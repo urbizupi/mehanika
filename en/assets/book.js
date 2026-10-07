@@ -49,4 +49,15 @@
     const open = b.dataset.details === "open";
     document.querySelectorAll("main details.hid").forEach((d) => { d.open = open; });
   });
+
+  // Theme button: switch between light and dark. The choice is kept in localStorage and applied
+  // before the page is drawn by a short script in the page head. Without a choice the system setting holds.
+  document.addEventListener("click", (ev) => {
+    if (!ev.target.closest("button.theme-toggle")) return;
+    const root = document.documentElement;
+    const dark = root.dataset.theme ? root.dataset.theme === "dark"
+      : matchMedia("(prefers-color-scheme: dark)").matches;
+    root.dataset.theme = dark ? "light" : "dark";
+    try { localStorage.setItem("theme", root.dataset.theme); } catch (e) { /* private mode: not kept */ }
+  });
 })();
