@@ -60,4 +60,51 @@
     root.dataset.theme = dark ? "light" : "dark";
     try { localStorage.setItem("theme", root.dataset.theme); } catch (e) { /* private mode: not kept */ }
   });
+
+  // Temporary reread markers (local build only, removed from the source once read): a Done button
+  // on each marker and a floating button that jumps to the next unread one. Kept in localStorage.
+  const marks = [...document.querySelectorAll("main .preberi")];
+  if (marks.length) {
+    const L = window.REREAD || { label: "Reread", done: "Done", page: "All on one page" };
+    let store = {};
+    try { store = JSON.parse(localStorage.getItem("reread") || "{}"); } catch (e) { /* not kept */ }
+    const save = () => { try { localStorage.setItem("reread", JSON.stringify(store)); } catch (e) { /* not kept */ } };
+    const unread = () => marks.filter((m) => !m.classList.contains("prebrano"));
+    const next = document.createElement("button");
+    next.type = "button";
+    next.className = "reread-next";
+    const update = () => {
+      const n = unread().length;
+      next.textContent = `${L.label}: ${n} ↓`;
+      next.hidden = n === 0;
+    };
+    marks.forEach((m) => {
+      const b = document.createElement("button");
+      b.type = "button";
+      b.className = "reread-done";
+      const show = () => { b.textContent = m.classList.contains("prebrano") ? "↺" : `✓ ${L.done}`; };
+      if (store[m.dataset.key]) m.classList.add("prebrano");
+      show();
+      b.addEventListener("click", () => {
+        if (m.classList.toggle("prebrano")) store[m.dataset.key] = 1; else delete store[m.dataset.key];
+        save(); show(); update();
+      });
+      if (m.tagName === "MARK") m.after(b); else m.prepend(b);
+    });
+    next.addEventListener("click", () => {
+      const left = unread();
+      const below = left.find((m) => m.getBoundingClientRect().top > 90) || left[0];
+      if (below) below.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+    document.body.appendChild(next);
+    // Link to preberi.html, the page that collects all markers (not shown on that page itself).
+    if (!location.pathname.endsWith("/preberi.html")) {
+      const list = document.createElement("a");
+      list.className = "reread-list";
+      list.href = "preberi.html";
+      list.textContent = L.page;
+      document.body.appendChild(list);
+    }
+    update();
+  }
 })();

@@ -53,3 +53,4 @@ window.MathJax = {
  }
 };
 window.KNOWL_IN_CONTEXT = "Odpri v kontekstu →";
+window.REREAD = {"label": "Preberi znova", "done": "Prebrano", "page": "Vse na eni strani"};
