@@ -61,10 +61,17 @@
     try { localStorage.setItem("theme", root.dataset.theme); } catch (e) { /* private mode: not kept */ }
   });
 
-  // Figures alongside (wide screens only, see style.css): a panel on the right shows the figure of
-  // the passage being read, that is, the last figure or link to a figure above a reading line at 40 %
-  // of the window height. The toolbar button switches the mode, the choice is kept in localStorage
-  // (on by default). Links inside closed parts and opened knowls do not count.
+  // Figures alongside (wide screens only, see style.css): a panel on the right shows a figure only
+  // while the text that mentions it is being read. A passage of a figure runs from a paragraph, list
+  // item or display that mentions it (a link to it, or the figure itself) to the last such one in
+  // the same section or subsection, split where two mentions are more than a window height apart.
+  // The figure appears when the reading line (40 % of the window height) reaches the start of its
+  // passage and goes when the passage ends a little (10 % of the window) above the line. A passage
+  // that contains the line wins over one that has just ended, and of several, the one that started
+  // last. Over text that does not mention a figure the panel is empty,
+  // and it stays empty while the figure itself is fully visible in the text column. The toolbar
+  // button switches the mode, the choice is kept in localStorage (on by default). Links inside closed
+  // parts and opened knowls do not count.
   const sideBtn = document.querySelector("button.fig-side-toggle");
   const figs = [...document.querySelectorAll("main figure.slika[id]")];
   if (sideBtn && !figs.length) sideBtn.remove();
@@ -73,20 +80,53 @@
     const target = (a) => (a.tagName === "FIGURE" ? a.id : (a.getAttribute("href") || "").split("#")[1]);
     const anchors = [...document.querySelectorAll("main figure.slika[id], main a.xref[href*='#fig-']")]
       .filter((a) => ids.has(target(a)));
+    // Section number of every top-level block of main: it grows at each h2 and h3.
+    const sectionOf = new Map();
+    let sec = 0;
+    for (const el of document.querySelectorAll("main > *")) {
+      if (el.tagName === "H2" || el.tagName === "H3") sec += 1;
+      sectionOf.set(el, sec);
+    }
+    // Passages: the anchors of one figure in one section, with their top-level blocks.
+    const passages = new Map();
+    for (const a of anchors) {
+      const block = a.closest("main > *");
+      if (!block) continue;
+      const host = a.closest("li, p, figure, .eq, td, th") || block;
+      const key = target(a) + "@" + sectionOf.get(block);
+      if (!passages.has(key)) passages.set(key, { id: target(a), anchors: [] });
+      passages.get(key).anchors.push({ a, host });
+    }
     const panel = document.createElement("aside");
     panel.className = "fig-panel";
     document.body.appendChild(panel);
     let shown = null;
     const pick = () => {
       if (!document.body.classList.contains("fig-side")) return;
-      const line = innerHeight * 0.4;
-      let cur = null;
-      for (const a of anchors) {
-        if (!a.getClientRects().length) continue;
-        if (a.getBoundingClientRect().top > line) break;
-        cur = a;
+      const h = innerHeight, line = h * 0.4, near = h * 0.1;
+      let best = null;
+      for (const p of passages.values()) {
+        let seg = null;
+        const segs = [];
+        for (const x of p.anchors) {
+          if (!x.a.getClientRects().length) continue;
+          const r = x.host.getBoundingClientRect();
+          if (seg && r.top - seg.bottom <= h) { seg.bottom = Math.max(seg.bottom, r.bottom); continue; }
+          seg = { top: r.top, bottom: r.bottom };
+          segs.push(seg);
+        }
+        for (const g of segs) {
+          if (g.top > line || g.bottom < line - near) continue;
+          // Containing the line beats having just ended above it, then the later start wins.
+          const score = (g.bottom >= line ? 1e7 : 0) + g.top;
+          if (!best || score > best.score) best = { id: p.id, score };
+        }
       }
-      const id = cur ? target(cur) : null;
+      let id = best ? best.id : null;
+      if (id) {
+        const r = document.getElementById(id).getBoundingClientRect();
+        if (r.top >= 0 && r.bottom <= h) id = null;
+      }
       if (id === shown) return;
       shown = id;
       if (!id) { panel.replaceChildren(); return; }
