@@ -118,8 +118,20 @@ ol.toc li:not(.stub) .h-num { color: var(--accent); font-weight: 600; }
 ol.toc li.stub a { color: var(--muted); }
 
 .eq { overflow-x: auto; overflow-y: hidden; margin: .6rem 0; }
-table { border-collapse: collapse; margin: 1rem 0; }
-th, td { border: 1px solid var(--line); padding: .25rem .6rem; }
+/* Tables: framed, shaded header, light zebra rows, numbers right-aligned in tabular figures.
+   display: block lets a wide table scroll sideways on a phone instead of widening the page. */
+table {
+  display: block; width: fit-content; max-width: 100%; overflow-x: auto; margin: 1.3rem auto;
+  border: 1px solid var(--line); border-radius: 8px; border-spacing: 0; border-collapse: separate;
+  font: .92rem/1.4 var(--sans); font-variant-numeric: tabular-nums;
+}
+th, td { padding: .45rem .95rem; border-bottom: 1px solid var(--line); text-align: right; }
+td { white-space: nowrap; }
+th:first-child, td:first-child { text-align: left; }
+thead th { background: var(--soft); font-weight: 600; vertical-align: bottom; }
+tbody tr:nth-child(even) td { background: color-mix(in srgb, var(--soft) 55%, transparent); }
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover td { background: var(--knowl); }
 img { max-width: 100%; }
 
 .blk { --c: var(--accent); margin: 1.3rem 0; padding: .35rem 0 .35rem .9rem; border-left: 3px solid var(--c); scroll-margin-top: 3.5rem; }
@@ -208,3 +220,35 @@ div.preberi > .reread-done { float: right; margin: 0 0 0.3em 0.5em; }
 .reread-next { position: fixed; right: 1rem; bottom: 1rem; z-index: 10; font: 0.85rem var(--sans); color: var(--thm); background: var(--bg); border: 1px solid var(--thm); border-radius: 4px; padding: 0.35em 0.7em; cursor: pointer; }
 .reread-list { position: fixed; right: 1rem; bottom: 3.4rem; z-index: 10; font: 0.8rem var(--sans); color: var(--thm); background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: 0.25em 0.6em; text-decoration: none; }
 .preberi-kje { font: 0.8rem var(--sans); margin-top: 0.2rem; }
+/* Comments on a selection (local build only, book.js and tools/serve.py). */
+.comment-btn { position: absolute; z-index: 20; font: 600 .8rem var(--sans); color: var(--bg); background: var(--accent); border: 0; border-radius: 4px; padding: .3rem .65rem; cursor: pointer; box-shadow: 0 1px 4px rgba(0, 0, 0, .25); }
+.comment-box { position: absolute; z-index: 21; width: min(22rem, calc(100vw - 32px)); background: var(--bg); color: var(--fg); border: 1px solid var(--line); border-radius: 8px; padding: .6rem; box-shadow: 0 4px 16px rgba(0, 0, 0, .2); font: .85rem var(--sans); }
+.comment-box blockquote { margin: 0 0 .45rem; padding-left: .55rem; border-left: 3px solid var(--accent); color: var(--muted); max-height: 5rem; overflow: auto; }
+.comment-box textarea { width: 100%; font: inherit; color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: .4rem; resize: vertical; }
+.comment-box .row { display: flex; justify-content: flex-end; gap: .4rem; margin-top: .45rem; }
+.comment-box button { font: inherit; color: var(--fg); background: var(--soft); border: 1px solid var(--line); border-radius: 4px; padding: .2rem .75rem; cursor: pointer; }
+.comment-box button.save { color: var(--bg); background: var(--accent); border-color: var(--accent); }
+.comment-toast { position: fixed; left: 50%; bottom: 1.2rem; transform: translateX(-50%); z-index: 30; max-width: min(30rem, calc(100vw - 32px)); font: .85rem var(--sans); color: var(--bg); background: var(--fg); border-radius: 6px; padding: .5rem .9rem; }
+.comment-list-btn { position: fixed; left: 1rem; bottom: 1rem; z-index: 10; font: .85rem var(--sans); color: var(--accent); background: var(--bg); border: 1px solid var(--accent); border-radius: 4px; padding: .35em .7em; cursor: pointer; }
+.comment-panel { position: fixed; left: 1rem; bottom: 3.4rem; z-index: 15; width: min(24rem, calc(100vw - 32px)); max-height: 60vh; overflow: auto; background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: .3rem .8rem; font: .82rem var(--sans); box-shadow: 0 4px 16px rgba(0, 0, 0, .2); }
+.comment-panel .item { padding: .45rem 0; border-bottom: 1px solid var(--line); cursor: pointer; }
+.comment-panel .item:last-child { border-bottom: 0; }
+.comment-panel .item.done { opacity: .6; }
+.comment-panel .q { color: var(--muted); }
+mark.komentar { color: inherit; background: none; box-shadow: inset 0 -2px 0 var(--accent); cursor: help; }
+mark.komentar.done { box-shadow: inset 0 -1px 0 var(--muted); }
+/* Figures alongside (book.js): on wide screens the figure of the passage being read stays in a panel
+   on the right, and the text column moves left to make room. Off on narrow screens. */
+.tools .fig-side-toggle, .fig-panel { display: none; }
+@media (min-width: 72rem) {
+  .tools .fig-side-toggle { display: inline-block; }
+  .tools .fig-side-toggle.on { color: var(--fg); background: var(--soft); }
+  body.fig-side { --figw: min(34rem, calc(100vw - 52rem)); --figx: max(16px, calc((100vw - 48rem - var(--figw)) / 2)); }
+  body.fig-side main, body.fig-side footer { margin-left: var(--figx); margin-right: 0; }
+  body.fig-side .fig-panel {
+    display: block; position: fixed; top: 3.4rem; right: var(--figx); width: var(--figw);
+    max-height: calc(100vh - 4.4rem); overflow: auto; padding: .2rem 0 .4rem 1rem; border-left: 1px solid var(--line);
+  }
+  body.fig-side .fig-panel:empty { display: none; }
+  .fig-panel figure.blk { margin: 0; }
+}
