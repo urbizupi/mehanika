@@ -340,3 +340,13 @@
     })();
   }
 })();
+
+// Contents page: the i button next to a chapter's share shows or hides what the chapter still lacks.
+document.querySelectorAll(".toc-info").forEach((b) => {
+  b.addEventListener("click", () => {
+    const box = b.closest("li").querySelector(".toc-missing");
+    if (!box) return;
+    box.hidden = !box.hidden;
+    b.setAttribute("aria-expanded", String(!box.hidden));
+  });
+});
