@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-darbouxove-vsote"] = {"html": "<div class=\"eq\">\\[s(f, D) = \\sum_{\\mathrm{i}=1}^n m_{\\mathrm{i}}\\,\\Delta x_{\\mathrm{i}} , \\qquad S(f, D) = \\sum_{\\mathrm{i}=1}^n M_{\\mathrm{i}}\\,\\Delta x_{\\mathrm{i}} . \\tag{3.31}\\]</div>", "href": "sec-integral.html#eq-darbouxove-vsote"};

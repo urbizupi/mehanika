@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-odvod-zasuka"] = {"html": "<div class=\"eq\">\\[\\frac{\\partial\\omega_{\\mathrm{ij}}}{\\partial x_{\\mathrm{k}}} = \\frac{\\partial\\varepsilon_{\\mathrm{ik}}}{\\partial x_{\\mathrm{j}}} - \\frac{\\partial\\varepsilon_{\\mathrm{jk}}}{\\partial x_{\\mathrm{i}}} , \\tag{1.69}\\]</div>", "href": "sec-kompatibilnost.html#eq-odvod-zasuka"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vsota-stena"] = {"html": "<div class=\"eq\">\\[F \\approx \\sum_{\\mathrm{i}=1}^{l} \\sum_{\\mathrm{j}=1}^{m} \\rho g\\,\\xi_{\\mathrm{i}}\\,\\Delta x_{\\mathrm{i}}\\,\\Delta y_{\\mathrm{j}} . \\tag{4.6}\\]</div>", "href": "sec-integral-po-telesu.html#eq-vsota-stena"};

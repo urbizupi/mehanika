@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-enotski-vektorji-osi"] = {"html": "<div class=\"eq\">\\[\\vek e_{\\mathrm{x}} = (1, 0, 0) , \\quad \\vek e_{\\mathrm{y}} = (0, 1, 0) , \\quad \\vek e_{\\mathrm{z}} = (0, 0, 1) . \\tag{1.12}\\]</div>", "href": "sec-vektorji.html#eq-enotski-vektorji-osi"};

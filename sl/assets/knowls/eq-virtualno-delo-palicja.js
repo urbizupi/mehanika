@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-virtualno-delo-palicja"] = {"html": "<div class=\"eq\">\\[N_{\\mathrm{AC}}\\,\\delta e_{\\mathrm{AC}} + N_{\\mathrm{BC}}\\,\\delta e_{\\mathrm{BC}} = \\vek F\\cdot\\delta\\vek u_{\\mathrm{C}} . \\tag{4.49}\\]</div>", "href": "sec-virtualni-pomiki-palice.html#eq-virtualno-delo-palicja"};

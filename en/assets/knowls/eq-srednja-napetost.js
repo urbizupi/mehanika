@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-srednja-napetost"] = {"html": "<div class=\"eq\">\\[\\sigma_{\\mathrm{m}} = \\frac{\\sigma_{\\mathrm{xx}} + \\sigma_{\\mathrm{yy}} + \\sigma_{\\mathrm{zz}}}{3} = \\frac{I_1}{3} . \\tag{2.71}\\]</div>", "href": "sec-najvecja-strizna.html#eq-srednja-napetost"};

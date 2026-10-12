@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kvadrat-razlike"] = {"html": "<div class=\"eq\">\\[|\\vek b - \\vek a|^2 = |\\vek a|^2 + |\\vek b|^2 - 2\\,\\vek a\\cdot\\vek b , \\qquad |\\vek a + \\vek b|^2 = |\\vek a|^2 + |\\vek b|^2 + 2\\,\\vek a\\cdot\\vek b . \\tag{2.7}\\]</div>", "href": "sec-skalarni-produkt.html#eq-kvadrat-razlike"};

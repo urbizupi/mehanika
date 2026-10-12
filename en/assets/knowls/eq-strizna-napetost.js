@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-strizna-napetost"] = {"html": "<div class=\"eq\">\\[\\tau = |\\vek t - \\sigma_{\\mathrm{n}}\\,\\vek n| \\tag{2.12}\\]</div>", "href": "sec-posevni-prerez.html#eq-strizna-napetost"};

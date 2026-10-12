@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-razlika-uy-viseca"] = {"html": "<div class=\"eq\">\\[u_{\\mathrm{y}}(x, y + \\Delta y, z) - u_{\\mathrm{y}}(x, y, z) = -0{,}6\\,a\\,(L - x)\\,\\Delta y . \\tag{1.21}\\]</div>", "href": "sec-parcialni-odvodi.html#eq-razlika-uy-viseca"};

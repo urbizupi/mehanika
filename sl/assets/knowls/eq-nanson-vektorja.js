@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nanson-vektorja"] = {"html": "<div class=\"eq\">\\[(\\mat F\\vek a)\\times(\\mat F\\vek b) = J\\,\\mat F^{-\\T}\\,(\\vek a\\times\\vek b) . \\tag{2.79}\\]</div>", "href": "sec-piola-kirchhoff.html#eq-nanson-vektorja"};

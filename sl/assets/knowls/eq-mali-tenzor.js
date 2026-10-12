@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mali-tenzor"] = {"html": "<div class=\"eq\">\\[\\ten\\varepsilon = \\tfrac12\\big(\\mat H + \\mat H^\\T\\big) , \\tag{1.51}\\]</div>", "href": "sec-deformacija-v-prostoru.html#eq-mali-tenzor"};

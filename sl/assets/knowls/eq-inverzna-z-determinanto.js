@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-inverzna-z-determinanto"] = {"html": "<div class=\"eq\">\\[\\frac{\\vek b\\times\\vek c}{\\det\\mat A} , \\qquad \\frac{\\vek c\\times\\vek a}{\\det\\mat A} , \\qquad \\frac{\\vek a\\times\\vek b}{\\det\\mat A} , \\tag{2.54}\\]</div>", "href": "sec-determinanta.html#eq-inverzna-z-determinanto"};

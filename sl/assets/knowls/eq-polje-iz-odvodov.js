@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-polje-iz-odvodov"] = {"html": "<div class=\"eq\">\\[\\varphi(P) = \\int_0^1 \\sum_{\\mathrm{k}} w_{\\mathrm{k}}(P_0 + t\\,\\vek d)\\,d_{\\mathrm{k}}\\,\\mathrm{d}t . \\tag{4.70}\\]</div>", "href": "sec-virtualne-sile.html#eq-polje-iz-odvodov"};

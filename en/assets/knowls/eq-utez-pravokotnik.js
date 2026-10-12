@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-utez-pravokotnik"] = {"html": "<div class=\"eq\">\\[\\varphi(x, y, c) = \\frac{q_{\\alpha_1\\beta_1}(x)\\,q_{\\alpha_2\\beta_2}(y)}{(\\ell_1/2)^8\\,(\\ell_2/2)^8} . \\tag{4.89}\\]</div>", "href": "sec-betti-maxwell.html#eq-utez-pravokotnik"};

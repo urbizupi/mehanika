@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-prostorninska-sila"] = {"html": "<div class=\"eq\">\\[\\vek b(P) = \\lim_{\\mathrm{h} \\to 0^+} \\frac{\\Delta\\vek F_{\\mathrm{V}}}{h^3} , \\tag{2.26}\\]</div>", "href": "sec-ravnotezne-enacbe.html#eq-prostorninska-sila"};

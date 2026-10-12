@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-cisti-strig-deformacija"] = {"html": "<div class=\"eq\">\\[\\varepsilon_{\\mathrm{xz}} = \\varepsilon_{\\mathrm{zx}} = \\frac{(1 + \\nu)\\,\\tau_0}{E} . \\tag{3.9}\\]</div>", "href": "sec-hookov-zakon.html#eq-cisti-strig-deformacija"};

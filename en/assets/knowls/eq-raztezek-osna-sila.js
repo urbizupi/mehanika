@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-raztezek-osna-sila"] = {"html": "<div class=\"eq\">\\[\\Delta L = \\frac{N L}{E A} . \\tag{3.2}\\]</div>", "href": "sec-natezni-preizkus.html#eq-raztezek-osna-sila"};

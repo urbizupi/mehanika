@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-odvod"] = {"html": "<div class=\"eq\">\\[f'(x) = \\lim_{\\Delta \\mathrm{x} \\to 0} \\frac{f(x + \\Delta x) - f(x)}{\\Delta x} . \\tag{1.5}\\]</div>", "href": "sec-limita-odvod.html#eq-odvod"};

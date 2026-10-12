@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-najvecja-strizna"] = {"html": "<div class=\"eq\">\\[\\tau_{\\max} = \\frac{\\sigma_1 - \\sigma_3}{2} . \\tag{2.68}\\]</div>", "href": "sec-najvecja-strizna.html#eq-najvecja-strizna"};

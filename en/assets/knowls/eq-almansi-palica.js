@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-almansi-palica"] = {"html": "<div class=\"eq\">\\[\\frac{L_1^2 - L_0^2}{2L_1^2} = \\frac{2\\varepsilon + \\varepsilon^2}{2\\,(1 + \\varepsilon)^2} . \\tag{1.56}\\]</div>", "href": "sec-deformacija-v-prostoru.html#eq-almansi-palica"};

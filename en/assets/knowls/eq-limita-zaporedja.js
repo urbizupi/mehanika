@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-limita-zaporedja"] = {"html": "<div class=\"eq\">\\[\\lim_{\\mathrm{n} \\to \\infty} x_{\\mathrm{n}} = d . \\tag{1.25}\\]</div>", "href": "sec-zaporedja.html#eq-limita-zaporedja"};

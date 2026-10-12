@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ravnovesje-momentov"] = {"html": "<div class=\"eq\">\\[\\vek r_1\\times\\vek F_1 + \\vek r_2\\times\\vek F_2 + \\dots + \\vek r_{\\mathrm{k}}\\times\\vek F_{\\mathrm{k}} = \\vek 0 , \\tag{2.35}\\]</div>", "href": "sec-simetrija-napetosti.html#eq-ravnovesje-momentov"};

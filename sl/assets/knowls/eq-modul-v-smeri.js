@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-modul-v-smeri"] = {"html": "<div class=\"eq\">\\[\\frac{1}{\\bar E} = \\frac{c^4}{E_{\\mathrm{x}}} + \\frac{s^4}{E_{\\mathrm{y}}} + c^2 s^2 \\left(\\frac{1}{G_{\\mathrm{xy}}} - \\frac{2\\nu_{\\mathrm{xy}}}{E_{\\mathrm{x}}}\\right) . \\tag{3.29}\\]</div>", "href": "sec-anizotropija.html#eq-modul-v-smeri"};

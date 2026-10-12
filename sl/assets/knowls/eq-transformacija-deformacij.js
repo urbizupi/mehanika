@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-transformacija-deformacij"] = {"html": "<div class=\"eq\">\\[\\bar{\\ten\\varepsilon} = \\mat Q\\,\\ten\\varepsilon\\,\\mat Q^\\T . \\tag{2.47}\\]</div>", "href": "sec-vrtenje-osi.html#eq-transformacija-deformacij"};

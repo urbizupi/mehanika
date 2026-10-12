@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dolzina-vektorja"] = {"html": "<div class=\"eq\">\\[|\\vek a| = \\sqrt{a_{\\mathrm{x}}^2 + a_{\\mathrm{y}}^2 + a_{\\mathrm{z}}^2} . \\tag{1.10}\\]</div>", "href": "sec-vektorji.html#eq-dolzina-vektorja"};

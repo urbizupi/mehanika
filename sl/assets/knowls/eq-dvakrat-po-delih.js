@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dvakrat-po-delih"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{K}} g\\,\\frac{\\partial^2\\varphi}{\\partial a\\,\\partial b}\\,\\mathrm{d}V = \\int_{\\mathrm{K}} \\frac{\\partial^2 g}{\\partial a\\,\\partial b}\\,\\varphi\\,\\mathrm{d}V . \\tag{4.79}\\]</div>", "href": "sec-virtualne-sile.html#eq-dvakrat-po-delih"};

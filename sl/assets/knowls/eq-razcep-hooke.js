@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-razcep-hooke"] = {"html": "<div class=\"eq\">\\[\\sigma_{\\mathrm{m}} = K\\,\\varepsilon_{\\mathrm{v}} , \\qquad \\ten s = 2G\\,\\ten e . \\tag{3.14}\\]</div>", "href": "sec-hookov-zakon.html#eq-razcep-hooke"};

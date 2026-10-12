@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-virtualni-pomiki-palice"] = {"html": "<div class=\"eq\">\\[\\int_0^L N(x)\\,\\delta u'(x)\\,\\mathrm{d}x = \\int_0^L q(x)\\,\\delta u(x)\\,\\mathrm{d}x + F\\,\\delta u(L) . \\tag{4.47}\\]</div>", "href": "sec-virtualni-pomiki-palice.html#eq-virtualni-pomiki-palice"};

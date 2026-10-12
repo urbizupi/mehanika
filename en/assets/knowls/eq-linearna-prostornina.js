@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-linearna-prostornina"] = {"html": "<div class=\"eq\">\\[V_{\\Lambda(\\mathrm{W})} = |\\det\\mat A|\\,V_{\\mathrm{W}} . \\tag{4.30}\\]</div>", "href": "sec-zamenjava-spremenljivk.html#eq-linearna-prostornina"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-centralni-kolicnik"] = {"html": "<div class=\"eq\">\\[\\lim_{\\mathrm{h} \\to 0} \\frac{f(x + \\tfrac h2) - f(x - \\tfrac h2)}{h} = f'(x) . \\tag{2.30}\\]</div>", "href": "sec-ravnotezne-enacbe.html#eq-centralni-kolicnik"};

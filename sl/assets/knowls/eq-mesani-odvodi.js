@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mesani-odvodi"] = {"html": "<div class=\"eq\">\\[\\frac{\\partial^2 f}{\\partial y\\,\\partial x}(P) = \\frac{\\partial^2 f}{\\partial x\\,\\partial y}(P) . \\tag{1.67}\\]</div>", "href": "sec-kompatibilnost.html#eq-mesani-odvodi"};

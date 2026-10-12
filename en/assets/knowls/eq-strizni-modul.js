@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-strizni-modul"] = {"html": "<div class=\"eq\">\\[G = \\frac{E}{2\\,(1 + \\nu)} , \\qquad \\sigma_{\\mathrm{xz}} = 2G\\,\\varepsilon_{\\mathrm{xz}} . \\tag{3.10}\\]</div>", "href": "sec-hookov-zakon.html#eq-strizni-modul"};

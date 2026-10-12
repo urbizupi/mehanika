@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-drugi-piola-kirchhoff"] = {"html": "<div class=\"eq\">\\[\\mat S = J\\,\\mat F^{-1}\\,\\ten\\sigma\\,\\mat F^{-\\T} . \\tag{2.83}\\]</div>", "href": "sec-piola-kirchhoff.html#eq-drugi-piola-kirchhoff"};

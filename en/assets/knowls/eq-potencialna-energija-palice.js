@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-potencialna-energija-palice"] = {"html": "<div class=\"eq\">\\[\\Pi(u) = \\int_0^L \\tfrac12\\,EA\\,u'(x)^2\\,\\mathrm{d}x - \\int_0^L q(x)\\,u(x)\\,\\mathrm{d}x - F\\,u(L) . \\tag{4.62}\\]</div>", "href": "sec-potencialna-energija.html#eq-potencialna-energija-palice"};

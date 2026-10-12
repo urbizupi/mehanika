@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-delo-neodvisno-od-poti"] = {"html": "<div class=\"eq\">\\[W_{\\mathrm{zun}} = U(\\lambda_1) - U(\\lambda_0) . \\tag{4.85}\\]</div>", "href": "sec-betti-maxwell.html#eq-delo-neodvisno-od-poti"};

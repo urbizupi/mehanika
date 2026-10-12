@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ravnovesje-palice"] = {"html": "<div class=\"eq\">\\[N'(x) + q(x) = 0 \\quad \\text{for every } x \\in (0, L) , \\qquad N(L) = F . \\tag{4.46}\\]</div>", "href": "sec-virtualni-pomiki-palice.html#eq-ravnovesje-palice"};

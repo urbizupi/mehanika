@@ -1,8 +1,38 @@
 // Knowls: a click on a cross-reference opens the target in place, below the
 // paragraph that holds the link. A second click closes it. Ctrl or Cmd click
-// follows the link instead. Knowl content comes from knowls.js.
+// follows the link instead. The content of each knowl is a small script,
+// assets/knowls/<id>.js, loaded on the first click or when the pointer comes to the link.
 (() => {
   const HOSTS = "p, li, .eq, td, th, figcaption, summary, h1, h2, h3, .blk-head";
+
+  // Chapters with several sections are split into one page per section. An old link to the chapter
+  // page with an anchor that is now on a section page goes on to that page.
+  const moved = document.getElementById("moved");
+  if (moved && location.hash) {
+    const id = decodeURIComponent(location.hash.slice(1));
+    const file = !document.getElementById(id) && JSON.parse(moved.textContent)[id];
+    if (file) location.replace(file + location.hash);
+  }
+
+  window.KNOWLS = window.KNOWLS || {};
+  const loading = {};
+  const knowl = (id) => {
+    if (window.KNOWLS[id]) return Promise.resolve(window.KNOWLS[id]);
+    if (!loading[id]) {
+      loading[id] = new Promise((resolve) => {
+        const s = document.createElement("script");
+        s.src = `assets/knowls/${id}.js`;
+        s.onload = () => resolve(window.KNOWLS[id] || null);
+        s.onerror = () => { delete loading[id]; resolve(null); };
+        document.head.appendChild(s);
+      });
+    }
+    return loading[id];
+  };
+  document.addEventListener("pointerover", (ev) => {
+    const a = ev.target.closest && ev.target.closest("a.xref[data-knowl]");
+    if (a) knowl(a.dataset.knowl);
+  });
 
   // Typeset an element after the page and every earlier call are done. MathJax shares one document,
   // and a call during the first pass, while it loads an extension such as \boldsymbol, leaves that
@@ -17,8 +47,6 @@
   document.addEventListener("click", (ev) => {
     const a = ev.target.closest("a.xref[data-knowl]");
     if (!a || ev.button !== 0 || ev.ctrlKey || ev.metaKey || ev.shiftKey || ev.altKey) return;
-    const k = (window.KNOWLS || {})[a.dataset.knowl];
-    if (!k) return;
     ev.preventDefault();
 
     if (a._knowl) {
@@ -27,7 +55,16 @@
       a.classList.remove("open");
       return;
     }
+    if (a._waiting) return;
+    a._waiting = true;
+    knowl(a.dataset.knowl).then((k) => {
+      a._waiting = false;
+      if (k) openKnowl(a, k);
+      else location.href = a.href; // no knowl (not loaded): follow the link
+    });
+  });
 
+  const openKnowl = (a, k) => {
     const box = document.createElement("div");
     box.className = "knowl";
     box.innerHTML = k.html;
@@ -51,7 +88,7 @@
     a.classList.add("open");
     typeset(box);
     if (window.BookInt) BookInt.mount(box); // an interactive figure in the knowl
-  });
+  };
 
   // Toolbar: open or close every born-hidden block on the page.
   document.addEventListener("click", (ev) => {
@@ -75,15 +112,14 @@
   // Figures alongside (wide screens only, see style.css): a panel on the right shows the figure of
   // the passage being read, that is, the last figure or link to a figure above a reading line at 40 %
   // of the window height. The toolbar button switches the mode, the choice is kept in localStorage
-  // (on by default). Links inside closed parts and opened knowls do not count.
+  // (on by default). Links inside closed parts and opened knowls do not count. A figure on another
+  // page (another section) is shown from its knowl.
   const sideBtn = document.querySelector("button.fig-side-toggle");
-  const figs = [...document.querySelectorAll("main figure.slika[id]")];
-  if (sideBtn && !figs.length) sideBtn.remove();
-  if (sideBtn && figs.length) {
-    const ids = new Set(figs.map((f) => f.id));
-    const target = (a) => (a.tagName === "FIGURE" ? a.id : (a.getAttribute("href") || "").split("#")[1]);
-    const anchors = [...document.querySelectorAll("main figure.slika[id], main a.xref[href*='#fig-']")]
-      .filter((a) => ids.has(target(a)));
+  const target = (a) => (a.tagName === "FIGURE" ? a.id : (a.getAttribute("href") || "").split("#")[1]);
+  const anchors = [...document.querySelectorAll("main figure.slika[id], main a.xref[data-knowl][href*='#fig-']")]
+    .filter((a) => target(a));
+  if (sideBtn && !anchors.length) sideBtn.remove();
+  if (sideBtn && anchors.length) {
     const panel = document.createElement("aside");
     panel.className = "fig-panel";
     document.body.appendChild(panel);
@@ -101,10 +137,19 @@
       if (id === shown) return;
       shown = id;
       if (!id) { panel.replaceChildren(); return; }
-      const fig = document.getElementById(id).cloneNode(true);
-      fig.removeAttribute("id");
-      panel.replaceChildren(fig);
-      typeset(panel);
+      const here = document.getElementById(id);
+      if (here) {
+        const fig = here.cloneNode(true);
+        fig.removeAttribute("id");
+        panel.replaceChildren(fig);
+        typeset(panel);
+        return;
+      }
+      knowl(id).then((k) => {
+        if (shown !== id) return;
+        panel.innerHTML = k ? k.html : "";
+        typeset(panel);
+      });
     };
     const set = (on) => {
       document.body.classList.toggle("fig-side", on);
@@ -165,11 +210,12 @@
       if (below) below.scrollIntoView({ behavior: "smooth", block: "start" });
     });
     document.body.appendChild(next);
-    // Link to preberi.html, the page that collects all markers (not shown on that page itself).
-    if (!location.pathname.endsWith("/preberi.html")) {
+    // Link to preberi-<page>, the page that collects the markers of this page (not shown on the reread pages).
+    const here = location.pathname.split("/").pop();
+    if (here && !here.startsWith("preberi")) {
       const list = document.createElement("a");
       list.className = "reread-list";
-      list.href = "preberi.html";
+      list.href = `preberi-${here}`;
       list.textContent = L.page;
       document.body.appendChild(list);
     }

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-virtualni-podaljsek"] = {"html": "<div class=\"eq\">\\[\\delta e = \\vek n\\cdot\\delta\\vek u_{\\mathrm{C}} , \\tag{4.48}\\]</div>", "href": "sec-virtualni-pomiki-palice.html#eq-virtualni-podaljsek"};

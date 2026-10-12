@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-odvod-integrala"] = {"html": "<div class=\"eq\">\\[G'(s) = \\int_\\alpha^\\beta \\frac{\\partial f}{\\partial s}(t, s)\\,\\mathrm{d}t , \\tag{4.12}\\]</div>", "href": "sec-integral-po-telesu.html#eq-odvod-integrala"};

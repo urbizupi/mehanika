@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-oktaedrska-napetost"] = {"html": "<div class=\"eq\">\\[\\sigma_{\\mathrm{oct}} = \\sigma_{\\mathrm{m}} , \\qquad \\tau_{\\mathrm{oct}} = \\sqrt{\\tfrac23\\,J_2} = \\frac{\\sqrt2}{3}\\,\\sigma_{\\mathrm{vM}} . \\tag{2.76}\\]</div>", "href": "sec-najvecja-strizna.html#eq-oktaedrska-napetost"};

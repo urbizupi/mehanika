@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-odvod-obratnega-korena"] = {"html": "<div class=\"eq\">\\[\\frac{\\partial f}{\\partial x} = -\\frac12\\,f^3\\,\\frac{\\partial p}{\\partial x} , \\tag{4.43}\\]</div>", "href": "sec-zamenjava-spremenljivk.html#eq-odvod-obratnega-korena"};

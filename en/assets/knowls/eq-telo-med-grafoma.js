@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-telo-med-grafoma"] = {"html": "<div class=\"eq\">\\[V = \\{ (x, y, z) : (x, y) \\in R,\\ g(x, y) \\le z \\le h(x, y) \\} \\tag{4.10}\\]</div>", "href": "sec-integral-po-telesu.html#eq-telo-med-grafoma"};

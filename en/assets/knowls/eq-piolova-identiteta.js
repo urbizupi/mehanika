@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-piolova-identiteta"] = {"html": "<div class=\"eq\">\\[\\frac{\\partial\\vek N_{\\mathrm{x}}}{\\partial x} + \\frac{\\partial\\vek N_{\\mathrm{y}}}{\\partial y} + \\frac{\\partial\\vek N_{\\mathrm{z}}}{\\partial z} = \\vek 0 , \\tag{4.39}\\]</div>", "href": "sec-zamenjava-spremenljivk.html#eq-piolova-identiteta"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kratko-vlakno"] = {"html": "<div class=\"eq\">\\[\\overrightarrow{P_1 Q_1} = \\mat F\\,(h\\,\\vek n) + (R_{\\mathrm{x}}, R_{\\mathrm{y}}, R_{\\mathrm{z}}) , \\tag{1.46}\\]</div>", "href": "sec-deformacija-v-prostoru.html#eq-kratko-vlakno"};

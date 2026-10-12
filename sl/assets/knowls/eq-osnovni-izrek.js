@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-osnovni-izrek"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{a}}^b f(x)\\,\\mathrm{d}x = G(b) - G(a) . \\tag{3.32}\\]</div>", "href": "sec-integral.html#eq-osnovni-izrek"};

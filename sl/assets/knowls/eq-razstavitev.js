@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-razstavitev"] = {"html": "<div class=\"eq\">\\[\\vek a = (\\vek a\\cdot\\vek e)\\,\\vek e + \\big(\\vek a - (\\vek a\\cdot\\vek e)\\,\\vek e\\big) . \\tag{2.8}\\]</div>", "href": "sec-skalarni-produkt.html#eq-razstavitev"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-majhen-ostanek"] = {"html": "<div class=\"eq\">\\[|R(Q)| \\le \\eta\\,|PQ| \\quad \\text{for every point } Q \\text{ with } 0 &lt; |PQ| &lt; \\delta . \\tag{1.32}\\]</div>", "href": "sec-sprememba-polja.html#eq-majhen-ostanek"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kvadrat-vlakna"] = {"html": "<div class=\"eq\">\\[\\lim_{\\mathrm{h} \\to 0} \\frac{L_1^2 - L_0^2}{2L_0^2} = \\vek n^\\T\\mat E\\,\\vek n , \\tag{1.49}\\]</div>", "href": "sec-deformacija-v-prostoru.html#eq-kvadrat-vlakna"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sprememba-polja"] = {"html": "<div class=\"eq\">\\[f(Q) - f(P) = \\frac{\\partial f}{\\partial x}(P)\\,\\Delta x + \\frac{\\partial f}{\\partial y}(P)\\,\\Delta y + \\frac{\\partial f}{\\partial z}(P)\\,\\Delta z + R(Q) . \\tag{1.34}\\]</div>", "href": "sec-sprememba-polja.html#eq-sprememba-polja"};

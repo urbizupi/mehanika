@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ploskovni-integral-parametra"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{S}} f\\,\\mathrm{d}A = \\int_{\\mathrm{M}} f\\big(\\vek r(s, t)\\big)\\,\\big|\\vek N(s, t)\\big|\\,\\mathrm{d}A , \\tag{4.34}\\]</div>", "href": "sec-zamenjava-spremenljivk.html#eq-ploskovni-integral-parametra"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sila-na-zacetno-ploscino"] = {"html": "<div class=\"eq\">\\[\\frac{\\Delta\\vek F}{\\Delta A_0} \\approx J\\,\\ten\\sigma\\,\\mat F^{-\\T}\\,\\vek n_0 . \\tag{2.81}\\]</div>", "href": "sec-piola-kirchhoff.html#eq-sila-na-zacetno-ploscino"};

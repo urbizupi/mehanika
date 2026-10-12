@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-strig-kocke"] = {"html": "<div class=\"eq\">\\[u_{\\mathrm{x}}(x, y, z) = 0{,}001\\,z , \\qquad u_{\\mathrm{y}}(x, y, z) = 0 , \\qquad u_{\\mathrm{z}}(x, y, z) = 0 . \\tag{1.16}\\]</div>", "href": "sec-pomik-v-prostoru.html#eq-strig-kocke"};

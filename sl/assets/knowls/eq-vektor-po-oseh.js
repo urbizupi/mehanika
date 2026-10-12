@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vektor-po-oseh"] = {"html": "<div class=\"eq\">\\[\\vek a = a_{\\mathrm{x}}\\,\\vek e_{\\mathrm{x}} + a_{\\mathrm{y}}\\,\\vek e_{\\mathrm{y}} + a_{\\mathrm{z}}\\,\\vek e_{\\mathrm{z}} . \\tag{1.13}\\]</div>", "href": "sec-vektorji.html#eq-vektor-po-oseh"};

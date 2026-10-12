@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kolicnik-viseca-palica"] = {"html": "<div class=\"eq\">\\[\\frac{u(x + \\Delta x) - u(x)}{\\Delta x} = a\\,(2L - 2x) - a\\,\\Delta x . \\tag{1.6}\\]</div>", "href": "sec-limita-odvod.html#eq-kolicnik-viseca-palica"};

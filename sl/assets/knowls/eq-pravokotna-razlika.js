@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pravokotna-razlika"] = {"html": "<div class=\"eq\">\\[\\sum_{\\mathrm{i}} \\big(u_{\\mathrm{i}}(B) - u_{\\mathrm{i}}(A)\\big)\\,d_{\\mathrm{i}} = 0 . \\tag{1.73}\\]</div>", "href": "sec-kompatibilnost.html#eq-pravokotna-razlika"};

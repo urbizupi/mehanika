@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pretok-ploskve-kvadra"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{a}_1}^{b_1}\\int_{\\mathrm{a}_2}^{b_2} \\vek v\\big(\\Phi(x, y, b_3)\\big)\\cdot\\vek N_{\\mathrm{z}}(x, y, b_3)\\,\\mathrm{d}y\\,\\mathrm{d}x , \\tag{4.38}\\]</div>", "href": "sec-zamenjava-spremenljivk.html#eq-pretok-ploskve-kvadra"};

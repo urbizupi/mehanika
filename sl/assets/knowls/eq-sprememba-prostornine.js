@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sprememba-prostornine"] = {"html": "<div class=\"eq\">\\[\\det(\\mat F\\vek a, \\mat F\\vek b, \\mat F\\vek c) = \\det\\mat F\\,\\det(\\vek a, \\vek b, \\vek c) . \\tag{2.55}\\]</div>", "href": "sec-determinanta.html#eq-sprememba-prostornine"};

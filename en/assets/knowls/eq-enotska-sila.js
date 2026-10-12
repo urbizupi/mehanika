@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-enotska-sila"] = {"html": "<div class=\"eq\">\\[\\vek d\\cdot\\vek u_{\\mathrm{C}} = \\sum_{\\mathrm{k}=1}^{m} \\hat N_{\\mathrm{k}}\\,\\frac{N_{\\mathrm{k}}\\,L_{\\mathrm{k}}}{E_{\\mathrm{k}}\\,A_{\\mathrm{k}}} . \\tag{4.64}\\]</div>", "href": "sec-virtualne-sile.html#eq-enotska-sila"};

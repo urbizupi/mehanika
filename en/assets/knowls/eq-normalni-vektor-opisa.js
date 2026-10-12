@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-normalni-vektor-opisa"] = {"html": "<div class=\"eq\">\\[\\vek N_2(s, t) = J_\\tau(s, t)\\,\\vek N_1\\big(\\tau(s, t)\\big) . \\tag{4.36}\\]</div>", "href": "sec-zamenjava-spremenljivk.html#eq-normalni-vektor-opisa"};

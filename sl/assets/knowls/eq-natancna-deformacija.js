@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-natancna-deformacija"] = {"html": "<div class=\"eq\">\\[\\lim_{\\mathrm{h} \\to 0} \\frac{L_1 - L_0}{L_0} = \\sqrt{1 + 2\\,\\vek n^\\T\\mat E\\,\\vek n} - 1 . \\tag{1.50}\\]</div>", "href": "sec-deformacija-v-prostoru.html#eq-natancna-deformacija"};

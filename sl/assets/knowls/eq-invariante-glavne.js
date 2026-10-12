@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-invariante-glavne"] = {"html": "<div class=\"eq\">\\[\\begin{aligned} I_1 &amp;= \\sigma_1 + \\sigma_2 + \\sigma_3 , \\\\ I_2 &amp;= \\sigma_1\\sigma_2 + \\sigma_2\\sigma_3 + \\sigma_3\\sigma_1 , \\\\ I_3 &amp;= \\sigma_1\\sigma_2\\sigma_3 . \\end{aligned} \\tag{2.65}\\]</div>", "href": "sec-glavne-napetosti.html#eq-invariante-glavne"};

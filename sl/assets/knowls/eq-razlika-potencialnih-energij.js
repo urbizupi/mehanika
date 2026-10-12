@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-razlika-potencialnih-energij"] = {"html": "<div class=\"eq\">\\[\\Pi(\\tilde{\\vek u}) - \\Pi(\\vek u) = U(\\tilde{\\vek u} - \\vek u) \\ge 0 , \\tag{4.58}\\]</div>", "href": "sec-potencialna-energija.html#eq-razlika-potencialnih-energij"};

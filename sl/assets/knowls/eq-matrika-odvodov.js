@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-matrika-odvodov"] = {"html": "<div class=\"eq\">\\[\\big(\\mat F_\\Phi(P)\\big)_{\\mathrm{ij}} = \\frac{\\partial\\Phi_{\\mathrm{i}}}{\\partial x_{\\mathrm{j}}}(P) , \\tag{4.23}\\]</div>", "href": "sec-zamenjava-spremenljivk.html#eq-matrika-odvodov"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-napetost-viseca-palica"] = {"html": "<div class=\"eq\">\\[\\sigma(x) = \\frac{N(x)}{A} = \\frac{\\rho g A\\,(L - x)}{A} = \\rho g\\,(L - x) . \\tag{2.5}\\]</div>", "href": "sec-napetost-v-palici.html#eq-napetost-viseca-palica"};

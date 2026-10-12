@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-oglisca-tetraedra"] = {"html": "<div class=\"eq\">\\[A = P + \\frac{h}{n_{\\mathrm{x}}}\\,\\vek e_{\\mathrm{x}} , \\qquad B = P + \\frac{h}{n_{\\mathrm{y}}}\\,\\vek e_{\\mathrm{y}} , \\qquad C = P + \\frac{h}{n_{\\mathrm{z}}}\\,\\vek e_{\\mathrm{z}} . \\tag{2.17}\\]</div>", "href": "sec-cauchyjeva-formula.html#eq-oglisca-tetraedra"};

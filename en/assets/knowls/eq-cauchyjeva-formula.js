@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-cauchyjeva-formula"] = {"html": "<div class=\"eq\">\\[\\vek t(\\vek n) = n_{\\mathrm{x}}\\,\\vek t(\\vek e_{\\mathrm{x}}) + n_{\\mathrm{y}}\\,\\vek t(\\vek e_{\\mathrm{y}}) + n_{\\mathrm{z}}\\,\\vek t(\\vek e_{\\mathrm{z}}) . \\tag{2.22}\\]</div>", "href": "sec-cauchyjeva-formula.html#eq-cauchyjeva-formula"};

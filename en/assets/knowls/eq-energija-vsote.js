@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-energija-vsote"] = {"html": "<div class=\"eq\">\\[w(\\{\\varepsilon\\} + \\{\\eta\\}) = w(\\{\\varepsilon\\}) + \\sum_{\\ix{i}} \\sum_{\\ix{j}} \\sigma_{\\mathrm{ij}}\\,\\eta_{\\mathrm{ij}} + w(\\{\\eta\\}) , \\tag{4.57}\\]</div>", "href": "sec-potencialna-energija.html#eq-energija-vsote"};

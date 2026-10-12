@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-razdalja-na-daljici"] = {"html": "<div class=\"eq\">\\[|CT|^2 = (1 - t)\\,|CA|^2 + t\\,|CB|^2 - t\\,(1 - t)\\,|AB|^2 , \\tag{1.70}\\]</div>", "href": "sec-kompatibilnost.html#eq-razdalja-na-daljici"};

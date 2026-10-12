@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-omejeno-raztezanje"] = {"html": "<div class=\"eq\">\\[|\\Phi(Q) - \\Phi(P)| \\le 3M\\,|PQ| . \\tag{4.26}\\]</div>", "href": "sec-zamenjava-spremenljivk.html#eq-omejeno-raztezanje"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-delo-obremenitve-na-pomikih"] = {"html": "<div class=\"eq\">\\[W_{\\mathrm{kl}} = \\int_{\\mathrm{V}} \\vek b^{(k)}\\cdot\\vek u^{(l)}\\,\\mathrm{d}V + \\int_{\\mathrm{S}_\\mathrm{t}} \\bar{\\vek t}^{(k)}\\cdot\\vek u^{(l)}\\,\\mathrm{d}A \\tag{4.84}\\]</div>", "href": "sec-betti-maxwell.html#eq-delo-obremenitve-na-pomikih"};

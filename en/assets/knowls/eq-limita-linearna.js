@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-limita-linearna"] = {"html": "<div class=\"eq\">\\[\\lim_{\\mathrm{h} \\to 0} \\,(d + c\\,h) = d . \\tag{1.20}\\]</div>", "href": "sec-parcialni-odvodi.html#eq-limita-linearna"};

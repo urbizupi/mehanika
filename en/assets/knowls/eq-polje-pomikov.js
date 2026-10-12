@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-polje-pomikov"] = {"html": "<div class=\"eq\">\\[\\vek u(x, y, z) = \\big(u_{\\mathrm{x}}(x, y, z),\\ u_{\\mathrm{y}}(x, y, z),\\ u_{\\mathrm{z}}(x, y, z)\\big) . \\tag{1.14}\\]</div>", "href": "sec-pomik-v-prostoru.html#eq-polje-pomikov"};

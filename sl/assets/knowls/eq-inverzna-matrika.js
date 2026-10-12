@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-inverzna-matrika"] = {"html": "<div class=\"eq\">\\[\\mat A\\mat B = \\mat B\\mat A = \\mat I , \\tag{1.43}\\]</div>", "href": "sec-matrike.html#eq-inverzna-matrika"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ocena-raztezanja"] = {"html": "<div class=\"eq\">\\[|U_{\\mathrm{ij}} - I_{\\mathrm{ij}} - \\varepsilon_{\\mathrm{ij}}| \\le \\frac{9\\,m^2}{1 - 3m} \\le 18\\,m^2 , \\qquad |R_{\\mathrm{ij}} - I_{\\mathrm{ij}} - \\omega_{\\mathrm{ij}}| \\le 91\\,m^2 . \\tag{2.85}\\]</div>", "href": "sec-piola-kirchhoff.html#eq-ocena-raztezanja"};

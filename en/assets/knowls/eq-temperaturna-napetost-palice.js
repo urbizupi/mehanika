@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-temperaturna-napetost-palice"] = {"html": "<div class=\"eq\">\\[\\sigma_{\\mathrm{xx}} = -E\\,\\alpha\\,\\Delta T . \\tag{3.18}\\]</div>", "href": "sec-temperaturne-deformacije.html#eq-temperaturna-napetost-palice"};

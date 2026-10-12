@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-transformacija-tenzorja"] = {"html": "<div class=\"eq\">\\[\\bar{\\mat A} = \\mat Q\\,\\mat A\\,\\mat Q^\\T , \\qquad \\bar A_{\\mathrm{kl}} = \\sum_{\\mathrm{i}} \\sum_{\\mathrm{j}} Q_{\\mathrm{ki}}\\,A_{\\mathrm{ij}}\\,Q_{\\mathrm{lj}} , \\tag{2.49}\\]</div>", "href": "sec-vrtenje-osi.html#eq-transformacija-tenzorja"};

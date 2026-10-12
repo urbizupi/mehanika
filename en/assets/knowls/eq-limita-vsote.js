@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-limita-vsote"] = {"html": "<div class=\"eq\">\\[\\lim_{\\mathrm{h} \\to 0} \\big(c_1\\,g_1(h) + c_2\\,g_2(h) + \\dots + c_{\\mathrm{k}}\\,g_{\\mathrm{k}}(h)\\big) = c_1 d_1 + c_2 d_2 + \\dots + c_{\\mathrm{k}} d_{\\mathrm{k}} . \\tag{2.21}\\]</div>", "href": "sec-cauchyjeva-formula.html#eq-limita-vsote"};

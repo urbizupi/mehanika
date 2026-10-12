@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-modul-stisljivosti"] = {"html": "<div class=\"eq\">\\[K = \\frac{E}{3\\,(1 - 2\\nu)} . \\tag{3.8}\\]</div>", "href": "sec-hookov-zakon.html#eq-modul-stisljivosti"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-temperaturni-koeficient"] = {"html": "<div class=\"eq\">\\[\\alpha = \\frac{\\text{thermal strain}}{\\Delta T} . \\tag{3.15}\\]</div>", "href": "sec-temperaturne-deformacije.html#eq-temperaturni-koeficient"};

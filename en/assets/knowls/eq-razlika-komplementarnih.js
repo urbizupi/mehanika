@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-razlika-komplementarnih"] = {"html": "<div class=\"eq\">\\[\\Pi^*(\\tilde{\\ten\\sigma}) - \\Pi^*(\\ten\\sigma) = U^*(\\tilde{\\ten\\sigma} - \\ten\\sigma) \\ge 0 , \\tag{4.67}\\]</div>", "href": "sec-virtualne-sile.html#eq-razlika-komplementarnih"};

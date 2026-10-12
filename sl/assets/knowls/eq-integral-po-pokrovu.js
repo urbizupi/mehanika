@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-integral-po-pokrovu"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{S}_\\mathrm{h}} f\\,\\mathrm{d}A = \\int_{\\mathrm{a}}^b \\int_{\\mathrm{c}}^d f\\big(x, y, h(x, y)\\big)\\,\\big|\\vek N_{\\mathrm{h}}(x, y)\\big|\\,\\mathrm{d}y\\,\\mathrm{d}x , \\tag{4.18}\\]</div>", "href": "sec-integral-po-telesu.html#eq-integral-po-pokrovu"};

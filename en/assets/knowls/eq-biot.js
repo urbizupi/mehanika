@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-biot"] = {"html": "<div class=\"eq\">\\[\\mat T = \\tfrac12\\,\\big(\\mat P\\,\\mat R + \\mat R^\\T\\mat P^\\T\\big) . \\tag{2.86}\\]</div>", "href": "sec-piola-kirchhoff.html#eq-biot"};

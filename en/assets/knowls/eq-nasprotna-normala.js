@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nasprotna-normala"] = {"html": "<div class=\"eq\">\\[\\vek t(-\\vek n) = -\\vek t(\\vek n) . \\tag{2.16}\\]</div>", "href": "sec-vektor-napetosti.html#eq-nasprotna-normala"};

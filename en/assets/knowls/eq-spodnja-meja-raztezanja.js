@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-spodnja-meja-raztezanja"] = {"html": "<div class=\"eq\">\\[|\\Phi(P) - \\Phi(Q)| \\ge \\frac{|PQ|}{2m} \\tag{4.28}\\]</div>", "href": "sec-zamenjava-spremenljivk.html#eq-spodnja-meja-raztezanja"};

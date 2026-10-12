@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vlakno-po-obremenitvi"] = {"html": "<div class=\"eq\">\\[\\overrightarrow{P_1 Q_1} = \\overrightarrow{PQ} + \\big(\\vek u(Q) - \\vek u(P)\\big) . \\tag{1.15}\\]</div>", "href": "sec-pomik-v-prostoru.html#eq-vlakno-po-obremenitvi"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-matrika-inverzne"] = {"html": "<div class=\"eq\">\\[\\mat F_\\Psi\\big(\\Phi(P)\\big) = \\mat F_\\Phi(P)^{-1} , \\qquad J_\\Psi\\big(\\Phi(P)\\big) = \\frac{1}{J_\\Phi(P)} . \\tag{4.29}\\]</div>", "href": "sec-zamenjava-spremenljivk.html#eq-matrika-inverzne"};

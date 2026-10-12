@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-diferencni-kolicnik"] = {"html": "<div class=\"eq\">\\[\\frac{f(x + \\Delta x) - f(x)}{\\Delta x} \\tag{1.3}\\]</div>", "href": "sec-limita-odvod.html#eq-diferencni-kolicnik"};

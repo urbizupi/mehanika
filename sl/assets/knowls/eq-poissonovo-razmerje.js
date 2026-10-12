@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-poissonovo-razmerje"] = {"html": "<div class=\"eq\">\\[\\nu = -\\frac{\\varepsilon_{\\mathrm{yy}}}{\\varepsilon_{\\mathrm{xx}}} . \\tag{3.3}\\]</div>", "href": "sec-natezni-preizkus.html#eq-poissonovo-razmerje"};

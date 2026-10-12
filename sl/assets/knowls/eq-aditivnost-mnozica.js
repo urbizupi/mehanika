@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-aditivnost-mnozica"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{W}_1 \\cup \\dots \\cup \\mathrm{W}_\\mathrm{m}} f\\,\\mathrm{d}V = \\int_{\\mathrm{W}_1} f\\,\\mathrm{d}V + \\dots + \\int_{\\mathrm{W}_\\mathrm{m}} f\\,\\mathrm{d}V . \\tag{4.16}\\]</div>", "href": "sec-integral-po-telesu.html#eq-aditivnost-mnozica"};

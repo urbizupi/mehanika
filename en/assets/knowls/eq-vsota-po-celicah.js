@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vsota-po-celicah"] = {"html": "<div class=\"eq\">\\[\\Big| \\sum_{\\mathrm{K}_{\\mathrm{ijk}} \\subseteq \\mathrm{W}} f(Q_{\\mathrm{ijk}})\\,\\Delta V_{\\mathrm{ijk}} - I \\Big| &lt; \\eta . \\tag{4.15}\\]</div>", "href": "sec-integral-po-telesu.html#eq-vsota-po-celicah"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-strizna-posevni"] = {"html": "<div class=\"eq\">\\[\\tau = |\\sigma\\sin\\theta\\cos\\theta| . \\tag{2.14}\\]</div>", "href": "sec-posevni-prerez.html#eq-strizna-posevni"};

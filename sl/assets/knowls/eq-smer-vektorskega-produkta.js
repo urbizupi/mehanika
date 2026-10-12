@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-smer-vektorskega-produkta"] = {"html": "<div class=\"eq\">\\[\\vek a\\cdot\\big(\\vek b\\times(\\vek a\\times\\vek b)\\big) = |\\vek a\\times\\vek b|^2 &gt; 0 . \\tag{2.50}\\]</div>", "href": "sec-determinanta.html#eq-smer-vektorskega-produkta"};

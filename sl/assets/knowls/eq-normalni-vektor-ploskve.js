@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-normalni-vektor-ploskve"] = {"html": "<div class=\"eq\">\\[\\vek N = \\frac{\\partial\\vek r}{\\partial s}\\times\\frac{\\partial\\vek r}{\\partial t} \\neq \\vek 0 . \\tag{4.33}\\]</div>", "href": "sec-zamenjava-spremenljivk.html#eq-normalni-vektor-ploskve"};

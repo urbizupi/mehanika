@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ploscine-tetraedra"] = {"html": "<div class=\"eq\">\\[\\Delta A_{\\mathrm{x}} = n_{\\mathrm{x}}\\,\\Delta A , \\qquad \\Delta A_{\\mathrm{y}} = n_{\\mathrm{y}}\\,\\Delta A , \\qquad \\Delta A_{\\mathrm{z}} = n_{\\mathrm{z}}\\,\\Delta A , \\tag{2.18}\\]</div>", "href": "sec-cauchyjeva-formula.html#eq-ploscine-tetraedra"};

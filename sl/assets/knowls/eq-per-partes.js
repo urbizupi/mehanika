@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-per-partes"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{a}}^b f(x)\\,g'(x)\\,\\mathrm{d}x = f(b)\\,g(b) - f(a)\\,g(a) - \\int_{\\mathrm{a}}^b f'(x)\\,g(x)\\,\\mathrm{d}x . \\tag{3.33}\\]</div>", "href": "sec-integral.html#eq-per-partes"};

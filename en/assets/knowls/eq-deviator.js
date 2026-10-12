@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-deviator"] = {"html": "<div class=\"eq\">\\[\\ten s = \\ten\\sigma - \\sigma_{\\mathrm{m}}\\,\\mat I , \\tag{2.72}\\]</div>", "href": "sec-najvecja-strizna.html#eq-deviator"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-hookov-zakon-lame"] = {"html": "<div class=\"eq\">\\[\\ten\\sigma = \\lambda\\,(\\tr\\ten\\varepsilon)\\,\\mat I + 2\\mu\\,\\ten\\varepsilon , \\tag{3.13}\\]</div>", "href": "sec-hookov-zakon.html#eq-hookov-zakon-lame"};

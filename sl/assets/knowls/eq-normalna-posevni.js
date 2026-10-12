@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-normalna-posevni"] = {"html": "<div class=\"eq\">\\[\\sigma_{\\mathrm{n}} = \\sigma\\cos^2\\theta . \\tag{2.13}\\]</div>", "href": "sec-posevni-prerez.html#eq-normalna-posevni"};

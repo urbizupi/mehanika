@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-gauss-komponenta"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{V}} \\frac{\\partial f}{\\partial x}\\,\\mathrm{d}V = \\int_{\\mathrm{S}} f\\,n_{\\mathrm{x}}\\,\\mathrm{d}A , \\tag{4.8}\\]</div>", "href": "sec-integral-po-telesu.html#eq-gauss-komponenta"};

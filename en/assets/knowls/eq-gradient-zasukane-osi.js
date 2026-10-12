@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-gradient-zasukane-osi"] = {"html": "<div class=\"eq\">\\[\\bar{\\mat H} = \\mat Q\\,\\mat H\\,\\mat Q^\\T . \\tag{2.46}\\]</div>", "href": "sec-vrtenje-osi.html#eq-gradient-zasukane-osi"};

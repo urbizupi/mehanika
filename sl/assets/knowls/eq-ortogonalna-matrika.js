@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ortogonalna-matrika"] = {"html": "<div class=\"eq\">\\[\\mat Q^\\T\\mat Q = \\mat Q\\,\\mat Q^\\T = \\mat I . \\tag{2.40}\\]</div>", "href": "sec-vrtenje-osi.html#eq-ortogonalna-matrika"};

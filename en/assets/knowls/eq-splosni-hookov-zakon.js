@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-splosni-hookov-zakon"] = {"html": "<div class=\"eq\">\\[\\sigma_{\\mathrm{ij}} = \\sum_{\\mathrm{k}} \\sum_{\\mathrm{l}} C_{\\mathrm{ijkl}}\\,\\varepsilon_{\\mathrm{kl}} \\tag{3.19}\\]</div>", "href": "sec-anizotropija.html#eq-splosni-hookov-zakon"};

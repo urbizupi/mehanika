@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vektor-med-tockama"] = {"html": "<div class=\"eq\">\\[\\overrightarrow{PQ} = (x_{\\mathrm{Q}} - x_{\\mathrm{P}},\\ y_{\\mathrm{Q}} - y_{\\mathrm{P}},\\ z_{\\mathrm{Q}} - z_{\\mathrm{P}}) . \\tag{1.8}\\]</div>", "href": "sec-vektorji.html#eq-vektor-med-tockama"};

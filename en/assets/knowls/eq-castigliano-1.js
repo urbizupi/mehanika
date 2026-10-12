@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-castigliano-1"] = {"html": "<div class=\"eq\">\\[F_{\\mathrm{i}} = \\frac{\\partial U}{\\partial \\Delta_{\\mathrm{i}}} . \\tag{4.61}\\]</div>", "href": "sec-potencialna-energija.html#eq-castigliano-1"};

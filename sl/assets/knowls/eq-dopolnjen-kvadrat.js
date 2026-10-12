@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dopolnjen-kvadrat"] = {"html": "<div class=\"eq\">\\[\\Pi(e) = \\tfrac12\\,k\\,(e - \\Delta L)^2 - \\tfrac12\\,F\\,\\Delta L . \\tag{4.53}\\]</div>", "href": "sec-potencialna-energija.html#eq-dopolnjen-kvadrat"};

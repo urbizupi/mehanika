@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-komplementarna-energija"] = {"html": "<div class=\"eq\">\\[\\Pi^*(\\ten\\sigma) = U^*(\\ten\\sigma) - \\int_{\\mathrm{S}_\\mathrm{u}} (\\ten\\sigma\\,\\vek n)\\cdot\\bar{\\vek u}\\,\\mathrm{d}A , \\tag{4.66}\\]</div>", "href": "sec-virtualne-sile.html#eq-komplementarna-energija"};

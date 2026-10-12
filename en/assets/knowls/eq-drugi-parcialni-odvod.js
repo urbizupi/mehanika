@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-drugi-parcialni-odvod"] = {"html": "<div class=\"eq\">\\[\\frac{\\partial^2 f}{\\partial y\\,\\partial x}(P) = \\frac{\\partial}{\\partial y}\\Big(\\frac{\\partial f}{\\partial x}\\Big)(P) . \\tag{1.65}\\]</div>", "href": "sec-kompatibilnost.html#eq-drugi-parcialni-odvod"};

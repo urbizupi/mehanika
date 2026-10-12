@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pretok-parametra"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{M}} \\vek v\\big(\\vek r(s, t)\\big)\\cdot\\vek N(s, t)\\,\\mathrm{d}A . \\tag{4.35}\\]</div>", "href": "sec-zamenjava-spremenljivk.html#eq-pretok-parametra"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-strig-kot"] = {"html": "<div class=\"eq\">\\[\\sin\\gamma \\approx 2\\,\\varepsilon_{\\mathrm{xy}} . \\tag{2.48}\\]</div>", "href": "sec-vrtenje-osi.html#eq-strig-kot"};

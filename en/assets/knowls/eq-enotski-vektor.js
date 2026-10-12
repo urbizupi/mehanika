@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-enotski-vektor"] = {"html": "<div class=\"eq\">\\[\\hat{\\vek a} = \\frac{1}{|\\vek a|}\\,\\vek a \\tag{1.11}\\]</div>", "href": "sec-vektorji.html#eq-enotski-vektor"};

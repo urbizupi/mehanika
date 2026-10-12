@@ -53,4 +53,4 @@ window.MathJax = {
  }
 };
 window.KNOWL_IN_CONTEXT = "Open in context →";
-window.REREAD = {"label": "Reread", "done": "Done", "page": "All on one page"};
+window.REREAD = {"label": "Reread", "done": "Done", "page": "Only the changed parts"};

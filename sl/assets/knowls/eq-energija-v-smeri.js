@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-energija-v-smeri"] = {"html": "<div class=\"eq\">\\[\\Pi(\\vek u + \\alpha\\,\\vek v) = \\Pi(\\vek u) + \\alpha\\,B(\\vek v) + \\alpha^2\\,U(\\vek v) , \\tag{4.60}\\]</div>", "href": "sec-potencialna-energija.html#eq-energija-v-smeri"};

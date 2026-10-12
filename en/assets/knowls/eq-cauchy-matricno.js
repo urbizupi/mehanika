@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-cauchy-matricno"] = {"html": "<div class=\"eq\">\\[\\vek t(\\vek n) = \\ten\\sigma\\,\\vek n . \\tag{2.42}\\]</div>", "href": "sec-vrtenje-osi.html#eq-cauchy-matricno"};

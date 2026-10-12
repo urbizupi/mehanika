@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-inverzna-2x2"] = {"html": "<div class=\"eq\">\\[\\mat A^{-1} = \\frac{1}{\\det\\mat A} \\begin{bmatrix} A_{\\mathrm{yy}} &amp; -A_{\\mathrm{xy}} \\\\ -A_{\\mathrm{yx}} &amp; A_{\\mathrm{xx}} \\end{bmatrix} . \\tag{4.27}\\]</div>", "href": "sec-zamenjava-spremenljivk.html#eq-inverzna-2x2"};

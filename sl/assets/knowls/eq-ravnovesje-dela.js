@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ravnovesje-dela"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{S}} \\vek t(\\vek n)\\,\\mathrm{d}A + \\int_{\\mathrm{V}} \\vek b\\,\\mathrm{d}V = \\vek 0 , \\tag{4.22}\\]</div>", "href": "sec-integral-po-telesu.html#eq-ravnovesje-dela"};

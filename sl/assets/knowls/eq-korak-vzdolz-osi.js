@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-korak-vzdolz-osi"] = {"html": "<div class=\"eq\">\\[f(S + \\Delta y\\,\\vek e_{\\mathrm{y}}) - f(S) = \\frac{\\partial f}{\\partial y}(S + \\xi\\,\\vek e_{\\mathrm{y}})\\,\\Delta y . \\tag{1.33}\\]</div>", "href": "sec-sprememba-polja.html#eq-korak-vzdolz-osi"};

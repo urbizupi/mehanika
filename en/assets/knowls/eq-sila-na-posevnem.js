@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sila-na-posevnem"] = {"html": "<div class=\"eq\">\\[\\vek t = \\frac{1}{A_\\theta}\\,\\vek R = \\frac{N\\cos\\theta}{A}\\,\\vek e_{\\mathrm{x}} = \\sigma\\cos\\theta\\,\\vek e_{\\mathrm{x}} . \\tag{2.10}\\]</div>", "href": "sec-posevni-prerez.html#eq-sila-na-posevnem"};

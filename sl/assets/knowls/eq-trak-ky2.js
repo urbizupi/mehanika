@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-trak-ky2"] = {"html": "<div class=\"eq\">\\[\\varepsilon_{\\mathrm{xx}} = k\\,y^2 , \\qquad \\varepsilon_{\\mathrm{yy}} = 0 , \\qquad \\varepsilon_{\\mathrm{xy}} = 0 , \\tag{1.64}\\]</div>", "href": "sec-kompatibilnost.html#eq-trak-ky2"};

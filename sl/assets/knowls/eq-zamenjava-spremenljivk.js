@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-zamenjava-spremenljivk"] = {"html": "<div class=\"eq\">\\[\\int_{\\Phi(\\mathrm{W})} f\\,\\mathrm{d}V = \\int_{\\mathrm{W}} f\\big(\\Phi(P)\\big)\\,\\big|J_\\Phi(P)\\big|\\,\\mathrm{d}V . \\tag{4.31}\\]</div>", "href": "sec-zamenjava-spremenljivk.html#eq-zamenjava-spremenljivk"};

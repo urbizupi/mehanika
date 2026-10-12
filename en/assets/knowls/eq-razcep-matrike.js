@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-razcep-matrike"] = {"html": "<div class=\"eq\">\\[\\mat A = \\tfrac12\\,(\\mat A + \\mat A^\\T) + \\tfrac12\\,(\\mat A - \\mat A^\\T) , \\tag{1.42}\\]</div>", "href": "sec-matrike.html#eq-razcep-matrike"};

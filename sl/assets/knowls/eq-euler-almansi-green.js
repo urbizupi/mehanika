@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-euler-almansi-green"] = {"html": "<div class=\"eq\">\\[\\mat F^\\T\\mat e\\,\\mat F = \\mat E \\qquad \\text{in} \\qquad \\mat e = \\mat F^{-\\T}\\mat E\\,\\mat F^{-1} . \\tag{1.58}\\]</div>", "href": "sec-deformacija-v-prostoru.html#eq-euler-almansi-green"};

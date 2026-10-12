@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-moment-kocke"] = {"html": "<div class=\"eq\">\\[h^3\\,\\big(\\sigma_{\\mathrm{yz}} - \\sigma_{\\mathrm{zy}},\\ \\ \\sigma_{\\mathrm{zx}} - \\sigma_{\\mathrm{xz}},\\ \\ \\sigma_{\\mathrm{xy}} - \\sigma_{\\mathrm{yx}}\\big) . \\tag{2.36}\\]</div>", "href": "sec-simetrija-napetosti.html#eq-moment-kocke"};

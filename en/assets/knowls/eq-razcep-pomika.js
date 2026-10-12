@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-razcep-pomika"] = {"html": "<div class=\"eq\">\\[\\vek u(Q) - \\vek u(P) \\approx h\\,\\ten\\varepsilon\\,\\vek n + h\\,\\ten\\omega\\,\\vek n . \\tag{1.55}\\]</div>", "href": "sec-deformacija-v-prostoru.html#eq-razcep-pomika"};

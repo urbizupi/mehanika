@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-normalna-glavne"] = {"html": "<div class=\"eq\">\\[\\sigma_{\\mathrm{n}} = \\sigma_1\\,\\bar n_1^2 + \\sigma_2\\,\\bar n_2^2 + \\sigma_3\\,\\bar n_3^2 , \\tag{2.62}\\]</div>", "href": "sec-glavne-napetosti.html#eq-normalna-glavne"};

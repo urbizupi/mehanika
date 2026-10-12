@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-druga-invarianta-deviatorja"] = {"html": "<div class=\"eq\">\\[J_2 = \\frac12\\sum_{\\mathrm{i}}\\sum_{\\mathrm{j}} s_{\\mathrm{ij}}^2 . \\tag{2.73}\\]</div>", "href": "sec-najvecja-strizna.html#eq-druga-invarianta-deviatorja"};

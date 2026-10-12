@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pomik-iz-deformacij"] = {"html": "<div class=\"eq\">\\[u_{\\mathrm{i}}(P) = \\int_0^1 \\sum_{\\mathrm{j}} \\big(\\varepsilon_{\\mathrm{ij}} + \\omega_{\\mathrm{ij}}\\big)(P_0 + t\\,\\vek d)\\,d_{\\mathrm{j}}\\,\\mathrm{d}t . \\tag{4.73}\\]</div>", "href": "sec-virtualne-sile.html#eq-pomik-iz-deformacij"};

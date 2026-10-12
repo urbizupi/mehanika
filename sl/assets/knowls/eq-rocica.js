@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rocica"] = {"html": "<div class=\"eq\">\\[\\ell = \\sqrt{|\\vek r|^2 - (\\vek r\\cdot\\vek e)^2} , \\tag{2.34}\\]</div>", "href": "sec-simetrija-napetosti.html#eq-rocica"};

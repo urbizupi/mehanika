@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-polje-brez-deformacij"] = {"html": "<div class=\"eq\">\\[\\vek u(P) = \\vek a + \\mat W\\,\\vek r_{\\mathrm{P}} \\qquad \\text{for every point } P \\text{ of } D , \\tag{1.72}\\]</div>", "href": "sec-kompatibilnost.html#eq-polje-brez-deformacij"};

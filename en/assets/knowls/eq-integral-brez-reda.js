@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-integral-brez-reda"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{V}} f\\,\\mathrm{d}V = \\int_{\\mathrm{a}}^b \\int_{\\mathrm{c}}^d \\int_{\\mathrm{g}(\\mathrm{x}, \\mathrm{y})}^{h(x, y)} f(x, y, z)\\,\\mathrm{d}z\\,\\mathrm{d}y\\,\\mathrm{d}x . \\tag{4.17}\\]</div>", "href": "sec-integral-po-telesu.html#eq-integral-brez-reda"};

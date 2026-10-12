@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pogoj-polja"] = {"html": "<div class=\"eq\">\\[\\frac{\\partial w_{\\mathrm{k}}}{\\partial x_{\\mathrm{l}}} = \\frac{\\partial w_{\\mathrm{l}}}{\\partial x_{\\mathrm{k}}} \\quad \\text{for all } \\ix{k}, \\ix{l} \\in \\{x, y, z\\} , \\tag{4.69}\\]</div>", "href": "sec-virtualne-sile.html#eq-pogoj-polja"};

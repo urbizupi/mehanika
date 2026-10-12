@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-simetrija-napetosti"] = {"html": "<div class=\"eq\">\\[\\sigma_{\\mathrm{xy}} = \\sigma_{\\mathrm{yx}} , \\qquad \\sigma_{\\mathrm{xz}} = \\sigma_{\\mathrm{zx}} , \\qquad \\sigma_{\\mathrm{yz}} = \\sigma_{\\mathrm{zy}} . \\tag{2.37}\\]</div>", "href": "sec-simetrija-napetosti.html#eq-simetrija-napetosti"};

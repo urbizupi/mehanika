@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-utezen-pomik"] = {"html": "<div class=\"eq\">\\[\\Delta_{\\mathrm{i}} = \\frac{\\int_{\\mathrm{S}_\\mathrm{t}} \\varphi_{\\mathrm{i}}\\,\\vek d_{\\mathrm{i}}\\cdot\\vek u\\,\\mathrm{d}A}{\\int_{\\mathrm{S}_\\mathrm{t}} \\varphi_{\\mathrm{i}}\\,\\mathrm{d}A} . \\tag{4.88}\\]</div>", "href": "sec-betti-maxwell.html#eq-utezen-pomik"};

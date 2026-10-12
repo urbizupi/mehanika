@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-deformacija-viseca-palica"] = {"html": "<div class=\"eq\">\\[\\varepsilon_{\\mathrm{xx}}(x) = \\frac{\\sigma_{\\mathrm{xx}}(x)}{E} = \\frac{\\rho g\\,(L - x)}{E} . \\tag{3.4}\\]</div>", "href": "sec-natezni-preizkus.html#eq-deformacija-viseca-palica"};

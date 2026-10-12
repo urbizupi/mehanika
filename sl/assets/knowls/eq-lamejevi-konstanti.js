@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-lamejevi-konstanti"] = {"html": "<div class=\"eq\">\\[\\lambda = \\frac{\\nu\\,E}{(1 + \\nu)(1 - 2\\nu)} , \\qquad \\mu = \\frac{E}{2\\,(1 + \\nu)} . \\tag{3.11}\\]</div>", "href": "sec-hookov-zakon.html#eq-lamejevi-konstanti"};

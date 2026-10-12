@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-potencialna-energija-nosilca"] = {"html": "<div class=\"eq\">\\[\\begin{aligned} \\Pi(u, v) &amp;= 3{,}7044 \\cdot 10^6\\,u^2 - 1{,}8816 \\cdot 10^6\\,u\\,v \\\\ &amp;\\quad + 0{,}7056 \\cdot 10^6\\,v^2 + 10^4\\,v , \\end{aligned} \\tag{4.59}\\]</div>", "href": "sec-potencialna-energija.html#eq-potencialna-energija-nosilca"};

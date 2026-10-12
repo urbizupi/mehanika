@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-predpostavka-ploskve"] = {"html": "<div class=\"eq\">\\[\\lim_{\\mathrm{h} \\to 0^+} \\frac1h \\left( \\frac{\\Delta\\vek F_{+\\mathrm{x}}}{h^2} - \\vek t(Q_{+\\mathrm{x}}, \\vek e_{\\mathrm{x}}) \\right) = \\vek 0 , \\tag{2.28}\\]</div>", "href": "sec-ravnotezne-enacbe.html#eq-predpostavka-ploskve"};

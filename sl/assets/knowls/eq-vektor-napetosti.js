@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vektor-napetosti"] = {"html": "<div class=\"eq\">\\[\\vek t(\\vek n) = \\lim_{\\mathrm{h} \\to 0^+} \\frac{\\Delta\\vek F}{\\Delta A} , \\tag{2.15}\\]</div>", "href": "sec-vektor-napetosti.html#eq-vektor-napetosti"};

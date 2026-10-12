@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-deformacija-koscka"] = {"html": "<div class=\"eq\">\\[\\varepsilon \\approx \\frac{u(x + \\Delta x) - u(x)}{\\Delta x} . \\tag{1.2}\\]</div>", "href": "sec-neenakomerni-raztezek.html#eq-deformacija-koscka"};

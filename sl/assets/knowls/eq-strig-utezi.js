@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-strig-utezi"] = {"html": "<div class=\"eq\">\\[\\tau^2 = w_1\\,(\\sigma_1 - \\sigma_{\\mathrm{n}})^2 + w_2\\,(\\sigma_2 - \\sigma_{\\mathrm{n}})^2 + w_3\\,(\\sigma_3 - \\sigma_{\\mathrm{n}})^2 . \\tag{2.67}\\]</div>", "href": "sec-najvecja-strizna.html#eq-strig-utezi"};

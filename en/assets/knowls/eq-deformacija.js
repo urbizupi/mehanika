@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-deformacija"] = {"html": "<div class=\"eq\">\\[\\varepsilon(x) = u'(x) = \\lim_{\\Delta \\mathrm{x} \\to 0} \\frac{u(x + \\Delta x) - u(x)}{\\Delta x} . \\tag{1.7}\\]</div>", "href": "sec-deformacija-v-tocki.html#eq-deformacija"};

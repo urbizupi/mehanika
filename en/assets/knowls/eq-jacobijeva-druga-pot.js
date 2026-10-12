@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-jacobijeva-druga-pot"] = {"html": "<div class=\"eq\">\\[J(t) = 1 - 2t + 4t^2(1 - t)^2 . \\tag{2.57}\\]</div>", "href": "sec-determinanta.html#eq-jacobijeva-druga-pot"};

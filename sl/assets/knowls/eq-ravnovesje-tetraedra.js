@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ravnovesje-tetraedra"] = {"html": "<div class=\"eq\">\\[\\Delta\\vek F_{\\mathrm{n}} + \\Delta\\vek F_{-\\mathrm{x}} + \\Delta\\vek F_{-\\mathrm{y}} + \\Delta\\vek F_{-\\mathrm{z}} + \\Delta\\vek W = \\vek 0 . \\tag{2.19}\\]</div>", "href": "sec-cauchyjeva-formula.html#eq-ravnovesje-tetraedra"};

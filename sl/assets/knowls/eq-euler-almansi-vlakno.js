@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-euler-almansi-vlakno"] = {"html": "<div class=\"eq\">\\[\\lim_{\\mathrm{h} \\to 0} \\frac{L_1^2 - L_0^2}{2L_1^2} = \\vek m^\\T\\mat e\\,\\vek m , \\tag{1.59}\\]</div>", "href": "sec-deformacija-v-prostoru.html#eq-euler-almansi-vlakno"};

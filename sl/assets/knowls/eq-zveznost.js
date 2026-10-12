@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-zveznost"] = {"html": "<div class=\"eq\">\\[|f(x) - f(c)| &lt; \\eta \\quad \\text{za vsak } x \\in D \\text{ z } |x - c| &lt; \\delta . \\tag{1.26}\\]</div>", "href": "sec-zveznost.html#eq-zveznost"};

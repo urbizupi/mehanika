@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pomik-viseca-palica"] = {"html": "<div class=\"eq\">\\[u(x) = \\frac{\\rho g}{2E}\\,(2Lx - x^2) . \\tag{3.5}\\]</div>", "href": "sec-natezni-preizkus.html#eq-pomik-viseca-palica"};

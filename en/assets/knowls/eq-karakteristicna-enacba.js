@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-karakteristicna-enacba"] = {"html": "<div class=\"eq\">\\[\\lambda^3 - I_1\\lambda^2 + I_2\\lambda - I_3 = 0 . \\tag{2.63}\\]</div>", "href": "sec-glavne-napetosti.html#eq-karakteristicna-enacba"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-zamenjava-vektorjev"] = {"html": "<div class=\"eq\">\\[\\sum_{\\mathrm{i}} g_{\\mathrm{i}}(\\vek w)\\,v_{\\mathrm{i}} = -\\sum_{\\mathrm{i}} g_{\\mathrm{i}}(\\vek v)\\,w_{\\mathrm{i}} . \\tag{1.74}\\]</div>", "href": "sec-kompatibilnost.html#eq-zamenjava-vektorjev"};

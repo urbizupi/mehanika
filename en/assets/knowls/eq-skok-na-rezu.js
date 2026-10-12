@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-skok-na-rezu"] = {"html": "<div class=\"eq\">\\[\\vek u^+(C) - \\vek u^-(C) = \\vek a + \\mat W\\,\\vek r_{\\mathrm{C}} \\tag{4.76}\\]</div>", "href": "sec-virtualne-sile.html#eq-skok-na-rezu"};

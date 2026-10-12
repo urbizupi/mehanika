@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-clapeyron"] = {"html": "<div class=\"eq\">\\[2\\,U = \\int_{\\mathrm{V}} \\vek b\\cdot\\vek u\\,\\mathrm{d}V + \\int_{\\mathrm{S}_\\mathrm{t}} \\bar{\\vek t}\\cdot\\vek u\\,\\mathrm{d}A . \\tag{4.54}\\]</div>", "href": "sec-potencialna-energija.html#eq-clapeyron"};

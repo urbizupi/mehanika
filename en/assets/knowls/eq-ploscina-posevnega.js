@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ploscina-posevnega"] = {"html": "<div class=\"eq\">\\[A_\\theta = \\frac{b}{\\cos\\theta}\\,h = \\frac{A}{\\cos\\theta} . \\tag{2.9}\\]</div>", "href": "sec-posevni-prerez.html#eq-ploscina-posevnega"};

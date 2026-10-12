@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-precno-izotropen"] = {"html": "<div class=\"eq\">\\[\\begin{aligned} C_{22} &amp;= C_{11} , &amp; C_{23} &amp;= C_{13} , \\\\ C_{55} &amp;= C_{44} , &amp; C_{66} &amp;= \\tfrac12\\,(C_{11} - C_{12}) , \\end{aligned} \\tag{3.26}\\]</div>", "href": "sec-anizotropija.html#eq-precno-izotropen"};

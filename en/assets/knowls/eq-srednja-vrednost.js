@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-srednja-vrednost"] = {"html": "<div class=\"eq\">\\[f(b) - f(a) = f'(\\xi)\\,(b - a) . \\tag{1.31}\\]</div>", "href": "sec-srednja-vrednost.html#eq-srednja-vrednost"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-matrika-sestavljene"] = {"html": "<div class=\"eq\">\\[\\mat F_{\\Psi\\circ\\Phi}(P) = \\mat F_\\Psi\\big(\\Phi(P)\\big)\\,\\mat F_\\Phi(P) . \\tag{4.25}\\]</div>", "href": "sec-zamenjava-spremenljivk.html#eq-matrika-sestavljene"};

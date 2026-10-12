@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-glavne-smeri"] = {"html": "<div class=\"eq\">\\[\\mat A\\,\\vek n_1 = \\lambda_1\\,\\vek n_1 , \\qquad \\mat A\\,\\vek n_2 = \\lambda_2\\,\\vek n_2 , \\qquad \\mat A\\,\\vek n_3 = \\lambda_3\\,\\vek n_3 . \\tag{2.61}\\]</div>", "href": "sec-glavne-napetosti.html#eq-glavne-smeri"};

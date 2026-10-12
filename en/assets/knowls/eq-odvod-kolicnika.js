@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-odvod-kolicnika"] = {"html": "<div class=\"eq\">\\[\\Big(\\frac fg\\Big)'(x) = \\frac{f'(x)\\,g(x) - f(x)\\,g'(x)}{g(x)^2} . \\tag{4.74}\\]</div>", "href": "sec-virtualne-sile.html#eq-odvod-kolicnika"};
