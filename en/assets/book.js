@@ -4,6 +4,16 @@
 (() => {
   const HOSTS = "p, li, .eq, td, th, figcaption, summary, h1, h2, h3, .blk-head";
 
+  // Typeset an element after the page and every earlier call are done. MathJax shares one document,
+  // and a call during the first pass, while it loads an extension such as \boldsymbol, leaves that
+  // macro undefined (red) on the page.
+  const typeset = (el) => {
+    if (!window.MathJax || !MathJax.startup || !MathJax.startup.promise) return;
+    MathJax.startup.promise = MathJax.startup.promise
+      .then(() => MathJax.typesetPromise([el]))
+      .catch((e) => console.error(e));
+  };
+
   document.addEventListener("click", (ev) => {
     const a = ev.target.closest("a.xref[data-knowl]");
     if (!a || ev.button !== 0 || ev.ctrlKey || ev.metaKey || ev.shiftKey || ev.altKey) return;
@@ -39,7 +49,7 @@
     after.after(box);
     a._knowl = box;
     a.classList.add("open");
-    if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([box]);
+    typeset(box);
     if (window.BookInt) BookInt.mount(box); // an interactive figure in the knowl
   });
 
@@ -94,7 +104,7 @@
       const fig = document.getElementById(id).cloneNode(true);
       fig.removeAttribute("id");
       panel.replaceChildren(fig);
-      if (window.MathJax && MathJax.typesetPromise) MathJax.typesetPromise([panel]);
+      typeset(panel);
     };
     const set = (on) => {
       document.body.classList.toggle("fig-side", on);
