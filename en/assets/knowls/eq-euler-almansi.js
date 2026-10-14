@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-euler-almansi"] = {"html": "<div class=\"eq\">\\[\\mat e = \\tfrac12\\big(\\mat I - \\mat F^{-\\T}\\mat F^{-1}\\big) , \\tag{1.57}\\]</div>", "href": "sec-deformacija-v-prostoru.html#eq-euler-almansi"};
+(window.KNOWLS = window.KNOWLS || {})["eq-euler-almansi"] = {"html": "<div class=\"eq\">\\[\\mat E^* = \\tfrac12\\big(\\mat I - \\mat F^{-\\T}\\mat F^{-1}\\big) , \\tag{1.57}\\]</div>", "href": "sec-deformacija-v-prostoru.html#eq-euler-almansi"};
