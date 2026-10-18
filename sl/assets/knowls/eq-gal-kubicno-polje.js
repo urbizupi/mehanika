@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-gal-kubicno-polje"] = {"html": "<div class=\"eq\">\\[u_1(x) = c\\,\\psi(x) , \\qquad \\psi(x) = 3L^2 x - x^3 . \\tag{6.27}\\]</div>", "href": "sec-galerkinova-metoda.html#eq-gal-kubicno-polje"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-integral-odsekoma"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{a}}^b f(x)\\,\\mathrm{d}x = \\sum_{\\mathrm{k}=1}^m \\int_{\\mathrm{x}_{\\mathrm{k}-1}}^{x_{\\mathrm{k}}} f_{\\mathrm{k}}(x)\\,\\mathrm{d}x , \\tag{6.5}\\]</div>", "href": "sec-funkcije-s-pregibi.html#eq-integral-odsekoma"};

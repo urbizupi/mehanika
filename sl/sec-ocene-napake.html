@@ -1,0 +1,1604 @@
+<!doctype html>
+<html lang="sl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6.5 Kako dober je približek · Poglavje 6</title>
+<script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/style.css">
+<noscript><style>#loadbar { display: none; }</style></noscript>
+<script src="assets/config.js"></script>
+<script src="assets/load.js"></script>
+<script defer src="assets/interaktivno.js"></script>
+<script defer src="assets/book.js"></script>
+<script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<div id="loadbar" aria-hidden="true"></div>
+<header class="top"><a class="home" href="index.html">Mehanika</a><nav class="pager"><a href="sec-ritzova-metoda.html" rel="prev">← 6.4</a><a href="index.html">Kazalo</a><a href="sec-galerkinova-metoda.html" rel="next">6.6 →</a></nav>
+<span class="tools"><a class="lang" href="../en/sec-ocene-napake.html" hreflang="en">English</a><button type="button" class="theme-toggle" title="Svetla ali temna tema" aria-label="Svetla ali temna tema"></button><button type="button" data-details="open">Razpri vse</button><button type="button" data-details="close">Skrij vse</button><button type="button" class="fig-side-toggle" aria-pressed="false">Slike ob strani</button></span></header>
+<main>
+<p class="updated">Posodobljeno 18. 10. 2026 ob 22.44</p>
+<p class="crumb"><a href="ch-sibka-oblika.html"><span class="h-num">Poglavje 6</span> Šibka oblika, Ritzova in Galerkinova metoda</a></p>
+<h2 id="sec-ocene-napake"><span class="h-num">6.5</span> Kako dober je približek</h2>
+<p>Poglavje <a class="xref" href="ch-energijski-principi.html">4</a> je pri viseči palici poskusilo premico in parabolo in pri premici zapisalo dve ugotovitvi. Napaka najboljše premice ima najmanjšo <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">deformacijsko</a> energijo, 97,76 µJ, pomik spodnjega konca pa je povsem točen (razdelek <a class="xref" href="sec-potencialna-energija.html#sec-poskusna-polja">4.6.8</a>). Ritzova metoda (definicija <a class="xref" href="sec-ritzova-metoda.html#def-ritzova-metoda" data-knowl="def-ritzova-metoda">6.32</a>) zdaj dopušča poljubno mnogo parametrov. Zastavimo tri vprašanja. Ali Ritzova metoda vedno izbere polje, katerega napaka ima najmanjšo energijo? Kdaj je pomik izbrane točke točen, in ne le približen? Kako hitro napaka pada, ko poskusno družino izboljšujemo? Vsakemu vprašanju sledi izrek, ki ga preizkusimo na viseči palici in na palici s stopnico.</p>
+<p>Oznake so iz razdelka <a class="xref" href="sec-ritzova-metoda.html">6.4</a>. Bilinearna forma \(B(u, w)\) (definicija <a class="xref" href="sec-mocna-sibka-oblika.html#def-bilinearna-forma" data-knowl="def-bilinearna-forma">6.4</a>) je pri palici <span class="nobr">\(\int_0^L EA\,u'\,w'\,\mathrm{d}x\),</span> <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-linearna-forma" data-knowl="def-linearna-forma">linearna forma</a> \(\ell(w)\) je delo danih bremen na polju <span class="nobr">\(w\),</span> \(u\) je rešitev <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">šibke oblike</a> (definicija <a class="xref" href="sec-mocna-sibka-oblika.html#def-sibka-oblika-splosna" data-knowl="def-sibka-oblika-splosna">6.6</a>), \(\mathcal{V}_{\mathrm{n}}\) je poskusni prostor, torej vse vsote \(c_1\psi_1 + \dots + c_{\mathrm{n}}\psi_{\mathrm{n}}\) poskusnih <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcij</a>, ki izpolnjujejo homogene bistvene pogoje, \(u_{\mathrm{n}}\) je Ritzova rešitev v \(\psi_0 + \mathcal{V}_{\mathrm{n}}\) in \(e_{\mathrm{n}} = u - u_{\mathrm{n}}\) njena napaka. Energija polja \(w\) je <span class="nobr">\(U(w) = \tfrac12 B(w, w)\),</span> njena energijska norma pa \(\|w\|_{\mathrm{E}} = \sqrt{B(w, w)}\) (definicija <a class="xref" href="sec-skalarni-produkt-funkcij.html#def-energijska-norma" data-knowl="def-energijska-norma">6.18</a>). Energija napake \(U(e_{\mathrm{n}})\) je zato <span class="nobr">\(\tfrac12\|e_{\mathrm{n}}\|_{\mathrm{E}}^2\).</span></p>
+
+<h3 id="sec-galerkinova-ortogonalnost"><span class="h-num">6.5.1</span> Napaka je pravokotna na poskusna polja</h3>
+<p>Pri najboljši premici je bila napaka \(a\,(Lx - x^2)\) v energijskem <a class="xref auto" href="sec-skalarni-produkt.html#def-skalarni-produkt" data-knowl="def-skalarni-produkt">skalarnem produktu</a> pravokotna na poskusno polje <span class="nobr">\(x\),</span> \(B(e_1, x) = \int_0^L EA\,a\,(L - 2x)\,\mathrm{d}x = 0\) (razdelek <a class="xref" href="sec-skalarni-produkt-funkcij.html#sec-pravokotnost-funkcij">6.3.2</a>). Ali to velja le za premico? Zamisel dokaza je preprosta. <a class="xref auto" href="sec-ritzova-metoda.html#def-ritzova-metoda" data-knowl="def-ritzova-metoda">Ritzova rešitev</a> je najnižja točka energije na poskusni družini. Če jo premaknemo v smeri ene od poskusnih <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcij</a>, se energija ne sme zmanjšati, v prvem redu pa se spremeni za <span class="nobr">\(B(u_{\mathrm{n}}, \psi_{\mathrm{i}}) - \ell(\psi_{\mathrm{i}})\).</span> To je ravno \(i\)-ta Ritzova enačba. Iz nje in iz <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">šibke oblike</a> za pravo polje sledi, da je napaka pravokotna na vse poskusne funkcije.</p>
+
+<div class="blk lema" id="lem-galerkinova-ortogonalnost"><div class="blk-head"><span class="blk-label">Lema 6.36</span> <span class="blk-title">Galerkinova ortogonalnost (Galerkin orthogonality)</span></div><div class="blk-body"><p>Naj bosta \(B\) <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-bilinearna-forma" data-knowl="def-bilinearna-forma">bilinearna forma</a> in \(\ell\) <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-linearna-forma" data-knowl="def-linearna-forma">linearna forma</a> palice, nosilca ali <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">telesa</a>. Naj bo \(u\) rešitev šibke oblike, \(B(u, w) = \ell(w)\) za vsako <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">preizkusno funkcijo</a> <span class="nobr">\(w\),</span> in \(u_{\mathrm{n}} = \psi_0 + c_1\psi_1 + \dots + c_{\mathrm{n}}\psi_{\mathrm{n}}\) Ritzova rešitev s poskusnimi <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcijami</a> iz definicije <a class="xref" href="sec-ritzova-metoda.html#def-ritzova-metoda" data-knowl="def-ritzova-metoda">6.32</a>. Tedaj je</p>
+<div class="eq" id="eq-galerkinova-ortogonalnost">\[B(u - u_{\mathrm{n}}, w) = 0 \quad \text{za vsak } w \in \mathcal{V}_{\mathrm{n}} . \tag{6.20}\]</div>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da napaka pri vsakem poskusnem polju opravi enako delo kot pravo polje, zato je razlika nič.</p>
+<ol>
+<li>Vsak \(w \in \mathcal{V}_{\mathrm{n}}\) je linearna kombinacija <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">preizkusnih funkcij</a> \(\psi_{\mathrm{i}}\) in je zato preizkusna funkcija, ker te tvorijo <a class="xref auto" href="sec-vektorji.html#def-vektorski-prostor" data-knowl="def-vektorski-prostor">vektorski prostor</a> \(W\) (definicija <a class="xref" href="sec-mocna-sibka-oblika.html#def-sibka-oblika-splosna" data-knowl="def-sibka-oblika-splosna">6.6</a>). Šibka oblika pove <span class="nobr">\(B(u, w) = \ell(w)\).</span></li>
+<li>Ritzove enačbe so \(K c = f\) s \(K_{\mathrm{ij}} = B(\psi_{\mathrm{j}}, \psi_{\mathrm{i}})\) in \(f_{\mathrm{i}} = \ell(\psi_{\mathrm{i}}) - B(\psi_0, \psi_{\mathrm{i}})\) (definicija <a class="xref" href="sec-ritzova-metoda.html#def-ritzova-metoda" data-knowl="def-ritzova-metoda">6.32</a>). Zapisane po vrsticah pravijo <span class="nobr">\(\sum_{\mathrm{j}} B(\psi_{\mathrm{j}}, \psi_{\mathrm{i}})\,c_{\mathrm{j}} = \ell(\psi_{\mathrm{i}}) - B(\psi_0, \psi_{\mathrm{i}})\).</span> Zaradi linearnosti \(B\) v prvem argumentu je \(B(u_{\mathrm{n}}, \psi_{\mathrm{i}}) = B(\psi_0, \psi_{\mathrm{i}}) + \sum_{\mathrm{j}} c_{\mathrm{j}} B(\psi_{\mathrm{j}}, \psi_{\mathrm{i}}) = \ell(\psi_{\mathrm{i}})\) za <span class="nobr">\(i = 1, \dots, n\).</span></li>
+<li>Naj bo <span class="nobr">\(w = \sum_{\mathrm{i}} d_{\mathrm{i}} \psi_{\mathrm{i}}\).</span> Enačbo koraka 2 pomnožimo z \(d_{\mathrm{i}}\) in seštejemo po <span class="nobr">\(i\).</span> Zaradi linearnosti \(B\) v drugem argumentu in \(\ell\) je <span class="nobr">\(B(u_{\mathrm{n}}, w) = \ell(w)\).</span></li>
+<li>Enačbo koraka 3 odštejemo od enačbe koraka 1. Zaradi linearnosti \(B\) v prvem argumentu je <span class="nobr">\(B(u, w) - B(u_{\mathrm{n}}, w) = B(u - u_{\mathrm{n}}, w) = \ell(w) - \ell(w) = 0\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> BATHE (4.86) do (4.88), lastnost 1 (PDF str. 258), kjer je pravokotnost (4.86) v \(a(\cdot, \cdot)\) dokazana z odštevanjem enačb načela virtualnega dela. Dokaz v korakih je naš.</p></div></div>
+<p>Dokaz je pokazal, da pravokotnost napake pove isto kot Ritzove enačbe, le drugače zapisano. Ime ima po metodi iz naslednjega razdelka, ki ima iste enačbe in zato isto pravokotnost tudi tam, kjer energije ni.</p>
+<p>Preverimo jo na viseči palici s kubičnim poskusnim poljem \(\psi = 3L^2 x - x^3\) iz razdelka <a class="xref" href="sec-ritzova-metoda.html#sec-ritz-palica">6.4.2</a>. Ritzova rešitev je \(u_1 = c\,\psi\) s <span class="nobr">\(c = \tfrac{25}{96}\,q/(EA\,L)\),</span> kjer je \(q/(EA) = 2a\) in \(a = \rho g/(2E)\) (poglavje <a class="xref" href="ch-energijski-principi.html">4</a>). Zato je <span class="nobr">\(c = \tfrac{25}{48}\,a/L\).</span> <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">Odvoda</a> sta \(u' = 2a\,(L - x)\) in <span class="nobr">\(u_1' = c\,\psi' = \tfrac{25}{16}\,(a/L)\,(L^2 - x^2)\),</span> napaka ima odvod</p>
+<div class="eq">\[e_1' = a\,(L - x)\Big(2 - \frac{25\,(L + x)}{16\,L}\Big) = \frac{a\,(L - x)(7L - 25x)}{16\,L} .\]</div>
+<p>Ker je <span class="nobr">\(\psi' = 3\,(L - x)(L + x)\),</span> je</p>
+<div class="eq">\[B(e_1, \psi) = \frac{3\,EA\,a}{16\,L} \int_0^L (L - x)^2 (L + x)(7L - 25x)\,\mathrm{d}x .\]</div>
+<p>Za \(L = 1\) je zmnožek pod <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integralom</a> <span class="nobr">\((1 - x)^2(1 + x)(7 - 25x) = 7 - 32x + 18x^2 + 32x^3 - 25x^4\),</span> integral pa <span class="nobr">\(7 - 16 + 6 + 8 - 5 = 0\).</span> Pravokotnost velja tudi tu (preverjeno s SymPy). Pitagorov izrek za energije (lema <a class="xref" href="sec-skalarni-produkt-funkcij.html#lem-pitagorov-izrek-funkcij" data-knowl="lem-pitagorov-izrek-funkcij">6.21</a>) iz pravokotnosti \(e_1 \perp u_1\) da <span class="nobr">\(U(u) = U(u_1) + U(e_1)\),</span> to je \(381{,}87 + 9{,}165 = 391{,}03\) µJ. Tako je že pri premici: \(293{,}27 + 97{,}76 = 391{,}03\) µJ.</p>
+<p>Energija napake \(U(e_1) = 9{,}165\) µJ je po izreku <a class="xref" href="sec-ritzova-metoda.html#thm-ritz-energija" data-knowl="thm-ritz-energija">6.34</a> tudi razlika energij \(\Pi(u_1) - \Pi(u)\) (razdelek <a class="xref" href="sec-ritzova-metoda.html#sec-ritz-lastnosti">6.4.4</a>). Preostane vprašanje, ali je to najmanjša napaka v družini.</p>
+
+<div class="blk izrek" id="thm-najboljsi-priblizek"><div class="blk-head"><span class="blk-label">Izrek 6.37</span> <span class="blk-title">Najboljši približek v energijski normi (best approximation in the energy norm)</span></div><div class="blk-body"><p>Naj bo \(B\) simetrična <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-bilinearna-forma" data-knowl="def-bilinearna-forma">bilinearna forma</a>, ki je pozitivna na <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">preizkusnih funkcijah</a>, torej \(B(w, w) &gt; 0\) za vsako preizkusno funkcijo \(w \ne 0\) (lema <a class="xref" href="sec-mocna-sibka-oblika.html#lem-pozitivnost-energije" data-knowl="lem-pozitivnost-energije">6.7</a>). Naj bosta \(u\) in \(u_{\mathrm{n}}\) kot v lemi <a class="xref" href="sec-ocene-napake.html#lem-galerkinova-ortogonalnost" data-knowl="lem-galerkinova-ortogonalnost">6.36</a>. Tedaj za vsak \(v \in \psi_0 + \mathcal{V}_{\mathrm{n}}\) velja</p>
+<div class="eq" id="eq-najboljsi-priblizek">\[\|u - u_{\mathrm{n}}\|_{\mathrm{E}} \le \|u - v\|_{\mathrm{E}} , \tag{6.21}\]</div>
+<p>enakost pa le pri <span class="nobr">\(v = u_{\mathrm{n}}\).</span> Natančneje, <span class="nobr">\(\|u - v\|_{\mathrm{E}}^2 = \|u - u_{\mathrm{n}}\|_{\mathrm{E}}^2 + \|u_{\mathrm{n}} - v\|_{\mathrm{E}}^2\).</span></p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da se napaka poljubnega polja iz družine razstavi na napako <a class="xref auto" href="sec-ritzova-metoda.html#def-ritzova-metoda" data-knowl="def-ritzova-metoda">Ritzove rešitve</a> in del znotraj družine, ki sta pravokotna.</p>
+<ol>
+<li>Naj bo \(e = u - u_{\mathrm{n}}\) in <span class="nobr">\(d = u_{\mathrm{n}} - v\).</span> Polji \(u_{\mathrm{n}}\) in \(v\) imata isti <span class="nobr">\(\psi_0\),</span> ki se pri razliki odšteje, zato je \(d\) vsota <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcij</a> <span class="nobr">\(\psi_{\mathrm{i}}\),</span> torej <span class="nobr">\(d \in \mathcal{V}_{\mathrm{n}}\).</span></li>
+<li>Velja <span class="nobr">\(u - v = e + d\).</span> Zaradi bilinearnosti in simetrije \(B\) je <span class="nobr">\(\|u - v\|_{\mathrm{E}}^2 = B(e + d, e + d) = B(e, e) + 2B(e, d) + B(d, d)\).</span></li>
+<li>Po lemi <a class="xref" href="sec-ocene-napake.html#lem-galerkinova-ortogonalnost" data-knowl="lem-galerkinova-ortogonalnost">6.36</a> je <span class="nobr">\(B(e, d) = 0\),</span> ker je <span class="nobr">\(d \in \mathcal{V}_{\mathrm{n}}\).</span> Zato je <span class="nobr">\(\|u - v\|_{\mathrm{E}}^2 = \|e\|_{\mathrm{E}}^2 + \|d\|_{\mathrm{E}}^2\).</span></li>
+<li>Ker je <span class="nobr">\(\|d\|_{\mathrm{E}}^2 = B(d, d) \ge 0\),</span> je <span class="nobr">\(\|e\|_{\mathrm{E}}^2 \le \|u - v\|_{\mathrm{E}}^2\),</span> in koren obeh strani da enačbo <a class="xref" href="sec-ocene-napake.html#eq-najboljsi-priblizek" data-knowl="eq-najboljsi-priblizek">(6.21)</a>.</li>
+<li>Če je <span class="nobr">\(\|e\|_{\mathrm{E}} = \|u - v\|_{\mathrm{E}}\),</span> je po koraku 3 <span class="nobr">\(\|d\|_{\mathrm{E}} = 0\),</span> zato je \(d = 0\) po pozitivnosti forme \(B\) in <span class="nobr">\(v = u_{\mathrm{n}}\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> BATHE (4.91)-(4.94), lastnost 3 (PDF str. 258-259): &quot;the strain energy corresponding to \(u - u_{\mathrm{h}}\) is the minimum&quot;. Dokaz v korakih je naš.</p></div></div>
+<p>Dokaz je pokazal, da Ritzova metoda med vsemi polji družine izbere tisto, katerega napaka ima najmanjšo energijo, in da je vsako drugo polje slabše natanko za energijo svoje razlike od Ritzovega (slika <a class="xref" href="sec-ocene-napake.html#fig-ono-ortogonalnost" data-knowl="fig-ono-ortogonalnost">6.17</a>). To smo pri premici le opazili (razdelek <a class="xref" href="sec-potencialna-energija.html#sec-poskusna-polja">4.6.8</a>).</p>
+<p>Preizkusimo na kubični družini \(v = c\,\psi\) z \(c\) v enotah <span class="nobr">\(q/(EA\,L)\).</span> Po izreku mora biti <span class="nobr">\(U(u - v) = U(e_1) + U(u_1 - v)\),</span> kar kaže preglednica.</p>
+<table>
+<thead>
+<tr>
+<th>\(c\)</th>
+<th>\(U(u - v)\) (µJ)</th>
+<th>\(U(u_1 - v)\) (µJ)</th>
+<th>konec (µm)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>\(25/96\) (Ritz)</td>
+<td>9,165</td>
+<td>0</td>
+<td>20,33</td>
+</tr>
+<tr>
+<td>\(1/4\) (najmanjši kvadrati, naslednji razdelek)</td>
+<td>9,776</td>
+<td>0,611</td>
+<td>19,52</td>
+</tr>
+<tr>
+<td>\(1/3\) (kolokacija, naslednji razdelek)</td>
+<td>39,10</td>
+<td>29,94</td>
+<td>26,03</td>
+</tr>
+<tr>
+<td>\(1/2\)</td>
+<td>332,4</td>
+<td>323,2</td>
+<td>39,04</td>
+</tr>
+</tbody>
+</table>
+<p>V vsaki vrstici je \(9{,}165 + U(u_1 - v) = U(u - v)\) (SymPy), na primer \(9{,}165 + 0{,}611 = 9{,}776\) µJ. Energija razlike je kvadratna v <span class="nobr">\(c\),</span> \(U(u_1 - v) = 5631\,(c - 25/96)^2\) µJ, parabola z najnižjo točko pri Ritzovi vrednosti. Pomik konca pa ni tako urejen: najmanjši kvadrati dajo točen pomik 19,52 µm in večjo energijo napake kot Ritz. Najboljša v energiji torej ne pomeni najboljša v vsaki točki. V naslednjem razdelku bomo videli, kdaj je pomik v točki vendarle točen.</p>
+
+<figure class="blk slika" id="fig-ono-ortogonalnost"><p><span class="svgfig" role="img" aria-label="Ravnina poskusnih polj, pravo polje nad njo, pravokotna napaka in daljša hipotenuza"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='329.91pt' height='149.50pt' viewBox='-72.000004 -72.000007 244.377345 110.740822'>
+<defs>
+<path id='ono-ortogonalnost-g0-0' d='M6.56538-2.291407C6.734745-2.291407 6.914072-2.291407 6.914072-2.49066S6.734745-2.689913 6.56538-2.689913H1.175592C1.006227-2.689913 .826899-2.689913 .826899-2.49066S1.006227-2.291407 1.175592-2.291407H6.56538Z'/>
+<path id='ono-ortogonalnost-g0-86' d='M2.689913-.856787C2.839352-2.082192 2.839352-2.978829 2.839352-3.128269C2.839352-3.835616 2.839352-6.804483 1.026152-6.804483C.687422-6.804483 .33873-6.525529 .33873-6.386052C.33873-6.316314 .388543-6.316314 .52802-6.306351C1.982565-6.176837 2.102117-3.895392 2.102117-2.769614C2.102117-1.763387 1.972603-.56787 1.853051 .099626C1.833126 .219178 1.833126 .239103 1.833126 .278954C1.833126 .328767 1.833126 .448319 1.902864 .448319C2.012453 .448319 4.423412-1.39477 5.688667-3.317559C6.196762-4.094645 6.575342-4.98132 6.575342-5.648817C6.575342-6.495641 6.017435-6.804483 5.608966-6.804483C5.32005-6.804483 5.180573-6.176837 5.180573-6.047323C5.180573-5.897883 5.230386-5.897883 5.349938-5.88792C6.017435-5.808219 6.136986-5.280199 6.136986-5.041096C6.136986-4.234122 4.403487-2.191781 2.689913-.856787Z'/>
+<path id='ono-ortogonalnost-g0-107' d='M1.713574-7.13325C1.713574-7.292653 1.713574-7.47198 1.514321-7.47198S1.315068-7.252802 1.315068-7.103362V2.122042C1.315068 2.281445 1.315068 2.49066 1.514321 2.49066S1.713574 2.311333 1.713574 2.15193V-7.13325ZM3.656289-7.103362C3.656289-7.262765 3.656289-7.47198 3.457036-7.47198S3.257783-7.292653 3.257783-7.13325V2.15193C3.257783 2.311333 3.257783 2.49066 3.457036 2.49066S3.656289 2.271482 3.656289 2.122042V-7.103362Z'/>
+<path id='ono-ortogonalnost-g1-117' d='M3.486924-.557908C3.596513-.14944 3.945205 .109589 4.373599 .109589C4.722291 .109589 4.951432-.119552 5.110834-.438356C5.280199-.797011 5.409714-1.404732 5.409714-1.424658C5.409714-1.524284 5.32005-1.524284 5.290162-1.524284C5.190535-1.524284 5.180573-1.484433 5.150685-1.344956C5.011208-.787049 4.821918-.109589 4.403487-.109589C4.194271-.109589 4.094645-.239103 4.094645-.56787C4.094645-.787049 4.214197-1.255293 4.293898-1.603985L4.572852-2.67995C4.60274-2.82939 4.702366-3.20797 4.742217-3.35741C4.79203-3.58655 4.891656-3.965131 4.891656-4.024907C4.891656-4.204234 4.752179-4.293898 4.60274-4.293898C4.552927-4.293898 4.293898-4.283935 4.214197-3.945205C4.024907-3.217933 3.58655-1.474471 3.466999-.946451C3.457036-.9066 3.058531-.109589 2.331258-.109589C1.8132-.109589 1.713574-.557908 1.713574-.926526C1.713574-1.484433 1.992528-2.271482 2.251557-2.958904C2.371108-3.257783 2.420922-3.39726 2.420922-3.58655C2.420922-4.034869 2.102117-4.403487 1.603985-4.403487C.657534-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.816936-3.815691 1.195517-4.184309 1.574097-4.184309C1.663761-4.184309 1.823163-4.174346 1.823163-3.855542C1.823163-3.616438 1.713574-3.327522 1.653798-3.178082C1.285181-2.191781 1.075965-1.574097 1.075965-1.085928C1.075965-.139477 1.763387 .109589 2.30137 .109589C2.958904 .109589 3.317559-.33873 3.486924-.557908Z'/>
+<path id='ono-ortogonalnost-g1-118' d='M4.662516-3.706102C4.662516-4.244085 4.403487-4.403487 4.224159-4.403487C3.975093-4.403487 3.73599-4.144458 3.73599-3.92528C3.73599-3.795766 3.785803-3.73599 3.895392-3.626401C4.104608-3.427148 4.234122-3.16812 4.234122-2.809465C4.234122-2.391034 3.626401-.109589 2.460772-.109589C1.952677-.109589 1.723537-.458281 1.723537-.976339C1.723537-1.534247 1.992528-2.261519 2.30137-3.088418C2.371108-3.257783 2.420922-3.39726 2.420922-3.58655C2.420922-4.034869 2.102117-4.403487 1.603985-4.403487C.667497-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.856787-3.955168 1.285181-4.184309 1.574097-4.184309C1.653798-4.184309 1.823163-4.184309 1.823163-3.865504C1.823163-3.616438 1.723537-3.347447 1.653798-3.16812C1.215442-2.012453 1.085928-1.554172 1.085928-1.125778C1.085928-.049813 1.96264 .109589 2.420922 .109589C4.094645 .109589 4.662516-3.188045 4.662516-3.706102Z'/>
+<path id='ono-ortogonalnost-g2-69' d='M5.523288-1.610959C5.565131-1.701619 5.565131-1.729514 5.565131-1.736488C5.565131-1.778331 5.537235-1.834122 5.446575-1.834122C5.432628-1.834122 5.397758-1.834122 5.369863-1.806227C5.355915-1.792279 5.348941-1.785305 5.265255-1.603985C4.811955-.599751 4.456289-.251059 3.319552-.251059H2.133998C1.917808-.251059 1.910834-.258032 1.910834-.320797C1.910834-.327771 1.910834-.36264 1.93873-.467248L2.405978-2.336239H3.187049C3.737983-2.336239 3.821669-2.245579 3.821669-2.015442C3.821669-1.93873 3.800747-1.820174 3.772852-1.701619C3.75193-1.638854 3.75193-1.63188 3.75193-1.617933S3.758904-1.520299 3.870486-1.520299C3.96812-1.520299 3.975093-1.555168 4.002989-1.673724L4.38655-3.200996C4.407472-3.284682 4.407472-3.29863 4.407472-3.305604C4.407472-3.375342 4.351681-3.403238 4.288917-3.403238C4.198257-3.403238 4.191283-3.368369 4.14944-3.221918C4.002989-2.677958 3.793773-2.587298 3.200996-2.587298H2.468742L2.887173-4.247073C2.942964-4.463263 2.949938-4.484184 3.242839-4.484184H4.379577C5.293151-4.484184 5.523288-4.29589 5.523288-3.675218C5.523288-3.493898 5.495392-3.284682 5.495392-3.249813C5.495392-3.194022 5.516314-3.131258 5.613948-3.131258C5.718555-3.131258 5.725529-3.194022 5.739477-3.312578L5.865006-4.526027C5.885928-4.735243 5.837111-4.735243 5.662765-4.735243H1.827148C1.687671-4.735243 1.603985-4.735243 1.603985-4.581818C1.603985-4.484184 1.680697-4.484184 1.834122-4.484184C1.945704-4.484184 1.973599-4.484184 2.099128-4.470237C2.238605-4.456289 2.252553-4.442341 2.252553-4.372603C2.252553-4.323786 2.231631-4.254047 2.224658-4.219178L1.311083-.571856C1.241345-.299875 1.234371-.251059 .690411-.251059C.564882-.251059 .481196-.251059 .481196-.097634C.481196 0 .564882 0 .690411 0H4.630635C4.804981 0 4.811955 0 4.867746-.125529L5.523288-1.610959Z'/>
+<path id='ono-ortogonalnost-g2-110' d='M.850809-.439352C.822914-.348692 .781071-.174346 .781071-.153425C.781071 0 .9066 .069738 1.018182 .069738C1.143711 .069738 1.255293-.020922 1.290162-.083686S1.380822-.369614 1.415691-.516065C1.45056-.648568 1.527273-.969365 1.569116-1.143711C1.610959-1.297136 1.652802-1.45056 1.687671-1.610959C1.764384-1.896887 1.778331-1.952677 1.980573-2.238605C2.175841-2.517559 2.503611-2.880199 3.02665-2.880199C3.431133-2.880199 3.438107-2.524533 3.438107-2.39203C3.438107-1.973599 3.138232-1.199502 3.02665-.9066C2.949938-.711333 2.922042-.648568 2.922042-.530012C2.922042-.160399 3.228892 .069738 3.584558 .069738C4.281943 .069738 4.588792-.892653 4.588792-.99726C4.588792-1.08792 4.498132-1.08792 4.47721-1.08792C4.379577-1.08792 4.372603-1.046077 4.344707-.969365C4.184309-.411457 3.884433-.125529 3.605479-.125529C3.459029-.125529 3.431133-.223163 3.431133-.369614C3.431133-.530012 3.466002-.620672 3.591532-.934496C3.675218-1.150685 3.961146-1.889913 3.961146-2.280448C3.961146-2.956912 3.424159-3.075467 3.054545-3.075467C2.475716-3.075467 2.085181-2.719801 1.875965-2.440847C1.827148-2.922042 1.415691-3.075467 1.129763-3.075467C.829888-3.075467 .669489-2.859278 .578829-2.698879C.425405-2.440847 .327771-2.043337 .327771-2.008468C.327771-1.917808 .425405-1.917808 .446326-1.917808C.54396-1.917808 .550934-1.93873 .599751-2.127024C.704359-2.538481 .836862-2.880199 1.108842-2.880199C1.290162-2.880199 1.338979-2.726775 1.338979-2.538481C1.338979-2.405978 1.276214-2.147945 1.227397-1.959651S1.108842-1.48543 1.073973-1.332005L.850809-.439352Z'/>
+</defs>
+<g id='ono-ortogonalnost-page1'>
+<g stroke-miterlimit='10' transform='translate(-71.701122,38.441933)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g fill='#e6ffe6' stroke='#e6ffe6'>
+<path d='M0 0H199.1692L244.69376 62.59595H45.52455Z' stroke='none'/>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M0 0H199.1692L244.69376 62.59595H45.52455Z' fill='none'/>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(19.82172,5.30005)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.701122,38.441933)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-71.701122' y='38.441933' xlink:href='#ono-ortogonalnost-g0-86'/>
+<use x='-65.596191' y='39.936314' xlink:href='#ono-ortogonalnost-g2-110'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<path d='M147.95418 34.1432L140.2718 33.85883V25.32292' fill='none'/>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.0'>
+<path d='M147.95418 25.60728V99.5846' fill='none'/>
+</g>
+</g>
+<g stroke-width='1.0'>
+<path d='M147.95418 25.60728L73.9773 36.98865' fill='none'/>
+</g>
+<g stroke-width='1.0'>
+<path d='M73.9773 36.98865L147.95418 99.5846' fill='none'/>
+</g>
+<path d='M149.7928 25.60728C149.7928 26.62273 148.96962 27.4459 147.95418 27.4459S146.11555 26.62273 146.11555 25.60728C146.11555 24.59184 146.93874 23.76866 147.95418 23.76866S149.7928 24.59184 149.7928 25.60728ZM147.95418 25.60728' stroke='none'/>
+<g transform='translate(147.95418,25.60728)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.701122,38.441933)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M75.81592 36.98865C75.81592 38.00409 74.99274 38.82727 73.9773 38.82727C72.96185 38.82727 72.13867 38.00409 72.13867 36.98865C72.13867 35.9732 72.96185 35.15002 73.9773 35.15002C74.99274 35.15002 75.81592 35.9732 75.81592 36.98865ZM73.9773 36.98865' stroke='none'/>
+<g transform='translate(73.9773,36.98865)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.701122,38.441933)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M149.7928 99.5846C149.7928 100.60004 148.96962 101.42322 147.95418 101.42322S146.11555 100.60004 146.11555 99.5846C146.11555 98.56915 146.93874 97.74597 147.95418 97.74597S149.7928 98.56915 149.7928 99.5846ZM147.95418 99.5846' stroke='none'/>
+<g transform='translate(147.95418,99.5846)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.701122,38.441933)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(151.58716,103.21758)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.701122,38.441933)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-71.701122' y='38.441933' xlink:href='#ono-ortogonalnost-g1-117'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(151.58716,17.66876)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.701122,38.441933)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-71.701122' y='38.441933' xlink:href='#ono-ortogonalnost-g1-117'/>
+<use x='-65.997926' y='39.936314' xlink:href='#ono-ortogonalnost-g2-110'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(65.13832,29.05013)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.701122,38.441933)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-71.701122' y='38.441933' xlink:href='#ono-ortogonalnost-g1-118'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(154.4326,81.4355)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.701122,38.441933)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-71.701122' y='38.441933' xlink:href='#ono-ortogonalnost-g0-107'/>
+<use x='-66.719783' y='38.441933' xlink:href='#ono-ortogonalnost-g1-117'/>
+<use x='-58.802721' y='38.441933' xlink:href='#ono-ortogonalnost-g0-0'/>
+<use x='-48.840108' y='38.441933' xlink:href='#ono-ortogonalnost-g1-117'/>
+<use x='-43.136912' y='39.936314' xlink:href='#ono-ortogonalnost-g2-110'/>
+<use x='-37.713919' y='38.441933' xlink:href='#ono-ortogonalnost-g0-107'/>
+<use x='-32.73258' y='39.936314' xlink:href='#ono-ortogonalnost-g2-69'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(88.28969,15.89703)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.701122,38.441933)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-71.701122' y='38.441933' xlink:href='#ono-ortogonalnost-g0-107'/>
+<use x='-66.719783' y='38.441933' xlink:href='#ono-ortogonalnost-g1-117'/>
+<use x='-61.016587' y='39.936314' xlink:href='#ono-ortogonalnost-g2-110'/>
+<use x='-53.379729' y='38.441933' xlink:href='#ono-ortogonalnost-g0-0'/>
+<use x='-43.417115' y='38.441933' xlink:href='#ono-ortogonalnost-g1-118'/>
+<use x='-38.230544' y='38.441933' xlink:href='#ono-ortogonalnost-g0-107'/>
+<use x='-33.249205' y='39.936314' xlink:href='#ono-ortogonalnost-g2-69'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(61.73375,77.26483)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.701122,38.441933)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-71.701122' y='38.441933' xlink:href='#ono-ortogonalnost-g0-107'/>
+<use x='-66.719783' y='38.441933' xlink:href='#ono-ortogonalnost-g1-117'/>
+<use x='-58.802721' y='38.441933' xlink:href='#ono-ortogonalnost-g0-0'/>
+<use x='-48.840108' y='38.441933' xlink:href='#ono-ortogonalnost-g1-118'/>
+<use x='-43.653537' y='38.441933' xlink:href='#ono-ortogonalnost-g0-107'/>
+<use x='-38.672198' y='39.936314' xlink:href='#ono-ortogonalnost-g2-69'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 6.17</span>: Poskusna družina kot ravnina, pravo polje \(u\) nad njo in vsa polja v družini, ki jih primerjamo z <span class="nobr">\(u\).</span> Ritzova rešitev \(u_{\mathrm{n}}\) je točka ravnine, v kateri je napaka \(u - u_{\mathrm{n}}\) pravokotna na ravnino (pravi kot). Za drugo polje \(v\) iz družine je \(u - v\) hipotenuza pravokotnega trikotnika in zato daljša od <span class="nobr">\(u - u_{\mathrm{n}}\).</span> Kvadrat dolžine hipotenuze je vsota kvadratov katet, kar je Pitagorov izrek za energije. Dolžine so energijske norme.</figcaption></figure>
+<h3 id="sec-tocnost-v-tocki"><span class="h-num">6.5.2</span> Kdaj je pomik v točki točen</h3>
+<p>Poglavje <a class="xref" href="ch-energijski-principi.html">4</a> je pri najboljši premici ugotovilo, da je pomik spodnjega konca točen, in zapisalo, da to ni naključje. Razlog je bil, da je premica povprečje prave <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">deformacije</a>. Zdaj lahko postavimo splošno vprašanje: za katere točke in katere družine je Ritzov pomik točen? Izrek <a class="xref" href="sec-ocene-napake.html#thm-najboljsi-priblizek" data-knowl="thm-najboljsi-priblizek">6.37</a> meri napako z energijo po vsej palici in o posamezni točki ne pove nič. Odgovor pride iz dela sile. Pomik točke \(P\) v smeri sile je delo enotske sile v \(P\) na tem pomiku. Isto delo lahko izrazimo z deformacijsko energijo polja, ki ga enotska sila povzroči.</p>
+<p>Vzemimo palico z osno togostjo <span class="nobr">\(EA\),</span> pozitivno in odsekoma zvezno (kot pri palici s stopnico), pritrjeno pri <span class="nobr">\(x = 0\).</span> Naj bo \(P\) točka \(x_{\mathrm{P}}\) in \(G_{\mathrm{P}}\) pomik te palice, kadar nanjo deluje le enotska sila \(1\) N v točki \(x_{\mathrm{P}}\) v smeri osi <span class="nobr">\(x\).</span> <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">Osna sila</a> je med vpetjem in točko \(x_{\mathrm{P}}\) enaka \(1\) N (nateg), saj mora vpetje držati to silo, za \(x_{\mathrm{P}}\) pa je nič, ker tam ni bremen. Zato je</p>
+<div class="eq" id="eq-polje-enotske-sile">\[\begin{aligned} G_{\mathrm{P}}(x) &amp;= \int_0^{\min(x,\, x_{\mathrm{P}})} \frac{\mathrm{d}t}{EA(t)} , \\ G_{\mathrm{P}}' &amp;= \frac{1}{EA} \ \text{ za } x &lt; x_{\mathrm{P}} , \qquad G_{\mathrm{P}}' = 0 \ \text{ za } x &gt; x_{\mathrm{P}} . \end{aligned} \tag{6.22}\]</div>
+<p>Polje \(G_{\mathrm{P}}\) narašča do točke \(x_{\mathrm{P}}\) in je naprej konstantno (slika <a class="xref" href="sec-ocene-napake.html#fig-ono-greenova" data-knowl="fig-ono-greenova">6.18</a>). Je zvezno in odsekoma zvezno odvedljivo (definicija <a class="xref" href="sec-funkcije-s-pregibi.html#def-odsekoma-zvezno-odvedljiva" data-knowl="def-odsekoma-zvezno-odvedljiva">6.11</a>), v \(x_{\mathrm{P}}\) ima pregib, in <span class="nobr">\(G_{\mathrm{P}}(0) = 0\).</span></p>
+
+<div class="blk izrek" id="thm-tocnost-v-tocki"><div class="blk-head"><span class="blk-label">Izrek 6.38</span> <span class="blk-title">Točnost pomika v točki (exactness of the displacement at a point)</span></div><div class="blk-body"><p>Naj bo palica pritrjena pri <span class="nobr">\(x = 0\),</span> z osno togostjo <span class="nobr">\(EA &gt; 0\),</span> odsekoma zvezno, in poljubnimi danimi bremeni. Naj bo \(u\) rešitev <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">šibke oblike</a> in \(u_{\mathrm{n}}\) <a class="xref auto" href="sec-ritzova-metoda.html#def-ritzova-metoda" data-knowl="def-ritzova-metoda">Ritzova rešitev</a> v \(\psi_0 + \mathcal{V}_{\mathrm{n}}\) z bistvenim pogojem \(u(0) = 0\) (ali \(u(0)\) dano, enako za oba). Naj bo \(G_{\mathrm{P}}\) polje enotske sile v točki \(x_{\mathrm{P}}\) iz enačbe <a class="xref" href="sec-ocene-napake.html#eq-polje-enotske-sile" data-knowl="eq-polje-enotske-sile">(6.22)</a>. Če je <span class="nobr">\(G_{\mathrm{P}} \in \mathcal{V}_{\mathrm{n}}\),</span> je</p>
+<div class="eq">\[u_{\mathrm{n}}(x_{\mathrm{P}}) = u(x_{\mathrm{P}}) .\]</div>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da je napaka v točki \(x_{\mathrm{P}}\) delo enotske sile na napaki, to delo pa je po pravokotnosti napake na poskusna polja nič.</p>
+<ol>
+<li>Za vsak dopusten \(w\) z \(w(0) = 0\) je <span class="nobr">\(B(G_{\mathrm{P}}, w) = \int_0^L EA\,G_{\mathrm{P}}'\,w'\,\mathrm{d}x\).</span> Po enačbi <a class="xref" href="sec-ocene-napake.html#eq-polje-enotske-sile" data-knowl="eq-polje-enotske-sile">(6.22)</a> je \(EA\,G_{\mathrm{P}}' = 1\) na \((0, x_{\mathrm{P}})\) in \(0\) na <span class="nobr">\((x_{\mathrm{P}}, L)\),</span> zato je \(B(G_{\mathrm{P}}, w) = \int_0^{x_{\mathrm{P}}} w'\,\mathrm{d}x = w(x_{\mathrm{P}}) - w(0) = w(x_{\mathrm{P}})\) po lemi <a class="xref" href="sec-funkcije-s-pregibi.html#lem-osnovni-izrek-pregibi" data-knowl="lem-osnovni-izrek-pregibi">6.12</a>.</li>
+<li>Napaka \(e = u - u_{\mathrm{n}}\) je <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">preizkusna funkcija</a> <span class="nobr">\(w\),</span> saj sta \(u\) in \(u_{\mathrm{n}}\) <a class="xref auto" href="sec-funkcije-s-pregibi.html#def-odsekoma-zvezno-odvedljiva" data-knowl="def-odsekoma-zvezno-odvedljiva">odsekoma zvezno odvedljivi</a> in imata isto vrednost pri <span class="nobr">\(x = 0\),</span> zato je <span class="nobr">\(e(0) = 0\).</span> Korak 1 s \(w = e\) da <span class="nobr">\(e(x_{\mathrm{P}}) = B(G_{\mathrm{P}}, e)\).</span></li>
+<li>Forma \(B\) je simetrična, <span class="nobr">\(B(G_{\mathrm{P}}, e) = B(e, G_{\mathrm{P}})\),</span> ker je integrand \(EA\,G_{\mathrm{P}}'\,e'\) simetričen v obeh poljih (definicija <a class="xref" href="sec-mocna-sibka-oblika.html#def-bilinearna-forma" data-knowl="def-bilinearna-forma">6.4</a>).</li>
+<li>Ker je <span class="nobr">\(G_{\mathrm{P}} \in \mathcal{V}_{\mathrm{n}}\),</span> je po lemi <a class="xref" href="sec-ocene-napake.html#lem-galerkinova-ortogonalnost" data-knowl="lem-galerkinova-ortogonalnost">6.36</a> <span class="nobr">\(B(e, G_{\mathrm{P}}) = 0\).</span></li>
+<li>Iz korakov 2 do 4 je <span class="nobr">\(e(x_{\mathrm{P}}) = 0\),</span> torej <span class="nobr">\(u_{\mathrm{n}}(x_{\mathrm{P}}) = u(x_{\mathrm{P}})\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> Dokaz ni iz vira. Izrek razloži opažanja, ki jih viri navajajo brez razloga: točne vozliščne vrednosti pri dvovozliščnih palicah (ONATE1, PDF str. 363, &quot;the displacement solution for 2-noded bar elements is exact at the nodes&quot;).</p></div></div>
+<p>Dokaz je pokazal, da je napaka v točki delo enotske sile na napaki (<a class="xref auto" href="sec-virtualno-delo-telesa.html#thm-virtualno-delo" data-knowl="thm-virtualno-delo">načelo virtualnih pomikov</a> za polje \(G_{\mathrm{P}}\) z <a class="xref auto" href="sec-virtualni-pomiki-palice.html#def-virtualni-pomik" data-knowl="def-virtualni-pomik">virtualnim pomikom</a> <span class="nobr">\(e\))</span> in da to delo pravokotnost izniči, kadar je \(G_{\mathrm{P}}\) v družini. Zamenjavo vlog polj v koraku 3 pove za telo Bettijev izrek (izrek <a class="xref" href="sec-betti-maxwell.html#thm-betti" data-knowl="thm-betti">4.137</a>), za palico pa jo tu da že simetrija forme <span class="nobr">\(B\).</span> Izrek preizkusimo na štirih primerih.</p>
+<p><strong>Premica na viseči palici.</strong> Družina \(\{c\,x\}\) vsebuje <span class="nobr">\(G_{\mathrm{L}} = x/EA\),</span> polje enotske sile na spodnjem koncu <span class="nobr">(\(x_{\mathrm{P}} = L\),</span> \(\min(x, L) = x\) in \(EA\) je stalna). Zato je \(u_1(L) = u(L) = 19{,}52\) µm. To je razlaga pojava iz poglavja <a class="xref" href="ch-energijski-principi.html">4</a>. Na sredini palice pa <span class="nobr">(\(x_{\mathrm{P}} = L/2\))</span> polje \(G_{\mathrm{L}/2} = \min(x, L/2)/EA\) ni premica, saj ima pregib, in res premica da 9,760 µm namesto 14,64 µm.</p>
+<p><strong>Kubični poskus.</strong> Pri \(\psi = 3L^2 x - x^3\) polje \(G_{\mathrm{L}} = x/EA\) ni v družini <span class="nobr">\(\{c\,\psi\}\),</span> izrek molči. Pomik konca je 20,33 µm namesto 19,52 µm. Korak 2 dokaza pa še vedno velja. Napaka pomika konca je \(e(L) = -0{,}813\) µm in prav toliko je \(B(G_{\mathrm{L}}, e_1)\) (SymPy). Ta vrednost ni nič, ker korak 4 odpove: <span class="nobr">\(G_{\mathrm{L}} \notin \mathcal{V}_1\),</span> zato je <span class="nobr">\(B(e_1, G_{\mathrm{L}}) \ne 0\).</span></p>
+<p><strong>Palica s stopnico.</strong> Zgornjih 5 m palice ima premer 10 mm, spodnjih 5 m premer 5 mm, torej \(EA\) pade na četrtino (razdelek <a class="xref" href="sec-mocna-sibka-oblika.html#sec-palica-s-stopnico">6.1.3</a>). Točna pomika sta \(u(5) = 7{,}320\) µm in \(u(10) = 12{,}20\) µm. Polje \(G_{\mathrm{P}}\) ima naklon <span class="nobr">\(1/EA\),</span> ki se pri stopnici poveča na štirikratnik. Poskusna polja, ki so zvezna in na vsakem od dveh elementov premica (<a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-sotorna-funkcija" data-knowl="def-sotorna-funkcija">šotorske funkcije</a>, razdelek <a class="xref" href="sec-skalarni-produkt-funkcij.html#sec-linearna-neodvisnost">6.3.3</a>), imajo ravno tak pregib, ko je vozlišče na stopnici. Dva elementa z vozliščem pri \(x = 5\) m vsebujeta \(G_5\) in <span class="nobr">\(G_{10}\),</span> zato sta obe vozliščni vrednosti točni (SymPy: 7,320 in 12,20 µm). Z enim samim elementom čez celo palico \(G_{10}\) ni v družini in pomik konca je 13,66 µm, 12 % preveč (razdelek <a class="xref" href="sec-funkcije-s-pregibi.html#sec-energija-pregibi">6.2.2</a>). Vozlišče mora torej biti tam, kjer se \(EA\) spremeni. Isti razlog velja za vsako vozlišče: kjer je \(EA\) na vsakem elementu stalna, je \(G_{\mathrm{P}}\) za vozlišče \(x_{\mathrm{P}}\) na vsakem elementu premica, torej v družini. Pri viseči palici z \(n\) elementi so zato vozliščne vrednosti točne za vsak \(n\) (SymPy za <span class="nobr">\(n = 1, 2, 4, 8, 16\)),</span> pri dveh elementih 14,64 in 19,52 µm.</p>
+<p><strong>Konzola pod lastno težo.</strong> Izrek velja tudi za <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">nosilec</a> s silo na prostem koncu, z istimi štirimi koraki. Konzola dolžine \(L\) naj bo vpeta pri <span class="nobr">\(x = 0\),</span> enotska sila navzgor pa naj deluje na prostem koncu. Polje \(G(x) = x^2\,(3L - x)/(6EI)\) ima \(EI\,G'' = L - x\) in <span class="nobr">\(G(0) = G'(0) = 0\).</span> Za vsak dopusten \(w\) z \(w(0) = w'(0) = 0\) je po <a class="xref auto" href="sec-integral.html#cor-per-partes" data-knowl="cor-per-partes">integriranju po delih</a> <span class="nobr">\(B(G, w) = \int_0^L (L - x)\,w''\,\mathrm{d}x = \big[(L - x)\,w'\big]_0^L + \int_0^L w'\,\mathrm{d}x = w(L)\),</span> kar je korak 1. Pri \(L = 1\) m in \(EI = 20\,906{,}7\ \text{N m}^2\) je \(G = (3x^2 - x^3)/125\,440\) in leži v družini <span class="nobr">\(\{x^2, x^3\}\),</span> ne pa v družini <span class="nobr">\(\{x^2\}\).</span> Zato je pomik konca z dvema členoma točen, \(-0{,}3660\) mm, z enim členom pa \(-0{,}2440\) mm, ker je napaka \(e(L) = B(G, e) = -0{,}1220\) mm. Moment vpetja pa z dvema členoma ni točen: je \(-25{,}51\) N m namesto \(-30{,}61\) N m (17 % premalo). Izrek o tem molči, ker je moment drugi <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">odvod</a> polja, ne njegova vrednost v točki.</p>
+<p>Izrek ima meje. Prvič, polje \(G_{\mathrm{P}}\) pripada eni točki. Pri dveh elementih na viseči palici so vozliščne vrednosti točne, na sredini elementa pa je napaka \(1{,}220\) µm, ker ima polje \(G_{\mathrm{P}}\) za to točko pregib sredi elementa in ni v družini. Ta napaka je \(a\,h^2/4\) z \(h = 5\) m, in v razdelku <a class="xref" href="sec-ocene-napake.html#sec-napaka-interpolacije">6.5.4</a> bomo videli, kako pada z <span class="nobr">\(h\).</span> Drugič, izrek ne pove nič o količinah, ki niso vrednost pomika v točki, na primer o momentu ali napetosti. Tretjič, v ravninskem ali prostorskem <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">telesu</a> je pomik pod točkovno silo neskončen (COOK, PDF str. 361: &quot;Infinite displacement and infinite stress where P acts on a 2D or 3D solid&quot;). Polje \(G_{\mathrm{P}}\) tam nima končne energije in ne more biti v družini polj s končno energijo, zato izrek za točkovno silo ni uporaben. Točnost v točki je lastnost enorazsežnega modela.</p>
+
+<figure class="blk slika" id="fig-ono-greenova"><p><span class="svgfig" role="img" aria-label="Polje enotske sile in šotorske funkcije, levo s pregibom v vozlišču, desno s pregibom znotraj elementa"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='603.41pt' height='269.08pt' viewBox='-72.000004 -72.000005 446.971696 199.320299'>
+<defs>
+<path id='ono-greenova-g0-71' d='M7.571606-6.924035C7.571606-6.953923 7.551681-7.023661 7.462017-7.023661C7.43213-7.023661 7.422167-7.013699 7.312578-6.90411L6.615193-6.136986C6.525529-6.276463 6.067248-7.023661 4.961395-7.023661C2.739726-7.023661 .498132-4.821918 .498132-2.510585C.498132-.926526 1.603985 .219178 3.217933 .219178C3.656289 .219178 4.104608 .129514 4.463263-.019925C4.961395-.219178 5.150685-.428394 5.330012-.627646C5.419676-.37858 5.678705-.009963 5.778331-.009963C5.828144-.009963 5.84807-.039851 5.84807-.049813C5.867995-.069738 5.967621-.448319 6.017435-.657534L6.206725-1.424658C6.246575-1.594022 6.296389-1.763387 6.336239-1.932752C6.445828-2.381071 6.455791-2.400996 7.023661-2.410959C7.073474-2.410959 7.183064-2.420922 7.183064-2.610212C7.183064-2.67995 7.13325-2.719801 7.053549-2.719801C6.824408-2.719801 6.236613-2.689913 6.007472-2.689913C5.69863-2.689913 4.921544-2.719801 4.612702-2.719801C4.523039-2.719801 4.403487-2.719801 4.403487-2.520548C4.403487-2.410959 4.483188-2.410959 4.702366-2.410959C4.712329-2.410959 5.001245-2.410959 5.230386-2.391034C5.489415-2.361146 5.539228-2.331258 5.539228-2.201743C5.539228-2.11208 5.429639-1.663761 5.330012-1.295143C5.051059-.199253 3.755915-.089664 3.407223-.089664C2.450809-.089664 1.404732-.657534 1.404732-2.181818C1.404732-2.49066 1.504359-4.134496 2.550436-5.429639C3.088418-6.107098 4.054795-6.714819 5.041096-6.714819C6.057285-6.714819 6.645081-5.947696 6.645081-4.79203C6.645081-4.393524 6.615193-4.383562 6.615193-4.283935S6.724782-4.184309 6.764633-4.184309C6.894147-4.184309 6.894147-4.204234 6.94396-4.383562L7.571606-6.924035Z'/>
+<path id='ono-greenova-g0-120' d='M3.327522-3.008717C3.387298-3.267746 3.616438-4.184309 4.313823-4.184309C4.363636-4.184309 4.60274-4.184309 4.811955-4.054795C4.533001-4.004981 4.333748-3.755915 4.333748-3.516812C4.333748-3.35741 4.443337-3.16812 4.712329-3.16812C4.931507-3.16812 5.250311-3.347447 5.250311-3.745953C5.250311-4.26401 4.662516-4.403487 4.323786-4.403487C3.745953-4.403487 3.39726-3.875467 3.277709-3.646326C3.028643-4.303861 2.49066-4.403487 2.201743-4.403487C1.165629-4.403487 .597758-3.118306 .597758-2.86924C.597758-2.769614 .697385-2.769614 .71731-2.769614C.797011-2.769614 .826899-2.789539 .846824-2.879203C1.185554-3.935243 1.843088-4.184309 2.181818-4.184309C2.371108-4.184309 2.719801-4.094645 2.719801-3.516812C2.719801-3.20797 2.550436-2.540473 2.181818-1.145704C2.022416-.52802 1.673724-.109589 1.235367-.109589C1.175592-.109589 .946451-.109589 .737235-.239103C.986301-.288917 1.205479-.498132 1.205479-.777086C1.205479-1.046077 .986301-1.125778 .836862-1.125778C.537983-1.125778 .288917-.86675 .288917-.547945C.288917-.089664 .787049 .109589 1.225405 .109589C1.882939 .109589 2.241594-.587796 2.271482-.647572C2.391034-.278954 2.749689 .109589 3.347447 .109589C4.373599 .109589 4.941469-1.175592 4.941469-1.424658C4.941469-1.524284 4.851806-1.524284 4.821918-1.524284C4.732254-1.524284 4.712329-1.484433 4.692403-1.414695C4.363636-.348692 3.686177-.109589 3.367372-.109589C2.978829-.109589 2.819427-.428394 2.819427-.767123C2.819427-.986301 2.879203-1.205479 2.988792-1.643836L3.327522-3.008717Z'/>
+<path id='ono-greenova-g1-80' d='M2.378082-2.161893H3.640349C4.818929-2.161893 5.816189-2.915068 5.816189-3.675218C5.816189-4.261021 5.244334-4.763138 4.288917-4.763138H1.84807C1.708593-4.763138 1.624907-4.763138 1.624907-4.609714C1.624907-4.51208 1.701619-4.51208 1.855044-4.51208C1.966625-4.51208 1.994521-4.51208 2.12005-4.498132C2.259527-4.484184 2.273474-4.470237 2.273474-4.400498C2.273474-4.38655 2.273474-4.351681 2.245579-4.247073L1.325031-.571856C1.255293-.299875 1.248319-.251059 .704359-.251059C.578829-.251059 .495143-.251059 .495143-.097634C.495143-.09066 .495143 0 .606725 0C.808966 0 1.311083-.027895 1.513325-.027895C1.63188-.027895 1.875965-.027895 1.994521-.020922C2.133998-.013948 2.308344 0 2.440847 0C2.48269 0 2.587298 0 2.587298-.153425C2.587298-.251059 2.503611-.251059 2.364134-.251059C2.357161-.251059 2.224658-.251059 2.099128-.265006C1.93873-.278954 1.93873-.299875 1.93873-.369614C1.93873-.376588 1.93873-.418431 1.966625-.523039L2.378082-2.161893ZM2.880199-4.274969C2.93599-4.491158 2.942964-4.51208 3.235866-4.51208H4.051806C4.700374-4.51208 5.104857-4.316812 5.104857-3.821669C5.104857-3.605479 5.021171-3.054545 4.672478-2.740722C4.42142-2.517559 4.02391-2.385056 3.521793-2.385056H2.405978L2.880199-4.274969Z'/>
+<path id='ono-greenova-g2-48' d='M3.598506-2.224658C3.598506-2.991781 3.507846-3.542715 3.187049-4.030884C2.970859-4.351681 2.538481-4.630635 1.980573-4.630635C.36264-4.630635 .36264-2.726775 .36264-2.224658S.36264 .139477 1.980573 .139477S3.598506-1.72254 3.598506-2.224658ZM1.980573-.055791C1.659776-.055791 1.234371-.244085 1.094894-.81594C.99726-1.227397 .99726-1.799253 .99726-2.315318C.99726-2.824408 .99726-3.354421 1.101868-3.737983C1.248319-4.288917 1.694645-4.435367 1.980573-4.435367C2.357161-4.435367 2.719801-4.20523 2.84533-3.800747C2.956912-3.424159 2.963885-2.922042 2.963885-2.315318C2.963885-1.799253 2.963885-1.283188 2.873225-.843836C2.733748-.209215 2.259527-.055791 1.980573-.055791Z'/>
+<path id='ono-greenova-g2-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='ono-greenova-g2-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+<path id='ono-greenova-g2-51' d='M1.903861-2.329265C2.447821-2.329265 2.838356-1.952677 2.838356-1.206476C2.838356-.341719 2.336239-.083686 1.931756-.083686C1.652802-.083686 1.039103-.160399 .746202-.571856C1.073973-.585803 1.150685-.81594 1.150685-.962391C1.150685-1.185554 .983313-1.345953 .767123-1.345953C.571856-1.345953 .376588-1.227397 .376588-.941469C.376588-.285928 1.101868 .139477 1.945704 .139477C2.915068 .139477 3.584558-.509091 3.584558-1.206476C3.584558-1.750436 3.138232-2.294396 2.371108-2.454795C3.103362-2.719801 3.368369-3.242839 3.368369-3.668244C3.368369-4.219178 2.733748-4.630635 1.959651-4.630635S.592777-4.254047 .592777-3.696139C.592777-3.459029 .746202-3.326526 .955417-3.326526C1.171606-3.326526 1.311083-3.486924 1.311083-3.682192C1.311083-3.884433 1.171606-4.030884 .955417-4.044832C1.199502-4.351681 1.680697-4.428394 1.93873-4.428394C2.252553-4.428394 2.691905-4.274969 2.691905-3.668244C2.691905-3.375342 2.594271-3.054545 2.412951-2.838356C2.182814-2.57335 1.987547-2.559402 1.638854-2.538481C1.464508-2.524533 1.45056-2.524533 1.415691-2.517559C1.401743-2.517559 1.345953-2.503611 1.345953-2.426899C1.345953-2.329265 1.408717-2.329265 1.527273-2.329265H1.903861Z'/>
+<path id='ono-greenova-g2-52' d='M3.689166-1.143711V-1.39477H2.915068V-4.505106C2.915068-4.651557 2.915068-4.700374 2.761644-4.700374C2.677958-4.700374 2.650062-4.700374 2.580324-4.60274L.27198-1.39477V-1.143711H2.322291V-.571856C2.322291-.334745 2.322291-.251059 1.75741-.251059H1.569116V0C1.917808-.013948 2.364134-.027895 2.615193-.027895C2.873225-.027895 3.319552-.013948 3.668244 0V-.251059H3.47995C2.915068-.251059 2.915068-.334745 2.915068-.571856V-1.143711H3.689166ZM2.371108-3.947198V-1.39477H.530012L2.371108-3.947198Z'/>
+</defs>
+<g id='ono-greenova-page1'>
+<g stroke-miterlimit='10' transform='translate(-61.44153,50.108221)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<path d='M0 0H187.70386' fill='none'/>
+<g transform='translate(185.2274,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(195.68903,-2.15277)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.44153,50.108221)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-61.44153' y='50.108221' xlink:href='#ono-greenova-g0-120'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 0V102.9147' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,100.43825)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-7.26509,112.39984)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.44153,50.108221)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-61.44153' y='50.108221' xlink:href='#ono-greenova-g0-71'/>
+<use x='-53.608413' y='51.602602' xlink:href='#ono-greenova-g1-80'/>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='1.1'>
+<path d='M0 0L85.35825 73.97733H170.71649' fill='none'/>
+</g>
+<path d='M44.51775 36.98866C44.51775 38.0041 43.69456 38.82729 42.67912 38.82729S40.8405 38.0041 40.8405 36.98866S41.66368 35.15004 42.67912 35.15004S44.51775 35.97322 44.51775 36.98866ZM42.67912 36.98866' stroke='none'/>
+<g transform='translate(42.67912,36.98866)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.44153,50.108221)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M87.19687 73.97733C87.19687 74.99277 86.37369 75.81595 85.35825 75.81595C84.3428 75.81595 83.51962 74.99277 83.51962 73.97733C83.51962 72.96188 84.3428 72.1387 85.35825 72.1387C86.37369 72.1387 87.19687 72.96188 87.19687 73.97733ZM85.35825 73.97733' stroke='none'/>
+<g transform='translate(85.35825,73.97733)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.44153,50.108221)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M129.87599 73.97733C129.87599 74.99277 129.05281 75.81595 128.03737 75.81595S126.19875 74.99277 126.19875 73.97733C126.19875 72.96188 127.02193 72.1387 128.03737 72.1387S129.87599 72.96188 129.87599 73.97733ZM128.03737 73.97733' stroke='none'/>
+<g transform='translate(128.03737,73.97733)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.44153,50.108221)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M172.55511 73.97733C172.55511 74.99277 171.73193 75.81595 170.71649 75.81595S168.87787 74.99277 168.87787 73.97733C168.87787 72.96188 169.70105 72.1387 170.71649 72.1387S172.55511 72.96188 172.55511 73.97733ZM170.71649 73.97733' stroke='none'/>
+<g transform='translate(170.71649,73.97733)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.44153,50.108221)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(79.16676,82.80936)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.44153,50.108221)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-61.44153' y='50.108221' xlink:href='#ono-greenova-g0-120'/>
+<use x='-55.747598' y='51.602602' xlink:href='#ono-greenova-g1-80'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M0-62.8806L42.67912-33.28957L85.35825-62.8806' fill='none'/>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M42.67912-62.8806L85.35825-33.28957L128.03737-62.8806' fill='none'/>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M85.35825-62.8806L128.03737-33.28957L170.71649-62.8806' fill='none'/>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M128.03737-62.8806L170.71649-33.28957' fill='none'/>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M0-62.8806H192.05605' fill='none'/>
+</g>
+<path d='M0-60.29169V-65.47008' fill='none'/>
+<g transform='translate(-5.1007,-72.66867)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.44153,50.108221)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-61.44153' y='50.108221' xlink:href='#ono-greenova-g0-120'/>
+<use x='-55.747598' y='51.602602' xlink:href='#ono-greenova-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M42.67912-60.29169V-65.47008' fill='none'/>
+<g transform='translate(37.57843,-72.66867)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.44153,50.108221)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-61.44153' y='50.108221' xlink:href='#ono-greenova-g0-120'/>
+<use x='-55.747598' y='51.602602' xlink:href='#ono-greenova-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M85.35825-60.29169V-65.47008' fill='none'/>
+<g transform='translate(80.25755,-72.66867)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.44153,50.108221)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-61.44153' y='50.108221' xlink:href='#ono-greenova-g0-120'/>
+<use x='-55.747598' y='51.602602' xlink:href='#ono-greenova-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M128.03737-60.29169V-65.47008' fill='none'/>
+<g transform='translate(122.93668,-72.66867)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.44153,50.108221)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-61.44153' y='50.108221' xlink:href='#ono-greenova-g0-120'/>
+<use x='-55.747598' y='51.602602' xlink:href='#ono-greenova-g2-51'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M170.71649-60.29169V-65.47008' fill='none'/>
+<g transform='translate(165.6158,-72.66867)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.44153,50.108221)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-61.44153' y='50.108221' xlink:href='#ono-greenova-g0-120'/>
+<use x='-55.747598' y='51.602602' xlink:href='#ono-greenova-g2-52'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M233.3125 0H421.01636' fill='none'/>
+<g transform='translate(418.5399,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(429.00153,-2.15277)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.44153,50.108221)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-61.44153' y='50.108221' xlink:href='#ono-greenova-g0-120'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M233.3125 0V102.9147' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,233.3125,100.43825)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(226.04741,112.39984)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.44153,50.108221)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-61.44153' y='50.108221' xlink:href='#ono-greenova-g0-71'/>
+<use x='-53.608413' y='51.602602' xlink:href='#ono-greenova-g1-80'/>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='1.1'>
+<path d='M233.3125 0L340.0103 92.47165H404.02899' fill='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.9'>
+<path d='M318.67075 73.97733L361.34987 92.47165' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M277.83025 36.98866C277.83025 38.0041 277.00706 38.82729 275.99162 38.82729S274.153 38.0041 274.153 36.98866S274.97618 35.15004 275.99162 35.15004S277.83025 35.97322 277.83025 36.98866ZM275.99162 36.98866' stroke='none'/>
+</g>
+<g transform='translate(275.99162,36.98866)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.44153,50.108221)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M320.50937 73.97733C320.50937 74.99277 319.68619 75.81595 318.67075 75.81595C317.6553 75.81595 316.83212 74.99277 316.83212 73.97733C316.83212 72.96188 317.6553 72.1387 318.67075 72.1387C319.68619 72.1387 320.50937 72.96188 320.50937 73.97733ZM318.67075 73.97733' stroke='none'/>
+</g>
+<g transform='translate(318.67075,73.97733)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.44153,50.108221)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M363.18849 92.47165C363.18849 93.48709 362.36531 94.31027 361.34987 94.31027S359.51125 93.48709 359.51125 92.47165C359.51125 91.4562 360.33443 90.63303 361.34987 90.63303S363.18849 91.4562 363.18849 92.47165ZM361.34987 92.47165' stroke='none'/>
+</g>
+<g transform='translate(361.34987,92.47165)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.44153,50.108221)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M405.86761 92.47165C405.86761 93.48709 405.04443 94.31027 404.02899 94.31027S402.19037 93.48709 402.19037 92.47165C402.19037 91.4562 403.01355 90.63303 404.02899 90.63303S405.86761 91.4562 405.86761 92.47165ZM404.02899 92.47165' stroke='none'/>
+</g>
+<g transform='translate(404.02899,92.47165)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.44153,50.108221)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M341.84892 92.47165C341.84892 93.48709 341.02574 94.31027 340.0103 94.31027S338.17168 93.48709 338.17168 92.47165C338.17168 91.4562 338.99486 90.63303 340.0103 90.63303S341.84892 91.4562 341.84892 92.47165ZM340.0103 92.47165' stroke='none'/>
+<g transform='translate(340.0103,92.47165)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.44153,50.108221)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(333.81882,101.3037)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.44153,50.108221)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-61.44153' y='50.108221' xlink:href='#ono-greenova-g0-120'/>
+<use x='-55.747598' y='51.602602' xlink:href='#ono-greenova-g1-80'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M340.0103 92.13417V83.56197' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,340.0103,86.33113)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,340.0103,92.24666)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,340.0103,89.365)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,340.0103,83.44948)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M233.3125-62.8806L275.99162-33.28957L318.67075-62.8806' fill='none'/>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M275.99162-62.8806L318.67075-33.28957L361.34987-62.8806' fill='none'/>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M318.67075-62.8806L361.34987-33.28957L404.02899-62.8806' fill='none'/>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M361.34987-62.8806L404.02899-33.28957' fill='none'/>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M233.3125-62.8806H425.36855' fill='none'/>
+</g>
+<path d='M233.3125-60.29169V-65.47008' fill='none'/>
+<g transform='translate(228.2118,-72.66867)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.44153,50.108221)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-61.44153' y='50.108221' xlink:href='#ono-greenova-g0-120'/>
+<use x='-55.747598' y='51.602602' xlink:href='#ono-greenova-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M275.99162-60.29169V-65.47008' fill='none'/>
+<g transform='translate(270.89093,-72.66867)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.44153,50.108221)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-61.44153' y='50.108221' xlink:href='#ono-greenova-g0-120'/>
+<use x='-55.747598' y='51.602602' xlink:href='#ono-greenova-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M318.67075-60.29169V-65.47008' fill='none'/>
+<g transform='translate(313.57005,-72.66867)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.44153,50.108221)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-61.44153' y='50.108221' xlink:href='#ono-greenova-g0-120'/>
+<use x='-55.747598' y='51.602602' xlink:href='#ono-greenova-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M361.34987-60.29169V-65.47008' fill='none'/>
+<g transform='translate(356.24918,-72.66867)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.44153,50.108221)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-61.44153' y='50.108221' xlink:href='#ono-greenova-g0-120'/>
+<use x='-55.747598' y='51.602602' xlink:href='#ono-greenova-g2-51'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M404.02899-60.29169V-65.47008' fill='none'/>
+<g transform='translate(398.9283,-72.66867)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.44153,50.108221)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-61.44153' y='50.108221' xlink:href='#ono-greenova-g0-120'/>
+<use x='-55.747598' y='51.602602' xlink:href='#ono-greenova-g2-52'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 6.18</span>: Polje \(G_{\mathrm{P}}\) enotske sile v točki \(x_{\mathrm{P}}\) palice s konstantno togostjo, višine v enotah metra na <span class="nobr">\(EA\).</span> Pod osjo so šotorske funkcije mreže z vozlišči <span class="nobr">\(x_0, \dots, x_4\).</span> Levo: \(x_{\mathrm{P}} = x_2\) je vozlišče, polje narašča po premici do \(x_{\mathrm{P}}\) in je naprej stalno, zato je enako vsoti šotorskih funkcij z vrednostmi \(G_{\mathrm{P}}(x_{\mathrm{i}})\) (pike) kot višinami. Desno: \(x_{\mathrm{P}}\) leži znotraj elementa \([x_2, x_3]\) in polje ima pregib sredi elementa. Vsota šotorskih funkcij z istimi vrednostmi v vozliščih (modro, črtkano, drugje enaka <span class="nobr">\(G_{\mathrm{P}}\))</span> zgreši \(G_{\mathrm{P}}\) v \(x_{\mathrm{P}}\) za razliko, narisano z daljico s prečkama.</figcaption></figure>
+<h3 id="sec-cea"><span class="h-num">6.5.3</span> Ceajeva lema za palico</h3>
+<p>Izrek <a class="xref" href="sec-ocene-napake.html#thm-najboljsi-priblizek" data-knowl="thm-najboljsi-priblizek">6.37</a> meri napako v <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-energijska-norma" data-knowl="def-energijska-norma">energijski normi</a>, ki vsebuje togost <span class="nobr">\(EA\).</span> Pogosto nas zanima <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">deformacija</a> sama, torej <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">odvod</a> \(u'\) in njegova napaka <span class="nobr">\(u' - u_{\mathrm{n}}'\),</span> ki z \(EA\) ni obtežena. Ali je <a class="xref auto" href="sec-ritzova-metoda.html#def-ritzova-metoda" data-knowl="def-ritzova-metoda">Ritzova rešitev</a> tudi tu blizu najboljšemu polju družine? Pri stalni togosti je odgovor da, saj je energijska norma tedaj \(\sqrt{EA}\)-kratnik norme odvoda. Pri palici s stopnico se togost spremeni in ocena potrebuje meje. Označimo z \(\|f\| = \sqrt{\int_0^L f^2\,\mathrm{d}x}\) normo <a class="xref auto" href="sec-skalarni-produkt.html#def-skalarni-produkt" data-knowl="def-skalarni-produkt">skalarnega produkta</a> \((f, g) = \int_0^L f\,g\,\mathrm{d}x\) (definicija <a class="xref" href="sec-skalarni-produkt-funkcij.html#def-skalarni-produkt-funkcij" data-knowl="def-skalarni-produkt-funkcij">6.16</a>).</p>
+
+<div class="blk izrek" id="thm-cea"><div class="blk-head"><span class="blk-label">Izrek 6.39</span> <span class="blk-title">Ceajeva lema za palico (Cea's lemma for a bar)</span></div><div class="blk-body"><p>Naj bo palica pritrjena pri <span class="nobr">\(x = 0\),</span> \(EA\) odsekoma zvezna in \(m \le EA(x) \le M\) z <span class="nobr">\(m &gt; 0\).</span> Naj bo \(u\) rešitev <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">šibke oblike</a> in \(u_{\mathrm{n}} \in \psi_0 + \mathcal{V}_{\mathrm{n}}\) polje z \(B(u - u_{\mathrm{n}}, w) = 0\) za vsak <span class="nobr">\(w \in \mathcal{V}_{\mathrm{n}}\),</span> na primer <a class="xref auto" href="sec-ritzova-metoda.html#def-ritzova-metoda" data-knowl="def-ritzova-metoda">Ritzova rešitev</a> (lema <a class="xref" href="sec-ocene-napake.html#lem-galerkinova-ortogonalnost" data-knowl="lem-galerkinova-ortogonalnost">6.36</a>). Tedaj za vsak \(v \in \psi_0 + \mathcal{V}_{\mathrm{n}}\) velja</p>
+<div class="eq" id="eq-cea">\[\|u' - u_{\mathrm{n}}'\| \le \frac{M}{m}\,\|u' - v'\| . \tag{6.23}\]</div>
+<p>Ker je \(B\) simetrična, velja celo</p>
+<div class="eq" id="eq-cea-koren">\[\|u' - u_{\mathrm{n}}'\| \le \sqrt{\frac{M}{m}}\,\|u' - v'\| . \tag{6.24}\]</div>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da energija napake navzdol omeji normo <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">odvoda</a> napake z <span class="nobr">\(m\),</span> navzgor pa energija napake zaradi pravokotnosti ne preseže dela napake poljubnega polja z <span class="nobr">\(M\).</span></p>
+<ol>
+<li>Naj bo <span class="nobr">\(e = u - u_{\mathrm{n}}\).</span> Polje \(e\) je <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">preizkusna funkcija</a>, <span class="nobr">\(e(0) = 0\).</span> Razstavimo <span class="nobr">\(e = (u - v) + (v - u_{\mathrm{n}})\),</span> kjer je <span class="nobr">\(v - u_{\mathrm{n}} \in \mathcal{V}_{\mathrm{n}}\).</span> Po lemi <a class="xref" href="sec-ocene-napake.html#lem-galerkinova-ortogonalnost" data-knowl="lem-galerkinova-ortogonalnost">6.36</a> je <span class="nobr">\(B(e, v - u_{\mathrm{n}}) = 0\),</span> zato je <span class="nobr">\(B(e, e) = B(e, u - v)\).</span></li>
+<li>Ker je \(EA \ge m\) in <span class="nobr">\(e'^2 \ge 0\),</span> je po nenegativnosti in linearnosti <a class="xref auto" href="sec-funkcije-s-pregibi.html#def-integral-odsekoma-zvezne" data-knowl="def-integral-odsekoma-zvezne">integrala odsekoma zveznih funkcij</a> (lema <a class="xref" href="sec-funkcije-s-pregibi.html#lem-lastnosti-integrala-pregibi" data-knowl="lem-lastnosti-integrala-pregibi">6.10</a>, točki 2 in 3, za razliko <span class="nobr">\((EA - m)\,e'^2 \ge 0\))</span> <span class="nobr">\(B(e, e) = \int_0^L EA\,e'^2\,\mathrm{d}x \ge m\,\|e'\|^2\).</span></li>
+<li>V vsaki točki je <span class="nobr">\(EA\,e'\,(u - v)' \le M\,|e'|\,|(u - v)'|\),</span> zato je po isti lemi, uporabljeni za razliko <span class="nobr">\(M\,|e'|\,|(u - v)'| - EA\,e'\,(u - v)' \ge 0\),</span> <span class="nobr">\(B(e, u - v) \le M \int_0^L |e'|\,|(u - v)'|\,\mathrm{d}x = M\,(|e'|, |(u - v)'|)\).</span> Po lemi <a class="xref" href="sec-skalarni-produkt-funkcij.html#lem-cauchy-schwarz-produkt" data-knowl="lem-cauchy-schwarz-produkt">6.19</a> je to največ <span class="nobr">\(M\,\|e'\|\,\|(u - v)'\|\).</span> Lema velja tu, ker njen dokaz uporablja le linearnost v obeh argumentih, simetrijo in <span class="nobr">\((f, f) \ge 0\),</span> ki jih ima \((f, g) = \int_0^L f\,g\,\mathrm{d}x\) za <a class="xref auto" href="sec-funkcije-s-pregibi.html#def-odsekoma-zvezna" data-knowl="def-odsekoma-zvezna">odsekoma zvezni funkciji</a> (lema <a class="xref" href="sec-funkcije-s-pregibi.html#lem-lastnosti-integrala-pregibi" data-knowl="lem-lastnosti-integrala-pregibi">6.10</a>).</li>
+<li>Iz korakov 1 do 3 je <span class="nobr">\(m\,\|e'\|^2 \le M\,\|e'\|\,\|(u - v)'\|\).</span> Če je <span class="nobr">\(\|e'\| = 0\),</span> trditev velja, sicer delimo z \(m\,\|e'\|\) in dobimo enačbo <a class="xref" href="sec-ocene-napake.html#eq-cea" data-knowl="eq-cea">(6.23)</a>.</li>
+<li>Za simetrični primer vzamemo iz koraka 2 spodnjo mejo <span class="nobr">\(m\,\|e'\|^2 \le \|e\|_{\mathrm{E}}^2\).</span> Kot v korakih 1 do 3 dokaza izreka <a class="xref" href="sec-ocene-napake.html#thm-najboljsi-priblizek" data-knowl="thm-najboljsi-priblizek">6.37</a> (uporabljajo le pravokotnost in simetrijo, ne Ritzove definicije) je \(u_{\mathrm{n}} - v \in \mathcal{V}_{\mathrm{n}}\) in <span class="nobr">\(\|u - v\|_{\mathrm{E}}^2 = \|e\|_{\mathrm{E}}^2 + \|u_{\mathrm{n}} - v\|_{\mathrm{E}}^2 \ge \|e\|_{\mathrm{E}}^2\).</span> Po <a class="xref auto" href="sec-polnost.html#def-zgornja-meja" data-knowl="def-zgornja-meja">zgornji meji</a> \(EA \le M\) pa <span class="nobr">\(\|u - v\|_{\mathrm{E}}^2 \le M\,\|(u - v)'\|^2\).</span> Verižna neenakost \(m\,\|e'\|^2 \le M\,\|(u - v)'\|^2\) da po deljenju z \(m\) in korenu enačbo <a class="xref" href="sec-ocene-napake.html#eq-cea-koren" data-knowl="eq-cea-koren">(6.24)</a>.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> BATHE (4.95) (PDF str. 259): &quot;This result is referred to as Cea's lemma&quot;, konstanta je neodvisna od \(h\) in odvisna od lastnosti materiala. Dokaz v korakih za palico je naš.</p></div></div>
+<p>Dokaz je pokazal, da napaka Ritzove metode ni več kot stalno število krat napaka najboljšega polja družine, in da to število zavisi le od razmerja skrajnih togosti, ne od mreže. Prva ocena <a class="xref" href="sec-ocene-napake.html#eq-cea" data-knowl="eq-cea">(6.23)</a> ne uporablja simetrije, zato velja tudi za metode brez energije, ki jih bomo spoznali v naslednjem razdelku. Pri drugi oceni simetrija prihrani koren. BATHE (PDF str. 259, opomba 13) opozarja, da pri <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">telesu</a> konstanta zraste, ko je prostorninski modul zelo velik, in ocena izgubi pomen. To je še en znak zaklepanja (razdelek <a class="xref" href="sec-ritzova-metoda.html#sec-ritz-lastnosti">6.4.4</a>), ki ga obravnavata poglavji <a class="xref stub" href="ch-mke-nosilci.html">12</a> in <a class="xref stub" href="ch-mke-kontinuum.html">15</a>.</p>
+<p>Preizkusimo na palici s stopnico, kjer je <span class="nobr">\(M/m = 4\),</span> torej je konstanta <a class="xref" href="sec-ocene-napake.html#eq-cea" data-knowl="eq-cea">(6.23)</a> enaka \(4\) in konstanta <a class="xref" href="sec-ocene-napake.html#eq-cea-koren" data-knowl="eq-cea-koren">(6.24)</a> enaka <span class="nobr">\(2\).</span> Poskusna družina je en element čez celo palico, <span class="nobr">\(\{c\,x\}\).</span> Ritzova enačba s <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">preizkusno funkcijo</a> \(x\) da <span class="nobr">\(c\int_0^L EA\,\mathrm{d}x = \int_0^L EA\,u'\,\mathrm{d}x\),</span> torej je \(c\) povprečje prave deformacije <span class="nobr">\(u'\),</span> uteženo s togostjo: zgornji del ima štirikrat večjo težo. Pravo polje ima povprečni odvod \(u(10)/10 = 1{,}220\) µm/m, Ritzova \(c = 1{,}366\) µm/m, 12 % več, kar je enako razmerju pomikov konca 13,66 in 12,20 µm. Najboljša premica v normi odvoda je tista z navadnim povprečjem \(1{,}220\) µm/m. Razmerje norm je \(\|u' - c\|/\|u' - v'\| = 1{,}028\) (SymPy), daleč pod mejama 2 in 4 (slika <a class="xref" href="sec-ocene-napake.html#fig-ono-cea" data-knowl="fig-ono-cea">6.19</a>). Meja velja za vsako obremenitev in vsako palico z istim <span class="nobr">\(M/m\),</span> zato je tu ohlapna. Pri stalni togosti <span class="nobr">(\(M/m = 1\),</span> viseča palica) je konstanta 1 in Ritzova rešitev je najboljša tudi v normi odvoda, kar je izrek <a class="xref" href="sec-ocene-napake.html#thm-najboljsi-priblizek" data-knowl="thm-najboljsi-priblizek">6.37</a>.</p>
+
+<figure class="blk slika" id="fig-ono-cea"><p><span class="svgfig" role="img" aria-label="Stopnica v togosti in štiri palice, ki primerjajo normo odvoda napake z mejama Ceajeve leme"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='548.94pt' height='148.55pt' viewBox='-72.000004 -72.000005 406.620394 110.036902'>
+<defs>
+<path id='ono-cea-g0-0' d='M6.56538-2.291407C6.734745-2.291407 6.914072-2.291407 6.914072-2.49066S6.734745-2.689913 6.56538-2.689913H1.175592C1.006227-2.689913 .826899-2.689913 .826899-2.49066S1.006227-2.291407 1.175592-2.291407H6.56538Z'/>
+<path id='ono-cea-g0-107' d='M1.713574-7.13325C1.713574-7.292653 1.713574-7.47198 1.514321-7.47198S1.315068-7.252802 1.315068-7.103362V2.122042C1.315068 2.281445 1.315068 2.49066 1.514321 2.49066S1.713574 2.311333 1.713574 2.15193V-7.13325ZM3.656289-7.103362C3.656289-7.262765 3.656289-7.47198 3.457036-7.47198S3.257783-7.292653 3.257783-7.13325V2.15193C3.257783 2.311333 3.257783 2.49066 3.457036 2.49066S3.656289 2.271482 3.656289 2.122042V-7.103362Z'/>
+<path id='ono-cea-g1-48' d='M2.022416-3.291656C2.078207-3.410212 2.085181-3.466002 2.085181-3.514819C2.085181-3.731009 1.889913-3.898381 1.673724-3.898381C1.408717-3.898381 1.325031-3.682192 1.290162-3.57061L.369614-.550934C.36264-.536986 .334745-.446326 .334745-.439352C.334745-.355666 .550934-.285928 .606725-.285928C.655542-.285928 .662516-.299875 .711333-.404483L2.022416-3.291656Z'/>
+<path id='ono-cea-g2-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='ono-cea-g2-61' d='M4.373599-7.0934C4.423412-7.222914 4.423412-7.262765 4.423412-7.272727C4.423412-7.382316 4.333748-7.47198 4.224159-7.47198C4.154421-7.47198 4.084682-7.442092 4.054795-7.382316L.597758 2.11208C.547945 2.241594 .547945 2.281445 .547945 2.291407C.547945 2.400996 .637609 2.49066 .747198 2.49066C.876712 2.49066 .9066 2.420922 .966376 2.251557L4.373599-7.0934Z'/>
+<path id='ono-cea-g2-65' d='M1.783313-1.145704C1.384807-.478207 .996264-.33873 .557908-.308842C.438356-.298879 .348692-.298879 .348692-.109589C.348692-.049813 .398506 0 .478207 0C.747198 0 1.05604-.029888 1.334994-.029888C1.663761-.029888 2.012453 0 2.331258 0C2.391034 0 2.520548 0 2.520548-.18929C2.520548-.298879 2.430884-.308842 2.361146-.308842C2.132005-.328767 1.892902-.408468 1.892902-.657534C1.892902-.777086 1.952677-.886675 2.032379-1.026152L2.789539-2.30137H5.290162C5.310087-2.092154 5.449564-.737235 5.449564-.637609C5.449564-.33873 4.931507-.308842 4.732254-.308842C4.592777-.308842 4.493151-.308842 4.493151-.109589C4.493151 0 4.612702 0 4.632628 0C5.041096 0 5.469489-.029888 5.877958-.029888C6.127024-.029888 6.75467 0 7.003736 0C7.063512 0 7.183064 0 7.183064-.199253C7.183064-.308842 7.083437-.308842 6.953923-.308842C6.336239-.308842 6.336239-.37858 6.306351-.667497L5.69863-6.894147C5.678705-7.0934 5.678705-7.13325 5.50934-7.13325C5.349938-7.13325 5.310087-7.063512 5.250311-6.963885L1.783313-1.145704ZM2.978829-2.610212L4.941469-5.897883L5.260274-2.610212H2.978829Z'/>
+<path id='ono-cea-g2-69' d='M7.053549-2.321295C7.073474-2.371108 7.103362-2.440847 7.103362-2.460772C7.103362-2.470735 7.103362-2.570361 6.983811-2.570361C6.894147-2.570361 6.874222-2.510585 6.854296-2.450809C6.206725-.976339 5.838107-.308842 4.134496-.308842H2.67995C2.540473-.308842 2.520548-.308842 2.460772-.318804C2.361146-.328767 2.331258-.33873 2.331258-.418431C2.331258-.448319 2.331258-.468244 2.381071-.647572L3.058531-3.367372H4.044832C4.891656-3.367372 4.891656-3.158157 4.891656-2.909091C4.891656-2.839352 4.891656-2.719801 4.821918-2.420922C4.801993-2.371108 4.79203-2.34122 4.79203-2.311333C4.79203-2.261519 4.83188-2.201743 4.921544-2.201743C5.001245-2.201743 5.031133-2.251557 5.070984-2.400996L5.638854-4.732254C5.638854-4.79203 5.589041-4.841843 5.519303-4.841843C5.429639-4.841843 5.409714-4.782067 5.379826-4.662516C5.17061-3.905355 4.991283-3.676214 4.07472-3.676214H3.138232L3.73599-6.07721C3.825654-6.425903 3.835616-6.465753 4.273973-6.465753H5.678705C6.894147-6.465753 7.193026-6.176837 7.193026-5.3599C7.193026-5.120797 7.193026-5.100872 7.153176-4.83188C7.153176-4.772105 7.143213-4.702366 7.143213-4.652553S7.173101-4.533001 7.262765-4.533001C7.372354-4.533001 7.382316-4.592777 7.402242-4.782067L7.601494-6.505604C7.631382-6.774595 7.581569-6.774595 7.332503-6.774595H2.30137C2.102117-6.774595 2.002491-6.774595 2.002491-6.575342C2.002491-6.465753 2.092154-6.465753 2.281445-6.465753C2.650062-6.465753 2.929016-6.465753 2.929016-6.286426C2.929016-6.246575 2.929016-6.22665 2.879203-6.047323L1.564134-.777086C1.464508-.388543 1.444583-.308842 .657534-.308842C.488169-.308842 .37858-.308842 .37858-.119552C.37858 0 .468244 0 .657534 0H5.828144C6.057285 0 6.067248-.009963 6.136986-.169365L7.053549-2.321295Z'/>
+<path id='ono-cea-g2-77' d='M9.225405-6.03736C9.315068-6.396015 9.334994-6.495641 10.082192-6.495641C10.311333-6.495641 10.400996-6.495641 10.400996-6.694894C10.400996-6.804483 10.30137-6.804483 10.132005-6.804483H8.816936C8.557908-6.804483 8.547945-6.804483 8.428394-6.615193L4.79203-.936488L4.014944-6.575342C3.985056-6.804483 3.965131-6.804483 3.706102-6.804483H2.34122C2.15193-6.804483 2.042341-6.804483 2.042341-6.615193C2.042341-6.495641 2.132005-6.495641 2.331258-6.495641C2.460772-6.495641 2.6401-6.485679 2.759651-6.475716C2.919054-6.455791 2.978829-6.425903 2.978829-6.316314C2.978829-6.276463 2.968867-6.246575 2.938979-6.127024L1.673724-1.05604C1.574097-.657534 1.404732-.33873 .597758-.308842C.547945-.308842 .418431-.298879 .418431-.119552C.418431-.029888 .478207 0 .557908 0C.876712 0 1.225405-.029888 1.554172-.029888C1.892902-.029888 2.251557 0 2.580324 0C2.630137 0 2.759651 0 2.759651-.199253C2.759651-.308842 2.650062-.308842 2.580324-.308842C2.012453-.318804 1.902864-.518057 1.902864-.747198C1.902864-.816936 1.912827-.86675 1.942715-.976339L3.297634-6.405978H3.307597L4.164384-.229141C4.184309-.109589 4.194271 0 4.313823 0C4.423412 0 4.483188-.109589 4.533001-.179328L8.557908-6.485679H8.56787L7.143213-.777086C7.043587-.388543 7.023661-.308842 6.236613-.308842C6.067248-.308842 5.957659-.308842 5.957659-.119552C5.957659 0 6.07721 0 6.107098 0C6.386052 0 7.063512-.029888 7.342466-.029888C7.750934-.029888 8.179328 0 8.587796 0C8.647572 0 8.777086 0 8.777086-.199253C8.777086-.308842 8.687422-.308842 8.498132-.308842C8.129514-.308842 7.85056-.308842 7.85056-.488169C7.85056-.52802 7.85056-.547945 7.900374-.727273L9.225405-6.03736Z'/>
+<path id='ono-cea-g2-109' d='M.876712-.587796C.846824-.438356 .787049-.209215 .787049-.159402C.787049 .019925 .926526 .109589 1.075965 .109589C1.195517 .109589 1.374844 .029888 1.444583-.169365C1.454545-.18929 1.574097-.657534 1.633873-.9066L1.853051-1.803238C1.912827-2.022416 1.972603-2.241594 2.022416-2.470735C2.062267-2.6401 2.141968-2.929016 2.15193-2.968867C2.30137-3.277709 2.82939-4.184309 3.775841-4.184309C4.224159-4.184309 4.313823-3.815691 4.313823-3.486924C4.313823-3.237858 4.244085-2.958904 4.164384-2.660025L3.88543-1.504359L3.686177-.747198C3.646326-.547945 3.556663-.209215 3.556663-.159402C3.556663 .019925 3.696139 .109589 3.845579 .109589C4.154421 .109589 4.214197-.139477 4.293898-.458281C4.433375-1.016189 4.801993-2.470735 4.891656-2.859278C4.921544-2.988792 5.449564-4.184309 6.535492-4.184309C6.963885-4.184309 7.073474-3.845579 7.073474-3.486924C7.073474-2.919054 6.655044-1.783313 6.455791-1.255293C6.366127-1.016189 6.326276-.9066 6.326276-.707347C6.326276-.239103 6.674969 .109589 7.143213 .109589C8.079701 .109589 8.448319-1.344956 8.448319-1.424658C8.448319-1.524284 8.358655-1.524284 8.328767-1.524284C8.229141-1.524284 8.229141-1.494396 8.179328-1.344956C8.029888-.816936 7.711083-.109589 7.163138-.109589C6.993773-.109589 6.924035-.209215 6.924035-.438356C6.924035-.687422 7.013699-.926526 7.103362-1.145704C7.292653-1.663761 7.711083-2.769614 7.711083-3.337484C7.711083-3.985056 7.312578-4.403487 6.56538-4.403487S5.310087-3.965131 4.941469-3.437111C4.931507-3.566625 4.901619-3.905355 4.622665-4.144458C4.373599-4.353674 4.054795-4.403487 3.805729-4.403487C2.909091-4.403487 2.420922-3.765878 2.251557-3.536737C2.201743-4.104608 1.783313-4.403487 1.334994-4.403487C.876712-4.403487 .687422-4.014944 .597758-3.835616C.418431-3.486924 .288917-2.899128 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.779577 .577833-2.998755C.747198-3.706102 .946451-4.184309 1.305106-4.184309C1.464508-4.184309 1.613948-4.104608 1.613948-3.726027C1.613948-3.516812 1.58406-3.407223 1.454545-2.889166L.876712-.587796Z'/>
+<path id='ono-cea-g2-117' d='M3.486924-.557908C3.596513-.14944 3.945205 .109589 4.373599 .109589C4.722291 .109589 4.951432-.119552 5.110834-.438356C5.280199-.797011 5.409714-1.404732 5.409714-1.424658C5.409714-1.524284 5.32005-1.524284 5.290162-1.524284C5.190535-1.524284 5.180573-1.484433 5.150685-1.344956C5.011208-.787049 4.821918-.109589 4.403487-.109589C4.194271-.109589 4.094645-.239103 4.094645-.56787C4.094645-.787049 4.214197-1.255293 4.293898-1.603985L4.572852-2.67995C4.60274-2.82939 4.702366-3.20797 4.742217-3.35741C4.79203-3.58655 4.891656-3.965131 4.891656-4.024907C4.891656-4.204234 4.752179-4.293898 4.60274-4.293898C4.552927-4.293898 4.293898-4.283935 4.214197-3.945205C4.024907-3.217933 3.58655-1.474471 3.466999-.946451C3.457036-.9066 3.058531-.109589 2.331258-.109589C1.8132-.109589 1.713574-.557908 1.713574-.926526C1.713574-1.484433 1.992528-2.271482 2.251557-2.958904C2.371108-3.257783 2.420922-3.39726 2.420922-3.58655C2.420922-4.034869 2.102117-4.403487 1.603985-4.403487C.657534-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.816936-3.815691 1.195517-4.184309 1.574097-4.184309C1.663761-4.184309 1.823163-4.174346 1.823163-3.855542C1.823163-3.616438 1.713574-3.327522 1.653798-3.178082C1.285181-2.191781 1.075965-1.574097 1.075965-1.085928C1.075965-.139477 1.763387 .109589 2.30137 .109589C2.958904 .109589 3.317559-.33873 3.486924-.557908Z'/>
+<path id='ono-cea-g2-118' d='M4.662516-3.706102C4.662516-4.244085 4.403487-4.403487 4.224159-4.403487C3.975093-4.403487 3.73599-4.144458 3.73599-3.92528C3.73599-3.795766 3.785803-3.73599 3.895392-3.626401C4.104608-3.427148 4.234122-3.16812 4.234122-2.809465C4.234122-2.391034 3.626401-.109589 2.460772-.109589C1.952677-.109589 1.723537-.458281 1.723537-.976339C1.723537-1.534247 1.992528-2.261519 2.30137-3.088418C2.371108-3.257783 2.420922-3.39726 2.420922-3.58655C2.420922-4.034869 2.102117-4.403487 1.603985-4.403487C.667497-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.856787-3.955168 1.285181-4.184309 1.574097-4.184309C1.653798-4.184309 1.823163-4.184309 1.823163-3.865504C1.823163-3.616438 1.723537-3.347447 1.653798-3.16812C1.215442-2.012453 1.085928-1.554172 1.085928-1.125778C1.085928-.049813 1.96264 .109589 2.420922 .109589C4.094645 .109589 4.662516-3.188045 4.662516-3.706102Z'/>
+<path id='ono-cea-g2-120' d='M3.327522-3.008717C3.387298-3.267746 3.616438-4.184309 4.313823-4.184309C4.363636-4.184309 4.60274-4.184309 4.811955-4.054795C4.533001-4.004981 4.333748-3.755915 4.333748-3.516812C4.333748-3.35741 4.443337-3.16812 4.712329-3.16812C4.931507-3.16812 5.250311-3.347447 5.250311-3.745953C5.250311-4.26401 4.662516-4.403487 4.323786-4.403487C3.745953-4.403487 3.39726-3.875467 3.277709-3.646326C3.028643-4.303861 2.49066-4.403487 2.201743-4.403487C1.165629-4.403487 .597758-3.118306 .597758-2.86924C.597758-2.769614 .697385-2.769614 .71731-2.769614C.797011-2.769614 .826899-2.789539 .846824-2.879203C1.185554-3.935243 1.843088-4.184309 2.181818-4.184309C2.371108-4.184309 2.719801-4.094645 2.719801-3.516812C2.719801-3.20797 2.550436-2.540473 2.181818-1.145704C2.022416-.52802 1.673724-.109589 1.235367-.109589C1.175592-.109589 .946451-.109589 .737235-.239103C.986301-.288917 1.205479-.498132 1.205479-.777086C1.205479-1.046077 .986301-1.125778 .836862-1.125778C.537983-1.125778 .288917-.86675 .288917-.547945C.288917-.089664 .787049 .109589 1.225405 .109589C1.882939 .109589 2.241594-.587796 2.271482-.647572C2.391034-.278954 2.749689 .109589 3.347447 .109589C4.373599 .109589 4.941469-1.175592 4.941469-1.424658C4.941469-1.524284 4.851806-1.524284 4.821918-1.524284C4.732254-1.524284 4.712329-1.484433 4.692403-1.414695C4.363636-.348692 3.686177-.109589 3.367372-.109589C2.978829-.109589 2.819427-.428394 2.819427-.767123C2.819427-.986301 2.879203-1.205479 2.988792-1.643836L3.327522-3.008717Z'/>
+<path id='ono-cea-g3-40' d='M3.297634 2.391034C3.297634 2.361146 3.297634 2.34122 3.128269 2.171856C1.882939 .916563 1.564134-.966376 1.564134-2.49066C1.564134-4.224159 1.942715-5.957659 3.16812-7.202989C3.297634-7.32254 3.297634-7.342466 3.297634-7.372354C3.297634-7.442092 3.257783-7.47198 3.198007-7.47198C3.098381-7.47198 2.201743-6.794521 1.613948-5.529265C1.105853-4.433375 .986301-3.327522 .986301-2.49066C.986301-1.713574 1.09589-.508095 1.643836 .617684C2.241594 1.843088 3.098381 2.49066 3.198007 2.49066C3.257783 2.49066 3.297634 2.460772 3.297634 2.391034Z'/>
+<path id='ono-cea-g3-41' d='M2.879203-2.49066C2.879203-3.267746 2.769614-4.473225 2.221669-5.599004C1.62391-6.824408 .767123-7.47198 .667497-7.47198C.607721-7.47198 .56787-7.43213 .56787-7.372354C.56787-7.342466 .56787-7.32254 .757161-7.143213C1.733499-6.156912 2.30137-4.572852 2.30137-2.49066C2.30137-.787049 1.932752 .966376 .697385 2.221669C.56787 2.34122 .56787 2.361146 .56787 2.391034C.56787 2.450809 .607721 2.49066 .667497 2.49066C.767123 2.49066 1.663761 1.8132 2.251557 .547945C2.759651-.547945 2.879203-1.653798 2.879203-2.49066Z'/>
+<path id='ono-cea-g3-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='ono-cea-g3-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='ono-cea-g3-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='ono-cea-g3-52' d='M2.929016-1.643836V-.777086C2.929016-.418431 2.909091-.308842 2.171856-.308842H1.96264V0C2.371108-.029888 2.889166-.029888 3.307597-.029888S4.254047-.029888 4.662516 0V-.308842H4.4533C3.716065-.308842 3.696139-.418431 3.696139-.777086V-1.643836H4.692403V-1.952677H3.696139V-6.485679C3.696139-6.684932 3.696139-6.744707 3.536737-6.744707C3.447073-6.744707 3.417186-6.744707 3.337484-6.625156L.278954-1.952677V-1.643836H2.929016ZM2.988792-1.952677H.557908L2.988792-5.668742V-1.952677Z'/>
+<path id='ono-cea-g3-53' d='M4.473225-2.002491C4.473225-3.188045 3.656289-4.184309 2.580324-4.184309C2.102117-4.184309 1.673724-4.024907 1.315068-3.676214V-5.618929C1.514321-5.559153 1.843088-5.489415 2.161893-5.489415C3.387298-5.489415 4.084682-6.396015 4.084682-6.525529C4.084682-6.585305 4.054795-6.635118 3.985056-6.635118C3.975093-6.635118 3.955168-6.635118 3.905355-6.60523C3.706102-6.515567 3.217933-6.316314 2.550436-6.316314C2.15193-6.316314 1.693649-6.386052 1.225405-6.595268C1.145704-6.625156 1.125778-6.625156 1.105853-6.625156C1.006227-6.625156 1.006227-6.545455 1.006227-6.386052V-3.437111C1.006227-3.257783 1.006227-3.178082 1.145704-3.178082C1.215442-3.178082 1.235367-3.20797 1.275218-3.267746C1.384807-3.427148 1.753425-3.965131 2.560399-3.965131C3.078456-3.965131 3.327522-3.506849 3.407223-3.327522C3.566625-2.958904 3.58655-2.570361 3.58655-2.072229C3.58655-1.723537 3.58655-1.125778 3.347447-.707347C3.108344-.318804 2.739726-.059776 2.281445-.059776C1.554172-.059776 .986301-.587796 .816936-1.175592C.846824-1.165629 .876712-1.155666 .986301-1.155666C1.315068-1.155666 1.484433-1.404732 1.484433-1.643836S1.315068-2.132005 .986301-2.132005C.846824-2.132005 .498132-2.062267 .498132-1.603985C.498132-.747198 1.185554 .219178 2.30137 .219178C3.457036 .219178 4.473225-.737235 4.473225-2.002491Z'/>
+<path id='ono-cea-g3-56' d='M1.62391-4.552927C1.165629-4.851806 1.125778-5.190535 1.125778-5.3599C1.125778-5.967621 1.77335-6.386052 2.480697-6.386052C3.20797-6.386052 3.845579-5.867995 3.845579-5.150685C3.845579-4.582814 3.457036-4.104608 2.859278-3.755915L1.62391-4.552927ZM3.078456-3.606476C3.795766-3.975093 4.283935-4.493151 4.283935-5.150685C4.283935-6.067248 3.39726-6.635118 2.49066-6.635118C1.494396-6.635118 .687422-5.897883 .687422-4.971357C.687422-4.79203 .707347-4.343711 1.125778-3.875467C1.235367-3.755915 1.603985-3.506849 1.853051-3.337484C1.275218-3.048568 .418431-2.49066 .418431-1.504359C.418431-.448319 1.43462 .219178 2.480697 .219178C3.606476 .219178 4.552927-.607721 4.552927-1.673724C4.552927-2.032379 4.443337-2.480697 4.064757-2.899128C3.875467-3.108344 3.716065-3.20797 3.078456-3.606476ZM2.082192-3.188045L3.307597-2.410959C3.58655-2.221669 4.054795-1.92279 4.054795-1.315068C4.054795-.577833 3.307597-.059776 2.49066-.059776C1.633873-.059776 .916563-.67746 .916563-1.504359C.916563-2.082192 1.235367-2.719801 2.082192-3.188045Z'/>
+<path id='ono-cea-g4-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='ono-cea-g5-112' d='M4.224159 11.556663C4.533001 11.556663 4.542964 11.5467 4.64259 11.35741L10.092154-.019925C10.161893-.14944 10.161893-.169365 10.161893-.199253C10.161893-.308842 10.082192-.398506 9.96264-.398506C9.833126-.398506 9.793275-.308842 9.743462-.199253L4.60274 10.520548L2.480697 5.579078L1.09589 6.645081L1.24533 6.804483L1.952677 6.266501L4.224159 11.556663Z'/>
+</defs>
+<g id='ono-cea-page1'>
+<g stroke-miterlimit='10' transform='translate(-54.308732,24.676612)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<path d='M0 0H126.5284' fill='none'/>
+<g transform='translate(124.05194,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(134.51357,-2.15277)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.308732,24.676612)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.308732' y='24.676612' xlink:href='#ono-cea-g2-120'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 0V46.86264' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,44.38618)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-7.72916,54.84781)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.308732,24.676612)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.308732' y='24.676612' xlink:href='#ono-cea-g2-69'/>
+<use x='-46.38014' y='24.676612' xlink:href='#ono-cea-g2-65'/>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='1.0'>
+<path d='M0 34.14322H56.9046V8.5358H113.8092' fill='none'/>
+</g>
+<g transform='translate(-14.42464,30.72656)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.308732,24.676612)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.308732' y='24.676612' xlink:href='#ono-cea-g2-77'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-12.4131,6.38303)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.308732,24.676612)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.308732' y='24.676612' xlink:href='#ono-cea-g2-109'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 8.5358H56.9046' fill='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(54.4046,-10.07741)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.308732,24.676612)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.308732' y='24.676612' xlink:href='#ono-cea-g3-53'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(108.80919,-10.07741)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.308732,24.676612)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.308732' y='24.676612' xlink:href='#ono-cea-g3-49'/>
+<use x='-49.327393' y='24.676612' xlink:href='#ono-cea-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M56.9046 2.39027V-2.39027' fill='none'/>
+<path d='M113.8092 2.39027V-2.39027' fill='none'/>
+<g fill='#00f' stroke='#00f'>
+<g fill='#d9d9ff'>
+<path d='M204.85974 80.5213V90.19514H247.53885V80.5213ZM247.53885 90.19514'/>
+</g>
+</g>
+<g transform='translate(159.61746,82.84932)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.308732,24.676612)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.308732' y='24.676612' xlink:href='#ono-cea-g0-107'/>
+<use x='-49.327393' y='24.676612' xlink:href='#ono-cea-g2-117'/>
+<use x='-43.624198' y='21.061249' xlink:href='#ono-cea-g1-48'/>
+<use x='-38.615256' y='24.676612' xlink:href='#ono-cea-g0-0'/>
+<use x='-28.652642' y='24.676612' xlink:href='#ono-cea-g2-118'/>
+<use x='-23.466072' y='21.061249' xlink:href='#ono-cea-g1-48'/>
+<use x='-20.670996' y='24.676612' xlink:href='#ono-cea-g0-107'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(254.01727,82.13602)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.308732,24.676612)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.308732' y='24.676612' xlink:href='#ono-cea-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#d9d9ff'>
+<path d='M204.85974 54.91402V64.58784H248.73364V54.91402ZM248.73364 64.58784'/>
+</g>
+</g>
+<g transform='translate(157.4183,57.24202)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.308732,24.676612)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.308732' y='24.676612' xlink:href='#ono-cea-g0-107'/>
+<use x='-49.327393' y='24.676612' xlink:href='#ono-cea-g2-117'/>
+<use x='-43.624198' y='21.061249' xlink:href='#ono-cea-g1-48'/>
+<use x='-38.615256' y='24.676612' xlink:href='#ono-cea-g0-0'/>
+<use x='-28.652642' y='24.676612' xlink:href='#ono-cea-g2-117'/>
+<use x='-22.949447' y='21.061249' xlink:href='#ono-cea-g1-48'/>
+<use x='-22.949447' y='27.149441' xlink:href='#ono-cea-g4-49'/>
+<use x='-18.480077' y='24.676612' xlink:href='#ono-cea-g0-107'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(255.21207,57.50093)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.308732,24.676612)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.308732' y='24.676612' xlink:href='#ono-cea-g3-49'/>
+<use x='-49.327393' y='24.676612' xlink:href='#ono-cea-g2-59'/>
+<use x='-46.559985' y='24.676612' xlink:href='#ono-cea-g3-48'/>
+<use x='-41.578646' y='24.676612' xlink:href='#ono-cea-g3-50'/>
+<use x='-36.597307' y='24.676612' xlink:href='#ono-cea-g3-56'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#d9d9ff'>
+<path d='M204.85974 29.30629V38.98012H290.21797V29.30629ZM290.21797 38.98012'/>
+</g>
+</g>
+<g transform='translate(123.93457,30.99324)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.308732,24.676612)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.308732' y='16.158507' xlink:href='#ono-cea-g5-112'/>
+<rect x='-44.346077' y='15.760022' height='.398484' width='23.926526'/>
+<use x='-44.346077' y='24.676612' xlink:href='#ono-cea-g2-77'/>
+<use x='-34.148216' y='24.676612' xlink:href='#ono-cea-g2-61'/>
+<use x='-29.166877' y='24.676612' xlink:href='#ono-cea-g2-109'/>
+<use x='-18.759151' y='24.676612' xlink:href='#ono-cea-g0-107'/>
+<use x='-13.777812' y='24.676612' xlink:href='#ono-cea-g2-117'/>
+<use x='-8.074617' y='21.061249' xlink:href='#ono-cea-g1-48'/>
+<use x='-3.065675' y='24.676612' xlink:href='#ono-cea-g0-0'/>
+<use x='6.896938' y='24.676612' xlink:href='#ono-cea-g2-118'/>
+<use x='12.083509' y='21.061249' xlink:href='#ono-cea-g1-48'/>
+<use x='14.878585' y='24.676612' xlink:href='#ono-cea-g0-107'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(296.6964,30.92099)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.308732,24.676612)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.308732' y='24.676612' xlink:href='#ono-cea-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#d9d9ff'>
+<path d='M204.85974 3.69899V13.37282H375.5762V3.69899ZM375.5762 13.37282'/>
+</g>
+</g>
+<g transform='translate(126.15677,6.027)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.308732,24.676612)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.308732' y='24.676612' xlink:href='#ono-cea-g3-40'/>
+<use x='-50.434359' y='24.676612' xlink:href='#ono-cea-g2-77'/>
+<use x='-40.236498' y='24.676612' xlink:href='#ono-cea-g2-61'/>
+<use x='-35.255158' y='24.676612' xlink:href='#ono-cea-g2-109'/>
+<use x='-26.507825' y='24.676612' xlink:href='#ono-cea-g3-41'/>
+<use x='-20.973052' y='24.676612' xlink:href='#ono-cea-g0-107'/>
+<use x='-15.991713' y='24.676612' xlink:href='#ono-cea-g2-117'/>
+<use x='-10.288517' y='21.061249' xlink:href='#ono-cea-g1-48'/>
+<use x='-5.279575' y='24.676612' xlink:href='#ono-cea-g0-0'/>
+<use x='4.683038' y='24.676612' xlink:href='#ono-cea-g2-118'/>
+<use x='9.869609' y='21.061249' xlink:href='#ono-cea-g1-48'/>
+<use x='12.664685' y='24.676612' xlink:href='#ono-cea-g0-107'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(382.05463,5.31369)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.308732,24.676612)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.308732' y='24.676612' xlink:href='#ono-cea-g3-52'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M204.85974 0V96.73915' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 6.19</span>: Palica s stopnico, ki jo preizkušamo z enim samim elementom. Levo: togost <span class="nobr">\(EA\),</span> spodnja polovica ima četrtino zgornje, zato je <span class="nobr">\(M/m = 4\).</span> Desno: dolžine palic so norme odvoda napake. Najboljša premica družine \(\{c\,x\}\) ima normo \(1\) (merilo), Ritzova rešitev <span class="nobr">\(1{,}028\),</span> meja iz enačbe <a class="xref" href="sec-ocene-napake.html#eq-cea-koren" data-knowl="eq-cea-koren">(6.24)</a> \(2\) in meja iz enačbe <a class="xref" href="sec-ocene-napake.html#eq-cea" data-knowl="eq-cea">(6.23)</a> <span class="nobr">\(4\).</span> Ritzova rešitev je blizu najboljši, meji pa sta ohlapni.</figcaption></figure>
+<h3 id="sec-napaka-interpolacije"><span class="h-num">6.5.4</span> Napaka odsekoma linearne interpolacije</h3>
+<p>Ceajeva lema in izrek o najboljšem približku vodita napako <a class="xref auto" href="sec-ritzova-metoda.html#def-ritzova-metoda" data-knowl="def-ritzova-metoda">Ritzove metode</a> nazaj na napako, ki jo ima najboljše polje družine. To lahko ocenimo, če znamo kakšno polje družine poimenovati. Za družino polj, ki so na vsakem elementu premica, je tako polje interpolacija. Naj bo \([x_{\mathrm{a}}, x_{\mathrm{b}}]\) element dolžine \(h = x_{\mathrm{b}} - x_{\mathrm{a}}\) in \(u\) polje na njem. Interpolacija \(Iu\) je premica skozi točki \((x_{\mathrm{a}}, u(x_{\mathrm{a}}))\) in \((x_{\mathrm{b}}, u(x_{\mathrm{b}}))\) (slika <a class="xref" href="sec-ocene-napake.html#fig-ono-interpolacija" data-knowl="fig-ono-interpolacija">6.20</a>). Koliko se \(u\) in \(u'\) razlikujeta od \(Iu\) in <span class="nobr">\((Iu)'\)?</span> Odgovor mora kazati na <span class="nobr">\(u''\):</span> če je \(u\) premica, je napaka nič, in večja ko je ukrivljenost, večja je napaka.</p>
+
+<div class="blk lema" id="lem-napaka-interpolacije"><div class="blk-head"><span class="blk-label">Lema 6.40</span> <span class="blk-title">Napaka odsekoma linearne interpolacije (error of piecewise linear interpolation)</span></div><div class="blk-body"><p>Naj ima \(u\) na \([x_{\mathrm{a}}, x_{\mathrm{b}}]\) zvezen drugi <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">odvod</a> (v krajiščih enostransko), <span class="nobr">\(h = x_{\mathrm{b}} - x_{\mathrm{a}}\),</span> \(\mu = \max |u''|\) na tem <a class="xref auto" href="sec-konvergenca-zaporedij.html#def-interval" data-knowl="def-interval">intervalu</a> in \(Iu\) premica skozi točki \((x_{\mathrm{a}}, u(x_{\mathrm{a}}))\) in <span class="nobr">\((x_{\mathrm{b}}, u(x_{\mathrm{b}}))\).</span> Tedaj za vsak \(x \in [x_{\mathrm{a}}, x_{\mathrm{b}}]\) velja</p>
+<ol>
+<li><span class="nobr">\(|u'(x) - (Iu)'| \le h\,\mu\),</span></li>
+<li><span class="nobr">\(|u(x) - Iu(x)| \le \tfrac18\,h^2\,\mu\).</span></li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da se odvod napake spremeni največ za \(h\,\mu\) in da se napaka sama obnaša kot parabola z ničlama v krajiščih.</p>
+<ol>
+<li>Naklon premice \(Iu\) je <span class="nobr">\(k = (u(x_{\mathrm{b}}) - u(x_{\mathrm{a}}))/h\).</span> Polje \(u\) je zvezno na \([x_{\mathrm{a}}, x_{\mathrm{b}}]\) in <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">odvedljivo</a>, zato po izreku o srednji vrednosti (izrek <a class="xref" href="sec-srednja-vrednost.html#thm-srednja-vrednost" data-knowl="thm-srednja-vrednost">1.84</a>) obstaja \(\xi \in (x_{\mathrm{a}}, x_{\mathrm{b}})\) z <span class="nobr">\(u'(\xi) = k\).</span></li>
+<li>Odvod \(u'\) je odvedljiv z odvodom <span class="nobr">\(u''\),</span> zveznim na <span class="nobr">\([x_{\mathrm{a}}, x_{\mathrm{b}}]\),</span> zato po istem izreku za \(u'\) med \(\xi\) in \(x\) obstaja \(\eta\) z <span class="nobr">\(u'(x) - u'(\xi) = u''(\eta)\,(x - \xi)\).</span> Ker je \(|x - \xi| \le h\) in <span class="nobr">\(|u''(\eta)| \le \mu\),</span> je <span class="nobr">\(|u'(x) - (Iu)'| = |u'(x) - u'(\xi)| \le h\,\mu\).</span> To je točka 1.</li>
+<li>Za točko 2 naj bo \(x \in (x_{\mathrm{a}}, x_{\mathrm{b}})\) (v krajiščih je napaka nič). Naj bo \(K = (u(x) - Iu(x))/((x - x_{\mathrm{a}})(x - x_{\mathrm{b}}))\) in <span class="nobr">\(g(t) = u(t) - Iu(t) - K\,(t - x_{\mathrm{a}})(t - x_{\mathrm{b}})\).</span> Polje \(g\) je zvezno, dvakrat odvedljivo in ima ničle v <span class="nobr">\(x_{\mathrm{a}}\),</span> \(x\) in <span class="nobr">\(x_{\mathrm{b}}\).</span></li>
+<li>Po Rolleovem izreku (izrek <a class="xref" href="sec-srednja-vrednost.html#thm-rolle" data-knowl="thm-rolle">1.83</a>) ima \(g'\) ničlo v \((x_{\mathrm{a}}, x)\) in ničlo v <span class="nobr">\((x, x_{\mathrm{b}})\).</span> Po istem izreku za \(g'\) med tema ničlama obstaja \(\zeta \in (x_{\mathrm{a}}, x_{\mathrm{b}})\) z <span class="nobr">\(g''(\zeta) = 0\).</span></li>
+<li>Ker je \(Iu\) premica, je <span class="nobr">\((Iu)'' = 0\),</span> zato je \(g'' = u'' - 2K\) in <span class="nobr">\(K = u''(\zeta)/2\).</span></li>
+<li>Torej je <span class="nobr">\(u(x) - Iu(x) = \tfrac12\,u''(\zeta)\,(x - x_{\mathrm{a}})(x - x_{\mathrm{b}})\).</span> Z \(s = x - (x_{\mathrm{a}} + x_{\mathrm{b}})/2\) je <span class="nobr">\(|(x - x_{\mathrm{a}})(x - x_{\mathrm{b}})| = h^2/4 - s^2 \le h^2/4\),</span> zato je <span class="nobr">\(|u(x) - Iu(x)| \le \tfrac12\,\mu\,h^2/4 = \tfrac18\,h^2\,\mu\).</span> To je točka 2.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> KREYSZIG §19.3, (5) (PDF str. 837), izrek 1 in zgled 3 (PDF str. 838) za napako interpolacije s polinomom. Dokaz v korakih je naš.</p></div></div>
+<p>Dokaz je pokazal, da napaka <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">odvoda</a> sledi iz dvakratne uporabe <a class="xref auto" href="sec-srednja-vrednost.html#thm-srednja-vrednost" data-knowl="thm-srednja-vrednost">izreka o srednji vrednosti</a>, napaka polja pa iz dvakratne uporabe <a class="xref auto" href="sec-srednja-vrednost.html#thm-rolle" data-knowl="thm-rolle">Rolleovega izreka</a>. Preizkus na viseči palici: \(u'' = -2a\) je stalen, zato je <span class="nobr">\(\mu = 2a\),</span> točka 2 pa da <span class="nobr">\(\tfrac18\,h^2 \cdot 2a = a h^2/4\).</span> Dejanska napaka je <span class="nobr">\(\tfrac12 \cdot 2a\,(x - x_{\mathrm{a}})(x_{\mathrm{b}} - x)\),</span> največja na sredini elementa, <span class="nobr">\(a h^2/4\),</span> enakost torej velja. Pri \(h = 5\) m je \(a h^2/4 = 1{,}220\) µm, pri \(h = 10\) m pa \(4{,}880\) µm (SymPy). Točka 1 pa je pri istem polju dvakrat prevelika. Dejanski \(u' - (Iu)' = u''\,(x - x_{\text{sredina}})\) doseže \(a h\) v krajiščih, ocena pa je <span class="nobr">\(2 a h\).</span></p>
+
+<figure class="blk slika" id="fig-ono-interpolacija"><p><span class="svgfig" role="img" aria-label="Krivulja, njena tetiva, vzporedna tangenta v točki ksi in napaka med njima"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='330.87pt' height='251.99pt' viewBox='-72.000004 -72.000001 245.089823 186.662516'>
+<defs>
+<path id='ono-interpolacija-g0-0' d='M6.56538-2.291407C6.734745-2.291407 6.914072-2.291407 6.914072-2.49066S6.734745-2.689913 6.56538-2.689913H1.175592C1.006227-2.689913 .826899-2.689913 .826899-2.49066S1.006227-2.291407 1.175592-2.291407H6.56538Z'/>
+<path id='ono-interpolacija-g1-24' d='M1.534247-3.048568C.448319-2.331258 .229141-1.39477 .229141-1.036115C.229141-.557908 .498132-.278954 .518057-.249066C.836862 .079701 .926526 .119552 1.673724 .398506L2.879203 .86675C3.028643 .936488 3.227895 1.006227 3.227895 1.295143C3.227895 1.524284 3.048568 1.823163 2.739726 1.823163C2.30137 1.823163 1.972603 1.58406 1.863014 1.504359C1.803238 1.464508 1.793275 1.454545 1.753425 1.454545C1.673724 1.454545 1.653798 1.524284 1.653798 1.564134C1.653798 1.683686 2.181818 2.042341 2.739726 2.042341C3.35741 2.042341 3.775841 1.464508 3.775841 .976339C3.775841 .498132 3.407223 .318804 3.297634 .268991C3.158157 .219178 2.819427 .089664 2.689913 .039851C2.49066-.039851 2.291407-.119552 2.082192-.18929L1.484433-.428394C1.036115-.607721 .737235-.896638 .737235-1.315068C.737235-1.723537 1.125778-2.590286 1.96264-3.008717C2.331258-2.879203 2.630137-2.879203 2.839352-2.879203C3.138232-2.879203 3.765878-2.879203 3.765878-3.188045C3.765878-3.437111 3.337484-3.457036 2.948941-3.457036C2.769614-3.457036 2.480697-3.457036 2.11208-3.337484C1.853051-3.596513 1.8132-3.92528 1.8132-4.11457C1.8132-4.672478 2.171856-5.439601 2.919054-5.808219C3.098381-5.589041 3.327522-5.589041 3.556663-5.589041C3.805729-5.589041 4.443337-5.589041 4.443337-5.897883C4.443337-6.156912 4.004981-6.166874 3.616438-6.166874C3.486924-6.166874 3.247821-6.166874 2.988792-6.117061C2.958904-6.206725 2.938979-6.276463 2.938979-6.445828C2.938979-6.585305 2.988792-6.794521 2.988792-6.814446C2.988792-6.894147 2.938979-6.94396 2.86924-6.94396C2.689913-6.94396 2.689913-6.485679 2.689913-6.455791C2.689913-6.256538 2.749689-6.107098 2.759651-6.067248C1.693649-5.768369 1.016189-4.971357 1.016189-4.204234C1.016189-3.835616 1.195517-3.417186 1.663761-3.148194L1.534247-3.048568ZM3.148194-5.897883C3.307597-5.947696 3.516812-5.947696 3.626401-5.947696C3.965131-5.947696 4.004981-5.937733 4.184309-5.88792C4.104608-5.858032 4.004981-5.808219 3.566625-5.808219C3.377335-5.808219 3.257783-5.808219 3.148194-5.897883ZM2.371108-3.178082C2.600249-3.237858 2.819427-3.237858 2.938979-3.237858C3.287671-3.237858 3.327522-3.227895 3.506849-3.178082C3.427148-3.138232 3.327522-3.098381 2.86924-3.098381C2.6401-3.098381 2.550436-3.098381 2.371108-3.178082Z'/>
+<path id='ono-interpolacija-g1-73' d='M3.726027-6.03736C3.815691-6.396015 3.845579-6.495641 4.632628-6.495641C4.871731-6.495641 4.951432-6.495641 4.951432-6.684932C4.951432-6.804483 4.841843-6.804483 4.801993-6.804483C4.513076-6.804483 3.775841-6.774595 3.486924-6.774595C3.188045-6.774595 2.460772-6.804483 2.161893-6.804483C2.092154-6.804483 1.96264-6.804483 1.96264-6.60523C1.96264-6.495641 2.052304-6.495641 2.241594-6.495641C2.660025-6.495641 2.929016-6.495641 2.929016-6.306351C2.929016-6.256538 2.929016-6.236613 2.909091-6.146949L1.564134-.777086C1.474471-.408468 1.444583-.308842 .657534-.308842C.428394-.308842 .33873-.308842 .33873-.109589C.33873 0 .458281 0 .488169 0C.777086 0 1.504359-.029888 1.793275-.029888C2.092154-.029888 2.82939 0 3.128269 0C3.20797 0 3.327522 0 3.327522-.18929C3.327522-.308842 3.247821-.308842 3.028643-.308842C2.849315-.308842 2.799502-.308842 2.600249-.328767C2.391034-.348692 2.351183-.388543 2.351183-.498132C2.351183-.577833 2.371108-.657534 2.391034-.727273L3.726027-6.03736Z'/>
+<path id='ono-interpolacija-g1-104' d='M2.859278-6.804483C2.859278-6.814446 2.859278-6.914072 2.729763-6.914072C2.500623-6.914072 1.77335-6.834371 1.514321-6.814446C1.43462-6.804483 1.325031-6.794521 1.325031-6.615193C1.325031-6.495641 1.414695-6.495641 1.564134-6.495641C2.042341-6.495641 2.062267-6.425903 2.062267-6.326276L2.032379-6.127024L.587796-.388543C.547945-.249066 .547945-.229141 .547945-.169365C.547945 .059776 .747198 .109589 .836862 .109589C.996264 .109589 1.155666-.009963 1.205479-.14944L1.39477-.9066L1.613948-1.803238C1.673724-2.022416 1.733499-2.241594 1.783313-2.470735C1.803238-2.530511 1.882939-2.859278 1.892902-2.919054C1.92279-3.008717 2.231631-3.566625 2.570361-3.835616C2.789539-3.995019 3.098381-4.184309 3.526775-4.184309S4.064757-3.845579 4.064757-3.486924C4.064757-2.948941 3.686177-1.863014 3.447073-1.255293C3.367372-1.026152 3.317559-.9066 3.317559-.707347C3.317559-.239103 3.666252 .109589 4.134496 .109589C5.070984 .109589 5.439601-1.344956 5.439601-1.424658C5.439601-1.524284 5.349938-1.524284 5.32005-1.524284C5.220423-1.524284 5.220423-1.494396 5.17061-1.344956C5.021171-.816936 4.702366-.109589 4.154421-.109589C3.985056-.109589 3.915318-.209215 3.915318-.438356C3.915318-.687422 4.004981-.926526 4.094645-1.145704C4.254047-1.574097 4.702366-2.759651 4.702366-3.337484C4.702366-3.985056 4.303861-4.403487 3.556663-4.403487C2.929016-4.403487 2.450809-4.094645 2.082192-3.636364L2.859278-6.804483Z'/>
+<path id='ono-interpolacija-g1-117' d='M3.486924-.557908C3.596513-.14944 3.945205 .109589 4.373599 .109589C4.722291 .109589 4.951432-.119552 5.110834-.438356C5.280199-.797011 5.409714-1.404732 5.409714-1.424658C5.409714-1.524284 5.32005-1.524284 5.290162-1.524284C5.190535-1.524284 5.180573-1.484433 5.150685-1.344956C5.011208-.787049 4.821918-.109589 4.403487-.109589C4.194271-.109589 4.094645-.239103 4.094645-.56787C4.094645-.787049 4.214197-1.255293 4.293898-1.603985L4.572852-2.67995C4.60274-2.82939 4.702366-3.20797 4.742217-3.35741C4.79203-3.58655 4.891656-3.965131 4.891656-4.024907C4.891656-4.204234 4.752179-4.293898 4.60274-4.293898C4.552927-4.293898 4.293898-4.283935 4.214197-3.945205C4.024907-3.217933 3.58655-1.474471 3.466999-.946451C3.457036-.9066 3.058531-.109589 2.331258-.109589C1.8132-.109589 1.713574-.557908 1.713574-.926526C1.713574-1.484433 1.992528-2.271482 2.251557-2.958904C2.371108-3.257783 2.420922-3.39726 2.420922-3.58655C2.420922-4.034869 2.102117-4.403487 1.603985-4.403487C.657534-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.816936-3.815691 1.195517-4.184309 1.574097-4.184309C1.663761-4.184309 1.823163-4.174346 1.823163-3.855542C1.823163-3.616438 1.713574-3.327522 1.653798-3.178082C1.285181-2.191781 1.075965-1.574097 1.075965-1.085928C1.075965-.139477 1.763387 .109589 2.30137 .109589C2.958904 .109589 3.317559-.33873 3.486924-.557908Z'/>
+<path id='ono-interpolacija-g1-120' d='M3.327522-3.008717C3.387298-3.267746 3.616438-4.184309 4.313823-4.184309C4.363636-4.184309 4.60274-4.184309 4.811955-4.054795C4.533001-4.004981 4.333748-3.755915 4.333748-3.516812C4.333748-3.35741 4.443337-3.16812 4.712329-3.16812C4.931507-3.16812 5.250311-3.347447 5.250311-3.745953C5.250311-4.26401 4.662516-4.403487 4.323786-4.403487C3.745953-4.403487 3.39726-3.875467 3.277709-3.646326C3.028643-4.303861 2.49066-4.403487 2.201743-4.403487C1.165629-4.403487 .597758-3.118306 .597758-2.86924C.597758-2.769614 .697385-2.769614 .71731-2.769614C.797011-2.769614 .826899-2.789539 .846824-2.879203C1.185554-3.935243 1.843088-4.184309 2.181818-4.184309C2.371108-4.184309 2.719801-4.094645 2.719801-3.516812C2.719801-3.20797 2.550436-2.540473 2.181818-1.145704C2.022416-.52802 1.673724-.109589 1.235367-.109589C1.175592-.109589 .946451-.109589 .737235-.239103C.986301-.288917 1.205479-.498132 1.205479-.777086C1.205479-1.046077 .986301-1.125778 .836862-1.125778C.537983-1.125778 .288917-.86675 .288917-.547945C.288917-.089664 .787049 .109589 1.225405 .109589C1.882939 .109589 2.241594-.587796 2.271482-.647572C2.391034-.278954 2.749689 .109589 3.347447 .109589C4.373599 .109589 4.941469-1.175592 4.941469-1.424658C4.941469-1.524284 4.851806-1.524284 4.821918-1.524284C4.732254-1.524284 4.712329-1.484433 4.692403-1.414695C4.363636-.348692 3.686177-.109589 3.367372-.109589C2.978829-.109589 2.819427-.428394 2.819427-.767123C2.819427-.986301 2.879203-1.205479 2.988792-1.643836L3.327522-3.008717Z'/>
+<path id='ono-interpolacija-g2-97' d='M2.942964-2.66401C2.796513-2.894147 2.559402-3.075467 2.224658-3.075467C1.332005-3.075467 .425405-2.092154 .425405-1.08792C.425405-.411457 .878705 .069738 1.478456 .069738C1.855044 .069738 2.189788-.146451 2.468742-.418431C2.601245 0 3.005729 .069738 3.187049 .069738C3.438107 .069738 3.612453-.083686 3.737983-.299875C3.891407-.571856 3.982067-.969365 3.982067-.99726C3.982067-1.08792 3.891407-1.08792 3.870486-1.08792C3.772852-1.08792 3.765878-1.060025 3.717061-.871731C3.633375-.536986 3.500872-.125529 3.20797-.125529C3.02665-.125529 2.977833-.278954 2.977833-.467248C2.977833-.585803 3.033624-.836862 3.082441-1.018182C3.131258-1.206476 3.200996-1.492403 3.235866-1.645828L3.375342-2.175841C3.417186-2.357161 3.500872-2.684932 3.500872-2.719801C3.500872-2.873225 3.375342-2.942964 3.263761-2.942964C3.145205-2.942964 2.984807-2.859278 2.942964-2.66401ZM2.496638-.871731C2.447821-.676463 2.294396-.536986 2.140971-.404483C2.078207-.348692 1.799253-.125529 1.499377-.125529C1.241345-.125529 .990286-.306849 .990286-.801993C.990286-1.171606 1.192528-1.93873 1.352927-2.217684C1.673724-2.775592 2.02939-2.880199 2.224658-2.880199C2.712827-2.880199 2.84533-2.350187 2.84533-2.273474C2.84533-2.245579 2.831382-2.196762 2.824408-2.175841L2.496638-.871731Z'/>
+<path id='ono-interpolacija-g2-98' d='M1.841096-4.630635C1.84807-4.644583 1.868991-4.735243 1.868991-4.742217C1.868991-4.777086 1.841096-4.839851 1.75741-4.839851C1.617933-4.839851 1.039103-4.78406 .864757-4.770112C.808966-4.763138 .711333-4.756164 .711333-4.609714C.711333-4.51208 .808966-4.51208 .892653-4.51208C1.227397-4.51208 1.227397-4.463263 1.227397-4.407472C1.227397-4.358655 1.157659-4.079701 1.115816-3.919303L.955417-3.277709C.892653-3.040598 .509091-1.513325 .495143-1.422665C.460274-1.255293 .460274-1.164633 .460274-1.080946C.460274-.376588 .9066 .069738 1.48543 .069738C2.357161 .069738 3.284682-.878705 3.284682-1.910834C3.284682-2.726775 2.719801-3.075467 2.238605-3.075467C1.875965-3.075467 1.569116-2.873225 1.3599-2.691905L1.841096-4.630635ZM1.492403-.125529C1.150685-.125529 .955417-.425405 .955417-.836862C.955417-1.094894 1.018182-1.332005 1.21345-2.12005C1.255293-2.252553 1.255293-2.266501 1.387796-2.419925C1.652802-2.726775 1.966625-2.880199 2.217684-2.880199C2.489664-2.880199 2.726775-2.677958 2.726775-2.203736C2.726775-1.917808 2.57335-1.206476 2.364134-.801993C2.196762-.460274 1.84807-.125529 1.492403-.125529Z'/>
+</defs>
+<g id='ono-interpolacija-page1'>
+<g stroke-miterlimit='10' transform='translate(-61.779268,80.961668)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<path d='M-9.95906 0H218.71643' fill='none'/>
+<g transform='translate(216.23997,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(226.7016,-2.15277)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.779268,80.961668)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-61.779268' y='80.961668' xlink:href='#ono-interpolacija-g1-120'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-7.11362V137.91159' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,135.43513)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-2.86229,145.89676)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.779268,80.961668)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-61.779268' y='80.961668' xlink:href='#ono-interpolacija-g1-117'/>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='1.0'>
+<path d='M0 0C0 0 2.43727 3.64493 3.37337 5.03401C4.30946 6.4231 5.81065 8.63878 6.74675 10.0116C7.68285 11.38441 9.18404 13.57275 10.12013 14.9284C11.05623 16.28406 12.55742 18.44496 13.49352 19.78224C14.42961 21.11952 15.9308 23.24893 16.8669 24.56664C17.803 25.88434 19.30418 27.98215 20.24028 29.27937C21.17638 30.5766 22.67757 32.64091 23.61366 33.91615C24.54976 35.19139 26.05095 37.21779 26.98705 38.47043C27.92314 39.72307 29.42433 41.71555 30.36043 42.9444C31.29652 44.17325 32.79771 46.12332 33.73381 47.32718C34.6699 48.53104 36.17108 50.44333 37.10718 51.62097C38.04327 52.79861 39.54446 54.66467 40.48056 55.81491S42.91785 58.78894 43.85394 59.91116C44.79004 61.03339 46.29123 62.8102 47.22733 63.90321C48.16342 64.99623 49.66461 66.7269 50.60071 67.7889C51.5368 68.85089 53.038 70.527 53.97409 71.55736C54.91019 72.58772 56.41138 74.21696 57.34747 75.2151C58.28357 76.21324 59.78476 77.78719 60.72086 78.7513C61.65695 79.71541 63.15814 81.23459 64.09424 82.16376C65.03033 83.09293 66.53152 84.55511 67.46762 85.44814C68.40372 86.34116 69.90489 87.74413 70.84099 88.6001C71.77708 89.45607 73.27827 90.79974 74.21437 91.61746S76.65166 93.71547 77.58775 94.49374C78.52385 95.27202 80.02504 96.48883 80.96114 97.22675C81.89723 97.96466 83.39842 99.11578 84.33452 99.81213C85.27061 100.50848 86.7718 101.592 87.7079 102.24557C88.644 102.89915 90.14519 103.9131 91.08128 104.5227C92.01738 105.13231 93.51857 106.07419 94.45467 106.63922C95.39076 107.20425 96.89195 108.07584 97.82805 108.59508C98.76414 109.11432 100.26534 109.90967 101.20143 110.38162C102.13753 110.85358 103.6387 111.57292 104.5748 111.99669S107.01208 113.06154 107.94818 113.43591C108.88428 113.81029 110.38547 114.3709 111.32156 114.69496C112.25766 115.01903 113.75885 115.49908 114.69495 115.77165C115.63104 116.04422 117.13223 116.43964 118.06833 116.6595S120.50562 117.19008 121.44171 117.35632C122.3778 117.52257 123.879 117.74664 124.8151 117.85777C125.75119 117.9689 127.25238 118.10193 128.18848 118.15733C129.12457 118.21274 130.62576 118.25838 131.56186 118.25719S133.99915 118.20828 134.93524 118.14865C135.87134 118.08902 137.37251 117.94664 138.30861 117.82738C139.2447 117.70811 140.7459 117.46884 141.68199 117.28903C142.61809 117.10922 144.11928 116.77208 145.05537 116.53143C145.99147 116.29079 147.49266 115.85757 148.42876 115.55458C149.36485 115.25159 150.86604 114.71446 151.80214 114.34763C152.73824 113.98079 154.23943 113.34218 155.17552 112.91058C156.11162 112.47899 157.61281 111.73508 158.5489 111.23691C159.485 110.73874 160.98619 109.88484 161.92229 109.32011C162.85838 108.75539 164.35957 107.7989 165.29567 107.16672C166.23177 106.53453 167.73296 105.46574 168.66905 104.76367C169.60515 104.0616 171.10632 102.87889 172.04242 102.10664C172.97852 101.3344 174.4797 100.04143 175.4158 99.1978S177.85309 96.94252 178.78918 96.0263C179.72528 95.11009 181.22647 93.58372 182.16257 92.59431C183.09866 91.6049 184.59985 89.95973 185.53595 88.89532C186.47205 87.83092 187.97324 86.0628 188.90933 84.9228C189.84543 83.7828 191.34662 81.89635 192.28271 80.67894C193.21881 79.46153 194.72 77.44365 195.6561 76.14854C196.5922 74.85344 199.02948 71.34462 199.02948 71.34462' fill='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.0'>
+<path d='M0 0L199.16928 71.13188' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M29.87418 85.60008L189.2102 142.50473' fill='none'/>
+</g>
+</g>
+</g>
+<path d='M112.49767 114.45183C112.49767 115.46727 111.67448 116.29045 110.65904 116.29045S108.82042 115.46727 108.82042 114.45183S109.6436 112.6132 110.65904 112.6132S112.49767 113.43639 112.49767 114.45183ZM110.65904 114.45183' stroke='none'/>
+<g transform='translate(110.65904,114.45183)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.779268,80.961668)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M112.49767 39.52109C112.49767 40.53653 111.67448 41.35971 110.65904 41.35971S108.82042 40.53653 108.82042 39.52109S109.6436 37.68246 110.65904 37.68246S112.49767 38.50565 112.49767 39.52109ZM110.65904 39.52109' stroke='none'/>
+</g>
+<g transform='translate(110.65904,39.52109)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.779268,80.961668)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M110.65904 114.11435V39.85857' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,110.65904,108.31131)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,110.65904,114.22684)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,110.65904,45.6616)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,110.65904,39.74608)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M110.65904 0V39.52109' fill='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(108.2415,-10.57742)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.779268,80.961668)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-61.779268' y='80.961668' xlink:href='#ono-interpolacija-g1-24'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-5.27646,-7.93852)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.779268,80.961668)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-61.779268' y='80.961668' xlink:href='#ono-interpolacija-g1-120'/>
+<use x='-56.085336' y='82.456049' xlink:href='#ono-interpolacija-g2-97'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(194.30331,-7.93852)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.779268,80.961668)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-61.779268' y='80.961668' xlink:href='#ono-interpolacija-g1-120'/>
+<use x='-56.085336' y='82.456049' xlink:href='#ono-interpolacija-g2-98'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M199.16928 1.42184V-1.42184' fill='none'/>
+<g transform='translate(24.50084,54.84802)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.779268,80.961668)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-61.779268' y='80.961668' xlink:href='#ono-interpolacija-g1-117'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(162.96901,46.43834)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.779268,80.961668)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-61.779268' y='80.961668' xlink:href='#ono-interpolacija-g1-73'/>
+<use x='-56.618077' y='80.961668' xlink:href='#ono-interpolacija-g1-117'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(117.16092,75.2455)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.779268,80.961668)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-61.779268' y='80.961668' xlink:href='#ono-interpolacija-g1-117'/>
+<use x='-53.862207' y='80.961668' xlink:href='#ono-interpolacija-g0-0'/>
+<use x='-43.899593' y='80.961668' xlink:href='#ono-interpolacija-g1-73'/>
+<use x='-38.738402' y='80.961668' xlink:href='#ono-interpolacija-g1-117'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M.45-19.91684H198.71928' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,0.3,-19.91684)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.69885V-3.69885' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(191.74063,-19.91684)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(198.86928,-19.91684)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.69885V-3.69885' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(96.70386,-30.49425)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-61.779268,80.961668)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-61.779268' y='80.961668' xlink:href='#ono-interpolacija-g1-104'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 6.20</span>: Element \([x_{\mathrm{a}}, x_{\mathrm{b}}]\) dolžine <span class="nobr">\(h\).</span> Polje \(u\) (črno), njegova interpolacija \(Iu\) (modro) in točka <span class="nobr">\(\xi\),</span> v kateri je tangenta na \(u\) vzporedna s premico \(Iu\) (črtkano), po izreku o srednji vrednosti. Napaka \(u - Iu\) je v krajiščih nič in doseže največ znotraj elementa, narisana je z daljico s prečkama. Pri polju z majhno ukrivljenostjo je daljica majhna, pri premici nič.</figcaption></figure>
+<p>Zdaj lahko ocenimo napako Ritzove metode s <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-sotorna-funkcija" data-knowl="def-sotorna-funkcija">šotorskimi funkcijami</a>. Naj bo palica pritrjena pri \(x = 0\) in naj bo <span class="nobr">\(EA \le M\).</span> Razdelimo jo z vozlišči \(0 = x_0 &lt; x_1 &lt; \dots &lt; x_{\mathrm{n}} = L\) na elemente <span class="nobr">\([x_{\mathrm{k}-1}, x_{\mathrm{k}}]\),</span> najdaljši element naj ima dolžino <span class="nobr">\(h\).</span> Poskusni prostor \(\mathcal{V}_{\mathrm{h}}\) so zvezna polja, ki so na vsakem elementu premica in imajo vrednost nič pri \(x = 0\) (šotorske funkcije, razdelek <a class="xref" href="sec-skalarni-produkt-funkcij.html#sec-linearna-neodvisnost">6.3.3</a>). Ritzovo rešitev v njem označimo z <span class="nobr">\(u_{\mathrm{h}}\).</span></p>
+
+<div class="blk izrek" id="thm-konvergenca-odsekoma-linearnih"><div class="blk-head"><span class="blk-label">Izrek 6.41</span> <span class="blk-title">Konvergenca odsekoma linearnih polj (convergence of piecewise linear fields)</span></div><div class="blk-body"><p>Naj bo \(u\) rešitev <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">šibke oblike</a> palice, pritrjene pri <span class="nobr">\(x = 0\),</span> z odsekoma zvezno <span class="nobr">\(EA \le M\),</span> in naj ima \(u\) na vsakem elementu zvezen drugi <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">odvod</a> (vozlišča so pri skokih <span class="nobr">\(EA\)).</span> Naj bo \(\mu\) največ \(|u''|\) po vseh elementih. Tedaj je</p>
+<div class="eq" id="eq-konvergenca-norma">\[\|u - u_{\mathrm{h}}\|_{\mathrm{E}}^2 \le M\,L\,h^2\,\mu^2 , \qquad \|u - u_{\mathrm{h}}\|_{\mathrm{E}} \le \sqrt{M L}\,h\,\mu , \tag{6.25}\]</div>
+<div class="eq" id="eq-konvergenca-energija">\[0 \le \Pi(u_{\mathrm{h}}) - \Pi(u) \le \tfrac12\,M\,L\,h^2\,\mu^2 . \tag{6.26}\]</div>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da je v družini polje, katerega napaka je ocenjena z lemo o interpolaciji, in da je Ritzova napaka od te kvečjemu manjša.</p>
+<ol>
+<li>Naj bo \(v = Iu\) polje, ki je na vsakem elementu interpolacija polja <span class="nobr">\(u\).</span> Je zvezno, ker je v vozlišču enako \(u(x_{\mathrm{k}})\) z obeh strani, na vsakem elementu je premica in <span class="nobr">\(v(0) = u(0) = 0\).</span> Torej je <span class="nobr">\(v \in \mathcal{V}_{\mathrm{h}}\).</span></li>
+<li>Po izreku <a class="xref" href="sec-ocene-napake.html#thm-najboljsi-priblizek" data-knowl="thm-najboljsi-priblizek">6.37</a> je <span class="nobr">\(\|u - u_{\mathrm{h}}\|_{\mathrm{E}}^2 \le \|u - v\|_{\mathrm{E}}^2 = \int_0^L EA\,((u - v)')^2\,\mathrm{d}x\).</span></li>
+<li>Na vsakem elementu je po točki 1 leme <a class="xref" href="sec-ocene-napake.html#lem-napaka-interpolacije" data-knowl="lem-napaka-interpolacije">6.40</a> <span class="nobr">\(|(u - v)'| \le h\,\mu\),</span> saj je dolžina elementa največ <span class="nobr">\(h\).</span></li>
+<li>Zato je zaradi \(EA \le M\) in nenegativnosti <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integrala</a> (lema <a class="xref" href="sec-funkcije-s-pregibi.html#lem-lastnosti-integrala-pregibi" data-knowl="lem-lastnosti-integrala-pregibi">6.10</a>, točki 2 in 3, za nenegativno razliko <span class="nobr">\((M - EA)\,((u - v)')^2\)),</span> <span class="nobr">\(\int_0^L EA\,((u - v)')^2\,\mathrm{d}x \le M\,h^2\,\mu^2\,L\).</span> S korakom 2 je to prva neenakost v enačbi <a class="xref" href="sec-ocene-napake.html#eq-konvergenca-norma" data-knowl="eq-konvergenca-norma">(6.25)</a>, koren da drugo.</li>
+<li>Po izreku <a class="xref" href="sec-ritzova-metoda.html#thm-ritz-energija" data-knowl="thm-ritz-energija">6.34</a> je <span class="nobr">\(\Pi(u_{\mathrm{h}}) - \Pi(u) = \tfrac12\,\|u - u_{\mathrm{h}}\|_{\mathrm{E}}^2\).</span> Ta ni negativna, in po koraku 4 ni večja od <span class="nobr">\(\tfrac12\,M L\,h^2\,\mu^2\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> BATHE §4.3.5, hitrost konvergence (PDF str. 261), kjer je hitrost povezana z redom polinomov. Dokaz v korakih je naš.</p></div></div>
+<p>Dokaz je pokazal, da napaka v energiji pada kot \(h^2\) in v <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-energijska-norma" data-knowl="def-energijska-norma">energijski normi</a> kot <span class="nobr">\(h\),</span> ker ocena odvoda napake raste kot <span class="nobr">\(h\).</span> Hkrati je to polnost šotorskih funkcij, ki jo potrebuje izrek <a class="xref" href="sec-ritzova-metoda.html#thm-ritz-konvergenca" data-knowl="thm-ritz-konvergenca">6.35</a>: za vsak \(\varepsilon &gt; 0\) obstaja mreža s <span class="nobr">\(\sqrt{M L}\,h\,\mu &lt; \varepsilon\),</span> torej polje v družini z napako pod <span class="nobr">\(\varepsilon\).</span></p>
+<p>Preizkus na viseči palici <span class="nobr">(\(M = EA\),</span> <span class="nobr">\(\mu = 2a\))</span> z enakomernimi mrežami \(n = 1, 2, 4, 8, 16\) (preglednica). Energija napake je natanko \(97{,}76/n^2\) µJ, ocena <a class="xref" href="sec-ocene-napake.html#eq-konvergenca-energija" data-knowl="eq-konvergenca-energija">(6.26)</a> pa \(1173/n^2\) µJ, za vsak \(n\) ravno 12-krat več (SymPy).</p>
+<table>
+<thead>
+<tr>
+<th>\(n\)</th>
+<th>\(h\) (m)</th>
+<th>\(\Pi(u_{\mathrm{h}}) - \Pi(u)\) (µJ)</th>
+<th>ocena (µJ)</th>
+<th>največja napaka pomika \(a h^2/4\) (µm)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>10</td>
+<td>97,76</td>
+<td>1173</td>
+<td>4,880</td>
+</tr>
+<tr>
+<td>2</td>
+<td>5</td>
+<td>24,44</td>
+<td>293,3</td>
+<td>1,220</td>
+</tr>
+<tr>
+<td>4</td>
+<td>2,5</td>
+<td>6,110</td>
+<td>73,32</td>
+<td>0,3050</td>
+</tr>
+<tr>
+<td>8</td>
+<td>1,25</td>
+<td>1,527</td>
+<td>18,33</td>
+<td>0,07625</td>
+</tr>
+<tr>
+<td>16</td>
+<td>0,625</td>
+<td>0,3819</td>
+<td>4,582</td>
+<td>0,01906</td>
+</tr>
+</tbody>
+</table>
+<p>Ko \(h\) razpolovimo, se energija napake deli s 4 (slika <a class="xref" href="sec-ocene-napake.html#fig-ono-red-konvergence" data-knowl="fig-ono-red-konvergence">6.21</a>). Razlog je <span class="nobr">\(h^2\).</span> Ritzova rešitev je tu kar interpolacija, <span class="nobr">\(u_{\mathrm{h}} = Iu\):</span> polje \(G_{\mathrm{x}_\mathrm{i}}\) enotske sile v vozlišču je zvezno in na vsakem elementu premica (togost je stalna), torej leži v <span class="nobr">\(\mathcal{V}_{\mathrm{h}}\),</span> zato so vozliščne vrednosti \(u_{\mathrm{h}}\) točne po izreku <a class="xref" href="sec-ocene-napake.html#thm-tocnost-v-tocki" data-knowl="thm-tocnost-v-tocki">6.38</a>, premica na elementu pa je s svojima krajiščema določena. Pri kvadratnem \(u\) je zato <span class="nobr">\(u' - u_{\mathrm{h}}' = u''\,(x - x_{\text{sredina}})\),</span> energija napake na enem elementu je torej \(\tfrac12\,EA\,u''^2\,h^3/12\) in po \(n = L/h\) elementih <span class="nobr">\(EA\,u''^2\,L\,h^2/24\).</span> Pri \(u'' = -2a\) je to <span class="nobr">\(\tfrac16\,EA\,a^2 L\,h^2\),</span> kar pri \(h = L/n\) da \(97{,}76/n^2\) µJ. Faktor 12 med oceno in dejansko napako ima dva vira: točka 1 leme je dvakrat prevelika (dejanski največji odvod napake je <span class="nobr">\(u''\,h/2\)),</span> to je faktor 4 v kvadratu, ocena pa vzame največjo vrednost namesto kvadratnega povprečja, ki je \(u''\,h/\sqrt{12}\) proti <span class="nobr">\(u''\,h/2\),</span> to je še faktor 3. Skupaj <span class="nobr">\(4 \cdot 3 = 12\).</span> Ocena je torej zanesljiva, a ohlapna za stalni faktor, medtem ko je red \(h^2\) natančen.</p>
+<p>Zato je korak 2 dokaza izreka <a class="xref" href="sec-ocene-napake.html#thm-konvergenca-odsekoma-linearnih" data-knowl="thm-konvergenca-odsekoma-linearnih">6.41</a> tu enakost. Ocena <a class="xref" href="sec-ocene-napake.html#eq-konvergenca-energija" data-knowl="eq-konvergenca-energija">(6.26)</a> velja za vsako mrežo posebej, tudi za mreži z 2 in 3 elementi, ki nista ena v drugi in o katerih izrek <a class="xref" href="sec-ritzova-metoda.html#thm-ritz-konvergenca" data-knowl="thm-ritz-konvergenca">6.35</a> ne pove nič (razdelek <a class="xref" href="sec-ritzova-metoda.html#sec-ritz-konvergenca">6.4.5</a>).</p>
+
+<figure class="blk slika" id="fig-ono-red-konvergence"><p><span class="svgfig" role="img" aria-label="Logaritemski graf energije napake proti dolžini elementa, točke na premici z naklonom 2 in vzporedna ocena nad njo"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='203.22pt' height='388.80pt' viewBox='-72.000004 -72.000005 150.532264 287.998406'>
+<defs>
+<path id='ono-red-konvergence-g0-0' d='M6.56538-2.291407C6.734745-2.291407 6.914072-2.291407 6.914072-2.49066S6.734745-2.689913 6.56538-2.689913H1.175592C1.006227-2.689913 .826899-2.689913 .826899-2.49066S1.006227-2.291407 1.175592-2.291407H6.56538Z'/>
+<path id='ono-red-konvergence-g1-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='ono-red-konvergence-g1-104' d='M2.859278-6.804483C2.859278-6.814446 2.859278-6.914072 2.729763-6.914072C2.500623-6.914072 1.77335-6.834371 1.514321-6.814446C1.43462-6.804483 1.325031-6.794521 1.325031-6.615193C1.325031-6.495641 1.414695-6.495641 1.564134-6.495641C2.042341-6.495641 2.062267-6.425903 2.062267-6.326276L2.032379-6.127024L.587796-.388543C.547945-.249066 .547945-.229141 .547945-.169365C.547945 .059776 .747198 .109589 .836862 .109589C.996264 .109589 1.155666-.009963 1.205479-.14944L1.39477-.9066L1.613948-1.803238C1.673724-2.022416 1.733499-2.241594 1.783313-2.470735C1.803238-2.530511 1.882939-2.859278 1.892902-2.919054C1.92279-3.008717 2.231631-3.566625 2.570361-3.835616C2.789539-3.995019 3.098381-4.184309 3.526775-4.184309S4.064757-3.845579 4.064757-3.486924C4.064757-2.948941 3.686177-1.863014 3.447073-1.255293C3.367372-1.026152 3.317559-.9066 3.317559-.707347C3.317559-.239103 3.666252 .109589 4.134496 .109589C5.070984 .109589 5.439601-1.344956 5.439601-1.424658C5.439601-1.524284 5.349938-1.524284 5.32005-1.524284C5.220423-1.524284 5.220423-1.494396 5.17061-1.344956C5.021171-.816936 4.702366-.109589 4.154421-.109589C3.985056-.109589 3.915318-.209215 3.915318-.438356C3.915318-.687422 4.004981-.926526 4.094645-1.145704C4.254047-1.574097 4.702366-2.759651 4.702366-3.337484C4.702366-3.985056 4.303861-4.403487 3.556663-4.403487C2.929016-4.403487 2.450809-4.094645 2.082192-3.636364L2.859278-6.804483Z'/>
+<path id='ono-red-konvergence-g1-117' d='M3.486924-.557908C3.596513-.14944 3.945205 .109589 4.373599 .109589C4.722291 .109589 4.951432-.119552 5.110834-.438356C5.280199-.797011 5.409714-1.404732 5.409714-1.424658C5.409714-1.524284 5.32005-1.524284 5.290162-1.524284C5.190535-1.524284 5.180573-1.484433 5.150685-1.344956C5.011208-.787049 4.821918-.109589 4.403487-.109589C4.194271-.109589 4.094645-.239103 4.094645-.56787C4.094645-.787049 4.214197-1.255293 4.293898-1.603985L4.572852-2.67995C4.60274-2.82939 4.702366-3.20797 4.742217-3.35741C4.79203-3.58655 4.891656-3.965131 4.891656-4.024907C4.891656-4.204234 4.752179-4.293898 4.60274-4.293898C4.552927-4.293898 4.293898-4.283935 4.214197-3.945205C4.024907-3.217933 3.58655-1.474471 3.466999-.946451C3.457036-.9066 3.058531-.109589 2.331258-.109589C1.8132-.109589 1.713574-.557908 1.713574-.926526C1.713574-1.484433 1.992528-2.271482 2.251557-2.958904C2.371108-3.257783 2.420922-3.39726 2.420922-3.58655C2.420922-4.034869 2.102117-4.403487 1.603985-4.403487C.657534-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.816936-3.815691 1.195517-4.184309 1.574097-4.184309C1.663761-4.184309 1.823163-4.174346 1.823163-3.855542C1.823163-3.616438 1.713574-3.327522 1.653798-3.178082C1.285181-2.191781 1.075965-1.574097 1.075965-1.085928C1.075965-.139477 1.763387 .109589 2.30137 .109589C2.958904 .109589 3.317559-.33873 3.486924-.557908Z'/>
+<path id='ono-red-konvergence-g2-104' d='M2.182814-4.630635C2.189788-4.644583 2.21071-4.735243 2.21071-4.742217C2.21071-4.777086 2.182814-4.839851 2.099128-4.839851C1.959651-4.839851 1.380822-4.78406 1.206476-4.770112C1.150685-4.763138 1.053051-4.756164 1.053051-4.609714C1.053051-4.51208 1.150685-4.51208 1.234371-4.51208C1.569116-4.51208 1.569116-4.463263 1.569116-4.407472C1.569116-4.358655 1.555168-4.316812 1.54122-4.254047L.557908-.306849C.523039-.18132 .523039-.167372 .523039-.153425C.523039-.048817 .606725 .069738 .760149 .069738C.836862 .069738 .969365 .034869 1.046077-.111582C1.066999-.153425 1.129763-.404483 1.164633-.550934L1.325031-1.171606C1.345953-1.276214 1.415691-1.54122 1.436613-1.645828C1.506351-1.910834 1.506351-1.917808 1.645828-2.140971C1.868991-2.48269 2.217684-2.880199 2.761644-2.880199C3.152179-2.880199 3.173101-2.559402 3.173101-2.39203C3.173101-1.973599 2.873225-1.199502 2.761644-.9066C2.684932-.711333 2.657036-.648568 2.657036-.530012C2.657036-.160399 2.963885 .069738 3.319552 .069738C4.016936 .069738 4.323786-.892653 4.323786-.99726C4.323786-1.08792 4.233126-1.08792 4.212204-1.08792C4.11457-1.08792 4.107597-1.046077 4.079701-.969365C3.919303-.411457 3.612453-.125529 3.340473-.125529C3.194022-.125529 3.166127-.223163 3.166127-.369614C3.166127-.530012 3.200996-.620672 3.326526-.934496C3.410212-1.150685 3.696139-1.889913 3.696139-2.280448C3.696139-2.39203 3.696139-2.684932 3.438107-2.887173C3.319552-2.977833 3.11731-3.075467 2.789539-3.075467C2.280448-3.075467 1.910834-2.796513 1.652802-2.496638L2.182814-4.630635Z'/>
+<path id='ono-red-konvergence-g3-5' d='M6.107098-5.997509C6.107098-6.356164 6.127024-6.465753 6.894147-6.465753H7.13325V-6.774595H.328767V-6.465753H.56787C1.334994-6.465753 1.354919-6.356164 1.354919-5.997509V-.777086C1.354919-.418431 1.334994-.308842 .56787-.308842H.328767V0C.67746-.029888 1.414695-.029888 1.793275-.029888S2.919054-.029888 3.267746 0V-.308842H3.028643C2.261519-.308842 2.241594-.418431 2.241594-.777086V-6.465753H5.220423V-.777086C5.220423-.418431 5.200498-.308842 4.433375-.308842H4.194271V0C4.542964-.029888 5.280199-.029888 5.65878-.029888S6.784558-.029888 7.13325 0V-.308842H6.894147C6.127024-.308842 6.107098-.418431 6.107098-.777086V-5.997509Z'/>
+<path id='ono-red-konvergence-g3-40' d='M3.297634 2.391034C3.297634 2.361146 3.297634 2.34122 3.128269 2.171856C1.882939 .916563 1.564134-.966376 1.564134-2.49066C1.564134-4.224159 1.942715-5.957659 3.16812-7.202989C3.297634-7.32254 3.297634-7.342466 3.297634-7.372354C3.297634-7.442092 3.257783-7.47198 3.198007-7.47198C3.098381-7.47198 2.201743-6.794521 1.613948-5.529265C1.105853-4.433375 .986301-3.327522 .986301-2.49066C.986301-1.713574 1.09589-.508095 1.643836 .617684C2.241594 1.843088 3.098381 2.49066 3.198007 2.49066C3.257783 2.49066 3.297634 2.460772 3.297634 2.391034Z'/>
+<path id='ono-red-konvergence-g3-41' d='M2.879203-2.49066C2.879203-3.267746 2.769614-4.473225 2.221669-5.599004C1.62391-6.824408 .767123-7.47198 .667497-7.47198C.607721-7.47198 .56787-7.43213 .56787-7.372354C.56787-7.342466 .56787-7.32254 .757161-7.143213C1.733499-6.156912 2.30137-4.572852 2.30137-2.49066C2.30137-.787049 1.932752 .966376 .697385 2.221669C.56787 2.34122 .56787 2.361146 .56787 2.391034C.56787 2.450809 .607721 2.49066 .667497 2.49066C.767123 2.49066 1.663761 1.8132 2.251557 .547945C2.759651-.547945 2.879203-1.653798 2.879203-2.49066Z'/>
+<path id='ono-red-konvergence-g3-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='ono-red-konvergence-g3-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='ono-red-konvergence-g3-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='ono-red-konvergence-g3-53' d='M4.473225-2.002491C4.473225-3.188045 3.656289-4.184309 2.580324-4.184309C2.102117-4.184309 1.673724-4.024907 1.315068-3.676214V-5.618929C1.514321-5.559153 1.843088-5.489415 2.161893-5.489415C3.387298-5.489415 4.084682-6.396015 4.084682-6.525529C4.084682-6.585305 4.054795-6.635118 3.985056-6.635118C3.975093-6.635118 3.955168-6.635118 3.905355-6.60523C3.706102-6.515567 3.217933-6.316314 2.550436-6.316314C2.15193-6.316314 1.693649-6.386052 1.225405-6.595268C1.145704-6.625156 1.125778-6.625156 1.105853-6.625156C1.006227-6.625156 1.006227-6.545455 1.006227-6.386052V-3.437111C1.006227-3.257783 1.006227-3.178082 1.145704-3.178082C1.215442-3.178082 1.235367-3.20797 1.275218-3.267746C1.384807-3.427148 1.753425-3.965131 2.560399-3.965131C3.078456-3.965131 3.327522-3.506849 3.407223-3.327522C3.566625-2.958904 3.58655-2.570361 3.58655-2.072229C3.58655-1.723537 3.58655-1.125778 3.347447-.707347C3.108344-.318804 2.739726-.059776 2.281445-.059776C1.554172-.059776 .986301-.587796 .816936-1.175592C.846824-1.165629 .876712-1.155666 .986301-1.155666C1.315068-1.155666 1.484433-1.404732 1.484433-1.643836S1.315068-2.132005 .986301-2.132005C.846824-2.132005 .498132-2.062267 .498132-1.603985C.498132-.747198 1.185554 .219178 2.30137 .219178C3.457036 .219178 4.473225-.737235 4.473225-2.002491Z'/>
+<path id='ono-red-konvergence-g3-54' d='M1.315068-3.267746V-3.506849C1.315068-6.027397 2.550436-6.386052 3.058531-6.386052C3.297634-6.386052 3.716065-6.326276 3.935243-5.987547C3.785803-5.987547 3.387298-5.987547 3.387298-5.539228C3.387298-5.230386 3.626401-5.080946 3.845579-5.080946C4.004981-5.080946 4.303861-5.17061 4.303861-5.559153C4.303861-6.156912 3.865504-6.635118 3.038605-6.635118C1.763387-6.635118 .418431-5.349938 .418431-3.148194C.418431-.488169 1.574097 .219178 2.500623 .219178C3.606476 .219178 4.552927-.71731 4.552927-2.032379C4.552927-3.297634 3.666252-4.254047 2.560399-4.254047C1.882939-4.254047 1.514321-3.745953 1.315068-3.267746ZM2.500623-.059776C1.872976-.059776 1.574097-.657534 1.514321-.806974C1.334994-1.275218 1.334994-2.072229 1.334994-2.251557C1.334994-3.028643 1.653798-4.024907 2.550436-4.024907C2.709838-4.024907 3.16812-4.024907 3.476961-3.407223C3.656289-3.038605 3.656289-2.530511 3.656289-2.042341C3.656289-1.564134 3.656289-1.066002 3.486924-.707347C3.188045-.109589 2.729763-.059776 2.500623-.059776Z'/>
+</defs>
+<g id='ono-red-konvergence-page1'>
+<g stroke-miterlimit='10' transform='translate(-24.912909,198.716468)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<path d='M0 0H86.75337' fill='none'/>
+<g transform='translate(84.27692,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(94.73854,-3.47221)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-24.912909,198.716468)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-24.912909' y='198.716468' xlink:href='#ono-red-konvergence-g1-104'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M-14.22636 0V250.41351' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,-14.22636,247.93706)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-43.9307,260.89868)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-24.912909,198.716468)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-24.912909' y='198.716468' xlink:href='#ono-red-konvergence-g3-5'/>
+<use x='-17.44091' y='198.716468' xlink:href='#ono-red-konvergence-g3-40'/>
+<use x='-13.566536' y='198.716468' xlink:href='#ono-red-konvergence-g1-117'/>
+<use x='-7.86334' y='200.210849' xlink:href='#ono-red-konvergence-g2-104'/>
+<use x='-2.700952' y='198.716468' xlink:href='#ono-red-konvergence-g3-41'/>
+<use x='3.387288' y='198.716468' xlink:href='#ono-red-konvergence-g0-0'/>
+<use x='13.349901' y='198.716468' xlink:href='#ono-red-konvergence-g3-5'/>
+<use x='20.8219' y='198.716468' xlink:href='#ono-red-konvergence-g3-40'/>
+<use x='24.696274' y='198.716468' xlink:href='#ono-red-konvergence-g1-117'/>
+<use x='30.39947' y='198.716468' xlink:href='#ono-red-konvergence-g3-41'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M73.9773 1.9919V-1.9919' fill='none'/>
+<g transform='translate(68.97728,-12.0693)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-24.912909,198.716468)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-24.912909' y='198.716468' xlink:href='#ono-red-konvergence-g3-49'/>
+<use x='-19.93157' y='198.716468' xlink:href='#ono-red-konvergence-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M56.8486 1.9919V-1.9919' fill='none'/>
+<path d='M39.71991 1.9919V-1.9919' fill='none'/>
+<g transform='translate(33.33101,-12.06932)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-24.912909,198.716468)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-24.912909' y='198.716468' xlink:href='#ono-red-konvergence-g3-50'/>
+<use x='-19.93157' y='198.716468' xlink:href='#ono-red-konvergence-g1-59'/>
+<use x='-17.164161' y='198.716468' xlink:href='#ono-red-konvergence-g3-53'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M22.59164 1.9919V-1.9919' fill='none'/>
+<path d='M5.46295 1.9919V-1.9919' fill='none'/>
+<g transform='translate(-5.92596,-12.06932)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-24.912909,198.716468)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-24.912909' y='198.716468' xlink:href='#ono-red-konvergence-g3-48'/>
+<use x='-19.93157' y='198.716468' xlink:href='#ono-red-konvergence-g1-59'/>
+<use x='-17.164161' y='198.716468' xlink:href='#ono-red-konvergence-g3-54'/>
+<use x='-12.182822' y='198.716468' xlink:href='#ono-red-konvergence-g3-50'/>
+<use x='-7.201483' y='198.716468' xlink:href='#ono-red-konvergence-g3-53'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M-12.23447 0H-16.21826' fill='none'/>
+<g transform='translate(-32.62904,-2.25)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-24.912909,198.716468)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-24.912909' y='198.716468' xlink:href='#ono-red-konvergence-g3-48'/>
+<use x='-19.93157' y='198.716468' xlink:href='#ono-red-konvergence-g1-59'/>
+<use x='-17.164161' y='198.716468' xlink:href='#ono-red-konvergence-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M-12.23447 56.90549H-16.21826' fill='none'/>
+<g transform='translate(-24.85124,53.68327)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-24.912909,198.716468)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-24.912909' y='198.716468' xlink:href='#ono-red-konvergence-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M-12.23447 113.81097H-16.21826' fill='none'/>
+<g transform='translate(-29.85127,110.58876)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-24.912909,198.716468)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-24.912909' y='198.716468' xlink:href='#ono-red-konvergence-g3-49'/>
+<use x='-19.93157' y='198.716468' xlink:href='#ono-red-konvergence-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M-12.23447 170.71646H-16.21826' fill='none'/>
+<g transform='translate(-34.85127,167.49425)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-24.912909,198.716468)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-24.912909' y='198.716468' xlink:href='#ono-red-konvergence-g3-49'/>
+<use x='-19.93157' y='198.716468' xlink:href='#ono-red-konvergence-g3-48'/>
+<use x='-14.950231' y='198.716468' xlink:href='#ono-red-konvergence-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M-12.23447 227.62195H-16.21826' fill='none'/>
+<g transform='translate(-39.8513,224.39973)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-24.912909,198.716468)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-24.912909' y='198.716468' xlink:href='#ono-red-konvergence-g3-49'/>
+<use x='-19.93157' y='198.716468' xlink:href='#ono-red-konvergence-g3-48'/>
+<use x='-14.950231' y='198.716468' xlink:href='#ono-red-konvergence-g3-48'/>
+<use x='-9.968892' y='198.716468' xlink:href='#ono-red-konvergence-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.0'>
+<path d='M73.9773 231.57709L56.8486 197.3197L39.71991 163.03409L22.59164 128.77713L5.46295 94.52019' fill='none'/>
+</g>
+</g>
+<g stroke-width='1.0'>
+<path d='M73.9773 170.14728L56.8486 135.89032L39.71991 101.63336L22.59164 67.37598L5.46295 33.11903' fill='none'/>
+</g>
+<path d='M75.81592 170.14728C75.81592 171.16272 74.99274 171.9859 73.9773 171.9859C72.96185 171.9859 72.13867 171.16272 72.13867 170.14728S72.96185 168.30865 73.9773 168.30865C74.99274 168.30865 75.81592 169.13184 75.81592 170.14728ZM73.9773 170.14728' stroke='none'/>
+<g transform='translate(73.9773,170.14728)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-24.912909,198.716468)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M58.68723 135.89032C58.68723 136.90576 57.86404 137.72894 56.8486 137.72894S55.00998 136.90576 55.00998 135.89032S55.83316 134.0517 56.8486 134.0517S58.68723 134.87488 58.68723 135.89032ZM56.8486 135.89032' stroke='none'/>
+<g transform='translate(56.8486,135.89032)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-24.912909,198.716468)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M41.55853 101.63336C41.55853 102.6488 40.73535 103.47198 39.71991 103.47198S37.88129 102.6488 37.88129 101.63336S38.70447 99.79474 39.71991 99.79474S41.55853 100.61792 41.55853 101.63336ZM39.71991 101.63336' stroke='none'/>
+<g transform='translate(39.71991,101.63336)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-24.912909,198.716468)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M24.43027 67.37598C24.43027 68.39142 23.60709 69.2146 22.59164 69.2146C21.5762 69.2146 20.75302 68.39142 20.75302 67.37598C20.75302 66.36053 21.5762 65.53735 22.59164 65.53735C23.60709 65.53735 24.43027 66.36053 24.43027 67.37598ZM22.59164 67.37598' stroke='none'/>
+<g transform='translate(22.59164,67.37598)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-24.912909,198.716468)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M7.30157 33.11903C7.30157 34.13448 6.4784 34.95766 5.46295 34.95766C4.44751 34.95766 3.62433 34.13448 3.62433 33.11903C3.62433 32.10359 4.44751 31.28041 5.46295 31.28041C6.4784 31.28041 7.30157 32.10359 7.30157 33.11903ZM5.46295 33.11903' stroke='none'/>
+<g transform='translate(5.46295,33.11903)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-24.912909,198.716468)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M75.81592 231.57709C75.81592 232.59253 74.99274 233.41571 73.9773 233.41571C72.96185 233.41571 72.13867 232.59253 72.13867 231.57709S72.96185 229.73846 73.9773 229.73846C74.99274 229.73846 75.81592 230.56165 75.81592 231.57709ZM73.9773 231.57709' stroke='none'/>
+</g>
+<g transform='translate(73.9773,231.57709)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-24.912909,198.716468)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M58.68723 197.3197C58.68723 198.33514 57.86404 199.15833 56.8486 199.15833S55.00998 198.33514 55.00998 197.3197S55.83316 195.48108 56.8486 195.48108S58.68723 196.30426 58.68723 197.3197ZM56.8486 197.3197' stroke='none'/>
+</g>
+<g transform='translate(56.8486,197.3197)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-24.912909,198.716468)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M41.55853 163.03409C41.55853 164.04953 40.73535 164.87271 39.71991 164.87271S37.88129 164.04953 37.88129 163.03409S38.70447 161.19547 39.71991 161.19547S41.55853 162.01865 41.55853 163.03409ZM39.71991 163.03409' stroke='none'/>
+</g>
+<g transform='translate(39.71991,163.03409)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-24.912909,198.716468)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M24.43027 128.77713C24.43027 129.79257 23.60709 130.61575 22.59164 130.61575C21.5762 130.61575 20.75302 129.79257 20.75302 128.77713S21.5762 126.9385 22.59164 126.9385C23.60709 126.9385 24.43027 127.76169 24.43027 128.77713ZM22.59164 128.77713' stroke='none'/>
+</g>
+<g transform='translate(22.59164,128.77713)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-24.912909,198.716468)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M7.30157 94.52019C7.30157 95.53563 6.4784 96.35881 5.46295 96.35881C4.44751 96.35881 3.62433 95.53563 3.62433 94.52019S4.44751 92.68156 5.46295 92.68156C6.4784 92.68156 7.30157 93.50475 7.30157 94.52019ZM5.46295 94.52019' stroke='none'/>
+</g>
+<g transform='translate(5.46295,94.52019)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-24.912909,198.716468)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M56.8486 74.03418H85.30135V130.93967Z' fill='none'/>
+</g>
+<g transform='translate(68.57498,63.95677)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-24.912909,198.716468)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-24.912909' y='198.716468' xlink:href='#ono-red-konvergence-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(88.93433,99.26471)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-24.912909,198.716468)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-24.912909' y='198.716468' xlink:href='#ono-red-konvergence-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 6.21</span>: Energija napake \(\Pi(u_{\mathrm{h}}) - \Pi(u)\) viseče palice z \(n\) enakimi elementi v odvisnosti od dolžine elementa <span class="nobr">\(h\),</span> na logaritemskih oseh. Črno: izračunane vrednosti, ki ležijo na premici z naklonom \(2\) (sivi trikotnik), ker energija pade kot <span class="nobr">\(h^2\).</span> Modro: ocena izreka, vzporedna premica nad njimi, vedno za faktor <span class="nobr">\(12\).</span> Pri vsaki razpolovitvi \(h\) se energija deli s <span class="nobr">\(4\).</span></figcaption></figure>
+<p>Zdaj imamo za Ritzovo metodo tri trdne trditve. Napaka je pravokotna na poskusna polja in Ritzovo polje je najboljše v energijski normi (lema <a class="xref" href="sec-ocene-napake.html#lem-galerkinova-ortogonalnost" data-knowl="lem-galerkinova-ortogonalnost">6.36</a> in izrek <a class="xref" href="sec-ocene-napake.html#thm-najboljsi-priblizek" data-knowl="thm-najboljsi-priblizek">6.37</a>, pokazano z linearnostjo in <a class="xref auto" href="sec-mocna-sibka-oblika.html#lem-pozitivnost-energije" data-knowl="lem-pozitivnost-energije">pozitivnostjo energije</a>). Pomik v točki je točen, kadar polje enotske sile v družini leži (izrek <a class="xref" href="sec-ocene-napake.html#thm-tocnost-v-tocki" data-knowl="thm-tocnost-v-tocki">6.38</a>, pokazano z delom enotske sile in pravokotnostjo). Pri odsekoma linearni družini napaka pada kot \(h^2\) v energiji (izrek <a class="xref" href="sec-ocene-napake.html#thm-konvergenca-odsekoma-linearnih" data-knowl="thm-konvergenca-odsekoma-linearnih">6.41</a>, pokazano z interpolacijo in Rolleovim izrekom). Kar ostane, je vprašanje, kaj storimo tam, kjer energije ni, in odgovor je v naslednjem razdelku.</p>
+
+</main>
+<footer><nav class="pager"><a href="sec-ritzova-metoda.html" rel="prev">← 6.4</a><a href="index.html">Kazalo</a><a href="sec-galerkinova-metoda.html" rel="next">6.6 →</a></nav></footer>
+</body>
+</html>

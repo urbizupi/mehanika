@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rit-razdelitev"] = {"html": "<div class=\"eq\">\\[\\psi_2 = \\tfrac{L}{2}\\,\\psi_1 + \\chi , \\qquad \\chi = x\\,(L - x)\\,\\big(x - \\tfrac{L}{2}\\big) . \\tag{6.19}\\]</div>", "href": "sec-ritzova-metoda.html#eq-rit-razdelitev"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ostanek"] = {"html": "<div class=\"eq\">\\[R(x) = \\big(EA\\,u_{\\mathrm{n}}'(x)\\big)' + q(x) , \\tag{6.29}\\]</div>", "href": "sec-galerkinova-metoda.html#eq-ostanek"};

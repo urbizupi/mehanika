@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rit-polje"] = {"html": "<div class=\"eq\">\\[u_{\\mathrm{n}} = \\psi_0 + \\sum_{\\mathrm{i}=1}^{n} c_{\\mathrm{i}}\\,\\psi_{\\mathrm{i}} , \\tag{6.16}\\]</div>", "href": "sec-ritzova-metoda.html#eq-rit-polje"};

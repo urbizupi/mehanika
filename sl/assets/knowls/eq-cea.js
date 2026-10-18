@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-cea"] = {"html": "<div class=\"eq\">\\[\\|u' - u_{\\mathrm{n}}'\\| \\le \\frac{M}{m}\\,\\|u' - v'\\| . \\tag{6.23}\\]</div>", "href": "sec-ocene-napake.html#eq-cea"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sibka-oblika-palice"] = {"html": "<div class=\"eq\">\\[\\int_0^L EA\\,u'\\,w'\\,\\mathrm{d}x = \\int_0^L q\\,w\\,\\mathrm{d}x + F\\,w(L) . \\tag{6.2}\\]</div>", "href": "sec-mocna-sibka-oblika.html#eq-sibka-oblika-palice"};

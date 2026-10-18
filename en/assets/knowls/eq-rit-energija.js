@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rit-energija"] = {"html": "<div class=\"eq\">\\[\\Pi(u_{\\mathrm{n}}) = \\Pi(\\psi_0) + \\tfrac12 \\sum_{\\mathrm{i},\\mathrm{j}} c_{\\mathrm{i}}\\,K_{\\mathrm{ij}}\\,c_{\\mathrm{j}} - \\sum_{\\mathrm{i}} f_{\\mathrm{i}}\\,c_{\\mathrm{i}} . \\tag{6.17}\\]</div>", "href": "sec-ritzova-metoda.html#eq-rit-energija"};

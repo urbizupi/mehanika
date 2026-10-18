@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-energijska-norma"] = {"html": "<div class=\"eq\">\\[\\|w\\|_{\\mathrm{E}} = \\sqrt{B(w, w)} = \\sqrt{2U(w)} , \\tag{6.10}\\]</div>", "href": "sec-skalarni-produkt-funkcij.html#eq-energijska-norma"};

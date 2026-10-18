@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-konvergenca-norma"] = {"html": "<div class=\"eq\">\\[\\|u - u_{\\mathrm{h}}\\|_{\\mathrm{E}}^2 \\le M\\,L\\,h^2\\,\\mu^2 , \\qquad \\|u - u_{\\mathrm{h}}\\|_{\\mathrm{E}} \\le \\sqrt{M L}\\,h\\,\\mu , \\tag{6.25}\\]</div>", "href": "sec-ocene-napake.html#eq-konvergenca-norma"};

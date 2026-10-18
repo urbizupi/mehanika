@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mocna-oblika-palice"] = {"html": "<div class=\"eq\">\\[\\begin{aligned} &amp;\\big(EA\\,u'\\big)'(x) + q(x) = 0 \\quad \\text{za vsak } x \\in (0, L) , \\\\ &amp;u(0) = 0 , \\qquad EA\\,u'(L) = F . \\end{aligned} \\tag{6.1}\\]</div>", "href": "sec-mocna-sibka-oblika.html#eq-mocna-oblika-palice"};

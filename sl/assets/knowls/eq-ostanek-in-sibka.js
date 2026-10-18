@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ostanek-in-sibka"] = {"html": "<div class=\"eq\">\\[\\int_0^L R\\,\\psi\\,\\mathrm{d}x = \\ell(\\psi) - B(u_{\\mathrm{n}}, \\psi) , \\tag{6.31}\\]</div>", "href": "sec-galerkinova-metoda.html#eq-ostanek-in-sibka"};

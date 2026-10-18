@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-galerkinova-ortogonalnost"] = {"html": "<div class=\"eq\">\\[B(u - u_{\\mathrm{n}}, w) = 0 \\quad \\text{za vsak } w \\in \\mathcal{V}_{\\mathrm{n}} . \\tag{6.20}\\]</div>", "href": "sec-ocene-napake.html#eq-galerkinova-ortogonalnost"};

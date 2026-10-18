@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-msp-uvod"] = {"html": "<div class=\"eq\">\\[\\begin{aligned} EA\\,L\\,c_1 + EA\\,L^2\\,c_2 &amp;= \\tfrac12\\,q L^2 , \\\\ EA\\,L^2\\,c_1 + \\tfrac43\\,EA\\,L^3\\,c_2 &amp;= \\tfrac13\\,q L^3 . \\end{aligned} \\tag{6.9}\\]</div>", "href": "sec-skalarni-produkt-funkcij.html#eq-msp-uvod"};

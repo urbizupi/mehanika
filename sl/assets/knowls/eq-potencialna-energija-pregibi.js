@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-potencialna-energija-pregibi"] = {"html": "<div class=\"eq\">\\[\\Pi(u) = \\int_0^L \\tfrac12\\,EA\\,u'^2\\,\\mathrm{d}x - \\int_0^L q\\,u\\,\\mathrm{d}x - F\\,u(L) , \\tag{6.8}\\]</div>", "href": "sec-funkcije-s-pregibi.html#eq-potencialna-energija-pregibi"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sibka-oblika-splosno"] = {"html": "<div class=\"eq\">\\[B(u, w) = \\ell(w) \\qquad \\text{za vsak } w \\in W . \\tag{6.4}\\]</div>", "href": "sec-mocna-sibka-oblika.html#eq-sibka-oblika-splosno"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-msp-sotorji"] = {"html": "<div class=\"eq\">\\[\\mat K = \\frac{EA}{h}\\begin{bmatrix} 2 &amp; -1 &amp; 0 &amp; 0 \\\\ -1 &amp; 2 &amp; -1 &amp; 0 \\\\ 0 &amp; -1 &amp; 2 &amp; -1 \\\\ 0 &amp; 0 &amp; -1 &amp; 1 \\end{bmatrix} , \\tag{6.15}\\]</div>", "href": "sec-skalarni-produkt-funkcij.html#eq-msp-sotorji"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-msp-minimum"] = {"html": "<div class=\"eq\">\\[\\Pi(\\vek d) - \\Pi(\\vek c^*) = \\tfrac12\\,(\\vek d - \\vek c^*)^\\T\\mat K\\,(\\vek d - \\vek c^*) \\ge 0 , \\tag{6.14}\\]</div>", "href": "sec-skalarni-produkt-funkcij.html#eq-msp-minimum"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-odsekoma-linearna"] = {"html": "<div class=\"eq\">\\[u = \\sum_{\\mathrm{i}=0}^{n} u(x_{\\mathrm{i}})\\,\\psi_{\\mathrm{i}} , \\tag{6.32}\\]</div>", "href": "sec-odsekoma-linearna.html#eq-odsekoma-linearna"};

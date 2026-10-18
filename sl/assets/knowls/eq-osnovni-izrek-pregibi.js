@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-osnovni-izrek-pregibi"] = {"html": "<div class=\"eq\">\\[u(b) - u(a) = \\int_{\\mathrm{a}}^b u'(x)\\,\\mathrm{d}x . \\tag{6.6}\\]</div>", "href": "sec-funkcije-s-pregibi.html#eq-osnovni-izrek-pregibi"};

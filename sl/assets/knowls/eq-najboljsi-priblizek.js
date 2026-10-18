@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-najboljsi-priblizek"] = {"html": "<div class=\"eq\">\\[\\|u - u_{\\mathrm{n}}\\|_{\\mathrm{E}} \\le \\|u - v\\|_{\\mathrm{E}} , \\tag{6.21}\\]</div>", "href": "sec-ocene-napake.html#eq-najboljsi-priblizek"};

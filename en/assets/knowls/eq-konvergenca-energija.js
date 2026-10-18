@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-konvergenca-energija"] = {"html": "<div class=\"eq\">\\[0 \\le \\Pi(u_{\\mathrm{h}}) - \\Pi(u) \\le \\tfrac12\\,M\\,L\\,h^2\\,\\mu^2 . \\tag{6.26}\\]</div>", "href": "sec-ocene-napake.html#eq-konvergenca-energija"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-per-partes-pregibi"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{a}}^b N(x)\\,w'(x)\\,\\mathrm{d}x = N(b)\\,w(b) - N(a)\\,w(a) - \\int_{\\mathrm{a}}^b N'(x)\\,w(x)\\,\\mathrm{d}x . \\tag{6.7}\\]</div>", "href": "sec-funkcije-s-pregibi.html#eq-per-partes-pregibi"};

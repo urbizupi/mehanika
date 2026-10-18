@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-galerkin-enacba"] = {"html": "<div class=\"eq\">\\[B(u_{\\mathrm{n}}, w) = \\ell(w) \\quad \\text{for every } w \\in \\mathcal{V}_{\\mathrm{n}} . \\tag{6.28}\\]</div>", "href": "sec-galerkinova-metoda.html#eq-galerkin-enacba"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-opl-sistem-n2"] = {"html": "<div class=\"eq\">\\[\\frac{EA}{h} \\begin{pmatrix} 2 &amp; -1 \\\\ -1 &amp; 1 \\end{pmatrix} \\begin{pmatrix} c_1 \\\\ c_2 \\end{pmatrix} = \\begin{pmatrix} q\\,h \\\\ q\\,h/2 \\end{pmatrix} . \\tag{6.33}\\]</div>", "href": "sec-odsekoma-linearna.html#eq-opl-sistem-n2"};

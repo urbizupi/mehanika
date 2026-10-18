@@ -1,0 +1,810 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>6.6 Galerkin method and weighted residuals (Galerkinova metoda in uteženi ostanki) · Chapter 6</title>
+<script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/style.css">
+<noscript><style>#loadbar { display: none; }</style></noscript>
+<script src="assets/config.js"></script>
+<script src="assets/load.js"></script>
+<script defer src="assets/interaktivno.js"></script>
+<script defer src="assets/book.js"></script>
+<script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<div id="loadbar" aria-hidden="true"></div>
+<header class="top"><a class="home" href="index.html">Mechanics</a><nav class="pager"><a href="sec-ocene-napake.html" rel="prev">← 6.5</a><a href="index.html">Contents</a><a href="sec-odsekoma-linearna.html" rel="next">6.7 →</a></nav>
+<span class="tools"><a class="lang" href="../sl/sec-galerkinova-metoda.html" hreflang="sl">Slovenščina</a><button type="button" class="theme-toggle" title="Light or dark theme" aria-label="Light or dark theme"></button><button type="button" data-details="open">Expand all</button><button type="button" data-details="close">Collapse all</button><button type="button" class="fig-side-toggle" aria-pressed="false">Figures alongside</button></span></header>
+<main>
+<p class="updated">Last updated 18 October 2026, 22:44</p>
+<p class="crumb"><a href="ch-sibka-oblika.html"><span class="h-num">Chapter 6</span> Weak form, the Ritz and Galerkin method (šibka oblika, Ritzova in Galerkinova metoda)</a></p>
+<h2 id="sec-galerkinova-metoda"><span class="h-num">6.6</span> Galerkin method and weighted residuals (Galerkinova metoda in uteženi ostanki)</h2>
+<p>The <a class="xref auto" href="sec-ritzova-metoda.html#def-ritzova-metoda" data-knowl="def-ritzova-metoda">Ritz method</a> of section <a class="xref" href="sec-ritzova-metoda.html">6.4</a> chooses the numbers \(c_{\mathrm{i}}\) so that the <a class="xref auto" href="sec-potencialna-energija.html#def-potencialna-energija" data-knowl="def-potencialna-energija">total potential energy</a> is smallest. For this it needs an energy. The weak form (šibka oblika) of section <a class="xref" href="sec-mocna-sibka-oblika.html#sec-sibka-oblika-palice">6.1.2</a>, however, is an equation that holds for every <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">test function</a> (preizkusna funkcija) and does not mention energy. Can we look for an approximation directly from it? And while we are at it: in how many ways can we demand that the error of an approximation be small, and how do these ways differ?</p>
+<p>We look for the answer on the hanging bar that we know from chapter <a class="xref" href="ch-energijski-principi.html">4</a> and section <a class="xref" href="sec-ritzova-metoda.html#sec-ritz-palica">6.4.2</a>. A steel bar of length \(L = 10\) m, cross-sectional area \(A = 78{,}54\ \text{mm}^2\) and <a class="xref auto" href="sec-natezni-preizkus.html#def-modul-elasticnosti" data-knowl="def-modul-elasticnosti">modulus of elasticity</a> \(E = 196\) GPa is fixed at <span class="nobr">\(x = 0\),</span> the axis \(x\) points downward, and the lower end is free. It is loaded by its own weight \(q = \rho g A = 6{,}010\) N/m per unit length, \(EA = 1{,}539 \cdot 10^7\) N. The true field is \(u = a\,(2Lx - x^2)\) with <span class="nobr">\(a = \rho g/(2E) = 1{,}952 \cdot 10^{-7}\ \text{m}^{-1}\),</span> the lower end moves by \(19{,}52\) µm and the middle by \(14{,}64\) µm. The trial field (poskusno polje) throughout this section is the cubic <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a></p>
+<div class="eq" id="eq-gal-kubicno-polje">\[u_1(x) = c\,\psi(x) , \qquad \psi(x) = 3L^2 x - x^3 . \tag{6.27}\]</div>
+<p>We chose it because it respects the fixing, <span class="nobr">\(\psi(0) = 0\),</span> and because <span class="nobr">\(\psi'(L) = 3(L^2 - L^2) = 0\),</span> so the field has zero <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> at the free end, as the true field has. The second <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivative</a> \(\psi'' = -6x\) is not zero, so we will also be able to try the ways that need a second derivative. And the true function is not among the fields <span class="nobr">\(c\,\psi\),</span> because it is quadratic and \(\psi\) is cubic, so the ways will give different results. Here \(c\) is a number with the unit <span class="nobr">\(\text{m}^{-2}\),</span> since \(\psi\) is in \(\text{m}^3\) and \(u_1\) in m.</p>
+
+<h3 id="sec-galerkin"><span class="h-num">6.6.1</span> Galerkin method (Galerkinova metoda)</h3>
+<p>The true solution \(u\) satisfies the weak form, <span class="nobr">\(B(u, w) = \ell(w)\),</span> for every test function \(w\) (definition <a class="xref" href="sec-mocna-sibka-oblika.html#def-sibka-oblika-splosna" data-knowl="def-sibka-oblika-splosna">6.6</a>). The trial field \(u_{\mathrm{n}}\) cannot satisfy it for all <span class="nobr">\(w\),</span> since it would otherwise be the true field. But we can satisfy it for \(n\) <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">test functions</a>, as many as there are unknown numbers. Which ones should they be? The simplest choice is to take the very <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> from which the trial field is built. Where this idea comes from is told in the next paragraph.</p>
+
+<div class="zgodovina"><p class="zgodovina-label">From history</p><p>Around the turn from the nineteenth to the twentieth century, Rayleigh, Ritz and Galerkin were among the prominent contributors to approximate variational methods (EP, pp. 3 to 4). Galerkin published his work in 1915 (EP, pp. 701 and 705). The work of Rayleigh and Ritz, together with Galerkin's weighted-residual approach, formed a consistent <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">framework</a> in which a continuous problem with infinitely many degrees of freedom is replaced by a discrete one (GR, PDF p. 354). In their original form these methods were not flexible enough for systems of complex geometry with arbitrary boundary conditions and loading (GR, PDF p. 354). Galerkin's idea is to make the residual of the differential equation orthogonal to the functions from which the approximation is built (EP, p. 344). The name is often used also for an expression in which <a class="xref auto" href="sec-integral.html#cor-per-partes" data-knowl="cor-per-partes">integration by parts</a> has reduced the order of the <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivatives</a>, but this turns Galerkin's original idea into the <a class="xref auto" href="sec-ritzova-metoda.html#def-ritzova-metoda" data-knowl="def-ritzova-metoda">Ritz method</a> (EP, p. 345). The method in which the weights are the same functions as in the approximation is called more precisely after Bubnov and Galerkin (COOK, PDF p. 196).</p>
+</div>
+<p>Let us return to the weak form of the bar. The equation \(B(u, w) = \ell(w)\) must be true for every test function. Which test functions do we take once we restrict the trial field to the family \(\psi_0 + \mathcal{V}_{\mathrm{n}}\) (definition <a class="xref" href="sec-ritzova-metoda.html#def-ritzova-metoda" data-knowl="def-ritzova-metoda">6.32</a>)? Galerkin's answer is this.</p>
+
+<div class="blk definicija" id="def-galerkinova-metoda"><div class="blk-head"><span class="blk-label">Definition 6.42</span> <span class="blk-title">Galerkin method (Galerkinova metoda)</span></div><div class="blk-body"><p>Let the problem be written in the weak form \(B(u, w) = \ell(w)\) for every test function <span class="nobr">\(w\),</span> with a <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-bilinearna-forma" data-knowl="def-bilinearna-forma">bilinear form</a> \(B\) and a <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-linearna-forma" data-knowl="def-linearna-forma">linear form</a> \(\ell\) (definition <a class="xref" href="sec-mocna-sibka-oblika.html#def-sibka-oblika-splosna" data-knowl="def-sibka-oblika-splosna">6.6</a>). Let \(\psi_0\) be an admissible field, \(\psi_1, \dots, \psi_{\mathrm{n}}\) independent <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">test functions</a> and \(\mathcal{V}_{\mathrm{n}}\) the set of all their linear combinations (definition <a class="xref" href="sec-ritzova-metoda.html#def-ritzova-metoda" data-knowl="def-ritzova-metoda">6.32</a>). The Galerkin approximation is a <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> \(u_{\mathrm{n}} \in \psi_0 + \mathcal{V}_{\mathrm{n}}\) for which</p>
+<div class="eq" id="eq-galerkin-enacba">\[B(u_{\mathrm{n}}, w) = \ell(w) \quad \text{for every } w \in \mathcal{V}_{\mathrm{n}} . \tag{6.28}\]</div>
+<p>The trial and the test functions are from the same family.</p>
+
+<p class="vir"><span class="vir-label">Source:</span> EP (6.4.12), (6.4.13), p. 344, COOK §5.1, PDF pp. 193 to 196 (&quot;a Galerkin statement incorporates differential equations in their weak form&quot;, PDF p. 193).</p></div></div>
+<p>How many equations is this? The demand holds for each of infinitely many fields <span class="nobr">\(w \in \mathcal{V}_{\mathrm{n}}\),</span> but the equations for \(w = \psi_1, \dots, \psi_{\mathrm{n}}\) already suffice, and they are linear in the numbers <span class="nobr">\(c_{\mathrm{j}}\).</span></p>
+
+<div class="blk lema" id="lem-galerkin-enacbe"><div class="blk-head"><span class="blk-label">Lemma 6.43</span> <span class="blk-title">Galerkin equations (Galerkinove enačbe)</span></div><div class="blk-body"><p>Let \(u_{\mathrm{n}} = \psi_0 + \sum_{\mathrm{j}} c_{\mathrm{j}} \psi_{\mathrm{j}}\) be as in definition <a class="xref" href="sec-galerkinova-metoda.html#def-galerkinova-metoda" data-knowl="def-galerkinova-metoda">6.42</a>. Then equation <a class="xref" href="sec-galerkinova-metoda.html#eq-galerkin-enacba" data-knowl="eq-galerkin-enacba">(6.28)</a> holds for every \(w \in \mathcal{V}_{\mathrm{n}}\) exactly when \(B(u_{\mathrm{n}}, \psi_{\mathrm{i}}) = \ell(\psi_{\mathrm{i}})\) for <span class="nobr">\(i = 1, \dots, n\).</span> These equations are the system \(K\,c = f\) with \(K_{\mathrm{ij}} = B(\psi_{\mathrm{j}}, \psi_{\mathrm{i}})\) and <span class="nobr">\(f_{\mathrm{i}} = \ell(\psi_{\mathrm{i}}) - B(\psi_0, \psi_{\mathrm{i}})\).</span></p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that the difference \(B(u_{\mathrm{n}}, w) - \ell(w)\) for each \(w\) splits into the differences for the <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> <span class="nobr">\(\psi_{\mathrm{i}}\).</span></p>
+<ol>
+<li>Every \(w \in \mathcal{V}_{\mathrm{n}}\) is <span class="nobr">\(w = \sum_{\mathrm{i}} d_{\mathrm{i}} \psi_{\mathrm{i}}\).</span> Since \(B\) is linear in the second argument and \(\ell\) is linear, <span class="nobr">\(B(u_{\mathrm{n}}, w) - \ell(w) = \sum_{\mathrm{i}} d_{\mathrm{i}}\,\big(B(u_{\mathrm{n}}, \psi_{\mathrm{i}}) - \ell(\psi_{\mathrm{i}})\big)\).</span></li>
+<li>If all terms in the brackets are zero, then by step 1 the sum is zero for every choice of the numbers <span class="nobr">\(d_{\mathrm{i}}\),</span> so the equation holds for every <span class="nobr">\(w\).</span></li>
+<li>If the equation holds for every <span class="nobr">\(w \in \mathcal{V}_{\mathrm{n}}\),</span> it also holds for <span class="nobr">\(w = \psi_{\mathrm{i}}\),</span> since \(\psi_{\mathrm{i}} \in \mathcal{V}_{\mathrm{n}}\) <span class="nobr">(\(d_{\mathrm{i}} = 1\),</span> the other \(d\) zero). These are the equations <span class="nobr">\(B(u_{\mathrm{n}}, \psi_{\mathrm{i}}) = \ell(\psi_{\mathrm{i}})\).</span></li>
+<li>Since \(B\) is linear in the first argument, <span class="nobr">\(B(u_{\mathrm{n}}, \psi_{\mathrm{i}}) = B(\psi_0, \psi_{\mathrm{i}}) + \sum_{\mathrm{j}} c_{\mathrm{j}}\,B(\psi_{\mathrm{j}}, \psi_{\mathrm{i}})\).</span> The equation \(B(u_{\mathrm{n}}, \psi_{\mathrm{i}}) = \ell(\psi_{\mathrm{i}})\) is therefore <span class="nobr">\(\sum_{\mathrm{j}} B(\psi_{\mathrm{j}}, \psi_{\mathrm{i}})\,c_{\mathrm{j}} = \ell(\psi_{\mathrm{i}}) - B(\psi_0, \psi_{\mathrm{i}})\),</span> row \(i\) of the system <span class="nobr">\(K\,c = f\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> The proof is not from a source. The same step is in the proof of lemma <a class="xref" href="sec-ocene-napake.html#lem-galerkinova-ortogonalnost" data-knowl="lem-galerkinova-ortogonalnost">6.36</a>, steps 2 and 3.</p></div></div>
+<p>The <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(K\) and the right-hand side \(f\) are the same as in the Ritz method (definition <a class="xref" href="sec-ritzova-metoda.html#def-ritzova-metoda" data-knowl="def-ritzova-metoda">6.32</a>). The only difference is that in the <a class="xref auto" href="sec-galerkinova-metoda.html#def-galerkinova-metoda" data-knowl="def-galerkinova-metoda">Galerkin method</a> \(B\) need not be symmetric, and therefore the matrix \(K\) need not be either.</p>
+<p><strong>A bar with the cubic field.</strong> Let us write out the definition for the field <a class="xref" href="sec-galerkinova-metoda.html#eq-gal-kubicno-polje" data-knowl="eq-gal-kubicno-polje">(6.27)</a>. The essential condition is <span class="nobr">\(u(0) = 0\),</span> so <span class="nobr">\(\psi_0 = 0\),</span> <span class="nobr">\(n = 1\),</span> <span class="nobr">\(\psi_1 = \psi\),</span> and equation <a class="xref" href="sec-galerkinova-metoda.html#eq-galerkin-enacba" data-knowl="eq-galerkin-enacba">(6.28)</a> is \(B(c\,\psi, \psi) = \ell(\psi)\) with \(B(u, w) = \int_0^L EA\,u'\,w'\,\mathrm{d}x\) and <span class="nobr">\(\ell(w) = \int_0^L q\,w\,\mathrm{d}x\).</span> The numbers \(B(\psi, \psi) = \tfrac{24}{5}\,EA\,L^5\) and \(\ell(\psi) = \tfrac54\,q\,L^4\) are the matrix and the right side of the Ritz equation of section <a class="xref" href="sec-ritzova-metoda.html#sec-ritz-palica">6.4.2</a>, so the Galerkin equation \(\tfrac{24}{5}\,EA\,L^5\,c = \tfrac54\,q\,L^4\) is the same and gives <span class="nobr">\(c = \tfrac{25}{96}\,q/(EA\,L)\).</span> The field has \(20{,}33\) µm at the end, \(4{,}2\ \%\) too much, and \(13{,}98\) µm in the middle, \(4{,}5\ \%\) too little, while the work of the weight is \(2{,}3\ \%\) smaller than the true one, as theorem <a class="xref" href="sec-ritzova-metoda.html#thm-ritz-energija" data-knowl="thm-ritz-energija">6.34</a> says (section <a class="xref" href="sec-ritzova-metoda.html#sec-ritz-lastnosti">6.4.4</a>). By the weak form for \(u\) and the Galerkin equation, \(B(u - u_1, \psi) = \ell(\psi) - B(u_1, \psi) = 0\) (lemma <a class="xref" href="sec-ocene-napake.html#lem-galerkinova-ortogonalnost" data-knowl="lem-galerkinova-ortogonalnost">6.36</a>), so the error is orthogonal to \(\psi\) in the energy inner product.</p>
+<p>Is this a coincidence? For a bar \(B\) is symmetric, and the two methods coincide for every symmetric <span class="nobr">\(B\).</span></p>
+
+<div class="blk izrek" id="thm-galerkin-ritz"><div class="blk-head"><span class="blk-label">Theorem 6.44</span> <span class="blk-title">Galerkin and Ritz methods coincide (Galerkinova in Ritzova metoda sovpadata)</span></div><div class="blk-body"><p>Let \(B\) be a symmetric <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-bilinearna-forma" data-knowl="def-bilinearna-forma">bilinear form</a>, \(B(v, w) = B(w, v)\) for all admissible <span class="nobr">\(v\),</span> <span class="nobr">\(w\),</span> let \(\ell\) be a <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-linearna-forma" data-knowl="def-linearna-forma">linear form</a> and \(\Pi(w) = \tfrac12\,B(w, w) - \ell(w)\) the <a class="xref auto" href="sec-potencialna-energija.html#def-potencialna-energija" data-knowl="def-potencialna-energija">total potential energy</a>. Let \(\psi_0, \psi_1, \dots, \psi_{\mathrm{n}}\) be the <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> of definition <a class="xref" href="sec-ritzova-metoda.html#def-ritzova-metoda" data-knowl="def-ritzova-metoda">6.32</a>. Then the <a class="xref auto" href="sec-galerkinova-metoda.html#lem-galerkin-enacbe" data-knowl="lem-galerkin-enacbe">Galerkin equations</a> \(B(u_{\mathrm{n}}, \psi_{\mathrm{k}}) = \ell(\psi_{\mathrm{k}})\) for \(k = 1, \dots, n\) are exactly the equations \(\partial \Pi/\partial c_{\mathrm{k}} = 0\) of the Ritz method, that is, the same system \(K\,c = f\) with the same solution <span class="nobr">\(u_{\mathrm{n}}\).</span></p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that the <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivative</a> of the energy with respect to \(c_{\mathrm{k}}\) equals the Galerkin expression.</p>
+<ol>
+<li>Let <span class="nobr">\(u_{\mathrm{n}} = \psi_0 + \sum_{\mathrm{j}} c_{\mathrm{j}} \psi_{\mathrm{j}}\).</span> By bilinearity and symmetry, <span class="nobr">\(B(\psi_{\mathrm{j}}, \psi_0) = B(\psi_0, \psi_{\mathrm{j}})\),</span> we have <span class="nobr">\(B(u_{\mathrm{n}}, u_{\mathrm{n}}) = B(\psi_0, \psi_0) + 2\sum_{\mathrm{j}} c_{\mathrm{j}} B(\psi_0, \psi_{\mathrm{j}}) + \sum_{\mathrm{i}} \sum_{\mathrm{j}} c_{\mathrm{i}} c_{\mathrm{j}} B(\psi_{\mathrm{j}}, \psi_{\mathrm{i}})\).</span></li>
+<li>By linearity of <span class="nobr">\(\ell\),</span> <span class="nobr">\(\ell(u_{\mathrm{n}}) = \ell(\psi_0) + \sum_{\mathrm{j}} c_{\mathrm{j}}\,\ell(\psi_{\mathrm{j}})\).</span> The energy \(\Pi\) is therefore a <a class="xref auto" href="sec-zveznost.html#def-polinom" data-knowl="def-polinom">polynomial</a> of second order in <span class="nobr">\(c_1, \dots, c_{\mathrm{n}}\).</span></li>
+<li>The term \(c_{\mathrm{i}} c_{\mathrm{j}}\) has the derivative \(\delta_{\mathrm{ik}}\,c_{\mathrm{j}} + c_{\mathrm{i}}\,\delta_{\mathrm{jk}}\) with respect to \(c_{\mathrm{k}}\) (<a class="xref auto" href="sec-srednja-vrednost.html#lem-pravila-odvajanja" data-knowl="lem-pravila-odvajanja">product rule</a>). Hence the derivative of the double sum is <span class="nobr">\(\sum_{\mathrm{j}} c_{\mathrm{j}} B(\psi_{\mathrm{j}}, \psi_{\mathrm{k}}) + \sum_{\mathrm{i}} c_{\mathrm{i}} B(\psi_{\mathrm{k}}, \psi_{\mathrm{i}})\),</span> which by symmetry is <span class="nobr">\(2\sum_{\mathrm{j}} c_{\mathrm{j}} B(\psi_{\mathrm{j}}, \psi_{\mathrm{k}})\).</span></li>
+<li>From steps 1 to 3, <span class="nobr">\(\dfrac{\partial \Pi}{\partial c_{\mathrm{k}}} = \tfrac12\,\big(2B(\psi_0, \psi_{\mathrm{k}}) + 2\sum_{\mathrm{j}} c_{\mathrm{j}} B(\psi_{\mathrm{j}}, \psi_{\mathrm{k}})\big) - \ell(\psi_{\mathrm{k}}) = B(u_{\mathrm{n}}, \psi_{\mathrm{k}}) - \ell(\psi_{\mathrm{k}})\),</span> where the derivative of \(\ell(u_{\mathrm{n}})\) with respect to <span class="nobr">\(c_{\mathrm{k}}\),</span> <span class="nobr">\(\ell(\psi_{\mathrm{k}})\),</span> was taken from step 2 and the last equality follows from bilinearity.</li>
+<li>By step 4 and lemma <a class="xref" href="sec-galerkinova-metoda.html#lem-galerkin-enacbe" data-knowl="lem-galerkin-enacbe">6.43</a>, \(\partial \Pi/\partial c_{\mathrm{k}} = \sum_{\mathrm{j}} K_{\mathrm{kj}}\,c_{\mathrm{j}} - f_{\mathrm{k}}\) with \(K_{\mathrm{kj}} = B(\psi_{\mathrm{j}}, \psi_{\mathrm{k}})\) and <span class="nobr">\(f_{\mathrm{k}} = \ell(\psi_{\mathrm{k}}) - B(\psi_0, \psi_{\mathrm{k}})\).</span> The Ritz method takes the numbers \(c_{\mathrm{j}}\) from \(K\,c = f\) (definition <a class="xref" href="sec-ritzova-metoda.html#def-ritzova-metoda" data-knowl="def-ritzova-metoda">6.32</a>), that is, from the condition \(\partial \Pi/\partial c_{\mathrm{k}} = 0\) for every <span class="nobr">\(k\),</span> as it must be at the lowest point (section <a class="xref" href="sec-potencialna-energija.html#sec-stacionarnost">4.6.6</a>). By step 4 the same condition is \(B(u_{\mathrm{n}}, \psi_{\mathrm{k}}) = \ell(\psi_{\mathrm{k}})\) for every <span class="nobr">\(k\),</span> and by lemma <a class="xref" href="sec-galerkinova-metoda.html#lem-galerkin-enacbe" data-knowl="lem-galerkin-enacbe">6.43</a> these are the Galerkin equations.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> EP p. 345 (&quot;The Ritz and Galerkin methods yield the same set of algebraic equations for the following three cases&quot;), COOK §5.1, PDF p. 196 (the same for the choice of the same family). The proof is not from a source.</p></div></div>
+<p>We have shown that the Galerkin equations are the condition that the derivative of the energy with respect to each \(c_{\mathrm{k}}\) is zero, written with the <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-bilinearna-forma" data-knowl="def-bilinearna-forma">bilinear form</a> and work instead of a derivative. For the bar with the cubic field this can be seen: \(\Pi(c) = \tfrac12\cdot\tfrac{24}{5}\,EA L^5 c^2 - \tfrac54\,qL^4 c\) has the derivative <span class="nobr">\(\tfrac{24}{5}\,EA L^5 c - \tfrac54\,qL^4\),</span> which is the Galerkin equation above. The Ritz calculation in section <a class="xref" href="sec-ritzova-metoda.html#sec-ritz-palica">6.4.2</a> and the Galerkin calculation above have the same number, <span class="nobr">\(c = 25/96\ q/(EAL)\),</span> and the energy \(\Pi = -381{,}87\) µJ.</p>
+<p>Why then do we need a new name at all? Because the Galerkin method does not need an energy. The bilinear form \(B\) and the right-hand side \(\ell\) of the weak form are enough. In some problems, for example in fluid flows, we have only a differential equation and boundary conditions, and a <a class="xref auto" href="sec-variacijski-racun.html#def-funkcional" data-knowl="def-funkcional">functional</a> similar to the potential energy cannot be written or has no clear physical meaning (COOK, PDF p. 193). Then we write the weak form from the equation itself, as COOK (PDF pp. 194 to 195) does for a bar, and as a nonstructural example it names steady heat conduction (COOK, PDF p. 194), to which chapter <a class="xref stub" href="ch-prevajanje-toplote.html">14</a> is devoted. The Galerkin method works there, the Ritz method does not. Also most of what we proved for the Ritz method in section <a class="xref" href="sec-ocene-napake.html">6.5</a> remains. The proof of lemma <a class="xref" href="sec-ocene-napake.html#lem-galerkinova-ortogonalnost" data-knowl="lem-galerkinova-ortogonalnost">6.36</a> uses only the weak form for \(u\) (step 1) and the equations \(K\,c = f\) (steps 2 and 3), which by lemma <a class="xref" href="sec-galerkinova-metoda.html#lem-galerkin-enacbe" data-knowl="lem-galerkin-enacbe">6.43</a> are the Galerkin equations, and it does not need symmetry, so it holds for every \(B\) and every Galerkin approximation. The steps of the proof of theorem <a class="xref" href="sec-ocene-napake.html#thm-cea" data-knowl="thm-cea">6.39</a> for the constant \(M/m\) use only this orthogonality and the estimates \(|B(v, w)| \le M \int |v'|\,|w'|\,\mathrm{d}x\) and <span class="nobr">\(B(w, w) \ge m \int w'^2\,\mathrm{d}x\),</span> and they do not need symmetry either. Hence the same steps give Cea's estimate with the constant \(M/m\) also for an unsymmetric \(B\) that has these two estimates. The estimate with the constant \(\sqrt{M/m}\) and theorem <a class="xref" href="sec-ocene-napake.html#thm-najboljsi-priblizek" data-knowl="thm-najboljsi-priblizek">6.37</a>, however, need symmetry, because the splitting \(B(e + d, e + d) = B(e, e) + 2B(e, d) + B(d, d)\) in the proof of theorem <a class="xref" href="sec-ocene-napake.html#thm-najboljsi-priblizek" data-knowl="thm-najboljsi-priblizek">6.37</a> combines two mixed terms into <span class="nobr">\(2B(e, d)\).</span> We do not develop unsymmetric problems further, since the book does not need them in this chapter.</p>
+
+<h3 id="sec-utezeni-ostanki"><span class="h-num">6.6.2</span> Weighted residuals (uteženi ostanki)</h3>
+<p>The <a class="xref auto" href="sec-galerkinova-metoda.html#def-galerkinova-metoda" data-knowl="def-galerkinova-metoda">Galerkin method</a> is the weak form with a particular choice of <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">test functions</a>. But what if we take the differential equation directly, without <a class="xref auto" href="sec-integral.html#cor-per-partes" data-knowl="cor-per-partes">integration by parts</a>? We insert the trial field into the equilibrium equation of the bar, and how much the equation fails is told by the residual.</p>
+
+<div class="blk definicija" id="def-ostanek"><div class="blk-head"><span class="blk-label">Definition 6.45</span> <span class="blk-title">Residual of a trial field (ostanek poskusnega polja)</span></div><div class="blk-body"><p>Let a bar with axial stiffness \(EA\) and axial load \(q\) be as in definition <a class="xref" href="sec-mocna-sibka-oblika.html#def-mocna-oblika" data-knowl="def-mocna-oblika">6.1</a>, and let \(u_{\mathrm{n}}\) be a trial field for which \(EA\,u_{\mathrm{n}}'\) is a <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">differentiable</a> <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a>. The residual of the trial field is the function</p>
+<div class="eq" id="eq-ostanek">\[R(x) = \big(EA\,u_{\mathrm{n}}'(x)\big)' + q(x) , \tag{6.29}\]</div>
+<p>a number with the unit N/m at every point <span class="nobr">\(x \in [0, L]\).</span> The residual is zero at every point exactly when the field satisfies the differential equation of equilibrium.</p>
+
+<p class="vir"><span class="vir-label">Source:</span> EP (6.4.3), (6.4.5), pp. 338 and 340, COOK (5.1-2), PDF p. 194.</p></div></div>
+<p>For the field <a class="xref" href="sec-galerkinova-metoda.html#eq-gal-kubicno-polje" data-knowl="eq-gal-kubicno-polje">(6.27)</a> we compute the residual in three steps.</p>
+<ol>
+<li>The <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivative</a> is <span class="nobr">\(u_1' = 3c\,(L^2 - x^2)\).</span></li>
+<li>The <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> \(EA\,u_1' = 3c\,EA\,(L^2 - x^2)\) has the derivative <span class="nobr">\(-6c\,EA\,x\).</span></li>
+<li>The residual is <span class="nobr">\(R(x) = q - 6c\,EA\,x\),</span> a straight line in \(x\) that equals the load \(q\) at \(x = 0\) and falls with a slope determined by <span class="nobr">\(c\).</span></li>
+</ol>
+<p>The residual cannot be zero everywhere: that would require \(q = 6c\,EA\,x\) for every <span class="nobr">\(x\),</span> which holds for no <span class="nobr">\(c\).</span> We must demand something weaker. We choose \(n\) <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> and demand that the residual be orthogonal to them, which means that the <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integral</a> of the product is zero (inner product of functions, definition <a class="xref" href="sec-skalarni-produkt-funkcij.html#def-skalarni-produkt-funkcij" data-knowl="def-skalarni-produkt-funkcij">6.16</a>).</p>
+
+<div class="blk definicija" id="def-metoda-utezenih-ostankov"><div class="blk-head"><span class="blk-label">Definition 6.46</span> <span class="blk-title">Weighted-residual method (metoda uteženih ostankov)</span></div><div class="blk-body"><p>Let \(u_{\mathrm{n}} = \psi_0 + \sum_{\mathrm{j}} c_{\mathrm{j}} \psi_{\mathrm{j}}\) be a trial field of a bar with the residual \(R\) (definition <a class="xref" href="sec-galerkinova-metoda.html#def-ostanek" data-knowl="def-ostanek">6.45</a>) that meets the essential conditions and the natural condition <span class="nobr">\(EA\,u_{\mathrm{n}}'(L) = F\).</span> Let \(w_1, \dots, w_{\mathrm{n}}\) be independent <a class="xref auto" href="sec-zveznost.html#def-zveznost" data-knowl="def-zveznost">continuous functions</a> on <span class="nobr">\([0, L]\),</span> the weight <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> (utežne funkcije), which may differ from the <span class="nobr">\(\psi_{\mathrm{j}}\).</span> The weighted-residual method determines the numbers \(c_{\mathrm{j}}\) from the \(n\) equations</p>
+<div class="eq" id="eq-utezeni-ostanki">\[\int_0^L R(x)\,w_{\mathrm{i}}(x)\,\mathrm{d}x = 0 , \qquad i = 1, \dots, n . \tag{6.30}\]</div>
+<p>If the trial field does not meet the natural condition, the residual at the boundary must be added to the equations.</p>
+
+<p class="vir"><span class="vir-label">Source:</span> EP §6.4.2, (6.4.4) to (6.4.6), pp. 339 to 340 (&quot;which, in general, are different from the approximation functions&quot;, p. 340), COOK §5.2, PDF pp. 196 to 197.</p></div></div>
+<p>For a linear problem the equations <a class="xref" href="sec-galerkinova-metoda.html#eq-utezeni-ostanki" data-knowl="eq-utezeni-ostanki">(6.30)</a> are linear in <span class="nobr">\(c_{\mathrm{j}}\),</span> just like the Galerkin ones. We wrote the method for a bar, for a general differential equation it is written by EP (6.4.4) to (6.4.6). Why must the trial field also meet the natural condition? In the weak form this condition is already in the equation, in the equation with the residual it is not (EP, pp. 340 to 341), so the field itself must ensure it. The field <a class="xref" href="sec-galerkinova-metoda.html#eq-gal-kubicno-polje" data-knowl="eq-gal-kubicno-polje">(6.27)</a> meets it, since \(u_1'(L) = c\,\psi'(L) = 0\) and <span class="nobr">\(F = 0\).</span></p>
+<p>The methods differ in the choice of the weights \(w_{\mathrm{i}}\) (EP (6.4.11), p. 341).</p>
+<ol>
+<li><strong>Galerkin</strong>, <span class="nobr">\(w_{\mathrm{i}} = \psi_{\mathrm{i}}\).</span> The residual must be orthogonal to the trial functions themselves.</li>
+<li><strong>Petrov-Galerkin</strong>, the weights are functions other than <span class="nobr">\(\psi_{\mathrm{i}}\),</span> for example <span class="nobr">\(w_1 = x\).</span> We separate the families of trial and test functions (EP, p. 270, example 6.4.1, pp. 342 to 344, COOK PDF p. 196). With the weight \(x\) we will obtain below the exact displacement of the end.</li>
+<li><strong>Least squares (najmanjši kvadrati)</strong>: we minimize <span class="nobr">\(I(c) = \int_0^L R^2\,\mathrm{d}x\).</span> The derivative \(\dfrac{\mathrm{d}I}{\mathrm{d}c_{\mathrm{i}}} = 2\int_0^L R\,\dfrac{\partial R}{\partial c_{\mathrm{i}}}\,\mathrm{d}x\) must be zero at the <a class="xref auto" href="sec-polnost.html#def-supremum" data-knowl="def-supremum">minimum</a>, so the residual is orthogonal to <span class="nobr">\(\partial R/\partial c_{\mathrm{i}}\).</span> This is the <a class="xref auto" href="sec-galerkinova-metoda.html#def-metoda-utezenih-ostankov" data-knowl="def-metoda-utezenih-ostankov">weighted-residual method</a> with the weight \(w_{\mathrm{i}} = \partial R/\partial c_{\mathrm{i}}\) (EP §6.4.4, (6.4.14) to (6.4.18), p. 349, COOK (5.2-4), (5.2-5), PDF p. 197). EP also adds to the <a class="xref auto" href="sec-variacijski-racun.html#def-funkcional" data-knowl="def-funkcional">functional</a> a term with the boundary residual, which we omit because our field meets the natural condition (EP, pp. 349 to 350).</li>
+<li><strong>Collocation (kolokacija)</strong>: the residual is zero at chosen points, \(R(x_{\mathrm{i}}) = 0\) (COOK, PDF p. 197, EP §6.4.5, p. 356). The weight is concentrated at the point <span class="nobr">\(x_{\mathrm{i}}\).</span> EP (6.4.29) writes it with the Dirac delta, a function concentrated at a point, which we will not need.</li>
+<li><strong>Subdomain (podobmočje)</strong>: we divide the bar into parts \([x_{\mathrm{i}-1}, x_{\mathrm{i}}]\) and demand that the integral of the residual over each part is zero, <span class="nobr">\(\int_{\mathrm{x}_{\mathrm{i}-1}}^{x_{\mathrm{i}}} R\,\mathrm{d}x = 0\).</span> The weight is \(1\) on this part and \(0\) elsewhere (EP §6.4.6, (6.4.34) to (6.4.36), pp. 358 to 359, COOK PDF p. 197).</li>
+</ol>
+<p>With the Galerkin choice the connection with the weak form appears. With integration by parts from chapter <a class="xref" href="ch-konstitutivne-enacbe.html">3</a> we can turn the residual with the weight \(\psi\) into the weak form.</p>
+
+<div class="blk lema" id="lem-galerkin-iz-ostanka"><div class="blk-head"><span class="blk-label">Lemma 6.47</span> <span class="blk-title">Weighted residual and weak form (utežni ostanek in šibka oblika)</span></div><div class="blk-body"><p>Let a bar with axial stiffness \(EA\) that is <a class="xref auto" href="sec-sprememba-polja.html#def-zvezno-odvedljivo-polje" data-knowl="def-zvezno-odvedljivo-polje">continuously differentiable</a> on \([0, L]\) be fixed at <span class="nobr">\(x = 0\),</span> loaded by a continuous axial load \(q\) and by a force \(F\) at the end <span class="nobr">\(x = L\).</span> Let \(u_{\mathrm{n}}\) be a field with a continuous second <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivative</a>, <span class="nobr">\(EA\,u_{\mathrm{n}}'(L) = F\),</span> and \(\psi\) a continuously differentiable <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> with <span class="nobr">\(\psi(0) = 0\).</span> Then</p>
+<div class="eq" id="eq-ostanek-in-sibka">\[\int_0^L R\,\psi\,\mathrm{d}x = \ell(\psi) - B(u_{\mathrm{n}}, \psi) , \tag{6.31}\]</div>
+<p>where \(B(u, w) = \int_0^L EA\,u'\,w'\,\mathrm{d}x\) and <span class="nobr">\(\ell(w) = \int_0^L q\,w\,\mathrm{d}x + F\,w(L)\).</span></p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that integration by parts turns the residual into the <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">weak form</a>.</p>
+<ol>
+<li>By the definition of the residual, <span class="nobr">\(\int_0^L R\,\psi\,\mathrm{d}x = \int_0^L (EA\,u_{\mathrm{n}}')'\,\psi\,\mathrm{d}x + \int_0^L q\,\psi\,\mathrm{d}x\).</span></li>
+<li>The <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> \(EA\,u_{\mathrm{n}}'\) and \(\psi\) are <a class="xref auto" href="sec-sprememba-polja.html#def-zvezno-odvedljivo-polje" data-knowl="def-zvezno-odvedljivo-polje">continuously differentiable</a>, so by corollary <a class="xref" href="sec-integral.html#cor-per-partes" data-knowl="cor-per-partes">3.41</a> <span class="nobr">\(\int_0^L (EA\,u_{\mathrm{n}}')'\,\psi\,\mathrm{d}x = \big[EA\,u_{\mathrm{n}}'\,\psi\big]_0^L - \int_0^L EA\,u_{\mathrm{n}}'\,\psi'\,\mathrm{d}x\).</span></li>
+<li>At \(x = 0\) we have <span class="nobr">\(\psi(0) = 0\),</span> at \(x = L\) we have <span class="nobr">\(EA\,u_{\mathrm{n}}'(L) = F\),</span> so the square bracket equals <span class="nobr">\(F\,\psi(L)\).</span></li>
+<li>From steps 1 to 3, <span class="nobr">\(\int_0^L R\,\psi\,\mathrm{d}x = F\,\psi(L) - B(u_{\mathrm{n}}, \psi) + \int_0^L q\,\psi\,\mathrm{d}x = \ell(\psi) - B(u_{\mathrm{n}}, \psi)\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> COOK §5.1, (5.1-5) to (5.1-7), PDF pp. 194 to 195 (the same step). The proof in steps is not from the source.</p></div></div>
+<p>We have shown that the equation with the weight \(\psi_{\mathrm{i}}\) is exactly the Galerkin equation \(B(u_{\mathrm{n}}, \psi_{\mathrm{i}}) = \ell(\psi_{\mathrm{i}})\) when the field meets the natural condition. The Galerkin method as EP (p. 344) describes it and its weak form therefore give the same, the difference is only whether we have already carried out the integration by parts. In the first form the field must have a second derivative and meet the natural condition, in the second a first derivative and the essential condition are enough.</p>
+<p>Let us also compute the equations for the field <a class="xref" href="sec-galerkinova-metoda.html#eq-gal-kubicno-polje" data-knowl="eq-gal-kubicno-polje">(6.27)</a>. The residual of step 3 is <span class="nobr">\(R = q - 6c\,EA\,x\),</span> its derivative with respect to \(c\) is <span class="nobr">\(\partial R/\partial c = -6\,EA\,x\).</span></p>
+<ol>
+<li>Galerkin: <span class="nobr">\(\int_0^L R\,\psi\,\mathrm{d}x = \tfrac54\,qL^4 - 6c\,EA\,\int_0^L x\,(3L^2 x - x^3)\,\mathrm{d}x = \tfrac54\,qL^4 - \tfrac{24}{5}\,c\,EA\,L^5\),</span> because <span class="nobr">\(\int_0^L (3L^2 x^2 - x^4)\,\mathrm{d}x = L^5\,(1 - \tfrac15)\).</span> The equation gives <span class="nobr">\(c = \tfrac{25}{96}\,q/(EA\,L)\),</span> which by lemma <a class="xref" href="sec-galerkinova-metoda.html#lem-galerkin-iz-ostanka" data-knowl="lem-galerkin-iz-ostanka">6.47</a> is the same number as for the weak form.</li>
+<li>Petrov-Galerkin with \(w = x\) and least squares: \(\int_0^L R\,x\,\mathrm{d}x = \tfrac12\,qL^2 - 6c\,EA\,\tfrac13 L^3 = 0\) gives <span class="nobr">\(c = \tfrac14\,q/(EA\,L)\).</span> The weight of least squares is <span class="nobr">\(-6\,EA\,x\),</span> proportional to <span class="nobr">\(x\),</span> so its equation is the same.</li>
+<li>Collocation at <span class="nobr">\(x_1 = L/2\):</span> \(R(L/2) = q - 3c\,EA\,L = 0\) gives <span class="nobr">\(c = \tfrac13\,q/(EA\,L)\).</span></li>
+<li>Subdomain, one whole bar <span class="nobr">\([0, L]\):</span> \(\int_0^L R\,\mathrm{d}x = qL - 3c\,EA\,L^2 = 0\) gives <span class="nobr">\(c = \tfrac13\,q/(EA\,L)\).</span></li>
+</ol>
+<p>Figure <a class="xref" href="sec-galerkinova-metoda.html#fig-gal-ostanek" data-knowl="fig-gal-ostanek">6.22</a> shows the residuals for the obtained numbers and the weights that gave them. All the residuals are straight lines that start at \(R = q\) at <span class="nobr">\(x = 0\).</span> With collocation the residual is zero in the middle of the bar and \(-q\) at the end, so by absolute value it is largest there. With Galerkin, \(R(L/2) = \tfrac{7}{32}\,q = 1{,}315\) N/m and <span class="nobr">\(R(L) = -\tfrac{9}{16}\,q\).</span> The residual is zero only at \(x = \tfrac{16}{25}\,L = 6{,}4\) m, but the integral of its product with \(\psi\) is zero, and Galerkin demands no more.</p>
+
+<figure class="blk slika" id="fig-gal-ostanek"><p><span class="svgfig" role="img" aria-label="Residuals of three trial fields as straight lines against x and below them the weights psi, x and an impulse in the middle"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='295.69pt' height='294.38pt' viewBox='-72.000004 -72.000003 219.030506 218.058531'>
+<defs>
+<path id='gal-ostanek-g0-0' d='M6.56538-2.291407C6.734745-2.291407 6.914072-2.291407 6.914072-2.49066S6.734745-2.689913 6.56538-2.689913H1.175592C1.006227-2.689913 .826899-2.689913 .826899-2.49066S1.006227-2.291407 1.175592-2.291407H6.56538Z'/>
+<path id='gal-ostanek-g1-14' d='M2.630137-4.353674C1.384807-4.054795 .418431-2.759651 .418431-1.554172C.418431-.597758 1.05604 .119552 1.992528 .119552C3.158157 .119552 3.985056-1.444583 3.985056-2.819427C3.985056-3.726027 3.58655-4.224159 3.247821-4.672478C2.889166-5.120797 2.30137-5.867995 2.30137-6.306351C2.30137-6.525529 2.500623-6.764633 2.849315-6.764633C3.148194-6.764633 3.347447-6.635118 3.556663-6.495641C3.755915-6.37609 3.955168-6.246575 4.104608-6.246575C4.353674-6.246575 4.503113-6.485679 4.503113-6.645081C4.503113-6.864259 4.343711-6.894147 3.985056-6.973848C3.466999-7.083437 3.327522-7.083437 3.16812-7.083437C2.391034-7.083437 2.032379-6.655044 2.032379-6.057285C2.032379-5.519303 2.321295-4.961395 2.630137-4.353674ZM2.749689-4.134496C2.998755-3.676214 3.297634-3.138232 3.297634-2.420922C3.297634-1.763387 2.919054-.099626 1.992528-.099626C1.444583-.099626 1.036115-.518057 1.036115-1.275218C1.036115-1.902864 1.404732-3.775841 2.749689-4.134496Z'/>
+<path id='gal-ostanek-g1-32' d='M4.801993-6.655044C4.811955-6.694894 4.83188-6.75467 4.83188-6.804483C4.83188-6.90411 4.762142-6.914072 4.712329-6.914072C4.612702-6.914072 4.60274-6.894147 4.562889-6.714819L2.909091-.129514C2.15193-.219178 1.77335-.587796 1.77335-1.24533C1.77335-1.444583 1.77335-1.703611 2.311333-3.098381C2.351183-3.217933 2.420922-3.387298 2.420922-3.58655C2.420922-4.034869 2.102117-4.403487 1.603985-4.403487C.657534-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.836862-3.895392 1.235367-4.184309 1.574097-4.184309C1.653798-4.184309 1.823163-4.184309 1.823163-3.865504C1.823163-3.606476 1.723537-3.35741 1.594022-3.008717C1.115816-1.753425 1.115816-1.494396 1.115816-1.325031C1.115816-.37858 1.892902 .029888 2.849315 .089664C2.769614 .448319 2.769614 .468244 2.630137 .996264C2.600249 1.105853 2.400996 1.912827 2.400996 1.942715C2.400996 1.952677 2.400996 2.042341 2.520548 2.042341C2.540473 2.042341 2.590286 2.042341 2.610212 2.002491C2.6401 1.982565 2.699875 1.733499 2.729763 1.594022L3.108344 .109589C3.476961 .109589 4.353674 .109589 5.290162-.956413C5.69863-1.414695 5.907846-1.853051 6.017435-2.15193C6.107098-2.400996 6.326276-3.267746 6.326276-3.706102C6.326276-4.26401 6.057285-4.403487 5.88792-4.403487C5.638854-4.403487 5.389788-4.144458 5.389788-3.92528C5.389788-3.795766 5.449564-3.73599 5.539228-3.656289C5.648817-3.5467 5.897883-3.287671 5.897883-2.809465C5.897883-2.171856 5.379826-1.354919 5.031133-.996264C4.154421-.109589 3.516812-.109589 3.158157-.109589L4.801993-6.655044Z'/>
+<path id='gal-ostanek-g1-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='gal-ostanek-g1-61' d='M4.373599-7.0934C4.423412-7.222914 4.423412-7.262765 4.423412-7.272727C4.423412-7.382316 4.333748-7.47198 4.224159-7.47198C4.154421-7.47198 4.084682-7.442092 4.054795-7.382316L.597758 2.11208C.547945 2.241594 .547945 2.281445 .547945 2.291407C.547945 2.400996 .637609 2.49066 .747198 2.49066C.876712 2.49066 .9066 2.420922 .966376 2.251557L4.373599-7.0934Z'/>
+<path id='gal-ostanek-g1-82' d='M3.73599-6.117061C3.795766-6.356164 3.825654-6.455791 4.014944-6.485679C4.104608-6.495641 4.423412-6.495641 4.622665-6.495641C5.330012-6.495641 6.435866-6.495641 6.435866-5.50934C6.435866-5.17061 6.276463-4.483188 5.88792-4.094645C5.628892-3.835616 5.100872-3.516812 4.204234-3.516812H3.088418L3.73599-6.117061ZM5.17061-3.387298C6.176837-3.606476 7.362391-4.303861 7.362391-5.310087C7.362391-6.166874 6.465753-6.804483 5.160648-6.804483H2.321295C2.122042-6.804483 2.032379-6.804483 2.032379-6.60523C2.032379-6.495641 2.122042-6.495641 2.311333-6.495641C2.331258-6.495641 2.520548-6.495641 2.689913-6.475716C2.86924-6.455791 2.958904-6.445828 2.958904-6.316314C2.958904-6.276463 2.948941-6.246575 2.919054-6.127024L1.58406-.777086C1.484433-.388543 1.464508-.308842 .67746-.308842C.498132-.308842 .408468-.308842 .408468-.109589C.408468 0 .52802 0 .547945 0C.826899 0 1.524284-.029888 1.803238-.029888S2.789539 0 3.068493 0C3.148194 0 3.267746 0 3.267746-.199253C3.267746-.308842 3.178082-.308842 2.988792-.308842C2.620174-.308842 2.34122-.308842 2.34122-.488169C2.34122-.547945 2.361146-.597758 2.371108-.657534L3.028643-3.297634H4.214197C5.120797-3.297634 5.300125-2.739726 5.300125-2.391034C5.300125-2.241594 5.220423-1.932752 5.160648-1.703611C5.090909-1.424658 5.001245-1.05604 5.001245-.856787C5.001245 .219178 6.196762 .219178 6.326276 .219178C7.173101 .219178 7.521793-.787049 7.521793-.926526C7.521793-1.046077 7.412204-1.046077 7.402242-1.046077C7.312578-1.046077 7.292653-.976339 7.272727-.9066C7.023661-.169365 6.595268 0 6.366127 0C6.03736 0 5.967621-.219178 5.967621-.607721C5.967621-.916563 6.027397-1.424658 6.067248-1.743462C6.087173-1.882939 6.107098-2.072229 6.107098-2.211706C6.107098-2.978829 5.439601-3.287671 5.17061-3.387298Z'/>
+<path id='gal-ostanek-g1-113' d='M4.503113-4.293898C4.503113-4.333748 4.473225-4.393524 4.403487-4.393524C4.293898-4.393524 3.895392-3.995019 3.726027-3.706102C3.506849-4.244085 3.118306-4.403487 2.799502-4.403487C1.62391-4.403487 .398506-2.929016 .398506-1.484433C.398506-.508095 .986301 .109589 1.713574 .109589C2.141968 .109589 2.530511-.129514 2.889166-.488169C2.799502-.139477 2.470735 1.205479 2.440847 1.295143C2.361146 1.574097 2.281445 1.613948 1.723537 1.62391C1.594022 1.62391 1.494396 1.62391 1.494396 1.823163C1.494396 1.833126 1.494396 1.932752 1.62391 1.932752C1.942715 1.932752 2.291407 1.902864 2.620174 1.902864C2.958904 1.902864 3.317559 1.932752 3.646326 1.932752C3.696139 1.932752 3.825654 1.932752 3.825654 1.733499C3.825654 1.62391 3.726027 1.62391 3.566625 1.62391C3.088418 1.62391 3.088418 1.554172 3.088418 1.464508C3.088418 1.39477 3.108344 1.334994 3.128269 1.24533L4.503113-4.293898ZM1.743462-.109589C1.145704-.109589 1.105853-.876712 1.105853-1.046077C1.105853-1.524284 1.39477-2.610212 1.564134-3.028643C1.872976-3.765878 2.391034-4.184309 2.799502-4.184309C3.447073-4.184309 3.58655-3.377335 3.58655-3.307597C3.58655-3.247821 3.038605-1.066002 3.008717-1.026152C2.859278-.747198 2.30137-.109589 1.743462-.109589Z'/>
+<path id='gal-ostanek-g1-119' d='M4.60274-3.377335C4.652553-3.596513 4.752179-3.965131 4.752179-4.024907C4.752179-4.204234 4.612702-4.293898 4.463263-4.293898C4.343711-4.293898 4.164384-4.214197 4.094645-4.014944C4.064757-3.945205 3.596513-2.042341 3.526775-1.783313C3.457036-1.484433 3.437111-1.305106 3.437111-1.125778C3.437111-1.016189 3.437111-.996264 3.447073-.946451C3.217933-.418431 2.919054-.109589 2.530511-.109589C1.733499-.109589 1.733499-.846824 1.733499-1.016189C1.733499-1.334994 1.783313-1.723537 2.251557-2.948941C2.361146-3.247821 2.420922-3.387298 2.420922-3.58655C2.420922-4.034869 2.092154-4.403487 1.603985-4.403487C.657534-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.836862-3.875467 1.225405-4.184309 1.574097-4.184309C1.663761-4.184309 1.823163-4.174346 1.823163-3.855542C1.823163-3.606476 1.713574-3.327522 1.643836-3.158157C1.205479-1.982565 1.085928-1.524284 1.085928-1.145704C1.085928-.239103 1.753425 .109589 2.500623 .109589C2.669988 .109589 3.138232 .109589 3.536737-.587796C3.795766 .049813 4.483188 .109589 4.782067 .109589C5.529265 .109589 5.967621-.518057 6.22665-1.115816C6.56538-1.892902 6.884184-3.227895 6.884184-3.706102C6.884184-4.254047 6.615193-4.403487 6.445828-4.403487C6.196762-4.403487 5.947696-4.144458 5.947696-3.92528C5.947696-3.795766 6.007472-3.73599 6.097136-3.656289C6.206725-3.5467 6.455791-3.287671 6.455791-2.809465C6.455791-2.470735 6.166874-1.494396 5.907846-.986301C5.648817-.458281 5.300125-.109589 4.811955-.109589C4.343711-.109589 4.07472-.408468 4.07472-.976339C4.07472-1.255293 4.144458-1.564134 4.184309-1.703611L4.60274-3.377335Z'/>
+<path id='gal-ostanek-g1-120' d='M3.327522-3.008717C3.387298-3.267746 3.616438-4.184309 4.313823-4.184309C4.363636-4.184309 4.60274-4.184309 4.811955-4.054795C4.533001-4.004981 4.333748-3.755915 4.333748-3.516812C4.333748-3.35741 4.443337-3.16812 4.712329-3.16812C4.931507-3.16812 5.250311-3.347447 5.250311-3.745953C5.250311-4.26401 4.662516-4.403487 4.323786-4.403487C3.745953-4.403487 3.39726-3.875467 3.277709-3.646326C3.028643-4.303861 2.49066-4.403487 2.201743-4.403487C1.165629-4.403487 .597758-3.118306 .597758-2.86924C.597758-2.769614 .697385-2.769614 .71731-2.769614C.797011-2.769614 .826899-2.789539 .846824-2.879203C1.185554-3.935243 1.843088-4.184309 2.181818-4.184309C2.371108-4.184309 2.719801-4.094645 2.719801-3.516812C2.719801-3.20797 2.550436-2.540473 2.181818-1.145704C2.022416-.52802 1.673724-.109589 1.235367-.109589C1.175592-.109589 .946451-.109589 .737235-.239103C.986301-.288917 1.205479-.498132 1.205479-.777086C1.205479-1.046077 .986301-1.125778 .836862-1.125778C.537983-1.125778 .288917-.86675 .288917-.547945C.288917-.089664 .787049 .109589 1.225405 .109589C1.882939 .109589 2.241594-.587796 2.271482-.647572C2.391034-.278954 2.749689 .109589 3.347447 .109589C4.373599 .109589 4.941469-1.175592 4.941469-1.424658C4.941469-1.524284 4.851806-1.524284 4.821918-1.524284C4.732254-1.524284 4.712329-1.484433 4.692403-1.414695C4.363636-.348692 3.686177-.109589 3.367372-.109589C2.978829-.109589 2.819427-.428394 2.819427-.767123C2.819427-.986301 2.879203-1.205479 2.988792-1.643836L3.327522-3.008717Z'/>
+<path id='gal-ostanek-g2-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='gal-ostanek-g2-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='gal-ostanek-g2-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='gal-ostanek-g2-53' d='M4.473225-2.002491C4.473225-3.188045 3.656289-4.184309 2.580324-4.184309C2.102117-4.184309 1.673724-4.024907 1.315068-3.676214V-5.618929C1.514321-5.559153 1.843088-5.489415 2.161893-5.489415C3.387298-5.489415 4.084682-6.396015 4.084682-6.525529C4.084682-6.585305 4.054795-6.635118 3.985056-6.635118C3.975093-6.635118 3.955168-6.635118 3.905355-6.60523C3.706102-6.515567 3.217933-6.316314 2.550436-6.316314C2.15193-6.316314 1.693649-6.386052 1.225405-6.595268C1.145704-6.625156 1.125778-6.625156 1.105853-6.625156C1.006227-6.625156 1.006227-6.545455 1.006227-6.386052V-3.437111C1.006227-3.257783 1.006227-3.178082 1.145704-3.178082C1.215442-3.178082 1.235367-3.20797 1.275218-3.267746C1.384807-3.427148 1.753425-3.965131 2.560399-3.965131C3.078456-3.965131 3.327522-3.506849 3.407223-3.327522C3.566625-2.958904 3.58655-2.570361 3.58655-2.072229C3.58655-1.723537 3.58655-1.125778 3.347447-.707347C3.108344-.318804 2.739726-.059776 2.281445-.059776C1.554172-.059776 .986301-.587796 .816936-1.175592C.846824-1.165629 .876712-1.155666 .986301-1.155666C1.315068-1.155666 1.484433-1.404732 1.484433-1.643836S1.315068-2.132005 .986301-2.132005C.846824-2.132005 .498132-2.062267 .498132-1.603985C.498132-.747198 1.185554 .219178 2.30137 .219178C3.457036 .219178 4.473225-.737235 4.473225-2.002491Z'/>
+<path id='gal-ostanek-g2-54' d='M1.315068-3.267746V-3.506849C1.315068-6.027397 2.550436-6.386052 3.058531-6.386052C3.297634-6.386052 3.716065-6.326276 3.935243-5.987547C3.785803-5.987547 3.387298-5.987547 3.387298-5.539228C3.387298-5.230386 3.626401-5.080946 3.845579-5.080946C4.004981-5.080946 4.303861-5.17061 4.303861-5.559153C4.303861-6.156912 3.865504-6.635118 3.038605-6.635118C1.763387-6.635118 .418431-5.349938 .418431-3.148194C.418431-.488169 1.574097 .219178 2.500623 .219178C3.606476 .219178 4.552927-.71731 4.552927-2.032379C4.552927-3.297634 3.666252-4.254047 2.560399-4.254047C1.882939-4.254047 1.514321-3.745953 1.315068-3.267746ZM2.500623-.059776C1.872976-.059776 1.574097-.657534 1.514321-.806974C1.334994-1.275218 1.334994-2.072229 1.334994-2.251557C1.334994-3.028643 1.653798-4.024907 2.550436-4.024907C2.709838-4.024907 3.16812-4.024907 3.476961-3.407223C3.656289-3.038605 3.656289-2.530511 3.656289-2.042341C3.656289-1.564134 3.656289-1.066002 3.486924-.707347C3.188045-.109589 2.729763-.059776 2.500623-.059776Z'/>
+</defs>
+<g id='gal-ostanek-page1'>
+<g stroke-miterlimit='10' transform='translate(-51.23855,2.304377)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<path d='M0 0H174.04738' fill='none'/>
+<g transform='translate(171.57092,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(182.03255,-2.15277)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.23855,2.304377)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.23855' y='2.304377' xlink:href='#gal-ostanek-g1-120'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-53.34889V53.26488' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,50.78842)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-8.74654,63.75005)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.23855,2.304377)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.23855' y='2.304377' xlink:href='#gal-ostanek-g1-82'/>
+<use x='-43.597053' y='2.304377' xlink:href='#gal-ostanek-g1-61'/>
+<use x='-38.615714' y='2.304377' xlink:href='#gal-ostanek-g1-113'/>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='1.0'>
+<path d='M0 42.67912L156.49094-24.007' fill='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.0'>
+<path d='M0 42.67912L156.49094-21.33955' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M0 42.67912L156.49094-42.67912' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M80.08409 0C80.08409 1.01544 79.26091 1.83862 78.24547 1.83862S76.40685 1.01544 76.40685 0S77.23003-1.83862 78.24547-1.83862S80.08409-1.01544 80.08409 0ZM78.24547 0' stroke='none'/>
+</g>
+<g transform='translate(78.24547,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.23855,2.304377)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M1.09555 42.67912H-1.09555' fill='none'/>
+<g transform='translate(-9.72853,39.45691)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.23855,2.304377)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.23855' y='2.304377' xlink:href='#gal-ostanek-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M1.09555-42.67912H-1.09555' fill='none'/>
+<g transform='translate(-17.50633,-45.48468)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.23855,2.304377)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.23855' y='2.304377' xlink:href='#gal-ostanek-g0-0'/>
+<use x='-43.489802' y='2.304377' xlink:href='#gal-ostanek-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-2.5,-10.07741)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.23855,2.304377)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.23855' y='2.304377' xlink:href='#gal-ostanek-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(75.74547,-12.21149)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.23855,2.304377)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.23855' y='2.304377' xlink:href='#gal-ostanek-g2-53'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(160.12392,-52.75655)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.23855,2.304377)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-51.23855' y='2.304377' xlink:href='#gal-ostanek-g0-0'/>
+<use x='-43.489802' y='2.304377' xlink:href='#gal-ostanek-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(160.12392,-15.76213)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.23855,2.304377)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-51.23855' y='2.304377' xlink:href='#gal-ostanek-g0-0'/>
+<use x='-43.489802' y='2.304377' xlink:href='#gal-ostanek-g2-48'/>
+<use x='-38.508463' y='2.304377' xlink:href='#gal-ostanek-g1-59'/>
+<use x='-35.741055' y='2.304377' xlink:href='#gal-ostanek-g2-53'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(160.12392,-34.08443)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.23855,2.304377)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.23855' y='2.304377' xlink:href='#gal-ostanek-g0-0'/>
+<use x='-43.489802' y='2.304377' xlink:href='#gal-ostanek-g2-48'/>
+<use x='-38.508463' y='2.304377' xlink:href='#gal-ostanek-g1-59'/>
+<use x='-35.741055' y='2.304377' xlink:href='#gal-ostanek-g2-53'/>
+<use x='-30.759716' y='2.304377' xlink:href='#gal-ostanek-g2-54'/>
+<use x='-25.778377' y='2.304377' xlink:href='#gal-ostanek-g2-50'/>
+<use x='-20.797038' y='2.304377' xlink:href='#gal-ostanek-g2-53'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-130.88284H174.04738' fill='none'/>
+<g transform='translate(171.57092,-130.88284)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(182.03255,-133.03561)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.23855,2.304377)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.23855' y='2.304377' xlink:href='#gal-ostanek-g1-120'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-130.88284V-77.61797' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,-80.09442)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-3.71413,-69.6328)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.23855,2.304377)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.23855' y='2.304377' xlink:href='#gal-ostanek-g1-119'/>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='1.0'>
+<path d='M0-130.88284C0-130.88284 2.30733-129.9388 3.19351-129.57648C4.0797-129.21416 5.50085-128.63329 6.38704-128.27141C7.27322-127.90953 8.69438-127.32935 9.58057-126.96829C10.46675-126.60724 11.88791-126.02914 12.7741-125.66908C13.66028-125.30902 15.08144-124.73184 15.96762-124.37314C16.8538-124.01443 18.27496-123.44069 19.16115-123.0837C20.04733-122.7267 21.46849-122.15523 22.35468-121.80013C23.24086-121.44502 24.66202-120.8772 25.5482-120.52435C26.43439-120.17151 27.85555-119.60738 28.74173-119.25706C29.62791-118.90675 31.04907-118.34685 31.93526-117.99953C32.82144-117.6522 34.2426-117.09789 35.12878-116.75372C36.01497-116.40956 37.43613-115.85973 38.32231-115.519C39.2085-115.17827 40.62965-114.63486 41.51584-114.29793C42.40202-113.961 43.82318-113.42351 44.70937-113.09055C45.59555-112.75758 47.01671-112.22668 47.9029-111.89815C48.78908-111.56961 50.21024-111.04651 51.09642-110.72267S53.40376-109.883 54.28995-109.56413C55.17613-109.24527 56.59729-108.738 57.48347-108.42447C58.36966-108.11093 59.79082-107.61227 60.677-107.30435C61.56319-106.99643 62.98434-106.50714 63.87053-106.20508C64.75671-105.90302 66.17787-105.4232 67.06406-105.12729C67.95024-104.83138 69.3714-104.36171 70.25758-104.0723C71.14377-103.78288 72.56493-103.32404 73.45111-103.0414C74.3373-102.75876 75.75845-102.31073 76.64464-102.03523C77.53082-101.75974 78.95198-101.32387 79.83817-101.05579C80.72435-100.7877 82.14551-100.36353 83.0317-100.10303C83.91788-99.84253 85.33904-99.43065 86.22522-99.17828C87.1114-98.92592 88.53256-98.5282 89.41875-98.28415C90.30493-98.0401 91.72609-97.65486 92.61227-97.41931C93.49846-97.18376 94.91962-96.81299 95.8058-96.58638C96.69199-96.35977 98.11314-96.00342 98.99933-95.78603C99.88551-95.56863 101.30667-95.22733 102.19286-95.01952C103.07904-94.8117 104.5002-94.48625 105.38638-94.2882C106.27257-94.09013 107.69373-93.78006 108.57991-93.59203C109.4661-93.40399 110.88725-93.11052 111.77344-92.93297C112.65962-92.75542 114.08078-92.47914 114.96696-92.31235C115.85315-92.14555 117.2743-91.88657 118.16049-91.7308C119.04668-91.57504 120.46783-91.33409 121.35402-91.18962C122.2402-91.04515 123.66136-90.82239 124.54755-90.68948C125.43373-90.55658 126.85489-90.35265 127.74107-90.23166C128.62726-90.11067 130.04842-89.92616 130.9346-89.81747C131.82079-89.70879 133.24194-89.54427 134.12813-89.44823C135.01431-89.35219 136.43547-89.20851 137.32166-89.12521C138.20784-89.04192 139.629-88.918 140.51518-88.8478C141.40137-88.77759 142.82253-88.67595 143.70871-88.61922C144.5949-88.56248 146.01604-88.48192 146.90222-88.43883S149.20956-88.3375 150.09575-88.30858C150.98193-88.27966 152.40309-88.24496 153.28928-88.23042C154.17546-88.21588 156.4828-88.20372 156.4828-88.20372' fill='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.0'>
+<path d='M0-130.88284L156.49094-88.20372' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M78.24547-130.88284V-83.84879' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,78.24547,-86.49667)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.33095 0L1.67535 1.31036L2.89789 0L1.67535-1.31036Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<path d='M1.09555-88.20372H-1.09555' fill='none'/>
+<g transform='translate(-9.72853,-91.42593)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.23855,2.304377)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.23855' y='2.304377' xlink:href='#gal-ostanek-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-2.5,-140.96025)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.23855,2.304377)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.23855' y='2.304377' xlink:href='#gal-ostanek-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(75.74547,-140.96025)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.23855,2.304377)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.23855' y='2.304377' xlink:href='#gal-ostanek-g2-53'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(151.49092,-140.96025)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.23855,2.304377)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.23855' y='2.304377' xlink:href='#gal-ostanek-g2-49'/>
+<use x='-46.257211' y='2.304377' xlink:href='#gal-ostanek-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(23.92229,-100.97801)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.23855,2.304377)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.23855' y='2.304377' xlink:href='#gal-ostanek-g1-32'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(121.00117,-106.81203)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.23855,2.304377)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.23855' y='2.304377' xlink:href='#gal-ostanek-g1-120'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(81.87845,-76.03505)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.23855,2.304377)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.23855' y='2.304377' xlink:href='#gal-ostanek-g1-14'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 6.22</span>: Residual \(R/q\) of the trial field \(c\,(3L^2 x - x^3)\) of the hanging bar of length \(L = 10\) m when \(c\) is determined with different weights. Top: Galerkin with the weight \(\psi\) (black), least squares and Petrov-Galerkin with the weight \(x\) (blue), collocation at \(x = 5\) m and subdomain \([0, 10]\) m (orange). All the residuals are straight lines, equal to \(q\) at <span class="nobr">\(x = 0\),</span> and none is zero everywhere. Bottom: the weights, normalized to the height \(1\) at <span class="nobr">\(x = L\),</span> the functions \(\psi\) and \(x\) and the impulse at \(x = 5\) m (orange arrow). The weight of the subdomain is constant and is not drawn.</figcaption></figure>
+<p>What about the field from the chapter on energy? In section <a class="xref" href="sec-potencialna-energija.html#sec-poskusna-polja">4.6.8</a> we took \(u = c\,x\) and with the energy obtained \(c = aL\) and the exact displacement of the end. Its residual is \(R = q = 6{,}010\) N/m for every <span class="nobr">\(c\),</span> as we saw for the <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-mocna-oblika" data-knowl="def-mocna-oblika">strong form</a> in section <a class="xref" href="sec-mocna-sibka-oblika.html#sec-robni-problem-palice">6.1.1</a>. For a weight that is positive everywhere, such as <span class="nobr">\(\psi\),</span> \(x\) or <span class="nobr">\(1\),</span> <span class="nobr">\(\int_0^L q\,w\,\mathrm{d}x &gt; 0\),</span> so the equation cannot be solved for any <span class="nobr">\(c\).</span> Moreover, the field does not meet the natural condition, <span class="nobr">\(EA\,u'(L) = EA\,c \ne 0\),</span> which the weak form does not demand. The weighted-residual method gives nothing with this field, while the cubic field <a class="xref" href="sec-galerkinova-metoda.html#eq-gal-kubicno-polje" data-knowl="eq-gal-kubicno-polje">(6.27)</a> has a nonzero second derivative and is therefore suitable. In the methods with a residual the trial field must have a second derivative that can follow the equation, while the weak form needs only the first, which EP (p. 323) describes for the weak form as &quot;weaker (i.e., lesser) differentiability&quot;.</p>
+
+<h3 id="sec-primerjava-metod"><span class="h-num">6.6.3</span> Comparison of the methods (primerjava metod)</h3>
+<p>Which of the ways is best? The answer depends on what we measure. Let us compare them on the trial field <a class="xref" href="sec-galerkinova-metoda.html#eq-gal-kubicno-polje" data-knowl="eq-gal-kubicno-polje">(6.27)</a>, which separates them. The table gives the number \(c\) in units of <span class="nobr">\(q/(EA\,L)\),</span> the displacement of the lower end and of the middle, and the energy of the error, which is \(\Pi(u_1) - \Pi(u) = \tfrac12\,\|u - u_1\|_{\mathrm{E}}^2\) by corollary <a class="xref" href="sec-potencialna-energija.html#cor-najmanjsa-energija-palice" data-knowl="cor-najmanjsa-energija-palice">4.93</a>, and the total energy \(\Pi\) (true field: \(\Pi = -391{,}03\) µJ, end \(19{,}52\) µm, middle \(14{,}64\) µm).</p>
+<table>
+<thead>
+<tr>
+<th>method</th>
+<th>\(c\)</th>
+<th>end µm</th>
+<th>middle µm</th>
+<th>\(U\) of error µJ</th>
+<th>\(\Pi\) µJ</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Galerkin <span class="nobr">(\(w = \psi\))</span></td>
+<td>\(25/96\)</td>
+<td>\(20{,}33\) <span class="nobr">(\(+4{,}2\ \%\))</span></td>
+<td>\(13{,}98\) <span class="nobr">(\(-4{,}5\ \%\))</span></td>
+<td>\(9{,}165\)</td>
+<td>\(-381{,}87\)</td>
+</tr>
+<tr>
+<td>least squares</td>
+<td>\(1/4\)</td>
+<td>\(19{,}52\) (exact)</td>
+<td>\(13{,}42\) <span class="nobr">(\(-8{,}3\ \%\))</span></td>
+<td>\(9{,}776\)</td>
+<td>\(-381{,}25\)</td>
+</tr>
+<tr>
+<td>Petrov-Galerkin, \(w = x\)</td>
+<td>\(1/4\)</td>
+<td>\(19{,}52\) (exact)</td>
+<td>\(13{,}42\)</td>
+<td>\(9{,}776\)</td>
+<td>\(-381{,}25\)</td>
+</tr>
+<tr>
+<td>collocation at \(L/2\)</td>
+<td>\(1/3\)</td>
+<td>\(26{,}03\) <span class="nobr">(\(+33\ \%\))</span></td>
+<td>\(17{,}89\) <span class="nobr">(\(+22\ \%\))</span></td>
+<td>\(39{,}10\)</td>
+<td>\(-351{,}93\)</td>
+</tr>
+<tr>
+<td>subdomain \([0, L]\)</td>
+<td>\(1/3\)</td>
+<td>\(26{,}03\)</td>
+<td>\(17{,}89\)</td>
+<td>\(39{,}10\)</td>
+<td>\(-351{,}93\)</td>
+</tr>
+</tbody>
+</table>
+<p>Figure <a class="xref" href="sec-galerkinova-metoda.html#fig-gal-primerjava" data-knowl="fig-gal-primerjava">6.23</a> shows the fields and the energies of the errors. The numbers differ for four reasons.</p>
+<p><strong>Galerkin has the smallest energy of the error.</strong> This is theorem <a class="xref" href="sec-ocene-napake.html#thm-najboljsi-priblizek" data-knowl="thm-najboljsi-priblizek">6.37</a>: among all the fields \(c\,\psi\) the field with the Ritz and Galerkin number has the error with the smallest <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">strain</a> energy. For \(c = \kappa\,q/(EA\,L)\) the energy of the error is \(9{,}165 + 5631\,(\kappa - \tfrac{25}{96})^2\) µJ (the table in section <a class="xref" href="sec-ocene-napake.html#sec-galerkinova-ortogonalnost">6.5.1</a>), the second term being the energy of the difference from the Galerkin field. So collocation has an energy of error \(39{,}10/9{,}165 = 4{,}3\) times larger than Galerkin. The number \(1/3\) is \(7/96\) away from <span class="nobr">\(25/96\),</span> the number \(1/4\) only <span class="nobr">\(1/96\),</span> and the second term grows with the square of the distance, so for collocation it is \(49\) times larger than for least squares, \(29{,}94\) against \(0{,}611\) µJ.</p>
+<p><strong>Least squares and \(w = x\) give the exact displacement of the end.</strong> For the weight \(w = x\) we have <span class="nobr">\(w' = 1\),</span> so <span class="nobr">\(B(u_1, x) = \int_0^L EA\,u_1'\,\mathrm{d}x = EA\,u_1(L)\),</span> and <span class="nobr">\(\ell(x) = \int_0^L q\,x\,\mathrm{d}x = \tfrac12\,qL^2\).</span> The equation \(\int_0^L R\,x\,\mathrm{d}x = 0\) is by lemma <a class="xref" href="sec-galerkinova-metoda.html#lem-galerkin-iz-ostanka" data-knowl="lem-galerkin-iz-ostanka">6.47</a> (the field meets the natural condition, <span class="nobr">\(F = 0\))</span> equal to <span class="nobr">\(B(u_1, x) = \ell(x)\),</span> so <span class="nobr">\(EA\,u_1(L) = \tfrac12\,qL^2\).</span> The weak form with \(w = x\) says the same for the true field, so <span class="nobr">\(u_1(L) = u(L)\).</span> This weight is \(EA\) times the field <span class="nobr">\(G = x/EA\),</span> which is the field of a unit force at the end of the bar, and for every admissible field \(v\) we have <span class="nobr">\(B(G, v) = \int_0^L v'\,\mathrm{d}x = v(L)\),</span> which is exactly the reason why the equation reads off the displacement of the end. In theorem <a class="xref" href="sec-ocene-napake.html#thm-tocnost-v-tocki" data-knowl="thm-tocnost-v-tocki">6.38</a> this is the field <span class="nobr">\(G_{\mathrm{L}}\),</span> which must lie in the trial family for the displacement to be exact. In the <a class="xref auto" href="sec-galerkinova-metoda.html#def-galerkinova-metoda" data-knowl="def-galerkinova-metoda">Galerkin method</a> the test family is the same as the trial family, so \(G_{\mathrm{L}}\) must lie in it, while in the Petrov-Galerkin method we choose the <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">test function</a> ourselves and choose <span class="nobr">\(x\).</span> In least squares the weight is proportional to <span class="nobr">\(x\),</span> because <span class="nobr">\(\partial R/\partial c = -6\,EA\,x\),</span> and the equation is the same.</p>
+<p><strong>Collocation at \(L/2\) is the same as subdomain.</strong> The residual is a straight line, <span class="nobr">\(R = q - 6c\,EA\,x\).</span> The mean of a straight line over an <a class="xref auto" href="sec-konvergenca-zaporedij.html#def-interval" data-knowl="def-interval">interval</a> is its value in the middle, <span class="nobr">\(\int_0^L R\,\mathrm{d}x = L\,R(L/2)\),</span> so the equations \(R(L/2) = 0\) and \(\int_0^L R\,\mathrm{d}x = 0\) give the same number.</p>
+<p><strong>Which measure is the right one?</strong> The energy of the error is smallest for Galerkin. The displacement of the end is best for least squares. In the middle the error of Galerkin is <span class="nobr">\(-4{,}5\ \%\),</span> of least squares \(-8{,}3\ \%\) and of collocation <span class="nobr">\(+22\ \%\).</span> The theorem holds only for the energy: Galerkin is best in this sense for every <a class="xref auto" href="sec-ritzova-metoda.html#def-ritzova-metoda" data-knowl="def-ritzova-metoda">trial space</a> (theorem <a class="xref" href="sec-ocene-napake.html#thm-najboljsi-priblizek" data-knowl="thm-najboljsi-priblizek">6.37</a>), while the exact displacement of the end in least squares is a consequence of the weight being proportional to <span class="nobr">\(x\),</span> which is the field of the force at the end of the bar, and not a property of the method. If we were interested in the displacement of the middle, nothing of this would be guaranteed.</p>
+
+<figure class="blk slika" id="fig-gal-primerjava"><p><span class="svgfig" role="img" aria-label="Displacement of the hanging bar: true field and three trial fields, bars of the energy of the error on the right"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='490.91pt' height='221.89pt' viewBox='-72.000004 -72.000011 363.636453 164.362042'>
+<defs>
+<path id='gal-primerjava-g0-14' d='M2.630137-4.353674C1.384807-4.054795 .418431-2.759651 .418431-1.554172C.418431-.597758 1.05604 .119552 1.992528 .119552C3.158157 .119552 3.985056-1.444583 3.985056-2.819427C3.985056-3.726027 3.58655-4.224159 3.247821-4.672478C2.889166-5.120797 2.30137-5.867995 2.30137-6.306351C2.30137-6.525529 2.500623-6.764633 2.849315-6.764633C3.148194-6.764633 3.347447-6.635118 3.556663-6.495641C3.755915-6.37609 3.955168-6.246575 4.104608-6.246575C4.353674-6.246575 4.503113-6.485679 4.503113-6.645081C4.503113-6.864259 4.343711-6.894147 3.985056-6.973848C3.466999-7.083437 3.327522-7.083437 3.16812-7.083437C2.391034-7.083437 2.032379-6.655044 2.032379-6.057285C2.032379-5.519303 2.321295-4.961395 2.630137-4.353674ZM2.749689-4.134496C2.998755-3.676214 3.297634-3.138232 3.297634-2.420922C3.297634-1.763387 2.919054-.099626 1.992528-.099626C1.444583-.099626 1.036115-.518057 1.036115-1.275218C1.036115-1.902864 1.404732-3.775841 2.749689-4.134496Z'/>
+<path id='gal-primerjava-g0-22' d='M2.30137-3.496887C2.351183-3.706102 2.450809-4.084682 2.450809-4.134496C2.450809-4.303861 2.331258-4.403487 2.161893-4.403487C2.132005-4.403487 1.853051-4.393524 1.763387-4.044832L.328767 1.723537C.298879 1.843088 .298879 1.863014 .298879 1.882939C.298879 2.032379 .408468 2.15193 .577833 2.15193C.787049 2.15193 .9066 1.972603 .926526 1.942715C.966376 1.853051 1.09589 1.334994 1.474471-.199253C1.793275 .069738 2.241594 .109589 2.440847 .109589C3.138232 .109589 3.526775-.33873 3.765878-.617684C3.855542-.169365 4.224159 .109589 4.662516 .109589C5.011208 .109589 5.240349-.119552 5.399751-.438356C5.569116-.797011 5.69863-1.404732 5.69863-1.424658C5.69863-1.524284 5.608966-1.524284 5.579078-1.524284C5.479452-1.524284 5.469489-1.484433 5.439601-1.344956C5.270237-.697385 5.090909-.109589 4.682441-.109589C4.41345-.109589 4.383562-.368618 4.383562-.56787C4.383562-.787049 4.503113-1.255293 4.582814-1.603985L4.861768-2.67995C4.891656-2.82939 4.991283-3.20797 5.031133-3.35741C5.080946-3.58655 5.180573-3.965131 5.180573-4.024907C5.180573-4.204234 5.041096-4.293898 4.891656-4.293898C4.841843-4.293898 4.582814-4.283935 4.503113-3.945205L4.034869-2.082192C3.915318-1.58406 3.805729-1.165629 3.775841-1.066002C3.765878-1.016189 3.287671-.109589 2.480697-.109589C1.982565-.109589 1.743462-.438356 1.743462-.976339C1.743462-1.265255 1.8132-1.544209 1.882939-1.823163L2.30137-3.496887Z'/>
+<path id='gal-primerjava-g0-32' d='M4.801993-6.655044C4.811955-6.694894 4.83188-6.75467 4.83188-6.804483C4.83188-6.90411 4.762142-6.914072 4.712329-6.914072C4.612702-6.914072 4.60274-6.894147 4.562889-6.714819L2.909091-.129514C2.15193-.219178 1.77335-.587796 1.77335-1.24533C1.77335-1.444583 1.77335-1.703611 2.311333-3.098381C2.351183-3.217933 2.420922-3.387298 2.420922-3.58655C2.420922-4.034869 2.102117-4.403487 1.603985-4.403487C.657534-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.836862-3.895392 1.235367-4.184309 1.574097-4.184309C1.653798-4.184309 1.823163-4.184309 1.823163-3.865504C1.823163-3.606476 1.723537-3.35741 1.594022-3.008717C1.115816-1.753425 1.115816-1.494396 1.115816-1.325031C1.115816-.37858 1.892902 .029888 2.849315 .089664C2.769614 .448319 2.769614 .468244 2.630137 .996264C2.600249 1.105853 2.400996 1.912827 2.400996 1.942715C2.400996 1.952677 2.400996 2.042341 2.520548 2.042341C2.540473 2.042341 2.590286 2.042341 2.610212 2.002491C2.6401 1.982565 2.699875 1.733499 2.729763 1.594022L3.108344 .109589C3.476961 .109589 4.353674 .109589 5.290162-.956413C5.69863-1.414695 5.907846-1.853051 6.017435-2.15193C6.107098-2.400996 6.326276-3.267746 6.326276-3.706102C6.326276-4.26401 6.057285-4.403487 5.88792-4.403487C5.638854-4.403487 5.389788-4.144458 5.389788-3.92528C5.389788-3.795766 5.449564-3.73599 5.539228-3.656289C5.648817-3.5467 5.897883-3.287671 5.897883-2.809465C5.897883-2.171856 5.379826-1.354919 5.031133-.996264C4.154421-.109589 3.516812-.109589 3.158157-.109589L4.801993-6.655044Z'/>
+<path id='gal-primerjava-g0-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='gal-primerjava-g0-117' d='M3.486924-.557908C3.596513-.14944 3.945205 .109589 4.373599 .109589C4.722291 .109589 4.951432-.119552 5.110834-.438356C5.280199-.797011 5.409714-1.404732 5.409714-1.424658C5.409714-1.524284 5.32005-1.524284 5.290162-1.524284C5.190535-1.524284 5.180573-1.484433 5.150685-1.344956C5.011208-.787049 4.821918-.109589 4.403487-.109589C4.194271-.109589 4.094645-.239103 4.094645-.56787C4.094645-.787049 4.214197-1.255293 4.293898-1.603985L4.572852-2.67995C4.60274-2.82939 4.702366-3.20797 4.742217-3.35741C4.79203-3.58655 4.891656-3.965131 4.891656-4.024907C4.891656-4.204234 4.752179-4.293898 4.60274-4.293898C4.552927-4.293898 4.293898-4.283935 4.214197-3.945205C4.024907-3.217933 3.58655-1.474471 3.466999-.946451C3.457036-.9066 3.058531-.109589 2.331258-.109589C1.8132-.109589 1.713574-.557908 1.713574-.926526C1.713574-1.484433 1.992528-2.271482 2.251557-2.958904C2.371108-3.257783 2.420922-3.39726 2.420922-3.58655C2.420922-4.034869 2.102117-4.403487 1.603985-4.403487C.657534-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.816936-3.815691 1.195517-4.184309 1.574097-4.184309C1.663761-4.184309 1.823163-4.174346 1.823163-3.855542C1.823163-3.616438 1.713574-3.327522 1.653798-3.178082C1.285181-2.191781 1.075965-1.574097 1.075965-1.085928C1.075965-.139477 1.763387 .109589 2.30137 .109589C2.958904 .109589 3.317559-.33873 3.486924-.557908Z'/>
+<path id='gal-primerjava-g0-120' d='M3.327522-3.008717C3.387298-3.267746 3.616438-4.184309 4.313823-4.184309C4.363636-4.184309 4.60274-4.184309 4.811955-4.054795C4.533001-4.004981 4.333748-3.755915 4.333748-3.516812C4.333748-3.35741 4.443337-3.16812 4.712329-3.16812C4.931507-3.16812 5.250311-3.347447 5.250311-3.745953C5.250311-4.26401 4.662516-4.403487 4.323786-4.403487C3.745953-4.403487 3.39726-3.875467 3.277709-3.646326C3.028643-4.303861 2.49066-4.403487 2.201743-4.403487C1.165629-4.403487 .597758-3.118306 .597758-2.86924C.597758-2.769614 .697385-2.769614 .71731-2.769614C.797011-2.769614 .826899-2.789539 .846824-2.879203C1.185554-3.935243 1.843088-4.184309 2.181818-4.184309C2.371108-4.184309 2.719801-4.094645 2.719801-3.516812C2.719801-3.20797 2.550436-2.540473 2.181818-1.145704C2.022416-.52802 1.673724-.109589 1.235367-.109589C1.175592-.109589 .946451-.109589 .737235-.239103C.986301-.288917 1.205479-.498132 1.205479-.777086C1.205479-1.046077 .986301-1.125778 .836862-1.125778C.537983-1.125778 .288917-.86675 .288917-.547945C.288917-.089664 .787049 .109589 1.225405 .109589C1.882939 .109589 2.241594-.587796 2.271482-.647572C2.391034-.278954 2.749689 .109589 3.347447 .109589C4.373599 .109589 4.941469-1.175592 4.941469-1.424658C4.941469-1.524284 4.851806-1.524284 4.821918-1.524284C4.732254-1.524284 4.712329-1.484433 4.692403-1.414695C4.363636-.348692 3.686177-.109589 3.367372-.109589C2.978829-.109589 2.819427-.428394 2.819427-.767123C2.819427-.986301 2.879203-1.205479 2.988792-1.643836L3.327522-3.008717Z'/>
+<path id='gal-primerjava-g1-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='gal-primerjava-g1-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='gal-primerjava-g1-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='gal-primerjava-g1-51' d='M2.889166-3.506849C3.706102-3.775841 4.283935-4.473225 4.283935-5.260274C4.283935-6.07721 3.407223-6.635118 2.450809-6.635118C1.444583-6.635118 .687422-6.03736 .687422-5.280199C.687422-4.951432 .9066-4.762142 1.195517-4.762142C1.504359-4.762142 1.703611-4.98132 1.703611-5.270237C1.703611-5.768369 1.235367-5.768369 1.085928-5.768369C1.39477-6.256538 2.052304-6.386052 2.410959-6.386052C2.819427-6.386052 3.367372-6.166874 3.367372-5.270237C3.367372-5.150685 3.347447-4.572852 3.088418-4.134496C2.789539-3.656289 2.450809-3.626401 2.201743-3.616438C2.122042-3.606476 1.882939-3.58655 1.8132-3.58655C1.733499-3.576588 1.663761-3.566625 1.663761-3.466999C1.663761-3.35741 1.733499-3.35741 1.902864-3.35741H2.34122C3.158157-3.35741 3.526775-2.67995 3.526775-1.703611C3.526775-.348692 2.839352-.059776 2.400996-.059776C1.972603-.059776 1.225405-.229141 .876712-.816936C1.225405-.767123 1.534247-.986301 1.534247-1.364882C1.534247-1.723537 1.265255-1.92279 .976339-1.92279C.737235-1.92279 .418431-1.783313 .418431-1.344956C.418431-.438356 1.344956 .219178 2.430884 .219178C3.646326 .219178 4.552927-.687422 4.552927-1.703611C4.552927-2.520548 3.92528-3.297634 2.889166-3.506849Z'/>
+<path id='gal-primerjava-g1-53' d='M4.473225-2.002491C4.473225-3.188045 3.656289-4.184309 2.580324-4.184309C2.102117-4.184309 1.673724-4.024907 1.315068-3.676214V-5.618929C1.514321-5.559153 1.843088-5.489415 2.161893-5.489415C3.387298-5.489415 4.084682-6.396015 4.084682-6.525529C4.084682-6.585305 4.054795-6.635118 3.985056-6.635118C3.975093-6.635118 3.955168-6.635118 3.905355-6.60523C3.706102-6.515567 3.217933-6.316314 2.550436-6.316314C2.15193-6.316314 1.693649-6.386052 1.225405-6.595268C1.145704-6.625156 1.125778-6.625156 1.105853-6.625156C1.006227-6.625156 1.006227-6.545455 1.006227-6.386052V-3.437111C1.006227-3.257783 1.006227-3.178082 1.145704-3.178082C1.215442-3.178082 1.235367-3.20797 1.275218-3.267746C1.384807-3.427148 1.753425-3.965131 2.560399-3.965131C3.078456-3.965131 3.327522-3.506849 3.407223-3.327522C3.566625-2.958904 3.58655-2.570361 3.58655-2.072229C3.58655-1.723537 3.58655-1.125778 3.347447-.707347C3.108344-.318804 2.739726-.059776 2.281445-.059776C1.554172-.059776 .986301-.587796 .816936-1.175592C.846824-1.165629 .876712-1.155666 .986301-1.155666C1.315068-1.155666 1.484433-1.404732 1.484433-1.643836S1.315068-2.132005 .986301-2.132005C.846824-2.132005 .498132-2.062267 .498132-1.603985C.498132-.747198 1.185554 .219178 2.30137 .219178C3.457036 .219178 4.473225-.737235 4.473225-2.002491Z'/>
+<path id='gal-primerjava-g1-54' d='M1.315068-3.267746V-3.506849C1.315068-6.027397 2.550436-6.386052 3.058531-6.386052C3.297634-6.386052 3.716065-6.326276 3.935243-5.987547C3.785803-5.987547 3.387298-5.987547 3.387298-5.539228C3.387298-5.230386 3.626401-5.080946 3.845579-5.080946C4.004981-5.080946 4.303861-5.17061 4.303861-5.559153C4.303861-6.156912 3.865504-6.635118 3.038605-6.635118C1.763387-6.635118 .418431-5.349938 .418431-3.148194C.418431-.488169 1.574097 .219178 2.500623 .219178C3.606476 .219178 4.552927-.71731 4.552927-2.032379C4.552927-3.297634 3.666252-4.254047 2.560399-4.254047C1.882939-4.254047 1.514321-3.745953 1.315068-3.267746ZM2.500623-.059776C1.872976-.059776 1.574097-.657534 1.514321-.806974C1.334994-1.275218 1.334994-2.072229 1.334994-2.251557C1.334994-3.028643 1.653798-4.024907 2.550436-4.024907C2.709838-4.024907 3.16812-4.024907 3.476961-3.407223C3.656289-3.038605 3.656289-2.530511 3.656289-2.042341C3.656289-1.564134 3.656289-1.066002 3.486924-.707347C3.188045-.109589 2.729763-.059776 2.500623-.059776Z'/>
+<path id='gal-primerjava-g1-55' d='M4.742217-6.067248C4.83188-6.1868 4.83188-6.206725 4.83188-6.41594H2.410959C1.195517-6.41594 1.175592-6.545455 1.135741-6.734745H.886675L.557908-4.682441H.806974C.836862-4.841843 .926526-5.469489 1.05604-5.589041C1.125778-5.648817 1.902864-5.648817 2.032379-5.648817H4.094645C3.985056-5.489415 3.198007-4.403487 2.978829-4.07472C2.082192-2.729763 1.753425-1.344956 1.753425-.328767C1.753425-.229141 1.753425 .219178 2.211706 .219178S2.669988-.229141 2.669988-.328767V-.836862C2.669988-1.384807 2.699875-1.932752 2.779577-2.470735C2.819427-2.699875 2.958904-3.556663 3.39726-4.174346L4.742217-6.067248Z'/>
+<path id='gal-primerjava-g1-57' d='M3.656289-3.16812V-2.849315C3.656289-.518057 2.620174-.059776 2.042341-.059776C1.872976-.059776 1.334994-.079701 1.066002-.418431C1.504359-.418431 1.58406-.707347 1.58406-.876712C1.58406-1.185554 1.344956-1.334994 1.125778-1.334994C.966376-1.334994 .667497-1.24533 .667497-.856787C.667497-.18929 1.205479 .219178 2.052304 .219178C3.337484 .219178 4.552927-1.135741 4.552927-3.277709C4.552927-5.957659 3.407223-6.635118 2.520548-6.635118C1.972603-6.635118 1.484433-6.455791 1.05604-6.007472C.647572-5.559153 .418431-5.140722 .418431-4.393524C.418431-3.148194 1.295143-2.171856 2.410959-2.171856C3.01868-2.171856 3.427148-2.590286 3.656289-3.16812ZM2.420922-2.400996C2.261519-2.400996 1.803238-2.400996 1.494396-3.028643C1.315068-3.39726 1.315068-3.895392 1.315068-4.383562C1.315068-4.921544 1.315068-5.389788 1.524284-5.758406C1.793275-6.256538 2.171856-6.386052 2.520548-6.386052C2.978829-6.386052 3.307597-6.047323 3.476961-5.599004C3.596513-5.280199 3.636364-4.652553 3.636364-4.194271C3.636364-3.367372 3.297634-2.400996 2.420922-2.400996Z'/>
+<path id='gal-primerjava-g1-74' d='M3.008717-1.474471C3.008717-.557908 2.510585 0 1.982565 0C1.92279 0 1.24533 0 .886675-.577833C1.404732-.577833 1.524284-.876712 1.524284-1.135741C1.524284-1.494396 1.24533-1.693649 .966376-1.693649C.747198-1.693649 .408468-1.554172 .408468-1.115816C.408468-.37858 1.115816 .219178 2.002491 .219178C3.01868 .219178 3.745953-.478207 3.855542-1.225405C3.865504-1.305106 3.865504-1.325031 3.865504-1.663761V-6.087173C3.865504-6.495641 4.004981-6.495641 4.632628-6.495641V-6.804483C4.194271-6.784558 3.815691-6.774595 3.347447-6.774595C2.929016-6.774595 2.052304-6.774595 1.673724-6.804483V-6.495641H2.032379C3.008717-6.495641 3.008717-6.366127 3.008717-6.017435V-1.474471Z'/>
+</defs>
+<g id='gal-primerjava-page1'>
+<g stroke-miterlimit='10' transform='translate(-65.827883,76.566422)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<path d='M0 0H154.98303' fill='none'/>
+<g transform='translate(152.50658,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(162.9682,-2.15277)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-65.827883,76.566422)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-65.827883' y='76.566422' xlink:href='#gal-primerjava-g0-120'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 0V133.49986' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,131.0234)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-2.86229,141.48503)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-65.827883,76.566422)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-65.827883' y='76.566422' xlink:href='#gal-primerjava-g0-117'/>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='1.4'>
+<path d='M0 0C0 0 2.09756 2.76651 2.90318 3.81396C3.7088 4.86142 5.00075 6.52376 5.80637 7.54941C6.61198 8.57506 7.90395 10.20236 8.70956 11.20618C9.51518 12.20999 10.80713 13.80226 11.61275 14.78426C12.41837 15.76625 13.71031 17.32356 14.51593 18.28374C15.32155 19.24391 16.61351 20.76627 17.41913 21.70462S19.5167 24.1303 20.32231 25.04683C21.12793 25.96336 22.41989 27.41573 23.22551 28.31044S25.32307 30.62247 26.1287 31.49536C26.93431 32.36826 28.22626 33.75061 29.03188 34.60168C29.8375 35.45276 31.12946 36.80008 31.93507 37.62933C32.74069 38.45859 34.03264 39.77097 34.83826 40.57838C35.64388 41.3858 36.93584 42.66315 37.74146 43.44875C38.54707 44.23434 39.83902 45.47672 40.64464 46.24051S42.7422 48.2117 43.54782 48.95367C44.35344 49.69565 45.6454 50.86801 46.45102 51.58817C47.25664 52.30832 48.54858 53.44572 49.3542 54.14404S51.45178 55.94475 52.2574 56.62125C53.06302 57.29774 54.35497 58.36517 55.16058 59.01985C55.9662 59.67453 57.25815 60.70692 58.06377 61.33978C58.86938 61.97264 60.16135 62.97006 60.96696 63.5811C61.77258 64.19214 63.06453 65.1546 63.87015 65.74382S65.96773 67.26047 66.77335 67.82787C67.57896 68.39526 68.87091 69.28767 69.67653 69.83324C70.48215 70.3788 71.7741 71.23624 72.57971 71.76C73.38533 72.28375 74.67729 73.10622 75.48291 73.60815C76.28853 74.11009 77.58047 74.89754 78.3861 75.37766C79.19171 75.85777 80.48367 76.61024 81.28929 77.06853C82.09491 77.52681 83.38686 78.24428 84.19247 78.68074C84.9981 79.1172 86.29004 79.79968 87.09566 80.21434S89.19324 81.2765 89.99886 81.66934C90.80447 82.06218 92.09642 82.67467 92.90204 83.04567S94.99962 83.99413 95.80524 84.3433C96.61086 84.69249 97.9028 85.235 98.70842 85.56236S100.80598 86.39726 101.6116 86.7028C102.41722 87.00835 103.70918 87.48083 104.5148 87.76456C105.32042 88.04828 106.61237 88.48582 107.41798 88.74773C108.2236 89.00963 109.51555 89.41212 110.32117 89.6522C111.12679 89.89229 112.41875 90.25983 113.22437 90.47809C114.02998 90.69635 115.32193 91.02893 116.12755 91.22537S118.22513 91.71938 119.03075 91.89398C119.83636 92.06859 121.12831 92.33112 121.93393 92.4839C122.73955 92.63669 124.0315 92.86424 124.83711 92.99522C125.64273 93.1262 126.9347 93.31879 127.74031 93.42795C128.54593 93.53711 129.83788 93.69467 130.6435 93.782C131.44911 93.86932 132.74107 93.99193 133.54669 94.05743C134.35231 94.12294 135.64426 94.21051 136.44987 94.2542C137.2555 94.29788 138.54744 94.35048 139.35306 94.37236S142.25626 94.41193 142.25626 94.41193' fill='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M0 0C0 0 2.09756 2.17422 2.90318 3.00882C3.7088 3.84341 5.00075 5.18166 5.80637 6.01521C6.61198 6.84877 7.90395 8.18477 8.70956 9.01659C9.51518 9.8484 10.80713 11.18105 11.61275 12.01042C12.41837 12.8398 13.71031 14.16798 14.51593 14.99423S16.61351 17.14307 17.41913 17.9655S19.5167 20.10385 20.32231 20.92177C21.12793 21.73969 22.41989 23.0478 23.22551 23.86049C24.03113 24.67317 25.32307 25.97235 26.1287 26.77911C26.93431 27.58588 28.22626 28.875 29.03188 29.67517S31.12946 31.75333 31.93507 32.5462C32.74069 33.33908 34.03264 34.60483 34.83826 35.38971S36.93584 37.42693 37.74146 38.2031C38.54707 38.97926 39.83902 40.21709 40.64464 40.98387C41.45026 41.75066 42.7422 42.97287 43.54782 43.72957S45.6454 45.69171 46.45102 46.43764C47.25664 47.18356 48.54858 48.37128 49.3542 49.10571C50.15982 49.84015 51.45178 51.00879 52.2574 51.73105S54.35497 53.60194 55.16058 54.31136C55.9662 55.02077 57.25815 56.14816 58.06377 56.844C58.86938 57.53983 60.16135 58.64493 60.96696 59.3265C61.77258 60.00809 63.06453 61.08978 63.87015 61.75641C64.67577 62.42303 65.96773 63.4802 66.77335 64.13118C67.57896 64.78217 68.87091 65.81364 69.67653 66.44829C70.48215 67.08293 71.7741 68.08768 72.57971 68.70526C73.38533 69.32285 74.67729 70.29965 75.48291 70.8995C76.28853 71.49936 77.58047 72.4472 78.3861 73.02864C79.19171 73.61008 80.48367 74.5278 81.28929 75.0901S83.38686 76.5389 84.19247 77.08138C84.9981 77.62386 86.29004 78.47798 87.09566 78.99994S89.19324 80.34258 89.99886 80.8433C90.80447 81.34404 92.09642 82.13013 92.90204 82.60896C93.70766 83.0878 94.99962 83.83821 95.80524 84.29445S97.9028 85.46428 98.70842 85.89722C99.51404 86.33015 100.80598 87.00586 101.6116 87.4148C102.41722 87.82373 103.70918 88.46039 104.5148 88.84464C105.32042 89.22888 106.61237 89.82535 107.41798 90.1842C108.2236 90.54306 109.51555 91.0983 110.32117 91.43108C111.12679 91.76385 112.41875 92.27666 113.22437 92.58266C114.02998 92.88866 115.32193 93.358 116.12755 93.63652S118.22513 94.33974 119.03075 94.59009C119.83636 94.84044 121.12831 95.21942 121.93393 95.44092C122.73955 95.66241 124.0315 95.99458 124.83711 96.18651C125.64273 96.37843 126.9347 96.6626 127.74031 96.82426C128.54593 96.98593 129.83788 97.22102 130.6435 97.35175C131.44911 97.48247 132.74107 97.66739 133.54669 97.76646C134.35231 97.86554 135.64426 97.99915 136.44987 98.06589C137.2555 98.13263 138.54744 98.21382 139.35306 98.24753C140.15868 98.28123 142.25626 98.30885 142.25626 98.30885' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M0 0C0 0 2.09756 2.08607 2.90318 2.88683C3.7088 3.68758 5.00075 4.9716 5.80637 5.77136C6.61198 6.57112 7.90395 7.85294 8.70956 8.65103C9.51518 9.44913 10.80713 10.72777 11.61275 11.52353S13.71031 13.59361 14.51593 14.38637C15.32155 15.17912 16.61351 16.4481 17.41913 17.23718S19.5167 19.28885 20.32231 20.0736C21.12793 20.85834 22.41989 22.11337 23.22551 22.89311S25.32307 24.91936 26.1287 25.69344C26.93431 26.46751 28.22626 27.7044 29.03188 28.47214C29.8375 29.23987 31.12946 30.46605 31.93507 31.22678C32.74069 31.9875 34.03264 33.20195 34.83826 33.955S36.93584 35.90958 37.74146 36.65428C38.54707 37.39899 39.83902 38.58665 40.64464 39.32236C41.45026 40.05806 42.7422 41.23074 43.54782 41.95677S45.6454 43.83942 46.45102 44.55508C47.25664 45.27075 48.54858 46.41022 49.3542 47.11488C50.15982 47.81955 51.45178 48.94087 52.2574 49.63387C53.06302 50.32686 54.35497 51.42888 55.16058 52.10951C55.9662 52.79015 57.25815 53.87186 58.06377 54.53949C58.86938 55.20712 60.16135 56.26747 60.96696 56.92142C61.77258 57.57536 63.06453 58.61317 63.87015 59.25278C64.67577 59.89238 65.96773 60.90665 66.77335 61.53123C67.57896 62.15582 68.87091 63.1455 69.67653 63.7544S71.7741 65.32729 72.57971 65.91985C73.38533 66.5124 74.67729 67.44968 75.48291 68.02522C76.28853 68.60077 77.58047 69.51015 78.3861 70.06801C79.19171 70.62587 80.48367 71.50642 81.28929 72.04593C82.09491 72.58543 83.38686 73.43597 84.19247 73.95645C84.9981 74.47693 86.29004 75.29643 87.09566 75.79723C87.90128 76.29802 89.19324 77.08546 89.99886 77.5659C90.80447 78.04634 92.09642 78.80055 92.90204 79.25996C93.70766 79.71938 94.99962 80.43938 95.80524 80.8771C96.61086 81.31483 97.9028 81.99953 98.70842 82.41492C99.51404 82.8303 100.80598 83.4786 101.6116 83.87096C102.41722 84.2633 103.70918 84.87411 104.5148 85.24278S106.61237 86.18379 107.41798 86.5281C108.2236 86.87242 109.51555 87.40514 110.32117 87.72441C111.12679 88.04369 112.41875 88.5357 113.22437 88.82928C114.02998 89.12286 115.32193 89.57318 116.12755 89.84042C116.93317 90.10767 118.22513 90.51518 119.03075 90.75539C119.83636 90.99559 121.12831 91.35916 121.93393 91.57167S124.0315 92.1029 124.83711 92.28706C125.64273 92.47122 126.9347 92.74387 127.74031 92.89899C128.54593 93.05411 129.83788 93.27966 130.6435 93.40508C131.44911 93.53049 132.74107 93.7079 133.54669 93.80296C134.35231 93.89803 135.64426 94.02625 136.44987 94.09029C137.2555 94.15433 138.54744 94.23221 139.35306 94.26454C140.15868 94.29688 142.25626 94.32336 142.25626 94.32336' fill='none'/>
+</g>
+</g>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.9'>
+<path d='M0 0C0 0 2.09756 2.78148 2.90318 3.84917C3.7088 4.91685 5.00075 6.62883 5.80637 7.69518C6.61198 8.76152 7.90395 10.47063 8.70956 11.53474C9.51518 12.59886 10.80713 14.30367 11.61275 15.36467S13.71031 18.1248 14.51593 19.18181S16.61351 21.93082 17.41913 22.98294S19.5167 25.71848 20.32231 26.7648C21.12793 27.81113 22.41989 29.48457 23.22551 30.52423S25.32307 33.22589 26.1287 34.25798C26.93431 35.29007 28.22626 36.93922 29.03188 37.96286S31.12946 40.62141 31.93507 41.63571C32.74069 42.65001 34.03264 44.26921 34.83826 45.27328C35.64388 46.27736 36.93584 47.87946 37.74146 48.8724C38.54707 49.86536 39.83902 51.44891 40.64464 52.42984S42.7422 54.97429 43.54782 55.9423C44.35344 56.91032 45.6454 58.4525 46.45102 59.40674S48.54858 61.8803 49.3542 62.81987C50.15982 63.75945 51.45178 65.25455 52.2574 66.17854C53.06302 67.10254 54.35497 68.5719 55.16058 69.47942C55.9662 70.38693 57.25815 71.82921 58.06377 72.71939C58.86938 73.60957 60.16135 75.02332 60.96696 75.89525C61.77258 76.76718 63.06453 78.15091 63.87015 79.00371C64.67577 79.8565 65.96773 81.2089 66.77335 82.04169C67.57896 82.87448 68.87091 84.19406 69.67653 85.00594C70.48215 85.81781 71.7741 87.10312 72.57971 87.8932C73.38533 88.68329 74.67729 89.93294 75.48291 90.70032S77.58047 92.68024 78.3861 93.42404C79.19171 94.16785 80.48367 95.34184 81.28929 96.06119C82.09491 96.78053 83.38686 97.9146 84.19247 98.60858C84.9981 99.30257 86.29004 100.39523 87.09566 101.06297S89.19324 102.78061 89.99886 103.4212C90.80447 104.0618 92.09642 105.06738 92.90204 105.67995C93.70766 106.29251 94.99962 107.25253 95.80524 107.83618S97.9028 109.33272 98.70842 109.88657C99.51404 110.44041 100.80598 111.3048 101.6116 111.82794C102.41722 112.35109 103.70918 113.16551 104.5148 113.65706C105.32042 114.1486 106.61237 114.91168 107.41798 115.37076C108.2236 115.82983 109.51555 116.54012 110.32117 116.96584S112.41875 118.0476 113.22437 118.43907C114.02998 118.83054 115.32193 119.43095 116.12755 119.78728C116.93317 120.1436 118.22513 120.68694 119.03075 121.0072C119.83636 121.32747 121.12831 121.81227 121.93393 122.09561S124.0315 122.80386 124.83711 123.04941C125.64273 123.29495 126.9347 123.6585 127.74031 123.86533C128.54593 124.07216 129.83788 124.3729 130.6435 124.54012C131.44911 124.70734 132.74107 124.94388 133.54669 125.07063C134.35231 125.19739 135.64426 125.36832 136.44987 125.45369C137.2555 125.53906 138.54744 125.6429 139.35306 125.68602S142.25626 125.76448 142.25626 125.76448' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M71.13182 0V86.53238' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M142.26364 0V125.90486' fill='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(-2.5,-10.07741)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-65.827883,76.566422)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-65.827883' y='76.566422' xlink:href='#gal-primerjava-g1-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(68.63182,-10.07741)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-65.827883,76.566422)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-65.827883' y='76.566422' xlink:href='#gal-primerjava-g1-53'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(137.26363,-10.07741)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-65.827883,76.566422)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-65.827883' y='76.566422' xlink:href='#gal-primerjava-g1-49'/>
+<use x='-60.846544' y='76.566422' xlink:href='#gal-primerjava-g1-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(147.31934,123.65486)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-65.827883,76.566422)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-65.827883' y='76.566422' xlink:href='#gal-primerjava-g1-50'/>
+<use x='-60.846544' y='76.566422' xlink:href='#gal-primerjava-g1-54'/>
+<use x='-55.865205' y='76.566422' xlink:href='#gal-primerjava-g0-59'/>
+<use x='-53.097796' y='76.566422' xlink:href='#gal-primerjava-g1-48'/>
+<use x='-48.116457' y='76.566422' xlink:href='#gal-primerjava-g1-51'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(147.31934,97.39046)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-65.827883,76.566422)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-65.827883' y='76.566422' xlink:href='#gal-primerjava-g1-50'/>
+<use x='-60.846544' y='76.566422' xlink:href='#gal-primerjava-g1-48'/>
+<use x='-55.865205' y='76.566422' xlink:href='#gal-primerjava-g0-59'/>
+<use x='-53.097796' y='76.566422' xlink:href='#gal-primerjava-g1-51'/>
+<use x='-48.116457' y='76.566422' xlink:href='#gal-primerjava-g1-51'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(147.31934,89.16763)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-65.827883,76.566422)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-65.827883' y='76.566422' xlink:href='#gal-primerjava-g1-49'/>
+<use x='-60.846544' y='76.566422' xlink:href='#gal-primerjava-g1-57'/>
+<use x='-55.865205' y='76.566422' xlink:href='#gal-primerjava-g0-59'/>
+<use x='-53.097796' y='76.566422' xlink:href='#gal-primerjava-g1-53'/>
+<use x='-48.116457' y='76.566422' xlink:href='#gal-primerjava-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M216.2411 0H354.15263' fill='none'/>
+<g transform='translate(351.67618,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<path d='M216.2411 0V120.84734' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,216.2411,118.37088)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(210.65892,130.77693)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-65.827883,76.566422)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-65.827883' y='76.566422' xlink:href='#gal-primerjava-g0-22'/>
+<use x='-59.824899' y='76.566422' xlink:href='#gal-primerjava-g1-74'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#d9d9ff'>
+<g stroke='#00f'>
+<path d='M224.77701 0V26.07846H241.84839V0ZM241.84839 26.07846'/>
+</g>
+</g>
+<g fill='#ffd9d9'>
+<g stroke='#f00'>
+<path d='M253.22975 0V27.81705H270.30113V0ZM270.30113 27.81705'/>
+</g>
+</g>
+<g fill='#b3ffb3'>
+<g stroke='#0f0'>
+<path d='M281.6825 0V111.25687H298.75388V0ZM298.75388 111.25687'/>
+</g>
+</g>
+<g fill='#b3ffb3'>
+<g stroke='#0f0'>
+<path d='M310.13524 0V111.25687H327.20662V0ZM327.20662 111.25687'/>
+</g>
+</g>
+<g transform='translate(221.924,31.7555)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-65.827883,76.566422)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-65.827883' y='76.566422' xlink:href='#gal-primerjava-g1-57'/>
+<use x='-60.846544' y='76.566422' xlink:href='#gal-primerjava-g0-59'/>
+<use x='-58.079135' y='76.566422' xlink:href='#gal-primerjava-g1-49'/>
+<use x='-53.097796' y='76.566422' xlink:href='#gal-primerjava-g1-54'/>
+<use x='-48.116457' y='76.566422' xlink:href='#gal-primerjava-g1-53'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(250.37674,33.46277)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-65.827883,76.566422)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-65.827883' y='76.566422' xlink:href='#gal-primerjava-g1-57'/>
+<use x='-60.846544' y='76.566422' xlink:href='#gal-primerjava-g0-59'/>
+<use x='-58.079135' y='76.566422' xlink:href='#gal-primerjava-g1-55'/>
+<use x='-53.097796' y='76.566422' xlink:href='#gal-primerjava-g1-55'/>
+<use x='-48.116457' y='76.566422' xlink:href='#gal-primerjava-g1-54'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(278.82948,116.83429)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-65.827883,76.566422)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-65.827883' y='76.566422' xlink:href='#gal-primerjava-g1-51'/>
+<use x='-60.846544' y='76.566422' xlink:href='#gal-primerjava-g1-57'/>
+<use x='-55.865205' y='76.566422' xlink:href='#gal-primerjava-g0-59'/>
+<use x='-53.097796' y='76.566422' xlink:href='#gal-primerjava-g1-49'/>
+<use x='-48.116457' y='76.566422' xlink:href='#gal-primerjava-g1-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(307.28223,116.83429)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-65.827883,76.566422)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-65.827883' y='76.566422' xlink:href='#gal-primerjava-g1-51'/>
+<use x='-60.846544' y='76.566422' xlink:href='#gal-primerjava-g1-57'/>
+<use x='-55.865205' y='76.566422' xlink:href='#gal-primerjava-g0-59'/>
+<use x='-53.097796' y='76.566422' xlink:href='#gal-primerjava-g1-49'/>
+<use x='-48.116457' y='76.566422' xlink:href='#gal-primerjava-g1-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(229.87657,-10.57742)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-65.827883,76.566422)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-65.827883' y='76.566422' xlink:href='#gal-primerjava-g0-32'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(258.90802,-7.93852)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-65.827883,76.566422)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-65.827883' y='76.566422' xlink:href='#gal-primerjava-g0-120'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(287.80695,-10.57741)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-65.827883,76.566422)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-65.827883' y='76.566422' xlink:href='#gal-primerjava-g0-14'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(316.17114,-10.07741)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-65.827883,76.566422)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-65.827883' y='76.566422' xlink:href='#gal-primerjava-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 6.23</span>: Displacement of the hanging bar of length \(L = 10\) m (left, in µm) and energy of the error (right, in µJ) for five ways for the field <span class="nobr">\(c\,(3L^2 x - x^3)\).</span> The true field \(a\,(2Lx - x^2)\) is the thick black line. The weight \(\psi\) (Galerkin) gives the blue curve, the weight \(x\) (Petrov-Galerkin, the same as in least squares) the orange one, the weight \(\delta\) (collocation at \(x = 5\) m) and the weight \(1\) (subdomain) the dashed black one: these two curves coincide. The vertical dashed lines are at \(x = 5\) m and \(x = 10\) m. The bars on the right are labelled with the weights, each bar is the energy of the error \(\Pi(u_1) - \Pi(u)\) of the corresponding field.</figcaption></figure>
+<p><strong><a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">Matrices</a>.</strong> In the Ritz method the matrix \(K\) is symmetric, because \(B\) is symmetric, and so it is in the Galerkin method with a symmetric \(B\) (theorem <a class="xref" href="sec-galerkinova-metoda.html#thm-galerkin-ritz" data-knowl="thm-galerkin-ritz">6.44</a>). In least squares the matrix \(\int_0^L (EA\,\psi_{\mathrm{i}}')'\,(EA\,\psi_{\mathrm{j}}')'\,\mathrm{d}x\) is symmetric already because of the commutativity of the product, and as a matrix of inner products of the <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> \((EA\,\psi_{\mathrm{i}}')'\) it is <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite</a> if these functions are independent (lemma <a class="xref" href="sec-skalarni-produkt-funkcij.html#lem-matrika-skalarnih-produktov" data-knowl="lem-matrika-skalarnih-produktov">6.28</a>). EP (p. 350) writes that this is &quot;the only other method, in addition to the Ritz method, that is based on the minimization of a <a class="xref auto" href="sec-variacijski-racun.html#def-funkcional" data-knowl="def-funkcional">functional</a> and results in a symmetric coefficient matrix&quot;. In collocation and Petrov-Galerkin the matrix is in general unsymmetric (EP, p. 340), and we do not have the positive definiteness that guarantees a single solution (theorem <a class="xref" href="sec-skalarni-produkt-funkcij.html#thm-sistem-pozitivno-definitna" data-knowl="thm-sistem-pozitivno-definitna">6.29</a>). For \(n = 1\) the matrix is \(1 \times 1\) and always symmetric, so our example cannot show this. In collocation the choice of points matters: EP (p. 358) shows that for a simply supported <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beam</a> with two parameters the points \(L/4\) and \(3L/4\) give the same relations between the numbers \(c_1\) and <span class="nobr">\(c_2\),</span> so no solution follows from them.</p>
+<p><strong>Finite differences (končne razlike).</strong> We can use collocation in one more way. We divide the bar into \(n\) equal parts of length \(h = L/n\) with grid points \(x_{\mathrm{i}} = i h\) and demand that the residual be zero at the points <span class="nobr">\(x_1, \dots, x_{\mathrm{n}}\).</span> The unknowns are not coefficients of trial functions but the values <span class="nobr">\(u_{\mathrm{i}} \approx u(x_{\mathrm{i}})\),</span> and the second <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivative</a> is replaced by a difference. The central quotient of section <a class="xref" href="sec-ravnotezne-enacbe.html#sec-centralni-kolicnik">2.7.4</a> gives \(u'(x_{\mathrm{i}} + h/2) \approx (u_{\mathrm{i}+1} - u_{\mathrm{i}})/h\) and <span class="nobr">\(u'(x_{\mathrm{i}} - h/2) \approx (u_{\mathrm{i}} - u_{\mathrm{i}-1})/h\),</span> and with it applied to \(u'\) we obtain</p>
+<div class="eq">\[u''(x_{\mathrm{i}}) \approx \frac{u'(x_{\mathrm{i}} + h/2) - u'(x_{\mathrm{i}} - h/2)}{h} \approx \frac{u_{\mathrm{i}+1} - 2u_{\mathrm{i}} + u_{\mathrm{i}-1}}{h^2} .\]</div>
+<p>For constant \(EA\) the equation at the point \(x_{\mathrm{i}}\) is then <span class="nobr">\(EA\,(u_{\mathrm{i}+1} - 2u_{\mathrm{i}} + u_{\mathrm{i}-1})/h^2 + q = 0\),</span> at \(x_0 = 0\) we have <span class="nobr">\(u_0 = 0\),</span> and the natural condition \(u'(L) = 0\) we write with the central quotient around <span class="nobr">\(x_{\mathrm{n}}\),</span> <span class="nobr">\((u_{\mathrm{n}+1} - u_{\mathrm{n}-1})/(2h) = 0\),</span> so \(u_{\mathrm{n}+1} = u_{\mathrm{n}-1}\) (the point \(x_{\mathrm{n}+1}\) is auxiliary, outside the bar). For \(n = 2\) and \(n = 4\) we solved the system with NumPy. We obtain exactly the true values: \(14{,}64\) and \(19{,}52\) µm for <span class="nobr">\(n = 2\),</span> and <span class="nobr">\(8{,}540\),</span> <span class="nobr">\(14{,}64\),</span> \(18{,}30\) and \(19{,}52\) µm for <span class="nobr">\(n = 4\).</span> Why exactly? The true field is quadratic, and the central quotient of a quadratic function is exact (section <a class="xref" href="sec-ravnotezne-enacbe.html#sec-centralni-kolicnik">2.7.4</a>), so the true values satisfy the difference equations. The system has a single solution: the homogeneous system gives \(u_{\mathrm{i}+1} - 2u_{\mathrm{i}} + u_{\mathrm{i}-1} = 0\) for \(i &lt; n\) and <span class="nobr">\(u_0 = 0\),</span> so \(u_{\mathrm{i}} = i s\) for some number <span class="nobr">\(s\),</span> and the last equation \(u_{\mathrm{n}-1} - u_{\mathrm{n}} = 0\) gives <span class="nobr">\(s = 0\).</span> The exactness is therefore a consequence of the quadratic true field and not a property of the method, for other fields the central quotient is not exact and the values are not hit exactly. This paragraph is not from the sources. We do not treat the boundary element method (metoda robnih elementov) in the book.</p>
+<p>The <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">eigenvalues</a> that the Ritz method looks for in vibration (the Rayleigh quotient) need mass and motion, so we treat them in chapter <a class="xref stub" href="ch-nihanje-zveznih-sistemov.html">13</a>.</p>
+<p>With this we have answered the two questions from the start of the section. We can use the weak form directly, without energy: the Galerkin method with the same functions for the trial and the test fields gives for a symmetric \(B\) the same equations as the Ritz method, and the orthogonality of the error and Cea's estimate hold. We can also make the error small with weighted residuals, and the five ways of choosing the weights give for the same cubic field an energy of error between \(9{,}165\) and \(39{,}10\) µJ. The theorem on the best approximation guarantees this only for the Galerkin choice, so the next section builds the trial fields from pieces of straight lines, which this theorem covers.</p>
+
+</main>
+<footer><nav class="pager"><a href="sec-ocene-napake.html" rel="prev">← 6.5</a><a href="index.html">Contents</a><a href="sec-odsekoma-linearna.html" rel="next">6.7 →</a></nav></footer>
+</body>
+</html>
