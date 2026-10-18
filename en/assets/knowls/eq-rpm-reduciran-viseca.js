@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rpm-reduciran-viseca"] = {"html": "<div class=\"eq\">\\[\\frac{EA}{h} \\begin{pmatrix} 2 &amp; -1 \\\\ -1 &amp; 1 \\end{pmatrix} \\begin{pmatrix} d_1 \\\\ d_2 \\end{pmatrix} = \\begin{pmatrix} 30{,}05 \\\\ 15{,}02 \\end{pmatrix}\\ \\text{N} . \\tag{7.17}\\]</div>", "href": "sec-robni-pogoji-mke.html#eq-rpm-reduciran-viseca"};

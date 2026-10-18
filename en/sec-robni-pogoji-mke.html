@@ -1,0 +1,1545 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7.3 Boundary conditions, solution and reactions (robni pogoji, rešitev in reakcije) · Chapter 7</title>
+<script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/style.css">
+<noscript><style>#loadbar { display: none; }</style></noscript>
+<script src="assets/config.js"></script>
+<script src="assets/load.js"></script>
+<script defer src="assets/interaktivno.js"></script>
+<script defer src="assets/book.js"></script>
+<script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<div id="loadbar" aria-hidden="true"></div>
+<header class="top"><a class="home" href="index.html">Mechanics</a><nav class="pager"><a href="sec-sestavljanje.html" rel="prev">← 7.2</a><a href="index.html">Contents</a><a href="sec-kvadratni-element.html" rel="next">7.4 →</a></nav>
+<span class="tools"><a class="lang" href="../sl/sec-robni-pogoji-mke.html" hreflang="sl">Slovenščina</a><button type="button" class="theme-toggle" title="Light or dark theme" aria-label="Light or dark theme"></button><button type="button" data-details="open">Expand all</button><button type="button" data-details="close">Collapse all</button><button type="button" class="fig-side-toggle" aria-pressed="false">Figures alongside</button></span></header>
+<main>
+<p class="updated">Last updated 18 October 2026, 23:31</p>
+<p class="crumb"><a href="ch-mke-palice.html"><span class="h-num">Chapter 7</span> Basics of FEM for bars and trusses</a></p>
+<h2 id="sec-robni-pogoji-mke"><span class="h-num">7.3</span> Boundary conditions, solution and reactions (robni pogoji, rešitev in reakcije)</h2>
+<p>In section <a class="xref" href="sec-sestavljanje.html#sec-viseca-palica-sestavljena">7.2.3</a> we assembled the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> and the right-hand side of the hanging bar of chapter <a class="xref" href="ch-sibka-oblika.html">6</a>. The bar is made of steel, \(L = 10\) m long, with diameter 10 mm, axial stiffness \(EA = 1{,}539 \cdot 10^7\) N and self weight \(q = \rho g A = 6{,}010\) N/m. The axis \(x\) points down. We divide it into two elements of length \(h = 5\) m, with nodes <span class="nobr">\(0\),</span> \(1\) and \(2\) at <span class="nobr">\(x = 0\),</span> \(5\) and \(10\) m. The unknowns are the node displacements <span class="nobr">\(d_0\),</span> <span class="nobr">\(d_1\),</span> \(d_2\) along the axis, and the right-hand side consists of consistent nodal forces (definition <a class="xref" href="sec-element-palice.html#def-konsistentne-sile" data-knowl="def-konsistentne-sile">7.7</a>), which for an element with constant load is half the weight of the element at each of its nodes. The system of the whole structure is</p>
+<div class="eq" id="eq-rpm-celoten-sistem">\[\frac{EA}{h} \begin{pmatrix} 1 &amp; -1 &amp; 0 \\ -1 &amp; 2 &amp; -1 \\ 0 &amp; -1 &amp; 1 \end{pmatrix} \begin{pmatrix} d_0 \\ d_1 \\ d_2 \end{pmatrix} = \begin{pmatrix} 15{,}02 \\ 30{,}05 \\ 15{,}02 \end{pmatrix}\ \text{N} , \tag{7.13}\]</div>
+<p>where \(EA/h = 3{,}079 \cdot 10^6\) N/m. In chapter <a class="xref" href="ch-sibka-oblika.html">6</a> we left out node \(0\) because the bar is fixed there. Here three questions arise. Why does the matrix of equation <a class="xref" href="sec-robni-pogoji-mke.html#eq-rpm-celoten-sistem" data-knowl="eq-rpm-celoten-sistem">(7.13)</a> have no inverse, and what is missing from it? How do we add supports, including those that move an end by a given distance? And how do we obtain the forces with which the supports hold the structure, which the system with the omitted row does not contain?</p>
+
+<h3 id="sec-singularna-togost"><span class="h-num">7.3.1</span> Mathematics: the singular stiffness matrix (matematika: singularna togostna matrika)</h3>
+<p>In section <a class="xref" href="sec-sestavljanje.html#sec-viseca-palica-sestavljena">7.2.3</a> we saw that the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> of equation <a class="xref" href="sec-robni-pogoji-mke.html#eq-rpm-celoten-sistem" data-knowl="eq-rpm-celoten-sistem">(7.13)</a> multiplies the column \((1, 1, 1)\) into the zero column, because the sum of every row is zero. The meaning is plain: if all three nodes move by the same distance <span class="nobr">\(c\),</span> the bar moves as a whole and no element stretches (figure <a class="xref" href="sec-robni-pogoji-mke.html#fig-rpm-singularna" data-knowl="fig-rpm-singularna">7.6</a>). Such a displacement needs no force, and the <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">strain</a> energy is zero.</p>
+
+<figure class="blk slika" id="fig-rpm-singularna"><p><span class="svgfig" role="img" aria-label="A bar with nodes 0, 1, 2 and the same bar moved as a whole by the distance c"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='195.79pt' height='197.49pt' viewBox='-72.000004 -72.000004 145.027517 146.289594'>
+<defs>
+<path id='rpm-singularna-g0-99' d='M3.945205-3.785803C3.785803-3.785803 3.646326-3.785803 3.506849-3.646326C3.347447-3.496887 3.327522-3.327522 3.327522-3.257783C3.327522-3.01868 3.506849-2.909091 3.696139-2.909091C3.985056-2.909091 4.254047-3.148194 4.254047-3.5467C4.254047-4.034869 3.785803-4.403487 3.078456-4.403487C1.733499-4.403487 .408468-2.978829 .408468-1.574097C.408468-.67746 .986301 .109589 2.022416 .109589C3.447073 .109589 4.283935-.946451 4.283935-1.066002C4.283935-1.125778 4.224159-1.195517 4.164384-1.195517C4.11457-1.195517 4.094645-1.175592 4.034869-1.09589C3.247821-.109589 2.161893-.109589 2.042341-.109589C1.414695-.109589 1.145704-.597758 1.145704-1.195517C1.145704-1.603985 1.344956-2.570361 1.683686-3.188045C1.992528-3.755915 2.540473-4.184309 3.088418-4.184309C3.427148-4.184309 3.805729-4.054795 3.945205-3.785803Z'/>
+<path id='rpm-singularna-g0-120' d='M3.327522-3.008717C3.387298-3.267746 3.616438-4.184309 4.313823-4.184309C4.363636-4.184309 4.60274-4.184309 4.811955-4.054795C4.533001-4.004981 4.333748-3.755915 4.333748-3.516812C4.333748-3.35741 4.443337-3.16812 4.712329-3.16812C4.931507-3.16812 5.250311-3.347447 5.250311-3.745953C5.250311-4.26401 4.662516-4.403487 4.323786-4.403487C3.745953-4.403487 3.39726-3.875467 3.277709-3.646326C3.028643-4.303861 2.49066-4.403487 2.201743-4.403487C1.165629-4.403487 .597758-3.118306 .597758-2.86924C.597758-2.769614 .697385-2.769614 .71731-2.769614C.797011-2.769614 .826899-2.789539 .846824-2.879203C1.185554-3.935243 1.843088-4.184309 2.181818-4.184309C2.371108-4.184309 2.719801-4.094645 2.719801-3.516812C2.719801-3.20797 2.550436-2.540473 2.181818-1.145704C2.022416-.52802 1.673724-.109589 1.235367-.109589C1.175592-.109589 .946451-.109589 .737235-.239103C.986301-.288917 1.205479-.498132 1.205479-.777086C1.205479-1.046077 .986301-1.125778 .836862-1.125778C.537983-1.125778 .288917-.86675 .288917-.547945C.288917-.089664 .787049 .109589 1.225405 .109589C1.882939 .109589 2.241594-.587796 2.271482-.647572C2.391034-.278954 2.749689 .109589 3.347447 .109589C4.373599 .109589 4.941469-1.175592 4.941469-1.424658C4.941469-1.524284 4.851806-1.524284 4.821918-1.524284C4.732254-1.524284 4.712329-1.484433 4.692403-1.414695C4.363636-.348692 3.686177-.109589 3.367372-.109589C2.978829-.109589 2.819427-.428394 2.819427-.767123C2.819427-.986301 2.879203-1.205479 2.988792-1.643836L3.327522-3.008717Z'/>
+<path id='rpm-singularna-g1-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='rpm-singularna-g1-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='rpm-singularna-g1-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+</defs>
+<g id='rpm-singularna-page1'>
+<g stroke-miterlimit='10' transform='translate(-31.019708,-65.469303)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<path d='M-28.45274 0V-35.48148' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,-28.45274,-33.00502)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-37.801,-41.98643)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-31.019708,-65.469303)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-31.019708' y='-65.469303' xlink:href='#rpm-singularna-g0-120'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M-3.41418 0V-113.81097H3.41418V0ZM3.41418-113.81097' fill='none'/>
+<path d='M1.83862 0C1.83862 1.01544 1.01544 1.83862 0 1.83862S-1.83862 1.01544-1.83862 0S-1.01544-1.83862 0-1.83862S1.83862-1.01544 1.83862 0ZM0 0' stroke='none'/>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-31.019708,-65.469303)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+<g transform='translate(-15.74615,-3.22221)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-31.019708,-65.469303)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-31.019708' y='-65.469303' xlink:href='#rpm-singularna-g1-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M1.83862-56.90549C1.83862-55.89005 1.01544-55.06686 0-55.06686S-1.83862-55.89005-1.83862-56.90549S-1.01544-58.74411 0-58.74411S1.83862-57.92093 1.83862-56.90549ZM0-56.90549' stroke='none'/>
+<g transform='translate(0.0,-56.90549)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-31.019708,-65.469303)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(-15.74615,-60.1277)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-31.019708,-65.469303)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-31.019708' y='-65.469303' xlink:href='#rpm-singularna-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M1.83862-113.81097C1.83862-112.79553 1.01544-111.97235 0-111.97235S-1.83862-112.79553-1.83862-113.81097C-1.83862-114.82642-1.01544-115.6496 0-115.6496S1.83862-114.82642 1.83862-113.81097ZM0-113.81097' stroke='none'/>
+<g transform='translate(0.0,-113.81097)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-31.019708,-65.469303)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(-15.74615,-117.03319)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-31.019708,-65.469303)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-31.019708' y='-65.469303' xlink:href='#rpm-singularna-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M81.94408-19.91682V-133.7278H88.77245V-19.91682ZM88.77245-133.7278' fill='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M87.19688-19.91682C87.19688-18.90138 86.3737-18.0782 85.35826-18.0782S83.51964-18.90138 83.51964-19.91682C83.51964-20.93227 84.34282-21.75545 85.35826-21.75545S87.19688-20.93227 87.19688-19.91682ZM85.35826-19.91682' stroke='none'/>
+</g>
+<g transform='translate(85.35826,-19.91682)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-31.019708,-65.469303)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(96.10442,-23.13904)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-31.019708,-65.469303)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-31.019708' y='-65.469303' xlink:href='#rpm-singularna-g1-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M87.19688-76.82231C87.19688-75.80687 86.3737-74.98369 85.35826-74.98369S83.51964-75.80687 83.51964-76.82231S84.34282-78.66093 85.35826-78.66093S87.19688-77.83775 87.19688-76.82231ZM85.35826-76.82231' stroke='none'/>
+</g>
+<g transform='translate(85.35826,-76.82231)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-31.019708,-65.469303)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(96.10442,-80.04453)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-31.019708,-65.469303)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-31.019708' y='-65.469303' xlink:href='#rpm-singularna-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M87.19688-133.7278C87.19688-132.71236 86.3737-131.88918 85.35826-131.88918S83.51964-132.71236 83.51964-133.7278S84.34282-135.56642 85.35826-135.56642S87.19688-134.74324 87.19688-133.7278ZM85.35826-133.7278' stroke='none'/>
+</g>
+<g transform='translate(85.35826,-133.7278)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-31.019708,-65.469303)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(96.10442,-136.95001)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-31.019708,-65.469303)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-31.019708' y='-65.469303' xlink:href='#rpm-singularna-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M5.69046 0H54.06003' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M79.66776-19.91682H36.98865' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M45.52455-.33748V-19.57935' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,45.52455,-6.14052)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,45.52455,-0.22499)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,45.52455,-13.7763)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,45.52455,-19.69183)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g transform='translate(50.57982,-12.11096)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-31.019708,-65.469303)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-31.019708' y='-65.469303' xlink:href='#rpm-singularna-g0-99'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M5.69046-56.90549H54.06003' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M79.66776-76.82231H36.98865' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M45.52455-57.24297V-76.48483' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,45.52455,-63.046)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,45.52455,-57.13048)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,45.52455,-70.6818)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,45.52455,-76.59732)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g transform='translate(50.57982,-69.01645)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-31.019708,-65.469303)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-31.019708' y='-65.469303' xlink:href='#rpm-singularna-g0-99'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M5.69046-113.81097H54.06003' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M79.66776-133.7278H36.98865' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M45.52455-114.14845V-133.39032' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,45.52455,-119.95149)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,45.52455,-114.03596)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,45.52455,-127.58728)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,45.52455,-133.5028)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g transform='translate(50.57982,-125.92194)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-31.019708,-65.469303)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-31.019708' y='-65.469303' xlink:href='#rpm-singularna-g0-99'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 7.6</span>: A hanging bar of two elements that is not fixed anywhere. Left: initial position with nodes <span class="nobr">\(0\),</span> <span class="nobr">\(1\),</span> \(2\) (black). Right: the same bar with all three nodes moved down by the same distance \(c\) (orange). The lengths of both elements stay <span class="nobr">\(h\),</span> no element stretches, so the strain energy stays zero and no force is needed for such a displacement: <span class="nobr">\(\mat K\,(c, c, c) = \vek 0\).</span> The displacement \(c\) is drawn greatly enlarged.</figcaption></figure>
+<p>What does this mean for the system <span class="nobr">\(\mat K\,\vek d = \vek f\)?</span> The sum of the three rows gives zero on the left for all <span class="nobr">\(d_0\),</span> <span class="nobr">\(d_1\),</span> \(d_2\) and the weight of the bar \(60{,}097\) N on the right, so the system has no solution (section <a class="xref" href="sec-sestavljanje.html#sec-viseca-palica-sestavljena">7.2.3</a>). Let the bar be fixed at \(x = 0\) and let the support force be \(-60{,}097\) N (upward, because the axis points down), which we compute in section <a class="xref" href="sec-robni-pogoji-mke.html#sec-reakcije">7.3.4</a>. Then the right-hand side is \((15{,}024 - 60{,}097,\ 30{,}049,\ 15{,}024) = (-45{,}073,\ 30{,}049,\ 15{,}024)\) N with sum zero. This system has a solution, one is \(\vek d^* = (0,\ 14{,}64,\ 19{,}52)\) µm, as we will see in section <a class="xref" href="sec-robni-pogoji-mke.html#sec-reduciran-sistem">7.3.2</a>, and if \(\vek d^*\) is one of them, then \(\vek d^* + c\,(1, 1, 1)\) is a solution for every number <span class="nobr">\(c\),</span> because <span class="nobr">\(\mat K\,(\vek d^* + c\,\vek 1) = \mat K\,\vek d^* + c\,\mat K\,\vek 1 = \mat K\,\vek d^*\).</span> A system whose matrix has a nonzero column with product zero therefore has either no solution or infinitely many. What is missing is a support that holds the bar and thereby decides how large \(c\) is.</p>
+<p>We want to say the same for every structure and not only for this example. The energy is \(\tfrac12\,\vek d^\T\mat K\,\vek d\) and is never negative, but it can be zero also for a nonzero <span class="nobr">\(\vek d\).</span> We give matrices with this property a name. The name is similar to a positive definite matrix (definition <a class="xref" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">6.27</a>), except that the value zero is allowed.</p>
+
+<div class="blk definicija" id="def-pozitivno-semidefinitna"><div class="blk-head"><span class="blk-label">Definition 7.15</span> <span class="blk-title">Positive semidefinite matrix (pozitivno semidefinitna matrika)</span></div><div class="blk-body"><p>A <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">square matrix</a> \(\mat K\) of order \(n\) is positive semidefinite if it is symmetric (definition <a class="xref" href="sec-matrike.html#def-simetricna-matrika" data-knowl="def-simetricna-matrika">1.102</a>) and for every column \(\vek d\) with \(n\) entries</p>
+<div class="eq">\[\vek d^\T \mat K\,\vek d = \sum_{\mathrm{i}=1}^n \sum_{\mathrm{j}=1}^n d_{\mathrm{i}}\,K_{\mathrm{ij}}\,d_{\mathrm{j}} \ge 0 .\]</div>
+
+<p class="vir"><span class="vir-label">Source:</span> KREYSZIG §8.4, problem 24 (PDF p. 372): positive semidefiniteness of a quadratic form and of its symmetric matrix.</p></div></div>
+<p>The matrix \(\frac{EA}{h}\left[\begin{smallmatrix} 1 &amp; -1 &amp; 0 \\ -1 &amp; 2 &amp; -1 \\ 0 &amp; -1 &amp; 1 \end{smallmatrix}\right]\) of equation <a class="xref" href="sec-robni-pogoji-mke.html#eq-rpm-celoten-sistem" data-knowl="eq-rpm-celoten-sistem">(7.13)</a> is symmetric and its quadratic form is <span class="nobr">\(\vek d^\T\mat K\,\vek d = \frac{EA}{h}\big((d_1 - d_0)^2 + (d_2 - d_1)^2\big)\).</span> We check this by expanding, <span class="nobr">\(d_0 (d_0 - d_1) + d_1 (-d_0 + 2d_1 - d_2) + d_2 (-d_1 + d_2) = d_0^2 - 2 d_0 d_1 + 2 d_1^2 - 2 d_1 d_2 + d_2^2\).</span> Both squares are nonnegative, so the form is nonnegative and the matrix is <a class="xref auto" href="sec-robni-pogoji-mke.html#def-pozitivno-semidefinitna" data-knowl="def-pozitivno-semidefinitna">positive semidefinite</a>, and zero occurs at <span class="nobr">\(\vek d = (1, 1, 1)\),</span> so it is not positive definite. We notice that \(\mat K\,\vek d\) is also zero there. Is this a coincidence? No, for a semidefinite matrix this is always true.</p>
+
+<div class="blk lema" id="lem-jedro-semidefinitne"><div class="blk-head"><span class="blk-label">Lemma 7.16</span> <span class="blk-title">Zero energy means zero force (ničelna energija pomeni ničelno silo)</span></div><div class="blk-body"><p>Let \(\mat K\) be a <a class="xref auto" href="sec-robni-pogoji-mke.html#def-pozitivno-semidefinitna" data-knowl="def-pozitivno-semidefinitna">positive semidefinite matrix</a> of order \(n\) and \(\vek d\) a column with \(n\) entries. Then \(\mat K\,\vek d = \vek 0\) if and only if <span class="nobr">\(\vek d^\T\mat K\,\vek d = 0\).</span></p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>The direction from left to right is immediate. For the converse we choose an arbitrary column \(\vek y\) and a number \(t\) and estimate the energy of the column <span class="nobr">\(\vek d + t\,\vek y\).</span></p>
+<ol>
+<li>If <span class="nobr">\(\mat K\,\vek d = \vek 0\),</span> then <span class="nobr">\(\vek d^\T\mat K\,\vek d = \vek d^\T\vek 0 = 0\).</span></li>
+<li>Let <span class="nobr">\(\vek d^\T\mat K\,\vek d = 0\),</span> \(\vek y\) an arbitrary column with \(n\) entries and \(t\) an arbitrary number. By lemma <a class="xref" href="sec-matrike.html#lem-transponiran-produkt" data-knowl="lem-transponiran-produkt">1.101</a> and the symmetry of \(\mat K\) we have <span class="nobr">\(\vek y^\T\mat K\,\vek d = (\mat K\,\vek y)^\T\vek d = \vek d^\T\mat K\,\vek y\),</span> since this is a number and equals its <a class="xref auto" href="sec-matrike.html#def-transponirana-matrika" data-knowl="def-transponirana-matrika">transpose</a>. Hence <span class="nobr">\(g(t) = (\vek d + t\,\vek y)^\T\mat K\,(\vek d + t\,\vek y) = \vek d^\T\mat K\,\vek d + 2t\,\vek y^\T\mat K\,\vek d + t^2\,\vek y^\T\mat K\,\vek y\),</span> and since <span class="nobr">\(\vek d^\T\mat K\,\vek d = 0\),</span> <span class="nobr">\(g(t) = 2t\,\vek y^\T\mat K\,\vek d + t^2\,\vek y^\T\mat K\,\vek y\).</span></li>
+<li>By definition <a class="xref" href="sec-robni-pogoji-mke.html#def-pozitivno-semidefinitna" data-knowl="def-pozitivno-semidefinitna">7.15</a>, \(g(t) \ge 0\) for every <span class="nobr">\(t\),</span> and <span class="nobr">\(g(0) = 0\).</span> The <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> \(g\) is a <a class="xref auto" href="sec-zveznost.html#def-polinom" data-knowl="def-polinom">polynomial</a>, hence <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">differentiable</a>, and on the <a class="xref auto" href="sec-konvergenca-zaporedij.html#def-interval" data-knowl="def-interval">interval</a> \((-1, 1)\) it attains its smallest value \(0\) at the interior point <span class="nobr">\(t = 0\).</span> By lemma <a class="xref" href="sec-srednja-vrednost.html#lem-ekstrem-odvod" data-knowl="lem-ekstrem-odvod">1.82</a>, <span class="nobr">\(g'(0) = 0\).</span></li>
+<li>The derivative is <span class="nobr">\(g'(t) = 2\,\vek y^\T\mat K\,\vek d + 2t\,\vek y^\T\mat K\,\vek y\),</span> so <span class="nobr">\(g'(0) = 2\,\vek y^\T\mat K\,\vek d = 0\),</span> which holds for every <span class="nobr">\(\vek y\).</span></li>
+<li>For <span class="nobr">\(\vek y = \vek e_{\mathrm{i}}\),</span> the \(i\)-th column of the <a class="xref auto" href="sec-matrike.html#def-enotska-matrika" data-knowl="def-enotska-matrika">identity matrix</a>, \(\vek e_{\mathrm{i}}^\T\mat K\,\vek d\) is the \(i\)-th entry of the column \(\mat K\,\vek d\) (definition <a class="xref" href="sec-matrike.html#def-produkt-matrik" data-knowl="def-produkt-matrik">1.98</a>). Hence every entry of the column \(\mat K\,\vek d\) is zero, so <span class="nobr">\(\mat K\,\vek d = \vek 0\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> The proof is not from a source.</p></div></div>
+<p>The proof showed that for a positive semidefinite matrix there is no difference between the two questions of whether a column \(\vek d\) requires a force and whether it has energy. If the energy is zero, every entry of the force column \(\mat K\,\vek d\) is zero too. For a structure we read this physically: a displacement in which nothing deforms needs no forces. COOK says this for a rigid displacement (»If {D} represents a small <a class="xref auto" href="sec-deformacija-v-tocki.html#def-togo-telo" data-knowl="def-togo-telo">rigid-body displacement</a>, then [K]{D} = {0}«), and no load is needed (COOK, PDF p. 52). What remains is the question of which displacements of a bar have zero energy. There is exactly one answer.</p>
+
+<div class="blk lema" id="lem-nicelna-energija-palice"><div class="blk-head"><span class="blk-label">Lemma 7.17</span> <span class="blk-title">Displacements of a bar with zero energy (premiki palice z ničelno energijo)</span></div><div class="blk-body"><p>A bar has nodes \(0, 1, \dots, n\) in order along the axis \(x\) and elements <span class="nobr">\(1, \dots, n\),</span> where element \(e\) has the nodes \(e - 1\) and <span class="nobr">\(e\),</span> length \(h_{\mathrm{e}} &gt; 0\) and axial stiffness <span class="nobr">\(EA_{\mathrm{e}} &gt; 0\).</span> Let \(\mat K\) be the <a class="xref auto" href="sec-sestavljanje.html#cor-matrika-konstrukcije" data-knowl="cor-matrika-konstrukcije">structure matrix</a> of theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a>. Then</p>
+<div class="eq" id="eq-rpm-energija-palice">\[\vek d^\T\mat K\,\vek d = \sum_{\mathrm{e}=1}^{n} \frac{EA_{\mathrm{e}}}{h_{\mathrm{e}}}\,(d_{\mathrm{e}} - d_{\mathrm{e}-1})^2 , \tag{7.14}\]</div>
+<p>the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat K\) is <a class="xref auto" href="sec-robni-pogoji-mke.html#def-pozitivno-semidefinitna" data-knowl="def-pozitivno-semidefinitna">positive semidefinite</a>, and \(\mat K\,\vek d = \vek 0\) if and only if \(\vek d = c\,(1, 1, \dots, 1)\) for some number <span class="nobr">\(c\).</span></p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show three things: the form of the energy, semidefiniteness and the kernel. We split the energy by elements, because the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> is a sum of element contributions.</p>
+<ol>
+<li>By item 2 of theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a>, <span class="nobr">\(\vek d^\T\mat K\,\vek d = \sum_{\mathrm{e}} \vek d_{\mathrm{e}}^\T\,\mat k_{\mathrm{e}}\,\vek d_{\mathrm{e}}\),</span> where <span class="nobr">\(\vek d_{\mathrm{e}} = \mat Z_{\mathrm{e}}\,\vek d = (d_{\mathrm{e}-1}, d_{\mathrm{e}})\).</span></li>
+<li>By lemma <a class="xref" href="sec-element-palice.html#lem-togost-elementa-palice" data-knowl="lem-togost-elementa-palice">7.5</a>, <span class="nobr">\(\mat k_{\mathrm{e}} = \frac{EA_{\mathrm{e}}}{h_{\mathrm{e}}}\left[\begin{smallmatrix} 1 &amp; -1 \\ -1 &amp; 1 \end{smallmatrix}\right]\),</span> so <span class="nobr">\(\vek d_{\mathrm{e}}^\T\mat k_{\mathrm{e}}\,\vek d_{\mathrm{e}} = \frac{EA_{\mathrm{e}}}{h_{\mathrm{e}}}\,(d_{\mathrm{e}-1}^2 - 2 d_{\mathrm{e}-1} d_{\mathrm{e}} + d_{\mathrm{e}}^2) = \frac{EA_{\mathrm{e}}}{h_{\mathrm{e}}}\,(d_{\mathrm{e}} - d_{\mathrm{e}-1})^2\).</span> Summing over \(e\) gives equation <a class="xref" href="sec-robni-pogoji-mke.html#eq-rpm-energija-palice" data-knowl="eq-rpm-energija-palice">(7.14)</a>.</li>
+<li>Every term of the sum is nonnegative, because \(EA_{\mathrm{e}}\) and \(h_{\mathrm{e}}\) are positive, so <span class="nobr">\(\vek d^\T\mat K\,\vek d \ge 0\).</span> The matrix \(\mat K\) is symmetric (corollary <a class="xref" href="sec-sestavljanje.html#cor-matrika-konstrukcije" data-knowl="cor-matrika-konstrukcije">7.14</a>), hence positive semidefinite (definition <a class="xref" href="sec-robni-pogoji-mke.html#def-pozitivno-semidefinitna" data-knowl="def-pozitivno-semidefinitna">7.15</a>).</li>
+<li>By lemma <a class="xref" href="sec-robni-pogoji-mke.html#lem-jedro-semidefinitne" data-knowl="lem-jedro-semidefinitne">7.16</a>, \(\mat K\,\vek d = \vek 0\) if and only if <span class="nobr">\(\vek d^\T\mat K\,\vek d = 0\).</span> A sum of nonnegative terms is zero if and only if every term is zero, so \(d_{\mathrm{e}} = d_{\mathrm{e}-1}\) for every <span class="nobr">\(e = 1, \dots, n\).</span></li>
+<li>From \(d_0 = d_1 = \dots = d_{\mathrm{n}}\) it follows that \(\vek d = c\,(1, \dots, 1)\) with <span class="nobr">\(c = d_0\).</span> Conversely, for such \(\vek d\) every term of the sum is zero.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> The proof is not from a source.</p></div></div>
+<p>For the example of equation <a class="xref" href="sec-robni-pogoji-mke.html#eq-rpm-celoten-sistem" data-knowl="eq-rpm-celoten-sistem">(7.13)</a>, <span class="nobr">\(n = 2\),</span> \(EA_{\mathrm{e}}/h_{\mathrm{e}} = 3{,}079 \cdot 10^6\) N/m and \(\vek d^\T\mat K\,\vek d = 3{,}079 \cdot 10^6\,\big((d_1 - d_0)^2 + (d_2 - d_1)^2\big)\) N/m, as we expanded it before. The displacement of the bar as a whole is the only one that requires no force. For <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">trusses</a> in the plane and in space we will see that other displacements can also have zero energy. A displacement of the whole truss as a <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">body</a> and a rotation of the truss about a point stretch no bar (section <a class="xref" href="sec-palicje-ravnina-mke.html">7.5</a>), and this is exactly what the supports will have to prevent.</p>
+
+<h3 id="sec-reduciran-sistem"><span class="h-num">7.3.2</span> Supports and the reduced system (podpore in reducirani sistem)</h3>
+<p>The <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat K\) of theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a> lacks a support. The weak form of chapter <a class="xref" href="ch-sibka-oblika.html">6</a> says what to do with it. At a node where a support prescribes the displacement, the <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">test functions</a> are zero (definition <a class="xref" href="sec-mocna-sibka-oblika.html#def-sibka-oblika-splosna" data-knowl="def-sibka-oblika-splosna">6.6</a>), so we get no equation from there. Equations come only from test functions that are zero at all supported nodes, that is from the <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-sotorna-funkcija" data-knowl="def-sotorna-funkcija">hat functions</a> of the free nodes. We therefore divide the unknowns into two parts. A free unknown is the displacement of a node that no support prescribes, and a prescribed unknown is one whose value is given, for the hanging bar <span class="nobr">\(d_0 = 0\).</span> We denote the free ones by the index \(\mathrm{f}\) and the prescribed ones by the index <span class="nobr">\(\mathrm{p}\).</span> We renumber the unknowns so that the free ones come before the prescribed ones, and rearrange the rows and columns of the matrix in the same way. This is only a renaming of unknowns, which changes no equation and no value of <span class="nobr">\(\vek d^\T\mat K\,\vek d\),</span> and the symmetry remains. The matrix, the columns of unknowns and the right-hand sides split into blocks:</p>
+<div class="eq" id="eq-rpm-bloki">\[\mat K = \begin{pmatrix} \mat K_{\mathrm{ff}} &amp; \mat K_{\mathrm{fp}} \\ \mat K_{\mathrm{pf}} &amp; \mat K_{\mathrm{pp}} \end{pmatrix} , \qquad \vek d = \begin{pmatrix} \vek d_{\mathrm{f}} \\ \vek d_{\mathrm{p}} \end{pmatrix} , \qquad \vek f = \begin{pmatrix} \vek f_{\mathrm{f}} \\ \vek f_{\mathrm{p}} \end{pmatrix} . \tag{7.15}\]</div>
+<p>The block \(\mat K_{\mathrm{ff}}\) has the rows and columns of the free unknowns, and the block \(\mat K_{\mathrm{fp}}\) the rows of the free and the columns of the prescribed ones. For the hanging bar, \(\mat K_{\mathrm{ff}}\) is the matrix that remains when we strike out row and column \(0\) (figure <a class="xref" href="sec-robni-pogoji-mke.html#fig-rpm-reduciran" data-knowl="fig-rpm-reduciran">7.7</a>).</p>
+
+<figure class="blk slika" id="fig-rpm-reduciran"><p><span class="svgfig" role="img" aria-label="A 3 x 3 matrix with the row and column of node 0 struck out, the remaining 2 x 2 block and the right-hand side"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='288.19pt' height='173.34pt' viewBox='-72.000004 -72.000005 213.473116 128.398177'>
+<defs>
+<path id='rpm-reduciran-g0-75' d='M4.83188-4.194271L7.222914-6.1868C7.442092-6.366127 7.860523-6.366127 8.159402-6.366127H8.328767V-6.834371C7.930262-6.804483 7.362391-6.804483 7.312578-6.804483C6.933998-6.804483 6.216687-6.804483 5.858032-6.834371V-6.366127C5.987547-6.366127 6.1868-6.366127 6.435866-6.316314C6.595268-6.276463 6.475716-6.286426 6.56538-6.256538L2.879203-3.178082V-6.366127H3.955168V-6.834371C3.576588-6.804483 2.600249-6.804483 2.171856-6.804483S.767123-6.804483 .388543-6.834371V-6.366127H1.464508V-.468244H.388543V0C.767123-.029888 1.743462-.029888 2.171856-.029888S3.576588-.029888 3.955168 0V-.468244H2.879203V-2.560399L3.875467-3.387298L5.927771-.687422C5.977584-.627646 5.977584-.607721 6.007472-.547945C5.828144-.468244 5.628892-.468244 5.280199-.468244V0C5.688667-.029888 6.585305-.029888 7.033624-.029888C7.43213-.029888 8.119552-.029888 8.488169 0V-.468244H8.199253C7.671233-.468244 7.641345-.508095 7.521793-.667497L4.83188-4.194271Z'/>
+<path id='rpm-reduciran-g1-0' d='M6.56538-2.291407C6.734745-2.291407 6.914072-2.291407 6.914072-2.49066S6.734745-2.689913 6.56538-2.689913H1.175592C1.006227-2.689913 .826899-2.689913 .826899-2.49066S1.006227-2.291407 1.175592-2.291407H6.56538Z'/>
+<path id='rpm-reduciran-g2-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='rpm-reduciran-g2-100' d='M5.140722-6.804483C5.140722-6.814446 5.140722-6.914072 5.011208-6.914072C4.861768-6.914072 3.915318-6.824408 3.745953-6.804483C3.666252-6.794521 3.606476-6.744707 3.606476-6.615193C3.606476-6.495641 3.696139-6.495641 3.845579-6.495641C4.323786-6.495641 4.343711-6.425903 4.343711-6.326276L4.313823-6.127024L3.716065-3.765878C3.536737-4.134496 3.247821-4.403487 2.799502-4.403487C1.633873-4.403487 .398506-2.938979 .398506-1.484433C.398506-.547945 .946451 .109589 1.723537 .109589C1.92279 .109589 2.420922 .069738 3.01868-.637609C3.098381-.219178 3.447073 .109589 3.92528 .109589C4.273973 .109589 4.503113-.119552 4.662516-.438356C4.83188-.797011 4.961395-1.404732 4.961395-1.424658C4.961395-1.524284 4.871731-1.524284 4.841843-1.524284C4.742217-1.524284 4.732254-1.484433 4.702366-1.344956C4.533001-.697385 4.353674-.109589 3.945205-.109589C3.676214-.109589 3.646326-.368618 3.646326-.56787C3.646326-.806974 3.666252-.876712 3.706102-1.046077L5.140722-6.804483ZM3.068493-1.185554C3.01868-1.006227 3.01868-.986301 2.86924-.816936C2.430884-.268991 2.022416-.109589 1.743462-.109589C1.24533-.109589 1.105853-.657534 1.105853-1.046077C1.105853-1.544209 1.424658-2.769614 1.653798-3.227895C1.96264-3.815691 2.410959-4.184309 2.809465-4.184309C3.457036-4.184309 3.596513-3.367372 3.596513-3.307597S3.576588-3.188045 3.566625-3.138232L3.068493-1.185554Z'/>
+<path id='rpm-reduciran-g2-114' d='M.876712-.587796C.846824-.438356 .787049-.209215 .787049-.159402C.787049 .019925 .926526 .109589 1.075965 .109589C1.195517 .109589 1.374844 .029888 1.444583-.169365C1.464508-.209215 1.803238-1.564134 1.843088-1.743462C1.92279-2.072229 2.102117-2.769614 2.161893-3.038605C2.201743-3.16812 2.480697-3.636364 2.719801-3.855542C2.799502-3.92528 3.088418-4.184309 3.516812-4.184309C3.775841-4.184309 3.92528-4.064757 3.935243-4.064757C3.636364-4.014944 3.417186-3.775841 3.417186-3.516812C3.417186-3.35741 3.526775-3.16812 3.795766-3.16812S4.343711-3.39726 4.343711-3.755915C4.343711-4.104608 4.024907-4.403487 3.516812-4.403487C2.86924-4.403487 2.430884-3.915318 2.241594-3.636364C2.161893-4.084682 1.803238-4.403487 1.334994-4.403487C.876712-4.403487 .687422-4.014944 .597758-3.835616C.418431-3.496887 .288917-2.899128 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.779577 .577833-2.998755C.747198-3.706102 .946451-4.184309 1.305106-4.184309C1.474471-4.184309 1.613948-4.104608 1.613948-3.726027C1.613948-3.516812 1.58406-3.407223 1.454545-2.889166L.876712-.587796Z'/>
+<path id='rpm-reduciran-g3-43' d='M4.07472-2.291407H6.854296C6.993773-2.291407 7.183064-2.291407 7.183064-2.49066S6.993773-2.689913 6.854296-2.689913H4.07472V-5.479452C4.07472-5.618929 4.07472-5.808219 3.875467-5.808219S3.676214-5.618929 3.676214-5.479452V-2.689913H.886675C.747198-2.689913 .557908-2.689913 .557908-2.49066S.747198-2.291407 .886675-2.291407H3.676214V.498132C3.676214 .637609 3.676214 .826899 3.875467 .826899S4.07472 .637609 4.07472 .498132V-2.291407Z'/>
+<path id='rpm-reduciran-g3-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='rpm-reduciran-g3-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='rpm-reduciran-g3-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='rpm-reduciran-g3-51' d='M2.889166-3.506849C3.706102-3.775841 4.283935-4.473225 4.283935-5.260274C4.283935-6.07721 3.407223-6.635118 2.450809-6.635118C1.444583-6.635118 .687422-6.03736 .687422-5.280199C.687422-4.951432 .9066-4.762142 1.195517-4.762142C1.504359-4.762142 1.703611-4.98132 1.703611-5.270237C1.703611-5.768369 1.235367-5.768369 1.085928-5.768369C1.39477-6.256538 2.052304-6.386052 2.410959-6.386052C2.819427-6.386052 3.367372-6.166874 3.367372-5.270237C3.367372-5.150685 3.347447-4.572852 3.088418-4.134496C2.789539-3.656289 2.450809-3.626401 2.201743-3.616438C2.122042-3.606476 1.882939-3.58655 1.8132-3.58655C1.733499-3.576588 1.663761-3.566625 1.663761-3.466999C1.663761-3.35741 1.733499-3.35741 1.902864-3.35741H2.34122C3.158157-3.35741 3.526775-2.67995 3.526775-1.703611C3.526775-.348692 2.839352-.059776 2.400996-.059776C1.972603-.059776 1.225405-.229141 .876712-.816936C1.225405-.767123 1.534247-.986301 1.534247-1.364882C1.534247-1.723537 1.265255-1.92279 .976339-1.92279C.737235-1.92279 .418431-1.783313 .418431-1.344956C.418431-.438356 1.344956 .219178 2.430884 .219178C3.646326 .219178 4.552927-.687422 4.552927-1.703611C4.552927-2.520548 3.92528-3.297634 2.889166-3.506849Z'/>
+<path id='rpm-reduciran-g3-53' d='M4.473225-2.002491C4.473225-3.188045 3.656289-4.184309 2.580324-4.184309C2.102117-4.184309 1.673724-4.024907 1.315068-3.676214V-5.618929C1.514321-5.559153 1.843088-5.489415 2.161893-5.489415C3.387298-5.489415 4.084682-6.396015 4.084682-6.525529C4.084682-6.585305 4.054795-6.635118 3.985056-6.635118C3.975093-6.635118 3.955168-6.635118 3.905355-6.60523C3.706102-6.515567 3.217933-6.316314 2.550436-6.316314C2.15193-6.316314 1.693649-6.386052 1.225405-6.595268C1.145704-6.625156 1.125778-6.625156 1.105853-6.625156C1.006227-6.625156 1.006227-6.545455 1.006227-6.386052V-3.437111C1.006227-3.257783 1.006227-3.178082 1.145704-3.178082C1.215442-3.178082 1.235367-3.20797 1.275218-3.267746C1.384807-3.427148 1.753425-3.965131 2.560399-3.965131C3.078456-3.965131 3.327522-3.506849 3.407223-3.327522C3.566625-2.958904 3.58655-2.570361 3.58655-2.072229C3.58655-1.723537 3.58655-1.125778 3.347447-.707347C3.108344-.318804 2.739726-.059776 2.281445-.059776C1.554172-.059776 .986301-.587796 .816936-1.175592C.846824-1.165629 .876712-1.155666 .986301-1.155666C1.315068-1.155666 1.484433-1.404732 1.484433-1.643836S1.315068-2.132005 .986301-2.132005C.846824-2.132005 .498132-2.062267 .498132-1.603985C.498132-.747198 1.185554 .219178 2.30137 .219178C3.457036 .219178 4.473225-.737235 4.473225-2.002491Z'/>
+<path id='rpm-reduciran-g3-61' d='M6.844334-3.257783C6.993773-3.257783 7.183064-3.257783 7.183064-3.457036S6.993773-3.656289 6.854296-3.656289H.886675C.747198-3.656289 .557908-3.656289 .557908-3.457036S.747198-3.257783 .896638-3.257783H6.844334ZM6.854296-1.325031C6.993773-1.325031 7.183064-1.325031 7.183064-1.524284S6.993773-1.723537 6.844334-1.723537H.896638C.747198-1.723537 .557908-1.723537 .557908-1.524284S.747198-1.325031 .886675-1.325031H6.854296Z'/>
+<path id='rpm-reduciran-g4-11' d='M3.640349-2.75467H4.519054V-3.005729H3.612453V-3.7868C3.612453-4.414446 3.982067-4.714321 4.29589-4.714321C4.358655-4.714321 4.428394-4.700374 4.498132-4.679452C4.400498-4.623661 4.344707-4.51208 4.344707-4.400498C4.344707-4.212204 4.47721-4.079701 4.665504-4.079701S4.986301-4.212204 4.986301-4.400498C4.986301-4.700374 4.686426-4.909589 4.302864-4.909589C4.051806-4.909589 3.744956-4.832877 3.493898-4.616687C3.263761-4.867746 2.852304-4.909589 2.580324-4.909589C1.820174-4.909589 .864757-4.560897 .864757-3.772852V-3.005729H.265006V-2.75467H.864757V-.550934C.864757-.251059 .795019-.251059 .341719-.251059V0C.355666 0 .843836-.027895 1.12279-.027895C1.387796-.027895 1.645828-.020922 1.910834 0V-.251059C1.457534-.251059 1.387796-.251059 1.387796-.550934V-2.75467H3.11731V-.550934C3.11731-.251059 3.047572-.251059 2.594271-.251059V0C2.629141 0 3.103362-.027895 3.38929-.027895C3.689166-.027895 3.996015-.013948 4.29589 0V-.251059H4.156413C3.640349-.251059 3.640349-.327771 3.640349-.564882V-2.75467ZM1.3599-3.005729V-3.765878C1.3599-4.442341 2.043337-4.714321 2.559402-4.714321C2.622167-4.714321 2.922042-4.714321 3.152179-4.60274C3.075467-4.574844 2.956912-4.484184 2.956912-4.302864C2.956912-4.20523 2.991781-4.086675 3.131258-4.016936C3.11731-3.947198 3.11731-3.856538 3.11731-3.7868V-3.005729H1.3599Z'/>
+<path id='rpm-reduciran-g4-48' d='M3.598506-2.224658C3.598506-2.991781 3.507846-3.542715 3.187049-4.030884C2.970859-4.351681 2.538481-4.630635 1.980573-4.630635C.36264-4.630635 .36264-2.726775 .36264-2.224658S.36264 .139477 1.980573 .139477S3.598506-1.72254 3.598506-2.224658ZM1.980573-.055791C1.659776-.055791 1.234371-.244085 1.094894-.81594C.99726-1.227397 .99726-1.799253 .99726-2.315318C.99726-2.824408 .99726-3.354421 1.101868-3.737983C1.248319-4.288917 1.694645-4.435367 1.980573-4.435367C2.357161-4.435367 2.719801-4.20523 2.84533-3.800747C2.956912-3.424159 2.963885-2.922042 2.963885-2.315318C2.963885-1.799253 2.963885-1.283188 2.873225-.843836C2.733748-.209215 2.259527-.055791 1.980573-.055791Z'/>
+<path id='rpm-reduciran-g4-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='rpm-reduciran-g4-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+</defs>
+<g id='rpm-reduciran-page1'>
+<g stroke-miterlimit='10' transform='translate(-45.905917,-38.961423)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(-2.5,-3.22221)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-45.905917,-38.961423)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-45.905917' y='-38.961423' xlink:href='#rpm-reduciran-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(30.59976,-2.80556)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-45.905917,-38.961423)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-45.905917' y='-38.961423' xlink:href='#rpm-reduciran-g1-0'/>
+<use x='-38.157169' y='-38.961423' xlink:href='#rpm-reduciran-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(71.47733,-3.22221)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-45.905917,-38.961423)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-45.905917' y='-38.961423' xlink:href='#rpm-reduciran-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(-6.3889,-31.2583)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-45.905917,-38.961423)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-45.905917' y='-38.961423' xlink:href='#rpm-reduciran-g1-0'/>
+<use x='-38.157169' y='-38.961423' xlink:href='#rpm-reduciran-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(34.48866,-31.67496)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-45.905917,-38.961423)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-45.905917' y='-38.961423' xlink:href='#rpm-reduciran-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(67.58842,-31.2583)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-45.905917,-38.961423)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-45.905917' y='-38.961423' xlink:href='#rpm-reduciran-g1-0'/>
+<use x='-38.157169' y='-38.961423' xlink:href='#rpm-reduciran-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(-2.5,-60.1277)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-45.905917,-38.961423)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-45.905917' y='-38.961423' xlink:href='#rpm-reduciran-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(30.59976,-59.71104)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-45.905917,-38.961423)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-45.905917' y='-38.961423' xlink:href='#rpm-reduciran-g1-0'/>
+<use x='-38.157169' y='-38.961423' xlink:href='#rpm-reduciran-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(71.47733,-60.1277)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-45.905917,-38.961423)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-45.905917' y='-38.961423' xlink:href='#rpm-reduciran-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-4.84549,22.88506)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-45.905917,-38.961423)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-45.905917' y='-38.961423' xlink:href='#rpm-reduciran-g2-100'/>
+<use x='-40.720484' y='-37.467043' xlink:href='#rpm-reduciran-g4-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(32.14317,22.88506)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-45.905917,-38.961423)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-45.905917' y='-38.961423' xlink:href='#rpm-reduciran-g2-100'/>
+<use x='-40.720484' y='-37.467043' xlink:href='#rpm-reduciran-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(69.13184,22.88506)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-45.905917,-38.961423)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-45.905917' y='-38.961423' xlink:href='#rpm-reduciran-g2-100'/>
+<use x='-40.720484' y='-37.467043' xlink:href='#rpm-reduciran-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(121.87231,-30.28711)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-45.905917,-38.961423)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-45.905917' y='-38.961423' xlink:href='#rpm-reduciran-g3-61'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(140.75104,-2.25)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-45.905917,-38.961423)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-45.905917' y='-38.961423' xlink:href='#rpm-reduciran-g3-49'/>
+<use x='-40.924578' y='-38.961423' xlink:href='#rpm-reduciran-g3-53'/>
+<use x='-35.943239' y='-38.961423' xlink:href='#rpm-reduciran-g2-59'/>
+<use x='-33.17583' y='-38.961423' xlink:href='#rpm-reduciran-g3-48'/>
+<use x='-28.194491' y='-38.961423' xlink:href='#rpm-reduciran-g3-50'/>
+<use x='-20.999286' y='-38.961423' xlink:href='#rpm-reduciran-g3-43'/>
+<use x='-11.036673' y='-38.961423' xlink:href='#rpm-reduciran-g2-114'/>
+<use x='-6.541933' y='-37.467043' xlink:href='#rpm-reduciran-g4-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(151.36096,-30.70274)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-45.905917,-38.961423)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-45.905917' y='-38.961423' xlink:href='#rpm-reduciran-g3-51'/>
+<use x='-40.924578' y='-38.961423' xlink:href='#rpm-reduciran-g3-48'/>
+<use x='-35.943239' y='-38.961423' xlink:href='#rpm-reduciran-g2-59'/>
+<use x='-33.17583' y='-38.961423' xlink:href='#rpm-reduciran-g3-48'/>
+<use x='-28.194491' y='-38.961423' xlink:href='#rpm-reduciran-g3-53'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(151.36096,-59.15549)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-45.905917,-38.961423)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-45.905917' y='-38.961423' xlink:href='#rpm-reduciran-g3-49'/>
+<use x='-40.924578' y='-38.961423' xlink:href='#rpm-reduciran-g3-53'/>
+<use x='-35.943239' y='-38.961423' xlink:href='#rpm-reduciran-g2-59'/>
+<use x='-33.17583' y='-38.961423' xlink:href='#rpm-reduciran-g3-48'/>
+<use x='-28.194491' y='-38.961423' xlink:href='#rpm-reduciran-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M-18.49432 14.22636H-25.89194V-71.13185H-18.49432' fill='none'/>
+<path d='M92.47165 14.22636H99.86926V-71.13185H92.47165' fill='none'/>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<g stroke-width='0.8'>
+<path d='M-14.79523 11.38092H90.6221V-11.38092H14.79523V-69.70912H-14.79523Z' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.8'>
+<path d='M20.34387-15.6491V-69.70912H90.6221V-15.6491ZM90.6221-69.70912' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(48.07501,-90.88425)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-45.905917,-38.961423)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-45.905917' y='-38.961423' xlink:href='#rpm-reduciran-g0-75'/>
+<use x='-36.925749' y='-37.467043' xlink:href='#rpm-reduciran-g4-11'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 7.7</span>: The structure matrix of the hanging bar of two elements in units \(EA/h\) with its right-hand side. Row and column \(0\) of the node that the support holds are struck out (grey). What remains is the block \(\mat K_{\mathrm{ff}}\) (blue) for the free unknowns <span class="nobr">\(d_1\),</span> <span class="nobr">\(d_2\).</span> The struck-out row is not an equation of the system: its left-hand side is the force that the support must give so that node \(0\) stays at rest, and from it we get the reaction \(r_0\) (section <a class="xref" href="sec-robni-pogoji-mke.html#sec-reakcije">7.3.4</a>). The struck-out column, multiplied by the prescribed value <span class="nobr">\(d_0\),</span> goes to the right-hand side.</figcaption></figure>
+<p>When does the block \(\mat K_{\mathrm{ff}}\) have an inverse, that is, when are the supports sufficient? The answer is a theorem. It requires the supports to stop all displacements that the structure does not resist with any force.</p>
+
+<div class="blk izrek" id="thm-reduciran-sistem"><div class="blk-head"><span class="blk-label">Theorem 7.18</span> <span class="blk-title">Reduced system (reducirani sistem)</span></div><div class="blk-body"><p>Let \(\mat K\) and \(\vek f\) be the matrix and the right-hand side of a structure of theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a> with element <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> that satisfy the hypothesis of corollary <a class="xref" href="sec-sestavljanje.html#cor-matrika-konstrukcije" data-knowl="cor-matrika-konstrukcije">7.14</a>, let the unknowns be divided into free and prescribed as in equation <a class="xref" href="sec-robni-pogoji-mke.html#eq-rpm-bloki" data-knowl="eq-rpm-bloki">(7.15)</a>, and let the values \(\vek d_{\mathrm{p}}\) be given. Let the column \(\vek d\) with the given \(\vek d_{\mathrm{p}}\) satisfy \((\mat K\,\vek d)_{\mathrm{i}} = f_{\mathrm{i}}\) for every free unknown <span class="nobr">\(i\).</span> Then \(\vek d_{\mathrm{f}}\) is a solution of the system</p>
+<div class="eq" id="eq-rpm-reduciran">\[\mat K_{\mathrm{ff}}\,\vek d_{\mathrm{f}} = \vek f_{\mathrm{f}} - \mat K_{\mathrm{fp}}\,\vek d_{\mathrm{p}} . \tag{7.16}\]</div>
+<p>For the bar of item 3 of theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a> the condition is satisfied by the displacements of the finite element solution, the field \(u_{\mathrm{h}} = \sum_{\mathrm{j}} d_{\mathrm{j}}\,\psi_{\mathrm{j}}\) with the given \(\vek d_{\mathrm{p}}\) and \(B(u_{\mathrm{h}}, \psi_{\mathrm{i}}) = \ell(\psi_{\mathrm{i}})\) for every free unknown <span class="nobr">\(i\).</span> If there is no nonzero \(\vek d\) with \(\vek d_{\mathrm{p}} = \vek 0\) and <span class="nobr">\(\vek d^\T\mat K\,\vek d = 0\),</span> then \(\mat K_{\mathrm{ff}}\) is <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite</a>, the system <a class="xref" href="sec-robni-pogoji-mke.html#eq-rpm-reduciran" data-knowl="eq-rpm-reduciran">(7.16)</a> has exactly one solution, and Gaussian elimination without row exchanges reaches it with all pivots positive.</p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that the rows of the free unknowns give the system <a class="xref" href="sec-robni-pogoji-mke.html#eq-rpm-reduciran" data-knowl="eq-rpm-reduciran">(7.16)</a>, that for the bar the finite element solution satisfies them, and that the hypothesis guarantees positive definiteness. The latter is then covered by theorem <a class="xref" href="sec-skalarni-produkt-funkcij.html#thm-sistem-pozitivno-definitna" data-knowl="thm-sistem-pozitivno-definitna">6.29</a>.</p>
+<ol>
+<li>The bar. The <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">test function</a> \(\psi_{\mathrm{i}}\) of a free node is zero at all prescribed nodes, so by definition <a class="xref" href="sec-mocna-sibka-oblika.html#def-sibka-oblika-splosna" data-knowl="def-sibka-oblika-splosna">6.6</a> it is a test function. The equation \(B(u_{\mathrm{h}}, \psi_{\mathrm{i}}) = \ell(\psi_{\mathrm{i}})\) is thus the equation that the weak form requires for every free unknown <span class="nobr">\(i\).</span></li>
+<li>We insert the field \(u_{\mathrm{h}} = \sum_{\mathrm{j}} d_{\mathrm{j}}\,\psi_{\mathrm{j}}\) into the first argument. The form \(B\) is linear in the first argument (definition <a class="xref" href="sec-mocna-sibka-oblika.html#def-bilinearna-forma" data-knowl="def-bilinearna-forma">6.4</a>), so <span class="nobr">\(B(u_{\mathrm{h}}, \psi_{\mathrm{i}}) = \sum_{\mathrm{j}} B(\psi_{\mathrm{j}}, \psi_{\mathrm{i}})\,d_{\mathrm{j}} = \sum_{\mathrm{j}} K_{\mathrm{ij}}\,d_{\mathrm{j}}\),</span> where \(K_{\mathrm{ij}} = B(\psi_{\mathrm{j}}, \psi_{\mathrm{i}})\) by theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a>. The same theorem gives <span class="nobr">\(\ell(\psi_{\mathrm{i}}) = f_{\mathrm{i}}\).</span> For the bar every row \(i\) of a free node is therefore <span class="nobr">\(\sum_{\mathrm{j}} K_{\mathrm{ij}}\,d_{\mathrm{j}} = f_{\mathrm{i}}\),</span> which is the hypothesis of the theorem.</li>
+<li>By hypothesis \(\sum_{\mathrm{j}} K_{\mathrm{ij}}\,d_{\mathrm{j}} = f_{\mathrm{i}}\) for every free unknown <span class="nobr">\(i\).</span> We split the sum over \(j\) into free and prescribed unknowns. By the rule for the product of matrices (definition <a class="xref" href="sec-matrike.html#def-produkt-matrik" data-knowl="def-produkt-matrik">1.98</a>, applied to blocks), the rows of the free unknowns are <span class="nobr">\(\mat K_{\mathrm{ff}}\,\vek d_{\mathrm{f}} + \mat K_{\mathrm{fp}}\,\vek d_{\mathrm{p}} = \vek f_{\mathrm{f}}\).</span> We move the term with the prescribed values to the right and obtain equation <a class="xref" href="sec-robni-pogoji-mke.html#eq-rpm-reduciran" data-knowl="eq-rpm-reduciran">(7.16)</a>.</li>
+<li>The block \(\mat K_{\mathrm{ff}}\) is symmetric because it is part of the <a class="xref auto" href="sec-matrike.html#def-simetricna-matrika" data-knowl="def-simetricna-matrika">symmetric matrix</a> \(\mat K\) (corollary <a class="xref" href="sec-sestavljanje.html#cor-matrika-konstrukcije" data-knowl="cor-matrika-konstrukcije">7.14</a>), \(K_{\mathrm{ij}} = K_{\mathrm{ji}}\) also for free <span class="nobr">\(i, j\).</span></li>
+<li>Let \(\vek y \ne \vek 0\) be a column of free unknowns and \(\vek z = (\vek y, \vek 0)\) the column of all unknowns, which is nonzero and has <span class="nobr">\(\vek z_{\mathrm{p}} = \vek 0\).</span> By the rule for the product of matrices on blocks, <span class="nobr">\(\vek z^\T\mat K\,\vek z = \vek y^\T\mat K_{\mathrm{ff}}\,\vek y\),</span> since the other three blocks multiply the zero column.</li>
+<li>By corollary <a class="xref" href="sec-sestavljanje.html#cor-matrika-konstrukcije" data-knowl="cor-matrika-konstrukcije">7.14</a>, <span class="nobr">\(\vek z^\T\mat K\,\vek z \ge 0\),</span> and by the hypothesis it is not zero, so <span class="nobr">\(\vek y^\T\mat K_{\mathrm{ff}}\,\vek y &gt; 0\).</span> The block \(\mat K_{\mathrm{ff}}\) is therefore a positive definite matrix (definition <a class="xref" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">6.27</a>), and the claim about the solution and the pivots is theorem <a class="xref" href="sec-skalarni-produkt-funkcij.html#thm-sistem-pozitivno-definitna" data-knowl="thm-sistem-pozitivno-definitna">6.29</a>.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> COOK (2.7-1) to (2.7-3), PDF p. 54, and (2.7-5) to (2.7-8), PDF pp. 55-56, FELIPPA (3.21) to (3.23), PDF p. 45 (»striking out« of rows and columns), ONATE1 (2.85), (2.86), PDF p. 98, EP (8.2.41), p. 542 (first row and first column omitted, a system with a known right-hand column remains). The proof in steps is not from the sources.</p></div></div>
+<p>The proof showed that the <a class="xref auto" href="sec-robni-pogoji-mke.html#thm-reduciran-sistem" data-knowl="thm-reduciran-sistem">reduced system</a> is not a new procedure but the rows of the weak form that we had in chapter <a class="xref" href="ch-sibka-oblika.html">6</a> for the free hat functions, and that the <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definiteness</a> of the block follows from the condition on the supports. The condition in words: the supports must stop every displacement in which the energy would stay zero. For a bar this condition is simple.</p>
+
+<div class="blk posledica" id="cor-podprta-palica"><div class="blk-head"><span class="blk-label">Corollary 7.19</span> <span class="blk-title">A supported bar (podprta palica)</span></div><div class="blk-body"><p>Let the bar be as in lemma <a class="xref" href="sec-robni-pogoji-mke.html#lem-nicelna-energija-palice" data-knowl="lem-nicelna-energija-palice">7.17</a> and let at least one unknown be prescribed, \(d_{\mathrm{k}} = \bar d_{\mathrm{k}}\) for some <span class="nobr">\(k\).</span> Then \(\mat K_{\mathrm{ff}}\) is <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite</a>, the system <a class="xref" href="sec-robni-pogoji-mke.html#eq-rpm-reduciran" data-knowl="eq-rpm-reduciran">(7.16)</a> has exactly one solution, and elimination reaches it with positive pivots.</p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that the hypothesis of theorem <a class="xref" href="sec-robni-pogoji-mke.html#thm-reduciran-sistem" data-knowl="thm-reduciran-sistem">7.18</a> holds.</p>
+<ol>
+<li>Let \(\vek d \ne \vek 0\) with \(\vek d_{\mathrm{p}} = \vek 0\) and <span class="nobr">\(\vek d^\T\mat K\,\vek d = 0\).</span> By lemma <a class="xref" href="sec-robni-pogoji-mke.html#lem-jedro-semidefinitne" data-knowl="lem-jedro-semidefinitne">7.16</a>, <span class="nobr">\(\mat K\,\vek d = \vek 0\),</span> so by lemma <a class="xref" href="sec-robni-pogoji-mke.html#lem-nicelna-energija-palice" data-knowl="lem-nicelna-energija-palice">7.17</a> <span class="nobr">\(\vek d = c\,(1, \dots, 1)\).</span></li>
+<li>The unknown \(d_{\mathrm{k}}\) is prescribed, so \(d_{\mathrm{k}} = 0\) in <span class="nobr">\(\vek d_{\mathrm{p}} = \vek 0\).</span> From \(d_{\mathrm{k}} = c\) it follows that \(c = 0\) and <span class="nobr">\(\vek d = \vek 0\),</span> a contradiction.</li>
+<li>The hypothesis of theorem <a class="xref" href="sec-robni-pogoji-mke.html#thm-reduciran-sistem" data-knowl="thm-reduciran-sistem">7.18</a> therefore holds, and the claim is the theorem itself.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> The proof is not from a source.</p></div></div>
+<p>For a bar the supports therefore cannot be chosen wrongly: any node with a given displacement suffices. For <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">trusses</a> the condition will be stricter and we will have to check it.</p>
+<p>We test it on the hanging bar of two elements. The free unknowns are \(d_1\) and <span class="nobr">\(d_2\),</span> the prescribed one is <span class="nobr">\(d_0 = 0\).</span> The block \(\mat K_{\mathrm{ff}}\) is the matrix that remains when we strike out row and column \(0\) of the matrix of equation <a class="xref" href="sec-robni-pogoji-mke.html#eq-rpm-celoten-sistem" data-knowl="eq-rpm-celoten-sistem">(7.13)</a>, \(\mat K_{\mathrm{fp}}\) is the column <span class="nobr">\(\frac{EA}{h}(-1, 0)\),</span> and because of \(d_0 = 0\) we have <span class="nobr">\(\mat K_{\mathrm{fp}}\,\vek d_{\mathrm{p}} = \vek 0\).</span> The system <a class="xref" href="sec-robni-pogoji-mke.html#eq-rpm-reduciran" data-knowl="eq-rpm-reduciran">(7.16)</a> is</p>
+<div class="eq" id="eq-rpm-reduciran-viseca">\[\frac{EA}{h} \begin{pmatrix} 2 &amp; -1 \\ -1 &amp; 1 \end{pmatrix} \begin{pmatrix} d_1 \\ d_2 \end{pmatrix} = \begin{pmatrix} 30{,}05 \\ 15{,}02 \end{pmatrix}\ \text{N} . \tag{7.17}\]</div>
+<p>Elimination starts with the pivot \(2EA/h = 6{,}158 \cdot 10^6\) N/m. We add half of the first row to the second and obtain \(\big(1 - \tfrac12\big)\frac{EA}{h}\,d_2 = 15{,}02 + \tfrac12\,30{,}05\) N. The second pivot is \(\frac{EA}{2h} = 1{,}539 \cdot 10^6\) N/m, positive, as corollary <a class="xref" href="sec-robni-pogoji-mke.html#cor-podprta-palica" data-knowl="cor-podprta-palica">7.19</a> predicts, and the right-hand side is \(30{,}05\) N. From this \(d_2 = 30{,}05\ \text{N} / (1{,}539 \cdot 10^6\ \text{N/m}) = 19{,}52\) µm. The first row gives \(d_1 = \big(30{,}05\ \text{N} + \frac{EA}{h}\,d_2\big) / (2EA/h) = 14{,}64\) µm. Both displacements are the same as in chapter <a class="xref" href="ch-sibka-oblika.html">6</a> and are exact (theorem <a class="xref" href="sec-ocene-napake.html#thm-tocnost-v-tocki" data-knowl="thm-tocnost-v-tocki">6.38</a>).</p>
+<p>What happens if there is no support? Elimination of the whole matrix of equation <a class="xref" href="sec-robni-pogoji-mke.html#eq-rpm-celoten-sistem" data-knowl="eq-rpm-celoten-sistem">(7.13)</a> starts with the pivot <span class="nobr">\(\frac{EA}{h}\).</span> After the first step \(\frac{EA}{h}\left[\begin{smallmatrix} 1 &amp; -1 \\ -1 &amp; 1 \end{smallmatrix}\right]\) remains, the second pivot is again <span class="nobr">\(\frac{EA}{h}\),</span> and after the second step the third entry is <span class="nobr">\(\frac{EA}{h}(1 - 1) = 0\).</span> The third pivot is zero, we cannot divide, and elimination fails. The positive pivots of theorem <a class="xref" href="sec-skalarni-produkt-funkcij.html#thm-sistem-pozitivno-definitna" data-knowl="thm-sistem-pozitivno-definitna">6.29</a> are lost exactly where the energy is zero.</p>
+
+<h3 id="sec-predpisan-pomik"><span class="h-num">7.3.3</span> A prescribed displacement that is not zero (predpisan pomik, ki ni nič)</h3>
+<p>A support often does not only hold a node but moves it. The foundation of a building can settle, or a structure can be deliberately clamped into a displaced support. Does theorem <a class="xref" href="sec-robni-pogoji-mke.html#thm-reduciran-sistem" data-knowl="thm-reduciran-sistem">7.18</a> cover this? It does, because it does not require <span class="nobr">\(\vek d_{\mathrm{p}} = \vek 0\).</span> Take the bar of chapter <a class="xref" href="ch-sibka-oblika.html">6</a> fixed at both ends (subsection <a class="xref" href="sec-ritzova-metoda.html#sec-ritz-palica">6.4.2</a>), where the lower support has settled by \(\bar u = 0{,}1\) mm downward. The bar has the same data as before and two elements, nodes <span class="nobr">\(0\),</span> <span class="nobr">\(1\),</span> <span class="nobr">\(2\).</span> The prescribed ones are \(d_0 = 0\) and <span class="nobr">\(d_2 = \bar u\),</span> only \(d_1\) is free. The <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat K_{\mathrm{ff}}\) is a single entry, \(K_{11} = 2EA/h = 6{,}158 \cdot 10^6\) N/m, and the row \(\mat K_{\mathrm{fp}}\) is <span class="nobr">\(\big(K_{10}, K_{12}\big) = \frac{EA}{h}(-1, -1)\).</span> The term with the prescribed values is <span class="nobr">\(\mat K_{\mathrm{fp}}\,\vek d_{\mathrm{p}} = -\frac{EA}{h}\,\bar u\),</span> and equation <a class="xref" href="sec-robni-pogoji-mke.html#eq-rpm-reduciran" data-knowl="eq-rpm-reduciran">(7.16)</a> is</p>
+<div class="eq" id="eq-rpm-predpisan">\[\frac{2EA}{h}\,d_1 = f_1 + \frac{EA}{h}\,\bar u = 30{,}05\ \text{N} + 307{,}88\ \text{N} = 337{,}93\ \text{N} , \tag{7.18}\]</div>
+<p>where \(EA\,\bar u/h = 3{,}079 \cdot 10^6\ \text{N/m} \cdot 10^{-4}\ \text{m} = 307{,}88\) N. From this \(d_1 = 54{,}88\) µm.</p>
+<p>We check against the known solution. The true field of this problem is \(a\,x\,(L - x) + \bar u\,x/L\) (subsection <a class="xref" href="sec-ritzova-metoda.html#sec-ritz-palica">6.4.2</a>), at the middle \(x = 5\) m it is \(a \cdot 25\ \text{m}^2 + \bar u/2 = 4{,}88\ \text{µm} + 50{,}00\ \text{µm} = 54{,}88\) µm, the same number. Equation <a class="xref" href="sec-robni-pogoji-mke.html#eq-rpm-predpisan" data-knowl="eq-rpm-predpisan">(7.18)</a> gives it in two parts: \(30{,}05\ \text{N}/(6{,}158 \cdot 10^6\ \text{N/m}) = 4{,}88\) µm from the weight and \(307{,}88\ \text{N}/(6{,}158 \cdot 10^6\ \text{N/m}) = 50{,}00\) µm from the settlement, that is half of the settlement, because node \(1\) is in the middle between the supports.</p>
+<p>Why did \(307{,}88\) N appear on the right-hand side? Imagine that we clamp the second element at its lower end into the displaced support and hold node \(1\) at <span class="nobr">\(d_1 = 0\).</span> The element stretches by \(\bar u\) and pulls node \(1\) downward with the force <span class="nobr">\(EA\,\bar u/h\).</span> When solving for the free node we must subtract this force, so on the right-hand side we add it as a load (figure <a class="xref" href="sec-robni-pogoji-mke.html#fig-rpm-predpisan" data-knowl="fig-rpm-predpisan">7.8</a>). The prescribed displacement acts on the free node as a load equal to the force that would be needed to stretch the element by this displacement while the free node is held.</p>
+
+<figure class="blk slika" id="fig-rpm-predpisan"><p><span class="svgfig" role="img" aria-label="A bar with both ends fixed and the lower end displaced, and node 1 with the two added forces"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='303.77pt' height='196.63pt' viewBox='-72.000004 -72.000004 225.018271 145.652244'>
+<defs>
+<path id='rpm-predpisan-g0-61' d='M4.373599-7.0934C4.423412-7.222914 4.423412-7.262765 4.423412-7.272727C4.423412-7.382316 4.333748-7.47198 4.224159-7.47198C4.154421-7.47198 4.084682-7.442092 4.054795-7.382316L.597758 2.11208C.547945 2.241594 .547945 2.281445 .547945 2.291407C.547945 2.400996 .637609 2.49066 .747198 2.49066C.876712 2.49066 .9066 2.420922 .966376 2.251557L4.373599-7.0934Z'/>
+<path id='rpm-predpisan-g0-65' d='M1.783313-1.145704C1.384807-.478207 .996264-.33873 .557908-.308842C.438356-.298879 .348692-.298879 .348692-.109589C.348692-.049813 .398506 0 .478207 0C.747198 0 1.05604-.029888 1.334994-.029888C1.663761-.029888 2.012453 0 2.331258 0C2.391034 0 2.520548 0 2.520548-.18929C2.520548-.298879 2.430884-.308842 2.361146-.308842C2.132005-.328767 1.892902-.408468 1.892902-.657534C1.892902-.777086 1.952677-.886675 2.032379-1.026152L2.789539-2.30137H5.290162C5.310087-2.092154 5.449564-.737235 5.449564-.637609C5.449564-.33873 4.931507-.308842 4.732254-.308842C4.592777-.308842 4.493151-.308842 4.493151-.109589C4.493151 0 4.612702 0 4.632628 0C5.041096 0 5.469489-.029888 5.877958-.029888C6.127024-.029888 6.75467 0 7.003736 0C7.063512 0 7.183064 0 7.183064-.199253C7.183064-.308842 7.083437-.308842 6.953923-.308842C6.336239-.308842 6.336239-.37858 6.306351-.667497L5.69863-6.894147C5.678705-7.0934 5.678705-7.13325 5.50934-7.13325C5.349938-7.13325 5.310087-7.063512 5.250311-6.963885L1.783313-1.145704ZM2.978829-2.610212L4.941469-5.897883L5.260274-2.610212H2.978829Z'/>
+<path id='rpm-predpisan-g0-69' d='M7.053549-2.321295C7.073474-2.371108 7.103362-2.440847 7.103362-2.460772C7.103362-2.470735 7.103362-2.570361 6.983811-2.570361C6.894147-2.570361 6.874222-2.510585 6.854296-2.450809C6.206725-.976339 5.838107-.308842 4.134496-.308842H2.67995C2.540473-.308842 2.520548-.308842 2.460772-.318804C2.361146-.328767 2.331258-.33873 2.331258-.418431C2.331258-.448319 2.331258-.468244 2.381071-.647572L3.058531-3.367372H4.044832C4.891656-3.367372 4.891656-3.158157 4.891656-2.909091C4.891656-2.839352 4.891656-2.719801 4.821918-2.420922C4.801993-2.371108 4.79203-2.34122 4.79203-2.311333C4.79203-2.261519 4.83188-2.201743 4.921544-2.201743C5.001245-2.201743 5.031133-2.251557 5.070984-2.400996L5.638854-4.732254C5.638854-4.79203 5.589041-4.841843 5.519303-4.841843C5.429639-4.841843 5.409714-4.782067 5.379826-4.662516C5.17061-3.905355 4.991283-3.676214 4.07472-3.676214H3.138232L3.73599-6.07721C3.825654-6.425903 3.835616-6.465753 4.273973-6.465753H5.678705C6.894147-6.465753 7.193026-6.176837 7.193026-5.3599C7.193026-5.120797 7.193026-5.100872 7.153176-4.83188C7.153176-4.772105 7.143213-4.702366 7.143213-4.652553S7.173101-4.533001 7.262765-4.533001C7.372354-4.533001 7.382316-4.592777 7.402242-4.782067L7.601494-6.505604C7.631382-6.774595 7.581569-6.774595 7.332503-6.774595H2.30137C2.102117-6.774595 2.002491-6.774595 2.002491-6.575342C2.002491-6.465753 2.092154-6.465753 2.281445-6.465753C2.650062-6.465753 2.929016-6.465753 2.929016-6.286426C2.929016-6.246575 2.929016-6.22665 2.879203-6.047323L1.564134-.777086C1.464508-.388543 1.444583-.308842 .657534-.308842C.488169-.308842 .37858-.308842 .37858-.119552C.37858 0 .468244 0 .657534 0H5.828144C6.057285 0 6.067248-.009963 6.136986-.169365L7.053549-2.321295Z'/>
+<path id='rpm-predpisan-g0-102' d='M3.656289-3.985056H4.513076C4.712329-3.985056 4.811955-3.985056 4.811955-4.184309C4.811955-4.293898 4.712329-4.293898 4.542964-4.293898H3.716065L3.92528-5.429639C3.965131-5.638854 4.104608-6.346202 4.164384-6.465753C4.254047-6.655044 4.423412-6.804483 4.632628-6.804483C4.672478-6.804483 4.931507-6.804483 5.120797-6.625156C4.682441-6.585305 4.582814-6.236613 4.582814-6.087173C4.582814-5.858032 4.762142-5.738481 4.951432-5.738481C5.210461-5.738481 5.499377-5.957659 5.499377-6.336239C5.499377-6.794521 5.041096-7.023661 4.632628-7.023661C4.293898-7.023661 3.666252-6.844334 3.367372-5.858032C3.307597-5.648817 3.277709-5.549191 3.038605-4.293898H2.351183C2.161893-4.293898 2.052304-4.293898 2.052304-4.104608C2.052304-3.985056 2.141968-3.985056 2.331258-3.985056H2.988792L2.241594-.049813C2.062267 .916563 1.892902 1.823163 1.374844 1.823163C1.334994 1.823163 1.085928 1.823163 .896638 1.643836C1.354919 1.613948 1.444583 1.255293 1.444583 1.105853C1.444583 .876712 1.265255 .757161 1.075965 .757161C.816936 .757161 .52802 .976339 .52802 1.354919C.52802 1.803238 .966376 2.042341 1.374844 2.042341C1.92279 2.042341 2.321295 1.454545 2.500623 1.075965C2.819427 .448319 3.048568-.757161 3.058531-.826899L3.656289-3.985056Z'/>
+<path id='rpm-predpisan-g0-104' d='M2.859278-6.804483C2.859278-6.814446 2.859278-6.914072 2.729763-6.914072C2.500623-6.914072 1.77335-6.834371 1.514321-6.814446C1.43462-6.804483 1.325031-6.794521 1.325031-6.615193C1.325031-6.495641 1.414695-6.495641 1.564134-6.495641C2.042341-6.495641 2.062267-6.425903 2.062267-6.326276L2.032379-6.127024L.587796-.388543C.547945-.249066 .547945-.229141 .547945-.169365C.547945 .059776 .747198 .109589 .836862 .109589C.996264 .109589 1.155666-.009963 1.205479-.14944L1.39477-.9066L1.613948-1.803238C1.673724-2.022416 1.733499-2.241594 1.783313-2.470735C1.803238-2.530511 1.882939-2.859278 1.892902-2.919054C1.92279-3.008717 2.231631-3.566625 2.570361-3.835616C2.789539-3.995019 3.098381-4.184309 3.526775-4.184309S4.064757-3.845579 4.064757-3.486924C4.064757-2.948941 3.686177-1.863014 3.447073-1.255293C3.367372-1.026152 3.317559-.9066 3.317559-.707347C3.317559-.239103 3.666252 .109589 4.134496 .109589C5.070984 .109589 5.439601-1.344956 5.439601-1.424658C5.439601-1.524284 5.349938-1.524284 5.32005-1.524284C5.220423-1.524284 5.220423-1.494396 5.17061-1.344956C5.021171-.816936 4.702366-.109589 4.154421-.109589C3.985056-.109589 3.915318-.209215 3.915318-.438356C3.915318-.687422 4.004981-.926526 4.094645-1.145704C4.254047-1.574097 4.702366-2.759651 4.702366-3.337484C4.702366-3.985056 4.303861-4.403487 3.556663-4.403487C2.929016-4.403487 2.450809-4.094645 2.082192-3.636364L2.859278-6.804483Z'/>
+<path id='rpm-predpisan-g0-117' d='M3.486924-.557908C3.596513-.14944 3.945205 .109589 4.373599 .109589C4.722291 .109589 4.951432-.119552 5.110834-.438356C5.280199-.797011 5.409714-1.404732 5.409714-1.424658C5.409714-1.524284 5.32005-1.524284 5.290162-1.524284C5.190535-1.524284 5.180573-1.484433 5.150685-1.344956C5.011208-.787049 4.821918-.109589 4.403487-.109589C4.194271-.109589 4.094645-.239103 4.094645-.56787C4.094645-.787049 4.214197-1.255293 4.293898-1.603985L4.572852-2.67995C4.60274-2.82939 4.702366-3.20797 4.742217-3.35741C4.79203-3.58655 4.891656-3.965131 4.891656-4.024907C4.891656-4.204234 4.752179-4.293898 4.60274-4.293898C4.552927-4.293898 4.293898-4.283935 4.214197-3.945205C4.024907-3.217933 3.58655-1.474471 3.466999-.946451C3.457036-.9066 3.058531-.109589 2.331258-.109589C1.8132-.109589 1.713574-.557908 1.713574-.926526C1.713574-1.484433 1.992528-2.271482 2.251557-2.958904C2.371108-3.257783 2.420922-3.39726 2.420922-3.58655C2.420922-4.034869 2.102117-4.403487 1.603985-4.403487C.657534-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.816936-3.815691 1.195517-4.184309 1.574097-4.184309C1.663761-4.184309 1.823163-4.174346 1.823163-3.855542C1.823163-3.616438 1.713574-3.327522 1.653798-3.178082C1.285181-2.191781 1.075965-1.574097 1.075965-1.085928C1.075965-.139477 1.763387 .109589 2.30137 .109589C2.958904 .109589 3.317559-.33873 3.486924-.557908Z'/>
+<path id='rpm-predpisan-g0-120' d='M3.327522-3.008717C3.387298-3.267746 3.616438-4.184309 4.313823-4.184309C4.363636-4.184309 4.60274-4.184309 4.811955-4.054795C4.533001-4.004981 4.333748-3.755915 4.333748-3.516812C4.333748-3.35741 4.443337-3.16812 4.712329-3.16812C4.931507-3.16812 5.250311-3.347447 5.250311-3.745953C5.250311-4.26401 4.662516-4.403487 4.323786-4.403487C3.745953-4.403487 3.39726-3.875467 3.277709-3.646326C3.028643-4.303861 2.49066-4.403487 2.201743-4.403487C1.165629-4.403487 .597758-3.118306 .597758-2.86924C.597758-2.769614 .697385-2.769614 .71731-2.769614C.797011-2.769614 .826899-2.789539 .846824-2.879203C1.185554-3.935243 1.843088-4.184309 2.181818-4.184309C2.371108-4.184309 2.719801-4.094645 2.719801-3.516812C2.719801-3.20797 2.550436-2.540473 2.181818-1.145704C2.022416-.52802 1.673724-.109589 1.235367-.109589C1.175592-.109589 .946451-.109589 .737235-.239103C.986301-.288917 1.205479-.498132 1.205479-.777086C1.205479-1.046077 .986301-1.125778 .836862-1.125778C.537983-1.125778 .288917-.86675 .288917-.547945C.288917-.089664 .787049 .109589 1.225405 .109589C1.882939 .109589 2.241594-.587796 2.271482-.647572C2.391034-.278954 2.749689 .109589 3.347447 .109589C4.373599 .109589 4.941469-1.175592 4.941469-1.424658C4.941469-1.524284 4.851806-1.524284 4.821918-1.524284C4.732254-1.524284 4.712329-1.484433 4.692403-1.414695C4.363636-.348692 3.686177-.109589 3.367372-.109589C2.978829-.109589 2.819427-.428394 2.819427-.767123C2.819427-.986301 2.879203-1.205479 2.988792-1.643836L3.327522-3.008717Z'/>
+<path id='rpm-predpisan-g1-22' d='M4.283935-5.569116V-5.877958H.687422V-5.569116H4.283935Z'/>
+<path id='rpm-predpisan-g1-43' d='M4.07472-2.291407H6.854296C6.993773-2.291407 7.183064-2.291407 7.183064-2.49066S6.993773-2.689913 6.854296-2.689913H4.07472V-5.479452C4.07472-5.618929 4.07472-5.808219 3.875467-5.808219S3.676214-5.618929 3.676214-5.479452V-2.689913H.886675C.747198-2.689913 .557908-2.689913 .557908-2.49066S.747198-2.291407 .886675-2.291407H3.676214V.498132C3.676214 .637609 3.676214 .826899 3.875467 .826899S4.07472 .637609 4.07472 .498132V-2.291407Z'/>
+<path id='rpm-predpisan-g1-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='rpm-predpisan-g1-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='rpm-predpisan-g1-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='rpm-predpisan-g2-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+</defs>
+<g id='rpm-predpisan-page1'>
+<g stroke-miterlimit='10' transform='translate(-28.184895,-65.469303)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-17.07181 0H17.0714' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-17.07181 0L-11.38135 5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-9.95863 0L-4.26817 5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-2.84544 0L2.84502 5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M4.26775 0L9.9582 5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M11.38094 0L17.0714 5.69046' fill='none'/>
+</g>
+</g>
+<path d='M-3.41418 0V-113.81097H3.41418V0ZM3.41418-113.81097' fill='none'/>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M-17.07181-113.81097H17.07181' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.8'>
+<path d='M-17.07181-133.7278H17.07181' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-17.07181-133.7278L-22.76227-139.41826' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-9.95863-133.7278L-15.6491-139.41826' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-2.84544-133.7278L-8.5359-139.41826' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M4.26775-133.7278L-1.42271-139.41826' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M11.38094-133.7278L5.69048-139.41826' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M-3.41418 0V-133.7278H3.41418V0ZM3.41418-133.7278' fill='none'/>
+</g>
+<path d='M1.83862 0C1.83862 1.01544 1.01544 1.83862 0 1.83862S-1.83862 1.01544-1.83862 0S-1.01544-1.83862 0-1.83862S1.83862-1.01544 1.83862 0ZM0 0' stroke='none'/>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-28.184895,-65.469303)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M1.83862-67.71722C1.83862-66.70178 1.01544-65.8786 0-65.8786S-1.83862-66.70178-1.83862-67.71722C-1.83862-68.73267-1.01544-69.55585 0-69.55585S1.83862-68.73267 1.83862-67.71722ZM0-67.71722' stroke='none'/>
+</g>
+<g transform='translate(0.0,-67.71722)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-28.184895,-65.469303)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M1.83862-133.7278C1.83862-132.71236 1.01544-131.88918 0-131.88918S-1.83862-132.71236-1.83862-133.7278S-1.01544-135.56642 0-135.56642S1.83862-134.74324 1.83862-133.7278ZM0-133.7278' stroke='none'/>
+</g>
+<g transform='translate(0.0,-133.7278)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-28.184895,-65.469303)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-28.5498,-3.22221)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-28.184895,-65.469303)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-28.184895' y='-65.469303' xlink:href='#rpm-predpisan-g1-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-28.5498,-70.93944)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-28.184895,-65.469303)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-28.184895' y='-65.469303' xlink:href='#rpm-predpisan-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-28.5498,-126.99138)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-28.184895,-65.469303)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-28.184895' y='-65.469303' xlink:href='#rpm-predpisan-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M27.03001-114.14845V-133.39032' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,27.03001,-119.95149)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,27.03001,-114.03596)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,27.03001,-127.58728)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,27.03001,-133.5028)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(30.58798,-126.60826)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-28.184895,-65.469303)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-27.547211' y='-65.469303' xlink:href='#rpm-predpisan-g1-22'/>
+<use x='-28.184895' y='-65.469303' xlink:href='#rpm-predpisan-g0-117'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M5.69046-113.81097H31.29819' fill='none'/>
+</g>
+</g>
+</g>
+<path d='M-31.29819 0V-29.79102' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,-31.29819,-27.31456)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-40.64644,-36.29597)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-28.184895,-65.469303)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-28.184895' y='-65.469303' xlink:href='#rpm-predpisan-g0-120'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M122.61305-34.14322C122.61305-32.42473 121.21997-31.03165 119.50148-31.03165S116.38991-32.42473 116.38991-34.14322S117.78299-37.25479 119.50148-37.25479S122.61305-35.86171 122.61305-34.14322ZM119.50148-34.14322' fill='none'/>
+<g transform='translate(119.50148,-34.14322)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-28.184895,-65.469303)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(117.00148,-23.39706)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-28.184895,-65.469303)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-28.184895' y='-65.469303' xlink:href='#rpm-predpisan-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='1.0'>
+<g fill='#00f' stroke='#00f'>
+<path d='M119.50148-37.5574V-101.09431' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,119.50148,-98.44643)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.33095 0L1.67535 1.31036L2.89789 0L1.67535-1.31036Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(123.33446,-73.91623)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-28.184895,-65.469303)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-28.184895' y='-65.469303' xlink:href='#rpm-predpisan-g0-102'/>
+<use x='-23.307327' y='-63.974923' xlink:href='#rpm-predpisan-g2-49'/>
+<use x='-16.624092' y='-65.469303' xlink:href='#rpm-predpisan-g1-43'/>
+<use x='-6.661478' y='-65.469303' xlink:href='#rpm-predpisan-g0-69'/>
+<use x='1.267114' y='-65.469303' xlink:href='#rpm-predpisan-g0-65'/>
+<use x='11.037197' y='-65.469303' xlink:href='#rpm-predpisan-g1-22'/>
+<use x='10.399513' y='-65.469303' xlink:href='#rpm-predpisan-g0-117'/>
+<use x='16.102705' y='-65.469303' xlink:href='#rpm-predpisan-g0-61'/>
+<use x='21.084044' y='-65.469303' xlink:href='#rpm-predpisan-g0-104'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 7.8</span>: A bar fixed at both ends, the lower support displaced by \(\bar u\) downward (left, displacement drawn greatly enlarged, nodes <span class="nobr">\(0\),</span> <span class="nobr">\(1\),</span> <span class="nobr">\(2\)).</span> Right: node \(1\) with the load that the reduced system sees (equation <a class="xref" href="sec-robni-pogoji-mke.html#eq-rpm-predpisan" data-knowl="eq-rpm-predpisan">(7.18)</a>), a single force \(f_1 + EA\,\bar u/h = 30{,}05\ \text{N} + 307{,}88\ \text{N} = 337{,}93\) N downward, which replaces the weight and the displaced support together. The force is not drawn to scale with the other part of the figure.</figcaption></figure>
+<p>In a computer program, splitting the matrix into blocks is laborious, because the rows and columns would have to be rearranged. A procedure that keeps the size of the system is therefore often used (COOK, PDF pp. 54-55, »without ... changing its size, or rearranging its terms«). For every prescribed unknown \(d_{\mathrm{k}} = \bar d_{\mathrm{k}}\) we do three things: from the right-hand side of every other row \(i\) we subtract <span class="nobr">\(K_{\mathrm{ik}}\,\bar d_{\mathrm{k}}\),</span> we replace the row and column \(k\) of the matrix by zeros and put \(1\) on the diagonal, and on the right-hand side of row \(k\) we put <span class="nobr">\(\bar d_{\mathrm{k}}\).</span> Let us prove that the solution is the same.</p>
+<p>Row \(k\) of the new matrix is \((0, \dots, 1, \dots, 0)\) and the right-hand side is <span class="nobr">\(\bar d_{\mathrm{k}}\),</span> so the equation says <span class="nobr">\(d_{\mathrm{k}} = \bar d_{\mathrm{k}}\),</span> which is exactly the prescribed value. Row \(i\) of a free node has a zero in column <span class="nobr">\(k\),</span> so it no longer contains the unknown <span class="nobr">\(d_{\mathrm{k}}\),</span> and on the right-hand side it has <span class="nobr">\(f_{\mathrm{i}} - K_{\mathrm{ik}}\,\bar d_{\mathrm{k}}\).</span> This is row \(i\) of the system <a class="xref" href="sec-robni-pogoji-mke.html#eq-rpm-reduciran" data-knowl="eq-rpm-reduciran">(7.16)</a>, in which the term \(K_{\mathrm{ik}}\,\bar d_{\mathrm{k}}\) has been moved to the right. Only the rows <span class="nobr">\(d_{\mathrm{k}} = \bar d_{\mathrm{k}}\),</span> which do not mix unknowns, have been added to the free rows, so the solution for the free unknowns is the same as for equation <a class="xref" href="sec-robni-pogoji-mke.html#eq-rpm-reduciran" data-knowl="eq-rpm-reduciran">(7.16)</a>. For the settled bar of equation <a class="xref" href="sec-robni-pogoji-mke.html#eq-rpm-predpisan" data-knowl="eq-rpm-predpisan">(7.18)</a> the nodes \(0\) and \(2\) are prescribed. The new matrix is diagonal,</p>
+<div class="eq" id="eq-rpm-ohranjena-velikost">\[\begin{pmatrix} 1 &amp; 0 &amp; 0 \\ 0 &amp; 2EA/h &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{pmatrix} \begin{pmatrix} d_0 \\ d_1 \\ d_2 \end{pmatrix} = \begin{pmatrix} 0 \\ 337{,}93\ \text{N} \\ \bar u \end{pmatrix} , \tag{7.19}\]</div>
+<p>and from it we read <span class="nobr">\(d_0 = 0\),</span> \(d_1 = 337{,}93\ \text{N}/(2EA/h) = 54{,}88\) µm, <span class="nobr">\(d_2 = \bar u\).</span> The matrix is still symmetric, which preserves the advantage of symmetric storage. The ones on the diagonal have a different unit than \(2EA/h\) in N/m, which is unpleasant for large structures. COOK mentions as an alternative that the original \(K_{\mathrm{kk}}\) stays on the diagonal and \(K_{\mathrm{kk}}\,\bar d_{\mathrm{k}}\) goes to the right-hand side of row \(k\) (COOK, PDF p. 55). The solution is again the same, because row \(k\) again says <span class="nobr">\(d_{\mathrm{k}} = \bar d_{\mathrm{k}}\),</span> only with both sides multiplied by <span class="nobr">\(K_{\mathrm{kk}}\).</span></p>
+<p>Prescribed values can also be imposed in two other ways, with a penalty (penalty method) and with Lagrange multipliers. COOK only mentions them: »Boundary conditions can also be treated by Lagrange multipliers and by the penalty method« (COOK, PDF p. 56). We will meet the penalty in <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">frames</a> in chapter <a class="xref stub" href="ch-mke-nosilci.html">12</a>, and the multipliers in chapter <a class="xref stub" href="ch-analiticna-dinamika.html">8</a>, where they appear as constraint forces. In this chapter we stay with the division into blocks and with the procedure that keeps the size.</p>
+
+<h3 id="sec-reakcije"><span class="h-num">7.3.4</span> Reactions (reakcije)</h3>
+<p>The <a class="xref auto" href="sec-robni-pogoji-mke.html#thm-reduciran-sistem" data-knowl="thm-reduciran-sistem">reduced system</a> does not use the rows of the prescribed unknowns. We must not throw these rows away, because they hold the forces with which the supports hold the structure. A reaction is the force that a support exerts on the structure at the node of a prescribed unknown, in the direction of that unknown. How do we obtain it?</p>
+<p>Row \(i\) of the product \(\mat K\,\vek d\) is the force that we must give to node \(i\) from outside to maintain the displacements <span class="nobr">\(\vek d\).</span> Column \(j\) of the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat K\) is namely the force at the nodes that is needed for a unit displacement of unknown \(j\) with the other unknowns zero (definition <a class="xref" href="sec-element-palice.html#def-togostna-matrika" data-knowl="def-togostna-matrika">7.4</a>), and row \(i\) of the product is the sum of these contributions at the given <span class="nobr">\(d_{\mathrm{j}}\).</span> At a free node this force is provided by the load, and \((\mat K\,\vek d)_{\mathrm{i}} = f_{\mathrm{i}}\) is exactly an equation of the system. At a prescribed node the load \(f_{\mathrm{i}}\) carries a part, and the remainder must be provided by the support. The reaction is therefore the difference</p>
+<div class="eq">\[r_{\mathrm{i}} = (\mat K\,\vek d)_{\mathrm{i}} - f_{\mathrm{i}} , \qquad i \text{ prescribed} ,\]</div>
+<p>which for the blocks of equation <a class="xref" href="sec-robni-pogoji-mke.html#eq-rpm-bloki" data-knowl="eq-rpm-bloki">(7.15)</a> means</p>
+<div class="eq" id="eq-rpm-reakcije">\[\vek r_{\mathrm{p}} = \mat K_{\mathrm{pf}}\,\vek d_{\mathrm{f}} + \mat K_{\mathrm{pp}}\,\vek d_{\mathrm{p}} - \vek f_{\mathrm{p}} . \tag{7.20}\]</div>
+<p>At free unknowns there is no support, <span class="nobr">\(r_{\mathrm{i}} = 0\),</span> and all the conditions together are written as \(\mat K\,\vek d = \vek f + \vek r\) with a column \(\vek r\) that is nonzero only at the prescribed unknowns. The reactions are computed afterwards and do not influence the solution for the displacements, since the free system of equation <a class="xref" href="sec-robni-pogoji-mke.html#eq-rpm-reduciran" data-knowl="eq-rpm-reduciran">(7.16)</a> does not contain the prescribed rows. ONATE1 says in words that the reactions are computed »a posteriori« from the already known displacements (ONATE1 (2.26), PDF p. 74, and (2.85), PDF p. 98), EP with the row that remains unused when the first row and column are omitted and from which we get the unknown reaction (EP (8.2.41) and (8.2.45), pp. 542-543), FELIPPA multiplies the whole solution by the matrix and obtains the reactions besides the known loads (FELIPPA (3.26), PDF p. 46), COOK obtains them by multiplying the solution by the rows of the matrix that were discarded when the supports were entered (COOK, PDF p. 56).</p>
+<p>The hanging bar of two elements. Only \(d_0 = 0\) is prescribed, row \(0\) of the matrix of equation <a class="xref" href="sec-robni-pogoji-mke.html#eq-rpm-celoten-sistem" data-knowl="eq-rpm-celoten-sistem">(7.13)</a> is <span class="nobr">\(\frac{EA}{h}(1, -1, 0)\),</span> and \((\mat K\,\vek d)_0 = \frac{EA}{h}\,(d_0 - d_1) = -3{,}079 \cdot 10^6\ \text{N/m} \cdot 14{,}64\ \text{µm} = -45{,}07\) N. The load of the node is \(f_0 = 15{,}02\) N, so</p>
+<div class="eq">\[r_0 = -45{,}073\ \text{N} - 15{,}024\ \text{N} = -60{,}097\ \text{N} .\]</div>
+<p>The support pulls the bar upward (the axis points down) with the force \(60{,}097\) N, which is the weight of the whole bar \(qL = 6{,}0097 \cdot 10 = 60{,}097\) N. The settled bar has two reactions. Rows \(0\) and \(2\) of the matrix are \(\frac{EA}{h}(1, -1, 0)\) and <span class="nobr">\(\frac{EA}{h}(0, -1, 1)\),</span> and with \(d = (0,\ 54{,}88\ \text{µm},\ 100{,}00\ \text{µm})\) we get \((\mat K\,\vek d)_0 = -3{,}0788 \cdot 10^6 \cdot 54{,}88 \cdot 10^{-6} = -168{,}96\) N and \((\mat K\,\vek d)_2 = 3{,}0788 \cdot 10^6 \cdot (100{,}00 - 54{,}88) \cdot 10^{-6} = 138{,}92\) N. After subtracting the loads \(f_0 = f_2 = 15{,}02\) N, computed with unrounded values,</p>
+<div class="eq">\[r_0 = -183{,}99\ \text{N} , \qquad r_2 = 123{,}89\ \text{N} .\]</div>
+<p>The upper support pulls upward with \(183{,}99\) N, and the lower one pulls downward with \(123{,}89\) N, because the settlement stretches the bar at its lower end. The sum of the reactions is \(-60{,}10\) N, again the weight of the bar. Is this a coincidence?</p>
+
+<div class="blk lema" id="lem-ravnovesje-reakcij"><div class="blk-head"><span class="blk-label">Lemma 7.20</span> <span class="blk-title">Balance of reactions and loads (ravnovesje reakcij in bremen)</span></div><div class="blk-body"><p>Let \(\vek d\) be a solution of the reduced system of a bar from theorem <a class="xref" href="sec-robni-pogoji-mke.html#thm-reduciran-sistem" data-knowl="thm-reduciran-sistem">7.18</a> and \(\vek r = \mat K\,\vek d - \vek f\) the column of reactions, which is zero at free unknowns. Then</p>
+<div class="eq" id="eq-rpm-ravnovesje">\[\sum_{\mathrm{i}} r_{\mathrm{i}} + \sum_{\mathrm{i}} f_{\mathrm{i}} = 0 , \tag{7.21}\]</div>
+<p>the sum over all nodes: the reactions are equal in magnitude and opposite in sign to the sum of all nodal loads.</p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that the column of ones \(\vek 1 = (1, \dots, 1)\) is multiplied by \(\mat K\) into zero, and that this gives the claim when the equation \(\mat K\,\vek d = \vek f + \vek r\) is multiplied from the left.</p>
+<ol>
+<li>By lemma <a class="xref" href="sec-element-palice.html#lem-lastnosti-togosti-elementa" data-knowl="lem-lastnosti-togosti-elementa">7.6</a>, \(\mat k_{\mathrm{e}}\,(1, 1) = \vek 0\) for every element. The selection <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> picks from \(\vek 1\) the two components that belong to element <span class="nobr">\(e\),</span> these are ones, <span class="nobr">\(\mat Z_{\mathrm{e}}\,\vek 1 = (1, 1)\),</span> so by theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a> <span class="nobr">\(\mat K\,\vek 1 = \sum_{\mathrm{e}} \mat Z_{\mathrm{e}}^\T\,\mat k_{\mathrm{e}}\,(1, 1) = \vek 0\).</span></li>
+<li>For free unknowns the row is an equation of <a class="xref" href="sec-robni-pogoji-mke.html#eq-rpm-reduciran" data-knowl="eq-rpm-reduciran">(7.16)</a>, and for prescribed ones it is the definition of the column <span class="nobr">\(\vek r\).</span> Together \(\mat K\,\vek d = \vek f + \vek r\) holds.</li>
+<li>We multiply the equation from the left by the row <span class="nobr">\(\vek 1^\T\):</span> <span class="nobr">\(\vek 1^\T\mat K\,\vek d = \vek 1^\T\vek f + \vek 1^\T\vek r\).</span></li>
+<li>The matrix \(\mat K\) is symmetric (corollary <a class="xref" href="sec-sestavljanje.html#cor-matrika-konstrukcije" data-knowl="cor-matrika-konstrukcije">7.14</a>), so by lemma <a class="xref" href="sec-matrike.html#lem-transponiran-produkt" data-knowl="lem-transponiran-produkt">1.101</a> \(\vek 1^\T\mat K = (\mat K^\T\vek 1)^\T = (\mat K\,\vek 1)^\T = \vek 0^\T\) by step 1. The left-hand side is zero, and the right-hand side is <span class="nobr">\(\vek 1^\T\vek f + \vek 1^\T\vek r = \sum_{\mathrm{i}} f_{\mathrm{i}} + \sum_{\mathrm{i}} r_{\mathrm{i}}\),</span> which is equation <a class="xref" href="sec-robni-pogoji-mke.html#eq-rpm-ravnovesje" data-knowl="eq-rpm-ravnovesje">(7.21)</a>.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> The proof is not from a source in this form. FELIPPA, PDF p. 46: »It is easy to check that the complete force system is in equilibrium«.</p></div></div>
+<p>The proof showed that the reactions and the loads are in balance because a rigid displacement of the bar needs no force, that is because of the same zero energy that cost the matrix \(\mat K\) its inverse. We check on the examples: hanging bar <span class="nobr">\(15{,}024 + 30{,}049 + 15{,}024 - 60{,}097 = 0\),</span> settled bar \(15{,}024 + 30{,}049 + 15{,}024 - 183{,}989 + 123{,}892 = 0\) (node \(1\) is not supported and has <span class="nobr">\(r_1 = 0\)).</span> So checking the reactions is the first thing we do after a computation: the sum of the reactions must be opposite to the sum of the loads. The check is necessary but not sufficient. The reactions would satisfy equation <a class="xref" href="sec-robni-pogoji-mke.html#eq-rpm-ravnovesje" data-knowl="eq-rpm-ravnovesje">(7.21)</a> even with a wrongly computed stiffness, as we will see for the bridge in section <a class="xref" href="sec-most.html">7.7</a>.</p>
+<p>For the hanging bar the lemma itself says that the only reaction is <span class="nobr">\(r_0 = -\sum_{\mathrm{i}} f_{\mathrm{i}} = -qL\),</span> because this is the only supported unknown. The sum of the nodal loads is the whole load, because on every element the two shape <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> add up to \(1\) (lemma <a class="xref" href="sec-element-palice.html#lem-vsota-oblikovnih" data-knowl="lem-vsota-oblikovnih">7.3</a>), so <span class="nobr">\(\sum_{\mathrm{i}} f_{\mathrm{i}} = \ell\big(\sum_{\mathrm{i}} \psi_{\mathrm{i}}\big) = \int_0^L q\,\mathrm{d}x = qL\).</span> Therefore the reaction is exact for every number of elements. The computation for <span class="nobr">\(n = 1\),</span> <span class="nobr">\(2\),</span> \(4\) elements (SymPy and NumPy) always gives \(-60{,}097\) N. For the settled bar two unknowns are supported, the lemma gives only the sum, and each reaction separately should be exact too. Why?</p>
+<p>Let us also look at the force in an element. By section <a class="xref" href="sec-element-palice.html#sec-sila-v-elementu">7.1.4</a>, \(N_{\mathrm{e}} = EA\,(d_{\mathrm{e}} - d_{\mathrm{e}-1})/h\) is constant on the element. For the bar of two elements \(N_1 = 3{,}079 \cdot 10^6 \cdot 14{,}64 \cdot 10^{-6} = 45{,}07\) N and \(N_2 = 3{,}079 \cdot 10^6 \cdot (19{,}52 - 14{,}64) \cdot 10^{-6} = 15{,}02\) N. The true <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> is <span class="nobr">\(N(x) = q\,(L - x)\),</span> at the support \(N(0) = qL = 60{,}10\) N. The force in the first element is \(45{,}07\) N, so \(qh/2 = 15{,}02\) N too little, exactly as much as <span class="nobr">\(f_0\).</span> For four elements the forces are <span class="nobr">\(52{,}585\),</span> <span class="nobr">\(37{,}561\),</span> \(22{,}536\) and \(7{,}512\) N, each is the average of the true force \(q\,(L - x)\) on its element. The first average is <span class="nobr">\(q\,(L - h/2)\),</span> so <span class="nobr">\(N_1 = N(0) - qh/2\).</span> Therefore from the equation \(r_0 = (\mat K\,\vek d)_0 - f_0 = -N_1 - f_0\) it follows that</p>
+<div class="eq" id="eq-rpm-reakcija-vozlisce">\[r_0 = -\big(N_1 + f_0\big) = -\big(N(0) - qh/2 + qh/2\big) = -N(0) . \tag{7.22}\]</div>
+<p>The support carries the force of the first element and that part of the weight that hangs on node <span class="nobr">\(0\).</span> The force in the element at the support is inexact by <span class="nobr">\(qh/2\),</span> and the reaction is exact, because the missing part is added to it by the load of the node. This holds more generally.</p>
+<p>The reaction is exact if the displacements of both nodes of the first element are exact. For the hanging bar this is guaranteed by theorem <a class="xref" href="sec-ocene-napake.html#thm-tocnost-v-tocki" data-knowl="thm-tocnost-v-tocki">6.38</a>. For a bar fixed at both ends that theorem says nothing, because it is written for a single support at <span class="nobr">\(x = 0\),</span> so we prove the exactness of the nodes separately. The proof follows the same idea: the error is orthogonal to the <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-sotorna-funkcija" data-knowl="def-sotorna-funkcija">hat functions</a> of the free nodes, and from this it follows that the error at all nodes is zero.</p>
+
+<div class="blk lema" id="lem-vozlisca-tocna-pritrjena"><div class="blk-head"><span class="blk-label">Lemma 7.21</span> <span class="blk-title">Exact nodal displacements of a bar fixed at both ends (točni pomiki vozlišč palice, pritrjene na obeh koncih)</span></div><div class="blk-body"><p>A bar has nodes \(0, 1, \dots, n\) at \(0 = x_0 &lt; x_1 &lt; \dots &lt; x_{\mathrm{n}} = L\) and elements \([x_{\mathrm{e}-1}, x_{\mathrm{e}}]\) with length \(h_{\mathrm{e}} = x_{\mathrm{e}} - x_{\mathrm{e}-1}\) and axial stiffness <span class="nobr">\(EA_{\mathrm{e}} &gt; 0\),</span> which is constant on each element (so there is a node wherever \(EA\) changes). The load \(q\) is <a class="xref auto" href="sec-zveznost.html#def-zveznost" data-knowl="def-zveznost">continuous on</a> each element. The displacements \(d_0\) and \(d_{\mathrm{n}}\) are prescribed. Let \(u\) be a <a class="xref auto" href="sec-funkcije-s-pregibi.html#def-odsekoma-zvezno-odvedljiva" data-knowl="def-odsekoma-zvezno-odvedljiva">piecewise continuously differentiable</a> solution of the <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">weak form</a> with \(u(0) = d_0\) and <span class="nobr">\(u(L) = d_{\mathrm{n}}\),</span> and \(u_{\mathrm{h}} = \sum_{\mathrm{j}} d_{\mathrm{j}}\,\psi_{\mathrm{j}}\) the finite element solution of theorem <a class="xref" href="sec-robni-pogoji-mke.html#thm-reduciran-sistem" data-knowl="thm-reduciran-sistem">7.18</a>, where the free unknowns are <span class="nobr">\(d_1, \dots, d_{\mathrm{n}-1}\).</span> Then \(d_{\mathrm{j}} = u(x_{\mathrm{j}})\) for every <span class="nobr">\(j = 0, 1, \dots, n\).</span></p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that the error \(e = u - u_{\mathrm{h}}\) is zero at all nodes. The hat function of every free node is orthogonal to the error, which gives equal forces in neighbouring elements, and the two ends close them.</p>
+<ol>
+<li>The <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> \(e\) is continuous and <a class="xref auto" href="sec-funkcije-s-pregibi.html#def-odsekoma-zvezno-odvedljiva" data-knowl="def-odsekoma-zvezno-odvedljiva">piecewise continuously differentiable</a> on the same <a class="xref auto" href="sec-integral.html#def-delitev" data-knowl="def-delitev">partition</a> as \(u\) and <span class="nobr">\(u_{\mathrm{h}}\).</span> Since \(\psi_{\mathrm{j}}(x_{\mathrm{i}}) = 1\) for \(j = i\) and \(0\) for \(j \ne i\) (definition <a class="xref" href="sec-skalarni-produkt-funkcij.html#def-sotorna-funkcija" data-knowl="def-sotorna-funkcija">6.25</a>), <span class="nobr">\(u_{\mathrm{h}}(x_{\mathrm{i}}) = d_{\mathrm{i}}\),</span> so \(e(x_0) = d_0 - u(0) = 0\) and <span class="nobr">\(e(x_{\mathrm{n}}) = d_{\mathrm{n}} - u(L) = 0\).</span> We write <span class="nobr">\(e_{\mathrm{j}} = e(x_{\mathrm{j}})\).</span></li>
+<li>For \(k = 1, \dots, n - 1\) the function \(\psi_{\mathrm{k}}\) is zero at \(x_0\) and <span class="nobr">\(x_{\mathrm{n}}\),</span> so it is a <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">test function</a> (definition <a class="xref" href="sec-mocna-sibka-oblika.html#def-sibka-oblika-splosna" data-knowl="def-sibka-oblika-splosna">6.6</a>), hence <span class="nobr">\(B(u, \psi_{\mathrm{k}}) = \ell(\psi_{\mathrm{k}})\).</span> The unknown \(d_{\mathrm{k}}\) is free, so by theorem <a class="xref" href="sec-robni-pogoji-mke.html#thm-reduciran-sistem" data-knowl="thm-reduciran-sistem">7.18</a> <span class="nobr">\(B(u_{\mathrm{h}}, \psi_{\mathrm{k}}) = \ell(\psi_{\mathrm{k}})\).</span> By linearity of \(B\) in the first argument, <span class="nobr">\(B(e, \psi_{\mathrm{k}}) = 0\).</span></li>
+<li>On element \(k\) we have <span class="nobr">\(\psi_{\mathrm{k}}' = 1/h_{\mathrm{k}}\),</span> on element \(k + 1\) we have <span class="nobr">\(\psi_{\mathrm{k}}' = -1/h_{\mathrm{k}+1}\),</span> and elsewhere zero (definition <a class="xref" href="sec-skalarni-produkt-funkcij.html#def-sotorna-funkcija" data-knowl="def-sotorna-funkcija">6.25</a>). Since \(EA\) is constant on each element, by lemma <a class="xref" href="sec-funkcije-s-pregibi.html#lem-osnovni-izrek-pregibi" data-knowl="lem-osnovni-izrek-pregibi">6.12</a>
+<div class="eq">\[\begin{aligned} B(e, \psi_{\mathrm{k}}) &amp;= \frac{EA_{\mathrm{k}}}{h_{\mathrm{k}}}\int_{\mathrm{x}_{\mathrm{k}-1}}^{x_{\mathrm{k}}} e'\,\mathrm{d}x - \frac{EA_{\mathrm{k}+1}}{h_{\mathrm{k}+1}}\int_{\mathrm{x}_\mathrm{k}}^{x_{\mathrm{k}+1}} e'\,\mathrm{d}x = s_{\mathrm{k}} - s_{\mathrm{k}+1} , \\ s_{\mathrm{j}} = \frac{EA_{\mathrm{j}}}{h_{\mathrm{j}}}\,(e_{\mathrm{j}} - e_{\mathrm{j}-1}) . \end{aligned}\]</div></li>
+<li>From steps 2 and 3, <span class="nobr">\(s_1 = s_2 = \dots = s_{\mathrm{n}}\).</span> We denote this number by <span class="nobr">\(s\).</span></li>
+<li>From the definition of <span class="nobr">\(s_{\mathrm{j}}\),</span> <span class="nobr">\(e_{\mathrm{j}} - e_{\mathrm{j}-1} = s\,h_{\mathrm{j}}/EA_{\mathrm{j}}\).</span> The sum over \(j = 1, \dots, n\) gives <span class="nobr">\(e_{\mathrm{n}} - e_0 = s \sum_{\mathrm{j}} h_{\mathrm{j}}/EA_{\mathrm{j}}\).</span> The left-hand side is zero by step 1, the sum on the right is positive, so <span class="nobr">\(s = 0\).</span></li>
+<li>From \(s = 0\) it follows that \(e_{\mathrm{j}} = e_{\mathrm{j}-1}\) for every <span class="nobr">\(j\),</span> so \(e_{\mathrm{j}} = e_0 = 0\) and <span class="nobr">\(d_{\mathrm{j}} = u_{\mathrm{h}}(x_{\mathrm{j}}) = u(x_{\mathrm{j}})\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> The proof is not from a source. The same reason as in theorem <a class="xref" href="sec-ocene-napake.html#thm-tocnost-v-tocki" data-knowl="thm-tocnost-v-tocki">6.38</a>, which is written for one support.</p></div></div>
+<p>For \(n = 1\) there are no free unknowns, step 4 says nothing and step 5 gives \(s = 0\) directly. For the settled bar of two elements \(n = 2\) and the lemma says that \(d_1 = 54{,}88\) µm is the exact value, which we checked earlier against the known solution.</p>
+
+<div class="blk lema" id="lem-reakcija-tocna"><div class="blk-head"><span class="blk-label">Lemma 7.22</span> <span class="blk-title">Exactness of the reaction of a bar (točnost reakcije palice)</span></div><div class="blk-body"><p>Let the bar have the axis \(x\) from \(0\) to <span class="nobr">\(L\),</span> loaded only by a <a class="xref auto" href="sec-funkcije-s-pregibi.html#def-odsekoma-zvezna" data-knowl="def-odsekoma-zvezna">piecewise continuous</a> <a class="xref auto" href="sec-virtualni-pomiki-palice.html#def-porazdeljena-obtezba" data-knowl="def-porazdeljena-obtezba">distributed load</a> <span class="nobr">\(q\),</span> with piecewise continuous axial stiffness \(EA &gt; 0\) that is constant on the first element <span class="nobr">\([x_0, x_1]\),</span> <span class="nobr">\(x_0 = 0\),</span> and let it be supported at \(x = 0\) (prescribed displacement). Let \(u\) be the solution of the <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">weak form</a> whose <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> \(N = EA\,u'\) is continuous and <a class="xref auto" href="sec-funkcije-s-pregibi.html#def-odsekoma-zvezno-odvedljiva" data-knowl="def-odsekoma-zvezno-odvedljiva">piecewise continuously differentiable</a> with \(N' = -q\) (equilibrium of a bar element, chapter <a class="xref" href="ch-sibka-oblika.html">6</a>), \(u_{\mathrm{h}}\) the finite element solution with the same value <span class="nobr">\(u(0)\),</span> and let \(u_{\mathrm{h}}(x_0) = u(x_0)\) and <span class="nobr">\(u_{\mathrm{h}}(x_1) = u(x_1)\).</span> Then the reaction at node \(0\) equals the exact reaction,</p>
+<div class="eq" id="eq-rpm-reakcija-tocna">\[r_0 = -N(0) . \tag{7.23}\]</div>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that the error \(e = u - u_{\mathrm{h}}\) contributes nothing to the reaction. We write the reaction with the weak form tested with the hat function of the supported node, which is not a <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">test function</a>.</p>
+<ol>
+<li>Let \(\varphi = \psi_0\) be the hat function of node \(0\) (definition <a class="xref" href="sec-skalarni-produkt-funkcij.html#def-sotorna-funkcija" data-knowl="def-sotorna-funkcija">6.25</a>). We have <span class="nobr">\(\varphi(0) = 1\),</span> \(\varphi = 0\) from \(x_1\) onward and \(\varphi' = -1/h_1\) on the first element of length <span class="nobr">\(h_1 = x_1 - x_0\).</span></li>
+<li>In the finite element method <span class="nobr">\(r_0 = (\mat K\,\vek d)_0 - f_0\),</span> and row \(0\) is by theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a> <span class="nobr">\(\sum_{\mathrm{j}} B(\psi_{\mathrm{j}}, \psi_0)\,d_{\mathrm{j}} - \ell(\psi_0)\).</span> By linearity of \(B\) in the first argument, <span class="nobr">\(r_0 = B(u_{\mathrm{h}}, \varphi) - \ell(\varphi)\).</span></li>
+<li>For the exact solution <span class="nobr">\(B(u, \varphi) = \int_0^L N\,\varphi'\,\mathrm{d}x\).</span> By lemma <a class="xref" href="sec-funkcije-s-pregibi.html#lem-per-partes-pregibi" data-knowl="lem-per-partes-pregibi">6.13</a> with \(N' = -q\) and \(\varphi(L) = 0\) this is <span class="nobr">\(-N(0)\,\varphi(0) + \int_0^L q\,\varphi\,\mathrm{d}x = -N(0) + \ell(\varphi)\).</span> So <span class="nobr">\(-N(0) = B(u, \varphi) - \ell(\varphi)\).</span></li>
+<li>We subtract: \(r_0 - (-N(0)) = B(u_{\mathrm{h}}, \varphi) - B(u, \varphi) = -B(e, \varphi)\) by linearity of \(B\) in the first argument.</li>
+<li>Since \(\varphi' = 0\) outside the first element and \(EA\) is constant there, <span class="nobr">\(B(e, \varphi) = \int_0^{x_1} EA\,e'\,\varphi'\,\mathrm{d}x = -\frac{EA}{h_1}\,\big(e(x_1) - e(x_0)\big) = 0\),</span> because \(e(x_0) = 0\) and \(e(x_1) = 0\) by assumption (lemma <a class="xref" href="sec-funkcije-s-pregibi.html#lem-osnovni-izrek-pregibi" data-knowl="lem-osnovni-izrek-pregibi">6.12</a>). Hence <span class="nobr">\(r_0 = -N(0)\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> The proof is not from a source.</p></div></div>
+<p>The proof showed that the reaction stays exact whenever the displacements of both nodes of the first element are exact, no matter how the function differs between them. This is so for the hanging bar (the exactness of the displacements is guaranteed by theorem <a class="xref" href="sec-ocene-napake.html#thm-tocnost-v-tocki" data-knowl="thm-tocnost-v-tocki">6.38</a>) and also for the settled bar (lemma <a class="xref" href="sec-robni-pogoji-mke.html#lem-vozlisca-tocna-pritrjena" data-knowl="lem-vozlisca-tocna-pritrjena">7.21</a>). There the support is also at \(x = L\) and the same computation with the hat function \(\psi_{\mathrm{n}}\) on the last element, where <span class="nobr">\(\psi_{\mathrm{n}}' = 1/h_{\mathrm{n}}\),</span> gives in step 3 \(B(u, \psi_{\mathrm{n}}) = N(L) + \ell(\psi_{\mathrm{n}})\) and therefore <span class="nobr">\(r_2 = N(L)\).</span> The exact force in the bar with the settlement is \(N = EA\,\big(a\,(L - 2x) + \bar u/L\big)\) (subsection <a class="xref" href="sec-ritzova-metoda.html#sec-ritz-palica">6.4.2</a>), so \(N(0) = 183{,}99\) N and \(N(L) = 123{,}89\) N, and both agree with the reactions \(-183{,}99\) N and \(123{,}89\) N from the computation above. At node \(0\) the reaction thus receives all the accuracy of the displacements, while the force in the element at the support receives only the average.</p>
+
+<figure class="blk slika" id="fig-rpm-reakcije"><p><span class="svgfig" role="img" aria-label="A hanging bar with nodal forces and the reaction, and a graph of the true axial force and the stepwise element force"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='395.73pt' height='325.52pt' viewBox='-72.000004 -72.00001 293.132304 241.128169'>
+<defs>
+<path id='rpm-reakcije-g0-0' d='M6.56538-2.291407C6.734745-2.291407 6.914072-2.291407 6.914072-2.49066S6.734745-2.689913 6.56538-2.689913H1.175592C1.006227-2.689913 .826899-2.689913 .826899-2.49066S1.006227-2.291407 1.175592-2.291407H6.56538Z'/>
+<path id='rpm-reakcije-g1-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='rpm-reakcije-g1-61' d='M4.373599-7.0934C4.423412-7.222914 4.423412-7.262765 4.423412-7.272727C4.423412-7.382316 4.333748-7.47198 4.224159-7.47198C4.154421-7.47198 4.084682-7.442092 4.054795-7.382316L.597758 2.11208C.547945 2.241594 .547945 2.281445 .547945 2.291407C.547945 2.400996 .637609 2.49066 .747198 2.49066C.876712 2.49066 .9066 2.420922 .966376 2.251557L4.373599-7.0934Z'/>
+<path id='rpm-reakcije-g1-76' d='M3.726027-6.027397C3.815691-6.386052 3.845579-6.495641 4.782067-6.495641C5.080946-6.495641 5.160648-6.495641 5.160648-6.684932C5.160648-6.804483 5.051059-6.804483 5.001245-6.804483C4.672478-6.804483 3.855542-6.774595 3.526775-6.774595C3.227895-6.774595 2.500623-6.804483 2.201743-6.804483C2.132005-6.804483 2.012453-6.804483 2.012453-6.60523C2.012453-6.495641 2.102117-6.495641 2.291407-6.495641C2.311333-6.495641 2.500623-6.495641 2.669988-6.475716C2.849315-6.455791 2.938979-6.445828 2.938979-6.316314C2.938979-6.276463 2.929016-6.246575 2.899128-6.127024L1.564134-.777086C1.464508-.388543 1.444583-.308842 .657534-.308842C.488169-.308842 .388543-.308842 .388543-.109589C.388543 0 .478207 0 .657534 0H5.270237C5.50934 0 5.519303 0 5.579078-.169365L6.366127-2.321295C6.405978-2.430884 6.405978-2.450809 6.405978-2.460772C6.405978-2.500623 6.37609-2.570361 6.286426-2.570361S6.1868-2.520548 6.117061-2.361146C5.778331-1.444583 5.339975-.308842 3.616438-.308842H2.67995C2.540473-.308842 2.520548-.308842 2.460772-.318804C2.361146-.328767 2.331258-.33873 2.331258-.418431C2.331258-.448319 2.331258-.468244 2.381071-.647572L3.726027-6.027397Z'/>
+<path id='rpm-reakcije-g1-78' d='M7.531756-5.758406C7.631382-6.156912 7.81071-6.465753 8.607721-6.495641C8.657534-6.495641 8.777086-6.505604 8.777086-6.694894C8.777086-6.704857 8.777086-6.804483 8.647572-6.804483C8.318804-6.804483 7.970112-6.774595 7.641345-6.774595C7.302615-6.774595 6.953923-6.804483 6.625156-6.804483C6.56538-6.804483 6.445828-6.804483 6.445828-6.60523C6.445828-6.495641 6.545455-6.495641 6.625156-6.495641C7.193026-6.485679 7.302615-6.276463 7.302615-6.057285C7.302615-6.027397 7.28269-5.877958 7.272727-5.84807L6.156912-1.414695L3.955168-6.615193C3.875467-6.794521 3.865504-6.804483 3.636364-6.804483H2.30137C2.102117-6.804483 2.012453-6.804483 2.012453-6.60523C2.012453-6.495641 2.102117-6.495641 2.291407-6.495641C2.34122-6.495641 2.968867-6.495641 2.968867-6.405978L1.633873-1.05604C1.534247-.657534 1.364882-.33873 .557908-.308842C.498132-.308842 .388543-.298879 .388543-.109589C.388543-.039851 .438356 0 .518057 0C.836862 0 1.185554-.029888 1.514321-.029888C1.853051-.029888 2.211706 0 2.540473 0C2.590286 0 2.719801 0 2.719801-.199253C2.719801-.298879 2.630137-.308842 2.520548-.308842C1.942715-.328767 1.863014-.547945 1.863014-.747198C1.863014-.816936 1.872976-.86675 1.902864-.976339L3.217933-6.236613C3.257783-6.176837 3.257783-6.156912 3.307597-6.057285L5.788294-.18929C5.858032-.019925 5.88792 0 5.977584 0C6.087173 0 6.087173-.029888 6.136986-.209215L7.531756-5.758406Z'/>
+<path id='rpm-reakcije-g1-102' d='M3.656289-3.985056H4.513076C4.712329-3.985056 4.811955-3.985056 4.811955-4.184309C4.811955-4.293898 4.712329-4.293898 4.542964-4.293898H3.716065L3.92528-5.429639C3.965131-5.638854 4.104608-6.346202 4.164384-6.465753C4.254047-6.655044 4.423412-6.804483 4.632628-6.804483C4.672478-6.804483 4.931507-6.804483 5.120797-6.625156C4.682441-6.585305 4.582814-6.236613 4.582814-6.087173C4.582814-5.858032 4.762142-5.738481 4.951432-5.738481C5.210461-5.738481 5.499377-5.957659 5.499377-6.336239C5.499377-6.794521 5.041096-7.023661 4.632628-7.023661C4.293898-7.023661 3.666252-6.844334 3.367372-5.858032C3.307597-5.648817 3.277709-5.549191 3.038605-4.293898H2.351183C2.161893-4.293898 2.052304-4.293898 2.052304-4.104608C2.052304-3.985056 2.141968-3.985056 2.331258-3.985056H2.988792L2.241594-.049813C2.062267 .916563 1.892902 1.823163 1.374844 1.823163C1.334994 1.823163 1.085928 1.823163 .896638 1.643836C1.354919 1.613948 1.444583 1.255293 1.444583 1.105853C1.444583 .876712 1.265255 .757161 1.075965 .757161C.816936 .757161 .52802 .976339 .52802 1.354919C.52802 1.803238 .966376 2.042341 1.374844 2.042341C1.92279 2.042341 2.321295 1.454545 2.500623 1.075965C2.819427 .448319 3.048568-.757161 3.058531-.826899L3.656289-3.985056Z'/>
+<path id='rpm-reakcije-g1-104' d='M2.859278-6.804483C2.859278-6.814446 2.859278-6.914072 2.729763-6.914072C2.500623-6.914072 1.77335-6.834371 1.514321-6.814446C1.43462-6.804483 1.325031-6.794521 1.325031-6.615193C1.325031-6.495641 1.414695-6.495641 1.564134-6.495641C2.042341-6.495641 2.062267-6.425903 2.062267-6.326276L2.032379-6.127024L.587796-.388543C.547945-.249066 .547945-.229141 .547945-.169365C.547945 .059776 .747198 .109589 .836862 .109589C.996264 .109589 1.155666-.009963 1.205479-.14944L1.39477-.9066L1.613948-1.803238C1.673724-2.022416 1.733499-2.241594 1.783313-2.470735C1.803238-2.530511 1.882939-2.859278 1.892902-2.919054C1.92279-3.008717 2.231631-3.566625 2.570361-3.835616C2.789539-3.995019 3.098381-4.184309 3.526775-4.184309S4.064757-3.845579 4.064757-3.486924C4.064757-2.948941 3.686177-1.863014 3.447073-1.255293C3.367372-1.026152 3.317559-.9066 3.317559-.707347C3.317559-.239103 3.666252 .109589 4.134496 .109589C5.070984 .109589 5.439601-1.344956 5.439601-1.424658C5.439601-1.524284 5.349938-1.524284 5.32005-1.524284C5.220423-1.524284 5.220423-1.494396 5.17061-1.344956C5.021171-.816936 4.702366-.109589 4.154421-.109589C3.985056-.109589 3.915318-.209215 3.915318-.438356C3.915318-.687422 4.004981-.926526 4.094645-1.145704C4.254047-1.574097 4.702366-2.759651 4.702366-3.337484C4.702366-3.985056 4.303861-4.403487 3.556663-4.403487C2.929016-4.403487 2.450809-4.094645 2.082192-3.636364L2.859278-6.804483Z'/>
+<path id='rpm-reakcije-g1-113' d='M4.503113-4.293898C4.503113-4.333748 4.473225-4.393524 4.403487-4.393524C4.293898-4.393524 3.895392-3.995019 3.726027-3.706102C3.506849-4.244085 3.118306-4.403487 2.799502-4.403487C1.62391-4.403487 .398506-2.929016 .398506-1.484433C.398506-.508095 .986301 .109589 1.713574 .109589C2.141968 .109589 2.530511-.129514 2.889166-.488169C2.799502-.139477 2.470735 1.205479 2.440847 1.295143C2.361146 1.574097 2.281445 1.613948 1.723537 1.62391C1.594022 1.62391 1.494396 1.62391 1.494396 1.823163C1.494396 1.833126 1.494396 1.932752 1.62391 1.932752C1.942715 1.932752 2.291407 1.902864 2.620174 1.902864C2.958904 1.902864 3.317559 1.932752 3.646326 1.932752C3.696139 1.932752 3.825654 1.932752 3.825654 1.733499C3.825654 1.62391 3.726027 1.62391 3.566625 1.62391C3.088418 1.62391 3.088418 1.554172 3.088418 1.464508C3.088418 1.39477 3.108344 1.334994 3.128269 1.24533L4.503113-4.293898ZM1.743462-.109589C1.145704-.109589 1.105853-.876712 1.105853-1.046077C1.105853-1.524284 1.39477-2.610212 1.564134-3.028643C1.872976-3.765878 2.391034-4.184309 2.799502-4.184309C3.447073-4.184309 3.58655-3.377335 3.58655-3.307597C3.58655-3.247821 3.038605-1.066002 3.008717-1.026152C2.859278-.747198 2.30137-.109589 1.743462-.109589Z'/>
+<path id='rpm-reakcije-g1-114' d='M.876712-.587796C.846824-.438356 .787049-.209215 .787049-.159402C.787049 .019925 .926526 .109589 1.075965 .109589C1.195517 .109589 1.374844 .029888 1.444583-.169365C1.464508-.209215 1.803238-1.564134 1.843088-1.743462C1.92279-2.072229 2.102117-2.769614 2.161893-3.038605C2.201743-3.16812 2.480697-3.636364 2.719801-3.855542C2.799502-3.92528 3.088418-4.184309 3.516812-4.184309C3.775841-4.184309 3.92528-4.064757 3.935243-4.064757C3.636364-4.014944 3.417186-3.775841 3.417186-3.516812C3.417186-3.35741 3.526775-3.16812 3.795766-3.16812S4.343711-3.39726 4.343711-3.755915C4.343711-4.104608 4.024907-4.403487 3.516812-4.403487C2.86924-4.403487 2.430884-3.915318 2.241594-3.636364C2.161893-4.084682 1.803238-4.403487 1.334994-4.403487C.876712-4.403487 .687422-4.014944 .597758-3.835616C.418431-3.496887 .288917-2.899128 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.779577 .577833-2.998755C.747198-3.706102 .946451-4.184309 1.305106-4.184309C1.474471-4.184309 1.613948-4.104608 1.613948-3.726027C1.613948-3.516812 1.58406-3.407223 1.454545-2.889166L.876712-.587796Z'/>
+<path id='rpm-reakcije-g1-120' d='M3.327522-3.008717C3.387298-3.267746 3.616438-4.184309 4.313823-4.184309C4.363636-4.184309 4.60274-4.184309 4.811955-4.054795C4.533001-4.004981 4.333748-3.755915 4.333748-3.516812C4.333748-3.35741 4.443337-3.16812 4.712329-3.16812C4.931507-3.16812 5.250311-3.347447 5.250311-3.745953C5.250311-4.26401 4.662516-4.403487 4.323786-4.403487C3.745953-4.403487 3.39726-3.875467 3.277709-3.646326C3.028643-4.303861 2.49066-4.403487 2.201743-4.403487C1.165629-4.403487 .597758-3.118306 .597758-2.86924C.597758-2.769614 .697385-2.769614 .71731-2.769614C.797011-2.769614 .826899-2.789539 .846824-2.879203C1.185554-3.935243 1.843088-4.184309 2.181818-4.184309C2.371108-4.184309 2.719801-4.094645 2.719801-3.516812C2.719801-3.20797 2.550436-2.540473 2.181818-1.145704C2.022416-.52802 1.673724-.109589 1.235367-.109589C1.175592-.109589 .946451-.109589 .737235-.239103C.986301-.288917 1.205479-.498132 1.205479-.777086C1.205479-1.046077 .986301-1.125778 .836862-1.125778C.537983-1.125778 .288917-.86675 .288917-.547945C.288917-.089664 .787049 .109589 1.225405 .109589C1.882939 .109589 2.241594-.587796 2.271482-.647572C2.391034-.278954 2.749689 .109589 3.347447 .109589C4.373599 .109589 4.941469-1.175592 4.941469-1.424658C4.941469-1.524284 4.851806-1.524284 4.821918-1.524284C4.732254-1.524284 4.712329-1.484433 4.692403-1.414695C4.363636-.348692 3.686177-.109589 3.367372-.109589C2.978829-.109589 2.819427-.428394 2.819427-.767123C2.819427-.986301 2.879203-1.205479 2.988792-1.643836L3.327522-3.008717Z'/>
+<path id='rpm-reakcije-g2-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='rpm-reakcije-g2-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='rpm-reakcije-g2-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='rpm-reakcije-g2-52' d='M2.929016-1.643836V-.777086C2.929016-.418431 2.909091-.308842 2.171856-.308842H1.96264V0C2.371108-.029888 2.889166-.029888 3.307597-.029888S4.254047-.029888 4.662516 0V-.308842H4.4533C3.716065-.308842 3.696139-.418431 3.696139-.777086V-1.643836H4.692403V-1.952677H3.696139V-6.485679C3.696139-6.684932 3.696139-6.744707 3.536737-6.744707C3.447073-6.744707 3.417186-6.744707 3.337484-6.625156L.278954-1.952677V-1.643836H2.929016ZM2.988792-1.952677H.557908L2.988792-5.668742V-1.952677Z'/>
+<path id='rpm-reakcije-g2-53' d='M4.473225-2.002491C4.473225-3.188045 3.656289-4.184309 2.580324-4.184309C2.102117-4.184309 1.673724-4.024907 1.315068-3.676214V-5.618929C1.514321-5.559153 1.843088-5.489415 2.161893-5.489415C3.387298-5.489415 4.084682-6.396015 4.084682-6.525529C4.084682-6.585305 4.054795-6.635118 3.985056-6.635118C3.975093-6.635118 3.955168-6.635118 3.905355-6.60523C3.706102-6.515567 3.217933-6.316314 2.550436-6.316314C2.15193-6.316314 1.693649-6.386052 1.225405-6.595268C1.145704-6.625156 1.125778-6.625156 1.105853-6.625156C1.006227-6.625156 1.006227-6.545455 1.006227-6.386052V-3.437111C1.006227-3.257783 1.006227-3.178082 1.145704-3.178082C1.215442-3.178082 1.235367-3.20797 1.275218-3.267746C1.384807-3.427148 1.753425-3.965131 2.560399-3.965131C3.078456-3.965131 3.327522-3.506849 3.407223-3.327522C3.566625-2.958904 3.58655-2.570361 3.58655-2.072229C3.58655-1.723537 3.58655-1.125778 3.347447-.707347C3.108344-.318804 2.739726-.059776 2.281445-.059776C1.554172-.059776 .986301-.587796 .816936-1.175592C.846824-1.165629 .876712-1.155666 .986301-1.155666C1.315068-1.155666 1.484433-1.404732 1.484433-1.643836S1.315068-2.132005 .986301-2.132005C.846824-2.132005 .498132-2.062267 .498132-1.603985C.498132-.747198 1.185554 .219178 2.30137 .219178C3.457036 .219178 4.473225-.737235 4.473225-2.002491Z'/>
+<path id='rpm-reakcije-g2-54' d='M1.315068-3.267746V-3.506849C1.315068-6.027397 2.550436-6.386052 3.058531-6.386052C3.297634-6.386052 3.716065-6.326276 3.935243-5.987547C3.785803-5.987547 3.387298-5.987547 3.387298-5.539228C3.387298-5.230386 3.626401-5.080946 3.845579-5.080946C4.004981-5.080946 4.303861-5.17061 4.303861-5.559153C4.303861-6.156912 3.865504-6.635118 3.038605-6.635118C1.763387-6.635118 .418431-5.349938 .418431-3.148194C.418431-.488169 1.574097 .219178 2.500623 .219178C3.606476 .219178 4.552927-.71731 4.552927-2.032379C4.552927-3.297634 3.666252-4.254047 2.560399-4.254047C1.882939-4.254047 1.514321-3.745953 1.315068-3.267746ZM2.500623-.059776C1.872976-.059776 1.574097-.657534 1.514321-.806974C1.334994-1.275218 1.334994-2.072229 1.334994-2.251557C1.334994-3.028643 1.653798-4.024907 2.550436-4.024907C2.709838-4.024907 3.16812-4.024907 3.476961-3.407223C3.656289-3.038605 3.656289-2.530511 3.656289-2.042341C3.656289-1.564134 3.656289-1.066002 3.486924-.707347C3.188045-.109589 2.729763-.059776 2.500623-.059776Z'/>
+<path id='rpm-reakcije-g2-55' d='M4.742217-6.067248C4.83188-6.1868 4.83188-6.206725 4.83188-6.41594H2.410959C1.195517-6.41594 1.175592-6.545455 1.135741-6.734745H.886675L.557908-4.682441H.806974C.836862-4.841843 .926526-5.469489 1.05604-5.589041C1.125778-5.648817 1.902864-5.648817 2.032379-5.648817H4.094645C3.985056-5.489415 3.198007-4.403487 2.978829-4.07472C2.082192-2.729763 1.753425-1.344956 1.753425-.328767C1.753425-.229141 1.753425 .219178 2.211706 .219178S2.669988-.229141 2.669988-.328767V-.836862C2.669988-1.384807 2.699875-1.932752 2.779577-2.470735C2.819427-2.699875 2.958904-3.556663 3.39726-4.174346L4.742217-6.067248Z'/>
+<path id='rpm-reakcije-g3-48' d='M3.598506-2.224658C3.598506-2.991781 3.507846-3.542715 3.187049-4.030884C2.970859-4.351681 2.538481-4.630635 1.980573-4.630635C.36264-4.630635 .36264-2.726775 .36264-2.224658S.36264 .139477 1.980573 .139477S3.598506-1.72254 3.598506-2.224658ZM1.980573-.055791C1.659776-.055791 1.234371-.244085 1.094894-.81594C.99726-1.227397 .99726-1.799253 .99726-2.315318C.99726-2.824408 .99726-3.354421 1.101868-3.737983C1.248319-4.288917 1.694645-4.435367 1.980573-4.435367C2.357161-4.435367 2.719801-4.20523 2.84533-3.800747C2.956912-3.424159 2.963885-2.922042 2.963885-2.315318C2.963885-1.799253 2.963885-1.283188 2.873225-.843836C2.733748-.209215 2.259527-.055791 1.980573-.055791Z'/>
+<path id='rpm-reakcije-g3-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='rpm-reakcije-g3-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+</defs>
+<g id='rpm-reakcije-page1'>
+<g stroke-miterlimit='10' transform='translate(-19.681307,-3.470582)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-25.60728 0H-8.53548' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-25.60728 0L-19.91682 5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-18.49411 0L-12.80365 5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-11.38092 0L-5.69046 5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M11.38092 0H28.45273' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M11.38092 0L17.07138 5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M18.4941 0L24.18456 5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M25.60728 0L31.29774 5.69046' fill='none'/>
+</g>
+</g>
+<path d='M-3.41418 0V-113.81097H3.41418V0ZM3.41418-113.81097' fill='none'/>
+<path d='M1.83862 0C1.83862 1.01544 1.01544 1.83862 0 1.83862S-1.83862 1.01544-1.83862 0S-1.01544-1.83862 0-1.83862S1.83862-1.01544 1.83862 0ZM0 0' stroke='none'/>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-19.681307,-3.470582)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+<path d='M1.83862-56.90549C1.83862-55.89005 1.01544-55.06686 0-55.06686S-1.83862-55.89005-1.83862-56.90549S-1.01544-58.74411 0-58.74411S1.83862-57.92093 1.83862-56.90549ZM0-56.90549' stroke='none'/>
+<g transform='translate(0.0,-56.90549)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-19.681307,-3.470582)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M1.83862-113.81097C1.83862-112.79553 1.01544-111.97235 0-111.97235S-1.83862-112.79553-1.83862-113.81097C-1.83862-114.82642-1.01544-115.6496 0-115.6496S1.83862-114.82642 1.83862-113.81097ZM0-113.81097' stroke='none'/>
+<g transform='translate(0.0,-113.81097)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-19.681307,-3.470582)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(-11.47842,-10.07741)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-19.681307,-3.470582)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-19.681307' y='-3.470582' xlink:href='#rpm-reakcije-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-17.16888,-60.1277)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-19.681307,-3.470582)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-19.681307' y='-3.470582' xlink:href='#rpm-reakcije-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-17.16888,-117.03319)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-19.681307,-3.470582)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-19.681307' y='-3.470582' xlink:href='#rpm-reakcije-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M3.41418 0V-12.71962' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,3.41418,-10.24316)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(7.04716,-11.0359)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-19.681307,-3.470582)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-19.681307' y='-3.470582' xlink:href='#rpm-reakcije-g1-102'/>
+<use x='-14.803739' y='-1.976201' xlink:href='#rpm-reakcije-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M3.41418-56.90549V-86.6965' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,3.41418,-84.22005)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(7.04716,-76.47708)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-19.681307,-3.470582)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-19.681307' y='-3.470582' xlink:href='#rpm-reakcije-g1-102'/>
+<use x='-14.803739' y='-1.976201' xlink:href='#rpm-reakcije-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M3.41418-113.81097V-126.5306' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,3.41418,-124.05414)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(7.04716,-124.84688)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-19.681307,-3.470582)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-19.681307' y='-3.470582' xlink:href='#rpm-reakcije-g1-102'/>
+<use x='-14.803739' y='-1.976201' xlink:href='#rpm-reakcije-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M-3.41418 0V64.10565' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,-3.41418,61.45776)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.33095 0L1.67535 1.31036L2.89789 0L1.67535-1.31036Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-24.02267,31.97653)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-19.681307,-3.470582)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-19.681307' y='-3.470582' xlink:href='#rpm-reakcije-g0-0'/>
+<use x='-11.932559' y='-3.470582' xlink:href='#rpm-reakcije-g1-114'/>
+<use x='-7.43782' y='-1.976201' xlink:href='#rpm-reakcije-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<path d='M-39.83366 0V-29.79102' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,-39.83366,-27.31456)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-49.18192,-36.29597)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-19.681307,-3.470582)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-19.681307' y='-3.470582' xlink:href='#rpm-reakcije-g1-120'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M96.73918-159.3356H220.42433' fill='none'/>
+<g transform='translate(217.94788,-159.3356)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(228.4095,-161.48837)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-19.681307,-3.470582)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-19.681307' y='-3.470582' xlink:href='#rpm-reakcije-g1-120'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M96.73918-159.3356V-86.86548' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,96.73918,-89.34193)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(92.1767,-78.88031)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-19.681307,-3.470582)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-19.681307' y='-3.470582' xlink:href='#rpm-reakcije-g1-78'/>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='1.0'>
+<path d='M96.73918-90.93501L210.55016-159.3356' fill='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.1'>
+<path d='M96.73918-108.03549H153.64467V-142.23557H210.55016' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M153.64467-159.3356V-108.03549' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M210.55016-159.3356V-142.23557' fill='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(94.23918,-169.41301)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-19.681307,-3.470582)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-19.681307' y='-3.470582' xlink:href='#rpm-reakcije-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(150.76389,-169.91301)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-19.681307,-3.470582)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-19.681307' y='-3.470582' xlink:href='#rpm-reakcije-g1-104'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(207.14737,-169.8019)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-19.681307,-3.470582)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-19.681307' y='-3.470582' xlink:href='#rpm-reakcije-g1-76'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(100.37216,-85.47177)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-19.681307,-3.470582)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-19.681307' y='-3.470582' xlink:href='#rpm-reakcije-g2-54'/>
+<use x='-14.699968' y='-3.470582' xlink:href='#rpm-reakcije-g2-48'/>
+<use x='-9.718629' y='-3.470582' xlink:href='#rpm-reakcije-g1-59'/>
+<use x='-6.95122' y='-3.470582' xlink:href='#rpm-reakcije-g2-49'/>
+<use x='-1.969881' y='-3.470582' xlink:href='#rpm-reakcije-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(102.42207,-118.11292)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-19.681307,-3.470582)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-19.681307' y='-3.470582' xlink:href='#rpm-reakcije-g2-52'/>
+<use x='-14.699968' y='-3.470582' xlink:href='#rpm-reakcije-g2-53'/>
+<use x='-9.718629' y='-3.470582' xlink:href='#rpm-reakcije-g1-59'/>
+<use x='-6.95122' y='-3.470582' xlink:href='#rpm-reakcije-g2-48'/>
+<use x='-1.969881' y='-3.470582' xlink:href='#rpm-reakcije-g2-55'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(215.60585,-144.48557)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-19.681307,-3.470582)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-19.681307' y='-3.470582' xlink:href='#rpm-reakcije-g2-49'/>
+<use x='-14.699968' y='-3.470582' xlink:href='#rpm-reakcije-g2-53'/>
+<use x='-9.718629' y='-3.470582' xlink:href='#rpm-reakcije-g1-59'/>
+<use x='-6.95122' y='-3.470582' xlink:href='#rpm-reakcije-g2-48'/>
+<use x='-1.969881' y='-3.470582' xlink:href='#rpm-reakcije-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M93.89374-108.03549H96.73918' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M85.35826-107.69801V-91.27249' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,85.35826,-101.89497)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,85.35826,-107.8105)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,85.35826,-97.07553)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,85.35826,-91.16)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(61.21579,-101.98526)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-19.681307,-3.470582)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-19.681307' y='-3.470582' xlink:href='#rpm-reakcije-g1-113'/>
+<use x='-14.876405' y='-3.470582' xlink:href='#rpm-reakcije-g1-104'/>
+<use x='-9.136336' y='-3.470582' xlink:href='#rpm-reakcije-g1-61'/>
+<use x='-4.154997' y='-3.470582' xlink:href='#rpm-reakcije-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M83.93555-90.93501H96.73918' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 7.9</span>: A hanging bar with two elements. Left: nodes <span class="nobr">\(0\),</span> <span class="nobr">\(1\),</span> \(2\) with the loads \(f_0 = 15{,}02\) N, \(f_1 = 30{,}05\) N, \(f_2 = 15{,}02\) N downward and the reaction \(r_0 = -60{,}10\) N, which pulls node \(0\) upward. Right: the axial force. The true \(N(x) = q\,(L - x)\) (black line from \(60{,}10\) N to <span class="nobr">\(0\))</span> and the element forces \(N_1 = 45{,}07\) N, \(N_2 = 15{,}02\) N (blue steps). On each element the step is the average of the true line, so at the support it is \(qh/2 = 15{,}02\) N below the true value. The reaction \(-r_0 = 60{,}10\) N is the true value <span class="nobr">\(N(0)\),</span> because <span class="nobr">\(N_1 + f_0 = N(0)\).</span></figcaption></figure>
+<p>We now have everything for the computation of a bar with linear elements. We eliminate the supported node (theorem <a class="xref" href="sec-robni-pogoji-mke.html#thm-reduciran-sistem" data-knowl="thm-reduciran-sistem">7.18</a>), move a displacement that is not zero to the right-hand side, solve the system with positive pivots (theorem <a class="xref" href="sec-skalarni-produkt-funkcij.html#thm-sistem-pozitivno-definitna" data-knowl="thm-sistem-pozitivno-definitna">6.29</a>), then obtain the reactions from the rows of the supported nodes and check their sum (lemma <a class="xref" href="sec-robni-pogoji-mke.html#lem-ravnovesje-reakcij" data-knowl="lem-ravnovesje-reakcij">7.20</a>). What remains open is what to do when the load varies along the element and straight lines on the element are too coarse. The answer is an element with more nodes, section <a class="xref" href="sec-kvadratni-element.html">7.4</a>.</p>
+
+</main>
+<footer><nav class="pager"><a href="sec-sestavljanje.html" rel="prev">← 7.2</a><a href="index.html">Contents</a><a href="sec-kvadratni-element.html" rel="next">7.4 →</a></nav></footer>
+</body>
+</html>

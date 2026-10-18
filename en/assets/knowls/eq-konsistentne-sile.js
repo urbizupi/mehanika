@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-konsistentne-sile"] = {"html": "<div class=\"eq\">\\[f_{\\mathrm{i}} = \\int_{\\mathrm{x}_\\mathrm{a}}^{x_{\\mathrm{b}}} q(x)\\,\\psi_{\\mathrm{i}}^e(x)\\,\\mathrm{d}x , \\qquad \\ix{i} = 1, 2 , \\tag{7.8}\\]</div>", "href": "sec-element-palice.html#eq-konsistentne-sile"};

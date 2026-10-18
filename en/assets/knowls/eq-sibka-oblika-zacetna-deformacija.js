@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sibka-oblika-zacetna-deformacija"] = {"html": "<div class=\"eq\">\\[\\int EA\\,u'\\,w'\\,\\mathrm{d}x = \\int q\\,w\\,\\mathrm{d}x + F\\,w(L) + \\int EA\\,\\varepsilon_0\\,w'\\,\\mathrm{d}x . \\tag{7.47}\\]</div>", "href": "sec-temperatura-mke.html#eq-sibka-oblika-zacetna-deformacija"};

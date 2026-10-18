@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-energija-palicje-globalno"] = {"html": "<div class=\"eq\">\\[\\vek d^\\T\\mat K\\,\\vek d = \\sum_{\\text{palice}} \\frac{EA}{L}\\,\\big(\\vek n\\cdot(\\vek u_{\\mathrm{j}} - \\vek u_{\\mathrm{i}})\\big)^2 \\ge 0 , \\tag{7.36}\\]</div>", "href": "sec-palicje-ravnina-mke.html#eq-energija-palicje-globalno"};

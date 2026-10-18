@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kve-oblikovne"] = {"html": "<div class=\"eq\">\\[\\begin{aligned} \\psi_1 &amp;= \\frac{2\\,(x - h/2)(x - h)}{h^2} , \\qquad \\psi_2 = -\\frac{4\\,x\\,(x - h)}{h^2} , \\\\ \\psi_3 &amp;= \\frac{2\\,x\\,(x - h/2)}{h^2} , \\end{aligned} \\tag{7.24}\\]</div>", "href": "sec-kvadratni-element.html#eq-kve-oblikovne"};

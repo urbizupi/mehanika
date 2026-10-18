@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mrm-cena-pasovna"] = {"html": "<div class=\"eq\">\\[\\frac{b\\,(b + 1)\\,(3n - 2b - 1)}{6} \\approx \\frac{n\\,b^2}{2} \\quad (n \\gg b \\gg 1) , \\tag{7.44}\\]</div>", "href": "sec-redke-matrike.html#eq-mrm-cena-pasovna"};

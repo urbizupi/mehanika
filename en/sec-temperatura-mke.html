@@ -1,0 +1,1574 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7.9 Temperature and bars of wrong length · Chapter 7</title>
+<script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/style.css">
+<noscript><style>#loadbar { display: none; }</style></noscript>
+<script src="assets/config.js"></script>
+<script src="assets/load.js"></script>
+<script defer src="assets/interaktivno.js"></script>
+<script defer src="assets/book.js"></script>
+<script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<div id="loadbar" aria-hidden="true"></div>
+<header class="top"><a class="home" href="index.html">Mechanics</a><nav class="pager"><a href="sec-redke-matrike.html" rel="prev">← 7.8</a><a href="index.html">Contents</a><a href="sec-koraki-analize.html" rel="next">7.10 →</a></nav>
+<span class="tools"><a class="lang" href="../sl/sec-temperatura-mke.html" hreflang="sl">Slovenščina</a><button type="button" class="theme-toggle" title="Light or dark theme" aria-label="Light or dark theme"></button><button type="button" data-details="open">Expand all</button><button type="button" data-details="close">Collapse all</button><button type="button" class="fig-side-toggle" aria-pressed="false">Figures alongside</button></span></header>
+<main>
+<p class="updated">Last updated 18 October 2026, 23:31</p>
+<p class="crumb"><a href="ch-mke-palice.html"><span class="h-num">Chapter 7</span> Basics of FEM for bars and trusses</a></p>
+<h2 id="sec-temperatura-mke"><span class="h-num">7.9</span> Temperature and bars of wrong length</h2>
+<p>The steel bar that we heated by 30 K in section <a class="xref" href="sec-temperaturne-deformacije.html#sec-ovirano-raztezanje">3.3.3</a> was pressed by two rigid walls with a force of 6927 N, because the walls did not let it lengthen. A bar in a truss is not clamped between rigid walls. Its ends are nodes, which move if the rest of the truss lets them. What does heating do to a truss? And what if a bar was made a millimetre too long and we must fit it into a place that is a millimetre shorter? In both cases no external force acts on the truss, yet the nodes move and forces can appear in the bars. We do not need a new theorem for this. Only the relation between the <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">strain</a> and the force in a bar must change, and everything else, the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> <span class="nobr">\(\mat K\),</span> assembly, supports and reactions, stays as in sections <a class="xref" href="sec-element-palice.html">7.1</a> to <a class="xref" href="sec-palicje-ravnina-mke.html">7.5</a>.</p>
+<p>The model is the same as before. The truss is made of steel bars with pins (definition <a class="xref" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">4.4</a>), \(E = 196\) GPa, \(\alpha = 15 \cdot 10^{-6}\) 1/K, and the axial stiffness \(EA\) is constant in each bar. The temperature of each bar is constant along the bar and differs by \(\Delta T\) from the reference temperature, at which the truss is free of stress, so the bar has the thermal strain of definition <a class="xref" href="sec-temperaturne-deformacije.html#def-temperaturni-raztezek" data-knowl="def-temperaturni-raztezek">3.13</a>. Displacements are small, and everything is computed on the shape before loading (section <a class="xref" href="sec-palicje-ravnina-mke.html">7.5</a>). The examples from chapters <a class="xref" href="ch-energijski-principi.html">4</a> and <a class="xref" href="ch-nosilci.html">5</a> are already known: the wall truss with bars \(AC\) and \(BC\) (loaded with \(10\) kN, \(A = 1\ \text{cm}^2\) in each bar, \(EA = 1{,}96 \cdot 10^7\) N) and the same truss with the post \(CD\) (section <a class="xref" href="sec-virtualne-sile.html#sec-staticno-nedoloceno-palicje">4.7.5</a>).</p>
+
+<h3 id="sec-zacetna-deformacija"><span class="h-num">7.9.1</span> Initial strain (začetna deformacija)</h3>
+<p>Take a single bar with no forces at its ends. If we heat it, it lengthens by \(\alpha\,\Delta T\,L\) and there is no force. If it was made \(\delta\) too long, its length without force is <span class="nobr">\(L + \delta\),</span> and if we place it into a gap of length <span class="nobr">\(L\),</span> it would have, measured against the gap, the strain \(\delta/L\) without a force. What the two bars have in common is that they would have a strain different from zero even if nothing acted on them. The relation between force and <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">strain of a bar</a> must therefore measure the strain from this value onward.</p>
+
+<div class="blk definicija" id="def-zacetna-deformacija"><div class="blk-head"><span class="blk-label">Definition 7.48</span> <span class="blk-title">Initial strain (začetna deformacija)</span></div><div class="blk-body"><p>Let a bar with axial stiffness \(EA\) be fitted between two nodes at distance <span class="nobr">\(L\),</span> and let \(\varepsilon\) be its <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">strain</a>, that is the elongation between the nodes divided by \(L\) (a number without a unit). The initial strain (začetna deformacija) of the bar is the number \(\varepsilon_0\) at which the <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> of the bar is zero when <span class="nobr">\(\varepsilon = \varepsilon_0\),</span> and the axial force is</p>
+<div class="eq" id="eq-sila-zacetna-deformacija">\[N = EA\,(\varepsilon - \varepsilon_0) . \tag{7.46}\]</div>
+<p>For a bar heated by \(\Delta T\) relative to the <a class="xref auto" href="sec-temperaturne-deformacije.html#def-temperaturni-raztezek" data-knowl="def-temperaturni-raztezek">reference temperature</a>, <span class="nobr">\(\varepsilon_0 = \alpha\,\Delta T\).</span> For a bar that is \(\delta\) longer than the distance \(L\) between the nodes it connects, <span class="nobr">\(\varepsilon_0 = \delta/L\).</span></p>
+
+<p class="vir"><span class="vir-label">Source:</span> FELIPPA (4.16) to (4.18) (PDF p. 58), COOK §2.10, (2.10-1) (PDF p. 67), ONATE1 (4.17) (PDF p. 147). A bar that is too long is not in the sources, we get it from the same relation.</p></div></div>
+<p>Relation <a class="xref" href="sec-temperatura-mke.html#eq-sila-zacetna-deformacija" data-knowl="eq-sila-zacetna-deformacija">(7.46)</a> is the one-dimensional row of Hooke's law with temperature (theorem <a class="xref" href="sec-temperaturne-deformacije.html#thm-termoelasticni-hookov-zakon" data-knowl="thm-termoelasticni-hookov-zakon">3.15</a>). For \(\sigma_{\mathrm{yy}} = \sigma_{\mathrm{zz}} = 0\) we have <span class="nobr">\(\varepsilon_{\mathrm{xx}} = \sigma_{\mathrm{xx}}/E + \alpha\,\Delta T\),</span> hence <span class="nobr">\(\sigma_{\mathrm{xx}} = E\,(\varepsilon_{\mathrm{xx}} - \alpha\,\Delta T)\),</span> and the <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> is the stress times the cross-section, <span class="nobr">\(N = A\,\sigma_{\mathrm{xx}}\).</span> It means only that in every step where we previously wrote \(N = EA\,\varepsilon\) we subtract <span class="nobr">\(EA\,\varepsilon_0\).</span> For the bar between walls from section <a class="xref" href="sec-temperaturne-deformacije.html#sec-ovirano-raztezanje">3.3.3</a> we have <span class="nobr">\(\varepsilon = 0\),</span> so <span class="nobr">\(N = -EA\,\varepsilon_0 = -EA\,\alpha\,\Delta T\),</span> which is equation <a class="xref" href="sec-temperaturne-deformacije.html#eq-temperaturna-napetost-palice" data-knowl="eq-temperaturna-napetost-palice">(3.18)</a> multiplied by the cross-section. If the temperature varies along the bar, we take the average temperature of the bar. COOK shows that a linear temperature distribution, inserted as an initial stress at the ends, gives a stress that varies along the element, although it must be constant in the element, and therefore recommends the average temperature (COOK, PDF pp. 67-68).</p>
+<p>The numbers we will need: for the steel bar from chapter <a class="xref" href="ch-konstitutivne-enacbe.html">3</a> <span class="nobr">(\(EA = 1{,}5394 \cdot 10^7\)</span> N, \(\Delta T = 30\) K) we have \(\varepsilon_0 = 15 \cdot 10^{-6} \cdot 30 = 4{,}5 \cdot 10^{-4}\) and \(EA\,\varepsilon_0 = 6927\) N. For a bar of the wall <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">truss</a> <span class="nobr">(\(EA = 1{,}96 \cdot 10^7\)</span> N) at the same temperature change \(EA\,\varepsilon_0 = 8820\) N. For the post \(CD\) of length \(3\) m that is \(1\) mm too long, \(\varepsilon_0 = 1\ \text{mm}/3\ \text{m} = 3{,}33 \cdot 10^{-4}\) and \(EA\,\varepsilon_0 = 6533\) N.</p>
+
+<h3 id="sec-temperaturne-sile"><span class="h-num">7.9.2</span> Nodal forces of an initial strain (vozliščne sile začetne deformacije)</h3>
+<p>How does the <a class="xref auto" href="sec-temperatura-mke.html#def-zacetna-deformacija" data-knowl="def-zacetna-deformacija">initial strain</a> enter the equations of the method? Imagine an element whose nodes are prevented from moving in any way. A heated element would like to lengthen, but the nodes do not let it, so it is compressed with the force <span class="nobr">\(-EA\,\varepsilon_0\),</span> like the bar between walls. The nodes must therefore hold it with forces that compress it. By the law of action and reaction the element pushes the nodes outwards with the same force <span class="nobr">\(EA\,\varepsilon_0\).</span> When the nodes are not fixed, these forces act on them as a load. The following lemma states this exactly. It holds for a bar on the axis \(x\) and for a bar of a <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">truss</a>, where \(\vek n\) is the <a class="xref auto" href="sec-vektorji.html#def-enotski-vektor" data-knowl="def-enotski-vektor">unit vector</a> from the first node of the bar to the second (section <a class="xref" href="sec-palicje-ravnina-mke.html#sec-lokalne-globalne-osi">7.5.1</a>).</p>
+
+<div class="blk lema" id="lem-temperaturne-sile"><div class="blk-head"><span class="blk-label">Lemma 7.49</span> <span class="blk-title">Nodal forces of an initial strain (vozliščne sile začetne deformacije)</span></div><div class="blk-body"><p>Let element \(e\) be a straight bar of length \(L_{\mathrm{e}}\) with linear shape <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> (definition <a class="xref" href="sec-element-palice.html#def-oblikovna-funkcija" data-knowl="def-oblikovna-funkcija">7.2</a>), constant axial stiffness \(EA\) and constant initial strain \(\varepsilon_0\) (definition <a class="xref" href="sec-temperatura-mke.html#def-zacetna-deformacija" data-knowl="def-zacetna-deformacija">7.48</a>). Let \(\vek d_{\mathrm{e}}\) be the column of displacements of its nodes, for a <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">truss</a> in global axes, and \(\mat T_{\mathrm{e}} = \begin{bmatrix}\vek n^\T &amp; \vek 0^\T \\ \vek 0^\T &amp; \vek n^\T\end{bmatrix}\) the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> from lemma <a class="xref" href="sec-palicje-ravnina-mke.html#lem-togost-palice-globalno" data-knowl="lem-togost-palice-globalno">7.28</a>, which gives the axial displacements of the nodes from the global ones, \(\bar{\vek d}_{\mathrm{e}} = \mat T_{\mathrm{e}}\,\vek d_{\mathrm{e}}\) (for a bar on the axis <span class="nobr">\(x\),</span> \(\mat T_{\mathrm{e}}\) is the <a class="xref auto" href="sec-matrike.html#def-enotska-matrika" data-knowl="def-enotska-matrika">identity matrix</a> and <span class="nobr">\(\vek n = 1\)).</span> Then:</p>
+<ol>
+<li>The <a class="xref auto" href="sec-virtualni-pomiki-palice.html#def-virtualni-pomik" data-knowl="def-virtualni-pomik">virtual displacement</a> equation of the bar has, because of <span class="nobr">\(\varepsilon_0\),</span> an additional term \(\int EA\,\varepsilon_0\,w'\,\mathrm{d}x\) on the right-hand side.</li>
+<li>The element contributes to the right-hand side the nodal forces \(\vek f_{\mathrm{e}0} = EA\,\varepsilon_0\,(-1, 1)^\T\) in the axis of the bar and \(\mat T_{\mathrm{e}}^\T\vek f_{\mathrm{e}0} = EA\,\varepsilon_0\,(-\vek n, \vek n)^\T\) in global axes.</li>
+<li>The equations of the structure are <span class="nobr">\(\mat K\,\vek d = \vek f + \vek f_0\),</span> where \(\vek f_0 = \sum_{\mathrm{e}} \mat Z_{\mathrm{e}}^\T\,\mat T_{\mathrm{e}}^\T\,\vek f_{\mathrm{e}0}\) (theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a>).</li>
+<li>The <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> of the element is <span class="nobr">\(N_{\mathrm{e}} = EA\,\big(\vek n\cdot(\vek u_2 - \vek u_1)/L_{\mathrm{e}} - \varepsilon_0\big)\),</span> where \(\vek u_1\) and \(\vek u_2\) are the displacements of its nodes.</li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that the initial strain changes only the right-hand side of the equations and the force of the element, not the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a>.</p>
+<ol>
+<li>By definition <a class="xref" href="sec-temperatura-mke.html#def-zacetna-deformacija" data-knowl="def-zacetna-deformacija">7.48</a> the <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> of the bar is <span class="nobr">\(N = EA\,(u' - \varepsilon_0)\),</span> because the <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">strain</a> of the bar is <span class="nobr">\(u'\).</span></li>
+<li>Theorem <a class="xref" href="sec-virtualni-pomiki-palice.html#thm-virtualni-pomiki-palice" data-knowl="thm-virtualni-pomiki-palice">4.76</a> requires only \(N' + q = 0\) and \(N(L) = F\) and does not use the relation between \(N\) and \(u\) (steps 2 to 5 of its proof). Hence for every <a class="xref auto" href="sec-virtualni-pomiki-palice.html#def-virtualni-pomik" data-knowl="def-virtualni-pomik">virtual displacement</a> \(w\) we have <span class="nobr">\(\int N\,w'\,\mathrm{d}x = \int q\,w\,\mathrm{d}x + F\,w(L)\).</span> Where \(EA\) and \(\varepsilon_0\) are constant only piecewise, we apply the theorem on each piece separately and add the pieces, as for the weak form (definition <a class="xref" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">6.2</a>).</li>
+<li>We insert \(N\) from step 1 and move the term with \(\varepsilon_0\) to the right:
+<div class="eq" id="eq-sibka-oblika-zacetna-deformacija">\[\int EA\,u'\,w'\,\mathrm{d}x = \int q\,w\,\mathrm{d}x + F\,w(L) + \int EA\,\varepsilon_0\,w'\,\mathrm{d}x . \tag{7.47}\]</div>
+This is claim 1. The left side is the same as in equation <a class="xref" href="sec-mocna-sibka-oblika.html#eq-sibka-oblika-palice" data-knowl="eq-sibka-oblika-palice">(6.2)</a>, so the matrix of the element is the same. The solution of the method is the solution of this equation on the trial fields (equation <a class="xref" href="sec-galerkinova-metoda.html#eq-galerkin-enacba" data-knowl="eq-galerkin-enacba">(6.28)</a>).</li>
+<li>On element \(e\) of length \(h = L_{\mathrm{e}}\) we have \(w' = \mat b_{\mathrm{e}}\,\vek w_{\mathrm{e}}\) with \(\mat b_{\mathrm{e}} = (-1, 1)/h\) (lemma <a class="xref" href="sec-element-palice.html#lem-togost-elementa-palice" data-knowl="lem-togost-elementa-palice">7.5</a>). The additional term is therefore
+<div class="eq">\[\int_{\mathrm{e}} EA\,\varepsilon_0\,w'\,\mathrm{d}x = \vek w_{\mathrm{e}}^\T\,EA\,\varepsilon_0 \int_{\mathrm{e}} \mat b_{\mathrm{e}}^\T\,\mathrm{d}x = \vek w_{\mathrm{e}}^\T\,EA\,\varepsilon_0\,(-1, 1)^\T ,\]</div>
+because \(\mat b_{\mathrm{e}}\) is constant and the <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integral</a> of a constant <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> over the length \(h\) equals its value times \(h\) (theorem <a class="xref" href="sec-integral.html#thm-osnovni-izrek" data-knowl="thm-osnovni-izrek">3.40</a>). The column next to \(\vek w_{\mathrm{e}}^\T\) is <span class="nobr">\(\vek f_{\mathrm{e}0}\),</span> as for consistent nodal forces (definition <a class="xref" href="sec-element-palice.html#def-konsistentne-sile" data-knowl="def-konsistentne-sile">7.7</a>).</li>
+<li>For a <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">truss</a> the axial displacements are <span class="nobr">\(\mat T_{\mathrm{e}}\,\vek d_{\mathrm{e}}\),</span> the test function has the axial displacements <span class="nobr">\(\mat T_{\mathrm{e}}\,\vek w_{\mathrm{e}}\),</span> so the additional term is <span class="nobr">\((\mat T_{\mathrm{e}}\vek w_{\mathrm{e}})^\T\vek f_{\mathrm{e}0} = \vek w_{\mathrm{e}}^\T\,\mat T_{\mathrm{e}}^\T\vek f_{\mathrm{e}0}\).</span> The columns of \(\mat T_{\mathrm{e}}^\T\) are \((\vek n, \vek 0)\) and <span class="nobr">\((\vek 0, \vek n)\),</span> so \(\mat T_{\mathrm{e}}^\T(a, b)^\T = (a\,\vek n, b\,\vek n)\) and <span class="nobr">\(\mat T_{\mathrm{e}}^\T\vek f_{\mathrm{e}0} = EA\,\varepsilon_0\,(-\vek n, \vek n)\).</span> This is claim 2.</li>
+<li>Assembly (theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a>) combines the contributions of the elements on the right-hand side term by term in the same way as it combined <span class="nobr">\(\vek f_{\mathrm{e}}\).</span> This is claim 3.</li>
+<li>Claim 4 is step 1 with the strain <span class="nobr">\(\varepsilon = \vek n\cdot(\vek u_2 - \vek u_1)/L_{\mathrm{e}}\),</span> which is the axial elongation \(\vek n\cdot(\vek u_2 - \vek u_1)\) divided by the length (lemma <a class="xref" href="sec-palicje-ravnina-mke.html#lem-togost-palice-globalno" data-knowl="lem-togost-palice-globalno">7.28</a>, step 1).</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> COOK §2.10 (2.10-1) to (2.10-8) (PDF pp. 66-68), FELIPPA §4.2.2 (4.19) to (4.24) (PDF p. 59), ONATE1 §4 (PDF p. 147). The proof from theorem <a class="xref" href="sec-virtualni-pomiki-palice.html#thm-virtualni-pomiki-palice" data-knowl="thm-virtualni-pomiki-palice">4.76</a> is not from a source.</p></div></div>
+<p>What have we shown? The initial strain does not change the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> <span class="nobr">\(\mat K\),</span> but it changes the right-hand side of the equations and the force of the element. A bar with \(\varepsilon_0 &gt; 0\) pushes its nodes apart with \(EA\,\varepsilon_0\) in the direction of its axis (the column \(EA\,\varepsilon_0\,(-\vek n, \vek n)\) has \(+\vek n\) at the second node). COOK proceeds in the same way: he computes the initial stresses with prevented displacements, assembles them as a load and then solves (COOK, PDF p. 66, steps 1 to 3). Mechanical forces and forces of the initial strain are added on the same right-hand side (COOK, PDF p. 66).</p>
+<p>The trap is the term \(-EA\,\varepsilon_0\) in claim 4. For loading with forces it was not there, so it is easy to forget. If we forget it, we get a force in a bar on which nobody acts. We test this on a free bar.</p>
+
+<h3 id="sec-palica-med-stenama-mke"><span class="h-num">7.9.3</span> Bar between walls and free bar (palica med stenama in prosta palica)</h3>
+<p>Take the bar from section <a class="xref" href="sec-temperaturne-deformacije.html#sec-ovirano-raztezanje">3.3.3</a>, of length \(L = 10\) m, with \(EA = 1{,}5394 \cdot 10^7\) N and <span class="nobr">\(\varepsilon_0 = 4{,}5 \cdot 10^{-4}\),</span> as one element with nodes at \(x = 0\) and <span class="nobr">\(x = L\).</span> The nodal forces of the <a class="xref auto" href="sec-temperatura-mke.html#def-zacetna-deformacija" data-knowl="def-zacetna-deformacija">initial strain</a> are</p>
+<div class="eq">\[\vek f_{\mathrm{e}0} = EA\,\varepsilon_0\,(-1, 1)^\T = (-6927, 6927)^\T\ \text{N} .\]</div>
+<p>If both nodes are fixed (the walls), there are no free unknowns and \(\mat K_{\mathrm{ff}}\) is an empty <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a>. The reactions from section <a class="xref" href="sec-robni-pogoji-mke.html#sec-reakcije">7.3.4</a> are the rows of the equations \(\mat K\,\vek d = \vek f + \vek f_0 + \vek r\) at \(\vek d = \vek 0\) and <span class="nobr">\(\vek f = \vek 0\),</span> so \(\vek r = -\vek f_0 = (6927, -6927)^\T\) N. The first wall pushes the bar in the direction \(+x\) and the second in the direction <span class="nobr">\(-x\),</span> each with a force of \(6927\) N. The <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> by claim 4 is \(N = EA\,(0 - \varepsilon_0) = -6927\) N, as in chapter <a class="xref" href="ch-konstitutivne-enacbe.html">3</a>.</p>
+<p>We remove the right wall, so that node 2 is free. The equation of node 2 is <span class="nobr">\((EA/L)\,d_2 = EA\,\varepsilon_0\),</span> where \(EA/L = 1{,}5394 \cdot 10^6\) N/m, hence \(d_2 = \varepsilon_0\,L = 4{,}5\) mm. This is the free elongation \(\alpha\,\Delta T\,L = 15 \cdot 10^{-6} \cdot 30 \cdot 10\ \text{m}\) from chapter <a class="xref" href="ch-konstitutivne-enacbe.html">3</a>. The axial force by claim 4 is <span class="nobr">\(N = EA\,(d_2/L - \varepsilon_0) = 0\),</span> as it must be. But if we forget the term <span class="nobr">\(-EA\,\varepsilon_0\),</span> the program prints \(N = EA\,d_2/L = +6927\) N, a tensile force in a bar that lengthens freely. A test on an example where we know the solution (there is no force in a free heated bar) finds such an error. Section <a class="xref" href="sec-koraki-analize.html#sec-preverjanja">7.10.2</a> collects such tests.</p>
+
+<h3 id="sec-segreto-konzola"><span class="h-num">7.9.4</span> Statically determinate truss: displacement without forces (statično določeno paličje: premik brez sil)</h3>
+<p>In the wall <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">truss</a> we heat the bar \(BC\) by \(30\) K and load nothing. What happens? Node \(C\) is held by the bar <span class="nobr">\(AC\),</span> which lies horizontally, and by the bar <span class="nobr">\(BC\).</span> Two bars and two <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">coordinates</a> of the node: we can choose the lengths of both bars independently, and the node adapts. The bar \(BC\) can lengthen, and node \(C\) moves so that the bar \(AC\) stays the same length. Therefore there are no forces. We take this first as a question about all such trusses, and then test it on the wall truss.</p>
+<p>We write the equilibrium of the free nodes with the <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial forces</a>. A bar \(e\) with the <a class="xref auto" href="sec-vektorji.html#def-enotski-vektor" data-knowl="def-enotski-vektor">unit vector</a> \(\vek n\) from the first node to the second has the column \(\vek h_{\mathrm{e}} = (-\vek n, \vek n)^\T\) (this is the column from lemma <a class="xref" href="sec-temperatura-mke.html#lem-temperaturne-sile" data-knowl="lem-temperaturne-sile">7.49</a>). A tensile force \(N_{\mathrm{e}}\) pulls the first node in the direction \(+\vek n\) and the second in the direction <span class="nobr">\(-\vek n\),</span> so with the force <span class="nobr">\(-N_{\mathrm{e}}\,\vek h_{\mathrm{e}}\).</span> The column \(\vek h_{\mathrm{e}}\) has components only in the displacements of the two nodes of the bar, and by assembly (theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a>) we place it among all unknowns as <span class="nobr">\(\mat Z_{\mathrm{e}}^\T\vek h_{\mathrm{e}}\).</span> Let \(\mat H\) be the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> whose column \(e\) is <span class="nobr">\(\mat Z_{\mathrm{e}}^\T\vek h_{\mathrm{e}}\),</span> restricted to the free unknowns (we omit the rows of the fixed unknowns), so that it has \(n_{\mathrm{f}}\) rows and \(m\) columns, and \(\vek N\) the column of the axial forces of the bars. The sum of the external force and the forces of the bars on the free nodes is zero, <span class="nobr">\(\vek f_{\mathrm{f}} - \sum_{\mathrm{e}} N_{\mathrm{e}}\,\vek h_{\mathrm{e}} = \vek 0\),</span> which in matrix form means</p>
+<div class="eq" id="eq-ravnovesje-vozlisc-palicja">\[\mat H\,\vek N = \vek f_{\mathrm{f}} . \tag{7.48}\]</div>
+<p>For the wall truss with the unknowns \((u_{\mathrm{C}}, v_{\mathrm{C}})\) and the bars <span class="nobr">\(AC\),</span> \(BC\) in this order, <span class="nobr">\(\mat H = \begin{bmatrix} 1 &amp; 0{,}8 \\ 0 &amp; -0{,}6 \end{bmatrix}\),</span> because nodes \(A\) and \(B\) are fixed and only the part of the column at node <span class="nobr">\(C\),</span> the second node of both bars, remains, that is \(+\vek n_{\mathrm{AC}} = (1, 0)\) and <span class="nobr">\(+\vek n_{\mathrm{BC}} = (0{,}8, -0{,}6)\).</span> The equation \(\mat H\,\vek N = (0, -F)^\T\) is the equation of the node from section <a class="xref" href="sec-virtualne-sile.html#sec-staticno-nedoloceno-palicje">4.7.5</a> without the post. With the post, \(\mat H\) has a third column <span class="nobr">\((0, 1)^\T\).</span></p>
+<p>When do the <a class="xref auto" href="sec-ravnotezne-enacbe.html#thm-ravnotezne-enacbe" data-knowl="thm-ravnotezne-enacbe">equilibrium equations</a> alone determine the axial forces? The counting from section <a class="xref" href="sec-palicje-ravnina-mke.html#sec-mehanizmi">7.5.3</a> says that this is possible only for \(m = n_{\mathrm{f}}\) (as many bars as free unknowns), but it is not sufficient, because it does not exclude a mechanism. Therefore we state static determinacy with equation <a class="xref" href="sec-temperatura-mke.html#eq-ravnovesje-vozlisc-palicja" data-knowl="eq-ravnovesje-vozlisc-palicja">(7.48)</a> itself.</p>
+
+<div class="blk izrek" id="thm-zacetne-deformacije-brez-sil"><div class="blk-head"><span class="blk-label">Theorem 7.50</span> <span class="blk-title">Initial strains in a statically determinate truss (začetne deformacije v statično določenem paličju)</span></div><div class="blk-body"><p>Let the <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">truss</a> have \(m\) bars and \(n_{\mathrm{f}}\) free unknowns, let \(\mat H\) be the \(n_{\mathrm{f}} \times m\) <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> from equation <a class="xref" href="sec-temperatura-mke.html#eq-ravnovesje-vozlisc-palicja" data-knowl="eq-ravnovesje-vozlisc-palicja">(7.48)</a>, let \(\mat D = \mathrm{diag}(EA_{\mathrm{e}}/L_{\mathrm{e}})\) and let \(\vek c\) be the column with entries <span class="nobr">\(c_{\mathrm{e}} = EA_{\mathrm{e}}\,\varepsilon_{0,\mathrm{e}}\).</span> The truss is statically determinate (statično določeno) when the equation \(\mat H\,\vek N = \vek f_{\mathrm{f}}\) has exactly one solution \(\vek N\) for every column <span class="nobr">\(\vek f_{\mathrm{f}}\),</span> that is when the <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial forces</a> of the bars are determined by the equilibrium of the nodes alone, for every load. Let the truss be statically determinate, let no external force act on it, let the fixed displacements be zero and let bar \(e\) have the initial strain \(\varepsilon_{0,\mathrm{e}}\) (definition <a class="xref" href="sec-temperatura-mke.html#def-zacetna-deformacija" data-knowl="def-zacetna-deformacija">7.48</a>). Then <span class="nobr">\(m = n_{\mathrm{f}}\),</span> the matrix \(\mat H\) is <a class="xref auto" href="sec-matrike.html#def-inverzna-matrika" data-knowl="def-inverzna-matrika">invertible</a>, the equation of the method \(\mat K_{\mathrm{ff}}\,\vek d_{\mathrm{f}} = \vek f_{0,\mathrm{f}}\) has exactly one solution, the axial forces of all bars are zero, and the displacements of the free nodes are such that each bar lengthens by its free elongation <span class="nobr">\(\varepsilon_{0,\mathrm{e}}\,L_{\mathrm{e}}\).</span></p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that under these assumptions \(\mat H\) is invertible, that the equation of the method is then solved by a displacement at which every <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> is zero, and that there is no other solution.</p>
+<ol>
+<li>For \(j = 1, \dots, n_{\mathrm{f}}\) let \(\vek b_{\mathrm{j}}\) be the only solution of the equation <span class="nobr">\(\mat H\,\vek b_{\mathrm{j}} = \vek e_{\mathrm{j}}\),</span> where \(\vek e_{\mathrm{j}}\) is column \(j\) of the <a class="xref auto" href="sec-matrike.html#def-enotska-matrika" data-knowl="def-enotska-matrika">identity matrix</a> of order \(n_{\mathrm{f}}\) (by the definition of static determinacy it exists and is unique). The <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat B\) with columns \(\vek b_{\mathrm{j}}\) has size \(m \times n_{\mathrm{f}}\) and <span class="nobr">\(\mat H\,\mat B = \mat I_{\mathrm{n}_\mathrm{f}}\),</span> because column \(j\) of the product is \(\mat H\,\vek b_{\mathrm{j}}\) (definition <a class="xref" href="sec-matrike.html#def-produkt-matrik" data-knowl="def-produkt-matrik">1.98</a>).</li>
+<li>For every column \(\vek N\) of length <span class="nobr">\(m\),</span> \(\vek N\) and \(\mat B\,\mat H\,\vek N\) are solutions of the equation <span class="nobr">\(\mat H\,\vek X = \mat H\,\vek N\),</span> since <span class="nobr">\(\mat H\,(\mat B\,\mat H\,\vek N) = (\mat H\,\mat B)\,\mat H\,\vek N = \mat H\,\vek N\).</span> The solution is unique, so <span class="nobr">\(\mat B\,\mat H\,\vek N = \vek N\).</span> For \(\vek N\) equal to the columns of the identity matrix of order \(m\) we get <span class="nobr">\(\mat B\,\mat H = \mat I_{\mathrm{m}}\).</span></li>
+<li>We compute the sum of the diagonal entries in two ways: <span class="nobr">\(n_{\mathrm{f}} = \sum_{\mathrm{i}} (\mat H\,\mat B)_{\mathrm{ii}} = \sum_{\mathrm{i}} \sum_{\mathrm{j}} H_{\mathrm{ij}}\,B_{\mathrm{ji}} = \sum_{\mathrm{j}} \sum_{\mathrm{i}} B_{\mathrm{ji}}\,H_{\mathrm{ij}} = \sum_{\mathrm{j}} (\mat B\,\mat H)_{\mathrm{jj}} = m\).</span> The matrix \(\mat H\) is therefore square, and by steps 1 and 2 \(\mat B\) is its inverse matrix (definition <a class="xref" href="sec-matrike.html#def-inverzna-matrika" data-knowl="def-inverzna-matrika">1.107</a>). Also \(\mat H^\T\) is invertible, because by lemma <a class="xref" href="sec-matrike.html#lem-transponiran-produkt" data-knowl="lem-transponiran-produkt">1.101</a> \(\mat H^\T\mat B^\T = (\mat B\,\mat H)^\T = \mat I\) and <span class="nobr">\(\mat B^\T\mat H^\T = (\mat H\,\mat B)^\T = \mat I\).</span> The matrix \(\mat D\) is invertible, because it is diagonal with positive entries, <span class="nobr">\(\mat D^{-1} = \mathrm{diag}(L_{\mathrm{e}}/EA_{\mathrm{e}})\).</span></li>
+<li>By lemma <a class="xref" href="sec-palicje-ravnina-mke.html#lem-togost-palice-globalno" data-knowl="lem-togost-palice-globalno">7.28</a> <span class="nobr">\(\mat k_{\mathrm{e}} = (EA_{\mathrm{e}}/L_{\mathrm{e}})\,\vek h_{\mathrm{e}}\,\vek h_{\mathrm{e}}^\T\).</span> After assembly (theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a>) and restriction to the free unknowns, entry \((i, k)\) of \(\mat K_{\mathrm{ff}}\) is the sum over the bars <span class="nobr">\(\sum_{\mathrm{e}} H_{\mathrm{ie}}\,D_{\mathrm{e}}\,H_{\mathrm{ke}}\),</span> which is entry \((i, k)\) of the product <span class="nobr">\(\mat H\,\mat D\,\mat H^\T\).</span> Hence <span class="nobr">\(\mat K_{\mathrm{ff}} = \mat H\,\mat D\,\mat H^\T\).</span></li>
+<li>By lemma <a class="xref" href="sec-temperatura-mke.html#lem-temperaturne-sile" data-knowl="lem-temperaturne-sile">7.49</a>, claim 3, the right-hand side without external forces is <span class="nobr">\(\vek f_0 = \sum_{\mathrm{e}} \mat Z_{\mathrm{e}}^\T\mat T_{\mathrm{e}}^\T\vek f_{\mathrm{e}0}\),</span> and since <span class="nobr">\(\mat T_{\mathrm{e}}^\T\vek f_{\mathrm{e}0} = EA_{\mathrm{e}}\,\varepsilon_{0,\mathrm{e}}\,\vek h_{\mathrm{e}}\),</span> its part for the free unknowns is <span class="nobr">\(\vek f_{0,\mathrm{f}} = \mat H\,\vek c\).</span></li>
+<li>Let <span class="nobr">\(\vek d^* = (\mat H^\T)^{-1}\mat D^{-1}\vek c\).</span> Then <span class="nobr">\(\mat K_{\mathrm{ff}}\,\vek d^* = \mat H\,\mat D\,\mat H^\T(\mat H^\T)^{-1}\mat D^{-1}\vek c = \mat H\,\vek c = \vek f_{0,\mathrm{f}}\),</span> so \(\vek d^*\) solves the equation of the method.</li>
+<li>There is no other solution. If <span class="nobr">\(\mat K_{\mathrm{ff}}\,\vek y = \vek 0\),</span> then <span class="nobr">\(\mat H\,\mat D\,\mat H^\T\vek y = \vek 0\).</span> Multiplying by <span class="nobr">\(\mat H^{-1}\),</span> then by \(\mat D^{-1}\) and then by \((\mat H^\T)^{-1}\) gives <span class="nobr">\(\vek y = \vek 0\).</span> The difference of two solutions solves this equation, so <span class="nobr">\(\vek d_{\mathrm{f}} = \vek d^*\).</span></li>
+<li>By lemma <a class="xref" href="sec-temperatura-mke.html#lem-temperaturne-sile" data-knowl="lem-temperaturne-sile">7.49</a>, claim 4, with zero fixed displacements, <span class="nobr">\(N_{\mathrm{e}} = EA_{\mathrm{e}}\,\big(\vek h_{\mathrm{e}}^\T\vek d_{\mathrm{e}}/L_{\mathrm{e}} - \varepsilon_{0,\mathrm{e}}\big)\),</span> because <span class="nobr">\(\vek h_{\mathrm{e}}^\T\vek d_{\mathrm{e}} = \vek n\cdot(\vek u_2 - \vek u_1)\).</span> In a column this is <span class="nobr">\(\vek N = \mat D\,\mat H^\T\vek d_{\mathrm{f}} - \vek c\).</span> For \(\vek d_{\mathrm{f}} = \vek d^*\) we get <span class="nobr">\(\vek N = \mat D\,\mat H^\T(\mat H^\T)^{-1}\mat D^{-1}\vek c - \vek c = \vek c - \vek c = \vek 0\).</span></li>
+<li>From <span class="nobr">\(\mat H^\T\vek d^* = \mat D^{-1}\vek c\),</span> for every bar <span class="nobr">\(\vek n\cdot(\vek u_2 - \vek u_1) = c_{\mathrm{e}}/D_{\mathrm{e}} = \varepsilon_{0,\mathrm{e}}\,L_{\mathrm{e}}\),</span> which is the free elongation of the bar.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> The proof is not from a source. The converse, that in a statically indeterminate truss heating causes internal forces, is stated by FELIPPA (PDF p. 56, §4.2).</p></div></div>
+<p>What have we shown? Because <span class="nobr">\(\vek N = \mat D\,\mat H^\T\vek d_{\mathrm{f}} - \vek c\),</span> we have <span class="nobr">\(\mat H\,\vek N = \mat K_{\mathrm{ff}}\,\vek d_{\mathrm{f}} - \vek f_{0,\mathrm{f}}\),</span> so the equations of the method are the equilibrium of the nodes <span class="nobr">\(\mat H\,\vek N = \vek 0\),</span> in which the forces of the bars are computed from the displacements. In a truss that the equilibrium alone determines, this equilibrium has only the solution <span class="nobr">\(\vek N = \vek 0\),</span> and heating shows itself only in the displacements.</p>
+<p>We test it on the wall truss with the heated bar \(BC\) (figure <a class="xref" href="sec-temperatura-mke.html#fig-tmk-konzola" data-knowl="fig-tmk-konzola">7.33</a>). The unit vector from \(B\) to \(C\) is <span class="nobr">\(\vek n = (0{,}8, -0{,}6)\),</span> and \(EA\,\varepsilon_0 = 8820\) N. The nodal force of the <a class="xref auto" href="sec-temperatura-mke.html#def-zacetna-deformacija" data-knowl="def-zacetna-deformacija">initial strain</a> at \(C\) is</p>
+<div class="eq">\[EA\,\varepsilon_0\,\vek n = 8820 \cdot (0{,}8, -0{,}6) = (7056, -5292)\ \text{N} ,\]</div>
+<p>and the opposite one at <span class="nobr">\(B\),</span> but \(B\) is fixed. The equation \(\mat K_{\mathrm{ff}}\,\vek d_{\mathrm{f}} = \vek f_{0,\mathrm{f}}\) with \(\mat K_{\mathrm{ff}}\) from section <a class="xref" href="sec-palicje-ravnina-mke.html#sec-palicje-konzola-mke">7.5.2</a> is</p>
+<div class="eq">\[\begin{bmatrix} 7{,}4088 &amp; -1{,}8816 \\ -1{,}8816 &amp; 1{,}4112 \end{bmatrix} \cdot 10^6\ \frac{\text{N}}{\text{m}}\ \begin{pmatrix} u_{\mathrm{C}} \\ v_{\mathrm{C}} \end{pmatrix} = \begin{pmatrix} 7056 \\ -5292 \end{pmatrix}\ \text{N} ,\]</div>
+<p>and the solution is <span class="nobr">\(u_{\mathrm{C}} = 0\),</span> \(v_{\mathrm{C}} = -3{,}75\) mm. Check in the first row: \(-1{,}8816 \cdot 10^6 \cdot (-3{,}75 \cdot 10^{-3}) = 7056\) N. The axial forces by claim 4 are</p>
+<div class="eq">\[\begin{aligned} N_{\mathrm{AC}} &amp;= EA\,\Big(\frac{(1, 0)\cdot(0, -3{,}75\ \text{mm})}{4\ \text{m}} - 0\Big) = 0 , \\ N_{\mathrm{BC}} &amp;= EA\,\Big(\frac{(0{,}8, -0{,}6)\cdot(0, -3{,}75\ \text{mm})}{5\ \text{m}} - 4{,}5 \cdot 10^{-4}\Big) \\ &amp;= EA\,(4{,}5 \cdot 10^{-4} - 4{,}5 \cdot 10^{-4}) = 0 . \end{aligned}\]</div>
+<p>The bar \(BC\) lengthened by \(2{,}25\) mm, which is <span class="nobr">\(\alpha\,\Delta T\,L = 4{,}5 \cdot 10^{-4} \cdot 5\ \text{m}\).</span> The reactions are zero, because the axial forces are zero. Why did the node drop by exactly \(3{,}75\) mm? The bar \(AC\) stays \(4\) m long, so \(C\) moves perpendicular to it, vertically, and the vertical displacement \(v\) lengthens \(BC\) by <span class="nobr">\(0{,}6\,|v|\).</span> The condition \(0{,}6\,|v| = 2{,}25\) mm gives \(|v| = 3{,}75\) mm.</p>
+
+<figure class="blk slika" id="fig-tmk-konzola"><p><span class="svgfig" role="img" aria-label="Wall truss with a heated bar, displacement of node C along a circular arc and zero forces in the bars"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='230.64pt' height='181.30pt' viewBox='-72.000004 -72.000006 170.843288 134.298142'>
+<defs>
+<path id='tmk-konzola-g0-48' d='M2.022416-3.291656C2.078207-3.410212 2.085181-3.466002 2.085181-3.514819C2.085181-3.731009 1.889913-3.898381 1.673724-3.898381C1.408717-3.898381 1.325031-3.682192 1.290162-3.57061L.369614-.550934C.36264-.536986 .334745-.446326 .334745-.439352C.334745-.355666 .550934-.285928 .606725-.285928C.655542-.285928 .662516-.299875 .711333-.404483L2.022416-3.291656Z'/>
+<path id='tmk-konzola-g1-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='tmk-konzola-g1-65' d='M1.783313-1.145704C1.384807-.478207 .996264-.33873 .557908-.308842C.438356-.298879 .348692-.298879 .348692-.109589C.348692-.049813 .398506 0 .478207 0C.747198 0 1.05604-.029888 1.334994-.029888C1.663761-.029888 2.012453 0 2.331258 0C2.391034 0 2.520548 0 2.520548-.18929C2.520548-.298879 2.430884-.308842 2.361146-.308842C2.132005-.328767 1.892902-.408468 1.892902-.657534C1.892902-.777086 1.952677-.886675 2.032379-1.026152L2.789539-2.30137H5.290162C5.310087-2.092154 5.449564-.737235 5.449564-.637609C5.449564-.33873 4.931507-.308842 4.732254-.308842C4.592777-.308842 4.493151-.308842 4.493151-.109589C4.493151 0 4.612702 0 4.632628 0C5.041096 0 5.469489-.029888 5.877958-.029888C6.127024-.029888 6.75467 0 7.003736 0C7.063512 0 7.183064 0 7.183064-.199253C7.183064-.308842 7.083437-.308842 6.953923-.308842C6.336239-.308842 6.336239-.37858 6.306351-.667497L5.69863-6.894147C5.678705-7.0934 5.678705-7.13325 5.50934-7.13325C5.349938-7.13325 5.310087-7.063512 5.250311-6.963885L1.783313-1.145704ZM2.978829-2.610212L4.941469-5.897883L5.260274-2.610212H2.978829Z'/>
+<path id='tmk-konzola-g1-66' d='M1.594022-.777086C1.494396-.388543 1.474471-.308842 .687422-.308842C.518057-.308842 .418431-.308842 .418431-.109589C.418431 0 .508095 0 .687422 0H4.244085C5.818182 0 6.993773-1.175592 6.993773-2.15193C6.993773-2.86924 6.41594-3.447073 5.449564-3.556663C6.485679-3.745953 7.531756-4.483188 7.531756-5.429639C7.531756-6.166874 6.874222-6.804483 5.678705-6.804483H2.331258C2.141968-6.804483 2.042341-6.804483 2.042341-6.60523C2.042341-6.495641 2.132005-6.495641 2.321295-6.495641C2.34122-6.495641 2.530511-6.495641 2.699875-6.475716C2.879203-6.455791 2.968867-6.445828 2.968867-6.316314C2.968867-6.276463 2.958904-6.246575 2.929016-6.127024L1.594022-.777086ZM3.098381-3.646326L3.716065-6.117061C3.805729-6.465753 3.825654-6.495641 4.254047-6.495641H5.539228C6.41594-6.495641 6.625156-5.907846 6.625156-5.469489C6.625156-4.592777 5.768369-3.646326 4.552927-3.646326H3.098381ZM2.650062-.308842C2.510585-.308842 2.49066-.308842 2.430884-.318804C2.331258-.328767 2.30137-.33873 2.30137-.418431C2.30137-.448319 2.30137-.468244 2.351183-.647572L3.038605-3.427148H4.921544C5.877958-3.427148 6.067248-2.689913 6.067248-2.261519C6.067248-1.275218 5.180573-.308842 4.004981-.308842H2.650062Z'/>
+<path id='tmk-konzola-g1-67' d='M7.571606-6.924035C7.571606-6.953923 7.551681-7.023661 7.462017-7.023661C7.43213-7.023661 7.422167-7.013699 7.312578-6.90411L6.615193-6.136986C6.525529-6.276463 6.067248-7.023661 4.961395-7.023661C2.739726-7.023661 .498132-4.821918 .498132-2.510585C.498132-.86675 1.673724 .219178 3.198007 .219178C4.064757 .219178 4.821918-.179328 5.349938-.637609C6.276463-1.454545 6.445828-2.361146 6.445828-2.391034C6.445828-2.49066 6.346202-2.49066 6.326276-2.49066C6.266501-2.49066 6.216687-2.470735 6.196762-2.391034C6.107098-2.102117 5.877958-1.39477 5.190535-.816936C4.503113-.259029 3.875467-.089664 3.35741-.089664C2.460772-.089664 1.404732-.607721 1.404732-2.161893C1.404732-2.729763 1.613948-4.343711 2.610212-5.50934C3.217933-6.216687 4.154421-6.714819 5.041096-6.714819C6.057285-6.714819 6.645081-5.947696 6.645081-4.79203C6.645081-4.393524 6.615193-4.383562 6.615193-4.283935S6.724782-4.184309 6.764633-4.184309C6.894147-4.184309 6.894147-4.204234 6.94396-4.383562L7.571606-6.924035Z'/>
+<path id='tmk-konzola-g1-78' d='M7.531756-5.758406C7.631382-6.156912 7.81071-6.465753 8.607721-6.495641C8.657534-6.495641 8.777086-6.505604 8.777086-6.694894C8.777086-6.704857 8.777086-6.804483 8.647572-6.804483C8.318804-6.804483 7.970112-6.774595 7.641345-6.774595C7.302615-6.774595 6.953923-6.804483 6.625156-6.804483C6.56538-6.804483 6.445828-6.804483 6.445828-6.60523C6.445828-6.495641 6.545455-6.495641 6.625156-6.495641C7.193026-6.485679 7.302615-6.276463 7.302615-6.057285C7.302615-6.027397 7.28269-5.877958 7.272727-5.84807L6.156912-1.414695L3.955168-6.615193C3.875467-6.794521 3.865504-6.804483 3.636364-6.804483H2.30137C2.102117-6.804483 2.012453-6.804483 2.012453-6.60523C2.012453-6.495641 2.102117-6.495641 2.291407-6.495641C2.34122-6.495641 2.968867-6.495641 2.968867-6.405978L1.633873-1.05604C1.534247-.657534 1.364882-.33873 .557908-.308842C.498132-.308842 .388543-.298879 .388543-.109589C.388543-.039851 .438356 0 .518057 0C.836862 0 1.185554-.029888 1.514321-.029888C1.853051-.029888 2.211706 0 2.540473 0C2.590286 0 2.719801 0 2.719801-.199253C2.719801-.298879 2.630137-.308842 2.520548-.308842C1.942715-.328767 1.863014-.547945 1.863014-.747198C1.863014-.816936 1.872976-.86675 1.902864-.976339L3.217933-6.236613C3.257783-6.176837 3.257783-6.156912 3.307597-6.057285L5.788294-.18929C5.858032-.019925 5.88792 0 5.977584 0C6.087173 0 6.087173-.029888 6.136986-.209215L7.531756-5.758406Z'/>
+<path id='tmk-konzola-g1-84' d='M4.254047-6.047323C4.323786-6.326276 4.363636-6.386052 4.483188-6.41594C4.572852-6.435866 4.901619-6.435866 5.110834-6.435866C6.117061-6.435866 6.56538-6.396015 6.56538-5.618929C6.56538-5.469489 6.525529-5.080946 6.485679-4.821918C6.475716-4.782067 6.455791-4.662516 6.455791-4.632628C6.455791-4.572852 6.485679-4.503113 6.575342-4.503113C6.684932-4.503113 6.704857-4.582814 6.724782-4.732254L6.993773-6.465753C7.003736-6.505604 7.013699-6.60523 7.013699-6.635118C7.013699-6.744707 6.914072-6.744707 6.744707-6.744707H1.215442C.976339-6.744707 .966376-6.734745 .896638-6.545455L.298879-4.79203C.288917-4.772105 .239103-4.632628 .239103-4.612702C.239103-4.552927 .288917-4.503113 .358655-4.503113C.458281-4.503113 .468244-4.552927 .52802-4.712329C1.066002-6.256538 1.325031-6.435866 2.799502-6.435866H3.188045C3.466999-6.435866 3.466999-6.396015 3.466999-6.316314C3.466999-6.256538 3.437111-6.136986 3.427148-6.107098L2.092154-.787049C2.002491-.418431 1.972603-.308842 .9066-.308842C.547945-.308842 .488169-.308842 .488169-.119552C.488169 0 .597758 0 .657534 0C.926526 0 1.205479-.019925 1.474471-.019925C1.753425-.019925 2.042341-.029888 2.321295-.029888S2.879203-.019925 3.148194-.019925C3.437111-.019925 3.73599 0 4.014944 0C4.11457 0 4.234122 0 4.234122-.199253C4.234122-.308842 4.154421-.308842 3.895392-.308842C3.646326-.308842 3.516812-.308842 3.257783-.328767C2.968867-.358655 2.889166-.388543 2.889166-.547945C2.889166-.557908 2.889166-.607721 2.929016-.757161L4.254047-6.047323Z'/>
+<path id='tmk-konzola-g2-1' d='M4.403487-6.953923C4.333748-7.083437 4.313823-7.13325 4.144458-7.13325S3.955168-7.083437 3.88543-6.953923L.518057-.199253C.468244-.109589 .468244-.089664 .468244-.079701C.468244 0 .52802 0 .687422 0H7.601494C7.760897 0 7.820672 0 7.820672-.079701C7.820672-.089664 7.820672-.109589 7.770859-.199253L4.403487-6.953923ZM3.825654-6.136986L6.505604-.757161H1.135741L3.825654-6.136986Z'/>
+<path id='tmk-konzola-g2-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='tmk-konzola-g2-51' d='M2.889166-3.506849C3.706102-3.775841 4.283935-4.473225 4.283935-5.260274C4.283935-6.07721 3.407223-6.635118 2.450809-6.635118C1.444583-6.635118 .687422-6.03736 .687422-5.280199C.687422-4.951432 .9066-4.762142 1.195517-4.762142C1.504359-4.762142 1.703611-4.98132 1.703611-5.270237C1.703611-5.768369 1.235367-5.768369 1.085928-5.768369C1.39477-6.256538 2.052304-6.386052 2.410959-6.386052C2.819427-6.386052 3.367372-6.166874 3.367372-5.270237C3.367372-5.150685 3.347447-4.572852 3.088418-4.134496C2.789539-3.656289 2.450809-3.626401 2.201743-3.616438C2.122042-3.606476 1.882939-3.58655 1.8132-3.58655C1.733499-3.576588 1.663761-3.566625 1.663761-3.466999C1.663761-3.35741 1.733499-3.35741 1.902864-3.35741H2.34122C3.158157-3.35741 3.526775-2.67995 3.526775-1.703611C3.526775-.348692 2.839352-.059776 2.400996-.059776C1.972603-.059776 1.225405-.229141 .876712-.816936C1.225405-.767123 1.534247-.986301 1.534247-1.364882C1.534247-1.723537 1.265255-1.92279 .976339-1.92279C.737235-1.92279 .418431-1.783313 .418431-1.344956C.418431-.438356 1.344956 .219178 2.430884 .219178C3.646326 .219178 4.552927-.687422 4.552927-1.703611C4.552927-2.520548 3.92528-3.297634 2.889166-3.506849Z'/>
+<path id='tmk-konzola-g2-52' d='M2.929016-1.643836V-.777086C2.929016-.418431 2.909091-.308842 2.171856-.308842H1.96264V0C2.371108-.029888 2.889166-.029888 3.307597-.029888S4.254047-.029888 4.662516 0V-.308842H4.4533C3.716065-.308842 3.696139-.418431 3.696139-.777086V-1.643836H4.692403V-1.952677H3.696139V-6.485679C3.696139-6.684932 3.696139-6.744707 3.536737-6.744707C3.447073-6.744707 3.417186-6.744707 3.337484-6.625156L.278954-1.952677V-1.643836H2.929016ZM2.988792-1.952677H.557908L2.988792-5.668742V-1.952677Z'/>
+<path id='tmk-konzola-g2-53' d='M4.473225-2.002491C4.473225-3.188045 3.656289-4.184309 2.580324-4.184309C2.102117-4.184309 1.673724-4.024907 1.315068-3.676214V-5.618929C1.514321-5.559153 1.843088-5.489415 2.161893-5.489415C3.387298-5.489415 4.084682-6.396015 4.084682-6.525529C4.084682-6.585305 4.054795-6.635118 3.985056-6.635118C3.975093-6.635118 3.955168-6.635118 3.905355-6.60523C3.706102-6.515567 3.217933-6.316314 2.550436-6.316314C2.15193-6.316314 1.693649-6.386052 1.225405-6.595268C1.145704-6.625156 1.125778-6.625156 1.105853-6.625156C1.006227-6.625156 1.006227-6.545455 1.006227-6.386052V-3.437111C1.006227-3.257783 1.006227-3.178082 1.145704-3.178082C1.215442-3.178082 1.235367-3.20797 1.275218-3.267746C1.384807-3.427148 1.753425-3.965131 2.560399-3.965131C3.078456-3.965131 3.327522-3.506849 3.407223-3.327522C3.566625-2.958904 3.58655-2.570361 3.58655-2.072229C3.58655-1.723537 3.58655-1.125778 3.347447-.707347C3.108344-.318804 2.739726-.059776 2.281445-.059776C1.554172-.059776 .986301-.587796 .816936-1.175592C.846824-1.165629 .876712-1.155666 .986301-1.155666C1.315068-1.155666 1.484433-1.404732 1.484433-1.643836S1.315068-2.132005 .986301-2.132005C.846824-2.132005 .498132-2.062267 .498132-1.603985C.498132-.747198 1.185554 .219178 2.30137 .219178C3.457036 .219178 4.473225-.737235 4.473225-2.002491Z'/>
+<path id='tmk-konzola-g2-55' d='M4.742217-6.067248C4.83188-6.1868 4.83188-6.206725 4.83188-6.41594H2.410959C1.195517-6.41594 1.175592-6.545455 1.135741-6.734745H.886675L.557908-4.682441H.806974C.836862-4.841843 .926526-5.469489 1.05604-5.589041C1.125778-5.648817 1.902864-5.648817 2.032379-5.648817H4.094645C3.985056-5.489415 3.198007-4.403487 2.978829-4.07472C2.082192-2.729763 1.753425-1.344956 1.753425-.328767C1.753425-.229141 1.753425 .219178 2.211706 .219178S2.669988-.229141 2.669988-.328767V-.836862C2.669988-1.384807 2.699875-1.932752 2.779577-2.470735C2.819427-2.699875 2.958904-3.556663 3.39726-4.174346L4.742217-6.067248Z'/>
+<path id='tmk-konzola-g2-61' d='M6.844334-3.257783C6.993773-3.257783 7.183064-3.257783 7.183064-3.457036S6.993773-3.656289 6.854296-3.656289H.886675C.747198-3.656289 .557908-3.656289 .557908-3.457036S.747198-3.257783 .896638-3.257783H6.844334ZM6.854296-1.325031C6.993773-1.325031 7.183064-1.325031 7.183064-1.524284S6.993773-1.723537 6.844334-1.723537H.896638C.747198-1.723537 .557908-1.723537 .557908-1.524284S.747198-1.325031 .886675-1.325031H6.854296Z'/>
+</defs>
+<g id='tmk-konzola-page1'>
+<g stroke-miterlimit='10' transform='translate(37.106912,29.726629)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912-22.76227V81.94434' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912-22.76227L-95.6015-27.31467' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912-17.07172L-95.6015-21.6241' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912-11.38113L-95.6015-15.93352' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912-5.69057L-95.6015-10.24295' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 0L-95.6015-4.55238' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 5.69055L-95.6015 1.13817' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 11.38113L-95.6015 6.82874' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 17.0717L-95.6015 12.51932' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 22.76227L-95.6015 18.20988' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 28.45284L-95.6015 23.90045' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 34.1434L-95.6015 29.59102' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 39.83398L-95.6015 35.2816' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 45.52455L-95.6015 40.97217' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 51.21512L-95.6015 46.66273' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 56.90569L-95.6015 52.3533' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 62.59627L-95.6015 58.04388' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 68.28683L-95.6015 63.73445' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 73.9774L-95.6015 69.42502' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 79.66797L-95.6015 75.11559' fill='none'/>
+</g>
+</g>
+<g stroke-width='0.6'>
+<path d='M-91.04912 0H0' fill='none'/>
+</g>
+<g stroke-width='0.6'>
+<path d='M-91.04912 68.28683L0 0' fill='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.6'>
+<path d='M-91.04912 0L0-17.0717' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.6'>
+<path d='M-91.04912 68.28683L0-17.0717' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M-.67796 11.09633C.74606-.50154-.0792-12.27863-3.1023-23.56529' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M-88.78618 0C-88.78618 1.2498-89.79932 2.26294-91.04912 2.26294S-93.31206 1.2498-93.31206 0S-92.29892-2.26294-91.04912-2.26294S-88.78618-1.2498-88.78618 0ZM-91.04912 0'/>
+</g>
+<g transform='translate(-91.04912,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,29.726629)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M-88.78618 68.28683C-88.78618 69.53664-89.79932 70.54977-91.04912 70.54977S-93.31206 69.53664-93.31206 68.28683C-93.31206 67.03703-92.29892 66.0239-91.04912 66.0239S-88.78618 67.03703-88.78618 68.28683ZM-91.04912 68.28683'/>
+</g>
+<g transform='translate(-91.04912,68.28683)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,29.726629)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M2.26294 0C2.26294 1.2498 1.2498 2.26294 0 2.26294S-2.26294 1.2498-2.26294 0S-1.2498-2.26294 0-2.26294S2.26294-1.2498 2.26294 0ZM0 0'/>
+</g>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,29.726629)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g stroke='#f00'>
+<g fill='#fff'>
+<g stroke='#f00'>
+<path d='M2.26294-17.0717C2.26294-15.8219 1.2498-14.80876 0-14.80876S-2.26294-15.8219-2.26294-17.0717S-1.2498-19.33464 0-19.33464S2.26294-18.3215 2.26294-17.0717ZM0-17.0717'/>
+</g>
+</g>
+<g transform='translate(0.0,-17.0717)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,29.726629)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-105.5963,4.77115)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,29.726629)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='37.106912' y='29.726629' xlink:href='#tmk-konzola-g1-65'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-106.18309,73.058)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,29.726629)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='37.106912' y='29.726629' xlink:href='#tmk-konzola-g1-66'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(4.77115,4.77115)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,29.726629)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='37.106912' y='29.726629' xlink:href='#tmk-konzola-g1-67'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(5.454,-29.36067)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,29.726629)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='37.106912' y='29.726629' xlink:href='#tmk-konzola-g1-67'/>
+<use x='44.940026' y='26.111265' xlink:href='#tmk-konzola-g0-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-63.80603,-16.85292)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,29.726629)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='37.106912' y='29.726629' xlink:href='#tmk-konzola-g1-78'/>
+<use x='48.965135' y='29.726629' xlink:href='#tmk-konzola-g2-61'/>
+<use x='59.481215' y='29.726629' xlink:href='#tmk-konzola-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-46.44395,38.91458)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,29.726629)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='37.106912' y='29.726629' xlink:href='#tmk-konzola-g1-78'/>
+<use x='48.965135' y='29.726629' xlink:href='#tmk-konzola-g2-61'/>
+<use x='59.481215' y='29.726629' xlink:href='#tmk-konzola-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-77.24287,29.58856)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,29.726629)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='37.106912' y='29.726629' xlink:href='#tmk-konzola-g2-1'/>
+<use x='45.409138' y='29.726629' xlink:href='#tmk-konzola-g1-84'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M3.41418 0H28.45284' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M3.41418-17.0717H28.45284' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M25.03864-.33748V-16.73422' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,25.03864,-6.14052)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,25.03864,-0.22499)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,25.03864,-10.93118)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,25.03864,-16.84671)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(28.5966,-10.78584)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,29.726629)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='37.106912' y='29.726629' xlink:href='#tmk-konzola-g2-51'/>
+<use x='42.088251' y='29.726629' xlink:href='#tmk-konzola-g1-59'/>
+<use x='44.85566' y='29.726629' xlink:href='#tmk-konzola-g2-55'/>
+<use x='49.836999' y='29.726629' xlink:href='#tmk-konzola-g2-53'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 75.11559V92.1873' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 75.11559V92.1873' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-90.71164 88.77274H-.33748' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,-84.9086,88.77274)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,-90.82413,88.77274)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(-6.14052,88.77274)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-0.22499,88.77274)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(-48.02455,92.3307)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,29.726629)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='37.106912' y='29.726629' xlink:href='#tmk-konzola-g2-52'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M-84.22035 68.28683H53.49149' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M50.07693 .33748V67.94936' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,50.07693,6.14052)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,50.07693,0.22499)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,50.07693,62.14632)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,50.07693,68.06184)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(53.6349,30.92119)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,29.726629)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='37.106912' y='29.726629' xlink:href='#tmk-konzola-g2-51'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 7.33</span>: Wall truss with a heated bar \(BC\) and no load. Thin: the truss before heating, \(A = (-4, 0)\) m, \(B = (-4, 3)\) m, <span class="nobr">\(C = (0, 0)\).</span> Thick: the truss after heating, the displacement of node \(C\) to \(C'\) is \(3{,}75\) mm downward, magnified \(200\) times in the figure. Dashed: the circular arc about \(A\) with radius \(4\) m along which the node would move if the bar \(AC\) kept its length, while linear theory moves it along the tangent, vertically. Because of the magnification the bar \(AC'\) in the figure is longer than <span class="nobr">\(AC\),</span> in reality by only \(1{,}8\) µm. Beside the bars are the axial forces in kilonewtons, both are zero, and the reactions are zero. The bar \(BC\) lengthened by \(2{,}25\) mm, which is the free elongation \(\alpha\,\Delta T\,L\) at \(\Delta T = 30\) K.</figcaption></figure>
+<p>The theorem holds in linear theory, and this has a <a class="xref auto" href="sec-limita-odvod.html#def-limita" data-knowl="def-limita">limit</a>. Node \(C\) in fact moves along a circular arc about \(A\) (figure <a class="xref" href="sec-temperatura-mke.html#fig-tmk-konzola" data-knowl="fig-tmk-konzola">7.33</a>), while linear theory moves it along the tangent to the arc, vertically. The bar \(AC\) therefore lengthens by \(v^2/(2 \cdot 4\ \text{m}) = 1{,}8\) µm, which is \(0{,}08\) % of the free elongation \(2{,}25\) mm. This is a term of second order in the displacement, which equation <a class="xref" href="sec-virtualni-pomiki-palice.html#eq-virtualni-podaljsek" data-knowl="eq-virtualni-podaljsek">(4.48)</a> neglects.</p>
+
+<h3 id="sec-segret-steber"><span class="h-num">7.9.5</span> Statically indeterminate truss: forces without a load (statično nedoločeno paličje: sile brez bremena)</h3>
+<p>We add to the wall <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">truss</a> the post \(CD\) of length \(3\) m (section <a class="xref" href="sec-virtualne-sile.html#sec-staticno-nedoloceno-palicje">4.7.5</a>, figure <a class="xref" href="sec-temperatura-mke.html#fig-tmk-steber" data-knowl="fig-tmk-steber">7.34</a>). We take the bars in the order <span class="nobr">\(AC\),</span> \(BC\) and \(DC\) (the post as an element with nodes \(D\) and \(C\) in this order), so that the post has the <a class="xref auto" href="sec-vektorji.html#def-enotski-vektor" data-knowl="def-enotski-vektor">unit vector</a> \(\vek n = (0, 1)\) from the ground to the node. The unknowns are <span class="nobr">\((u_{\mathrm{C}}, v_{\mathrm{C}})\),</span> the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat H\) has two rows and three columns, <span class="nobr">\(\begin{bmatrix} 1 &amp; 0{,}8 &amp; 0 \\ 0 &amp; -0{,}6 &amp; 1 \end{bmatrix}\),</span> and the equation \(\mat H\,\vek N = \vek 0\) has more solutions, so the truss is not statically determinate (in the sense above: <span class="nobr">\(m = 3 \ne 2 = n_{\mathrm{f}}\)).</span> Section <a class="xref" href="sec-virtualne-sile.html#sec-staticno-nedoloceno-palicje">4.7.5</a> wrote them with the unknown <span class="nobr">\(X = N_{\mathrm{CD}}\):</span> without a load, <span class="nobr">\(\vek N = X\,(-\tfrac43, \tfrac53, 1)\).</span> Theorem <a class="xref" href="sec-temperatura-mke.html#thm-zacetne-deformacije-brez-sil" data-knowl="thm-zacetne-deformacije-brez-sil">7.50</a> therefore does not hold (the matrix \(\mat H\) is not square), and equilibrium does not say which \(X\) is the right one. This is told by the computation of the method, which requires that the elongations of the bars come from one displacement of the node.</p>
+<p>We heat the post by \(30\) K, without a load. The nodal force of the <a class="xref auto" href="sec-temperatura-mke.html#def-zacetna-deformacija" data-knowl="def-zacetna-deformacija">initial strain</a> at \(C\) is \(EA\,\varepsilon_0\,\vek n = (0, 8820)\) N: the heated post pushes node \(C\) upward. The matrix \(\mat K_{\mathrm{ff}}\) is now</p>
+<div class="eq">\[\mat K_{\mathrm{ff}} = \begin{bmatrix} 7{,}4088 &amp; -1{,}8816 \\ -1{,}8816 &amp; 7{,}9445 \end{bmatrix} \cdot 10^6\ \frac{\text{N}}{\text{m}} ,\]</div>
+<p>where the post contributes \(EA/L_{\mathrm{CD}} = 1{,}96 \cdot 10^7/3 = 6{,}5333 \cdot 10^6\) N/m to the entry <span class="nobr">\((2, 2)\),</span> <span class="nobr">\(1{,}4112 + 6{,}5333 = 7{,}9445\).</span> The solution is \(u_{\mathrm{C}} = 0{,}300\) mm and \(v_{\mathrm{C}} = 1{,}181\) mm, with <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial forces</a></p>
+<div class="eq">\[\begin{aligned} N_{\mathrm{AC}} &amp;= 1{,}470\ \text{kN} , \qquad N_{\mathrm{BC}} = -1{,}838\ \text{kN} , \\ N_{\mathrm{CD}} &amp;= EA\,\Big(\frac{1{,}18125\ \text{mm}}{3\ \text{m}} - 4{,}5 \cdot 10^{-4}\Big) = -1{,}1025\ \text{kN} . \end{aligned}\]</div>
+<p>These are indeed solutions \(\vek N = X\,(-\tfrac43, \tfrac53, 1)\) with \(X = -1{,}1025\) kN: \(-\tfrac43 \cdot (-1{,}1025) = 1{,}470\) and <span class="nobr">\(\tfrac53 \cdot (-1{,}1025) = -1{,}8375\).</span> The method chose one of the solutions of equilibrium, and since no external force acts, the forces of the heated post balance only each other (figure <a class="xref" href="sec-temperatura-mke.html#fig-tmk-steber" data-knowl="fig-tmk-steber">7.34</a>, right): the bar \(AC\) pulls node \(C\) toward \(A\) with \(1470\) N, the bar \(BC\) pushes it with a force of \(1837{,}5\) N in the direction <span class="nobr">\((0{,}8, -0{,}6)\),</span> that is with components \((1470, -1102{,}5)\) N, and the post pushes it upward with \(1102{,}5\) N. Horizontally \(-1470 + 1470 = 0\) and vertically <span class="nobr">\(-1102{,}5 + 1102{,}5 = 0\).</span></p>
+<p>If the post were between two rigid bases, it would carry \(-EA\,\alpha\,\Delta T = -8{,}82\) kN (chapter <a class="xref" href="ch-konstitutivne-enacbe.html">3</a>, equation <a class="xref" href="sec-temperaturne-deformacije.html#eq-temperaturna-napetost-palice" data-knowl="eq-temperaturna-napetost-palice">(3.18)</a>). But it carries only \(1{,}1025\) kN, which is \(12{,}5\) % of this force. Why? The post cannot lengthen by its free elongation \(\varepsilon_0\,L_{\mathrm{CD}} = 1{,}35\) mm, because it must move node <span class="nobr">\(C\),</span> which is held by the bars \(AC\) and <span class="nobr">\(BC\).</span> The node moved upward by only \(1{,}181\) mm, the post lengthened by \(1{,}181\) mm of \(1{,}35\) mm, and the remaining \(0{,}169\) mm is compressed. How stiffly does the wall truss hold the node? From the first row of the node equation we express \(u_{\mathrm{C}} = (1{,}8816/7{,}4088)\,v_{\mathrm{C}}\) and insert it in the second row:</p>
+<div class="eq">\[\Big(7{,}9445 - \frac{1{,}8816^2}{7{,}4088}\Big) \cdot 10^6\ v_{\mathrm{C}} = 8820\ \text{N} , \qquad 7{,}4667 \cdot 10^6\ \frac{\text{N}}{\text{m}}\ v_{\mathrm{C}} = 8820\ \text{N} .\]</div>
+<p>Of the vertical stiffness \(7{,}4667 \cdot 10^6\) N/m, \(k_{\mathrm{s}} = 6{,}5333 \cdot 10^6\) N/m belongs to the post, and to the wall truss without the post \(k_{\mathrm{p}} = 1{,}4112 - 1{,}8816^2/7{,}4088 = 0{,}9333 \cdot 10^6\) N/m, which is the second pivot of the elimination of the wall truss from section <a class="xref" href="sec-palicje-ravnina-mke.html#sec-palicje-konzola-mke">7.5.2</a>. The bar \(AC\) is horizontal, so the node can also adapt horizontally when it moves upward, and this adaptation is already counted in the pivot. The post and the truss are like two springs that both hold node <span class="nobr">\(C\),</span> which moves by <span class="nobr">\(v_{\mathrm{C}} = EA\,\varepsilon_0/(k_{\mathrm{p}} + k_{\mathrm{s}})\).</span> The force of the post is its stiffness times the difference between the displacement of the node and the free elongation:</p>
+<div class="eq">\[\begin{aligned} N_{\mathrm{CD}} &amp;= k_{\mathrm{s}}\,\big(v_{\mathrm{C}} - \varepsilon_0\,L_{\mathrm{CD}}\big) = k_{\mathrm{s}}\,EA\,\varepsilon_0\,\Big(\frac{1}{k_{\mathrm{p}} + k_{\mathrm{s}}} - \frac{1}{k_{\mathrm{s}}}\Big) \\ &amp;= -EA\,\varepsilon_0\,\frac{k_{\mathrm{p}}}{k_{\mathrm{p}} + k_{\mathrm{s}}} = -8820\ \text{N} \cdot \frac{0{,}9333}{7{,}4667} = -1102{,}5\ \text{N} . \end{aligned}\]</div>
+<p>The share \(k_{\mathrm{p}}/(k_{\mathrm{p}} + k_{\mathrm{s}}) = 0{,}125\) is the ratio of the stiffness of the truss to all the stiffness at the node. If the truss were infinitely stiff, the share would be \(1\) and the post would carry the whole force of the bar between walls. Because the truss is soft, the node gives way, and the post keeps an eighth.</p>
+
+<figure class="blk slika" id="fig-tmk-steber"><p><span class="svgfig" role="img" aria-label="Wall truss with a heated post and the forces of the bars on node C"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='485.06pt' height='210.20pt' viewBox='-72.000004 -72.000006 359.304159 155.704608'>
+<defs>
+<path id='tmk-steber-g0-0' d='M6.56538-2.291407C6.734745-2.291407 6.914072-2.291407 6.914072-2.49066S6.734745-2.689913 6.56538-2.689913H1.175592C1.006227-2.689913 .826899-2.689913 .826899-2.49066S1.006227-2.291407 1.175592-2.291407H6.56538Z'/>
+<path id='tmk-steber-g1-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='tmk-steber-g1-65' d='M1.783313-1.145704C1.384807-.478207 .996264-.33873 .557908-.308842C.438356-.298879 .348692-.298879 .348692-.109589C.348692-.049813 .398506 0 .478207 0C.747198 0 1.05604-.029888 1.334994-.029888C1.663761-.029888 2.012453 0 2.331258 0C2.391034 0 2.520548 0 2.520548-.18929C2.520548-.298879 2.430884-.308842 2.361146-.308842C2.132005-.328767 1.892902-.408468 1.892902-.657534C1.892902-.777086 1.952677-.886675 2.032379-1.026152L2.789539-2.30137H5.290162C5.310087-2.092154 5.449564-.737235 5.449564-.637609C5.449564-.33873 4.931507-.308842 4.732254-.308842C4.592777-.308842 4.493151-.308842 4.493151-.109589C4.493151 0 4.612702 0 4.632628 0C5.041096 0 5.469489-.029888 5.877958-.029888C6.127024-.029888 6.75467 0 7.003736 0C7.063512 0 7.183064 0 7.183064-.199253C7.183064-.308842 7.083437-.308842 6.953923-.308842C6.336239-.308842 6.336239-.37858 6.306351-.667497L5.69863-6.894147C5.678705-7.0934 5.678705-7.13325 5.50934-7.13325C5.349938-7.13325 5.310087-7.063512 5.250311-6.963885L1.783313-1.145704ZM2.978829-2.610212L4.941469-5.897883L5.260274-2.610212H2.978829Z'/>
+<path id='tmk-steber-g1-66' d='M1.594022-.777086C1.494396-.388543 1.474471-.308842 .687422-.308842C.518057-.308842 .418431-.308842 .418431-.109589C.418431 0 .508095 0 .687422 0H4.244085C5.818182 0 6.993773-1.175592 6.993773-2.15193C6.993773-2.86924 6.41594-3.447073 5.449564-3.556663C6.485679-3.745953 7.531756-4.483188 7.531756-5.429639C7.531756-6.166874 6.874222-6.804483 5.678705-6.804483H2.331258C2.141968-6.804483 2.042341-6.804483 2.042341-6.60523C2.042341-6.495641 2.132005-6.495641 2.321295-6.495641C2.34122-6.495641 2.530511-6.495641 2.699875-6.475716C2.879203-6.455791 2.968867-6.445828 2.968867-6.316314C2.968867-6.276463 2.958904-6.246575 2.929016-6.127024L1.594022-.777086ZM3.098381-3.646326L3.716065-6.117061C3.805729-6.465753 3.825654-6.495641 4.254047-6.495641H5.539228C6.41594-6.495641 6.625156-5.907846 6.625156-5.469489C6.625156-4.592777 5.768369-3.646326 4.552927-3.646326H3.098381ZM2.650062-.308842C2.510585-.308842 2.49066-.308842 2.430884-.318804C2.331258-.328767 2.30137-.33873 2.30137-.418431C2.30137-.448319 2.30137-.468244 2.351183-.647572L3.038605-3.427148H4.921544C5.877958-3.427148 6.067248-2.689913 6.067248-2.261519C6.067248-1.275218 5.180573-.308842 4.004981-.308842H2.650062Z'/>
+<path id='tmk-steber-g1-67' d='M7.571606-6.924035C7.571606-6.953923 7.551681-7.023661 7.462017-7.023661C7.43213-7.023661 7.422167-7.013699 7.312578-6.90411L6.615193-6.136986C6.525529-6.276463 6.067248-7.023661 4.961395-7.023661C2.739726-7.023661 .498132-4.821918 .498132-2.510585C.498132-.86675 1.673724 .219178 3.198007 .219178C4.064757 .219178 4.821918-.179328 5.349938-.637609C6.276463-1.454545 6.445828-2.361146 6.445828-2.391034C6.445828-2.49066 6.346202-2.49066 6.326276-2.49066C6.266501-2.49066 6.216687-2.470735 6.196762-2.391034C6.107098-2.102117 5.877958-1.39477 5.190535-.816936C4.503113-.259029 3.875467-.089664 3.35741-.089664C2.460772-.089664 1.404732-.607721 1.404732-2.161893C1.404732-2.729763 1.613948-4.343711 2.610212-5.50934C3.217933-6.216687 4.154421-6.714819 5.041096-6.714819C6.057285-6.714819 6.645081-5.947696 6.645081-4.79203C6.645081-4.393524 6.615193-4.383562 6.615193-4.283935S6.724782-4.184309 6.764633-4.184309C6.894147-4.184309 6.894147-4.204234 6.94396-4.383562L7.571606-6.924035Z'/>
+<path id='tmk-steber-g1-68' d='M1.58406-.777086C1.484433-.388543 1.464508-.308842 .67746-.308842C.508095-.308842 .398506-.308842 .398506-.119552C.398506 0 .488169 0 .67746 0H3.975093C6.047323 0 8.009963-2.102117 8.009963-4.283935C8.009963-5.688667 7.163138-6.804483 5.668742-6.804483H2.321295C2.132005-6.804483 2.022416-6.804483 2.022416-6.615193C2.022416-6.495641 2.11208-6.495641 2.311333-6.495641C2.440847-6.495641 2.620174-6.485679 2.739726-6.475716C2.899128-6.455791 2.958904-6.425903 2.958904-6.316314C2.958904-6.276463 2.948941-6.246575 2.919054-6.127024L1.58406-.777086ZM3.73599-6.117061C3.825654-6.465753 3.845579-6.495641 4.273973-6.495641H5.339975C6.316314-6.495641 7.143213-5.967621 7.143213-4.652553C7.143213-4.164384 6.94396-2.530511 6.097136-1.43462C5.808219-1.066002 5.021171-.308842 3.795766-.308842H2.669988C2.530511-.308842 2.510585-.308842 2.450809-.318804C2.351183-.328767 2.321295-.33873 2.321295-.418431C2.321295-.448319 2.321295-.468244 2.371108-.647572L3.73599-6.117061Z'/>
+<path id='tmk-steber-g2-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='tmk-steber-g2-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='tmk-steber-g2-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='tmk-steber-g2-51' d='M2.889166-3.506849C3.706102-3.775841 4.283935-4.473225 4.283935-5.260274C4.283935-6.07721 3.407223-6.635118 2.450809-6.635118C1.444583-6.635118 .687422-6.03736 .687422-5.280199C.687422-4.951432 .9066-4.762142 1.195517-4.762142C1.504359-4.762142 1.703611-4.98132 1.703611-5.270237C1.703611-5.768369 1.235367-5.768369 1.085928-5.768369C1.39477-6.256538 2.052304-6.386052 2.410959-6.386052C2.819427-6.386052 3.367372-6.166874 3.367372-5.270237C3.367372-5.150685 3.347447-4.572852 3.088418-4.134496C2.789539-3.656289 2.450809-3.626401 2.201743-3.616438C2.122042-3.606476 1.882939-3.58655 1.8132-3.58655C1.733499-3.576588 1.663761-3.566625 1.663761-3.466999C1.663761-3.35741 1.733499-3.35741 1.902864-3.35741H2.34122C3.158157-3.35741 3.526775-2.67995 3.526775-1.703611C3.526775-.348692 2.839352-.059776 2.400996-.059776C1.972603-.059776 1.225405-.229141 .876712-.816936C1.225405-.767123 1.534247-.986301 1.534247-1.364882C1.534247-1.723537 1.265255-1.92279 .976339-1.92279C.737235-1.92279 .418431-1.783313 .418431-1.344956C.418431-.438356 1.344956 .219178 2.430884 .219178C3.646326 .219178 4.552927-.687422 4.552927-1.703611C4.552927-2.520548 3.92528-3.297634 2.889166-3.506849Z'/>
+<path id='tmk-steber-g2-52' d='M2.929016-1.643836V-.777086C2.929016-.418431 2.909091-.308842 2.171856-.308842H1.96264V0C2.371108-.029888 2.889166-.029888 3.307597-.029888S4.254047-.029888 4.662516 0V-.308842H4.4533C3.716065-.308842 3.696139-.418431 3.696139-.777086V-1.643836H4.692403V-1.952677H3.696139V-6.485679C3.696139-6.684932 3.696139-6.744707 3.536737-6.744707C3.447073-6.744707 3.417186-6.744707 3.337484-6.625156L.278954-1.952677V-1.643836H2.929016ZM2.988792-1.952677H.557908L2.988792-5.668742V-1.952677Z'/>
+<path id='tmk-steber-g2-53' d='M4.473225-2.002491C4.473225-3.188045 3.656289-4.184309 2.580324-4.184309C2.102117-4.184309 1.673724-4.024907 1.315068-3.676214V-5.618929C1.514321-5.559153 1.843088-5.489415 2.161893-5.489415C3.387298-5.489415 4.084682-6.396015 4.084682-6.525529C4.084682-6.585305 4.054795-6.635118 3.985056-6.635118C3.975093-6.635118 3.955168-6.635118 3.905355-6.60523C3.706102-6.515567 3.217933-6.316314 2.550436-6.316314C2.15193-6.316314 1.693649-6.386052 1.225405-6.595268C1.145704-6.625156 1.125778-6.625156 1.105853-6.625156C1.006227-6.625156 1.006227-6.545455 1.006227-6.386052V-3.437111C1.006227-3.257783 1.006227-3.178082 1.145704-3.178082C1.215442-3.178082 1.235367-3.20797 1.275218-3.267746C1.384807-3.427148 1.753425-3.965131 2.560399-3.965131C3.078456-3.965131 3.327522-3.506849 3.407223-3.327522C3.566625-2.958904 3.58655-2.570361 3.58655-2.072229C3.58655-1.723537 3.58655-1.125778 3.347447-.707347C3.108344-.318804 2.739726-.059776 2.281445-.059776C1.554172-.059776 .986301-.587796 .816936-1.175592C.846824-1.165629 .876712-1.155666 .986301-1.155666C1.315068-1.155666 1.484433-1.404732 1.484433-1.643836S1.315068-2.132005 .986301-2.132005C.846824-2.132005 .498132-2.062267 .498132-1.603985C.498132-.747198 1.185554 .219178 2.30137 .219178C3.457036 .219178 4.473225-.737235 4.473225-2.002491Z'/>
+<path id='tmk-steber-g2-55' d='M4.742217-6.067248C4.83188-6.1868 4.83188-6.206725 4.83188-6.41594H2.410959C1.195517-6.41594 1.175592-6.545455 1.135741-6.734745H.886675L.557908-4.682441H.806974C.836862-4.841843 .926526-5.469489 1.05604-5.589041C1.125778-5.648817 1.902864-5.648817 2.032379-5.648817H4.094645C3.985056-5.489415 3.198007-4.403487 2.978829-4.07472C2.082192-2.729763 1.753425-1.344956 1.753425-.328767C1.753425-.229141 1.753425 .219178 2.211706 .219178S2.669988-.229141 2.669988-.328767V-.836862C2.669988-1.384807 2.699875-1.932752 2.779577-2.470735C2.819427-2.699875 2.958904-3.556663 3.39726-4.174346L4.742217-6.067248Z'/>
+<path id='tmk-steber-g2-56' d='M1.62391-4.552927C1.165629-4.851806 1.125778-5.190535 1.125778-5.3599C1.125778-5.967621 1.77335-6.386052 2.480697-6.386052C3.20797-6.386052 3.845579-5.867995 3.845579-5.150685C3.845579-4.582814 3.457036-4.104608 2.859278-3.755915L1.62391-4.552927ZM3.078456-3.606476C3.795766-3.975093 4.283935-4.493151 4.283935-5.150685C4.283935-6.067248 3.39726-6.635118 2.49066-6.635118C1.494396-6.635118 .687422-5.897883 .687422-4.971357C.687422-4.79203 .707347-4.343711 1.125778-3.875467C1.235367-3.755915 1.603985-3.506849 1.853051-3.337484C1.275218-3.048568 .418431-2.49066 .418431-1.504359C.418431-.448319 1.43462 .219178 2.480697 .219178C3.606476 .219178 4.552927-.607721 4.552927-1.673724C4.552927-2.032379 4.443337-2.480697 4.064757-2.899128C3.875467-3.108344 3.716065-3.20797 3.078456-3.606476ZM2.082192-3.188045L3.307597-2.410959C3.58655-2.221669 4.054795-1.92279 4.054795-1.315068C4.054795-.577833 3.307597-.059776 2.49066-.059776C1.633873-.059776 .916563-.67746 .916563-1.504359C.916563-2.082192 1.235367-2.719801 2.082192-3.188045Z'/>
+</defs>
+<g id='tmk-steber-page1'>
+<g stroke-miterlimit='10' transform='translate(37.106912,10.91336)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912-22.76227V81.94434' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912-22.76227L-95.6015-27.31467' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912-17.07172L-95.6015-21.6241' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912-11.38113L-95.6015-15.93352' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912-5.69057L-95.6015-10.24295' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 0L-95.6015-4.55238' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 5.69055L-95.6015 1.13817' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 11.38113L-95.6015 6.82874' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 17.0717L-95.6015 12.51932' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 22.76227L-95.6015 18.20988' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 28.45284L-95.6015 23.90045' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 34.1434L-95.6015 29.59102' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 39.83398L-95.6015 35.2816' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 45.52455L-95.6015 40.97217' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 51.21512L-95.6015 46.66273' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 56.90569L-95.6015 52.3533' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 62.59627L-95.6015 58.04388' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 68.28683L-95.6015 63.73445' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 73.9774L-95.6015 69.42502' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 79.66797L-95.6015 75.11559' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-15.93352-68.28683H15.93352' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-15.93352-68.28683L-20.4859-72.83922' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-10.24295-68.28683L-14.79533-72.83922' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-4.55238-68.28683L-9.10477-72.83922' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M1.13818-68.28683L-3.41418-72.83922' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M6.82875-68.28683L2.27637-72.83922' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M12.51932-68.28683L7.96693-72.83922' fill='none'/>
+</g>
+</g>
+<g stroke-width='1.6'>
+<path d='M-91.04912 0H0' fill='none'/>
+</g>
+<g stroke-width='1.6'>
+<path d='M-91.04912 68.28683L0 0' fill='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='2.6'>
+<path d='M0-68.28683V0' fill='none'/>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M-88.78618 0C-88.78618 1.2498-89.79932 2.26294-91.04912 2.26294S-93.31206 1.2498-93.31206 0S-92.29892-2.26294-91.04912-2.26294S-88.78618-1.2498-88.78618 0ZM-91.04912 0'/>
+</g>
+<g transform='translate(-91.04912,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M-88.78618 68.28683C-88.78618 69.53664-89.79932 70.54977-91.04912 70.54977S-93.31206 69.53664-93.31206 68.28683C-93.31206 67.03703-92.29892 66.0239-91.04912 66.0239S-88.78618 67.03703-88.78618 68.28683ZM-91.04912 68.28683'/>
+</g>
+<g transform='translate(-91.04912,68.28683)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M2.26294 0C2.26294 1.2498 1.2498 2.26294 0 2.26294S-2.26294 1.2498-2.26294 0S-1.2498-2.26294 0-2.26294S2.26294-1.2498 2.26294 0ZM0 0'/>
+</g>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M2.26294-68.28683C2.26294-67.03703 1.2498-66.0239 0-66.0239S-2.26294-67.03703-2.26294-68.28683C-2.26294-69.53664-1.2498-70.54977 0-70.54977S2.26294-69.53664 2.26294-68.28683ZM0-68.28683'/>
+</g>
+<g transform='translate(0.0,-68.28683)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-105.5963,4.77115)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='37.106912' y='10.91336' xlink:href='#tmk-steber-g1-65'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-106.18309,73.058)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='37.106912' y='10.91336' xlink:href='#tmk-steber-g1-66'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(4.77115,4.77115)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='37.106912' y='10.91336' xlink:href='#tmk-steber-g1-67'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-14.46628,-63.51567)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='37.106912' y='10.91336' xlink:href='#tmk-steber-g1-68'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-56.91347,-11.21559)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='37.106912' y='10.91336' xlink:href='#tmk-steber-g2-49'/>
+<use x='42.088251' y='10.91336' xlink:href='#tmk-steber-g1-59'/>
+<use x='44.85566' y='10.91336' xlink:href='#tmk-steber-g2-52'/>
+<use x='49.836999' y='10.91336' xlink:href='#tmk-steber-g2-55'/>
+<use x='54.818338' y='10.91336' xlink:href='#tmk-steber-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-39.6152,38.58264)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='37.106912' y='10.91336' xlink:href='#tmk-steber-g0-0'/>
+<use x='44.85566' y='10.91336' xlink:href='#tmk-steber-g2-49'/>
+<use x='49.836999' y='10.91336' xlink:href='#tmk-steber-g1-59'/>
+<use x='52.604407' y='10.91336' xlink:href='#tmk-steber-g2-56'/>
+<use x='57.585746' y='10.91336' xlink:href='#tmk-steber-g2-51'/>
+<use x='62.567085' y='10.91336' xlink:href='#tmk-steber-g2-56'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(6.36433,-36.3934)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='37.106912' y='10.91336' xlink:href='#tmk-steber-g0-0'/>
+<use x='44.85566' y='10.91336' xlink:href='#tmk-steber-g2-49'/>
+<use x='49.836999' y='10.91336' xlink:href='#tmk-steber-g1-59'/>
+<use x='52.604407' y='10.91336' xlink:href='#tmk-steber-g2-49'/>
+<use x='57.585746' y='10.91336' xlink:href='#tmk-steber-g2-48'/>
+<use x='62.567085' y='10.91336' xlink:href='#tmk-steber-g2-51'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M218.08029 0C218.08029 1.01544 217.25711 1.83862 216.24167 1.83862S214.40305 1.01544 214.40305 0S215.22623-1.83862 216.24167-1.83862S218.08029-1.01544 218.08029 0ZM216.24167 0' stroke='none'/>
+<g transform='translate(216.24167,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(221.01282,4.77115)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='37.106912' y='10.91336' xlink:href='#tmk-steber-g1-67'/>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M216.24167 0H166.9738' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,169.57883,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(178.10701,-10.22742)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='37.106912' y='10.91336' xlink:href='#tmk-steber-g2-49'/>
+<use x='42.088251' y='10.91336' xlink:href='#tmk-steber-g1-59'/>
+<use x='44.85566' y='10.91336' xlink:href='#tmk-steber-g2-52'/>
+<use x='49.836999' y='10.91336' xlink:href='#tmk-steber-g2-55'/>
+<use x='54.818338' y='10.91336' xlink:href='#tmk-steber-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M162.75018 40.06148L212.8611 2.53174' fill='none'/>
+<g transform='matrix(0.8004,-0.59943,0.59943,0.8004,210.77603,4.09326)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(182.58076,33.77032)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='37.106912' y='10.91336' xlink:href='#tmk-steber-g2-49'/>
+<use x='42.088251' y='10.91336' xlink:href='#tmk-steber-g1-59'/>
+<use x='44.85566' y='10.91336' xlink:href='#tmk-steber-g2-56'/>
+<use x='49.836999' y='10.91336' xlink:href='#tmk-steber-g2-51'/>
+<use x='54.818338' y='10.91336' xlink:href='#tmk-steber-g2-55'/>
+<use x='59.799677' y='10.91336' xlink:href='#tmk-steber-g2-53'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M216.24167-40.06148V-4.22362' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,216.24167,-6.82864)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(220.02464,-22.28073)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='37.106912' y='10.91336' xlink:href='#tmk-steber-g2-49'/>
+<use x='42.088251' y='10.91336' xlink:href='#tmk-steber-g1-59'/>
+<use x='44.85566' y='10.91336' xlink:href='#tmk-steber-g2-49'/>
+<use x='49.836999' y='10.91336' xlink:href='#tmk-steber-g2-48'/>
+<use x='54.818338' y='10.91336' xlink:href='#tmk-steber-g2-50'/>
+<use x='59.799677' y='10.91336' xlink:href='#tmk-steber-g2-53'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 7.34</span>: Wall truss with the post \(CD\) heated by \(30\) K, without a load. Left: the truss, \(A = (-4, 0)\) m, \(B = (-4, 3)\) m, <span class="nobr">\(C = (0, 0)\),</span> \(D = (0, -3)\) m, the heated post is thicker. Beside the bars are the axial forces in kilonewtons: \(1{,}470\) in <span class="nobr">\(AC\),</span> \(-1{,}838\) in <span class="nobr">\(BC\),</span> \(-1{,}103\) in <span class="nobr">\(CD\).</span> Right: forces of the bars on node <span class="nobr">\(C\).</span> The bar \(AC\) is in tension and pulls \(C\) toward \(A\) with \(1{,}470\) kN, the bars \(BC\) and \(CD\) are compressed and push \(C\) with \(1{,}8375\) kN in the direction \((0{,}8, -0{,}6)\) and with \(1{,}1025\) kN upward. The sum of the forces on \(C\) is zero.</figcaption></figure>
+<p>The same computation holds if the post is \(\delta = 1\) mm too long and we fit it in. The initial strain is <span class="nobr">\(\varepsilon_0 = \delta/L_{\mathrm{CD}} = 3{,}33 \cdot 10^{-4}\),</span> the nodal force of the initial strain at \(C\) is \(EA\,\varepsilon_0\,\vek n = (0, 6533)\) N, the displacements of the node are \(0{,}222\) mm and \(0{,}875\) mm and the forces are</p>
+<div class="eq">\[\begin{aligned} N_{\mathrm{AC}} &amp;= 1{,}089\ \text{kN} , \qquad N_{\mathrm{BC}} = -1{,}361\ \text{kN} , \\ N_{\mathrm{CD}} &amp;= -6533\ \text{N} \cdot 0{,}125 = -0{,}817\ \text{kN} . \end{aligned}\]</div>
+<p>The forces are in the ratio \(3{,}33/4{,}5 = 0{,}741\) to the heated post, because the equations are linear in \(\varepsilon_0\) (figure <a class="xref" href="sec-temperatura-mke.html#fig-tmk-predolga" data-knowl="fig-tmk-predolga">7.35</a>).</p>
+<p>A load and a wrong length add up. The equation \(\mat K\,\vek d = \vek f + \vek f_0\) is linear in \(\vek f\) and \(\vek f_0\) and has exactly one solution, because \(\mat K_{\mathrm{ff}}\) is <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite</a> (theorem <a class="xref" href="sec-palicje-ravnina-mke.html#thm-pozitivnost-palicja" data-knowl="thm-pozitivnost-palicja">7.33</a>, theorem <a class="xref" href="sec-skalarni-produkt-funkcij.html#thm-sistem-pozitivno-definitna" data-knowl="thm-sistem-pozitivno-definitna">6.29</a>), so the solution for both loads is the sum of the solutions. For the load of \(10\) kN at \(C\) the forces are <span class="nobr">\(-1{,}667\),</span> \(2{,}083\) and \(-8{,}750\) kN (section <a class="xref" href="sec-virtualne-sile.html#sec-staticno-nedoloceno-palicje">4.7.5</a>), and together with the post that is too long we get</p>
+<div class="eq">\[\begin{aligned} N_{\mathrm{AC}} &amp;= -1{,}667 + 1{,}089 = -0{,}578\ \text{kN} , \quad N_{\mathrm{BC}} = 2{,}083 - 1{,}361 = 0{,}722\ \text{kN} , \\ N_{\mathrm{CD}} &amp;= -8{,}750 - 0{,}817 = -9{,}567\ \text{kN} , \end{aligned}\]</div>
+<p>which agrees with the direct computation with both loads at once. The post is now compressed with \(9{,}567\) kN, that is with the stress \(95{,}7\) MPa, which is below the yield <a class="xref auto" href="sec-limita-odvod.html#def-limita" data-knowl="def-limita">limit</a> \(220\) MPa (buckling of the compressed post, as in chapter <a class="xref" href="ch-energijski-principi.html">4</a>, we do not check). A millimetre of error in length loaded the post by \(9{,}3\) % more than the load alone.</p>
+
+<figure class="blk slika" id="fig-tmk-predolga"><p><span class="svgfig" role="img" aria-label="Post that is too long before fitting and after it, with the axial forces"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='476.96pt' height='210.20pt' viewBox='-72.000004 -72.000006 353.304658 155.704608'>
+<defs>
+<path id='tmk-predolga-g0-0' d='M6.56538-2.291407C6.734745-2.291407 6.914072-2.291407 6.914072-2.49066S6.734745-2.689913 6.56538-2.689913H1.175592C1.006227-2.689913 .826899-2.689913 .826899-2.49066S1.006227-2.291407 1.175592-2.291407H6.56538Z'/>
+<path id='tmk-predolga-g1-14' d='M2.630137-4.353674C1.384807-4.054795 .418431-2.759651 .418431-1.554172C.418431-.597758 1.05604 .119552 1.992528 .119552C3.158157 .119552 3.985056-1.444583 3.985056-2.819427C3.985056-3.726027 3.58655-4.224159 3.247821-4.672478C2.889166-5.120797 2.30137-5.867995 2.30137-6.306351C2.30137-6.525529 2.500623-6.764633 2.849315-6.764633C3.148194-6.764633 3.347447-6.635118 3.556663-6.495641C3.755915-6.37609 3.955168-6.246575 4.104608-6.246575C4.353674-6.246575 4.503113-6.485679 4.503113-6.645081C4.503113-6.864259 4.343711-6.894147 3.985056-6.973848C3.466999-7.083437 3.327522-7.083437 3.16812-7.083437C2.391034-7.083437 2.032379-6.655044 2.032379-6.057285C2.032379-5.519303 2.321295-4.961395 2.630137-4.353674ZM2.749689-4.134496C2.998755-3.676214 3.297634-3.138232 3.297634-2.420922C3.297634-1.763387 2.919054-.099626 1.992528-.099626C1.444583-.099626 1.036115-.518057 1.036115-1.275218C1.036115-1.902864 1.404732-3.775841 2.749689-4.134496Z'/>
+<path id='tmk-predolga-g1-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='tmk-predolga-g1-65' d='M1.783313-1.145704C1.384807-.478207 .996264-.33873 .557908-.308842C.438356-.298879 .348692-.298879 .348692-.109589C.348692-.049813 .398506 0 .478207 0C.747198 0 1.05604-.029888 1.334994-.029888C1.663761-.029888 2.012453 0 2.331258 0C2.391034 0 2.520548 0 2.520548-.18929C2.520548-.298879 2.430884-.308842 2.361146-.308842C2.132005-.328767 1.892902-.408468 1.892902-.657534C1.892902-.777086 1.952677-.886675 2.032379-1.026152L2.789539-2.30137H5.290162C5.310087-2.092154 5.449564-.737235 5.449564-.637609C5.449564-.33873 4.931507-.308842 4.732254-.308842C4.592777-.308842 4.493151-.308842 4.493151-.109589C4.493151 0 4.612702 0 4.632628 0C5.041096 0 5.469489-.029888 5.877958-.029888C6.127024-.029888 6.75467 0 7.003736 0C7.063512 0 7.183064 0 7.183064-.199253C7.183064-.308842 7.083437-.308842 6.953923-.308842C6.336239-.308842 6.336239-.37858 6.306351-.667497L5.69863-6.894147C5.678705-7.0934 5.678705-7.13325 5.50934-7.13325C5.349938-7.13325 5.310087-7.063512 5.250311-6.963885L1.783313-1.145704ZM2.978829-2.610212L4.941469-5.897883L5.260274-2.610212H2.978829Z'/>
+<path id='tmk-predolga-g1-66' d='M1.594022-.777086C1.494396-.388543 1.474471-.308842 .687422-.308842C.518057-.308842 .418431-.308842 .418431-.109589C.418431 0 .508095 0 .687422 0H4.244085C5.818182 0 6.993773-1.175592 6.993773-2.15193C6.993773-2.86924 6.41594-3.447073 5.449564-3.556663C6.485679-3.745953 7.531756-4.483188 7.531756-5.429639C7.531756-6.166874 6.874222-6.804483 5.678705-6.804483H2.331258C2.141968-6.804483 2.042341-6.804483 2.042341-6.60523C2.042341-6.495641 2.132005-6.495641 2.321295-6.495641C2.34122-6.495641 2.530511-6.495641 2.699875-6.475716C2.879203-6.455791 2.968867-6.445828 2.968867-6.316314C2.968867-6.276463 2.958904-6.246575 2.929016-6.127024L1.594022-.777086ZM3.098381-3.646326L3.716065-6.117061C3.805729-6.465753 3.825654-6.495641 4.254047-6.495641H5.539228C6.41594-6.495641 6.625156-5.907846 6.625156-5.469489C6.625156-4.592777 5.768369-3.646326 4.552927-3.646326H3.098381ZM2.650062-.308842C2.510585-.308842 2.49066-.308842 2.430884-.318804C2.331258-.328767 2.30137-.33873 2.30137-.418431C2.30137-.448319 2.30137-.468244 2.351183-.647572L3.038605-3.427148H4.921544C5.877958-3.427148 6.067248-2.689913 6.067248-2.261519C6.067248-1.275218 5.180573-.308842 4.004981-.308842H2.650062Z'/>
+<path id='tmk-predolga-g1-67' d='M7.571606-6.924035C7.571606-6.953923 7.551681-7.023661 7.462017-7.023661C7.43213-7.023661 7.422167-7.013699 7.312578-6.90411L6.615193-6.136986C6.525529-6.276463 6.067248-7.023661 4.961395-7.023661C2.739726-7.023661 .498132-4.821918 .498132-2.510585C.498132-.86675 1.673724 .219178 3.198007 .219178C4.064757 .219178 4.821918-.179328 5.349938-.637609C6.276463-1.454545 6.445828-2.361146 6.445828-2.391034C6.445828-2.49066 6.346202-2.49066 6.326276-2.49066C6.266501-2.49066 6.216687-2.470735 6.196762-2.391034C6.107098-2.102117 5.877958-1.39477 5.190535-.816936C4.503113-.259029 3.875467-.089664 3.35741-.089664C2.460772-.089664 1.404732-.607721 1.404732-2.161893C1.404732-2.729763 1.613948-4.343711 2.610212-5.50934C3.217933-6.216687 4.154421-6.714819 5.041096-6.714819C6.057285-6.714819 6.645081-5.947696 6.645081-4.79203C6.645081-4.393524 6.615193-4.383562 6.615193-4.283935S6.724782-4.184309 6.764633-4.184309C6.894147-4.184309 6.894147-4.204234 6.94396-4.383562L7.571606-6.924035Z'/>
+<path id='tmk-predolga-g1-68' d='M1.58406-.777086C1.484433-.388543 1.464508-.308842 .67746-.308842C.508095-.308842 .398506-.308842 .398506-.119552C.398506 0 .488169 0 .67746 0H3.975093C6.047323 0 8.009963-2.102117 8.009963-4.283935C8.009963-5.688667 7.163138-6.804483 5.668742-6.804483H2.321295C2.132005-6.804483 2.022416-6.804483 2.022416-6.615193C2.022416-6.495641 2.11208-6.495641 2.311333-6.495641C2.440847-6.495641 2.620174-6.485679 2.739726-6.475716C2.899128-6.455791 2.958904-6.425903 2.958904-6.316314C2.958904-6.276463 2.948941-6.246575 2.919054-6.127024L1.58406-.777086ZM3.73599-6.117061C3.825654-6.465753 3.845579-6.495641 4.273973-6.495641H5.339975C6.316314-6.495641 7.143213-5.967621 7.143213-4.652553C7.143213-4.164384 6.94396-2.530511 6.097136-1.43462C5.808219-1.066002 5.021171-.308842 3.795766-.308842H2.669988C2.530511-.308842 2.510585-.308842 2.450809-.318804C2.351183-.328767 2.321295-.33873 2.321295-.418431C2.321295-.448319 2.321295-.468244 2.371108-.647572L3.73599-6.117061Z'/>
+<path id='tmk-predolga-g2-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='tmk-predolga-g2-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='tmk-predolga-g2-51' d='M2.889166-3.506849C3.706102-3.775841 4.283935-4.473225 4.283935-5.260274C4.283935-6.07721 3.407223-6.635118 2.450809-6.635118C1.444583-6.635118 .687422-6.03736 .687422-5.280199C.687422-4.951432 .9066-4.762142 1.195517-4.762142C1.504359-4.762142 1.703611-4.98132 1.703611-5.270237C1.703611-5.768369 1.235367-5.768369 1.085928-5.768369C1.39477-6.256538 2.052304-6.386052 2.410959-6.386052C2.819427-6.386052 3.367372-6.166874 3.367372-5.270237C3.367372-5.150685 3.347447-4.572852 3.088418-4.134496C2.789539-3.656289 2.450809-3.626401 2.201743-3.616438C2.122042-3.606476 1.882939-3.58655 1.8132-3.58655C1.733499-3.576588 1.663761-3.566625 1.663761-3.466999C1.663761-3.35741 1.733499-3.35741 1.902864-3.35741H2.34122C3.158157-3.35741 3.526775-2.67995 3.526775-1.703611C3.526775-.348692 2.839352-.059776 2.400996-.059776C1.972603-.059776 1.225405-.229141 .876712-.816936C1.225405-.767123 1.534247-.986301 1.534247-1.364882C1.534247-1.723537 1.265255-1.92279 .976339-1.92279C.737235-1.92279 .418431-1.783313 .418431-1.344956C.418431-.438356 1.344956 .219178 2.430884 .219178C3.646326 .219178 4.552927-.687422 4.552927-1.703611C4.552927-2.520548 3.92528-3.297634 2.889166-3.506849Z'/>
+<path id='tmk-predolga-g2-54' d='M1.315068-3.267746V-3.506849C1.315068-6.027397 2.550436-6.386052 3.058531-6.386052C3.297634-6.386052 3.716065-6.326276 3.935243-5.987547C3.785803-5.987547 3.387298-5.987547 3.387298-5.539228C3.387298-5.230386 3.626401-5.080946 3.845579-5.080946C4.004981-5.080946 4.303861-5.17061 4.303861-5.559153C4.303861-6.156912 3.865504-6.635118 3.038605-6.635118C1.763387-6.635118 .418431-5.349938 .418431-3.148194C.418431-.488169 1.574097 .219178 2.500623 .219178C3.606476 .219178 4.552927-.71731 4.552927-2.032379C4.552927-3.297634 3.666252-4.254047 2.560399-4.254047C1.882939-4.254047 1.514321-3.745953 1.315068-3.267746ZM2.500623-.059776C1.872976-.059776 1.574097-.657534 1.514321-.806974C1.334994-1.275218 1.334994-2.072229 1.334994-2.251557C1.334994-3.028643 1.653798-4.024907 2.550436-4.024907C2.709838-4.024907 3.16812-4.024907 3.476961-3.407223C3.656289-3.038605 3.656289-2.530511 3.656289-2.042341C3.656289-1.564134 3.656289-1.066002 3.486924-.707347C3.188045-.109589 2.729763-.059776 2.500623-.059776Z'/>
+<path id='tmk-predolga-g2-55' d='M4.742217-6.067248C4.83188-6.1868 4.83188-6.206725 4.83188-6.41594H2.410959C1.195517-6.41594 1.175592-6.545455 1.135741-6.734745H.886675L.557908-4.682441H.806974C.836862-4.841843 .926526-5.469489 1.05604-5.589041C1.125778-5.648817 1.902864-5.648817 2.032379-5.648817H4.094645C3.985056-5.489415 3.198007-4.403487 2.978829-4.07472C2.082192-2.729763 1.753425-1.344956 1.753425-.328767C1.753425-.229141 1.753425 .219178 2.211706 .219178S2.669988-.229141 2.669988-.328767V-.836862C2.669988-1.384807 2.699875-1.932752 2.779577-2.470735C2.819427-2.699875 2.958904-3.556663 3.39726-4.174346L4.742217-6.067248Z'/>
+<path id='tmk-predolga-g2-56' d='M1.62391-4.552927C1.165629-4.851806 1.125778-5.190535 1.125778-5.3599C1.125778-5.967621 1.77335-6.386052 2.480697-6.386052C3.20797-6.386052 3.845579-5.867995 3.845579-5.150685C3.845579-4.582814 3.457036-4.104608 2.859278-3.755915L1.62391-4.552927ZM3.078456-3.606476C3.795766-3.975093 4.283935-4.493151 4.283935-5.150685C4.283935-6.067248 3.39726-6.635118 2.49066-6.635118C1.494396-6.635118 .687422-5.897883 .687422-4.971357C.687422-4.79203 .707347-4.343711 1.125778-3.875467C1.235367-3.755915 1.603985-3.506849 1.853051-3.337484C1.275218-3.048568 .418431-2.49066 .418431-1.504359C.418431-.448319 1.43462 .219178 2.480697 .219178C3.606476 .219178 4.552927-.607721 4.552927-1.673724C4.552927-2.032379 4.443337-2.480697 4.064757-2.899128C3.875467-3.108344 3.716065-3.20797 3.078456-3.606476ZM2.082192-3.188045L3.307597-2.410959C3.58655-2.221669 4.054795-1.92279 4.054795-1.315068C4.054795-.577833 3.307597-.059776 2.49066-.059776C1.633873-.059776 .916563-.67746 .916563-1.504359C.916563-2.082192 1.235367-2.719801 2.082192-3.188045Z'/>
+<path id='tmk-predolga-g2-57' d='M3.656289-3.16812V-2.849315C3.656289-.518057 2.620174-.059776 2.042341-.059776C1.872976-.059776 1.334994-.079701 1.066002-.418431C1.504359-.418431 1.58406-.707347 1.58406-.876712C1.58406-1.185554 1.344956-1.334994 1.125778-1.334994C.966376-1.334994 .667497-1.24533 .667497-.856787C.667497-.18929 1.205479 .219178 2.052304 .219178C3.337484 .219178 4.552927-1.135741 4.552927-3.277709C4.552927-5.957659 3.407223-6.635118 2.520548-6.635118C1.972603-6.635118 1.484433-6.455791 1.05604-6.007472C.647572-5.559153 .418431-5.140722 .418431-4.393524C.418431-3.148194 1.295143-2.171856 2.410959-2.171856C3.01868-2.171856 3.427148-2.590286 3.656289-3.16812ZM2.420922-2.400996C2.261519-2.400996 1.803238-2.400996 1.494396-3.028643C1.315068-3.39726 1.315068-3.895392 1.315068-4.383562C1.315068-4.921544 1.315068-5.389788 1.524284-5.758406C1.793275-6.256538 2.171856-6.386052 2.520548-6.386052C2.978829-6.386052 3.307597-6.047323 3.476961-5.599004C3.596513-5.280199 3.636364-4.652553 3.636364-4.194271C3.636364-3.367372 3.297634-2.400996 2.420922-2.400996Z'/>
+</defs>
+<g id='tmk-predolga-page1'>
+<g stroke-miterlimit='10' transform='translate(37.106912,10.91336)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912-22.76227V81.94434' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912-22.76227L-95.6015-27.31467' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912-17.07172L-95.6015-21.6241' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912-11.38113L-95.6015-15.93352' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912-5.69057L-95.6015-10.24295' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 0L-95.6015-4.55238' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 5.69055L-95.6015 1.13817' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 11.38113L-95.6015 6.82874' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 17.0717L-95.6015 12.51932' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 22.76227L-95.6015 18.20988' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 28.45284L-95.6015 23.90045' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 34.1434L-95.6015 29.59102' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 39.83398L-95.6015 35.2816' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 45.52455L-95.6015 40.97217' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 51.21512L-95.6015 46.66273' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 56.90569L-95.6015 52.3533' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 62.59627L-95.6015 58.04388' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 68.28683L-95.6015 63.73445' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 73.9774L-95.6015 69.42502' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-91.04912 79.66797L-95.6015 75.11559' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-15.93352-68.28683H15.93352' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-15.93352-68.28683L-20.4859-72.83922' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-10.24295-68.28683L-14.79533-72.83922' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-4.55238-68.28683L-9.10477-72.83922' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M1.13818-68.28683L-3.41418-72.83922' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M6.82875-68.28683L2.27637-72.83922' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M12.51932-68.28683L7.96693-72.83922' fill='none'/>
+</g>
+</g>
+<g stroke-width='0.6'>
+<path d='M-91.04912 0H0' fill='none'/>
+</g>
+<g stroke-width='0.6'>
+<path d='M-91.04912 68.28683L0 0' fill='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='2.2'>
+<path d='M0-68.28683V6.82874' fill='none'/>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M-88.78618 0C-88.78618 1.2498-89.79932 2.26294-91.04912 2.26294S-93.31206 1.2498-93.31206 0S-92.29892-2.26294-91.04912-2.26294S-88.78618-1.2498-88.78618 0ZM-91.04912 0'/>
+</g>
+<g transform='translate(-91.04912,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M-88.78618 68.28683C-88.78618 69.53664-89.79932 70.54977-91.04912 70.54977S-93.31206 69.53664-93.31206 68.28683C-93.31206 67.03703-92.29892 66.0239-91.04912 66.0239S-88.78618 67.03703-88.78618 68.28683ZM-91.04912 68.28683'/>
+</g>
+<g transform='translate(-91.04912,68.28683)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M2.26294 0C2.26294 1.2498 1.2498 2.26294 0 2.26294S-2.26294 1.2498-2.26294 0S-1.2498-2.26294 0-2.26294S2.26294-1.2498 2.26294 0ZM0 0'/>
+</g>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M2.26294-68.28683C2.26294-67.03703 1.2498-66.0239 0-66.0239S-2.26294-67.03703-2.26294-68.28683C-2.26294-69.53664-1.2498-70.54977 0-70.54977S2.26294-69.53664 2.26294-68.28683ZM0-68.28683'/>
+</g>
+<g transform='translate(0.0,-68.28683)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-105.5963,4.77115)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='37.106912' y='10.91336' xlink:href='#tmk-predolga-g1-65'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-106.18309,73.058)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='37.106912' y='10.91336' xlink:href='#tmk-predolga-g1-66'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(5.454,-10.92162)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='37.106912' y='10.91336' xlink:href='#tmk-predolga-g1-67'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-14.46628,-63.51567)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='37.106912' y='10.91336' xlink:href='#tmk-predolga-g1-68'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M3.41418 0H28.45284' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M3.41418 6.82874H28.45284' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M25.03864 .33748V6.49126' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,25.03864,6.14052)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,25.03864,0.22499)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,25.03864,0.68822)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,25.03864,6.60374)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(28.5966,-0.05785)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='37.106912' y='10.91336' xlink:href='#tmk-predolga-g1-14'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M113.81142-22.76227V81.94434' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M113.81142-22.76227L109.25903-27.31467' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M113.81142-17.07172L109.25903-21.6241' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M113.81142-11.38113L109.25903-15.93352' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M113.81142-5.69057L109.25903-10.24295' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M113.81142 0L109.25903-4.55238' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M113.81142 5.69055L109.25903 1.13817' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M113.81142 11.38113L109.25903 6.82874' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M113.81142 17.0717L109.25903 12.51932' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M113.81142 22.76227L109.25903 18.20988' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M113.81142 28.45284L109.25903 23.90045' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M113.81142 34.1434L109.25903 29.59102' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M113.81142 39.83398L109.25903 35.2816' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M113.81142 45.52455L109.25903 40.97217' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M113.81142 51.21512L109.25903 46.66273' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M113.81142 56.90569L109.25903 52.3533' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M113.81142 62.59627L109.25903 58.04388' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M113.81142 68.28683L109.25903 63.73445' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M113.81142 73.9774L109.25903 69.42502' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M113.81142 79.66797L109.25903 75.11559' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M188.92702-68.28683H220.79405' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M188.92702-68.28683L184.37463-72.83922' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M194.61758-68.28683L190.0652-72.83922' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M200.30815-68.28683L195.75577-72.83922' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M205.99872-68.28683L201.44635-72.83922' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M211.68929-68.28683L207.1369-72.83922' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M217.37985-68.28683L212.82747-72.83922' fill='none'/>
+</g>
+</g>
+<g stroke-width='1.6'>
+<path d='M113.81142 0H204.86053' fill='none'/>
+</g>
+<g stroke-width='1.6'>
+<path d='M113.81142 68.28683L204.86053 0' fill='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='2.2'>
+<path d='M204.86053-68.28683V0' fill='none'/>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M116.07436 0C116.07436 1.2498 115.06122 2.26294 113.81142 2.26294C112.56161 2.26294 111.54848 1.2498 111.54848 0S112.56161-2.26294 113.81142-2.26294C115.06122-2.26294 116.07436-1.2498 116.07436 0ZM113.81142 0'/>
+</g>
+<g transform='translate(113.81142,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M116.07436 68.28683C116.07436 69.53664 115.06122 70.54977 113.81142 70.54977C112.56161 70.54977 111.54848 69.53664 111.54848 68.28683C111.54848 67.03703 112.56161 66.0239 113.81142 66.0239C115.06122 66.0239 116.07436 67.03703 116.07436 68.28683ZM113.81142 68.28683'/>
+</g>
+<g transform='translate(113.81142,68.28683)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M207.12347 0C207.12347 1.2498 206.11034 2.26294 204.86053 2.26294C203.61073 2.26294 202.5976 1.2498 202.5976 0S203.61073-2.26294 204.86053-2.26294C206.11034-2.26294 207.12347-1.2498 207.12347 0ZM204.86053 0'/>
+</g>
+<g transform='translate(204.86053,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M207.12347-68.28683C207.12347-67.03703 206.11034-66.0239 204.86053-66.0239C203.61073-66.0239 202.5976-67.03703 202.5976-68.28683C202.5976-69.53664 203.61073-70.54977 204.86053-70.54977C206.11034-70.54977 207.12347-69.53664 207.12347-68.28683ZM204.86053-68.28683'/>
+</g>
+<g transform='translate(204.86053,-68.28683)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(99.26424,4.77115)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='37.106912' y='10.91336' xlink:href='#tmk-predolga-g1-65'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(98.67744,73.058)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='37.106912' y='10.91336' xlink:href='#tmk-predolga-g1-66'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(209.63168,4.77115)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='37.106912' y='10.91336' xlink:href='#tmk-predolga-g1-67'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(190.39426,-63.51567)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='37.106912' y='10.91336' xlink:href='#tmk-predolga-g1-68'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(147.94707,-11.21559)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='37.106912' y='10.91336' xlink:href='#tmk-predolga-g2-49'/>
+<use x='42.088251' y='10.91336' xlink:href='#tmk-predolga-g1-59'/>
+<use x='44.85566' y='10.91336' xlink:href='#tmk-predolga-g2-48'/>
+<use x='49.836999' y='10.91336' xlink:href='#tmk-predolga-g2-56'/>
+<use x='54.818338' y='10.91336' xlink:href='#tmk-predolga-g2-57'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(165.24533,38.58264)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='37.106912' y='10.91336' xlink:href='#tmk-predolga-g0-0'/>
+<use x='44.85566' y='10.91336' xlink:href='#tmk-predolga-g2-49'/>
+<use x='49.836999' y='10.91336' xlink:href='#tmk-predolga-g1-59'/>
+<use x='52.604407' y='10.91336' xlink:href='#tmk-predolga-g2-51'/>
+<use x='57.585746' y='10.91336' xlink:href='#tmk-predolga-g2-54'/>
+<use x='62.567085' y='10.91336' xlink:href='#tmk-predolga-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(211.22487,-36.3934)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(37.106912,10.91336)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='37.106912' y='10.91336' xlink:href='#tmk-predolga-g0-0'/>
+<use x='44.85566' y='10.91336' xlink:href='#tmk-predolga-g2-48'/>
+<use x='49.836999' y='10.91336' xlink:href='#tmk-predolga-g1-59'/>
+<use x='52.604407' y='10.91336' xlink:href='#tmk-predolga-g2-56'/>
+<use x='57.585746' y='10.91336' xlink:href='#tmk-predolga-g2-49'/>
+<use x='62.567085' y='10.91336' xlink:href='#tmk-predolga-g2-55'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 7.35</span>: The post \(CD\) that is \(1\) mm too long. Left: the post before fitting, \(3{,}001\) m long, its top is \(\delta\) above node \(C\) (the difference is magnified \(300\) times in the figure). Right: the post fitted by force, and the axial forces in kilonewtons: \(1{,}089\) in <span class="nobr">\(AC\),</span> \(-1{,}361\) in \(BC\) and \(-0{,}817\) in <span class="nobr">\(CD\).</span> The forces are beside the same bars and in the same scale as in figure <a class="xref" href="sec-temperatura-mke.html#fig-tmk-steber" data-knowl="fig-tmk-steber">7.34</a>.</figcaption></figure>
+<p>What have we learned? Temperature and a wrong length enter the method as a right-hand side of the equations and as a term in the force of a bar. The matrix, assembly, supports and reactions are the same. In a statically determinate truss (theorem <a class="xref" href="sec-temperatura-mke.html#thm-zacetne-deformacije-brez-sil" data-knowl="thm-zacetne-deformacije-brez-sil">7.50</a>) the two effects are a displacement without forces, and in a statically indeterminate truss they are forces that the softer part takes up. Whether the computed forces are correct we check with the checks that the next section collects.</p>
+
+</main>
+<footer><nav class="pager"><a href="sec-redke-matrike.html" rel="prev">← 7.8</a><a href="index.html">Contents</a><a href="sec-koraki-analize.html" rel="next">7.10 →</a></nav></footer>
+</body>
+</html>

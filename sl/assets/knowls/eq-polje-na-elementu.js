@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-polje-na-elementu"] = {"html": "<div class=\"eq\">\\[u_{\\mathrm{h}}(x) = \\frac{x_{\\mathrm{b}} - x}{h}\\,d_1 + \\frac{x - x_{\\mathrm{a}}}{h}\\,d_2 . \\tag{7.1}\\]</div>", "href": "sec-element-palice.html#eq-polje-na-elementu"};

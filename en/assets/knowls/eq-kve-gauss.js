@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kve-gauss"] = {"html": "<div class=\"eq\">\\[\\int_{-1}^{1} g(\\xi)\\,\\mathrm{d}\\xi \\approx \\sum_{\\mathrm{i}=1}^{q} w_{\\mathrm{i}}\\,g(\\xi_{\\mathrm{i}}) , \\tag{7.30}\\]</div>", "href": "sec-kvadratni-element.html#eq-kve-gauss"};

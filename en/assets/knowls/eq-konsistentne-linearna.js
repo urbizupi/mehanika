@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-konsistentne-linearna"] = {"html": "<div class=\"eq\">\\[f_1 = \\frac{h\\,(2q_0 + q_1)}{6} , \\qquad f_2 = \\frac{h\\,(q_0 + 2q_1)}{6} , \\tag{7.9}\\]</div>", "href": "sec-element-palice.html#eq-konsistentne-linearna"};

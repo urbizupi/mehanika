@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kve-viseca"] = {"html": "<div class=\"eq\">\\[\\frac{EA}{3h} \\begin{pmatrix} 16 &amp; -8 \\\\ -8 &amp; 7 \\end{pmatrix} \\begin{pmatrix} d_2 \\\\ d_3 \\end{pmatrix} = \\begin{pmatrix} 40{,}065 \\\\ 10{,}016 \\end{pmatrix}\\ \\text{N} , \\tag{7.26}\\]</div>", "href": "sec-kvadratni-element.html#eq-kve-viseca"};

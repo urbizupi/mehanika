@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-oblikovni-funkciji"] = {"html": "<div class=\"eq\">\\[\\psi_1^e(x) = \\frac{x_{\\mathrm{b}} - x}{h} , \\qquad \\psi_2^e(x) = \\frac{x - x_{\\mathrm{a}}}{h} . \\tag{7.2}\\]</div>", "href": "sec-element-palice.html#eq-oblikovni-funkciji"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kve-preslikava"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{x}_\\mathrm{a}}^{x_{\\mathrm{b}}} g\\,\\mathrm{d}x = G(x_{\\mathrm{b}}) - G(x_{\\mathrm{a}}) = \\frac h2 \\int_{-1}^{1} g\\big(x_{\\mathrm{m}} + \\xi\\,\\tfrac h2\\big)\\,\\mathrm{d}\\xi . \\tag{7.28}\\]</div>", "href": "sec-kvadratni-element.html#eq-kve-preslikava"};

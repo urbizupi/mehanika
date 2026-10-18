@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sila-v-elementu"] = {"html": "<div class=\"eq\">\\[N_{\\mathrm{e}} = EA\\,\\varepsilon = \\frac{EA\\,(d_2 - d_1)}{h} \\tag{7.11}\\]</div>", "href": "sec-element-palice.html#eq-sila-v-elementu"};

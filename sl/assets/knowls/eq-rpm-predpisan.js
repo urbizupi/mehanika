@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rpm-predpisan"] = {"html": "<div class=\"eq\">\\[\\frac{2EA}{h}\\,d_1 = f_1 + \\frac{EA}{h}\\,\\bar u = 30{,}05\\ \\text{N} + 307{,}88\\ \\text{N} = 337{,}93\\ \\text{N} , \\tag{7.18}\\]</div>", "href": "sec-robni-pogoji-mke.html#eq-rpm-predpisan"};

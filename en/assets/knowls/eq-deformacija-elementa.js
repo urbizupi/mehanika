@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-deformacija-elementa"] = {"html": "<div class=\"eq\">\\[\\varepsilon = u_{\\mathrm{h}}' = \\frac{d_2 - d_1}{h} = \\mat b_{\\mathrm{e}}\\,\\vek d_{\\mathrm{e}} , \\qquad \\mat b_{\\mathrm{e}} = \\frac{1}{h}\\,(-1,\\ 1) . \\tag{7.4}\\]</div>", "href": "sec-element-palice.html#eq-deformacija-elementa"};

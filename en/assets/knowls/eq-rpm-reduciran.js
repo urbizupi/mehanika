@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rpm-reduciran"] = {"html": "<div class=\"eq\">\\[\\mat K_{\\mathrm{ff}}\\,\\vek d_{\\mathrm{f}} = \\vek f_{\\mathrm{f}} - \\mat K_{\\mathrm{fp}}\\,\\vek d_{\\mathrm{p}} . \\tag{7.16}\\]</div>", "href": "sec-robni-pogoji-mke.html#eq-rpm-reduciran"};

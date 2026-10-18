@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-enacba-elementa"] = {"html": "<div class=\"eq\">\\[\\mat k_{\\mathrm{e}}\\,\\vek d_{\\mathrm{e}} = \\vek f_{\\mathrm{e}} + \\vek F_{\\mathrm{e}} . \\tag{7.10}\\]</div>", "href": "sec-element-palice.html#eq-enacba-elementa"};

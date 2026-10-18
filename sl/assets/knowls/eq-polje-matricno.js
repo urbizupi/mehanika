@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-polje-matricno"] = {"html": "<div class=\"eq\">\\[u_{\\mathrm{h}}(x) = \\psi_1^e(x)\\,d_1 + \\psi_2^e(x)\\,d_2 = \\mat\\psi_{\\mathrm{e}}(x)\\,\\vek d_{\\mathrm{e}} , \\tag{7.3}\\]</div>", "href": "sec-element-palice.html#eq-polje-matricno"};

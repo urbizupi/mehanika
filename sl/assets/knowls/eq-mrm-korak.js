@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mrm-korak"] = {"html": "<div class=\"eq\">\\[K''_{\\mathrm{ij}} = K_{\\mathrm{ij}} - \\frac{g_{\\mathrm{i}}\\,g_{\\mathrm{j}}}{K_{11}} \\qquad (i, j = 2, \\dots, n) . \\tag{7.41}\\]</div>", "href": "sec-redke-matrike.html#eq-mrm-korak"};

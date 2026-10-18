@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mrm-cena-polna"] = {"html": "<div class=\"eq\">\\[\\frac{(n - 1)\\,n\\,(n + 1)}{6} \\approx \\frac{n^3}{6} \\tag{7.43}\\]</div>", "href": "sec-redke-matrike.html#eq-mrm-cena-polna"};

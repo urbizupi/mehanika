@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ravnovesje-vozlisc-palicja"] = {"html": "<div class=\"eq\">\\[\\mat H\\,\\vek N = \\vek f_{\\mathrm{f}} . \\tag{7.48}\\]</div>", "href": "sec-temperatura-mke.html#eq-ravnovesje-vozlisc-palicja"};

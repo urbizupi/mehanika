@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rpm-energija-palice"] = {"html": "<div class=\"eq\">\\[\\vek d^\\T\\mat K\\,\\vek d = \\sum_{\\mathrm{e}=1}^{n} \\frac{EA_{\\mathrm{e}}}{h_{\\mathrm{e}}}\\,(d_{\\mathrm{e}} - d_{\\mathrm{e}-1})^2 , \\tag{7.14}\\]</div>", "href": "sec-robni-pogoji-mke.html#eq-rpm-energija-palice"};

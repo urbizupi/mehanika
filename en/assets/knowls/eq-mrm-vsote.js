@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mrm-vsote"] = {"html": "<div class=\"eq\">\\[\\begin{aligned} 1 + 2 + \\dots + m &amp;= \\frac{m\\,(m + 1)}{2} , \\\\ 1^2 + 2^2 + \\dots + m^2 &amp;= \\frac{m\\,(m + 1)(2m + 1)}{6} . \\end{aligned} \\tag{7.42}\\]</div>", "href": "sec-redke-matrike.html#eq-mrm-vsote"};

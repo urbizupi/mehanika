@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-energija-elementa"] = {"html": "<div class=\"eq\">\\[U_{\\mathrm{e}} = \\frac{N^2 h}{2EA} = \\frac{EA\\,(d_2 - d_1)^2}{2h} = \\frac{EA}{2h}\\,\\big(d_1^2 - 2\\,d_1 d_2 + d_2^2\\big) . \\tag{7.5}\\]</div>", "href": "sec-element-palice.html#eq-energija-elementa"};

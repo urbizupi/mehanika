@@ -1,0 +1,2431 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>7.8 Mathematics: sparse and banded matrices (redke in pasovne matrike) · Chapter 7</title>
+<script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/style.css">
+<noscript><style>#loadbar { display: none; }</style></noscript>
+<script src="assets/config.js"></script>
+<script src="assets/load.js"></script>
+<script defer src="assets/interaktivno.js"></script>
+<script defer src="assets/book.js"></script>
+<script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<div id="loadbar" aria-hidden="true"></div>
+<header class="top"><a class="home" href="index.html">Mechanics</a><nav class="pager"><a href="sec-most.html" rel="prev">← 7.7</a><a href="index.html">Contents</a><a href="sec-temperatura-mke.html" rel="next">7.9 →</a></nav>
+<span class="tools"><a class="lang" href="../sl/sec-redke-matrike.html" hreflang="sl">Slovenščina</a><button type="button" class="theme-toggle" title="Light or dark theme" aria-label="Light or dark theme"></button><button type="button" data-details="open">Expand all</button><button type="button" data-details="close">Collapse all</button><button type="button" class="fig-side-toggle" aria-pressed="false">Figures alongside</button></span></header>
+<main>
+<p class="updated">Last updated 18 October 2026, 23:31</p>
+<p class="crumb"><a href="ch-mke-palice.html"><span class="h-num">Chapter 7</span> Basics of FEM for bars and trusses</a></p>
+<h2 id="sec-redke-matrike"><span class="h-num">7.8</span> Mathematics: sparse and banded matrices (redke in pasovne matrike)</h2>
+<p>The matrix \(\mat K_{\mathrm{ff}}\) of the bridge from section <a class="xref" href="sec-most.html">7.7</a> has order <span class="nobr">\(21\),</span> so \(21 \cdot 21 = 441\) entries, of which only \(93\) are nonzero, that is <span class="nobr">\(21\,\%\).</span> Almost four fifths, exactly \(348\) entries or <span class="nobr">\(78{,}9\,\%\),</span> are zeros, and the nonzero entries lie near the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">main diagonal</a> (figure <a class="xref" href="sec-redke-matrike.html#fig-mrm-pas" data-knowl="fig-mrm-pas">7.30</a>). This raises two questions. May we leave the zeros out of the computation, and how much do we save? And does the elimination of chapter <a class="xref" href="ch-sibka-oblika.html">6</a> (theorem <a class="xref" href="sec-skalarni-produkt-funkcij.html#thm-sistem-pozitivno-definitna" data-knowl="thm-sistem-pozitivno-definitna">6.29</a>) keep the zeros, or fill them with nonzero numbers? This section is mathematical: it proves statements about matrices, and for the bridge each one is tested with numbers.</p>
+
+<h3 id="sec-pasovna-matrika"><span class="h-num">7.8.1</span> Sparse and banded matrix (redka in pasovna matrika)</h3>
+<p>A <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> is sparse (redka matrika) if most of its entries are zero (COOK, PDF p. 51, &quot;Sparsity&quot;: &quot;A matrix is called sparse if it contains many zeros&quot;). For practical structures with hundreds or thousands of elements, more than \(99\,\%\) of the entries of the stiffness matrix may be zero by the same source, so programs use special storage formats and algorithms. Why the matrix of the bridge is sparse too, corollary <a class="xref" href="sec-sestavljanje.html#cor-matrika-konstrukcije" data-knowl="cor-matrika-konstrukcije">7.14</a> tells us, which holds for every structure made of elements, so also for the <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">truss</a> of section <a class="xref" href="sec-palicje-ravnina-mke.html">7.5</a>: the entry \(K_{\mathrm{ij}}\) is zero if the unknowns \(i\) and \(j\) are not at nodes of the same element. A bar connects only the nodes at its two ends, and at most five bars meet at any node of the bridge. So no row of the matrix \(\mat K_{\mathrm{ff}}\) has more than \(7\) nonzero entries (by counting), and this would stay so for a bridge with more bays, because the number of bars at a node would not grow. The number of nonzero entries would therefore grow in proportion to the order \(n\) of the matrix, and the number of all entries as the square <span class="nobr">\(n^2\).</span></p>
+<p>Where in a row are the nonzero entries? For the hanging bar of chapter <a class="xref" href="ch-sibka-oblika.html">6</a> we numbered the nodes of the bar in order and only three diagonals were nonzero, as the matrix <a class="xref" href="sec-skalarni-produkt-funkcij.html#eq-msp-sotorji" data-knowl="eq-msp-sotorji">(6.15)</a> shows. For the bridge the answer depends on how we numbered the unknowns, and that numbering is our choice. How far from the diagonal the nonzero entries reach, we capture with one number.</p>
+
+<div class="blk definicija" id="def-pasovna-matrika"><div class="blk-head"><span class="blk-label">Definition 7.40</span> <span class="blk-title">Banded matrix (pasovna matrika)</span></div><div class="blk-body"><p>Let \(\mat K\) be a <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">square matrix</a> of order \(n\) with entries \(K_{\mathrm{ij}}\) and let \(b\) be an integer between \(0\) and <span class="nobr">\(n - 1\).</span> The matrix \(\mat K\) is banded (pasovna) with half-bandwidth (polovična širina pasu) \(b\) if</p>
+<div class="eq" id="eq-mrm-pas">\[K_{\mathrm{ij}} = 0 \quad \text{for every pair } (i, j) \text{ with } |i - j| &gt; b . \tag{7.39}\]</div>
+<p>The nonzero entries therefore lie in the band between the diagonals \(j = i - b\) and <span class="nobr">\(j = i + b\).</span> The half-bandwidth of a matrix is the smallest such number <span class="nobr">\(b\).</span></p>
+
+<p class="vir"><span class="vir-label">Source:</span> COOK, PDF p. 58, &quot;semibandwidth&quot;: for row \(i\) it is the number of columns from the diagonal to the rightmost nonzero entry, and for the whole matrix the source takes the root-mean-square average over the rows. We take the largest distance \(|i - j|\) that carries a nonzero entry, so that the band certainly contains all nonzero entries. The source counts the diagonal in a row, we do not.</p></div></div>
+<p>For the matrix <a class="xref" href="sec-skalarni-produkt-funkcij.html#eq-msp-sotorji" data-knowl="eq-msp-sotorji">(6.15)</a> we have <span class="nobr">\(b = 1\).</span> A <a class="xref auto" href="sec-redke-matrike.html#def-pasovna-matrika" data-knowl="def-pasovna-matrika">banded matrix</a> with \(b = 0\) is diagonal. If <span class="nobr">\(b = n - 1\),</span> the condition <a class="xref" href="sec-redke-matrike.html#eq-mrm-pas" data-knowl="eq-mrm-pas">(7.39)</a> demands nothing and every matrix is banded, but the band is worth nothing.</p>
+<p>For a truss we number by nodes, as in the paragraph on unknowns in section <a class="xref" href="sec-palicje-ravnina-mke.html">7.5</a>: we number the nodes <span class="nobr">\(1, \dots, N\),</span> every node has \(r\) unknowns <span class="nobr">(\(r = 1\)</span> for the bar, \(r = 2\) for the plane truss and \(r = 3\) for the <a class="xref auto" href="sec-prostorsko-palicje.html#def-prostorsko-palicje" data-knowl="def-prostorsko-palicje">space truss</a>), and the unknowns of node \(p\) get the numbers <span class="nobr">\(r(p - 1) + 1, \dots, rp\).</span> For the plane truss these are \(2p - 1\) and <span class="nobr">\(2p\).</span> The band of the matrix is then decided by one datum, namely how far apart the numbers of the nodes of one element are.</p>
+
+<div class="blk lema" id="lem-pas-elementov"><div class="blk-head"><span class="blk-label">Lemma 7.41</span> <span class="blk-title">Band of the structure matrix (pas matrike konstrukcije)</span></div><div class="blk-body"><p>Let a mesh have \(N\) nodes numbered <span class="nobr">\(1, \dots, N\),</span> and let every node have \(r\) unknowns, numbered by nodes (node \(p\) has the unknowns <span class="nobr">\(r(p - 1) + 1, \dots, rp\)).</span> Let \(m\) be the largest difference \(|p - q|\) of the numbers of two nodes that belong to the same element. Then the <a class="xref auto" href="sec-sestavljanje.html#cor-matrika-konstrukcije" data-knowl="cor-matrika-konstrukcije">structure matrix</a> \(\mat K\) has <a class="xref auto" href="sec-redke-matrike.html#def-pasovna-matrika" data-knowl="def-pasovna-matrika">half-bandwidth</a></p>
+<div class="eq" id="eq-mrm-pas-elementov">\[b \le r\,(m + 1) - 1 . \tag{7.40}\]</div>
+<p>The <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> of free unknowns <span class="nobr">\(\mat K_{\mathrm{ff}}\),</span> obtained by deleting the rows and columns of the prescribed unknowns (theorem <a class="xref" href="sec-robni-pogoji-mke.html#thm-reduciran-sistem" data-knowl="thm-reduciran-sistem">7.18</a>), has half-bandwidth at most as large.</p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that \(K_{\mathrm{ij}} = 0\) for <span class="nobr">\(|i - j| &gt; r(m + 1) - 1\).</span> We assume <span class="nobr">\(i \le j\),</span> which loses no generality because of the symmetry of the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> <a class="xref" href="sec-sestavljanje.html#cor-matrika-konstrukcije" data-knowl="cor-matrika-konstrukcije">7.14</a>.</p>
+<ol>
+<li>Let <span class="nobr">\(K_{\mathrm{ij}} \ne 0\).</span> By corollary <a class="xref" href="sec-sestavljanje.html#cor-matrika-konstrukcije" data-knowl="cor-matrika-konstrukcije">7.14</a> the unknowns \(i\) and \(j\) stand in the same row of the <a class="xref auto" href="sec-sestavljanje.html#def-tabela-povezav" data-knowl="def-tabela-povezav">connectivity table</a>, that is in the same element, so they are at nodes \(p\) and \(q\) of this element <span class="nobr">(\(p = q\)</span> is allowed).</li>
+<li>Since <span class="nobr">\(i \le j\),</span> we have <span class="nobr">\(p \le q\),</span> because the unknowns are numbered by nodes. By the definition of <span class="nobr">\(m\),</span> <span class="nobr">\(q - p \le m\).</span></li>
+<li>For the unknown \(i\) of node \(p\) we have <span class="nobr">\(i \ge r(p - 1) + 1\),</span> and for the unknown \(j\) of node \(q\) we have <span class="nobr">\(j \le rq\).</span></li>
+<li>Therefore <span class="nobr">\(j - i \le rq - r(p - 1) - 1 = r(q - p + 1) - 1 \le r(m + 1) - 1\).</span> This is <a class="xref" href="sec-redke-matrike.html#eq-mrm-pas-elementov" data-knowl="eq-mrm-pas-elementov">(7.40)</a>.</li>
+<li>For \(\mat K_{\mathrm{ff}}\) we delete the rows and columns of some unknowns, and the remaining ones keep their order. The new number of an unknown is the old one decreased by the number of deleted unknowns before it, so the difference of the numbers of two remaining unknowns does not grow. The same bound therefore holds for <span class="nobr">\(\mat K_{\mathrm{ff}}\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> The proof is not from a source. COOK, PDF p. 51 (&quot;Sparsity&quot;) and EP, p. 541 for the condition that \(K_{\mathrm{IJ}}\) is zero if the nodes are not in the same element.</p></div></div>
+<p>Let us test it on the hanging bar: <span class="nobr">\(r = 1\),</span> nodes in order and \(m = 1\) give <span class="nobr">\(b \le 1 \cdot 2 - 1 = 1\),</span> the tridiagonal matrix <a class="xref" href="sec-skalarni-produkt-funkcij.html#eq-msp-sotorji" data-knowl="eq-msp-sotorji">(6.15)</a>. Now let us look at two numberings of the bridge (figure <a class="xref" href="sec-redke-matrike.html#fig-mrm-pas" data-knowl="fig-mrm-pas">7.30</a>), with the node names from section <a class="xref" href="sec-most.html#sec-model-mostu">7.7.1</a> <span class="nobr">(\(b_{\mathrm{i}}\)</span> in the bottom, \(t_{\mathrm{i}}\) in the top chord of the bridge). A chord (pas mostu) is the row of bars along the bottom or top edge of the bridge, the band of a matrix (pas matrike) the places next to the diagonal of definition <a class="xref" href="sec-redke-matrike.html#def-pasovna-matrika" data-knowl="def-pasovna-matrika">7.40</a>, and the two meanings must not be confused, since Slovenian uses the same word for both. In the first we go along the span: \(b_0, b_1, t_1, b_2, t_2, \dots, b_5, t_5, b_6\) get the numbers \(1\) to <span class="nobr">\(12\).</span> In the second we number the nodes of the bottom chord first, \(b_0, \dots, b_6\) with \(1\) to <span class="nobr">\(7\),</span> and then those of the top chord, \(t_1, \dots, t_5\) with \(8\) to <span class="nobr">\(12\),</span> and we call this the numbering by rows.</p>
+<ol>
+<li>Along the span, the farthest apart are the bar \(t_4 b_3\) between the numbers \(9\) and \(6\) and the bar \(t_5 b_4\) between \(11\) and <span class="nobr">\(8\),</span> so \(m = 3\) and <span class="nobr">\(b \le 2 \cdot 4 - 1 = 7\).</span> The computation gives \(b = 7\) for \(\mat K\) and for <span class="nobr">\(\mat K_{\mathrm{ff}}\),</span> so the bound is reached.</li>
+<li>By rows, the farthest apart are the bar \(b_0 t_1\) between \(1\) and \(8\) and the bar \(t_4 b_3\) between \(11\) and <span class="nobr">\(4\),</span> so \(m = 7\) and <span class="nobr">\(b \le 2 \cdot 8 - 1 = 15\).</span> The matrix \(\mat K\) has \(b = 15\) indeed, but the matrix \(\mat K_{\mathrm{ff}}\) has <span class="nobr">\(b = 14\),</span> because between the unknown \(u\) of node \(b_3\) and the unknown \(v\) of node \(t_4\) the unknown \(v\) of node \(b_6\) (a support) is deleted, so the numbers come closer by <span class="nobr">\(1\).</span></li>
+</ol>
+<p>The cause of the difference is simple. A bar of the bridge reaches at most across one bay, and in the numbering along the span every bay adds only two numbers <span class="nobr">(\(b_{\mathrm{i}}\)</span> and <span class="nobr">\(t_{\mathrm{i}}\)),</span> so the two nodes of one bar have numbers at most \(3\) apart. In the numbering by rows the vertical bar \(b_{\mathrm{i}} t_{\mathrm{i}}\) has the numbers \(i + 1\) and <span class="nobr">\(i + 7\),</span> always \(6\) apart, because the bottom chord has \(7\) nodes. The bars <span class="nobr">\(b_0 t_1\),</span> \(t_4 b_3\) and \(t_5 b_4\) are \(7\) apart. A longer bridge would have the same \(b\) in the first numbering, but in the second \(b\) would grow with the length of the bridge. The number of nonzero entries is the same in both cases, <span class="nobr">\(93\),</span> since the matrices are the same, only the unknowns are in another order.</p>
+
+<figure class="blk slika" id="fig-mrm-pas"><p><span class="svgfig" role="img" aria-label="Two numberings of the bridge and the patterns of the matrix of free unknowns with their bands"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='443.95pt' height='249.47pt' viewBox='-72.000004 -72.000007 328.849624 184.79211'>
+<defs>
+<path id='mrm-pas-g0-48' d='M3.287671-1.906849C3.287671-2.343213 3.287671-3.975093 1.823163-3.975093S.358655-2.343213 .358655-1.906849C.358655-1.476463 .358655 .125529 1.823163 .125529S3.287671-1.476463 3.287671-1.906849ZM1.823163-.065753C1.572105-.065753 1.165629-.185305 1.022167-.681445C.926526-1.028144 .926526-1.613948 .926526-1.984558C.926526-2.385056 .926526-2.84533 1.010212-3.16812C1.159651-3.706102 1.613948-3.783811 1.823163-3.783811C2.098132-3.783811 2.492653-3.652304 2.624159-3.198007C2.713823-2.881196 2.719801-2.444832 2.719801-1.984558C2.719801-1.601993 2.719801-.998257 2.618182-.663512C2.450809-.143462 2.020423-.065753 1.823163-.065753Z'/>
+<path id='mrm-pas-g0-49' d='M2.145953-3.795766C2.145953-3.975093 2.122042-3.975093 1.942715-3.975093C1.548194-3.592528 .938481-3.592528 .723288-3.592528V-3.359402C.878705-3.359402 1.273225-3.359402 1.63188-3.526775V-.508095C1.63188-.310834 1.63188-.233126 1.016189-.233126H.759153V0C1.08792-.02391 1.554172-.02391 1.888917-.02391S2.689913-.02391 3.01868 0V-.233126H2.761644C2.145953-.233126 2.145953-.310834 2.145953-.508095V-3.795766Z'/>
+<path id='mrm-pas-g0-50' d='M3.21594-1.117808H2.99477C2.982814-1.034122 2.923039-.639601 2.833375-.573848C2.791532-.537983 2.307347-.537983 2.223661-.537983H1.105853L1.870984-1.159651C2.074222-1.321046 2.606227-1.703611 2.791532-1.882939C2.970859-2.062267 3.21594-2.367123 3.21594-2.791532C3.21594-3.53873 2.540473-3.975093 1.739477-3.975093C.968369-3.975093 .430386-3.466999 .430386-2.905106C.430386-2.600249 .687422-2.564384 .753176-2.564384C.902615-2.564384 1.075965-2.67198 1.075965-2.887173C1.075965-3.01868 .998257-3.209963 .735243-3.209963C.872727-3.514819 1.23736-3.741968 1.649813-3.741968C2.27746-3.741968 2.612204-3.275716 2.612204-2.791532C2.612204-2.367123 2.331258-1.93076 1.912827-1.548194L.496139-.251059C.436364-.191283 .430386-.185305 .430386 0H3.030635L3.21594-1.117808Z'/>
+<path id='mrm-pas-g0-51' d='M1.75741-1.984558C2.265504-1.984558 2.606227-1.643836 2.606227-1.034122C2.606227-.376588 2.211706-.089664 1.775342-.089664C1.613948-.089664 .998257-.125529 .729265-.472229C.962391-.496139 1.058032-.651557 1.058032-.812951C1.058032-1.016189 .91457-1.153674 .71731-1.153674C.555915-1.153674 .376588-1.052055 .376588-.800996C.376588-.209215 1.034122 .125529 1.793275 .125529C2.677958 .125529 3.269738-.442341 3.269738-1.034122C3.269738-1.470486 2.934994-1.93076 2.223661-2.110087C2.69589-2.265504 3.078456-2.64807 3.078456-3.138232C3.078456-3.616438 2.516563-3.975093 1.799253-3.975093C1.099875-3.975093 .56787-3.652304 .56787-3.162142C.56787-2.905106 .765131-2.833375 .884682-2.833375C1.0401-2.833375 1.201494-2.940971 1.201494-3.150187C1.201494-3.335492 1.069988-3.443088 .908593-3.466999C1.189539-3.777833 1.733499-3.777833 1.787298-3.777833C2.092154-3.777833 2.47472-3.634371 2.47472-3.138232C2.47472-2.809465 2.289415-2.235616 1.691656-2.199751C1.58406-2.193773 1.422665-2.181818 1.368867-2.181818C1.309091-2.175841 1.243337-2.169863 1.243337-2.080199C1.243337-1.984558 1.309091-1.984558 1.41071-1.984558H1.75741Z'/>
+<path id='mrm-pas-g0-52' d='M3.371357-.980324V-1.21345H2.67198V-3.855542C2.67198-3.993026 2.67198-4.034869 2.52254-4.034869C2.414944-4.034869 2.402989-4.016936 2.349191-3.945205L.274969-1.21345V-.980324H2.133998V-.502117C2.133998-.304857 2.133998-.233126 1.63188-.233126H1.458531V0C1.578082-.005978 2.139975-.02391 2.402989-.02391S3.227895-.005978 3.347447 0V-.233126H3.174097C2.67198-.233126 2.67198-.304857 2.67198-.502117V-.980324H3.371357ZM2.175841-3.383313V-1.21345H.532005L2.175841-3.383313Z'/>
+<path id='mrm-pas-g0-53' d='M1.016189-3.317559C1.21345-3.263761 1.422665-3.239851 1.625903-3.239851C1.75741-3.239851 2.092154-3.239851 2.468742-3.449066C2.570361-3.508842 2.940971-3.753923 2.940971-3.879452C2.940971-3.957161 2.881196-3.975093 2.857285-3.975093C2.839352-3.975093 2.833375-3.975093 2.767621-3.951183C2.552428-3.867497 2.247572-3.783811 1.859029-3.783811C1.566127-3.783811 1.243337-3.837609 .974346-3.939228C.91457-3.963138 .89066-3.975093 .86675-3.975093C.783064-3.975093 .783064-3.90934 .783064-3.813699V-2.020423C.783064-1.918804 .783064-1.847073 .89066-1.847073C.944458-1.847073 .962391-1.870984 1.004234-1.918804C1.153674-2.110087 1.416687-2.313325 1.882939-2.313325C2.618182-2.313325 2.618182-1.416687 2.618182-1.225405C2.618182-.992279 2.600249-.657534 2.402989-.412453C2.217684-.185305 1.942715-.089664 1.685679-.089664C1.273225-.089664 .860772-.316812 .71731-.663512C1.010212-.669489 1.046077-.902615 1.046077-.974346C1.046077-1.135741 .920548-1.279203 .735243-1.279203C.681445-1.279203 .430386-1.249315 .430386-.950436C.430386-.400498 .950436 .125529 1.703611 .125529C2.52254 .125529 3.21594-.454296 3.21594-1.201494C3.21594-1.882939 2.666002-2.504608 1.894894-2.504608C1.506351-2.504608 1.207472-2.379078 1.016189-2.217684V-3.317559Z'/>
+<path id='mrm-pas-g0-54' d='M.974346-1.97858C.980324-2.27746 .992279-2.773599 1.201494-3.144209C1.464508-3.598506 1.859029-3.777833 2.217684-3.777833C2.355168-3.777833 2.630137-3.753923 2.773599-3.58655C2.552428-3.550685 2.516563-3.395268 2.516563-3.299626C2.516563-3.144209 2.624159-3.012702 2.803487-3.012702S3.096389-3.126276 3.096389-3.311582C3.096389-3.676214 2.82142-3.975093 2.211706-3.975093C1.285181-3.975093 .376588-3.16812 .376588-1.894894C.376588-.442341 1.052055 .125529 1.841096 .125529C2.074222 .125529 2.480697 .089664 2.84533-.263014C3.036613-.454296 3.269738-.6934 3.269738-1.219427C3.269738-1.422665 3.245828-1.80523 2.881196-2.145953C2.67198-2.337235 2.408966-2.546451 1.900872-2.546451C1.482441-2.546451 1.177584-2.331258 .974346-1.97858ZM1.835118-.089664C.992279-.089664 .992279-1.117808 .992279-1.350934C.992279-1.865006 1.333001-2.355168 1.870984-2.355168C2.181818-2.355168 2.361146-2.229639 2.504608-2.038356C2.67198-1.80523 2.67198-1.536239 2.67198-1.219427C2.67198-.806974 2.660025-.603736 2.456787-.364633C2.313325-.185305 2.122042-.089664 1.835118-.089664Z'/>
+<path id='mrm-pas-g0-55' d='M3.4132-3.610461C3.466999-3.670237 3.466999-3.682192 3.466999-3.849564H1.924782C1.679701-3.849564 1.536239-3.855542 1.303113-3.873474C1.010212-3.891407 .938481-3.897385 .908593-4.040847H.687422L.472229-2.731756H.6934C.711333-2.857285 .771108-3.209963 .860772-3.275716C.908593-3.311582 1.422665-3.311582 1.512329-3.311582H2.863263C2.797509-3.227895 2.47472-2.84533 2.331258-2.67198C1.751432-1.972603 1.344956-1.123786 1.344956-.215193C1.344956-.161395 1.344956 .125529 1.63188 .125529C1.924782 .125529 1.924782-.14944 1.924782-.227148V-.394521C1.924782-1.542217 2.169863-2.12802 2.468742-2.486675L3.4132-3.610461Z'/>
+<path id='mrm-pas-g0-56' d='M2.30137-2.157908C2.743711-2.355168 3.078456-2.64807 3.078456-3.078456C3.078456-3.664259 2.450809-3.975093 1.829141-3.975093C1.153674-3.975093 .56787-3.568618 .56787-2.964882C.56787-2.594271 .812951-2.307347 1.06401-2.157908C1.123786-2.122042 1.267248-2.044334 1.327024-2.008468C.932503-1.859029 .376588-1.524284 .376588-.920548C.376588-.221171 1.123786 .125529 1.817186 .125529C2.612204 .125529 3.269738-.352677 3.269738-1.016189C3.269738-1.428643 3.01868-1.673724 2.929016-1.763387C2.815442-1.870984 2.516563-2.038356 2.30137-2.157908ZM1.219427-2.749689C1.207472-2.755666 .902615-2.923039 .902615-3.198007C.902615-3.58655 1.374844-3.777833 1.817186-3.777833C2.283437-3.777833 2.743711-3.520797 2.743711-3.072478C2.743711-2.612204 2.247572-2.367123 2.080199-2.283437L1.219427-2.749689ZM1.566127-1.882939C1.63188-1.847073 2.271482-1.488418 2.432877-1.404732C2.558406-1.327024 2.887173-1.147696 2.887173-.806974C2.887173-.334745 2.337235-.089664 1.829141-.089664C1.273225-.089664 .759153-.412453 .759153-.920548S1.23736-1.763387 1.566127-1.882939Z'/>
+<path id='mrm-pas-g0-57' d='M2.67198-1.882939C2.67198-1.428643 2.630137-.980324 2.414944-.621669C2.265504-.388543 1.97858-.089664 1.512329-.089664C1.374844-.089664 1.052055-.107597 .884682-.263014C1.075965-.304857 1.129763-.436364 1.129763-.549938C1.129763-.705355 1.022167-.836862 .842839-.836862S.549938-.723288 .549938-.537983C.549938-.053798 .998257 .125529 1.518306 .125529C2.438854 .125529 3.269738-.711333 3.269738-1.960648C3.269738-3.4132 2.606227-3.975093 1.841096-3.975093C1.069988-3.975093 .376588-3.425156 .376588-2.636115C.376588-2.187796 .54396-1.936737 .759153-1.721544C1.022167-1.464508 1.309091-1.309091 1.745455-1.309091C2.265504-1.309091 2.546451-1.649813 2.67198-1.882939ZM1.775342-1.500374C1.404732-1.500374 1.243337-1.685679 1.147696-1.811208C.980324-2.038356 .974346-2.295392 .974346-2.636115C.974346-2.988792 .974346-3.221918 1.171606-3.466999C1.338979-3.670237 1.536239-3.777833 1.847073-3.777833C2.654047-3.777833 2.654047-2.755666 2.654047-2.516563C2.654047-1.97858 2.30137-1.500374 1.775342-1.500374Z'/>
+<path id='mrm-pas-g1-98' d='M2.381071-6.804483C2.381071-6.814446 2.381071-6.914072 2.251557-6.914072C2.022416-6.914072 1.295143-6.834371 1.036115-6.814446C.956413-6.804483 .846824-6.794521 .846824-6.615193C.846824-6.495641 .936488-6.495641 1.085928-6.495641C1.564134-6.495641 1.58406-6.425903 1.58406-6.326276C1.58406-6.256538 1.494396-5.917808 1.444583-5.708593L.627646-2.460772C.508095-1.96264 .468244-1.803238 .468244-1.454545C.468244-.508095 .996264 .109589 1.733499 .109589C2.909091 .109589 4.134496-1.374844 4.134496-2.809465C4.134496-3.716065 3.606476-4.403487 2.809465-4.403487C2.351183-4.403487 1.942715-4.11457 1.643836-3.805729L2.381071-6.804483ZM1.444583-3.038605C1.504359-3.257783 1.504359-3.277709 1.594022-3.387298C2.082192-4.034869 2.530511-4.184309 2.789539-4.184309C3.148194-4.184309 3.417186-3.88543 3.417186-3.247821C3.417186-2.660025 3.088418-1.514321 2.909091-1.135741C2.580324-.468244 2.122042-.109589 1.733499-.109589C1.39477-.109589 1.066002-.37858 1.066002-1.115816C1.066002-1.305106 1.066002-1.494396 1.225405-2.122042L1.444583-3.038605Z'/>
+<path id='mrm-pas-g2-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='mrm-pas-g2-52' d='M2.929016-1.643836V-.777086C2.929016-.418431 2.909091-.308842 2.171856-.308842H1.96264V0C2.371108-.029888 2.889166-.029888 3.307597-.029888S4.254047-.029888 4.662516 0V-.308842H4.4533C3.716065-.308842 3.696139-.418431 3.696139-.777086V-1.643836H4.692403V-1.952677H3.696139V-6.485679C3.696139-6.684932 3.696139-6.744707 3.536737-6.744707C3.447073-6.744707 3.417186-6.744707 3.337484-6.625156L.278954-1.952677V-1.643836H2.929016ZM2.988792-1.952677H.557908L2.988792-5.668742V-1.952677Z'/>
+<path id='mrm-pas-g2-55' d='M4.742217-6.067248C4.83188-6.1868 4.83188-6.206725 4.83188-6.41594H2.410959C1.195517-6.41594 1.175592-6.545455 1.135741-6.734745H.886675L.557908-4.682441H.806974C.836862-4.841843 .926526-5.469489 1.05604-5.589041C1.125778-5.648817 1.902864-5.648817 2.032379-5.648817H4.094645C3.985056-5.489415 3.198007-4.403487 2.978829-4.07472C2.082192-2.729763 1.753425-1.344956 1.753425-.328767C1.753425-.229141 1.753425 .219178 2.211706 .219178S2.669988-.229141 2.669988-.328767V-.836862C2.669988-1.384807 2.699875-1.932752 2.779577-2.470735C2.819427-2.699875 2.958904-3.556663 3.39726-4.174346L4.742217-6.067248Z'/>
+<path id='mrm-pas-g2-61' d='M6.844334-3.257783C6.993773-3.257783 7.183064-3.257783 7.183064-3.457036S6.993773-3.656289 6.854296-3.656289H.886675C.747198-3.656289 .557908-3.656289 .557908-3.457036S.747198-3.257783 .896638-3.257783H6.844334ZM6.854296-1.325031C6.993773-1.325031 7.183064-1.325031 7.183064-1.524284S6.993773-1.723537 6.844334-1.723537H.896638C.747198-1.723537 .557908-1.723537 .557908-1.524284S.747198-1.325031 .886675-1.325031H6.854296Z'/>
+<path id='mrm-pas-g3-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='mrm-pas-g3-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+</defs>
+<g id='mrm-pas-page1'>
+<g stroke-miterlimit='10' transform='translate(-70.567464,-43.081836)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<path d='M2.84544 0H26.74564' fill='none'/>
+<path d='M26.74564 0H50.64584' fill='none'/>
+<path d='M50.64584 0H74.54648' fill='none'/>
+<path d='M74.54648 0H98.44667' fill='none'/>
+<path d='M98.44667 0H122.34688' fill='none'/>
+<path d='M122.34688 0H146.24707' fill='none'/>
+<path d='M26.74564 23.90019H50.64584' fill='none'/>
+<path d='M50.64584 23.90019H74.54648' fill='none'/>
+<path d='M74.54648 23.90019H98.44667' fill='none'/>
+<path d='M98.44667 23.90019H122.34688' fill='none'/>
+<path d='M26.74564 0V23.90019' fill='none'/>
+<path d='M50.64584 0V23.90019' fill='none'/>
+<path d='M74.54648 0V23.90019' fill='none'/>
+<path d='M98.44667 0V23.90019' fill='none'/>
+<path d='M122.34688 0V23.90019' fill='none'/>
+<path d='M2.84544 0L26.74564 23.90019' fill='none'/>
+<path d='M146.24707 0L122.34688 23.90019' fill='none'/>
+<path d='M26.74564 23.90019L50.64584 0' fill='none'/>
+<path d='M50.64584 23.90019L74.54648 0' fill='none'/>
+<path d='M122.34688 23.90019L98.44667 0' fill='none'/>
+<path d='M98.44667 23.90019L74.54648 0' fill='none'/>
+<path d='M2.84544 0L-1.13791-6.82881H6.8288Z' fill='none'/>
+<path d='M146.24707 0L142.2637-6.82881H150.23044Z' fill='none'/>
+<path d='M140.55661-8.82027H151.93797' fill='none'/>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M6.21263 0C6.21263 1.85966 4.70511 3.36719 2.84544 3.36719C.98578 3.36719-.52174 1.85966-.52174 0S.98578-3.36719 2.84544-3.36719C4.70511-3.36719 6.21263-1.85966 6.21263 0ZM2.84544 0'/>
+</g>
+<g transform='translate(1.01215,-1.93332)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g0-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M30.11282 0C30.11282 1.85966 28.6053 3.36719 26.74564 3.36719C24.88597 3.36719 23.37845 1.85966 23.37845 0S24.88597-3.36719 26.74564-3.36719C28.6053-3.36719 30.11282-1.85966 30.11282 0ZM26.74564 0'/>
+</g>
+<g transform='translate(24.91234,-1.93332)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g0-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M30.11282 23.90019C30.11282 25.75986 28.6053 27.26738 26.74564 27.26738C24.88597 27.26738 23.37845 25.75986 23.37845 23.90019C23.37845 22.04053 24.88597 20.533 26.74564 20.533C28.6053 20.533 30.11282 22.04053 30.11282 23.90019ZM26.74564 23.90019'/>
+</g>
+<g transform='translate(24.91234,21.96687)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g0-51'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M54.01303 0C54.01303 1.85966 52.50551 3.36719 50.64584 3.36719C48.78618 3.36719 47.27866 1.85966 47.27866 0S48.78618-3.36719 50.64584-3.36719C52.50551-3.36719 54.01303-1.85966 54.01303 0ZM50.64584 0'/>
+</g>
+<g transform='translate(48.81255,-1.93332)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g0-52'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M54.01303 23.90019C54.01303 25.75986 52.50551 27.26738 50.64584 27.26738C48.78618 27.26738 47.27866 25.75986 47.27866 23.90019C47.27866 22.04053 48.78618 20.533 50.64584 20.533C52.50551 20.533 54.01303 22.04053 54.01303 23.90019ZM50.64584 23.90019'/>
+</g>
+<g transform='translate(48.81255,21.96687)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g0-53'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M77.91367 0C77.91367 1.85966 76.40614 3.36719 74.54648 3.36719C72.68681 3.36719 71.17929 1.85966 71.17929 0S72.68681-3.36719 74.54648-3.36719C76.40614-3.36719 77.91367-1.85966 77.91367 0ZM74.54648 0'/>
+</g>
+<g transform='translate(72.71318,-1.93332)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g0-54'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M77.91367 23.90019C77.91367 25.75986 76.40614 27.26738 74.54648 27.26738C72.68681 27.26738 71.17929 25.75986 71.17929 23.90019C71.17929 22.04053 72.68681 20.533 74.54648 20.533C76.40614 20.533 77.91367 22.04053 77.91367 23.90019ZM74.54648 23.90019'/>
+</g>
+<g transform='translate(72.71318,21.96687)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g0-55'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M101.81386 0C101.81386 1.85966 100.30634 3.36719 98.44667 3.36719S95.07948 1.85966 95.07948 0S96.587-3.36719 98.44667-3.36719S101.81386-1.85966 101.81386 0ZM98.44667 0'/>
+</g>
+<g transform='translate(96.61337,-1.93332)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g0-56'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M101.81386 23.90019C101.81386 25.75986 100.30634 27.26738 98.44667 27.26738S95.07948 25.75986 95.07948 23.90019C95.07948 22.04053 96.587 20.533 98.44667 20.533S101.81386 22.04053 101.81386 23.90019ZM98.44667 23.90019'/>
+</g>
+<g transform='translate(96.61337,21.96687)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g0-57'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M127.1733 0C127.1733 2.66559 125.01247 4.82642 122.34688 4.82642S117.52046 2.66559 117.52046 0S119.68129-4.82642 122.34688-4.82642S127.1733-2.66559 127.1733 0ZM122.34688 0'/>
+</g>
+<g transform='translate(118.68027,-1.93332)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g0-49'/>
+<use x='-66.914539' y='-43.081836' xlink:href='#mrm-pas-g0-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M127.1733 23.90019C127.1733 26.56578 125.01247 28.72661 122.34688 28.72661S117.52046 26.56578 117.52046 23.90019S119.68129 19.07378 122.34688 19.07378S127.1733 21.2346 127.1733 23.90019ZM122.34688 23.90019'/>
+</g>
+<g transform='translate(118.68027,21.96687)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g0-49'/>
+<use x='-66.914539' y='-43.081836' xlink:href='#mrm-pas-g0-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M151.07349 0C151.07349 2.66559 148.91266 4.82642 146.24707 4.82642S141.42065 2.66559 141.42065 0S143.58148-4.82642 146.24707-4.82642S151.07349-2.66559 151.07349 0ZM146.24707 0'/>
+</g>
+<g transform='translate(142.58046,-1.93332)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g0-49'/>
+<use x='-66.914539' y='-43.081836' xlink:href='#mrm-pas-g0-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M14.22636-33.85883V-28.45274H19.63245V-33.85883ZM19.63245-28.45274' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M35.85028-33.85883V-28.45274H41.25638V-33.85883ZM41.25638-28.45274' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M19.63245-39.26492V-33.85883H25.03854V-39.26492ZM25.03854-33.85883' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M30.44463-39.26492V-33.85883H35.85028V-39.26492ZM35.85028-33.85883' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M25.03854-44.671V-39.26492H30.44463V-44.671ZM30.44463-39.26492' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M35.85028-44.671V-39.26492H41.25638V-44.671ZM41.25638-39.26492' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M41.25638-44.671V-39.26492H46.66246V-44.671ZM46.66246-39.26492' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M46.66246-44.671V-39.26492H52.06856V-44.671ZM52.06856-39.26492' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M19.63245-50.07666V-44.671H25.03854V-50.07666ZM25.03854-44.671' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M30.44463-50.07666V-44.671H35.85028V-50.07666ZM35.85028-44.671' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M35.85028-50.07666V-44.671H41.25638V-50.07666ZM41.25638-44.671' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M41.25638-50.07666V-44.671H46.66246V-50.07666ZM46.66246-44.671' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M14.22636-55.48276V-50.07666H19.63245V-55.48276ZM19.63245-50.07666' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M25.03854-55.48276V-50.07666H30.44463V-55.48276ZM30.44463-50.07666' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M30.44463-55.48276V-50.07666H35.85028V-55.48276ZM35.85028-50.07666' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M35.85028-55.48276V-50.07666H41.25638V-55.48276ZM41.25638-50.07666' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M41.25638-55.48276V-50.07666H46.66246V-55.48276ZM46.66246-50.07666' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M57.47466-55.48276V-50.07666H62.88074V-55.48276ZM62.88074-50.07666' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M25.03854-60.88884V-55.48276H30.44463V-60.88884ZM30.44463-55.48276' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M30.44463-60.88884V-55.48276H35.85028V-60.88884ZM35.85028-55.48276' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M35.85028-60.88884V-55.48276H41.25638V-60.88884ZM41.25638-55.48276' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M41.25638-60.88884V-55.48276H46.66246V-60.88884ZM46.66246-55.48276' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M52.06856-60.88884V-55.48276H57.47466V-60.88884ZM57.47466-55.48276' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M25.03854-66.29494V-60.88884H30.44463V-66.29494ZM30.44463-60.88884' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M46.66246-66.29494V-60.88884H52.06856V-66.29494ZM52.06856-60.88884' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M52.06856-66.29494V-60.88884H57.47466V-66.29494ZM57.47466-60.88884' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M57.47466-66.29494V-60.88884H62.88074V-66.29494ZM62.88074-60.88884' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M62.88074-66.29494V-60.88884H68.28639V-66.29494ZM68.28639-60.88884' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M68.28639-66.29494V-60.88884H73.69249V-66.29494ZM73.69249-60.88884' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M41.25638-71.70103V-66.29494H46.66246V-71.70103ZM46.66246-66.29494' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M46.66246-71.70103V-66.29494H52.06856V-71.70103ZM52.06856-66.29494' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M52.06856-71.70103V-66.29494H57.47466V-71.70103ZM57.47466-66.29494' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M57.47466-71.70103V-66.29494H62.88074V-71.70103ZM62.88074-66.29494' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M62.88074-71.70103V-66.29494H68.28639V-71.70103ZM68.28639-66.29494' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M35.85028-77.10712V-71.70103H41.25638V-77.10712ZM41.25638-71.70103' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M46.66246-77.10712V-71.70103H52.06856V-77.10712ZM52.06856-71.70103' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M52.06856-77.10712V-71.70103H57.47466V-77.10712ZM57.47466-71.70103' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M57.47466-77.10712V-71.70103H62.88074V-77.10712ZM62.88074-71.70103' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M79.09857-77.10712V-71.70103H84.50467V-77.10712ZM84.50467-71.70103' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M89.91075-77.10712V-71.70103H95.31685V-77.10712ZM95.31685-71.70103' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M95.31685-77.10712V-71.70103H100.7225V-77.10712ZM100.7225-71.70103' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M46.66246-82.51277V-77.10712H52.06856V-82.51277ZM52.06856-77.10712' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M52.06856-82.51277V-77.10712H57.47466V-82.51277ZM57.47466-77.10712' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M62.88074-82.51277V-77.10712H68.28639V-82.51277ZM68.28639-77.10712' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M73.69249-82.51277V-77.10712H79.09857V-82.51277ZM79.09857-77.10712' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M89.91075-82.51277V-77.10712H95.31685V-82.51277ZM95.31685-77.10712' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M95.31685-82.51277V-77.10712H100.7225V-82.51277ZM100.7225-77.10712' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M46.66246-87.91887V-82.51277H52.06856V-87.91887ZM52.06856-82.51277' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M68.28639-87.91887V-82.51277H73.69249V-87.91887ZM73.69249-82.51277' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M89.91075-87.91887V-82.51277H95.31685V-87.91887ZM95.31685-82.51277' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M62.88074-93.32495V-87.91887H68.28639V-93.32495ZM68.28639-87.91887' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M73.69249-93.32495V-87.91887H79.09857V-93.32495ZM79.09857-87.91887' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M57.47466-98.73105V-93.32495H62.88074V-98.73105ZM62.88074-93.32495' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M79.09857-98.73105V-93.32495H84.50467V-98.73105ZM84.50467-93.32495' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M84.50467-98.73105V-93.32495H89.91075V-98.73105ZM89.91075-93.32495' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M100.7225-98.73105V-93.32495H106.1286V-98.73105ZM106.1286-93.32495' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M111.53468-98.73105V-93.32495H116.94078V-98.73105ZM116.94078-93.32495' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M116.94078-98.73105V-93.32495H122.34686V-98.73105ZM122.34686-93.32495' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M79.09857-104.13713V-98.73105H84.50467V-104.13713ZM84.50467-98.73105' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M84.50467-104.13713V-98.73105H89.91075V-104.13713ZM89.91075-98.73105' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M95.31685-104.13713V-98.73105H100.7225V-104.13713ZM100.7225-98.73105' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M111.53468-104.13713V-98.73105H116.94078V-104.13713ZM116.94078-98.73105' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M116.94078-104.13713V-98.73105H122.34686V-104.13713ZM122.34686-98.73105' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M57.47466-109.54323V-104.13713H62.88074V-109.54323ZM62.88074-104.13713' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M62.88074-109.54323V-104.13713H68.28639V-109.54323ZM68.28639-104.13713' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M68.28639-109.54323V-104.13713H73.69249V-109.54323ZM73.69249-104.13713' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M89.91075-109.54323V-104.13713H95.31685V-109.54323ZM95.31685-104.13713' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M95.31685-109.54323V-104.13713H100.7225V-109.54323ZM100.7225-104.13713' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M111.53468-109.54323V-104.13713H116.94078V-109.54323ZM116.94078-104.13713' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M57.47466-114.94888V-109.54323H62.88074V-114.94888ZM62.88074-109.54323' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M62.88074-114.94888V-109.54323H68.28639V-114.94888ZM68.28639-109.54323' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M84.50467-114.94888V-109.54323H89.91075V-114.94888ZM89.91075-109.54323' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M89.91075-114.94888V-109.54323H95.31685V-114.94888ZM95.31685-109.54323' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M95.31685-114.94888V-109.54323H100.7225V-114.94888ZM100.7225-109.54323' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M79.09857-120.35498V-114.94888H84.50467V-120.35498ZM84.50467-114.94888' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M100.7225-120.35498V-114.94888H106.1286V-120.35498ZM106.1286-114.94888' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M122.34686-120.35498V-114.94888H127.75296V-120.35498ZM127.75296-114.94888' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M106.1286-125.76106V-120.35498H111.53468V-125.76106ZM111.53468-120.35498' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M116.94078-125.76106V-120.35498H122.34686V-125.76106ZM122.34686-120.35498' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M79.09857-131.16716V-125.76106H84.50467V-131.16716ZM84.50467-125.76106' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M84.50467-131.16716V-125.76106H89.91075V-131.16716ZM89.91075-125.76106' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M89.91075-131.16716V-125.76106H95.31685V-131.16716ZM95.31685-125.76106' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M111.53468-131.16716V-125.76106H116.94078V-131.16716ZM116.94078-125.76106' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M122.34686-131.16716V-125.76106H127.75296V-131.16716ZM127.75296-125.76106' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M79.09857-136.57324V-131.16716H84.50467V-136.57324ZM84.50467-131.16716' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M84.50467-136.57324V-131.16716H89.91075V-136.57324ZM89.91075-131.16716' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M106.1286-136.57324V-131.16716H111.53468V-136.57324ZM111.53468-131.16716' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M116.94078-136.57324V-131.16716H122.34686V-136.57324ZM122.34686-131.16716' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M122.34686-136.57324V-131.16716H127.75296V-136.57324ZM127.75296-131.16716' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M100.7225-141.97934V-136.57324H106.1286V-141.97934ZM106.1286-136.57324' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M111.53468-141.97934V-136.57324H116.94078V-141.97934ZM116.94078-136.57324' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M116.94078-141.97934V-136.57324H122.34686V-141.97934ZM122.34686-136.57324' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M122.34686-141.97934V-136.57324H127.75296V-141.97934ZM127.75296-136.57324' stroke='none'/>
+</g>
+<path d='M14.22636-28.45274V-141.97934H127.75296V-28.45274ZM127.75296-141.97934' fill='none'/>
+<clipPath id='mrm-pas-pgfcp1'>
+<path d='M14.22636-28.45274V-141.97934H127.75296V-28.45274ZM127.75296-141.97934'/> </clipPath>
+<g clip-path='url(#pgfcp1)'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M54.7716-28.45274L168.29778-141.97934' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M14.22636-68.99799L127.75296-182.52415' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(14.2252,-24.81976)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(120.92139,-24.81976)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g3-50'/>
+<use x='-66.596224' y='-43.081836' xlink:href='#mrm-pas-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(6.60727,-33.55374)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(2.62112,-141.38945)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g3-50'/>
+<use x='-66.596224' y='-43.081836' xlink:href='#mrm-pas-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(59.81941,-153.12549)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g1-98'/>
+<use x='-63.524498' y='-43.081836' xlink:href='#mrm-pas-g2-61'/>
+<use x='-53.008418' y='-43.081836' xlink:href='#mrm-pas-g2-55'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M179.25237 0H203.15256' fill='none'/>
+<path d='M203.15256 0H227.05276' fill='none'/>
+<path d='M227.05276 0H250.9534' fill='none'/>
+<path d='M250.9534 0H274.85359' fill='none'/>
+<path d='M274.85359 0H298.7538' fill='none'/>
+<path d='M298.7538 0H322.65399' fill='none'/>
+<path d='M203.15256 23.90019H227.05276' fill='none'/>
+<path d='M227.05276 23.90019H250.9534' fill='none'/>
+<path d='M250.9534 23.90019H274.85359' fill='none'/>
+<path d='M274.85359 23.90019H298.7538' fill='none'/>
+<path d='M203.15256 0V23.90019' fill='none'/>
+<path d='M227.05276 0V23.90019' fill='none'/>
+<path d='M250.9534 0V23.90019' fill='none'/>
+<path d='M274.85359 0V23.90019' fill='none'/>
+<path d='M298.7538 0V23.90019' fill='none'/>
+<path d='M179.25237 0L203.15256 23.90019' fill='none'/>
+<path d='M322.65399 0L298.7538 23.90019' fill='none'/>
+<path d='M203.15256 23.90019L227.05276 0' fill='none'/>
+<path d='M227.05276 23.90019L250.9534 0' fill='none'/>
+<path d='M298.7538 23.90019L274.85359 0' fill='none'/>
+<path d='M274.85359 23.90019L250.9534 0' fill='none'/>
+<path d='M179.25237 0L175.26901-6.82881H183.23572Z' fill='none'/>
+<path d='M322.65399 0L318.67062-6.82881H326.63736Z' fill='none'/>
+<path d='M316.96353-8.82027H328.3449' fill='none'/>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M182.61955 0C182.61955 1.85966 181.11203 3.36719 179.25237 3.36719C177.3927 3.36719 175.88518 1.85966 175.88518 0S177.3927-3.36719 179.25237-3.36719C181.11203-3.36719 182.61955-1.85966 182.61955 0ZM179.25237 0'/>
+</g>
+<g transform='translate(177.41907,-1.93332)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g0-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M206.51974 0C206.51974 1.85966 205.01222 3.36719 203.15256 3.36719S199.78537 1.85966 199.78537 0S201.2929-3.36719 203.15256-3.36719S206.51974-1.85966 206.51974 0ZM203.15256 0'/>
+</g>
+<g transform='translate(201.31926,-1.93332)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g0-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M230.41995 0C230.41995 1.85966 228.91243 3.36719 227.05276 3.36719C225.1931 3.36719 223.68558 1.85966 223.68558 0S225.1931-3.36719 227.05276-3.36719C228.91243-3.36719 230.41995-1.85966 230.41995 0ZM227.05276 0'/>
+</g>
+<g transform='translate(225.21947,-1.93332)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g0-51'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M254.32059 0C254.32059 1.85966 252.81306 3.36719 250.9534 3.36719C249.09373 3.36719 247.58621 1.85966 247.58621 0S249.09373-3.36719 250.9534-3.36719C252.81306-3.36719 254.32059-1.85966 254.32059 0ZM250.9534 0'/>
+</g>
+<g transform='translate(249.1201,-1.93332)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g0-52'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M278.22078 0C278.22078 1.85966 276.71326 3.36719 274.85359 3.36719C272.99393 3.36719 271.4864 1.85966 271.4864 0S272.99393-3.36719 274.85359-3.36719C276.71326-3.36719 278.22078-1.85966 278.22078 0ZM274.85359 0'/>
+</g>
+<g transform='translate(273.0203,-1.93332)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g0-53'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M302.12099 0C302.12099 1.85966 300.61346 3.36719 298.7538 3.36719C296.89413 3.36719 295.38661 1.85966 295.38661 0S296.89413-3.36719 298.7538-3.36719C300.61346-3.36719 302.12099-1.85966 302.12099 0ZM298.7538 0'/>
+</g>
+<g transform='translate(296.9205,-1.93332)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g0-54'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M326.02118 0C326.02118 1.85966 324.51366 3.36719 322.65399 3.36719C320.79433 3.36719 319.2868 1.85966 319.2868 0S320.79433-3.36719 322.65399-3.36719C324.51366-3.36719 326.02118-1.85966 326.02118 0ZM322.65399 0'/>
+</g>
+<g transform='translate(320.8207,-1.93332)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g0-55'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M206.51974 23.90019C206.51974 25.75986 205.01222 27.26738 203.15256 27.26738S199.78537 25.75986 199.78537 23.90019C199.78537 22.04053 201.2929 20.533 203.15256 20.533S206.51974 22.04053 206.51974 23.90019ZM203.15256 23.90019'/>
+</g>
+<g transform='translate(201.31926,21.96687)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g0-56'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M230.41995 23.90019C230.41995 25.75986 228.91243 27.26738 227.05276 27.26738C225.1931 27.26738 223.68558 25.75986 223.68558 23.90019C223.68558 22.04053 225.1931 20.533 227.05276 20.533C228.91243 20.533 230.41995 22.04053 230.41995 23.90019ZM227.05276 23.90019'/>
+</g>
+<g transform='translate(225.21947,21.96687)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g0-57'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M255.77982 23.90019C255.77982 26.56578 253.61899 28.72661 250.9534 28.72661S246.12698 26.56578 246.12698 23.90019S248.28781 19.07378 250.9534 19.07378S255.77982 21.2346 255.77982 23.90019ZM250.9534 23.90019'/>
+</g>
+<g transform='translate(247.28679,21.96687)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g0-49'/>
+<use x='-66.914539' y='-43.081836' xlink:href='#mrm-pas-g0-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M279.68001 23.90019C279.68001 26.56578 277.51918 28.72661 274.85359 28.72661S270.02718 26.56578 270.02718 23.90019S272.188 19.07378 274.85359 19.07378S279.68001 21.2346 279.68001 23.90019ZM274.85359 23.90019'/>
+</g>
+<g transform='translate(271.18698,21.96687)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g0-49'/>
+<use x='-66.914539' y='-43.081836' xlink:href='#mrm-pas-g0-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M303.58022 23.90019C303.58022 26.56578 301.41939 28.72661 298.7538 28.72661S293.92738 26.56578 293.92738 23.90019S296.08821 19.07378 298.7538 19.07378S303.58022 21.2346 303.58022 23.90019ZM298.7538 23.90019'/>
+</g>
+<g transform='translate(295.08719,21.96687)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g0-49'/>
+<use x='-66.914539' y='-43.081836' xlink:href='#mrm-pas-g0-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M190.63329-33.85883V-28.45274H196.03937V-33.85883ZM196.03937-28.45274' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M201.44547-33.85883V-28.45274H206.85155V-33.85883ZM206.85155-28.45274' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M196.03937-39.26492V-33.85883H201.44547V-39.26492ZM201.44547-33.85883' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M255.5055-39.26492V-33.85883H260.91159V-39.26492ZM260.91159-33.85883' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M190.63329-44.671V-39.26492H196.03937V-44.671ZM196.03937-39.26492' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M201.44547-44.671V-39.26492H206.85155V-44.671ZM206.85155-39.26492' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M206.85155-44.671V-39.26492H212.2572V-44.671ZM212.2572-39.26492' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M212.2572-44.671V-39.26492H217.6633V-44.671ZM217.6633-39.26492' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M250.09941-44.671V-39.26492H255.5055V-44.671ZM255.5055-39.26492' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M255.5055-44.671V-39.26492H260.91159V-44.671ZM260.91159-39.26492' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M201.44547-50.07666V-44.671H206.85155V-50.07666ZM206.85155-44.671' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M206.85155-50.07666V-44.671H212.2572V-50.07666ZM212.2572-44.671' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M250.09941-50.07666V-44.671H255.5055V-50.07666ZM255.5055-44.671' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M255.5055-50.07666V-44.671H260.91159V-50.07666ZM260.91159-44.671' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M266.31767-50.07666V-44.671H271.72377V-50.07666ZM271.72377-44.671' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M201.44547-55.48276V-50.07666H206.85155V-55.48276ZM206.85155-50.07666' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M212.2572-55.48276V-50.07666H217.6633V-55.48276ZM217.6633-50.07666' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M223.06938-55.48276V-50.07666H228.47548V-55.48276ZM228.47548-50.07666' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M260.91159-55.48276V-50.07666H266.31767V-55.48276ZM266.31767-50.07666' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M266.31767-55.48276V-50.07666H271.72377V-55.48276ZM271.72377-50.07666' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M282.53552-55.48276V-50.07666H287.9416V-55.48276ZM287.9416-50.07666' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M287.9416-55.48276V-50.07666H293.3477V-55.48276ZM293.3477-50.07666' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M217.6633-60.88884V-55.48276H223.06938V-60.88884ZM223.06938-55.48276' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M260.91159-60.88884V-55.48276H266.31767V-60.88884ZM266.31767-55.48276' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M266.31767-60.88884V-55.48276H271.72377V-60.88884ZM271.72377-55.48276' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M277.12943-60.88884V-55.48276H282.53552V-60.88884ZM282.53552-55.48276' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M282.53552-60.88884V-55.48276H287.9416V-60.88884ZM287.9416-55.48276' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M287.9416-60.88884V-55.48276H293.3477V-60.88884ZM293.3477-55.48276' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M212.2572-66.29494V-60.88884H217.6633V-66.29494ZM217.6633-60.88884' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M223.06938-66.29494V-60.88884H228.47548V-66.29494ZM228.47548-60.88884' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M228.47548-66.29494V-60.88884H233.88158V-66.29494ZM233.88158-60.88884' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M233.88158-66.29494V-60.88884H239.28766V-66.29494ZM239.28766-60.88884' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M293.3477-66.29494V-60.88884H298.75378V-66.29494ZM298.75378-60.88884' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M298.75378-66.29494V-60.88884H304.15988V-66.29494ZM304.15988-60.88884' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M223.06938-71.70103V-66.29494H228.47548V-71.70103ZM228.47548-66.29494' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M228.47548-71.70103V-66.29494H233.88158V-71.70103ZM233.88158-66.29494' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M287.9416-71.70103V-66.29494H293.3477V-71.70103ZM293.3477-66.29494' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M293.3477-71.70103V-66.29494H298.75378V-71.70103ZM298.75378-66.29494' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M298.75378-71.70103V-66.29494H304.15988V-71.70103ZM304.15988-66.29494' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M223.06938-77.10712V-71.70103H228.47548V-77.10712ZM228.47548-71.70103' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M233.88158-77.10712V-71.70103H239.28766V-77.10712ZM239.28766-71.70103' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M244.69331-77.10712V-71.70103H250.09941V-77.10712ZM250.09941-71.70103' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M239.28766-82.51277V-77.10712H244.69331V-82.51277ZM244.69331-77.10712' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M298.75378-82.51277V-77.10712H304.15988V-82.51277ZM304.15988-77.10712' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M233.88158-87.91887V-82.51277H239.28766V-87.91887ZM239.28766-82.51277' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M244.69331-87.91887V-82.51277H250.09941V-87.91887ZM250.09941-82.51277' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M293.3477-87.91887V-82.51277H298.75378V-87.91887ZM298.75378-82.51277' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M298.75378-87.91887V-82.51277H304.15988V-87.91887ZM304.15988-82.51277' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M201.44547-93.32495V-87.91887H206.85155V-93.32495ZM206.85155-87.91887' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M206.85155-93.32495V-87.91887H212.2572V-93.32495ZM212.2572-87.91887' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M250.09941-93.32495V-87.91887H255.5055V-93.32495ZM255.5055-87.91887' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M260.91159-93.32495V-87.91887H266.31767V-93.32495ZM266.31767-87.91887' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M196.03937-98.73105V-93.32495H201.44547V-98.73105ZM201.44547-93.32495' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M201.44547-98.73105V-93.32495H206.85155V-98.73105ZM206.85155-93.32495' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M206.85155-98.73105V-93.32495H212.2572V-98.73105ZM212.2572-93.32495' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M255.5055-98.73105V-93.32495H260.91159V-98.73105ZM260.91159-93.32495' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M212.2572-104.13713V-98.73105H217.6633V-104.13713ZM217.6633-98.73105' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M217.6633-104.13713V-98.73105H223.06938V-104.13713ZM223.06938-98.73105' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M250.09941-104.13713V-98.73105H255.5055V-104.13713ZM255.5055-98.73105' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M260.91159-104.13713V-98.73105H266.31767V-104.13713ZM266.31767-98.73105' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M266.31767-104.13713V-98.73105H271.72377V-104.13713ZM271.72377-98.73105' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M271.72377-104.13713V-98.73105H277.12943V-104.13713ZM277.12943-98.73105' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M206.85155-109.54323V-104.13713H212.2572V-109.54323ZM212.2572-104.13713' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M212.2572-109.54323V-104.13713H217.6633V-109.54323ZM217.6633-104.13713' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M217.6633-109.54323V-104.13713H223.06938V-109.54323ZM223.06938-104.13713' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M260.91159-109.54323V-104.13713H266.31767V-109.54323ZM266.31767-104.13713' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M266.31767-109.54323V-104.13713H271.72377V-109.54323ZM271.72377-104.13713' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M260.91159-114.94888V-109.54323H266.31767V-114.94888ZM266.31767-109.54323' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M271.72377-114.94888V-109.54323H277.12943V-114.94888ZM277.12943-109.54323' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M282.53552-114.94888V-109.54323H287.9416V-114.94888ZM287.9416-109.54323' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M217.6633-120.35498V-114.94888H223.06938V-120.35498ZM223.06938-114.94888' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M277.12943-120.35498V-114.94888H282.53552V-120.35498ZM282.53552-114.94888' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M212.2572-125.76106V-120.35498H217.6633V-125.76106ZM217.6633-120.35498' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M217.6633-125.76106V-120.35498H223.06938V-125.76106ZM223.06938-120.35498' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M271.72377-125.76106V-120.35498H277.12943V-125.76106ZM277.12943-120.35498' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M282.53552-125.76106V-120.35498H287.9416V-125.76106ZM287.9416-120.35498' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M287.9416-125.76106V-120.35498H293.3477V-125.76106ZM293.3477-120.35498' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M293.3477-125.76106V-120.35498H298.75378V-125.76106ZM298.75378-120.35498' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M212.2572-131.16716V-125.76106H217.6633V-131.16716ZM217.6633-125.76106' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M217.6633-131.16716V-125.76106H223.06938V-131.16716ZM223.06938-125.76106' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M228.47548-131.16716V-125.76106H233.88158V-131.16716ZM233.88158-125.76106' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M282.53552-131.16716V-125.76106H287.9416V-131.16716ZM287.9416-125.76106' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M287.9416-131.16716V-125.76106H293.3477V-131.16716ZM293.3477-125.76106' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M223.06938-136.57324V-131.16716H228.47548V-136.57324ZM228.47548-131.16716' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M228.47548-136.57324V-131.16716H233.88158V-136.57324ZM233.88158-131.16716' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M244.69331-136.57324V-131.16716H250.09941V-136.57324ZM250.09941-131.16716' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M282.53552-136.57324V-131.16716H287.9416V-136.57324ZM287.9416-131.16716' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M293.3477-136.57324V-131.16716H298.75378V-136.57324ZM298.75378-131.16716' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M223.06938-141.97934V-136.57324H228.47548V-141.97934ZM228.47548-136.57324' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M228.47548-141.97934V-136.57324H233.88158V-141.97934ZM233.88158-136.57324' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M239.28766-141.97934V-136.57324H244.69331V-141.97934ZM244.69331-136.57324' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M244.69331-141.97934V-136.57324H250.09941V-141.97934ZM250.09941-136.57324' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M298.75378-141.97934V-136.57324H304.15988V-141.97934ZM304.15988-136.57324' stroke='none'/>
+</g>
+<path d='M190.63329-28.45274V-141.97934H304.15988V-28.45274ZM304.15988-141.97934' fill='none'/>
+<clipPath id='mrm-pas-pgfcp2'>
+<path d='M190.63329-28.45274V-141.97934H304.15988V-28.45274ZM304.15988-141.97934'/> </clipPath>
+<g clip-path='url(#pgfcp2)'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M269.02072-28.45274L382.54689-141.97934' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M190.63329-106.84018L304.15988-220.36635' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(190.63213,-24.81976)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(297.32831,-24.81976)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g3-50'/>
+<use x='-66.596224' y='-43.081836' xlink:href='#mrm-pas-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(183.01419,-33.55374)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(179.02805,-141.38945)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g3-50'/>
+<use x='-66.596224' y='-43.081836' xlink:href='#mrm-pas-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(233.72632,-153.12549)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-70.567464,-43.081836)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-70.567464' y='-43.081836' xlink:href='#mrm-pas-g1-98'/>
+<use x='-63.524498' y='-43.081836' xlink:href='#mrm-pas-g2-61'/>
+<use x='-53.008418' y='-43.081836' xlink:href='#mrm-pas-g2-49'/>
+<use x='-48.027078' y='-43.081836' xlink:href='#mrm-pas-g2-52'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 7.30</span>: Two numberings of the bridge and the patterns of the matrix \(\mat K_{\mathrm{ff}}\) of order <span class="nobr">\(21\).</span> Left: along the span, the nodes \(b_0, b_1, t_1, b_2, \dots\) have the numbers <span class="nobr">\(1, 2, 3, \dots, 12\).</span> Right: first the nodes of the bottom chord with the numbers \(1\) to <span class="nobr">\(7\),</span> then those of the top chord with \(8\) to <span class="nobr">\(12\).</span> Under each bridge is the pattern: blue squares are nonzero entries, the others are zero, and the two dashed lines bound the band <span class="nobr">\(|i - j| \le b\).</span> The patterns have the same number of nonzero entries, <span class="nobr">\(93\),</span> but the band is \(b = 7\) wide on the left and \(b = 14\) on the right.</figcaption></figure>
+<h3 id="sec-eliminacija-pas"><span class="h-num">7.8.2</span> Elimination keeps the band (eliminacija ohrani pas)</h3>
+<p>Zeros and band count only if the elimination does not destroy them. Let us repeat one step of elimination from the proof of theorem <a class="xref" href="sec-skalarni-produkt-funkcij.html#thm-sistem-pozitivno-definitna" data-knowl="thm-sistem-pozitivno-definitna">6.29</a>. We write the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> as <span class="nobr">\(\left[\begin{smallmatrix} K_{11} &amp; \vek g^\T \\ \vek g &amp; \mat K' \end{smallmatrix}\right]\),</span> where \(\vek g\) is the column of entries \(g_{\mathrm{i}} = K_{\mathrm{i}1}\) for \(i = 2, \dots, n\) (in chapter <a class="xref" href="ch-sibka-oblika.html">6</a> this column is called <span class="nobr">\(\vek b\),</span> here we write \(\vek g\) so that the letter \(b\) remains the <a class="xref auto" href="sec-redke-matrike.html#def-pasovna-matrika" data-knowl="def-pasovna-matrika">half-bandwidth</a>). After the step the matrix \(\mat K'' = \mat K' - \vek g\,\vek g^\T/K_{11}\) remains, with entries</p>
+<div class="eq" id="eq-mrm-korak">\[K''_{\mathrm{ij}} = K_{\mathrm{ij}} - \frac{g_{\mathrm{i}}\,g_{\mathrm{j}}}{K_{11}} \qquad (i, j = 2, \dots, n) . \tag{7.41}\]</div>
+<p>The entry \((i, j)\) therefore changes only if \(g_{\mathrm{i}}\) and \(g_{\mathrm{j}}\) are both nonzero. If \(K_{\mathrm{ij}} = 0\) but \(g_{\mathrm{i}}\) and \(g_{\mathrm{j}}\) are nonzero, the entry becomes nonzero. This is called fill (zapolnitev): a zero that the elimination turns into a nonzero number (COOK, PDF p. 57: &quot;a direct (noniterative) equation solver creates fills&quot;).</p>
+<p>For the hanging bar \(\vek g\) has only one nonzero entry, so the elimination changes only one diagonal entry and there is no fill. For the bridge with the numbering along the span (the unknowns \(1, 2, \dots, 6\) are \(u\) and \(v\) of the nodes <span class="nobr">\(b_1\),</span> \(t_1\) and <span class="nobr">\(b_2\),</span> the unknown \(7\) is \(u\) of node <span class="nobr">\(t_2\))</span> it is so in the first two steps. The third step has the pivot <span class="nobr">\(K_{33}\),</span> which is the unknown \(u\) of node <span class="nobr">\(t_1\).</span> Its column has nonzero entries in the rows <span class="nobr">\(5\),</span> \(6\) and <span class="nobr">\(7\),</span> because \(t_1\) is connected to node \(b_2\) by an oblique bar (it links \(u\) of node \(t_1\) with \(u\) and \(v\) of node <span class="nobr">\(b_2\))</span> and to node \(t_2\) by a horizontal bar (it links \(u\) with <span class="nobr">\(u\)).</span> The entry <span class="nobr">\(K_{43}\),</span> which links \(u\) and \(v\) of node <span class="nobr">\(t_1\),</span> is zero, because the contributions of the oblique bars \(b_0 t_1\) and \(t_1 b_2\) cancel in it: the bars have the same \(EA/L\) and the product of <a class="xref auto" href="sec-vrtenje-osi.html#def-matrika-zasuka" data-knowl="def-matrika-zasuka">direction cosines</a> \(cs = +\tfrac12\) and <span class="nobr">\(-\tfrac12\).</span> By equation <a class="xref" href="sec-redke-matrike.html#eq-mrm-korak" data-knowl="eq-mrm-korak">(7.41)</a> all entries with three rows and columns \(5, 6, 7\) change, also the entries \((7, 5)\) and <span class="nobr">\((7, 6)\),</span> which were zero, since the nodes \(b_2\) and \(t_2\) are connected only by a vertical bar, and that links only \(v\) with <span class="nobr">\(v\).</span> The elimination of the unknown \(u\) of node \(t_1\) expresses it by the unknowns of its neighbours and so links them to each other. Whether the band endures this, the next lemma tells.</p>
+
+<div class="blk lema" id="lem-pas-ostane"><div class="blk-head"><span class="blk-label">Lemma 7.42</span> <span class="blk-title">Elimination keeps the band (eliminacija ohrani pas)</span></div><div class="blk-body"><p>Let \(\mat K\) be a symmetric <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite matrix</a> of order \(n\) with <a class="xref auto" href="sec-redke-matrike.html#def-pasovna-matrika" data-knowl="def-pasovna-matrika">half-bandwidth</a> <span class="nobr">\(b\).</span> Let \(\mat K^{(1)} = \mat K\) and let \(\mat K^{(k+1)}\) be the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> that remains after the \(k\)-th step of elimination without row exchanges (the matrix \(\mat K''\) of equation <a class="xref" href="sec-redke-matrike.html#eq-mrm-korak" data-knowl="eq-mrm-korak">(7.41)</a> for <span class="nobr">\(\mat K^{(k)}\)),</span> of order <span class="nobr">\(n - k\).</span> Then every matrix \(\mat K^{(k)}\) is symmetric, positive definite and has half-bandwidth at most <span class="nobr">\(b\).</span> Entries outside the band therefore stay zero throughout the elimination, and fill occurs only inside the band.</p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We prove it by induction on \(k\) (theorem <a class="xref" href="sec-konvergenca-zaporedij.html#thm-indukcija" data-knowl="thm-indukcija">1.44</a>). The statement <span class="nobr">\(P(k)\):</span> the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat K^{(k)}\) is symmetric, <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite</a> and \(K^{(k)}_{\mathrm{ij}} = 0\) for <span class="nobr">\(|i - j| &gt; b\).</span></p>
+<ol>
+<li>Start. \(P(1)\) holds by assumption.</li>
+<li>Induction step. Let \(P(k)\) hold for some \(k &lt; n\) and let \(\mat K^{(k)}\) be written as above with <span class="nobr">\(K_{11}\),</span> \(\vek g\) and <span class="nobr">\(\mat K'\).</span> By theorem <a class="xref" href="sec-skalarni-produkt-funkcij.html#thm-sistem-pozitivno-definitna" data-knowl="thm-sistem-pozitivno-definitna">6.29</a>, steps 5 and 6 of the proof, \(\mat K^{(k+1)} = \mat K^{(k)\prime\prime}\) is symmetric and positive definite.</li>
+<li>The entry \(g_{\mathrm{i}} = K_{\mathrm{i}1}\) is zero for <span class="nobr">\(i &gt; b + 1\),</span> because \(|i - 1| = i - 1 &gt; b\) and \(K_{\mathrm{i}1} = 0\) by <span class="nobr">\(P(k)\).</span></li>
+<li>Let \(|i - j| &gt; b\) with <span class="nobr">\(i, j \ge 2\).</span> If \(i\) and \(j\) were both at most <span class="nobr">\(b + 1\),</span> they would lie in \(2, \dots, b + 1\) and the difference would be <span class="nobr">\(|i - j| \le b - 1\).</span> Hence at least one of the numbers <span class="nobr">\(i\),</span> \(j\) is greater than <span class="nobr">\(b + 1\),</span> and by step 3 at least one of <span class="nobr">\(g_{\mathrm{i}}\),</span> \(g_{\mathrm{j}}\) is zero.</li>
+<li>By equation <a class="xref" href="sec-redke-matrike.html#eq-mrm-korak" data-knowl="eq-mrm-korak">(7.41)</a>, then, <span class="nobr">\(K''_{\mathrm{ij}} = K_{\mathrm{ij}} - g_{\mathrm{i}} g_{\mathrm{j}}/K_{11} = 0 - 0 = 0\),</span> since \(K_{\mathrm{ij}} = 0\) by <span class="nobr">\(P(k)\).</span> The matrix \(\mat K^{(k+1)}\) is therefore banded with <a class="xref auto" href="sec-redke-matrike.html#def-pasovna-matrika" data-knowl="def-pasovna-matrika">half-bandwidth</a> at most \(b\) (the difference of two row numbers does not change, because the rows \(2, \dots, n\) get the numbers <span class="nobr">\(1, \dots, n - 1\),</span> all decreased by <span class="nobr">\(1\)).</span> This is <span class="nobr">\(P(k + 1)\).</span></li>
+<li>By the principle of induction \(P(k)\) holds for every \(k = 1, \dots, n\) (the matrix \(\mat K^{(n)}\) has order <span class="nobr">\(1\)).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> The proof is not from a source. COOK, PDF p. 58: for a matrix with a small profile there is little fill in the elimination, &quot;Then nonzero entries in the structure matrix are tightly clustered along its diagonal, so elimination produces few fills&quot;.</p></div></div>
+<p>The lemma says that there is no fill outside the band. How much of it there is inside the band it does not say, so we count on the bridge. The lower triangle of the matrix \(\mat K_{\mathrm{ff}}\) has \(57\) nonzero entries in both numberings <span class="nobr">(\(21\)</span> on the diagonal and \(36\) below it). After the elimination, the lower triangle of multipliers, which we will call \(\mat L\) in the next section, has \(83\) nonzero entries in the numbering along the span, so the fill is \(83 - 57 = 26\) entries. In the numbering by rows it has \(121\) and the fill is \(121 - 57 = 64\) (figure <a class="xref" href="sec-redke-matrike.html#fig-mrm-zapolnitev" data-knowl="fig-mrm-zapolnitev">7.31</a>). A wider band leaves more room for fill: below the diagonal and including it, the band holds \(140\) entries for \(b = 7\) and \(210\) for <span class="nobr">\(b = 14\),</span> of \(231\) in the lower triangle altogether.</p>
+
+<figure class="blk slika" id="fig-mrm-zapolnitev"><p><span class="svgfig" role="img" aria-label="Lower triangle of the factor L for both numberings, fill in orange"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='377.79pt' height='188.05pt' viewBox='-72.000004 -72.000003 279.843238 139.293778'>
+<defs>
+<path id='mrm-zapolnitev-g0-43' d='M4.07472-2.291407H6.854296C6.993773-2.291407 7.183064-2.291407 7.183064-2.49066S6.993773-2.689913 6.854296-2.689913H4.07472V-5.479452C4.07472-5.618929 4.07472-5.808219 3.875467-5.808219S3.676214-5.618929 3.676214-5.479452V-2.689913H.886675C.747198-2.689913 .557908-2.689913 .557908-2.49066S.747198-2.291407 .886675-2.291407H3.676214V.498132C3.676214 .637609 3.676214 .826899 3.875467 .826899S4.07472 .637609 4.07472 .498132V-2.291407Z'/>
+<path id='mrm-zapolnitev-g0-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='mrm-zapolnitev-g0-52' d='M2.929016-1.643836V-.777086C2.929016-.418431 2.909091-.308842 2.171856-.308842H1.96264V0C2.371108-.029888 2.889166-.029888 3.307597-.029888S4.254047-.029888 4.662516 0V-.308842H4.4533C3.716065-.308842 3.696139-.418431 3.696139-.777086V-1.643836H4.692403V-1.952677H3.696139V-6.485679C3.696139-6.684932 3.696139-6.744707 3.536737-6.744707C3.447073-6.744707 3.417186-6.744707 3.337484-6.625156L.278954-1.952677V-1.643836H2.929016ZM2.988792-1.952677H.557908L2.988792-5.668742V-1.952677Z'/>
+<path id='mrm-zapolnitev-g0-53' d='M4.473225-2.002491C4.473225-3.188045 3.656289-4.184309 2.580324-4.184309C2.102117-4.184309 1.673724-4.024907 1.315068-3.676214V-5.618929C1.514321-5.559153 1.843088-5.489415 2.161893-5.489415C3.387298-5.489415 4.084682-6.396015 4.084682-6.525529C4.084682-6.585305 4.054795-6.635118 3.985056-6.635118C3.975093-6.635118 3.955168-6.635118 3.905355-6.60523C3.706102-6.515567 3.217933-6.316314 2.550436-6.316314C2.15193-6.316314 1.693649-6.386052 1.225405-6.595268C1.145704-6.625156 1.125778-6.625156 1.105853-6.625156C1.006227-6.625156 1.006227-6.545455 1.006227-6.386052V-3.437111C1.006227-3.257783 1.006227-3.178082 1.145704-3.178082C1.215442-3.178082 1.235367-3.20797 1.275218-3.267746C1.384807-3.427148 1.753425-3.965131 2.560399-3.965131C3.078456-3.965131 3.327522-3.506849 3.407223-3.327522C3.566625-2.958904 3.58655-2.570361 3.58655-2.072229C3.58655-1.723537 3.58655-1.125778 3.347447-.707347C3.108344-.318804 2.739726-.059776 2.281445-.059776C1.554172-.059776 .986301-.587796 .816936-1.175592C.846824-1.165629 .876712-1.155666 .986301-1.155666C1.315068-1.155666 1.484433-1.404732 1.484433-1.643836S1.315068-2.132005 .986301-2.132005C.846824-2.132005 .498132-2.062267 .498132-1.603985C.498132-.747198 1.185554 .219178 2.30137 .219178C3.457036 .219178 4.473225-.737235 4.473225-2.002491Z'/>
+<path id='mrm-zapolnitev-g0-54' d='M1.315068-3.267746V-3.506849C1.315068-6.027397 2.550436-6.386052 3.058531-6.386052C3.297634-6.386052 3.716065-6.326276 3.935243-5.987547C3.785803-5.987547 3.387298-5.987547 3.387298-5.539228C3.387298-5.230386 3.626401-5.080946 3.845579-5.080946C4.004981-5.080946 4.303861-5.17061 4.303861-5.559153C4.303861-6.156912 3.865504-6.635118 3.038605-6.635118C1.763387-6.635118 .418431-5.349938 .418431-3.148194C.418431-.488169 1.574097 .219178 2.500623 .219178C3.606476 .219178 4.552927-.71731 4.552927-2.032379C4.552927-3.297634 3.666252-4.254047 2.560399-4.254047C1.882939-4.254047 1.514321-3.745953 1.315068-3.267746ZM2.500623-.059776C1.872976-.059776 1.574097-.657534 1.514321-.806974C1.334994-1.275218 1.334994-2.072229 1.334994-2.251557C1.334994-3.028643 1.653798-4.024907 2.550436-4.024907C2.709838-4.024907 3.16812-4.024907 3.476961-3.407223C3.656289-3.038605 3.656289-2.530511 3.656289-2.042341C3.656289-1.564134 3.656289-1.066002 3.486924-.707347C3.188045-.109589 2.729763-.059776 2.500623-.059776Z'/>
+<path id='mrm-zapolnitev-g0-55' d='M4.742217-6.067248C4.83188-6.1868 4.83188-6.206725 4.83188-6.41594H2.410959C1.195517-6.41594 1.175592-6.545455 1.135741-6.734745H.886675L.557908-4.682441H.806974C.836862-4.841843 .926526-5.469489 1.05604-5.589041C1.125778-5.648817 1.902864-5.648817 2.032379-5.648817H4.094645C3.985056-5.489415 3.198007-4.403487 2.978829-4.07472C2.082192-2.729763 1.753425-1.344956 1.753425-.328767C1.753425-.229141 1.753425 .219178 2.211706 .219178S2.669988-.229141 2.669988-.328767V-.836862C2.669988-1.384807 2.699875-1.932752 2.779577-2.470735C2.819427-2.699875 2.958904-3.556663 3.39726-4.174346L4.742217-6.067248Z'/>
+<path id='mrm-zapolnitev-g1-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='mrm-zapolnitev-g1-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+</defs>
+<g id='mrm-zapolnitev-page1'>
+<g stroke-miterlimit='10' transform='translate(-71.290811,-60.565816)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g fill='#00f' stroke='#00f'>
+<path d='M14.22636-5.40608V0H19.63245V-5.40608ZM19.63245 0' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M19.63245-10.81218V-5.40608H25.03854V-10.81218ZM25.03854-5.40608' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M25.03854-16.21826V-10.81218H30.44463V-16.21826ZM30.44463-10.81218' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M19.63245-21.62392V-16.21826H25.03854V-21.62392ZM25.03854-16.21826' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M30.44463-21.62392V-16.21826H35.85028V-21.62392ZM35.85028-16.21826' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M14.22636-27.03001V-21.62392H19.63245V-27.03001ZM19.63245-21.62392' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M25.03854-27.03001V-21.62392H30.44463V-27.03001ZM30.44463-21.62392' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M30.44463-27.03001V-21.62392H35.85028V-27.03001ZM35.85028-21.62392' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M35.85028-27.03001V-21.62392H41.25638V-27.03001ZM41.25638-21.62392' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M25.03854-32.4361V-27.03001H30.44463V-32.4361ZM30.44463-27.03001' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M30.44463-32.4361V-27.03001H35.85028V-32.4361ZM35.85028-27.03001' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M35.85028-32.4361V-27.03001H41.25638V-32.4361ZM41.25638-27.03001' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M41.25638-32.4361V-27.03001H46.66246V-32.4361ZM46.66246-27.03001' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M25.03854-37.8422V-32.4361H30.44463V-37.8422ZM30.44463-32.4361' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M35.85028-37.8422V-32.4361H41.25638V-37.8422ZM41.25638-32.4361' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M41.25638-37.8422V-32.4361H46.66246V-37.8422ZM46.66246-32.4361' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M46.66246-37.8422V-32.4361H52.06856V-37.8422ZM52.06856-32.4361' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M41.25638-43.24829V-37.8422H46.66246V-43.24829ZM46.66246-37.8422' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M46.66246-43.24829V-37.8422H52.06856V-43.24829ZM52.06856-37.8422' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M52.06856-43.24829V-37.8422H57.47466V-43.24829ZM57.47466-37.8422' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M35.85028-48.65437V-43.24829H41.25638V-48.65437ZM41.25638-43.24829' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M41.25638-48.65437V-43.24829H46.66246V-48.65437ZM46.66246-43.24829' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M46.66246-48.65437V-43.24829H52.06856V-48.65437ZM52.06856-43.24829' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M52.06856-48.65437V-43.24829H57.47466V-48.65437ZM57.47466-43.24829' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M57.47466-48.65437V-43.24829H62.88074V-48.65437ZM62.88074-43.24829' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M46.66246-54.06003V-48.65437H52.06856V-54.06003ZM52.06856-48.65437' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M52.06856-54.06003V-48.65437H57.47466V-54.06003ZM57.47466-48.65437' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M57.47466-54.06003V-48.65437H62.88074V-54.06003ZM62.88074-48.65437' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M62.88074-54.06003V-48.65437H68.28639V-54.06003ZM68.28639-48.65437' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M46.66246-59.46613V-54.06003H52.06856V-59.46613ZM52.06856-54.06003' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M52.06856-59.46613V-54.06003H57.47466V-59.46613ZM57.47466-54.06003' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M57.47466-59.46613V-54.06003H62.88074V-59.46613ZM62.88074-54.06003' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M62.88074-59.46613V-54.06003H68.28639V-59.46613ZM68.28639-54.06003' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M68.28639-59.46613V-54.06003H73.69249V-59.46613ZM73.69249-54.06003' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M62.88074-64.87221V-59.46613H68.28639V-64.87221ZM68.28639-59.46613' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M68.28639-64.87221V-59.46613H73.69249V-64.87221ZM73.69249-59.46613' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M73.69249-64.87221V-59.46613H79.09857V-64.87221ZM79.09857-59.46613' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M57.47466-70.2783V-64.87221H62.88074V-70.2783ZM62.88074-64.87221' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M62.88074-70.2783V-64.87221H68.28639V-70.2783ZM68.28639-64.87221' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M68.28639-70.2783V-64.87221H73.69249V-70.2783ZM73.69249-64.87221' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M73.69249-70.2783V-64.87221H79.09857V-70.2783ZM79.09857-64.87221' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M79.09857-70.2783V-64.87221H84.50467V-70.2783ZM84.50467-64.87221' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M79.09857-75.68439V-70.2783H84.50467V-75.68439ZM84.50467-70.2783' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M84.50467-75.68439V-70.2783H89.91075V-75.68439ZM89.91075-70.2783' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M57.47466-81.09048V-75.68439H62.88074V-81.09048ZM62.88074-75.68439' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M62.88074-81.09048V-75.68439H68.28639V-81.09048ZM68.28639-75.68439' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M68.28639-81.09048V-75.68439H73.69249V-81.09048ZM73.69249-75.68439' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M73.69249-81.09048V-75.68439H79.09857V-81.09048ZM79.09857-75.68439' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M79.09857-81.09048V-75.68439H84.50467V-81.09048ZM84.50467-75.68439' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M84.50467-81.09048V-75.68439H89.91075V-81.09048ZM89.91075-75.68439' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M89.91075-81.09048V-75.68439H95.31685V-81.09048ZM95.31685-75.68439' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M57.47466-86.49614V-81.09048H62.88074V-86.49614ZM62.88074-81.09048' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M62.88074-86.49614V-81.09048H68.28639V-86.49614ZM68.28639-81.09048' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M68.28639-86.49614V-81.09048H73.69249V-86.49614ZM73.69249-81.09048' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M73.69249-86.49614V-81.09048H79.09857V-86.49614ZM79.09857-81.09048' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M79.09857-86.49614V-81.09048H84.50467V-86.49614ZM84.50467-81.09048' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M84.50467-86.49614V-81.09048H89.91075V-86.49614ZM89.91075-81.09048' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M89.91075-86.49614V-81.09048H95.31685V-86.49614ZM95.31685-81.09048' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M95.31685-86.49614V-81.09048H100.7225V-86.49614ZM100.7225-81.09048' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M79.09857-91.90224V-86.49614H84.50467V-91.90224ZM84.50467-86.49614' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M84.50467-91.90224V-86.49614H89.91075V-91.90224ZM89.91075-86.49614' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M89.91075-91.90224V-86.49614H95.31685V-91.90224ZM95.31685-86.49614' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M95.31685-91.90224V-86.49614H100.7225V-91.90224ZM100.7225-86.49614' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M100.7225-91.90224V-86.49614H106.1286V-91.90224ZM106.1286-86.49614' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M106.1286-97.30832V-91.90224H111.53468V-97.30832ZM111.53468-91.90224' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M79.09857-102.71442V-97.30832H84.50467V-102.71442ZM84.50467-97.30832' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M84.50467-102.71442V-97.30832H89.91075V-102.71442ZM89.91075-97.30832' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M89.91075-102.71442V-97.30832H95.31685V-102.71442ZM95.31685-97.30832' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M95.31685-102.71442V-97.30832H100.7225V-102.71442ZM100.7225-97.30832' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M100.7225-102.71442V-97.30832H106.1286V-102.71442ZM106.1286-97.30832' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M111.53468-102.71442V-97.30832H116.94078V-102.71442ZM116.94078-97.30832' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M79.09857-108.1205V-102.71442H84.50467V-108.1205ZM84.50467-102.71442' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M84.50467-108.1205V-102.71442H89.91075V-108.1205ZM89.91075-102.71442' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M89.91075-108.1205V-102.71442H95.31685V-108.1205ZM95.31685-102.71442' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M95.31685-108.1205V-102.71442H100.7225V-108.1205ZM100.7225-102.71442' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M100.7225-108.1205V-102.71442H106.1286V-108.1205ZM106.1286-102.71442' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M106.1286-108.1205V-102.71442H111.53468V-108.1205ZM111.53468-102.71442' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M111.53468-108.1205V-102.71442H116.94078V-108.1205ZM116.94078-102.71442' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M116.94078-108.1205V-102.71442H122.34686V-108.1205ZM122.34686-102.71442' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M100.7225-113.5266V-108.1205H106.1286V-113.5266ZM106.1286-108.1205' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M111.53468-113.5266V-108.1205H116.94078V-113.5266ZM116.94078-108.1205' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M116.94078-113.5266V-108.1205H122.34686V-113.5266ZM122.34686-108.1205' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M122.34686-113.5266V-108.1205H127.75296V-113.5266ZM127.75296-108.1205' stroke='none'/>
+</g>
+<path d='M14.22636 0V-113.5266H127.75296V0ZM127.75296-113.5266' fill='none'/>
+<clipPath id='mrm-zapolnitev-pgfcp1'>
+<path d='M14.22636 0V-113.5266H127.75296V0ZM127.75296-113.5266'/> </clipPath>
+<g clip-path='url(#pgfcp1)'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M54.7716 0L168.29778-113.5266' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M14.22636-40.54524L127.75296-154.07141' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(14.2252,3.63298)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.290811,-60.565816)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-71.290811' y='-60.565816' xlink:href='#mrm-zapolnitev-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(120.92139,3.63298)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.290811,-60.565816)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-71.290811' y='-60.565816' xlink:href='#mrm-zapolnitev-g1-50'/>
+<use x='-67.31957' y='-60.565816' xlink:href='#mrm-zapolnitev-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(6.60727,-5.101)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.290811,-60.565816)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-71.290811' y='-60.565816' xlink:href='#mrm-zapolnitev-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(2.62112,-112.9367)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.290811,-60.565816)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-71.290811' y='-60.565816' xlink:href='#mrm-zapolnitev-g1-50'/>
+<use x='-67.31957' y='-60.565816' xlink:href='#mrm-zapolnitev-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(55.02075,-124.17276)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.290811,-60.565816)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-71.290811' y='-60.565816' xlink:href='#mrm-zapolnitev-g0-53'/>
+<use x='-66.309472' y='-60.565816' xlink:href='#mrm-zapolnitev-g0-55'/>
+<use x='-59.114267' y='-60.565816' xlink:href='#mrm-zapolnitev-g0-43'/>
+<use x='-49.151653' y='-60.565816' xlink:href='#mrm-zapolnitev-g0-50'/>
+<use x='-44.170314' y='-60.565816' xlink:href='#mrm-zapolnitev-g0-54'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M162.18054-5.40608V0H167.58662V-5.40608ZM167.58662 0' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M167.58662-10.81218V-5.40608H172.99272V-10.81218ZM172.99272-5.40608' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M162.18054-16.21826V-10.81218H167.58662V-16.21826ZM167.58662-10.81218' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M172.99272-16.21826V-10.81218H178.3988V-16.21826ZM178.3988-10.81218' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M172.99272-21.62392V-16.21826H178.3988V-21.62392ZM178.3988-16.21826' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M178.3988-21.62392V-16.21826H183.80446V-21.62392ZM183.80446-16.21826' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M172.99272-27.03001V-21.62392H178.3988V-27.03001ZM178.3988-21.62392' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M178.3988-27.03001V-21.62392H183.80446V-27.03001ZM183.80446-21.62392' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M183.80446-27.03001V-21.62392H189.21056V-27.03001ZM189.21056-21.62392' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M189.21056-32.4361V-27.03001H194.61664V-32.4361ZM194.61664-27.03001' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M183.80446-37.8422V-32.4361H189.21056V-37.8422ZM189.21056-32.4361' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M194.61664-37.8422V-32.4361H200.02274V-37.8422ZM200.02274-32.4361' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M194.61664-43.24829V-37.8422H200.02274V-43.24829ZM200.02274-37.8422' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M200.02274-43.24829V-37.8422H205.42883V-43.24829ZM205.42883-37.8422' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M194.61664-48.65437V-43.24829H200.02274V-48.65437ZM200.02274-43.24829' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M200.02274-48.65437V-43.24829H205.42883V-48.65437ZM205.42883-43.24829' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M205.42883-48.65437V-43.24829H210.83492V-48.65437ZM210.83492-43.24829' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M210.83492-54.06003V-48.65437H216.24057V-54.06003ZM216.24057-48.65437' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M205.42883-59.46613V-54.06003H210.83492V-59.46613ZM210.83492-54.06003' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M216.24057-59.46613V-54.06003H221.64667V-59.46613ZM221.64667-54.06003' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M172.99272-64.87221V-59.46613H178.3988V-64.87221ZM178.3988-59.46613' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M178.3988-64.87221V-59.46613H183.80446V-64.87221ZM183.80446-59.46613' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M183.80446-64.87221V-59.46613H189.21056V-64.87221ZM189.21056-59.46613' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M194.61664-64.87221V-59.46613H200.02274V-64.87221ZM200.02274-59.46613' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M200.02274-64.87221V-59.46613H205.42883V-64.87221ZM205.42883-59.46613' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M205.42883-64.87221V-59.46613H210.83492V-64.87221ZM210.83492-59.46613' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M216.24057-64.87221V-59.46613H221.64667V-64.87221ZM221.64667-59.46613' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M221.64667-64.87221V-59.46613H227.05275V-64.87221ZM227.05275-59.46613' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M167.58662-70.2783V-64.87221H172.99272V-70.2783ZM172.99272-64.87221' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M172.99272-70.2783V-64.87221H178.3988V-70.2783ZM178.3988-64.87221' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M178.3988-70.2783V-64.87221H183.80446V-70.2783ZM183.80446-64.87221' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M183.80446-70.2783V-64.87221H189.21056V-70.2783ZM189.21056-64.87221' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M194.61664-70.2783V-64.87221H200.02274V-70.2783ZM200.02274-64.87221' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M200.02274-70.2783V-64.87221H205.42883V-70.2783ZM205.42883-64.87221' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M205.42883-70.2783V-64.87221H210.83492V-70.2783ZM210.83492-64.87221' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M216.24057-70.2783V-64.87221H221.64667V-70.2783ZM221.64667-64.87221' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M221.64667-70.2783V-64.87221H227.05275V-70.2783ZM227.05275-64.87221' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M227.05275-70.2783V-64.87221H232.45885V-70.2783ZM232.45885-64.87221' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M183.80446-75.68439V-70.2783H189.21056V-75.68439ZM189.21056-70.2783' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M189.21056-75.68439V-70.2783H194.61664V-75.68439ZM194.61664-70.2783' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M194.61664-75.68439V-70.2783H200.02274V-75.68439ZM200.02274-70.2783' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M200.02274-75.68439V-70.2783H205.42883V-75.68439ZM205.42883-70.2783' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M205.42883-75.68439V-70.2783H210.83492V-75.68439ZM210.83492-70.2783' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M216.24057-75.68439V-70.2783H221.64667V-75.68439ZM221.64667-70.2783' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M221.64667-75.68439V-70.2783H227.05275V-75.68439ZM227.05275-70.2783' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M227.05275-75.68439V-70.2783H232.45885V-75.68439ZM232.45885-70.2783' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M232.45885-75.68439V-70.2783H237.86493V-75.68439ZM237.86493-70.2783' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M178.3988-81.09048V-75.68439H183.80446V-81.09048ZM183.80446-75.68439' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M183.80446-81.09048V-75.68439H189.21056V-81.09048ZM189.21056-75.68439' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M189.21056-81.09048V-75.68439H194.61664V-81.09048ZM194.61664-75.68439' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M194.61664-81.09048V-75.68439H200.02274V-81.09048ZM200.02274-75.68439' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M200.02274-81.09048V-75.68439H205.42883V-81.09048ZM205.42883-75.68439' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M205.42883-81.09048V-75.68439H210.83492V-81.09048ZM210.83492-75.68439' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M216.24057-81.09048V-75.68439H221.64667V-81.09048ZM221.64667-75.68439' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M221.64667-81.09048V-75.68439H227.05275V-81.09048ZM227.05275-75.68439' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M227.05275-81.09048V-75.68439H232.45885V-81.09048ZM232.45885-75.68439' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M232.45885-81.09048V-75.68439H237.86493V-81.09048ZM237.86493-75.68439' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M237.86493-81.09048V-75.68439H243.27103V-81.09048ZM243.27103-75.68439' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M232.45885-86.49614V-81.09048H237.86493V-86.49614ZM237.86493-81.09048' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M237.86493-86.49614V-81.09048H243.27103V-86.49614ZM243.27103-81.09048' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M243.27103-86.49614V-81.09048H248.67668V-86.49614ZM248.67668-81.09048' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M189.21056-91.90224V-86.49614H194.61664V-91.90224ZM194.61664-86.49614' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M232.45885-91.90224V-86.49614H237.86493V-91.90224ZM237.86493-86.49614' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M237.86493-91.90224V-86.49614H243.27103V-91.90224ZM243.27103-86.49614' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M243.27103-91.90224V-86.49614H248.67668V-91.90224ZM248.67668-86.49614' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M248.67668-91.90224V-86.49614H254.08278V-91.90224ZM254.08278-86.49614' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M183.80446-97.30832V-91.90224H189.21056V-97.30832ZM189.21056-91.90224' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M189.21056-97.30832V-91.90224H194.61664V-97.30832ZM194.61664-91.90224' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M194.61664-97.30832V-91.90224H200.02274V-97.30832ZM200.02274-91.90224' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M200.02274-97.30832V-91.90224H205.42883V-97.30832ZM205.42883-91.90224' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M205.42883-97.30832V-91.90224H210.83492V-97.30832ZM210.83492-91.90224' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M216.24057-97.30832V-91.90224H221.64667V-97.30832ZM221.64667-91.90224' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M221.64667-97.30832V-91.90224H227.05275V-97.30832ZM227.05275-91.90224' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M227.05275-97.30832V-91.90224H232.45885V-97.30832ZM232.45885-91.90224' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M232.45885-97.30832V-91.90224H237.86493V-97.30832ZM237.86493-91.90224' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M237.86493-97.30832V-91.90224H243.27103V-97.30832ZM243.27103-91.90224' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M243.27103-97.30832V-91.90224H248.67668V-97.30832ZM248.67668-91.90224' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M248.67668-97.30832V-91.90224H254.08278V-97.30832ZM254.08278-91.90224' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M254.08278-97.30832V-91.90224H259.48886V-97.30832ZM259.48886-91.90224' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M183.80446-102.71442V-97.30832H189.21056V-102.71442ZM189.21056-97.30832' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M189.21056-102.71442V-97.30832H194.61664V-102.71442ZM194.61664-97.30832' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M194.61664-102.71442V-97.30832H200.02274V-102.71442ZM200.02274-97.30832' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M200.02274-102.71442V-97.30832H205.42883V-102.71442ZM205.42883-97.30832' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M205.42883-102.71442V-97.30832H210.83492V-102.71442ZM210.83492-97.30832' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M216.24057-102.71442V-97.30832H221.64667V-102.71442ZM221.64667-97.30832' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M221.64667-102.71442V-97.30832H227.05275V-102.71442ZM227.05275-97.30832' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M227.05275-102.71442V-97.30832H232.45885V-102.71442ZM232.45885-97.30832' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M232.45885-102.71442V-97.30832H237.86493V-102.71442ZM237.86493-97.30832' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M237.86493-102.71442V-97.30832H243.27103V-102.71442ZM243.27103-97.30832' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M243.27103-102.71442V-97.30832H248.67668V-102.71442ZM248.67668-97.30832' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M248.67668-102.71442V-97.30832H254.08278V-102.71442ZM254.08278-97.30832' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M254.08278-102.71442V-97.30832H259.48886V-102.71442ZM259.48886-97.30832' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M259.48886-102.71442V-97.30832H264.89496V-102.71442ZM264.89496-97.30832' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M194.61664-108.1205V-102.71442H200.02274V-108.1205ZM200.02274-102.71442' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M200.02274-108.1205V-102.71442H205.42883V-108.1205ZM205.42883-102.71442' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M205.42883-108.1205V-102.71442H210.83492V-108.1205ZM210.83492-102.71442' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M216.24057-108.1205V-102.71442H221.64667V-108.1205ZM221.64667-102.71442' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M221.64667-108.1205V-102.71442H227.05275V-108.1205ZM227.05275-102.71442' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M227.05275-108.1205V-102.71442H232.45885V-108.1205ZM232.45885-102.71442' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M232.45885-108.1205V-102.71442H237.86493V-108.1205ZM237.86493-102.71442' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M237.86493-108.1205V-102.71442H243.27103V-108.1205ZM243.27103-102.71442' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M243.27103-108.1205V-102.71442H248.67668V-108.1205ZM248.67668-102.71442' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M248.67668-108.1205V-102.71442H254.08278V-108.1205ZM254.08278-102.71442' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M254.08278-108.1205V-102.71442H259.48886V-108.1205ZM259.48886-102.71442' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M259.48886-108.1205V-102.71442H264.89496V-108.1205ZM264.89496-102.71442' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M264.89496-108.1205V-102.71442H270.30104V-108.1205ZM270.30104-102.71442' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M194.61664-113.5266V-108.1205H200.02274V-113.5266ZM200.02274-108.1205' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M200.02274-113.5266V-108.1205H205.42883V-113.5266ZM205.42883-108.1205' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M205.42883-113.5266V-108.1205H210.83492V-113.5266ZM210.83492-108.1205' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M210.83492-113.5266V-108.1205H216.24057V-113.5266ZM216.24057-108.1205' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M216.24057-113.5266V-108.1205H221.64667V-113.5266ZM221.64667-108.1205' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M221.64667-113.5266V-108.1205H227.05275V-113.5266ZM227.05275-108.1205' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M227.05275-113.5266V-108.1205H232.45885V-113.5266ZM232.45885-108.1205' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M232.45885-113.5266V-108.1205H237.86493V-113.5266ZM237.86493-108.1205' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M237.86493-113.5266V-108.1205H243.27103V-113.5266ZM243.27103-108.1205' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M243.27103-113.5266V-108.1205H248.67668V-113.5266ZM248.67668-108.1205' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M248.67668-113.5266V-108.1205H254.08278V-113.5266ZM254.08278-108.1205' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M254.08278-113.5266V-108.1205H259.48886V-113.5266ZM259.48886-108.1205' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M259.48886-113.5266V-108.1205H264.89496V-113.5266ZM264.89496-108.1205' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M264.89496-113.5266V-108.1205H270.30104V-113.5266ZM270.30104-108.1205' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M270.30104-113.5266V-108.1205H275.70714V-113.5266ZM275.70714-108.1205' stroke='none'/>
+</g>
+<path d='M162.18054 0V-113.5266H275.70714V0ZM275.70714-113.5266' fill='none'/>
+<clipPath id='mrm-zapolnitev-pgfcp2'>
+<path d='M162.18054 0V-113.5266H275.70714V0ZM275.70714-113.5266'/> </clipPath>
+<g clip-path='url(#pgfcp2)'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M240.56798 0L354.09415-113.5266' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M162.18054-78.38744L275.70714-191.9136' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(162.17938,3.63298)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.290811,-60.565816)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-71.290811' y='-60.565816' xlink:href='#mrm-zapolnitev-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(268.87556,3.63298)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.290811,-60.565816)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-71.290811' y='-60.565816' xlink:href='#mrm-zapolnitev-g1-50'/>
+<use x='-67.31957' y='-60.565816' xlink:href='#mrm-zapolnitev-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(154.56145,-5.101)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.290811,-60.565816)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-71.290811' y='-60.565816' xlink:href='#mrm-zapolnitev-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(150.5753,-112.9367)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.290811,-60.565816)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-71.290811' y='-60.565816' xlink:href='#mrm-zapolnitev-g1-50'/>
+<use x='-67.31957' y='-60.565816' xlink:href='#mrm-zapolnitev-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(202.97493,-124.17276)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.290811,-60.565816)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-71.290811' y='-60.565816' xlink:href='#mrm-zapolnitev-g0-53'/>
+<use x='-66.309472' y='-60.565816' xlink:href='#mrm-zapolnitev-g0-55'/>
+<use x='-59.114267' y='-60.565816' xlink:href='#mrm-zapolnitev-g0-43'/>
+<use x='-49.151653' y='-60.565816' xlink:href='#mrm-zapolnitev-g0-54'/>
+<use x='-44.170314' y='-60.565816' xlink:href='#mrm-zapolnitev-g0-52'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 7.31</span>: The triangular factor \(\mat L\) of the matrix \(\mat K_{\mathrm{ff}}\) of the bridge (lower triangle with the diagonal) after elimination, for both numberings of figure <a class="xref" href="sec-redke-matrike.html#fig-mrm-pas" data-knowl="fig-mrm-pas">7.30</a>. Blue squares are entries that were already nonzero in \(\mat K_{\mathrm{ff}}\) <span class="nobr">(\(57\)),</span> orange ones are fill, that is entries that were zero and are nonzero after elimination <span class="nobr">(\(26\)</span> on the left, \(64\) on the right). The dashed lines bound the band <span class="nobr">\(|i - j| \le b\),</span> in the lower triangle the lower one decides. All orange squares are inside the band, the rest of the band is zero.</figcaption></figure>
+<p>How much work do we save? We count work as the number of multiplications and divisions. For counting we need the sum <span class="nobr">\(1^2 + 2^2 + \dots + m^2\),</span> which section <a class="xref" href="sec-integral.html">3.5</a> wrote without proof in the history box on Cavalieri. We prove it now, by <a class="xref auto" href="sec-konvergenca-zaporedij.html#thm-indukcija" data-knowl="thm-indukcija">induction</a>.</p>
+
+<div class="blk lema" id="lem-vsota-kvadratov"><div class="blk-head"><span class="blk-label">Lemma 7.43</span> <span class="blk-title">Sum of the squares of natural numbers (vsota kvadratov naravnih števil)</span></div><div class="blk-body"><p>For every natural number \(m\)</p>
+<div class="eq" id="eq-mrm-vsote">\[\begin{aligned} 1 + 2 + \dots + m &amp;= \frac{m\,(m + 1)}{2} , \\ 1^2 + 2^2 + \dots + m^2 &amp;= \frac{m\,(m + 1)(2m + 1)}{6} . \end{aligned} \tag{7.42}\]</div>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We prove it by induction on \(m\) (theorem <a class="xref" href="sec-konvergenca-zaporedij.html#thm-indukcija" data-knowl="thm-indukcija">1.44</a>) for both equalities together.</p>
+<ol>
+<li>Start, <span class="nobr">\(m = 1\).</span> The left side of both is <span class="nobr">\(1\),</span> the right sides are \(1 \cdot 2/2 = 1\) and <span class="nobr">\(1 \cdot 2 \cdot 3/6 = 1\).</span></li>
+<li>Induction step. Let the equalities hold for <span class="nobr">\(m\).</span> To the first sum we add <span class="nobr">\(m + 1\),</span> to the second <span class="nobr">\((m + 1)^2\).</span></li>
+<li>The first sum becomes <span class="nobr">\(\frac{m(m + 1)}{2} + (m + 1) = \frac{(m + 1)(m + 2)}{2}\).</span> This is the first equality for <span class="nobr">\(m + 1\).</span></li>
+<li>The second sum becomes <span class="nobr">\(\frac{m(m + 1)(2m + 1)}{6} + (m + 1)^2 = \frac{(m + 1)\,\big(m(2m + 1) + 6(m + 1)\big)}{6} = \frac{(m + 1)(2m^2 + 7m + 6)}{6}\).</span></li>
+<li>Since <span class="nobr">\((m + 2)(2m + 3) = 2m^2 + 7m + 6\),</span> this is <span class="nobr">\(\frac{(m + 1)(m + 2)(2m + 3)}{6}\),</span> which is the second equality for <span class="nobr">\(m + 1\),</span> because <span class="nobr">\(2(m + 1) + 1 = 2m + 3\).</span></li>
+<li>By the principle of induction the equalities hold for every <span class="nobr">\(m\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> The proof is not from a source. The equality is stated without proof in section <a class="xref" href="sec-integral.html">3.5</a>.</p></div></div>
+<p>The proof showed that the formula holds for every <span class="nobr">\(m\),</span> because it holds for \(m = 1\) and passes from \(m\) to <span class="nobr">\(m + 1\).</span></p>
+
+<div class="blk lema" id="lem-cena-eliminacije"><div class="blk-head"><span class="blk-label">Lemma 7.44</span> <span class="blk-title">Cost of elimination (cena eliminacije)</span></div><div class="blk-body"><p>Let \(\mat K\) be a symmetric <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite matrix</a> of order <span class="nobr">\(n\).</span> Elimination without row exchanges that uses the symmetry and corrects only the lower triangle in every step performs, for a full <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a>,</p>
+<div class="eq" id="eq-mrm-cena-polna">\[\frac{(n - 1)\,n\,(n + 1)}{6} \approx \frac{n^3}{6} \tag{7.43}\]</div>
+<p>multiplications in the corrections of entries and \(n(n - 1)/2\) divisions in the computation of the multipliers. If \(\mat K\) has <a class="xref auto" href="sec-redke-matrike.html#def-pasovna-matrika" data-knowl="def-pasovna-matrika">half-bandwidth</a> \(b &lt; n\) and in every step we skip the rows that have a zero in the pivot column, the number of multiplications is at most</p>
+<div class="eq" id="eq-mrm-cena-pasovna">\[\frac{b\,(b + 1)\,(3n - 2b - 1)}{6} \approx \frac{n\,b^2}{2} \quad (n \gg b \gg 1) , \tag{7.44}\]</div>
+<p>and the number of divisions at most <span class="nobr">\(b\,(2n - b - 1)/2 \approx n\,b\).</span> The bounds are reached if in every step all \(b\) entries below the pivot are nonzero.</p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that the number of operations is as stated. We count step by step. Let \(k = 1, \dots, n - 1\) be the step in which the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat K^{(k)}\) has order \(n - k + 1\) (notation of lemma <a class="xref" href="sec-redke-matrike.html#lem-pas-ostane" data-knowl="lem-pas-ostane">7.42</a>).</p>
+<ol>
+<li>In step \(k\) there are \(s = n - k\) rows below the pivot. The multiplier of row \(i\) is <span class="nobr">\(g_{\mathrm{i}}/K_{11}\),</span> which is one division per row, \(s\) divisions in all.</li>
+<li>The correction \(K_{\mathrm{ij}} - g_{\mathrm{i}} g_{\mathrm{j}}/K_{11} = K_{\mathrm{ij}} - \ell_{\mathrm{i}} g_{\mathrm{j}}\) with the already computed multiplier \(\ell_{\mathrm{i}} = g_{\mathrm{i}}/K_{11}\) is one multiplication. Since the matrix is symmetric (step 5 of the proof of theorem <a class="xref" href="sec-skalarni-produkt-funkcij.html#thm-sistem-pozitivno-definitna" data-knowl="thm-sistem-pozitivno-definitna">6.29</a>), we correct only the entries \((i, j)\) with \(i \ge j\) among the \(s\) rows, that is \(s(s + 1)/2\) entries and as many multiplications.</li>
+<li>For a full matrix the sum over the steps, as \(s = n - k\) goes from \(1\) to <span class="nobr">\(n - 1\),</span> by lemma <a class="xref" href="sec-redke-matrike.html#lem-vsota-kvadratov" data-knowl="lem-vsota-kvadratov">7.43</a> with \(m = n - 1\) is
+<div class="eq">\[\begin{aligned} \sum_{\mathrm{s}=1}^{n-1} \frac{s(s + 1)}{2} &amp;= \frac12\left(\frac{(n - 1)\,n\,(2n - 1)}{6} + \frac{(n - 1)\,n}{2}\right) \\ &amp;= \frac{(n - 1)\,n\,\big((2n - 1) + 3\big)}{12} = \frac{(n - 1)\,n\,(n + 1)}{6} . \end{aligned}\]</div>
+The number of divisions is <span class="nobr">\(\sum_{\mathrm{s}=1}^{n-1} s = n(n - 1)/2\).</span> This is <a class="xref" href="sec-redke-matrike.html#eq-mrm-cena-polna" data-knowl="eq-mrm-cena-polna">(7.43)</a>.</li>
+<li>For a <a class="xref auto" href="sec-redke-matrike.html#def-pasovna-matrika" data-knowl="def-pasovna-matrika">banded matrix</a>, by lemma <a class="xref" href="sec-redke-matrike.html#lem-pas-ostane" data-knowl="lem-pas-ostane">7.42</a> all entries outside the band of every matrix \(\mat K^{(k)}\) are zero, so in step \(k\) only \(t_{\mathrm{k}} = \min(b, n - k)\) entries of the column \(\vek g\) are nonzero (step 3 of the proof of the lemma). Multipliers and corrections are needed only for these rows, so at most \(t_{\mathrm{k}}\) divisions and \(t_{\mathrm{k}}(t_{\mathrm{k}} + 1)/2\) multiplications (exactly as many if all these entries are really nonzero).</li>
+<li>For \(k \le n - b\) we have <span class="nobr">\(t_{\mathrm{k}} = b\),</span> and for \(k &gt; n - b\) the number \(t_{\mathrm{k}} = n - k\) goes from \(b - 1\) to <span class="nobr">\(1\).</span> The sum of these <a class="xref auto" href="sec-polnost.html#def-zgornja-meja" data-knowl="def-zgornja-meja">upper bounds</a> is
+<div class="eq">\[\begin{aligned} (n - b)\,\frac{b(b + 1)}{2} + \sum_{\mathrm{s}=1}^{b-1}\frac{s(s + 1)}{2} &amp;= (n - b)\,\frac{b(b + 1)}{2} + \frac{(b - 1)\,b\,(b + 1)}{6} \\ &amp;= \frac{b(b + 1)}{6}\,\big(3(n - b) + (b - 1)\big) , \end{aligned}\]</div>
+where we computed the second sum as in step 3 with \(b - 1\) instead of <span class="nobr">\(n - 1\).</span> The bracket is <span class="nobr">\(3n - 2b - 1\),</span> which is <a class="xref" href="sec-redke-matrike.html#eq-mrm-cena-pasovna" data-knowl="eq-mrm-cena-pasovna">(7.44)</a>. The number of divisions is <span class="nobr">\((n - b)\,b + b(b - 1)/2 = b\,(2n - b - 1)/2\).</span></li>
+<li>For \(n \gg b \gg 1\) we have \(b + 1 \approx b\) and <span class="nobr">\(3n - 2b - 1 \approx 3n\),</span> so <span class="nobr">\(b \cdot b \cdot 3n/6 = n b^2/2\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> The counting is not from a source. The same proportionality \(n^3\) for a full matrix is given by KREYSZIG, PDF p. 876 (crop p876-b2): <span class="nobr">\(f(n) = \tfrac12 (n - 1) n + \tfrac23 (n^2 - 1) n \approx \tfrac23 n^3\),</span> where the source counts divisions, multiplications and subtractions for a nonsymmetric matrix, so \(\tfrac13 n^3\) multiplications. COOK, PDF p. 58: for a matrix with \(n \gg b\) the computational effort is &quot;approximately proportional to \(nb^2\)&quot;.</p></div></div>
+<p>The lemma and its bound for \(n \gg b\) say that the cost grows only linearly with the order \(n\) if the band stays equally wide, and for a full matrix as the third power. For the bridge with \(n = 21\) unknowns:</p>
+<ol>
+<li>Full matrix: by equation <a class="xref" href="sec-redke-matrike.html#eq-mrm-cena-polna" data-knowl="eq-mrm-cena-polna">(7.43)</a>, \(20 \cdot 21 \cdot 22/6 = 1540\) multiplications and \(210\) divisions, \(1750\) operations in all.</li>
+<li>Band \(b = 7\) (along the span), all entries of the band: by equation <a class="xref" href="sec-redke-matrike.html#eq-mrm-cena-pasovna" data-knowl="eq-mrm-cena-pasovna">(7.44)</a>, \(7 \cdot 8 \cdot (63 - 15)/6 = 448\) multiplications and \(7 \cdot (42 - 8)/2 = 119\) divisions, at most \(567\) in all. If in every step we count only the entries that are really nonzero in that step (including the fill created earlier), the number of operations is <span class="nobr">\(148 + 62 = 210\).</span></li>
+<li>Band \(b = 14\) (by rows), all entries of the band give at most \(1190\) multiplications, which is almost as many as for the full matrix, and \(189\) divisions, \(1379\) in all. Skipping zeros, it is \(380 + 100 = 480\) operations.</li>
+</ol>
+<p>The approximation \(n b^2/2\) would give \(21 \cdot 196/2 = 2058\) for <span class="nobr">\(b = 14\),</span> which is more than the full cost <span class="nobr">\(1540\).</span> This is no contradiction: the approximation \(n b^2/2\) holds for <span class="nobr">\(n \gg b\),</span> and for the bridge \(b = 14\) is only a little less than <span class="nobr">\(n = 21\),</span> and the exact equation <a class="xref" href="sec-redke-matrike.html#eq-mrm-cena-pasovna" data-knowl="eq-mrm-cena-pasovna">(7.44)</a> gives <span class="nobr">\(1190 &lt; 1540\).</span> The order \(21\) is too small for the band to save much, so let us look at a larger system. A mesh of \(50 \times 100\) nodes with two unknowns per node has \(n = 10^4\) unknowns. If we number the nodes by rows of length \(50\) and every element also connects diagonally neighbouring nodes, then \(m = 51\) and by equation <a class="xref" href="sec-redke-matrike.html#eq-mrm-pas-elementov" data-knowl="eq-mrm-pas-elementov">(7.40)</a> <span class="nobr">\(b \le 2 \cdot 52 - 1 = 103\),</span> which for an estimate we round to \(b = 100\) (an example for an estimate, not the computation of some structure, with \(b = 103\) it would be <span class="nobr">\(5{,}3 \cdot 10^7\)).</span> For \(n = 10^4\) and \(b = 100\) such a system needs \(n^3/6 = 1{,}7 \cdot 10^{11}\) multiplications for a full matrix and \(n b^2/2 = 5 \cdot 10^7\) for a banded one, which is \(3300\) times fewer. For \(n = 10^6\) and \(b = 10^3\) the ratio is \(3{,}3 \cdot 10^5\) <span class="nobr">(\(1{,}7 \cdot 10^{17}\)</span> against <span class="nobr">\(5 \cdot 10^{11}\)).</span> If we assume that one operation takes \(10^{-9}\) s (an assumption, not a measurement, but it agrees with the table in KREYSZIG, PDF p. 877, where for \(\tfrac23 n^3\) operations the time is \(0{,}7\) s at \(n = 1000\) and \(11\) min at <span class="nobr">\(n = 10\,000\)),</span> the first computation takes about \(170\) s and the second \(0{,}05\) s. Figure <a class="xref" href="sec-redke-matrike.html#fig-mrm-cena" data-knowl="fig-mrm-cena">7.32</a> shows all this on one graph.</p>
+
+<figure class="blk slika" id="fig-mrm-cena"><p><span class="svgfig" role="img" aria-label="Cost of elimination for a full and a banded matrix on a logarithmic scale"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='331.25pt' height='262.12pt' viewBox='-72.000004 -72.000006 245.373748 194.164174'>
+<defs>
+<path id='mrm-cena-g0-78' d='M7.531756-5.758406C7.631382-6.156912 7.81071-6.465753 8.607721-6.495641C8.657534-6.495641 8.777086-6.505604 8.777086-6.694894C8.777086-6.704857 8.777086-6.804483 8.647572-6.804483C8.318804-6.804483 7.970112-6.774595 7.641345-6.774595C7.302615-6.774595 6.953923-6.804483 6.625156-6.804483C6.56538-6.804483 6.445828-6.804483 6.445828-6.60523C6.445828-6.495641 6.545455-6.495641 6.625156-6.495641C7.193026-6.485679 7.302615-6.276463 7.302615-6.057285C7.302615-6.027397 7.28269-5.877958 7.272727-5.84807L6.156912-1.414695L3.955168-6.615193C3.875467-6.794521 3.865504-6.804483 3.636364-6.804483H2.30137C2.102117-6.804483 2.012453-6.804483 2.012453-6.60523C2.012453-6.495641 2.102117-6.495641 2.291407-6.495641C2.34122-6.495641 2.968867-6.495641 2.968867-6.405978L1.633873-1.05604C1.534247-.657534 1.364882-.33873 .557908-.308842C.498132-.308842 .388543-.298879 .388543-.109589C.388543-.039851 .438356 0 .518057 0C.836862 0 1.185554-.029888 1.514321-.029888C1.853051-.029888 2.211706 0 2.540473 0C2.590286 0 2.719801 0 2.719801-.199253C2.719801-.298879 2.630137-.308842 2.520548-.308842C1.942715-.328767 1.863014-.547945 1.863014-.747198C1.863014-.816936 1.872976-.86675 1.902864-.976339L3.217933-6.236613C3.257783-6.176837 3.257783-6.156912 3.307597-6.057285L5.788294-.18929C5.858032-.019925 5.88792 0 5.977584 0C6.087173 0 6.087173-.029888 6.136986-.209215L7.531756-5.758406Z'/>
+<path id='mrm-cena-g0-110' d='M.876712-.587796C.846824-.438356 .787049-.209215 .787049-.159402C.787049 .019925 .926526 .109589 1.075965 .109589C1.195517 .109589 1.374844 .029888 1.444583-.169365C1.454545-.18929 1.574097-.657534 1.633873-.9066L1.853051-1.803238C1.912827-2.022416 1.972603-2.241594 2.022416-2.470735C2.062267-2.6401 2.141968-2.929016 2.15193-2.968867C2.30137-3.277709 2.82939-4.184309 3.775841-4.184309C4.224159-4.184309 4.313823-3.815691 4.313823-3.486924C4.313823-2.86924 3.825654-1.594022 3.666252-1.165629C3.576588-.936488 3.566625-.816936 3.566625-.707347C3.566625-.239103 3.915318 .109589 4.383562 .109589C5.32005 .109589 5.688667-1.344956 5.688667-1.424658C5.688667-1.524284 5.599004-1.524284 5.569116-1.524284C5.469489-1.524284 5.469489-1.494396 5.419676-1.344956C5.220423-.667497 4.891656-.109589 4.403487-.109589C4.234122-.109589 4.164384-.209215 4.164384-.438356C4.164384-.687422 4.254047-.926526 4.343711-1.145704C4.533001-1.673724 4.951432-2.769614 4.951432-3.337484C4.951432-4.004981 4.523039-4.403487 3.805729-4.403487C2.909091-4.403487 2.420922-3.765878 2.251557-3.536737C2.201743-4.094645 1.793275-4.403487 1.334994-4.403487S.687422-4.014944 .587796-3.835616C.428394-3.496887 .288917-2.909091 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.779577 .577833-2.998755C.747198-3.706102 .946451-4.184309 1.305106-4.184309C1.504359-4.184309 1.613948-4.054795 1.613948-3.726027C1.613948-3.516812 1.58406-3.407223 1.454545-2.889166L.876712-.587796Z'/>
+<path id='mrm-cena-g1-61' d='M3.493898-4.923537C3.535741-5.014197 3.535741-5.028144 3.535741-5.05604C3.535741-5.167621 3.445081-5.230386 3.368369-5.230386C3.249813-5.230386 3.214944-5.1467 3.180075-5.05604L.578829 1.436613C.536986 1.527273 .536986 1.54122 .536986 1.569116C.536986 1.680697 .627646 1.743462 .704359 1.743462C.822914 1.743462 .857783 1.659776 .892653 1.569116L3.493898-4.923537Z'/>
+<path id='mrm-cena-g1-98' d='M1.841096-4.630635C1.84807-4.644583 1.868991-4.735243 1.868991-4.742217C1.868991-4.777086 1.841096-4.839851 1.75741-4.839851C1.617933-4.839851 1.039103-4.78406 .864757-4.770112C.808966-4.763138 .711333-4.756164 .711333-4.609714C.711333-4.51208 .808966-4.51208 .892653-4.51208C1.227397-4.51208 1.227397-4.463263 1.227397-4.407472C1.227397-4.358655 1.157659-4.079701 1.115816-3.919303L.955417-3.277709C.892653-3.040598 .509091-1.513325 .495143-1.422665C.460274-1.255293 .460274-1.164633 .460274-1.080946C.460274-.376588 .9066 .069738 1.48543 .069738C2.357161 .069738 3.284682-.878705 3.284682-1.910834C3.284682-2.726775 2.719801-3.075467 2.238605-3.075467C1.875965-3.075467 1.569116-2.873225 1.3599-2.691905L1.841096-4.630635ZM1.492403-.125529C1.150685-.125529 .955417-.425405 .955417-.836862C.955417-1.094894 1.018182-1.332005 1.21345-2.12005C1.255293-2.252553 1.255293-2.266501 1.387796-2.419925C1.652802-2.726775 1.966625-2.880199 2.217684-2.880199C2.489664-2.880199 2.726775-2.677958 2.726775-2.203736C2.726775-1.917808 2.57335-1.206476 2.364134-.801993C2.196762-.460274 1.84807-.125529 1.492403-.125529Z'/>
+<path id='mrm-cena-g1-110' d='M.850809-.439352C.822914-.348692 .781071-.174346 .781071-.153425C.781071 0 .9066 .069738 1.018182 .069738C1.143711 .069738 1.255293-.020922 1.290162-.083686S1.380822-.369614 1.415691-.516065C1.45056-.648568 1.527273-.969365 1.569116-1.143711C1.610959-1.297136 1.652802-1.45056 1.687671-1.610959C1.764384-1.896887 1.778331-1.952677 1.980573-2.238605C2.175841-2.517559 2.503611-2.880199 3.02665-2.880199C3.431133-2.880199 3.438107-2.524533 3.438107-2.39203C3.438107-1.973599 3.138232-1.199502 3.02665-.9066C2.949938-.711333 2.922042-.648568 2.922042-.530012C2.922042-.160399 3.228892 .069738 3.584558 .069738C4.281943 .069738 4.588792-.892653 4.588792-.99726C4.588792-1.08792 4.498132-1.08792 4.47721-1.08792C4.379577-1.08792 4.372603-1.046077 4.344707-.969365C4.184309-.411457 3.884433-.125529 3.605479-.125529C3.459029-.125529 3.431133-.223163 3.431133-.369614C3.431133-.530012 3.466002-.620672 3.591532-.934496C3.675218-1.150685 3.961146-1.889913 3.961146-2.280448C3.961146-2.956912 3.424159-3.075467 3.054545-3.075467C2.475716-3.075467 2.085181-2.719801 1.875965-2.440847C1.827148-2.922042 1.415691-3.075467 1.129763-3.075467C.829888-3.075467 .669489-2.859278 .578829-2.698879C.425405-2.440847 .327771-2.043337 .327771-2.008468C.327771-1.917808 .425405-1.917808 .446326-1.917808C.54396-1.917808 .550934-1.93873 .599751-2.127024C.704359-2.538481 .836862-2.880199 1.108842-2.880199C1.290162-2.880199 1.338979-2.726775 1.338979-2.538481C1.338979-2.405978 1.276214-2.147945 1.227397-1.959651S1.108842-1.48543 1.073973-1.332005L.850809-.439352Z'/>
+<path id='mrm-cena-g2-48' d='M3.598506-2.224658C3.598506-2.991781 3.507846-3.542715 3.187049-4.030884C2.970859-4.351681 2.538481-4.630635 1.980573-4.630635C.36264-4.630635 .36264-2.726775 .36264-2.224658S.36264 .139477 1.980573 .139477S3.598506-1.72254 3.598506-2.224658ZM1.980573-.055791C1.659776-.055791 1.234371-.244085 1.094894-.81594C.99726-1.227397 .99726-1.799253 .99726-2.315318C.99726-2.824408 .99726-3.354421 1.101868-3.737983C1.248319-4.288917 1.694645-4.435367 1.980573-4.435367C2.357161-4.435367 2.719801-4.20523 2.84533-3.800747C2.956912-3.424159 2.963885-2.922042 2.963885-2.315318C2.963885-1.799253 2.963885-1.283188 2.873225-.843836C2.733748-.209215 2.259527-.055791 1.980573-.055791Z'/>
+<path id='mrm-cena-g2-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='mrm-cena-g2-54' d='M1.046077-2.280448C1.046077-2.852304 1.094894-3.368369 1.3599-3.793773C1.597011-4.170361 1.973599-4.428394 2.419925-4.428394C2.629141-4.428394 2.908095-4.372603 3.047572-4.184309C2.873225-4.170361 2.726775-4.051806 2.726775-3.849564C2.726775-3.675218 2.84533-3.521793 3.054545-3.521793S3.38929-3.66127 3.38929-3.863512C3.38929-4.267995 3.096389-4.630635 2.405978-4.630635C1.401743-4.630635 .376588-3.710087 .376588-2.21071C.376588-.404483 1.227397 .139477 1.994521 .139477C2.84533 .139477 3.584558-.509091 3.584558-1.422665C3.584558-2.308344 2.880199-2.963885 2.064259-2.963885C1.506351-2.963885 1.199502-2.594271 1.046077-2.280448ZM1.994521-.083686C1.645828-.083686 1.373848-.285928 1.227397-.592777C1.12279-.801993 1.066999-1.150685 1.066999-1.569116C1.066999-2.245579 1.471482-2.768618 2.02939-2.768618C2.350187-2.768618 2.566376-2.643088 2.740722-2.385056C2.908095-2.12005 2.915068-1.827148 2.915068-1.422665C2.915068-1.025156 2.915068-.732254 2.726775-.460274C2.559402-.216189 2.336239-.083686 1.994521-.083686Z'/>
+<path id='mrm-cena-g2-55' d='M3.731009-4.212204C3.800747-4.29589 3.800747-4.309838 3.800747-4.491158H1.973599C1.694645-4.491158 1.617933-4.498132 1.366874-4.519054C1.004234-4.546949 .990286-4.595766 .969365-4.714321H.732254L.488169-3.221918H.72528C.739228-3.326526 .808966-3.7868 .920548-3.856538C.976339-3.898381 1.54122-3.898381 1.645828-3.898381H3.166127C2.942964-3.605479 2.587298-3.173101 2.440847-2.977833C1.527273-1.778331 1.443587-.669489 1.443587-.258032C1.443587-.18132 1.443587 .139477 1.771357 .139477C2.106102 .139477 2.106102-.174346 2.106102-.265006V-.54396C2.106102-1.896887 2.385056-2.517559 2.684932-2.894147L3.731009-4.212204Z'/>
+<path id='mrm-cena-g2-61' d='M5.355915-2.343213C5.460523-2.343213 5.620922-2.343213 5.620922-2.517559C5.620922-2.684932 5.453549-2.684932 5.362889-2.684932H.746202C.655542-2.684932 .488169-2.684932 .488169-2.517559C.488169-2.343213 .648568-2.343213 .753176-2.343213H5.355915ZM5.362889-.808966C5.453549-.808966 5.620922-.808966 5.620922-.976339C5.620922-1.150685 5.460523-1.150685 5.355915-1.150685H.753176C.648568-1.150685 .488169-1.150685 .488169-.976339C.488169-.808966 .655542-.808966 .746202-.808966H5.362889Z'/>
+<path id='mrm-cena-g2-111' d='M3.689166-1.48543C3.689166-2.357161 2.942964-3.110336 1.980573-3.110336S.27198-2.357161 .27198-1.48543C.27198-.620672 1.039103 .069738 1.980573 .069738S3.689166-.620672 3.689166-1.48543ZM1.980573-.153425C1.72254-.153425 1.345953-.237111 1.115816-.578829C.927522-.864757 .9066-1.227397 .9066-1.548194C.9066-1.84807 .913574-2.259527 1.157659-2.559402C1.332005-2.761644 1.624907-2.915068 1.980573-2.915068C2.39203-2.915068 2.684932-2.719801 2.838356-2.503611C3.033624-2.231631 3.054545-1.882939 3.054545-1.548194S3.033624-.843836 2.831382-.557908C2.643088-.292902 2.322291-.153425 1.980573-.153425Z'/>
+<path id='mrm-cena-g2-112' d='M1.93873 1.101868C1.48543 1.101868 1.415691 1.101868 1.415691 .801993V-.334745C1.45056-.299875 1.778331 .069738 2.364134 .069738C3.284682 .069738 4.072727-.620672 4.072727-1.506351C4.072727-2.364134 3.361395-3.075467 2.475716-3.075467C2.078207-3.075467 1.673724-2.929016 1.387796-2.650062V-3.075467L.341719-2.998755V-2.747696C.829888-2.747696 .864757-2.712827 .864757-2.419925V.801993C.864757 1.101868 .795019 1.101868 .341719 1.101868V1.352927C.355666 1.352927 .843836 1.325031 1.136737 1.325031C1.39477 1.325031 1.875965 1.345953 1.93873 1.352927V1.101868ZM1.415691-2.322291C1.624907-2.670984 2.02939-2.852304 2.399004-2.852304C2.984807-2.852304 3.438107-2.238605 3.438107-1.506351C3.438107-.711333 2.915068-.125529 2.322291-.125529C1.708593-.125529 1.436613-.662516 1.415691-.704359V-2.322291Z'/>
+<path id='mrm-cena-g3-48' d='M2.993773-1.594022C2.993773-1.952677 2.993773-3.317559 1.693649-3.317559S.393524-1.952677 .393524-1.594022C.393524-1.230386 .393524 .109589 1.693649 .109589S2.993773-1.230386 2.993773-1.594022ZM1.693649-.054795C1.50934-.054795 1.090909-.119552 .966376-.622665C.896638-.891656 .891656-1.24533 .891656-1.653798C.891656-2.022416 .891656-2.366127 .971357-2.650062C1.09589-3.068493 1.479452-3.153176 1.693649-3.153176C2.062267-3.153176 2.326276-2.963885 2.425903-2.615193C2.495641-2.361146 2.495641-1.947696 2.495641-1.653798C2.495641-1.315068 2.495641-.911582 2.420922-.612702C2.291407-.129514 1.892902-.054795 1.693649-.054795Z'/>
+<path id='mrm-cena-g3-49' d='M1.982565-3.16812C1.982565-3.317559 1.967621-3.317559 1.803238-3.317559C1.449564-2.998755 .896638-2.998755 .797011-2.998755H.712329V-2.779577H.797011C.911582-2.779577 1.235367-2.794521 1.524284-2.919054V-.428394C1.524284-.273973 1.524284-.219178 .996264-.219178H.747198V0C1.021171-.019925 1.464508-.019925 1.753425-.019925S2.485679-.019925 2.759651 0V-.219178H2.510585C1.982565-.219178 1.982565-.273973 1.982565-.428394V-3.16812Z'/>
+<path id='mrm-cena-g3-50' d='M2.933998-.961395H2.724782C2.709838-.86675 2.660025-.557908 2.580324-.508095C2.540473-.478207 2.122042-.478207 2.047323-.478207H1.070984C1.399751-.722291 1.768369-1.001245 2.067248-1.200498C2.515567-1.50934 2.933998-1.798257 2.933998-2.326276C2.933998-2.963885 2.331258-3.317559 1.618929-3.317559C.946451-3.317559 .4533-2.929016 .4533-2.440847C.4533-2.181818 .672478-2.136986 .742217-2.136986C.876712-2.136986 1.036115-2.22665 1.036115-2.430884C1.036115-2.610212 .9066-2.709838 .752179-2.724782C.891656-2.948941 1.180573-3.098381 1.514321-3.098381C1.997509-3.098381 2.400996-2.809465 2.400996-2.321295C2.400996-1.902864 2.11208-1.58406 1.728518-1.260274L.513076-.229141C.463263-.184309 .458281-.184309 .4533-.14944V0H2.769614L2.933998-.961395Z'/>
+<path id='mrm-cena-g3-51' d='M1.643836-1.648817C2.102117-1.648817 2.405978-1.364882 2.405978-.871731C2.405978-.363636 2.092154-.094645 1.648817-.094645C1.594022-.094645 1.001245-.094645 .747198-.353674C.951432-.383562 1.011208-.537983 1.011208-.657534C1.011208-.841843 .871731-.961395 .707347-.961395C.547945-.961395 .398506-.856787 .398506-.647572C.398506-.129514 .986301 .109589 1.663761 .109589C2.480697 .109589 2.988792-.383562 2.988792-.86675C2.988792-1.275218 2.625156-1.62391 2.057285-1.753425C2.655044-1.947696 2.814446-2.326276 2.814446-2.60523C2.814446-3.013699 2.306351-3.317559 1.678705-3.317559C1.066002-3.317559 .572852-3.058531 .572852-2.610212C.572852-2.37609 .762142-2.316314 .856787-2.316314C1.001245-2.316314 1.140722-2.420922 1.140722-2.600249C1.140722-2.714819 1.080946-2.854296 .901619-2.884184C1.115816-3.113325 1.559153-3.128269 1.663761-3.128269C2.027397-3.128269 2.286426-2.94396 2.286426-2.60523C2.286426-2.316314 2.097136-1.863014 1.574097-1.833126C1.43462-1.828144 1.414695-1.823163 1.285181-1.818182C1.230386-1.8132 1.175592-1.808219 1.175592-1.733499C1.175592-1.648817 1.225405-1.648817 1.315068-1.648817H1.643836Z'/>
+<path id='mrm-cena-g3-52' d='M3.073474-.811955V-1.031133H2.450809V-3.222914C2.450809-3.342466 2.445828-3.372354 2.316314-3.372354C2.216687-3.372354 2.211706-3.367372 2.156912-3.297634L.313823-1.031133V-.811955H1.972603V-.423412C1.972603-.268991 1.972603-.219178 1.539228-.219178H1.364882V0C1.599004-.009963 1.92279-.019925 2.211706-.019925S2.819427-.009963 3.058531 0V-.219178H2.884184C2.450809-.219178 2.450809-.268991 2.450809-.423412V-.811955H3.073474ZM2.012453-2.834371V-1.031133H.547945L2.012453-2.834371Z'/>
+<path id='mrm-cena-g3-53' d='M.976339-2.744707C1.240349-2.67995 1.464508-2.67995 1.519303-2.67995C1.858032-2.67995 2.107098-2.779577 2.236613-2.849315C2.356164-2.909091 2.694894-3.123288 2.694894-3.232877C2.694894-3.307597 2.6401-3.317559 2.625156-3.317559C2.615193-3.317559 2.60523-3.317559 2.550436-3.292653C2.361146-3.227895 2.052304-3.158157 1.723537-3.158157C1.439601-3.158157 1.165629-3.20797 .901619-3.297634C.846824-3.317559 .836862-3.317559 .826899-3.317559C.757161-3.317559 .757161-3.257783 .757161-3.178082V-1.683686C.757161-1.599004 .757161-1.534247 .851806-1.534247C.9066-1.534247 .911582-1.544209 .956413-1.599004C1.145704-1.818182 1.409714-1.927771 1.748443-1.927771C2.03736-1.927771 2.196762-1.758406 2.266501-1.653798C2.381071-1.484433 2.405978-1.260274 2.405978-1.021171C2.405978-.811955 2.386052-.533001 2.191781-.33873C1.967621-.109589 1.683686-.094645 1.574097-.094645C1.250311-.094645 .886675-.234122 .732254-.52802C.941469-.542964 1.011208-.692403 1.011208-.806974C1.011208-.966376 .891656-1.085928 .732254-1.085928C.622665-1.085928 .4533-1.021171 .4533-.79203C.4533-.303861 .931507 .109589 1.58406 .109589C2.326276 .109589 2.933998-.388543 2.933998-1.006227C2.933998-1.569116 2.450809-2.092154 1.758406-2.092154C1.444583-2.092154 1.190535-2.012453 .976339-1.84807V-2.744707Z'/>
+<path id='mrm-cena-g3-54' d='M.926526-1.633873C.931507-1.863014 .936488-2.256538 1.115816-2.580324C1.260274-2.849315 1.58406-3.128269 2.047323-3.128269C2.141968-3.128269 2.366127-3.118306 2.515567-2.998755C2.435866-2.978829 2.306351-2.90411 2.306351-2.734745C2.306351-2.575342 2.425903-2.470735 2.570361-2.470735C2.655044-2.470735 2.834371-2.515567 2.834371-2.749689C2.834371-3.01868 2.645081-3.317559 2.042341-3.317559C1.185554-3.317559 .398506-2.615193 .398506-1.58406C.398506-.393524 .98132 .109589 1.708593 .109589C2.201743 .109589 2.435866-.07472 2.60523-.214197C2.924035-.478207 2.988792-.772105 2.988792-1.021171C2.988792-1.325031 2.889166-1.569116 2.630137-1.798257C2.410959-1.997509 2.181818-2.132005 1.748443-2.132005C1.459527-2.132005 1.135741-1.992528 .926526-1.633873ZM1.708593-.094645C.941469-.094645 .941469-.921544 .941469-1.13076C.941469-1.514321 1.215442-1.96264 1.738481-1.96264C1.992528-1.96264 2.15193-1.897883 2.306351-1.69863C2.455791-1.514321 2.460772-1.305106 2.460772-1.026152C2.460772-.737235 2.460772-.547945 2.30137-.348692C2.161893-.184309 1.987547-.094645 1.708593-.094645Z'/>
+<path id='mrm-cena-g3-56' d='M2.136986-1.798257C2.650062-2.012453 2.814446-2.276463 2.814446-2.560399C2.814446-3.078456 2.241594-3.317559 1.69863-3.317559C1.080946-3.317559 .572852-2.968867 .572852-2.470735C.572852-2.012453 .966376-1.808219 1.225405-1.673724C.697385-1.469489 .398506-1.175592 .398506-.767123C.398506-.169365 1.061021 .109589 1.688667 .109589C2.386052 .109589 2.988792-.26401 2.988792-.851806C2.988792-1.39477 2.470735-1.648817 2.136986-1.798257ZM1.160648-2.306351C.946451-2.41594 .881694-2.545455 .881694-2.665006C.881694-2.983811 1.290162-3.128269 1.688667-3.128269S2.505604-2.933998 2.505604-2.555417C2.505604-2.117061 1.937733-1.912827 1.932752-1.912827S1.92279-1.912827 1.877958-1.937733L1.160648-2.306351ZM1.439601-1.564134L2.211706-1.17061C2.391034-1.075965 2.645081-.941469 2.645081-.672478C2.645081-.268991 2.141968-.094645 1.69863-.094645C1.24533-.094645 .742217-.318804 .742217-.772105C.742217-1.265255 1.280199-1.494396 1.439601-1.564134Z'/>
+</defs>
+<g id='mrm-cena-page1'>
+<g stroke-miterlimit='10' transform='translate(-48.138511,107.306843)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<path d='M0 0H191.97156' fill='none'/>
+<g transform='translate(189.4951,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(199.95673,-2.15277)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.138511,107.306843)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-48.138511' y='107.306843' xlink:href='#mrm-cena-g0-110'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 0V158.9667' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,156.49025)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-8.46877,169.81296)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.138511,107.306843)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-48.138511' y='107.306843' xlink:href='#mrm-cena-g0-78'/>
+<use x='-40.133804' y='108.801224' xlink:href='#mrm-cena-g2-111'/>
+<use x='-36.162563' y='108.801224' xlink:href='#mrm-cena-g2-112'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 1.70709V-1.70709' fill='none'/>
+<g transform='translate(-5.93755,-11.58006)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.138511,107.306843)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-48.138511' y='107.306843' xlink:href='#mrm-cena-g2-49'/>
+<use x='-44.167271' y='107.306843' xlink:href='#mrm-cena-g2-48'/>
+<use x='-40.19603' y='104.300326' xlink:href='#mrm-cena-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M31.29819 1.70709V-1.70709' fill='none'/>
+<g transform='translate(25.36064,-11.58006)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.138511,107.306843)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-48.138511' y='107.306843' xlink:href='#mrm-cena-g2-49'/>
+<use x='-44.167271' y='107.306843' xlink:href='#mrm-cena-g2-48'/>
+<use x='-40.19603' y='104.300326' xlink:href='#mrm-cena-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M62.59595 1.70709V-1.70709' fill='none'/>
+<g transform='translate(56.6584,-11.58006)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.138511,107.306843)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-48.138511' y='107.306843' xlink:href='#mrm-cena-g2-49'/>
+<use x='-44.167271' y='107.306843' xlink:href='#mrm-cena-g2-48'/>
+<use x='-40.19603' y='104.300326' xlink:href='#mrm-cena-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M93.89413 1.70709V-1.70709' fill='none'/>
+<g transform='translate(87.95659,-11.58006)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.138511,107.306843)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-48.138511' y='107.306843' xlink:href='#mrm-cena-g2-49'/>
+<use x='-44.167271' y='107.306843' xlink:href='#mrm-cena-g2-48'/>
+<use x='-40.19603' y='104.300326' xlink:href='#mrm-cena-g3-51'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M125.1919 1.70709V-1.70709' fill='none'/>
+<g transform='translate(119.25435,-11.58006)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.138511,107.306843)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-48.138511' y='107.306843' xlink:href='#mrm-cena-g2-49'/>
+<use x='-44.167271' y='107.306843' xlink:href='#mrm-cena-g2-48'/>
+<use x='-40.19603' y='104.300326' xlink:href='#mrm-cena-g3-52'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M156.49008 1.70709V-1.70709' fill='none'/>
+<g transform='translate(150.55254,-11.58006)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.138511,107.306843)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-48.138511' y='107.306843' xlink:href='#mrm-cena-g2-49'/>
+<use x='-44.167271' y='107.306843' xlink:href='#mrm-cena-g2-48'/>
+<use x='-40.19603' y='104.300326' xlink:href='#mrm-cena-g3-53'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M187.78827 1.70709V-1.70709' fill='none'/>
+<g transform='translate(181.85072,-11.58006)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.138511,107.306843)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-48.138511' y='107.306843' xlink:href='#mrm-cena-g2-49'/>
+<use x='-44.167271' y='107.306843' xlink:href='#mrm-cena-g2-48'/>
+<use x='-40.19603' y='104.300326' xlink:href='#mrm-cena-g3-54'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 9.10507H187.78827' fill='none'/>
+</g>
+</g>
+</g>
+<path d='M1.70709 9.10507H-1.70709' fill='none'/>
+<g transform='translate(-17.21516,5.98508)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.138511,107.306843)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-48.138511' y='107.306843' xlink:href='#mrm-cena-g2-49'/>
+<use x='-44.167271' y='107.306843' xlink:href='#mrm-cena-g2-48'/>
+<use x='-40.19603' y='104.300326' xlink:href='#mrm-cena-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 45.52455H187.78827' fill='none'/>
+</g>
+</g>
+</g>
+<path d='M1.70709 45.52455H-1.70709' fill='none'/>
+<g transform='translate(-17.21516,42.40456)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.138511,107.306843)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-48.138511' y='107.306843' xlink:href='#mrm-cena-g2-49'/>
+<use x='-44.167271' y='107.306843' xlink:href='#mrm-cena-g2-48'/>
+<use x='-40.19603' y='104.300326' xlink:href='#mrm-cena-g3-54'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 81.94403H187.78827' fill='none'/>
+</g>
+</g>
+</g>
+<path d='M1.70709 81.94403H-1.70709' fill='none'/>
+<g transform='translate(-20.618,78.82404)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.138511,107.306843)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-48.138511' y='107.306843' xlink:href='#mrm-cena-g2-49'/>
+<use x='-44.167271' y='107.306843' xlink:href='#mrm-cena-g2-48'/>
+<use x='-40.19603' y='104.300326' xlink:href='#mrm-cena-g3-49'/>
+<use x='-36.805909' y='104.300326' xlink:href='#mrm-cena-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 118.36351H187.78827' fill='none'/>
+</g>
+</g>
+</g>
+<path d='M1.70709 118.36351H-1.70709' fill='none'/>
+<g transform='translate(-20.618,115.24352)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.138511,107.306843)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-48.138511' y='107.306843' xlink:href='#mrm-cena-g2-49'/>
+<use x='-44.167271' y='107.306843' xlink:href='#mrm-cena-g2-48'/>
+<use x='-40.19603' y='104.300326' xlink:href='#mrm-cena-g3-49'/>
+<use x='-36.805909' y='104.300326' xlink:href='#mrm-cena-g3-52'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 154.78299H187.78827' fill='none'/>
+</g>
+</g>
+</g>
+<path d='M1.70709 154.78299H-1.70709' fill='none'/>
+<g transform='translate(-20.618,151.663)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.138511,107.306843)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-48.138511' y='107.306843' xlink:href='#mrm-cena-g2-49'/>
+<use x='-44.167271' y='107.306843' xlink:href='#mrm-cena-g2-48'/>
+<use x='-40.19603' y='104.300326' xlink:href='#mrm-cena-g3-49'/>
+<use x='-36.805909' y='104.300326' xlink:href='#mrm-cena-g3-56'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M31.29819 11.1252L187.78827 147.69801' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<path d='M62.59595 42.79286L187.78827 79.21233' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<path d='M41.37013 15.59221L187.78827 58.1858' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(192.84354,145.4248)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.138511,107.306843)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-48.138511' y='107.306843' xlink:href='#mrm-cena-g1-110'/>
+<use x='-43.213649' y='104.300326' xlink:href='#mrm-cena-g3-51'/>
+<use x='-39.325398' y='107.306843' xlink:href='#mrm-cena-g1-61'/>
+<use x='-35.243462' y='107.306843' xlink:href='#mrm-cena-g2-54'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(192.84354,76.66805)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.138511,107.306843)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-48.138511' y='107.306843' xlink:href='#mrm-cena-g1-98'/>
+<use x='-42.367248' y='107.306843' xlink:href='#mrm-cena-g2-61'/>
+<use x='-33.983538' y='107.306843' xlink:href='#mrm-cena-g2-49'/>
+<use x='-30.012297' y='107.306843' xlink:href='#mrm-cena-g2-48'/>
+<use x='-26.041057' y='107.306843' xlink:href='#mrm-cena-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(192.84354,55.61285)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.138511,107.306843)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-48.138511' y='107.306843' xlink:href='#mrm-cena-g1-98'/>
+<use x='-42.367248' y='107.306843' xlink:href='#mrm-cena-g2-61'/>
+<use x='-33.983538' y='107.306843' xlink:href='#mrm-cena-g2-55'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M39.66304 18.72203V22.13623H43.07767V18.72203ZM43.07767 22.13623' stroke='none'/>
+</g>
+<g fill='#fff'>
+<g fill='#00f' stroke='#00f'>
+<g fill='#fff'>
+<g fill='#00f' stroke='#00f'>
+<path d='M43.63307 15.3074C43.63307 16.5572 42.61993 17.57034 41.37013 17.57034S39.1072 16.5572 39.1072 15.3074S40.12033 13.04446 41.37013 13.04446S43.63307 14.0576 43.63307 15.3074ZM41.37013 15.3074'/>
+</g>
+</g>
+<g transform='translate(41.37013,15.3074)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.138511,107.306843)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M42.87013 12.03561C42.87013 12.86404 42.19856 13.53561 41.37013 13.53561S39.87013 12.86404 39.87013 12.03561S40.5417 10.53561 41.37013 10.53561S42.87013 11.20718 42.87013 12.03561ZM41.37013 12.03561' stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 7.32</span>: Number of operations of elimination against the order \(n\) of the matrix, on a logarithmic scale. Orange solid line: full matrix, <span class="nobr">\(n^3/6\).</span> Blue dashed lines: banded matrix, <span class="nobr">\(n b^2/2\),</span> for \(b = 100\) from \(n = 100\) on and for \(b = 7\) from \(n = 21\) on. The points at \(n = 21\) are the computation of the bridge: the orange square is the full matrix <span class="nobr">(\(1750\)</span> operations), the empty circle the numbering by rows <span class="nobr">(\(480\)),</span> the filled circle the numbering along the span <span class="nobr">(\(210\)).</span> A line with slope \(1\) means proportionality to <span class="nobr">\(n\),</span> a line with slope \(3\) proportionality to <span class="nobr">\(n^3\).</span></figcaption></figure>
+<p>The band also saves memory. Since the matrix \(\mat K_{\mathrm{ff}}\) is symmetric, it is enough to store the diagonal and the entries below it or above it (ONATE1, appendix B, paragraph after equation (B.9), PDF p. 448: &quot;It is sufficient to store only the coefficients above (or below) the principal diagonal and the diagonal coefficients&quot;), which nearly halves the memory and the work. Profile storage (profile) by COOK, PDF p. 57 saves still more: for every row we store the entries from the first nonzero one to the diagonal, also the zeros in between, because the elimination fills them (&quot;Zeros between the skyline and the diagonal are retained because a direct (noniterative) equation solver creates fills&quot;). For the bridge, below the diagonal and with it there are \(231\) entries, in the band \(140\) in the numbering along the span and \(210\) in the numbering by rows, and in the profile \(88\) and <span class="nobr">\(140\).</span> The triangle \(\mat L\) has \(83\) and \(121\) entries (above) and all of them lie in the profile, which tells us that the fill does not escape the profile (checked on this example, we do not prove the general statement).</p>
+
+<h3 id="sec-prestevilcenje"><span class="h-num">7.8.3</span> Renumbering the unknowns (preštevilčenje neznank)</h3>
+<p>The numbering of the unknowns is our choice, but the band, the fill and the cost depend on it. May we renumber the unknowns arbitrarily without changing the solution? Let us look at the smallest case first. For the <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">truss</a> of two bars from section <a class="xref" href="sec-palicje-ravnina-mke.html#sec-palicje-konzola-mke">7.5.2</a>, which meet at the point <span class="nobr">\(C\),</span> with the unknowns of this point in the order <span class="nobr">\(x\),</span> then <span class="nobr">\(y\),</span> we have \(\mat K_{\mathrm{ff}} = \left[\begin{smallmatrix} 7{,}4088 &amp; -1{,}8816 \\ -1{,}8816 &amp; 1{,}4112 \end{smallmatrix}\right] \cdot 10^6\) N/m. If we swap them, the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> becomes \(\left[\begin{smallmatrix} 1{,}4112 &amp; -1{,}8816 \\ -1{,}8816 &amp; 7{,}4088 \end{smallmatrix}\right] \cdot 10^6\) N/m, and the right-hand side and the solution are swapped. We will do the same with a matrix of any order, so we write the notion in general.</p>
+
+<div class="blk definicija" id="def-permutacijska-matrika"><div class="blk-head"><span class="blk-label">Definition 7.45</span> <span class="blk-title">Permutation matrix (permutacijska matrika)</span></div><div class="blk-body"><p>Let \(\pi\) be a rearrangement of the numbers <span class="nobr">\(1, \dots, n\),</span> that is a <a class="xref auto" href="sec-zaporedja.html#def-zaporedje" data-knowl="def-zaporedje">sequence</a> \(\pi(1), \dots, \pi(n)\) in which every number from \(1\) to \(n\) appears exactly once. The permutation matrix (permutacijska matrika) \(\mat P\) of order \(n\) of the rearrangement \(\pi\) is the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> with entries</p>
+<div class="eq">\[P_{\mathrm{ij}} = \begin{cases} 1 &amp; \text{if } j = \pi(i) , \\ 0 &amp; \text{otherwise} . \end{cases}\]</div>
+<p>In every row and every column there is therefore exactly one one, the rest are zeros. For a column <span class="nobr">\(\vek d\),</span> <span class="nobr">\((\mat P\,\vek d)_{\mathrm{i}} = d_{\pi(\mathrm{i})}\):</span> in the column \(\mat P\,\vek d\) the unknown with the new number \(i\) has the old number <span class="nobr">\(\pi(i)\).</span></p>
+
+<p class="vir"><span class="vir-label">Source:</span> The definition is ours. The notion in this form is not from the sources of the book. COOK, PDF p. 57 mentions that programs renumber the unknowns themselves (&quot;renumbering option&quot;) and convert the results back to the input numbering.</p></div></div>
+<div class="blk lema" id="lem-permutacija"><div class="blk-head"><span class="blk-label">Lemma 7.46</span> <span class="blk-title">Renumbering does not change the solution (preštevilčenje ne spremeni rešitve)</span></div><div class="blk-body"><p>Let \(\mat P\) be the <a class="xref auto" href="sec-redke-matrike.html#def-permutacijska-matrika" data-knowl="def-permutacijska-matrika">permutation matrix</a> of a rearrangement \(\pi\) of order <span class="nobr">\(n\),</span> \(\mat K\) a symmetric <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite matrix</a> of order \(n\) and \(\vek f\) a column. Then:</p>
+<ol>
+<li>\(\mat P\,\mat P^\T = \mat I\) (the identity matrix, definition <a class="xref" href="sec-matrike.html#def-enotska-matrika" data-knowl="def-enotska-matrika">1.105</a>).</li>
+<li>The <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\tilde{\mat K} = \mat P\,\mat K\,\mat P^\T\) has entries <span class="nobr">\(\tilde K_{\mathrm{ij}} = K_{\pi(\mathrm{i})\,\pi(\mathrm{j})}\),</span> is symmetric and positive definite.</li>
+<li>If <span class="nobr">\(\mat K\,\vek d = \vek f\),</span> then <span class="nobr">\(\tilde{\mat K}\,(\mat P\,\vek d) = \mat P\,\vek f\).</span> The system \(\tilde{\mat K}\,\tilde{\vek d} = \mat P\,\vek f\) has exactly one solution <span class="nobr">\(\tilde{\vek d} = \mat P\,\vek d\).</span></li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show the three points of the lemma, each by the definition of the <a class="xref auto" href="sec-redke-matrike.html#def-permutacijska-matrika" data-knowl="def-permutacijska-matrika">permutation matrix</a> and the rules for the product and the <a class="xref auto" href="sec-matrike.html#def-transponirana-matrika" data-knowl="def-transponirana-matrika">transpose</a> (lemmas <a class="xref" href="sec-matrike.html#lem-produkt-matrik" data-knowl="lem-produkt-matrik">1.99</a> and <a class="xref" href="sec-matrike.html#lem-transponiran-produkt" data-knowl="lem-transponiran-produkt">1.101</a>).</p>
+<ol>
+<li>The entry <span class="nobr">\((\mat P\,\mat P^\T)_{\mathrm{ij}} = \sum_{\mathrm{k}} P_{\mathrm{ik}}\,P_{\mathrm{jk}}\).</span> The term \(k\) is nonzero only for \(k = \pi(i)\) and at the same time <span class="nobr">\(k = \pi(j)\).</span> Since in a rearrangement every number occurs only once, this holds only for <span class="nobr">\(i = j\),</span> and then the sum is <span class="nobr">\(1\).</span> So <span class="nobr">\(\mat P\,\mat P^\T = \mat I\).</span> Likewise \((\mat P^\T\mat P)_{\mathrm{ij}} = \sum_{\mathrm{k}} P_{\mathrm{ki}}\,P_{\mathrm{kj}}\) is nonzero only for <span class="nobr">\(i = \pi(k) = j\),</span> and for every \(i\) there is exactly one such <span class="nobr">\(k\),</span> so also <span class="nobr">\(\mat P^\T\mat P = \mat I\).</span></li>
+<li>The entry \((\mat P\,\mat K\,\mat P^\T)_{\mathrm{ij}} = \sum_{\mathrm{k},\mathrm{l}} P_{\mathrm{ik}}\,K_{\mathrm{kl}}\,P_{\mathrm{jl}}\) is nonzero only for \(k = \pi(i)\) and <span class="nobr">\(l = \pi(j)\),</span> and equals <span class="nobr">\(K_{\pi(\mathrm{i})\,\pi(\mathrm{j})}\).</span> Since \(\mat K\) is symmetric, <span class="nobr">\(K_{\pi(\mathrm{j})\,\pi(\mathrm{i})} = K_{\pi(\mathrm{i})\,\pi(\mathrm{j})}\),</span> so \(\tilde{\mat K}\) is symmetric.</li>
+<li>Let \(\vek x \ne \vek 0\) and <span class="nobr">\(\vek y = \mat P^\T\vek x\).</span> By point 1, <span class="nobr">\(\mat P\,\vek y = \mat P\,\mat P^\T\vek x = \vek x \ne \vek 0\),</span> so <span class="nobr">\(\vek y \ne \vek 0\).</span> By the rule for the transposed product, <span class="nobr">\(\vek x^\T\tilde{\mat K}\,\vek x = (\mat P^\T\vek x)^\T\mat K\,(\mat P^\T\vek x) = \vek y^\T\mat K\,\vek y &gt; 0\),</span> because \(\mat K\) is <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite</a>. The <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\tilde{\mat K}\) is positive definite.</li>
+<li>If <span class="nobr">\(\mat K\,\vek d = \vek f\),</span> we multiply from the left by \(\mat P\) and insert \(\mat I = \mat P^\T\mat P\) (point 1) in front of <span class="nobr">\(\vek d\):</span> <span class="nobr">\(\mat P\,\mat K\,\mat P^\T\mat P\,\vek d = \mat P\,\vek f\).</span> This is <span class="nobr">\(\tilde{\mat K}\,(\mat P\,\vek d) = \mat P\,\vek f\).</span></li>
+<li>By point 3 and theorem <a class="xref" href="sec-skalarni-produkt-funkcij.html#thm-sistem-pozitivno-definitna" data-knowl="thm-sistem-pozitivno-definitna">6.29</a> the system \(\tilde{\mat K}\,\tilde{\vek d} = \mat P\,\vek f\) has exactly one solution. By point 4, \(\mat P\,\vek d\) is a solution, so it is this one.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> The proof is not from a source.</p></div></div>
+<p>For the truss of two bars, \(\mat P = \left[\begin{smallmatrix} 0 &amp; 1 \\ 1 &amp; 0 \end{smallmatrix}\right]\) <span class="nobr">(\(\pi = (2, 1)\)),</span> and the matrix \(\tilde{\mat K}\) has the pivots \(1{,}4112 \cdot 10^6\) and \(7{,}4088 - 1{,}8816^2/1{,}4112 = 4{,}9\) <span class="nobr">(\(\cdot 10^6\)</span> N/m), and with the original numbering \(7{,}4088 \cdot 10^6\) and \(0{,}9333 \cdot 10^6\) N/m. The pivots are different, but their product is \(6{,}9149\) in both cases (for a matrix of order \(2\) it is <span class="nobr">\(ad - b^2\),</span> which does not change under the swap), and the solution is the same, only in another order. For the bridge \(\mat P\) has order \(21\) with the rearrangement \(\pi = (1, 2, 12, 13, 3, 4, 14, 15, 5, 6, 16, 17, \dots)\) (the number in the numbering along the span, the corresponding number in the numbering by rows): the unknown \(u\) of node \(t_1\) is third along the span and twelfth by rows. The computation confirms \(\mat P\,\mat K_{\mathrm{ff}}^{\text{(rows)}}\,\mat P^\T = \mat K_{\mathrm{ff}}^{\text{(span)}}\) with exactly equal entries and <span class="nobr">\(\mat P\,\vek d^{\text{(rows)}} = \vek d^{\text{(span)}}\),</span> with the largest displacement \(7{,}305\) mm (the displacement \(v\) of node \(b_3\) from section <a class="xref" href="sec-most.html">7.7</a>). Renumbering changes only the band, the fill and the cost <span class="nobr">(\(7\)</span> against <span class="nobr">\(14\),</span> \(26\) against <span class="nobr">\(64\),</span> \(210\) against \(480\) operations), but not the solution. Programs renumber the unknowns themselves (COOK, PDF p. 57, &quot;renumbering option&quot;), and the book does not treat the procedures for it.</p>
+<p>For what follows we need one more form of the same elimination. For a structure we often have to solve several load cases with the same matrix, for the bridge for example a load on half of the span or wind. Must we eliminate anew every time? No, if we remember the multipliers and pivots of the elimination.</p>
+
+<div class="blk lema" id="lem-faktorizacija"><div class="blk-head"><span class="blk-label">Lemma 7.47</span> <span class="blk-title">Triangular and diagonal factorization (razcep na trikotni in diagonalni faktor)</span></div><div class="blk-body"><p>Let \(\mat K\) be a symmetric <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite matrix</a> of order <span class="nobr">\(n\).</span> Let \(\mat L\) be the lower triangular <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> with ones on the diagonal in which column \(k\) below the diagonal is the column of multipliers \(\vek g/K_{11}\) of the \(k\)-th step of elimination, and \(\mat D\) the diagonal matrix of the pivots of the \(k\)-th steps from theorem <a class="xref" href="sec-skalarni-produkt-funkcij.html#thm-sistem-pozitivno-definitna" data-knowl="thm-sistem-pozitivno-definitna">6.29</a>. Then</p>
+<div class="eq" id="eq-mrm-ldl">\[\mat K = \mat L\,\mat D\,\mat L^\T . \tag{7.45}\]</div>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We prove it by induction on the order \(n\) (theorem <a class="xref" href="sec-konvergenca-zaporedij.html#thm-indukcija" data-knowl="thm-indukcija">1.44</a>). The statement <span class="nobr">\(P(n)\):</span> for every symmetric <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite matrix</a> of order \(n\) the equality <a class="xref" href="sec-redke-matrike.html#eq-mrm-ldl" data-knowl="eq-mrm-ldl">(7.45)</a> holds.</p>
+<ol>
+<li>Start, <span class="nobr">\(n = 1\):</span> <span class="nobr">\(\mat K = [K_{11}]\),</span> <span class="nobr">\(\mat L = [1]\),</span> <span class="nobr">\(\mat D = [K_{11}]\).</span></li>
+<li>Induction step. Let \(P(n - 1)\) hold. We write \(\mat K = \left[\begin{smallmatrix} K_{11} &amp; \vek g^\T \\ \vek g &amp; \mat K' \end{smallmatrix}\right]\) and <span class="nobr">\(\vek\ell = \vek g/K_{11}\).</span> The <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat K'' = \mat K' - \vek g\,\vek g^\T/K_{11}\) is symmetric positive definite of order \(n - 1\) (theorem <a class="xref" href="sec-skalarni-produkt-funkcij.html#thm-sistem-pozitivno-definitna" data-knowl="thm-sistem-pozitivno-definitna">6.29</a>, steps 5 and 6). By <span class="nobr">\(P(n - 1)\),</span> \(\mat K'' = \mat L''\mat D''\mat L''^\T\) for the factorization determined by the multipliers and pivots of <span class="nobr">\(\mat K''\).</span></li>
+<li>The first step of elimination of the matrix \(\mat K\) gives the multipliers \(\vek\ell\) and the pivot <span class="nobr">\(K_{11}\),</span> and the further steps are the steps of elimination of the matrix \(\mat K''\) (step 4 of the proof of theorem <a class="xref" href="sec-skalarni-produkt-funkcij.html#thm-sistem-pozitivno-definitna" data-knowl="thm-sistem-pozitivno-definitna">6.29</a>). Therefore \(\mat L = \left[\begin{smallmatrix} 1 &amp; \vek 0^\T \\ \vek\ell &amp; \mat L'' \end{smallmatrix}\right]\) and <span class="nobr">\(\mat D = \left[\begin{smallmatrix} K_{11} &amp; \vek 0^\T \\ \vek 0 &amp; \mat D'' \end{smallmatrix}\right]\),</span> where \(\mat L''\) and \(\mat D''\) are the multipliers and pivots of the matrix <span class="nobr">\(\mat K''\).</span></li>
+<li>Block multiplication gives \(\mat L\,\mat D = \left[\begin{smallmatrix} K_{11} &amp; \vek 0^\T \\ K_{11}\vek\ell &amp; \mat L''\mat D'' \end{smallmatrix}\right]\) and
+<div class="eq">\[\mat L\,\mat D\,\mat L^\T = \begin{bmatrix} K_{11} &amp; K_{11}\,\vek\ell^\T \\ K_{11}\,\vek\ell &amp; K_{11}\,\vek\ell\,\vek\ell^\T + \mat L''\mat D''\mat L''^\T \end{bmatrix} = \begin{bmatrix} K_{11} &amp; \vek g^\T \\ \vek g &amp; \vek g\,\vek g^\T/K_{11} + \mat K'' \end{bmatrix} = \mat K ,\]</div>
+because <span class="nobr">\(K_{11}\vek\ell = \vek g\),</span> \(K_{11}\vek\ell\,\vek\ell^\T = \vek g\,\vek g^\T/K_{11}\) and <span class="nobr">\(\vek g\,\vek g^\T/K_{11} + \mat K'' = \mat K'\).</span></li>
+<li>By the principle of induction \(P(n)\) holds for every <span class="nobr">\(n\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> The factorization is named by KREYSZIG §20.2, PDF p. 878 to 881, and ONATE1, appendix B, equations (B.2), (B.3) and (B.7), (B.8), PDF p. 446 to 447 (&quot;forward elimination&quot;, &quot;back substitution&quot;). The source has the factorization <span class="nobr">\(\mat L\mat U\),</span> KREYSZIG on PDF p. 881 for a symmetric positive definite matrix the Cholesky form <span class="nobr">\(\mat A = \mat L\mat L^\T\).</span> The proof in steps is not from the sources.</p></div></div>
+<p>By lemma <a class="xref" href="sec-redke-matrike.html#lem-pas-ostane" data-knowl="lem-pas-ostane">7.42</a> the matrix \(\mat L\) has the same band as \(\mat K\) (the column \(\vek\ell\) has at most \(b\) nonzero entries), and the numbers \(83\) and \(121\) of nonzero entries in figure <a class="xref" href="sec-redke-matrike.html#fig-mrm-zapolnitev" data-knowl="fig-mrm-zapolnitev">7.31</a> are the entries of the matrix \(\mat L\) below the diagonal together with it. We solve the system \(\mat K\,\vek x = \vek f\) in three steps: \(\mat L\,\vek y = \vek f\) from top to bottom (forward, forward elimination), \(\mat D\,\vek z = \vek y\) with divisions, and \(\mat L^\T\vek x = \vek z\) from bottom to top (backward, back substitution). In row \(i\) the first step takes \(i - 1\) multiplications, \(n(n - 1)/2\) in all, the same for the third (KREYSZIG, PDF p. 877: for the unknown \(x_{\mathrm{i}}\) there are \(n - i\) multiplications), so about \(n^2\) for a full matrix and \(2 n b\) for a banded one. For \(n = 10^4\) and \(b = 100\) this is \(10^8\) multiplications for a full and \(2 \cdot 10^6\) for a <a class="xref auto" href="sec-redke-matrike.html#def-pasovna-matrika" data-knowl="def-pasovna-matrika">banded matrix</a>, while the factorization cost \(1{,}7 \cdot 10^{11}\) and \(5 \cdot 10^7\) respectively. We do the factorization once, and every further load case costs only this much (ONATE1, PDF p. 448: &quot;several solutions for different right-hand sides \(f\) can be obtained ... This process is often called a resolution since it is not necessary to recompute the \(L\) and \(U\) arrays&quot;).</p>
+<p>For the truss of two bars with \(\mat K_{\mathrm{ff}}\) from section <a class="xref" href="sec-palicje-ravnina-mke.html#sec-palicje-konzola-mke">7.5.2</a>, \(\ell_{21} = -1{,}8816/7{,}4088 = -0{,}2540\) and \(\mat D = \mathrm{diag}(7{,}4088,\ 0{,}9333) \cdot 10^6\) N/m. For the load \(10\) kN downward at the point <span class="nobr">\(C\),</span> \(\vek f = (0, -10\,000)\) N, \(\vek y = (0, -10\,000)\) N, \(\vek z = (0, -10{,}714)\) mm, \(\vek x = (-2{,}721,\ -10{,}714)\) mm, as in section <a class="xref" href="sec-palicje-ravnina-mke.html#sec-palicje-konzola-mke">7.5.2</a>. For the second case, \(10\) kN horizontally in the direction <span class="nobr">\(+x\),</span> we use the same \(\mat L\) and <span class="nobr">\(\mat D\):</span> \(\vek y = (10\,000,\ 2540)\) N, \(\vek z = (1{,}350,\ 2{,}721)\) mm, \(\vek x = (2{,}041,\ 2{,}721)\) mm. The second entry of the column <span class="nobr">\(\vek x\),</span> the displacement \(2{,}721\) mm in the direction \(y\) due to the horizontal force, is equal in magnitude to the displacement \(-2{,}721\) mm in the direction \(x\) due to an equally large vertical force (the sign differs because the vertical force points downward). So the <a class="xref auto" href="sec-betti-maxwell.html#thm-betti" data-knowl="thm-betti">reciprocal theorem</a> <a class="xref" href="sec-betti-maxwell.html#thm-maxwell" data-knowl="thm-maxwell">4.140</a> predicts: the displacement in the direction \(x\) due to a force in the direction \(y\) is equal to the displacement in the direction \(y\) due to a force in the direction \(x\) (the symmetry of the matrix \(\mat K_{\mathrm{ff}}^{-1}\) says the same). With the same factored matrix we have thus solved both load cases, the second without a new elimination.</p>
+<p>The solution that the computer gives is not exactly accurate. ONATE1, §3.13.4, PDF p. 137 lists three kinds of errors in the solution of the global system by a direct method. The first is ill-conditioning of the system (slaba pogojenost): small changes in \(\mat K\) or \(\vek f\) cause large changes of the solution. The second is truncation (okrajšanje): the computer stores only the first \(d\) digits of every number and so loses part of the data. The third is round-off (zaokrožitev): during the computation the computer adjusts the last digit of every number. By the source truncation is more important than round-off. In chapter <a class="xref" href="ch-sibka-oblika.html">6</a> we measured the conditioning by the condition number \(\kappa(\mat K)\) (definition <a class="xref" href="sec-skalarni-produkt-funkcij.html#def-stevilo-obcutljivosti" data-knowl="def-stevilo-obcutljivosti">6.31</a>): the relative error of the solution can be up to \(\kappa\) times larger than the relative error of the right-hand side. For the truss of two bars the <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">eigenvalues</a> of the matrix \(\mat K_{\mathrm{ff}}\) are \(0{,}870 \cdot 10^6\) and \(7{,}950 \cdot 10^6\) N/m, so <span class="nobr">\(\kappa = 9{,}14\):</span> we lose less than one digit of about sixteen. For the bridge <span class="nobr">\(\kappa = 395\),</span> equal in both numberings, because the eigenvalues do not change under renumbering: if <span class="nobr">\(\mat K\,\vek v = \lambda\,\vek v\),</span> then <span class="nobr">\(\mat P\,\mat K\,\mat P^\T(\mat P\,\vek v) = \mat P\,\mat K\,\vek v = \lambda\,\mat P\,\vek v\).</span> The <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-sotorna-funkcija" data-knowl="def-sotorna-funkcija">hat functions</a> of the bar from chapter <a class="xref" href="ch-sibka-oblika.html">6</a> gave <span class="nobr">\(\kappa = 29\),</span> \(113\) and \(438\) for <span class="nobr">\(4\),</span> \(8\) and \(16\) elements and <span class="nobr">\(\kappa \approx 1{,}7\,n^2\).</span> If the pattern continues, for \(10^4\) elements \(\kappa\) would be about \(1{,}7 \cdot 10^8\) and we would lose about eight of sixteen digits. The source (ONATE1, PDF p. 137) names as the main cause of ill-conditioning an element of large stiffness connected to elements of much smaller stiffness. The smallest example is two bars in a row, the first with stiffness \(k_1\) fixed to the wall, the second with \(k_2\) at the end of the first. The matrix of free unknowns is <span class="nobr">\(\left[\begin{smallmatrix} k_1 + k_2 &amp; -k_2 \\ -k_2 &amp; k_2 \end{smallmatrix}\right]\),</span> and for \(k_1/k_2 = 10^6\) we have <span class="nobr">\(\kappa \approx 10^6\),</span> for \(k_1/k_2 = 10^3\) we have <span class="nobr">\(\kappa \approx 10^3\).</span> A stiffness ratio of \(10^6\) between neighbouring elements thus costs six digits of sixteen.</p>
+
+</main>
+<footer><nav class="pager"><a href="sec-most.html" rel="prev">← 7.7</a><a href="index.html">Contents</a><a href="sec-temperatura-mke.html" rel="next">7.9 →</a></nav></footer>
+</body>
+</html>

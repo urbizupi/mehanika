@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ppa-kff"] = {"html": "<div class=\"eq\">\\[\\mat K_{\\mathrm{ff}} = \\begin{bmatrix} 10{,}5535 &amp; -1{,}8816 &amp; 0 \\\\ -1{,}8816 &amp; 1{,}4112 &amp; 0 \\\\ 0 &amp; 0 &amp; 1{,}1313 \\end{bmatrix} \\cdot 10^6\\ \\text{N/m} . \\tag{7.38}\\]</div>", "href": "sec-prostorsko-palicje.html#eq-ppa-kff"};

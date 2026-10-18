@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rpm-ravnovesje"] = {"html": "<div class=\"eq\">\\[\\sum_{\\mathrm{i}} r_{\\mathrm{i}} + \\sum_{\\mathrm{i}} f_{\\mathrm{i}} = 0 , \\tag{7.21}\\]</div>", "href": "sec-robni-pogoji-mke.html#eq-rpm-ravnovesje"};

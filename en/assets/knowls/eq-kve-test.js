@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kve-test"] = {"html": "<div class=\"eq\">\\[u(x) = \\frac{q_{\\mathrm{L}}}{2\\,EA\\,L}\\,\\Big(L^2 x - \\frac{x^3}{3}\\Big) , \\tag{7.33}\\]</div>", "href": "sec-kvadratni-element.html#eq-kve-test"};
