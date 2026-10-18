@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ddn-frekvence"] = {"html": "<div class=\"eq\">\\[r_{1,2}^2 = 1 + \\frac{\\mu}{2} \\mp \\sqrt{\\mu + \\frac{\\mu^2}{4}} , \\qquad r_1 &lt; 1 &lt; r_2 , \\qquad r_1 r_2 = 1 . \\tag{10.70}\\]</div>", "href": "sec-dusilnik-nihanja.html#eq-ddn-frekvence"};

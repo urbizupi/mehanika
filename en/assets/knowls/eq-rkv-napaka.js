@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rkv-napaka"] = {"html": "<div class=\"eq\">\\[R(\\vek v) - \\lambda_{\\mathrm{r}} = \\frac{\\sum_{\\mathrm{s} \\ne \\mathrm{r}}(\\lambda_{\\mathrm{s}} - \\lambda_{\\mathrm{r}})\\,e_{\\mathrm{s}}^2}{1 + \\sum_{\\mathrm{s} \\ne \\mathrm{r}}e_{\\mathrm{s}}^2} . \\tag{10.32}\\]</div>", "href": "sec-rayleighov-kolicnik.html#eq-rkv-napaka"};

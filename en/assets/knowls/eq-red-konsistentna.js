@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-red-konsistentna"] = {"html": "<div class=\"eq\">\\[1 \\le \\frac{\\lambda_{\\mathrm{r}}^{\\mathrm{k}}}{\\omega_{\\mathrm{r}}^2} \\le \\frac{6}{6 - \\theta^2} . \\tag{10.48}\\]</div>", "href": "sec-masna-matrika.html#eq-red-konsistentna"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rkv-nacin"] = {"html": "<div class=\"eq\">\\[R(\\vek\\varphi_{\\mathrm{r}}) = \\lambda_{\\mathrm{r}} . \\tag{10.30}\\]</div>", "href": "sec-rayleighov-kolicnik.html#eq-rkv-nacin"};

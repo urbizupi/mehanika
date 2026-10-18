@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-lpn-konzola"] = {"html": "<div class=\"eq\">\\[\\mat K = \\begin{bmatrix} 7{,}4088 &amp; -1{,}8816 \\\\ -1{,}8816 &amp; 1{,}4112 \\end{bmatrix}\\cdot 10^6\\ \\text{N/m} , \\qquad \\mat M = m\\begin{bmatrix} 1 &amp; 0 \\\\ 0 &amp; 1 \\end{bmatrix} , \\tag{10.15}\\]</div>", "href": "sec-lastni-problem.html#eq-lpn-konzola"};

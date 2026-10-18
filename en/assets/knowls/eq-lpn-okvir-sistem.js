@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-lpn-okvir-sistem"] = {"html": "<div class=\"eq\">\\[\\begin{bmatrix} 2k - \\lambda m &amp; -k \\\\ -k &amp; k - \\lambda m \\end{bmatrix}\\begin{bmatrix} \\varphi_1 \\\\ \\varphi_2 \\end{bmatrix} = \\begin{bmatrix} 0 \\\\ 0 \\end{bmatrix} . \\tag{10.13}\\]</div>", "href": "sec-lastni-problem.html#eq-lpn-okvir-sistem"};

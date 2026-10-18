@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dsp-enacba-r"] = {"html": "<div class=\"eq\">\\[\\ddot\\eta_{\\mathrm{r}} + 2\\zeta_{\\mathrm{r}}\\omega_{\\mathrm{r}}\\dot\\eta_{\\mathrm{r}} + \\omega_{\\mathrm{r}}^2\\eta_{\\mathrm{r}} = \\boldsymbol\\varphi_{\\mathrm{r}}^{\\T} \\vek Q(t) . \\tag{10.59}\\]</div>", "href": "sec-dusenje-superpozicija.html#eq-dsp-enacba-r"};

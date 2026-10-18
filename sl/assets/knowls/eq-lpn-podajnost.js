@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-lpn-podajnost"] = {"html": "<div class=\"eq\">\\[\\boldsymbol\\varphi = \\lambda m\\,\\mat D\\boldsymbol\\varphi , \\qquad \\mat D\\boldsymbol\\varphi = \\frac{1}{\\lambda m}\\,\\boldsymbol\\varphi . \\tag{10.16}\\]</div>", "href": "sec-lastni-problem.html#eq-lpn-podajnost"};

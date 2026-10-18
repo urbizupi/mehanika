@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dsp-podajnost"] = {"html": "<div class=\"eq\">\\[\\mat K^{-1} = \\sum_{\\mathrm{r}=1}^n\\frac{\\boldsymbol\\varphi_{\\mathrm{r}}\\boldsymbol\\varphi_{\\mathrm{r}}^{\\T}}{\\lambda_{\\mathrm{r}}} . \\tag{10.64}\\]</div>", "href": "sec-dusenje-superpozicija.html#eq-dsp-podajnost"};

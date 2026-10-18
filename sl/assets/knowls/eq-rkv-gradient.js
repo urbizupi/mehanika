@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rkv-gradient"] = {"html": "<div class=\"eq\">\\[\\frac{\\partial R}{\\partial v_{\\mathrm{i}}}(\\vek v) = \\frac{2\\,\\bigl(\\mat K\\vek v - R(\\vek v)\\,\\mat M\\vek v\\bigr)_{\\mathrm{i}}}{\\vek v^\\T\\mat M\\vek v} . \\tag{10.33}\\]</div>", "href": "sec-rayleighov-kolicnik.html#eq-rkv-gradient"};

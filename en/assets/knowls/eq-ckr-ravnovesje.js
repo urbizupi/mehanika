@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ckr-ravnovesje"] = {"html": "<div class=\"eq\">\\[\\mat M\\,\\vek a_{\\mathrm{k}} + \\mat C\\,\\vek v_{\\mathrm{k}} + \\mat K\\,\\vek q_{\\mathrm{k}} = \\vek Q_{\\mathrm{k}} , \\qquad \\vek Q_{\\mathrm{k}} = \\vek Q(t_{\\mathrm{k}}) . \\tag{10.73}\\]</div>", "href": "sec-casovno-korakanje.html#eq-ckr-ravnovesje"};

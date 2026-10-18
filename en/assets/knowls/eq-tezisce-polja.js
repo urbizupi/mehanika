@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-tezisce-polja"] = {"html": "<div class=\"eq\">\\[\\vek 1^\\T\\mat M\\,\\vek d = \\int_0^L\\rho A\\,u_{\\mathrm{h}}\\,\\mathrm{d}x . \\tag{10.52}\\]</div>", "href": "sec-masna-matrika.html#eq-tezisce-polja"};

@@ -1,0 +1,1214 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>10.6 The Rayleigh quotient · Chapter 10</title>
+<script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/style.css">
+<noscript><style>#loadbar { display: none; }</style></noscript>
+<script src="assets/config.js"></script>
+<script src="assets/load.js"></script>
+<script defer src="assets/interaktivno.js"></script>
+<script defer src="assets/book.js"></script>
+<script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<div id="loadbar" aria-hidden="true"></div>
+<header class="top"><a class="home" href="index.html">Mechanics</a><nav class="pager"><a href="sec-togi-nacini.html" rel="prev">← 10.5</a><a href="index.html">Contents</a><a href="sec-masna-matrika.html" rel="next">10.7 →</a></nav>
+<span class="tools"><a class="lang" href="../sl/sec-rayleighov-kolicnik.html" hreflang="sl">Slovenščina</a><button type="button" class="theme-toggle" title="Light or dark theme" aria-label="Light or dark theme"></button><button type="button" data-details="open">Expand all</button><button type="button" data-details="close">Collapse all</button><button type="button" class="fig-side-toggle" aria-pressed="false">Figures alongside</button></span></header>
+<main>
+<p class="updated">Last updated 19 October 2026, 1:11</p>
+<p class="crumb"><a href="ch-nihanje-vec-ps.html"><span class="h-num">Chapter 10</span> Vibration of systems with several degrees of freedom and modal analysis (nihanje sistemov z več prostostnimi stopnjami in modalna analiza)</a></p>
+<h2 id="sec-rayleighov-kolicnik"><span class="h-num">10.6</span> The Rayleigh quotient</h2>
+<p>The spectral theorem (theorem <a class="xref" href="sec-spektralni-izrek.html#thm-spektralni-izrek" data-knowl="thm-spektralni-izrek">10.13</a>) tells us that every system with \(n\) degrees of freedom has \(n\) modes of vibration and \(n\) natural frequencies. It does not tell us how to find them when \(n\) is large. We solved the <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">frame</a> with two storeys with a \(2 \times 2\) <a class="xref auto" href="sec-determinanta.html#def-determinanta" data-knowl="def-determinanta">determinant</a> (section <a class="xref" href="sec-lastni-problem.html">10.2</a>). A bar cut into 16 finite elements (chapter <a class="xref" href="ch-mke-palice.html">7</a>) has 16 <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">coordinates</a>, and we do not compute determinants of order 16 by hand. In the next section we will see that the mass <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> of such a system is assembled in the same way as the stiffness matrix, and we leave the solution of the <a class="xref auto" href="sec-lastni-problem.html#def-lastni-par" data-knowl="def-lastni-par">eigenvalue problem</a> to a computer. Often, however, we do not need all modes but only the lowest frequency, for example because we want to compare it with the frequency of a load. So we ask: can a guessed shape of the motion tell us the lowest frequency, and how good is such an estimate?</p>
+<p>Take frame A with two storeys, which we met in section <a class="xref" href="sec-enacbe-vec-ps.html">10.1</a>: rigid floors of mass \(m = 500\) kg, each storey has stiffness \(k = 501\,760\) N/m, the coordinates are the floor displacements \(q_1\) and <span class="nobr">\(q_2\),</span> \(\mat M = m\,\mat I\) and <span class="nobr">\(\mat K = k\left[\begin{smallmatrix} 2 &amp; -1 \\ -1 &amp; 1 \end{smallmatrix}\right]\).</span> Let us guess that both floors move equally, <span class="nobr">\(\vek v = (1, 1)\).</span> Imagine that a constraint imposes this shape, so \(\vek q(t) = a(t)\,\vek v\) with a single coordinate <span class="nobr">\(a\).</span> By section <a class="xref" href="sec-enacbe-vec-ps.html">10.1</a> the kinetic energy is \(T = \tfrac12\dot{\vek q}^\T\mat M\dot{\vek q} = \tfrac12\,(\vek v^\T\mat M\vek v)\,\dot a^2\) and the potential energy is <span class="nobr">\(V = \tfrac12\,\vek q^\T\mat K\vek q = \tfrac12\,(\vek v^\T\mat K\vek v)\,a^2\).</span> This is a system with one degree of freedom (theorem <a class="xref" href="sec-model-ena-ps.html#thm-enacba-ena-ps" data-knowl="thm-enacba-ena-ps">9.3</a>) with mass \(\vek v^\T\mat M\vek v = 1000\) kg and stiffness <span class="nobr">\(\vek v^\T\mat K\vek v = k\).</span> For \(\vek v = (1, 1)\) only the first storey is stretched, because the second floor does not move relative to the first, so the stiffness equals the stiffness of one storey. By theorem <a class="xref" href="sec-prosto-duseno-nihanje.html#thm-prosto-duseno" data-knowl="thm-prosto-duseno">9.43</a> its circular frequency is <span class="nobr">\(\omega^2 = k/1000\ \text{kg} = 501{,}76\ \text{1/s}^2\),</span> so \(\omega = 22{,}40\) 1/s. The true lowest frequency of the frame is \(\omega_1 = 19{,}578\) 1/s, so the estimate is \(14{,}41\) % too high. The high estimate is no accident: by imposing the shape we made the system stiffer, because we took away its freedom to move the second floor differently from the first, and a constraint does not lower the frequencies. Theorem <a class="xref" href="sec-rayleighov-kolicnik.html#thm-rayleigh-meje" data-knowl="thm-rayleigh-meje">10.26</a> will state this for every system and every shape.</p>
+<p>We compute the same for any shape \(\vek v\) and any system. The ratio of the energies at the shape \(\vek v\) is the number we need.</p>
+
+<div class="blk definicija" id="def-rayleighov-kolicnik"><div class="blk-head"><span class="blk-label">Definition 10.25</span> <span class="blk-title">Rayleigh quotient (Rayleighov količnik)</span></div><div class="blk-body"><p>Let \(\mat K\) be a <a class="xref auto" href="sec-matrike.html#def-simetricna-matrika" data-knowl="def-simetricna-matrika">symmetric matrix</a> and \(\mat M\) a symmetric positive definite matrix of order \(n\) (definition <a class="xref" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">6.27</a>). For a column \(\vek v \ne \vek 0\) with \(n\) elements the Rayleigh quotient (Rayleighov količnik) is the number</p>
+<div class="eq" id="eq-rkv-definicija">\[R(\vek v) = \frac{\vek v^\T\mat K\,\vek v}{\vek v^\T\mat M\,\vek v} . \tag{10.29}\]</div>
+<p>The <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> \(R\) assigns one real number to every nonzero column. The denominator is positive because \(\mat M\) is positive definite.</p>
+
+<p class="vir"><span class="vir-label">Source:</span> CK (10.40) (PDF p. 316), GR equation (2.200) (PDF p. 130), where GR introduces it for an eigenmode as the »Rayleigh quotient«. The name as in chapter <a class="xref" href="ch-sibka-oblika.html">6</a> and in the section on buckling in chapter <a class="xref" href="ch-analiticna-dinamika.html">8</a>.</p></div></div>
+<p>In buckling we wrote a quotient with the same name with <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integrals</a> (equation <a class="xref" href="sec-uklon.html#eq-ukl-rayleigh" data-knowl="eq-ukl-rayleigh">(8.123)</a>), here it is written with two matrices. The column \(\vek R\) of chapter <a class="xref" href="ch-analiticna-dinamika.html">8</a> is the remainder of a linearization, so a different object, while \(R(\vek v)\) is a number. For the column \(c\,\vek v\) with \(c \ne 0\) we have <span class="nobr">\(R(c\,\vek v) = c^2\,\vek v^\T\mat K\vek v/(c^2\,\vek v^\T\mat M\vek v) = R(\vek v)\):</span> the quotient does not depend on the scale of the column, only on its shape. This is as it should be, since a mode of vibration is known only up to multiplication by a number. If \(\vek\varphi_{\mathrm{r}}\) is a mode with <span class="nobr">\(\mat K\vek\varphi_{\mathrm{r}} = \lambda_{\mathrm{r}}\mat M\vek\varphi_{\mathrm{r}}\),</span> we multiply the equation by \(\vek\varphi_{\mathrm{r}}^\T\) and obtain <span class="nobr">\(\vek\varphi_{\mathrm{r}}^\T\mat K\vek\varphi_{\mathrm{r}} = \lambda_{\mathrm{r}}\,\vek\varphi_{\mathrm{r}}^\T\mat M\vek\varphi_{\mathrm{r}}\),</span> so</p>
+<div class="eq" id="eq-rkv-nacin">\[R(\vek\varphi_{\mathrm{r}}) = \lambda_{\mathrm{r}} . \tag{10.30}\]</div>
+<p>At a mode the quotient equals the <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">eigenvalue</a>. For other shapes we want to know where it lies among the eigenvalues. For \(\vek v = (1, 1)\) in frame A we have <span class="nobr">\(R = 501{,}76\ \text{1/s}^2\),</span> between \(\lambda_1 = 383{,}31\) and <span class="nobr">\(\lambda_2 = 2627{,}25\ \text{1/s}^2\).</span> Let us show that it always lies like this.</p>
+
+<div class="blk izrek" id="thm-rayleigh-meje"><div class="blk-head"><span class="blk-label">Theorem 10.26</span> <span class="blk-title">Bounds of the Rayleigh quotient (meje Rayleighovega količnika)</span></div><div class="blk-body"><p>Let \(\mat K\) be symmetric and \(\mat M\) symmetric <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite matrices</a> of order <span class="nobr">\(n\),</span> \(\lambda_1 \le \dots \le \lambda_{\mathrm{n}}\) the <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">eigenvalues</a> of the pair \((\mat K, \mat M)\) and \(\vek\varphi_1, \dots, \vek\varphi_{\mathrm{n}}\) modes with \(\vek\varphi_{\mathrm{r}}^\T\mat M\vek\varphi_{\mathrm{s}} = 1\) for \(r = s\) and \(0\) otherwise (theorem <a class="xref" href="sec-spektralni-izrek.html#thm-spektralni-izrek" data-knowl="thm-spektralni-izrek">10.13</a>). For every column \(\vek v \ne \vek 0\) with \(n\) elements and coefficients \(c_{\mathrm{r}} = \vek\varphi_{\mathrm{r}}^\T\mat M\vek v\)</p>
+<div class="eq" id="eq-rkv-razvoj">\[R(\vek v) = \frac{\lambda_1 c_1^2 + \dots + \lambda_{\mathrm{n}} c_{\mathrm{n}}^2}{c_1^2 + \dots + c_{\mathrm{n}}^2} , \qquad \lambda_1 \le R(\vek v) \le \lambda_{\mathrm{n}} . \tag{10.31}\]</div>
+<p>The equality \(R(\vek v) = \lambda_1\) holds exactly when <span class="nobr">\(\mat K\vek v = \lambda_1\mat M\vek v\),</span> and the equality \(R(\vek v) = \lambda_{\mathrm{n}}\) exactly when <span class="nobr">\(\mat K\vek v = \lambda_{\mathrm{n}}\mat M\vek v\).</span></p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We write the quotient with the expansion in modes, which is a weighted mean of the <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">eigenvalues</a>, and read off both bounds and the cases of equality.</p>
+<ol>
+<li>By corollary <a class="xref" href="sec-spektralni-izrek.html#cor-razvoj-po-nacinih-n" data-knowl="cor-razvoj-po-nacinih-n">10.14</a>, \(\vek v = \sum_{\mathrm{r}} c_{\mathrm{r}}\vek\varphi_{\mathrm{r}}\) with coefficients <span class="nobr">\(c_{\mathrm{r}} = \vek\varphi_{\mathrm{r}}^\T\mat M\vek v\).</span> Since <span class="nobr">\(\vek v \ne \vek 0\),</span> at least one \(c_{\mathrm{r}}\) is nonzero, since otherwise <span class="nobr">\(\vek v = \vek 0\).</span></li>
+<li>The denominator is <span class="nobr">\(\vek v^\T\mat M\vek v = \sum_{\mathrm{r}}\sum_{\mathrm{s}} c_{\mathrm{r}} c_{\mathrm{s}}\,\vek\varphi_{\mathrm{r}}^\T\mat M\vek\varphi_{\mathrm{s}} = \sum_{\mathrm{r}} c_{\mathrm{r}}^2\),</span> because by theorem <a class="xref" href="sec-spektralni-izrek.html#thm-spektralni-izrek" data-knowl="thm-spektralni-izrek">10.13</a> all terms with \(r \ne s\) are zero and those with \(r = s\) equal <span class="nobr">\(c_{\mathrm{r}}^2\).</span></li>
+<li>The numerator is <span class="nobr">\(\vek v^\T\mat K\vek v = \sum_{\mathrm{r}}\sum_{\mathrm{s}} c_{\mathrm{r}} c_{\mathrm{s}}\,\vek\varphi_{\mathrm{r}}^\T\mat K\vek\varphi_{\mathrm{s}}\).</span> Because \(\mat K\vek\varphi_{\mathrm{s}} = \lambda_{\mathrm{s}}\mat M\vek\varphi_{\mathrm{s}}\) we have <span class="nobr">\(\vek\varphi_{\mathrm{r}}^\T\mat K\vek\varphi_{\mathrm{s}} = \lambda_{\mathrm{s}}\,\vek\varphi_{\mathrm{r}}^\T\mat M\vek\varphi_{\mathrm{s}}\),</span> so the numerator is <span class="nobr">\(\sum_{\mathrm{r}}\lambda_{\mathrm{r}} c_{\mathrm{r}}^2\).</span> Steps 2 and 3 prove the first part of <a class="xref" href="sec-rayleighov-kolicnik.html#eq-rkv-razvoj" data-knowl="eq-rkv-razvoj">(10.31)</a>.</li>
+<li>Write <span class="nobr">\(S = \sum_{\mathrm{r}} c_{\mathrm{r}}^2 &gt; 0\).</span> By step 3, <span class="nobr">\(R(\vek v) - \lambda_1 = \sum_{\mathrm{r}}(\lambda_{\mathrm{r}} - \lambda_1)\,c_{\mathrm{r}}^2/S\).</span> Every term is nonnegative because <span class="nobr">\(\lambda_{\mathrm{r}} \ge \lambda_1\).</span> Hence <span class="nobr">\(R(\vek v) \ge \lambda_1\).</span> In the same way <span class="nobr">\(\lambda_{\mathrm{n}} - R(\vek v) = \sum_{\mathrm{r}}(\lambda_{\mathrm{n}} - \lambda_{\mathrm{r}})\,c_{\mathrm{r}}^2/S \ge 0\).</span></li>
+<li>The equality \(R(\vek v) = \lambda_1\) means that every term in step 4 is zero, so \(c_{\mathrm{r}} = 0\) for every \(r\) with <span class="nobr">\(\lambda_{\mathrm{r}} &gt; \lambda_1\).</span> Then \(\vek v\) is a combination of modes with \(\lambda_{\mathrm{r}} = \lambda_1\) and <span class="nobr">\(\mat K\vek v = \sum c_{\mathrm{r}}\lambda_1\mat M\vek\varphi_{\mathrm{r}} = \lambda_1\mat M\vek v\).</span> Conversely, from \(\mat K\vek v = \lambda_1\mat M\vek v\) multiplication by \(\vek v^\T\) gives <span class="nobr">\(\vek v^\T\mat K\vek v = \lambda_1\,\vek v^\T\mat M\vek v\),</span> so <span class="nobr">\(R(\vek v) = \lambda_1\).</span> The same holds for <span class="nobr">\(\lambda_{\mathrm{n}}\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> CK (10.40)-(10.45) (PDF p. 316): expansion in modes and the bounds, there for <span class="nobr">\(\omega_1 \ne 0\).</span> The form of the proof with the weighted mean and the cases of equality are ours.</p></div></div>
+<p>We have proved that \(R(\vek v)\) is a weighted mean of the eigenvalues, with weights \(c_{\mathrm{r}}^2/S\) that are nonnegative and add up to <span class="nobr">\(1\),</span> so it lies between the smallest and the largest. This keeps the promise of chapter <a class="xref" href="ch-deformacija.html">1</a>: the eigenvalue \(\lambda_1\) is the smallest and \(\lambda_{\mathrm{n}}\) the largest value of the quotient, and it takes them at the modes \(\vek\varphi_1\) and <span class="nobr">\(\vek\varphi_{\mathrm{n}}\).</span> For a system with \(\lambda_1 \ge 0\) we therefore have <span class="nobr">\(\sqrt{R(\vek v)} \ge \omega_1\):</span> every guessed shape estimates the lowest frequency from above. For \(n = 2\) we already had this: point 3 of theorem <a class="xref" href="sec-majhna-nihanja.html#thm-dve-ps" data-knowl="thm-dve-ps">8.123</a> says that \(K_{11}/M_{11}\) and \(K_{22}/M_{22}\) lie between \(\lambda_1\) and <span class="nobr">\(\lambda_2\).</span> Here this is a special case, since the column \(\vek e_{\mathrm{i}}\) with a one in place \(i\) and zeros elsewhere gives <span class="nobr">\(R(\vek e_{\mathrm{i}}) = K_{\mathrm{ii}}/M_{\mathrm{ii}}\).</span> In frame A these are \(2007{,}04\) and <span class="nobr">\(1003{,}52\ \text{1/s}^2\).</span></p>
+
+<h3 id="sec-kako-dobra"><span class="h-num">10.6.1</span> How good is a guessed shape</h3>
+<p>Let us try the quotient on <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">frame</a> A with two more shapes (figure <a class="xref" href="sec-rayleighov-kolicnik.html#fig-rkv-oblike" data-knowl="fig-rkv-oblike">10.17</a>). With \(\vek v = (1, 2)\) the second floor is displaced twice as far as the first. This is the shape the frame takes under a static force at the top: the <a class="xref auto" href="sec-betti-maxwell.html#def-podajnostna-matrika" data-knowl="def-podajnostna-matrika">flexibility matrix</a> is \(\mat D = \mat K^{-1} = \frac1k\left[\begin{smallmatrix} 1 &amp; 1 \\ 1 &amp; 2 \end{smallmatrix}\right]\) (lemma <a class="xref" href="sec-enacbe-vec-ps.html#lem-togost-podajnost" data-knowl="lem-togost-podajnost">10.3</a>), and the force \((0, F)\) gives the displacements <span class="nobr">\((F/k, 2F/k)\).</span> The computation by <a class="xref" href="sec-rayleighov-kolicnik.html#eq-rkv-definicija" data-knowl="eq-rkv-definicija">(10.29)</a> gives <span class="nobr">\(R = 401{,}41\ \text{1/s}^2\),</span> so \(\omega = 20{,}035\) 1/s, \(2{,}333\) % above <span class="nobr">\(\omega_1\).</span> We find the third shape as follows. In vibration in the mode \(\vek v\) with frequency \(\omega\) the floors carry the inertial forces <span class="nobr">\(\omega^2\mat M\vek v\),</span> their static displacement is <span class="nobr">\(\omega^2\mat K^{-1}\mat M\vek v\),</span> and \(\mat K\vek v = \omega^2\mat M\vek v\) means exactly that this displacement equals <span class="nobr">\(\vek v\).</span> For a true mode, therefore, \(\mat K^{-1}\mat M\vek v\) is parallel to <span class="nobr">\(\vek v\).</span> For a guessed shape it is not, but it is the static displacement under the inertial forces of that shape, so we take it as the new shape. For \(\vek v = (1, 1)\) the forces \(\mat M\vek v\) on the two floors are equal, as if the weight of each floor acted horizontally, and <span class="nobr">\(\mat K^{-1}\mat M\vek v = (m/k)\,(2, 3)\),</span> which is the shape <span class="nobr">\((1, 1{,}5)\).</span> The quotient of this shape is <span class="nobr">\(R = 385{,}97\ \text{1/s}^2\),</span> so \(\omega = 19{,}646\) 1/s, only \(0{,}346\) % above <span class="nobr">\(\omega_1\).</span></p>
+
+<figure class="blk slika" id="fig-rkv-oblike"><p><span class="svgfig" role="img" aria-label="Two storeys with a mode of vibration and three guessed shapes"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='337.25pt' height='222.71pt' viewBox='-72.000004 -72.000003 249.814496 164.969604'>
+<defs>
+<path id='rkv-oblike-g0-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='rkv-oblike-g0-113' d='M4.503113-4.293898C4.503113-4.333748 4.473225-4.393524 4.403487-4.393524C4.293898-4.393524 3.895392-3.995019 3.726027-3.706102C3.506849-4.244085 3.118306-4.403487 2.799502-4.403487C1.62391-4.403487 .398506-2.929016 .398506-1.484433C.398506-.508095 .986301 .109589 1.713574 .109589C2.141968 .109589 2.530511-.129514 2.889166-.488169C2.799502-.139477 2.470735 1.205479 2.440847 1.295143C2.361146 1.574097 2.281445 1.613948 1.723537 1.62391C1.594022 1.62391 1.494396 1.62391 1.494396 1.823163C1.494396 1.833126 1.494396 1.932752 1.62391 1.932752C1.942715 1.932752 2.291407 1.902864 2.620174 1.902864C2.958904 1.902864 3.317559 1.932752 3.646326 1.932752C3.696139 1.932752 3.825654 1.932752 3.825654 1.733499C3.825654 1.62391 3.726027 1.62391 3.566625 1.62391C3.088418 1.62391 3.088418 1.554172 3.088418 1.464508C3.088418 1.39477 3.108344 1.334994 3.128269 1.24533L4.503113-4.293898ZM1.743462-.109589C1.145704-.109589 1.105853-.876712 1.105853-1.046077C1.105853-1.524284 1.39477-2.610212 1.564134-3.028643C1.872976-3.765878 2.391034-4.184309 2.799502-4.184309C3.447073-4.184309 3.58655-3.377335 3.58655-3.307597C3.58655-3.247821 3.038605-1.066002 3.008717-1.026152C2.859278-.747198 2.30137-.109589 1.743462-.109589Z'/>
+<path id='rkv-oblike-g1-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='rkv-oblike-g1-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='rkv-oblike-g1-53' d='M4.473225-2.002491C4.473225-3.188045 3.656289-4.184309 2.580324-4.184309C2.102117-4.184309 1.673724-4.024907 1.315068-3.676214V-5.618929C1.514321-5.559153 1.843088-5.489415 2.161893-5.489415C3.387298-5.489415 4.084682-6.396015 4.084682-6.525529C4.084682-6.585305 4.054795-6.635118 3.985056-6.635118C3.975093-6.635118 3.955168-6.635118 3.905355-6.60523C3.706102-6.515567 3.217933-6.316314 2.550436-6.316314C2.15193-6.316314 1.693649-6.386052 1.225405-6.595268C1.145704-6.625156 1.125778-6.625156 1.105853-6.625156C1.006227-6.625156 1.006227-6.545455 1.006227-6.386052V-3.437111C1.006227-3.257783 1.006227-3.178082 1.145704-3.178082C1.215442-3.178082 1.235367-3.20797 1.275218-3.267746C1.384807-3.427148 1.753425-3.965131 2.560399-3.965131C3.078456-3.965131 3.327522-3.506849 3.407223-3.327522C3.566625-2.958904 3.58655-2.570361 3.58655-2.072229C3.58655-1.723537 3.58655-1.125778 3.347447-.707347C3.108344-.318804 2.739726-.059776 2.281445-.059776C1.554172-.059776 .986301-.587796 .816936-1.175592C.846824-1.165629 .876712-1.155666 .986301-1.155666C1.315068-1.155666 1.484433-1.404732 1.484433-1.643836S1.315068-2.132005 .986301-2.132005C.846824-2.132005 .498132-2.062267 .498132-1.603985C.498132-.747198 1.185554 .219178 2.30137 .219178C3.457036 .219178 4.473225-.737235 4.473225-2.002491Z'/>
+<path id='rkv-oblike-g1-54' d='M1.315068-3.267746V-3.506849C1.315068-6.027397 2.550436-6.386052 3.058531-6.386052C3.297634-6.386052 3.716065-6.326276 3.935243-5.987547C3.785803-5.987547 3.387298-5.987547 3.387298-5.539228C3.387298-5.230386 3.626401-5.080946 3.845579-5.080946C4.004981-5.080946 4.303861-5.17061 4.303861-5.559153C4.303861-6.156912 3.865504-6.635118 3.038605-6.635118C1.763387-6.635118 .418431-5.349938 .418431-3.148194C.418431-.488169 1.574097 .219178 2.500623 .219178C3.606476 .219178 4.552927-.71731 4.552927-2.032379C4.552927-3.297634 3.666252-4.254047 2.560399-4.254047C1.882939-4.254047 1.514321-3.745953 1.315068-3.267746ZM2.500623-.059776C1.872976-.059776 1.574097-.657534 1.514321-.806974C1.334994-1.275218 1.334994-2.072229 1.334994-2.251557C1.334994-3.028643 1.653798-4.024907 2.550436-4.024907C2.709838-4.024907 3.16812-4.024907 3.476961-3.407223C3.656289-3.038605 3.656289-2.530511 3.656289-2.042341C3.656289-1.564134 3.656289-1.066002 3.486924-.707347C3.188045-.109589 2.729763-.059776 2.500623-.059776Z'/>
+<path id='rkv-oblike-g1-56' d='M1.62391-4.552927C1.165629-4.851806 1.125778-5.190535 1.125778-5.3599C1.125778-5.967621 1.77335-6.386052 2.480697-6.386052C3.20797-6.386052 3.845579-5.867995 3.845579-5.150685C3.845579-4.582814 3.457036-4.104608 2.859278-3.755915L1.62391-4.552927ZM3.078456-3.606476C3.795766-3.975093 4.283935-4.493151 4.283935-5.150685C4.283935-6.067248 3.39726-6.635118 2.49066-6.635118C1.494396-6.635118 .687422-5.897883 .687422-4.971357C.687422-4.79203 .707347-4.343711 1.125778-3.875467C1.235367-3.755915 1.603985-3.506849 1.853051-3.337484C1.275218-3.048568 .418431-2.49066 .418431-1.504359C.418431-.448319 1.43462 .219178 2.480697 .219178C3.606476 .219178 4.552927-.607721 4.552927-1.673724C4.552927-2.032379 4.443337-2.480697 4.064757-2.899128C3.875467-3.108344 3.716065-3.20797 3.078456-3.606476ZM2.082192-3.188045L3.307597-2.410959C3.58655-2.221669 4.054795-1.92279 4.054795-1.315068C4.054795-.577833 3.307597-.059776 2.49066-.059776C1.633873-.059776 .916563-.67746 .916563-1.504359C.916563-2.082192 1.235367-2.719801 2.082192-3.188045Z'/>
+<path id='rkv-oblike-g2-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+</defs>
+<g id='rkv-oblike-page1'>
+<g stroke-miterlimit='10' transform='translate(-54.768252,58.617951)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0-25.60728V130.88278' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M113.81097 56.90549V-25.60728' fill='none'/>
+</g>
+</g>
+</g>
+<path d='M-3.41418 56.90549H0' fill='none'/>
+<path d='M-3.41418 113.81097H0' fill='none'/>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-11.38092 0H17.07182' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-11.38092 0L-17.07138-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-4.26775 0L-9.9582-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M2.84544 0L-2.84502-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M9.95863 0L4.26817-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M17.07182 0L11.38136-5.69046' fill='none'/>
+</g>
+</g>
+<g stroke-width='0.8'>
+<path d='M-11.38092 0H17.07181' fill='none'/>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='1.1'>
+<path d='M113.81097 56.90549V113.81097' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M115.6496 113.81097C115.6496 114.82642 114.82642 115.6496 113.81097 115.6496C112.79553 115.6496 111.97235 114.82642 111.97235 113.81097C111.97235 112.79553 112.79553 111.97235 113.81097 111.97235C114.82642 111.97235 115.6496 112.79553 115.6496 113.81097ZM113.81097 113.81097' stroke='none'/>
+</g>
+<g transform='translate(113.81097,113.81097)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.768252,58.617951)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.1'>
+<path d='M113.81097 56.90549L170.71646 113.81097' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M172.55508 113.81097C172.55508 114.82642 171.7319 115.6496 170.71646 115.6496S168.87784 114.82642 168.87784 113.81097C168.87784 112.79553 169.70102 111.97235 170.71646 111.97235S172.55508 112.79553 172.55508 113.81097ZM170.71646 113.81097' stroke='none'/>
+</g>
+<g transform='translate(170.71646,113.81097)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.768252,58.617951)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.1'>
+<path d='M113.81097 56.90549L227.62195 113.81097' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M229.46057 113.81097C229.46057 114.82642 228.63739 115.6496 227.62195 115.6496C226.6065 115.6496 225.78333 114.82642 225.78333 113.81097C225.78333 112.79553 226.6065 111.97235 227.62195 111.97235C228.63739 111.97235 229.46057 112.79553 229.46057 113.81097ZM227.62195 113.81097' stroke='none'/>
+</g>
+<g transform='translate(227.62195,113.81097)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.768252,58.617951)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='1.4'>
+<path d='M0 0L113.81097 56.90549L184.14615 113.81097' fill='none'/>
+</g>
+<path d='M115.6496 56.90549C115.6496 57.92093 114.82642 58.74411 113.81097 58.74411C112.79553 58.74411 111.97235 57.92093 111.97235 56.90549S112.79553 55.06686 113.81097 55.06686C114.82642 55.06686 115.6496 55.89005 115.6496 56.90549ZM113.81097 56.90549' stroke='none'/>
+<g transform='translate(113.81097,56.90549)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.768252,58.617951)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M185.98477 113.81097C185.98477 114.82642 185.16159 115.6496 184.14615 115.6496C183.1307 115.6496 182.30753 114.82642 182.30753 113.81097C182.30753 112.79553 183.1307 111.97235 184.14615 111.97235C185.16159 111.97235 185.98477 112.79553 185.98477 113.81097ZM184.14615 113.81097' stroke='none'/>
+<g transform='translate(184.14615,113.81097)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.768252,58.617951)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(111.31097,117.44395)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.768252,58.617951)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.768252' y='58.617951' xlink:href='#rkv-oblike-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(154.30568,119.3884)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.768252,58.617951)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.768252' y='58.617951' xlink:href='#rkv-oblike-g1-49'/>
+<use x='-49.786913' y='58.617951' xlink:href='#rkv-oblike-g0-59'/>
+<use x='-47.019504' y='58.617951' xlink:href='#rkv-oblike-g1-53'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(187.77913,119.3884)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.768252,58.617951)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.768252' y='58.617951' xlink:href='#rkv-oblike-g1-49'/>
+<use x='-49.786913' y='58.617951' xlink:href='#rkv-oblike-g0-59'/>
+<use x='-47.019504' y='58.617951' xlink:href='#rkv-oblike-g1-54'/>
+<use x='-42.038165' y='58.617951' xlink:href='#rkv-oblike-g1-49'/>
+<use x='-37.056826' y='58.617951' xlink:href='#rkv-oblike-g1-56'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(225.12195,117.44395)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.768252,58.617951)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.768252' y='58.617951' xlink:href='#rkv-oblike-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M.33748-21.33955H113.4735' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,6.14052,-21.33955)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,0.22499,-21.33955)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(107.67046,-21.33955)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(113.58598,-21.33955)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(52.43036,-29.20306)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.768252,58.617951)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-54.768252' y='58.617951' xlink:href='#rkv-oblike-g0-113'/>
+<use x='-50.32079' y='60.112332' xlink:href='#rkv-oblike-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 10.17</span>: Frame A: the first mode of vibration (black, displacement ratio <span class="nobr">\(q_2/q_1 = 1{,}618\))</span> and three guessed shapes (blue: <span class="nobr">\(1{,}5\),</span> orange: <span class="nobr">\(2\),</span> grey: <span class="nobr">\(1\)).</span> The vertical dashed line is the rest position, the two short ticks on it are the heights of the floors, and the horizontal distance of a dot from it is the element of the shape for that floor. The first element is the same for all shapes, \(q_1\) (dimension below), and the number above each dot is the ratio \(q_2/q_1\) of that shape. The shapes are drawn at an arbitrary scale, not as actual displacements. The frequency errors relative to \(\omega_1 = 19{,}578\) 1/s are, in this order, \(+0{,}346\) %, \(+2{,}333\) % and \(+14{,}41\) %, the black mode has error <span class="nobr">\(0\).</span></figcaption></figure>
+<p>The errors are \(14{,}41\) %, \(2{,}333\) % and \(0{,}346\) % for shapes that come ever closer to the first mode. The error seems to fall with the difference between the shape and the mode, but how fast? Let us compare one more guessed shape with an exactly known error: the first mode with a small addition of the second, <span class="nobr">\(\vek v = \vek\varphi_1 + \varepsilon\,\vek\varphi_2\).</span> At \(\varepsilon = 0{,}1\) we get <span class="nobr">\(R - \lambda_1 = 22{,}217\ \text{1/s}^2\),</span> and at the ten times smaller \(\varepsilon = 0{,}01\) we get <span class="nobr">\(R - \lambda_1 = 0{,}22437\ \text{1/s}^2\).</span> When the shape is ten times closer to the mode, the error of the <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">eigenvalue</a> is a hundred times smaller: \(22{,}217\) is \(5{,}80\) % of \(\lambda_1\) and \(0{,}22437\) only \(0{,}0585\) %, in frequency \(2{,}86\) % and \(0{,}0292\) %. The next theorem says why.</p>
+
+<div class="blk izrek" id="thm-stacionarnost-kolicnika"><div class="blk-head"><span class="blk-label">Theorem 10.27</span> <span class="blk-title">Stationarity of the Rayleigh quotient (stacionarnost Rayleighovega količnika)</span></div><div class="blk-body"><p>Let <span class="nobr">\(\mat K\),</span> <span class="nobr">\(\mat M\),</span> \(\lambda_{\mathrm{r}}\) and \(\vek\varphi_{\mathrm{r}}\) be as in theorem <a class="xref" href="sec-rayleighov-kolicnik.html#thm-rayleigh-meje" data-knowl="thm-rayleigh-meje">10.26</a>.</p>
+<ol>
+<li>Let <span class="nobr">\(\vek v = \vek\varphi_{\mathrm{r}} + \sum_{\mathrm{s} \ne \mathrm{r}}e_{\mathrm{s}}\vek\varphi_{\mathrm{s}}\),</span> where the \(e_{\mathrm{s}}\) are numbers. Then
+<div class="eq" id="eq-rkv-napaka">\[R(\vek v) - \lambda_{\mathrm{r}} = \frac{\sum_{\mathrm{s} \ne \mathrm{r}}(\lambda_{\mathrm{s}} - \lambda_{\mathrm{r}})\,e_{\mathrm{s}}^2}{1 + \sum_{\mathrm{s} \ne \mathrm{r}}e_{\mathrm{s}}^2} . \tag{10.32}\]</div>
+With \(\varepsilon^2 = \sum_{\mathrm{s} \ne \mathrm{r}}e_{\mathrm{s}}^2\) and \(\Delta = \max_{\mathrm{s}}|\lambda_{\mathrm{s}} - \lambda_{\mathrm{r}}|\) we therefore have <span class="nobr">\(|R(\vek v) - \lambda_{\mathrm{r}}| \le \Delta\,\varepsilon^2\).</span> Every column \(\vek v\) with \(c_{\mathrm{r}} = \vek\varphi_{\mathrm{r}}^\T\mat M\vek v \ne 0\) takes this form with \(e_{\mathrm{s}} = c_{\mathrm{s}}/c_{\mathrm{r}}\) after multiplication by the number <span class="nobr">\(1/c_{\mathrm{r}}\).</span></li>
+<li>The <a class="xref auto" href="sec-parcialni-odvodi.html#def-parcialni-odvod" data-knowl="def-parcialni-odvod">partial derivatives</a> of the quotient with respect to the elements of the column are
+<div class="eq" id="eq-rkv-gradient">\[\frac{\partial R}{\partial v_{\mathrm{i}}}(\vek v) = \frac{2\,\bigl(\mat K\vek v - R(\vek v)\,\mat M\vek v\bigr)_{\mathrm{i}}}{\vek v^\T\mat M\vek v} . \tag{10.33}\]</div>
+They are all zero exactly when <span class="nobr">\(\mat K\vek v = R(\vek v)\,\mat M\vek v\).</span> The stationary points of the quotient, the points at which all partial derivatives are zero (as in corollary <a class="xref" href="sec-posplosene-sile.html#cor-stacionarna-energija" data-knowl="cor-stacionarna-energija">8.56</a>), are therefore exactly the eigencolumns, and the value of the quotient at them is the <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">eigenvalue</a>.</li>
+<li>If there are \(s\) and \(t\) with <span class="nobr">\(\lambda_{\mathrm{s}} &lt; \lambda_{\mathrm{r}} &lt; \lambda_{\mathrm{t}}\),</span> then \(R - \lambda_{\mathrm{r}}\) takes both signs at arbitrarily small deviations from <span class="nobr">\(\vek\varphi_{\mathrm{r}}\),</span> so \(R\) has neither its smallest nor its largest value at <span class="nobr">\(\vek\varphi_{\mathrm{r}}\).</span></li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We obtain point 1 from the expansion <a class="xref" href="sec-rayleighov-kolicnik.html#eq-rkv-razvoj" data-knowl="eq-rkv-razvoj">(10.31)</a>, point 2 with the quotient rule, and point 3 from the signs of the terms in point 1.</p>
+<ol>
+<li>In <a class="xref" href="sec-rayleighov-kolicnik.html#eq-rkv-razvoj" data-knowl="eq-rkv-razvoj">(10.31)</a>, \(c_{\mathrm{r}} = 1\) and \(c_{\mathrm{s}} = e_{\mathrm{s}}\) for \(s \ne r\) (the coefficients are \(c_{\mathrm{s}} = \vek\varphi_{\mathrm{s}}^\T\mat M\vek v\) and <span class="nobr">\(\vek\varphi_{\mathrm{s}}^\T\mat M\vek\varphi_{\mathrm{t}} = \delta_{\mathrm{st}}\)).</span> Hence <span class="nobr">\(R(\vek v) = \bigl(\lambda_{\mathrm{r}} + \sum_{\mathrm{s} \ne \mathrm{r}}\lambda_{\mathrm{s}} e_{\mathrm{s}}^2\bigr)/\bigl(1 + \sum_{\mathrm{s} \ne \mathrm{r}}e_{\mathrm{s}}^2\bigr)\).</span> We subtract <span class="nobr">\(\lambda_{\mathrm{r}}\),</span> written as <span class="nobr">\(\lambda_{\mathrm{r}}\bigl(1 + \sum e_{\mathrm{s}}^2\bigr)/\bigl(1 + \sum e_{\mathrm{s}}^2\bigr)\),</span> and obtain <a class="xref" href="sec-rayleighov-kolicnik.html#eq-rkv-napaka" data-knowl="eq-rkv-napaka">(10.32)</a>.</li>
+<li>The estimate: the absolute value of each term in the numerator is at most \(\Delta\,e_{\mathrm{s}}^2\) and the denominator is <span class="nobr">\(\ge 1\),</span> so <span class="nobr">\(|R - \lambda_{\mathrm{r}}| \le \Delta\sum e_{\mathrm{s}}^2 = \Delta\,\varepsilon^2\).</span> If <span class="nobr">\(c_{\mathrm{r}} \ne 0\),</span> then because \(R(c\,\vek v) = R(\vek v)\) the quotient at \(\vek v/c_{\mathrm{r}}\) equals the quotient at <span class="nobr">\(\vek v\),</span> and \(\vek v/c_{\mathrm{r}}\) has the coefficients <span class="nobr">\(c_{\mathrm{s}}/c_{\mathrm{r}}\).</span></li>
+<li>We compute the derivative with respect to \(v_{\mathrm{i}}\) as the derivative of a <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> of one variable, with the other elements held constant (definition <a class="xref" href="sec-parcialni-odvodi.html#def-parcialni-odvod" data-knowl="def-parcialni-odvod">1.25</a>). The numerator \(\vek v^\T\mat K\vek v = \sum_{\mathrm{j}}\sum_{\mathrm{l}} K_{\mathrm{jl}}v_{\mathrm{j}}v_{\mathrm{l}}\) contains \(v_{\mathrm{i}}\) only in the terms with \(j = i\) or <span class="nobr">\(l = i\),</span> so its derivative is \(\sum_{\mathrm{l}} K_{\mathrm{il}}v_{\mathrm{l}} + \sum_{\mathrm{j}} K_{\mathrm{ji}}v_{\mathrm{j}} = 2\,(\mat K\vek v)_{\mathrm{i}}\) by the symmetry <span class="nobr">\(K_{\mathrm{ji}} = K_{\mathrm{ij}}\).</span> In the same way the denominator has the derivative <span class="nobr">\(2\,(\mat M\vek v)_{\mathrm{i}}\).</span></li>
+<li>A column that differs from \(\vek v\) only in element \(i\) is zero for at most one value of that element, and this value is not <span class="nobr">\(v_{\mathrm{i}}\),</span> because <span class="nobr">\(\vek v \ne \vek 0\).</span> On an <a class="xref auto" href="sec-konvergenca-zaporedij.html#def-interval" data-knowl="def-interval">open interval</a> around \(v_{\mathrm{i}}\) without this value the denominator is positive, so by point 3 of lemma <a class="xref" href="sec-virtualne-sile.html#lem-koren-kolicnik" data-knowl="lem-koren-kolicnik">4.108</a> <span class="nobr">\(\partial R/\partial v_{\mathrm{i}} = \bigl(2(\mat K\vek v)_{\mathrm{i}}\,\vek v^\T\mat M\vek v - \vek v^\T\mat K\vek v\cdot 2(\mat M\vek v)_{\mathrm{i}}\bigr)/(\vek v^\T\mat M\vek v)^2\).</span> Cancelling one \(\vek v^\T\mat M\vek v\) gives <a class="xref" href="sec-rayleighov-kolicnik.html#eq-rkv-gradient" data-knowl="eq-rkv-gradient">(10.33)</a>.</li>
+<li>The <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivatives</a> are all zero exactly when <span class="nobr">\(\mat K\vek v - R(\vek v)\mat M\vek v = \vek 0\),</span> since the denominator is positive. This is the <a class="xref auto" href="sec-lastni-problem.html#def-lastni-par" data-knowl="def-lastni-par">eigenvalue problem</a> with the <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">eigenvalue</a> <span class="nobr">\(R(\vek v)\).</span> Conversely, if <span class="nobr">\(\mat K\vek v = \lambda\mat M\vek v\),</span> multiplication by \(\vek v^\T\) gives \(R(\vek v) = \lambda\) and the expression is zero.</li>
+<li>Let <span class="nobr">\(\lambda_{\mathrm{s}} &lt; \lambda_{\mathrm{r}} &lt; \lambda_{\mathrm{t}}\).</span> Take \(e_{\mathrm{s}} = e\) and all other <span class="nobr">\(e_{\mathrm{s}'} = 0\).</span> By step 1, \(R - \lambda_{\mathrm{r}} = (\lambda_{\mathrm{s}} - \lambda_{\mathrm{r}})e^2/(1 + e^2) &lt; 0\) for every <span class="nobr">\(e \ne 0\).</span> With \(e_{\mathrm{t}} = e\) and the others zero, <span class="nobr">\(R - \lambda_{\mathrm{r}} = (\lambda_{\mathrm{t}} - \lambda_{\mathrm{r}})e^2/(1 + e^2) &gt; 0\).</span> The deviation \(e\,\vek\varphi_{\mathrm{s}}\) or \(e\,\vek\varphi_{\mathrm{t}}\) is arbitrarily small for small <span class="nobr">\(e\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> GR sections 2.10.2 and 2.10.3 (PDF pp. 130-132), (2.204) and (2.206): the quotient is stationary in the vicinity of an eigenmode, the error is of second order, the expansion of the error in modes. The exact form <a class="xref" href="sec-rayleighov-kolicnik.html#eq-rkv-napaka" data-knowl="eq-rkv-napaka">(10.32)</a>, the derivative <a class="xref" href="sec-rayleighov-kolicnik.html#eq-rkv-gradient" data-knowl="eq-rkv-gradient">(10.33)</a> and point 3 are not from the source, GR on PDF p. 131 says only that without restricting the comparison vectors the stationary point cannot be characterized as a smallest or largest value, because the matrix \(\mat K - \omega_{\mathrm{r}}^2\mat M\) is not positive definite.</p></div></div>
+<p>The theorem says three things. First, the error of the quotient is the square of the error of the shape, not the error itself (figure <a class="xref" href="sec-rayleighov-kolicnik.html#fig-rkv-napaka" data-knowl="fig-rkv-napaka">10.18</a>). This explains why the estimate of \(0{,}346\) % for the shape \((1, 1{,}5)\) is so good. Relative to the first mode it contains the share \(e_2 = 0{,}0344\) of the second, the shape \((1, 2)\) contains <span class="nobr">\(e_2 = -0{,}0902\),</span> which is \(2{,}618\) times more. The error of the quotient \(R - \lambda_1\) is \(2{,}66\ \text{1/s}^2\) against <span class="nobr">\(18{,}10\ \text{1/s}^2\),</span> which is \(6{,}81\) times more, close to <span class="nobr">\(2{,}618^2 = 6{,}85\).</span> The denominator \(1 + e_2^2\) in <a class="xref" href="sec-rayleighov-kolicnik.html#eq-rkv-napaka" data-knowl="eq-rkv-napaka">(10.32)</a> keeps it from the exact square. For the shape <span class="nobr">\((1, 1)\),</span> <span class="nobr">\(e_2 = 0{,}2361\),</span> <span class="nobr">\(\Delta\,e_2^2 = 125{,}05\ \text{1/s}^2\),</span> and the denominator \(1{,}056\) reduces it to <span class="nobr">\(118{,}45\ \text{1/s}^2\),</span> which is <span class="nobr">\(R - \lambda_1\).</span> Second, the quotient has zero <a class="xref auto" href="sec-parcialni-odvodi.html#def-parcialni-odvod" data-knowl="def-parcialni-odvod">partial derivatives</a> at a mode and nowhere else, so the eigencolumns are exactly the columns at which \(R\) does not change to first order. Third, at the lowest and the highest mode the quotient has its smallest and largest value (theorem <a class="xref" href="sec-rayleighov-kolicnik.html#thm-rayleigh-meje" data-knowl="thm-rayleigh-meje">10.26</a>), while at intermediate modes with \(\lambda_1 &lt; \lambda_{\mathrm{r}} &lt; \lambda_{\mathrm{n}}\) it has neither: a deviation towards a lower mode lowers the value and a deviation towards a higher mode raises it. In the frame with three storeys of section <a class="xref" href="sec-spektralni-izrek.html">10.3</a> the eigenvalues are <span class="nobr">\(198{,}76\),</span> \(1560{,}43\) and <span class="nobr">\(3258{,}41\ \text{1/s}^2\).</span> The second mode with an addition \(e_1 = 0{,}1\) of the first gives <span class="nobr">\(R - \lambda_2 = -13{,}48\ \text{1/s}^2\),</span> with an addition \(e_3 = 0{,}1\) of the third it gives <span class="nobr">\(+16{,}81\ \text{1/s}^2\),</span> as <a class="xref" href="sec-rayleighov-kolicnik.html#eq-rkv-napaka" data-knowl="eq-rkv-napaka">(10.32)</a> predicts.</p>
+
+<figure class="blk slika" id="fig-rkv-napaka"><p><span class="svgfig" role="img" aria-label="Error of the Rayleigh quotient as a function of the share of the second mode on logarithmic axes"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='359.04pt' height='335.70pt' viewBox='-72.000004 -72.000001 265.955866 248.670296'>
+<defs>
+<path id='rkv-napaka-g0-0' d='M6.56538-2.291407C6.734745-2.291407 6.914072-2.291407 6.914072-2.49066S6.734745-2.689913 6.56538-2.689913H1.175592C1.006227-2.689913 .826899-2.689913 .826899-2.49066S1.006227-2.291407 1.175592-2.291407H6.56538Z'/>
+<path id='rkv-napaka-g1-0' d='M5.188543-1.57609C5.300125-1.57609 5.467497-1.57609 5.467497-1.743462C5.467497-1.917808 5.307098-1.917808 5.188543-1.917808H1.03213C.920548-1.917808 .753176-1.917808 .753176-1.750436C.753176-1.57609 .913574-1.57609 1.03213-1.57609H5.188543Z'/>
+<path id='rkv-napaka-g2-21' d='M3.556663-2.909091C3.965131-1.863014 4.443337-.33873 4.60274-.109589C4.762142 .109589 4.861768 .109589 5.13076 .109589H5.349938C5.449564 .099626 5.459527 .039851 5.459527 .009963S5.439601-.039851 5.409714-.079701C5.310087-.18929 5.250311-.33873 5.180573-.537983L3.148194-6.206725C2.938979-6.784558 2.400996-6.914072 1.932752-6.914072C1.882939-6.914072 1.753425-6.914072 1.753425-6.804483C1.753425-6.724782 1.833126-6.704857 1.843088-6.704857C2.171856-6.645081 2.241594-6.585305 2.49066-5.907846L3.457036-3.198007L.707347-.468244C.587796-.348692 .52802-.288917 .52802-.159402C.52802 .009963 .667497 .129514 .826899 .129514S1.075965 .019925 1.155666-.079701L3.556663-2.909091Z'/>
+<path id='rkv-napaka-g2-34' d='M1.404732-2.261519C1.733499-2.122042 2.022416-2.122042 2.261519-2.122042C2.520548-2.122042 3.068493-2.122042 3.068493-2.430884C3.068493-2.669988 2.719801-2.699875 2.34122-2.699875C2.132005-2.699875 1.783313-2.67995 1.414695-2.510585C1.185554-2.630137 1.016189-2.819427 1.016189-3.088418C1.016189-3.696139 1.992528-4.054795 2.889166-4.054795C3.048568-4.054795 3.407223-4.054795 3.805729-3.775841C3.915318-3.696139 3.935243-3.676214 4.004981-3.676214C4.134496-3.676214 4.273973-3.805729 4.273973-3.945205C4.273973-4.134496 3.666252-4.513076 2.988792-4.513076C1.843088-4.513076 .767123-3.845579 .767123-3.088418C.767123-2.660025 1.125778-2.410959 1.165629-2.381071C.577833-2.052304 .259029-1.494396 .259029-1.036115C.259029-.388543 .826899 .219178 1.882939 .219178C3.198007 .219178 3.755915-.657534 3.755915-.806974C3.755915-.86675 3.706102-.9066 3.646326-.9066C3.596513-.9066 3.566625-.86675 3.5467-.836862C3.407223-.607721 3.16812-.239103 1.972603-.239103C1.364882-.239103 .518057-.388543 .518057-1.09589C.518057-1.43462 .797011-1.96264 1.404732-2.261519ZM1.733499-2.391034C1.96264-2.470735 2.171856-2.480697 2.34122-2.480697C2.590286-2.480697 2.630137-2.470735 2.809465-2.420922C2.660025-2.351183 2.6401-2.34122 2.261519-2.34122C2.042341-2.34122 1.92279-2.34122 1.733499-2.391034Z'/>
+<path id='rkv-napaka-g2-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='rkv-napaka-g2-82' d='M3.73599-6.117061C3.795766-6.356164 3.825654-6.455791 4.014944-6.485679C4.104608-6.495641 4.423412-6.495641 4.622665-6.495641C5.330012-6.495641 6.435866-6.495641 6.435866-5.50934C6.435866-5.17061 6.276463-4.483188 5.88792-4.094645C5.628892-3.835616 5.100872-3.516812 4.204234-3.516812H3.088418L3.73599-6.117061ZM5.17061-3.387298C6.176837-3.606476 7.362391-4.303861 7.362391-5.310087C7.362391-6.166874 6.465753-6.804483 5.160648-6.804483H2.321295C2.122042-6.804483 2.032379-6.804483 2.032379-6.60523C2.032379-6.495641 2.122042-6.495641 2.311333-6.495641C2.331258-6.495641 2.520548-6.495641 2.689913-6.475716C2.86924-6.455791 2.958904-6.445828 2.958904-6.316314C2.958904-6.276463 2.948941-6.246575 2.919054-6.127024L1.58406-.777086C1.484433-.388543 1.464508-.308842 .67746-.308842C.498132-.308842 .408468-.308842 .408468-.109589C.408468 0 .52802 0 .547945 0C.826899 0 1.524284-.029888 1.803238-.029888S2.789539 0 3.068493 0C3.148194 0 3.267746 0 3.267746-.199253C3.267746-.308842 3.178082-.308842 2.988792-.308842C2.620174-.308842 2.34122-.308842 2.34122-.488169C2.34122-.547945 2.361146-.597758 2.371108-.657534L3.028643-3.297634H4.214197C5.120797-3.297634 5.300125-2.739726 5.300125-2.391034C5.300125-2.241594 5.220423-1.932752 5.160648-1.703611C5.090909-1.424658 5.001245-1.05604 5.001245-.856787C5.001245 .219178 6.196762 .219178 6.326276 .219178C7.173101 .219178 7.521793-.787049 7.521793-.926526C7.521793-1.046077 7.412204-1.046077 7.402242-1.046077C7.312578-1.046077 7.292653-.976339 7.272727-.9066C7.023661-.169365 6.595268 0 6.366127 0C6.03736 0 5.967621-.219178 5.967621-.607721C5.967621-.916563 6.027397-1.424658 6.067248-1.743462C6.087173-1.882939 6.107098-2.072229 6.107098-2.211706C6.107098-2.978829 5.439601-3.287671 5.17061-3.387298Z'/>
+<path id='rkv-napaka-g3-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='rkv-napaka-g3-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='rkv-napaka-g3-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='rkv-napaka-g3-52' d='M2.929016-1.643836V-.777086C2.929016-.418431 2.909091-.308842 2.171856-.308842H1.96264V0C2.371108-.029888 2.889166-.029888 3.307597-.029888S4.254047-.029888 4.662516 0V-.308842H4.4533C3.716065-.308842 3.696139-.418431 3.696139-.777086V-1.643836H4.692403V-1.952677H3.696139V-6.485679C3.696139-6.684932 3.696139-6.744707 3.536737-6.744707C3.447073-6.744707 3.417186-6.744707 3.337484-6.625156L.278954-1.952677V-1.643836H2.929016ZM2.988792-1.952677H.557908L2.988792-5.668742V-1.952677Z'/>
+<path id='rkv-napaka-g4-48' d='M3.598506-2.224658C3.598506-2.991781 3.507846-3.542715 3.187049-4.030884C2.970859-4.351681 2.538481-4.630635 1.980573-4.630635C.36264-4.630635 .36264-2.726775 .36264-2.224658S.36264 .139477 1.980573 .139477S3.598506-1.72254 3.598506-2.224658ZM1.980573-.055791C1.659776-.055791 1.234371-.244085 1.094894-.81594C.99726-1.227397 .99726-1.799253 .99726-2.315318C.99726-2.824408 .99726-3.354421 1.101868-3.737983C1.248319-4.288917 1.694645-4.435367 1.980573-4.435367C2.357161-4.435367 2.719801-4.20523 2.84533-3.800747C2.956912-3.424159 2.963885-2.922042 2.963885-2.315318C2.963885-1.799253 2.963885-1.283188 2.873225-.843836C2.733748-.209215 2.259527-.055791 1.980573-.055791Z'/>
+<path id='rkv-napaka-g4-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='rkv-napaka-g4-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+<path id='rkv-napaka-g4-51' d='M1.903861-2.329265C2.447821-2.329265 2.838356-1.952677 2.838356-1.206476C2.838356-.341719 2.336239-.083686 1.931756-.083686C1.652802-.083686 1.039103-.160399 .746202-.571856C1.073973-.585803 1.150685-.81594 1.150685-.962391C1.150685-1.185554 .983313-1.345953 .767123-1.345953C.571856-1.345953 .376588-1.227397 .376588-.941469C.376588-.285928 1.101868 .139477 1.945704 .139477C2.915068 .139477 3.584558-.509091 3.584558-1.206476C3.584558-1.750436 3.138232-2.294396 2.371108-2.454795C3.103362-2.719801 3.368369-3.242839 3.368369-3.668244C3.368369-4.219178 2.733748-4.630635 1.959651-4.630635S.592777-4.254047 .592777-3.696139C.592777-3.459029 .746202-3.326526 .955417-3.326526C1.171606-3.326526 1.311083-3.486924 1.311083-3.682192C1.311083-3.884433 1.171606-4.030884 .955417-4.044832C1.199502-4.351681 1.680697-4.428394 1.93873-4.428394C2.252553-4.428394 2.691905-4.274969 2.691905-3.668244C2.691905-3.375342 2.594271-3.054545 2.412951-2.838356C2.182814-2.57335 1.987547-2.559402 1.638854-2.538481C1.464508-2.524533 1.45056-2.524533 1.415691-2.517559C1.401743-2.517559 1.345953-2.503611 1.345953-2.426899C1.345953-2.329265 1.408717-2.329265 1.527273-2.329265H1.903861Z'/>
+</defs>
+<g id='rkv-napaka-page1'>
+<g stroke-miterlimit='10' transform='translate(-41.566553,158.785946)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<path d='M0 0H220.4243' fill='none'/>
+<g transform='translate(217.94785,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(228.40947,-2.15277)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,158.785946)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='158.785946' xlink:href='#rkv-napaka-g2-34'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 0V211.88882' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,209.41237)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-15.10588,221.37398)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,158.785946)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='158.785946' xlink:href='#rkv-napaka-g2-82'/>
+<use x='-31.71119' y='158.785946' xlink:href='#rkv-napaka-g0-0'/>
+<use x='-21.748576' y='158.785946' xlink:href='#rkv-napaka-g2-21'/>
+<use x='-15.937011' y='160.280327' xlink:href='#rkv-napaka-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 0V-2.84544' fill='none'/>
+<g transform='translate(-10.36809,-14.61844)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,158.785946)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='158.785946' xlink:href='#rkv-napaka-g3-49'/>
+<use x='-36.585214' y='158.785946' xlink:href='#rkv-napaka-g3-48'/>
+<use x='-31.603875' y='155.170582' xlink:href='#rkv-napaka-g1-0'/>
+<use x='-25.377195' y='155.170582' xlink:href='#rkv-napaka-g4-51'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M68.2864 0V-2.84544' fill='none'/>
+<g transform='translate(57.91832,-14.61844)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,158.785946)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='158.785946' xlink:href='#rkv-napaka-g3-49'/>
+<use x='-36.585214' y='158.785946' xlink:href='#rkv-napaka-g3-48'/>
+<use x='-31.603875' y='155.170582' xlink:href='#rkv-napaka-g1-0'/>
+<use x='-25.377195' y='155.170582' xlink:href='#rkv-napaka-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M136.57324 0V-2.84544' fill='none'/>
+<g transform='translate(126.20515,-14.61844)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,158.785946)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='158.785946' xlink:href='#rkv-napaka-g3-49'/>
+<use x='-36.585214' y='158.785946' xlink:href='#rkv-napaka-g3-48'/>
+<use x='-31.603875' y='155.170582' xlink:href='#rkv-napaka-g1-0'/>
+<use x='-25.377195' y='155.170582' xlink:href='#rkv-napaka-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M204.85966 0V-2.84544' fill='none'/>
+<g transform='translate(197.6166,-14.61844)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,158.785946)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='158.785946' xlink:href='#rkv-napaka-g3-49'/>
+<use x='-36.585214' y='158.785946' xlink:href='#rkv-napaka-g3-48'/>
+<use x='-31.603875' y='155.170582' xlink:href='#rkv-napaka-g4-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 0H-2.84544' fill='none'/>
+<g transform='translate(-27.2146,-4.07)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,158.785946)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='158.785946' xlink:href='#rkv-napaka-g3-49'/>
+<use x='-36.585214' y='158.785946' xlink:href='#rkv-napaka-g3-48'/>
+<use x='-31.603875' y='155.170582' xlink:href='#rkv-napaka-g1-0'/>
+<use x='-25.377195' y='155.170582' xlink:href='#rkv-napaka-g4-51'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 34.1432H-2.84544' fill='none'/>
+<g transform='translate(-27.2146,30.0732)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,158.785946)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='158.785946' xlink:href='#rkv-napaka-g3-49'/>
+<use x='-36.585214' y='158.785946' xlink:href='#rkv-napaka-g3-48'/>
+<use x='-31.603875' y='155.170582' xlink:href='#rkv-napaka-g1-0'/>
+<use x='-25.377195' y='155.170582' xlink:href='#rkv-napaka-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 68.2864H-2.84544' fill='none'/>
+<g transform='translate(-27.2146,64.2164)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,158.785946)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='158.785946' xlink:href='#rkv-napaka-g3-49'/>
+<use x='-36.585214' y='158.785946' xlink:href='#rkv-napaka-g3-48'/>
+<use x='-31.603875' y='155.170582' xlink:href='#rkv-napaka-g1-0'/>
+<use x='-25.377195' y='155.170582' xlink:href='#rkv-napaka-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 102.43004H-2.84544' fill='none'/>
+<g transform='translate(-20.96457,98.36003)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,158.785946)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='158.785946' xlink:href='#rkv-napaka-g3-49'/>
+<use x='-36.585214' y='158.785946' xlink:href='#rkv-napaka-g3-48'/>
+<use x='-31.603875' y='155.170582' xlink:href='#rkv-napaka-g4-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 136.57324H-2.84544' fill='none'/>
+<g transform='translate(-20.96457,132.50323)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,158.785946)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='158.785946' xlink:href='#rkv-napaka-g3-49'/>
+<use x='-36.585214' y='158.785946' xlink:href='#rkv-napaka-g3-48'/>
+<use x='-31.603875' y='155.170582' xlink:href='#rkv-napaka-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 170.71646H-2.84544' fill='none'/>
+<g transform='translate(-20.96457,166.64645)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,158.785946)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='158.785946' xlink:href='#rkv-napaka-g3-49'/>
+<use x='-36.585214' y='158.785946' xlink:href='#rkv-napaka-g3-48'/>
+<use x='-31.603875' y='155.170582' xlink:href='#rkv-napaka-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 204.85966H-2.84544' fill='none'/>
+<g transform='translate(-20.96457,200.78966)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,158.785946)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='158.785946' xlink:href='#rkv-napaka-g3-49'/>
+<use x='-36.585214' y='158.785946' xlink:href='#rkv-napaka-g3-48'/>
+<use x='-31.603875' y='155.170582' xlink:href='#rkv-napaka-g4-51'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 114.40836L204.85966 216.83841' fill='none'/>
+</g>
+</g>
+</g>
+<g stroke-width='1.1'>
+<path d='M0 11.97874C0 11.97874 3.80696 15.78577 5.26369 17.24243C6.72041 18.6991 9.04242 21.02074 10.49915 22.47746C11.95587 23.93419 14.3061 26.28088 15.76283 27.7416C17.21956 29.2023 19.54158 31.54861 20.9983 33.00528C22.45503 34.46194 24.80135 36.78358 26.262 38.24031C27.72264 39.69704 30.06895 42.04373 31.52568 43.50444C32.9824 44.96515 35.30443 47.31146 36.76115 48.76813C38.21788 50.2248 40.5642 52.5465 42.02484 54.00316C43.48549 55.45982 45.83186 57.81012 47.28853 59.26685C48.7452 60.72357 51.06683 63.0456 52.52356 64.50232C53.98029 65.95905 56.33095 68.30536 57.78767 69.766C59.2444 71.22665 61.56606 73.57297 63.02272 75.0297C64.47939 76.48642 66.8257 78.80843 68.2864 80.26515C69.74712 81.72188 72.0938 84.07211 73.55052 85.52884C75.00725 86.98557 77.32889 89.30759 78.78555 90.76431C80.24222 92.22104 82.59251 94.57127 84.04924 96.028S87.82799 99.80675 89.28471 101.26347C90.74144 102.7202 93.08775 105.0705 94.5484 106.52716C96.00905 107.98383 98.35536 110.30547 99.81209 111.76219C101.26881 113.21892 103.59084 115.5696 105.04756 117.02632C106.50429 118.48305 108.8506 120.8086 110.31125 122.26135C111.7719 123.71411 114.11821 126.04008 115.57494 127.49681C117.03166 128.95354 119.35368 131.30774 120.81041 132.7605S124.61737 136.51848 126.0741 137.96732C127.53082 139.41615 129.85283 141.75395 131.30956 143.20279C132.76628 144.65163 135.1126 146.96872 136.57324 148.4096C138.03389 149.8505 140.3802 152.15079 141.83693 153.58775C143.29366 155.02472 145.61568 157.33728 147.0724 158.76636C148.52913 160.19543 150.87943 162.47043 152.33609 163.88763C153.79276 165.30484 156.1144 167.57921 157.57112 168.9807C159.02785 170.38219 161.37454 172.61484 162.83525 173.98868S166.64227 177.54024 168.09894 178.88246C169.5556 180.22469 171.8773 182.36372 173.33397 183.6625C174.79063 184.96129 177.13695 186.99973 178.59766 188.24327C180.05836 189.48682 182.40506 191.45271 183.86179 192.62518C185.31851 193.79765 187.64015 195.61594 189.09682 196.69365C190.55348 197.77136 192.90378 199.41751 194.3605 200.39264C195.81723 201.36777 198.13925 202.8651 199.59598 203.72174C201.0527 204.57838 204.85966 206.56676 204.85966 206.56676' fill='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M106.80066 116.94078C106.80066 117.95622 105.97748 118.7794 104.96204 118.7794S103.12341 117.95622 103.12341 116.94078S103.9466 115.10216 104.96204 115.10216S106.80066 115.92534 106.80066 116.94078ZM104.96204 116.94078' stroke='none'/>
+</g>
+<g transform='translate(104.96204,116.94078)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,158.785946)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M135.33893 145.36487C135.33893 146.38031 134.51575 147.20349 133.5003 147.20349C132.48486 147.20349 131.66168 146.38031 131.66168 145.36487S132.48486 143.52625 133.5003 143.52625C134.51575 143.52625 135.33893 144.34943 135.33893 145.36487ZM133.5003 145.36487' stroke='none'/>
+</g>
+<g transform='translate(133.5003,145.36487)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,158.785946)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M163.8772 173.22021C163.8772 174.23566 163.05402 175.05884 162.03857 175.05884C161.02313 175.05884 160.19995 174.23566 160.19995 173.22021C160.19995 172.20477 161.02313 171.38159 162.03857 171.38159C163.05402 171.38159 163.8772 172.20477 163.8772 173.22021ZM162.03857 173.22021' stroke='none'/>
+</g>
+<g transform='translate(162.03857,173.22021)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,158.785946)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M70.12503 80.26515C70.12503 81.2806 69.30185 82.10378 68.2864 82.10378C67.27097 82.10378 66.44778 81.2806 66.44778 80.26515C66.44778 79.24971 67.27097 78.42653 68.2864 78.42653C69.30185 78.42653 70.12503 79.24971 70.12503 80.26515ZM68.2864 80.26515' stroke='none'/>
+<g transform='translate(68.2864,80.26515)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,158.785946)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M138.41187 148.4096C138.41187 149.42505 137.58868 150.24823 136.57324 150.24823S134.73462 149.42505 134.73462 148.4096C134.73462 147.39417 135.5578 146.57098 136.57324 146.57098S138.41187 147.39417 138.41187 148.4096ZM136.57324 148.4096' stroke='none'/>
+<g transform='translate(136.57324,148.4096)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,158.785946)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(74.76483,73.74742)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,158.785946)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='158.785946' xlink:href='#rkv-napaka-g3-48'/>
+<use x='-36.585214' y='158.785946' xlink:href='#rkv-napaka-g2-59'/>
+<use x='-33.817805' y='158.785946' xlink:href='#rkv-napaka-g3-50'/>
+<use x='-28.836466' y='158.785946' xlink:href='#rkv-napaka-g3-50'/>
+<use x='-23.855127' y='158.785946' xlink:href='#rkv-napaka-g3-52'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(143.05124,141.89143)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,158.785946)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='158.785946' xlink:href='#rkv-napaka-g3-50'/>
+<use x='-36.585214' y='158.785946' xlink:href='#rkv-napaka-g3-50'/>
+<use x='-31.603875' y='158.785946' xlink:href='#rkv-napaka-g2-59'/>
+<use x='-28.836466' y='158.785946' xlink:href='#rkv-napaka-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 10.18</span>: Frame A: the error of the quotient \(R - \lambda_1\) for the shape \(\vek\varphi_1 + \varepsilon\,\vek\varphi_2\) as a function of <span class="nobr">\(\varepsilon\),</span> both axes logarithmic (solid line, <a class="xref" href="sec-rayleighov-kolicnik.html#eq-rkv-napaka" data-knowl="eq-rkv-napaka">(10.32)</a> with <span class="nobr">\(\lambda_2 - \lambda_1 = 2243{,}94\ \text{1/s}^2\)).</span> The grey dashed line is the line that would hold if the error were proportional to <span class="nobr">\(\varepsilon\).</span> The solid line has slope <span class="nobr">\(2\):</span> a ten times smaller \(\varepsilon\) gives a hundred times smaller error. Dots: the three guessed shapes of figure <a class="xref" href="sec-rayleighov-kolicnik.html#fig-rkv-oblike" data-knowl="fig-rkv-oblike">10.17</a> (blue <span class="nobr">\((1, 1{,}5)\),</span> orange <span class="nobr">\((1, 2)\),</span> grey <span class="nobr">\((1, 1)\))</span> at their shares <span class="nobr">\(\varepsilon = |e_2|\).</span> Black dots: \(\varepsilon = 0{,}1\) and \(0{,}01\) with errors \(22{,}2\) and <span class="nobr">\(0{,}224\ \text{1/s}^2\).</span></figcaption></figure>
+<p>We see the same law in bracket B with a mass at joint \(C\) of section <a class="xref" href="sec-enacbe-vec-ps.html">10.1</a>. Its mass <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> is \(\mat M = m\,\mat I\) with \(m = 1000\) kg, and by section <a class="xref" href="sec-enacbe-vec-ps.html">10.1</a> its stiffness matrix is \(\mat K = \left[\begin{smallmatrix} 7{,}4088 &amp; -1{,}8816 \\ -1{,}8816 &amp; 1{,}4112 \end{smallmatrix}\right]\cdot 10^6\) N/m. A displacement of the joint in the direction <span class="nobr">\(\vek v = (\cos\theta, \sin\theta)\),</span> which makes the angle \(\theta\) with the \(x\) axis, has the quotient <span class="nobr">\(R(\theta) = \vek v^\T\mat K\vek v/m\).</span> The modes are perpendicular, because <span class="nobr">\(\mat M = m\,\mat I\),</span> in the directions \(\theta_1 = 73{,}947^\circ\) and \(\theta_2 = \theta_1 + 90^\circ = 163{,}947^\circ\) (section <a class="xref" href="sec-lastni-problem.html">10.2</a>). Normalized with \(\mat M\) they are \(\vek\varphi_{\mathrm{r}} = \vek u_{\mathrm{r}}/\sqrt m\) with the <a class="xref auto" href="sec-vektorji.html#def-enotski-vektor" data-knowl="def-enotski-vektor">unit vectors</a> <span class="nobr">\(\vek u_{\mathrm{r}} = (\cos\theta_{\mathrm{r}}, \sin\theta_{\mathrm{r}})\).</span> By the addition formula (corollary <a class="xref" href="sec-sinus-kosinus.html#cor-adicijska-izreka" data-knowl="cor-adicijska-izreka">8.15</a>), <span class="nobr">\(c_1 = \vek\varphi_1^\T\mat M\vek v = \sqrt m\,(\cos\theta_1\cos\theta + \sin\theta_1\sin\theta) = \sqrt m\,\cos(\theta - \theta_1)\),</span> and in the same way <span class="nobr">\(c_2 = \sqrt m\,\cos(\theta - \theta_1 - 90^\circ) = \sqrt m\,\sin(\theta - \theta_1)\).</span> The sum \(c_1^2 + c_2^2 = m\) is the denominator in <a class="xref" href="sec-rayleighov-kolicnik.html#eq-rkv-razvoj" data-knowl="eq-rkv-razvoj">(10.31)</a> (lemma <a class="xref" href="sec-sinus-kosinus.html#lem-lastnosti-sinusa" data-knowl="lem-lastnosti-sinusa">8.10</a>, point 1), so</p>
+<div class="eq" id="eq-rkv-konzola">\[\begin{aligned} R(\theta) &amp;= \lambda_1\cos^2(\theta - \theta_1) \\ &amp;\quad + \lambda_2\sin^2(\theta - \theta_1) \\ &amp;= \lambda_1 + (\lambda_2 - \lambda_1)\sin^2(\theta - \theta_1) . \end{aligned} \tag{10.34}\]</div>
+<p>With \(\lambda_1 = 869{,}77\) and \(\lambda_2 = 7950{,}23\ \text{1/s}^2\) the curve in figure <a class="xref" href="sec-rayleighov-kolicnik.html#fig-rkv-krivulja" data-knowl="fig-rkv-krivulja">10.19</a> is lowest at \(\theta_1\) and highest at <span class="nobr">\(\theta_2\),</span> and at both it has a horizontal tangent. If we miss the direction by <span class="nobr">\(5^\circ\),</span> <span class="nobr">\(R = 923{,}56\ \text{1/s}^2\),</span> so \(\omega\) is \(3{,}05\) % too high. At \(10^\circ\) the error is \(11{,}6\) %, at \(20^\circ\) it is \(39{,}7\) %. For a small deviation \(\theta - \theta_1\) in radians, \(\sin(\theta - \theta_1) \approx \theta - \theta_1\) (theorem <a class="xref" href="sec-sinus-kosinus.html#thm-odvoda-sinusa-kosinusa" data-knowl="thm-odvoda-sinusa-kosinusa">8.12</a>, <span class="nobr">\(\sin'0 = \cos 0 = 1\)),</span> so <span class="nobr">\(R - \lambda_1 \approx (\lambda_2 - \lambda_1)(\theta - \theta_1)^2\),</span> the square of the deviation of the direction. At \(5^\circ = 0{,}08727\) rad this gives <span class="nobr">\(7080{,}46 \cdot 0{,}08727^2 = 53{,}92\ \text{1/s}^2\),</span> while the exact value by <a class="xref" href="sec-rayleighov-kolicnik.html#eq-rkv-konzola" data-knowl="eq-rkv-konzola">(10.34)</a> is <span class="nobr">\(R - \lambda_1 = 7080{,}46 \cdot \sin^2 5^\circ = 53{,}78\ \text{1/s}^2\),</span> only \(0{,}25\) % less.</p>
+
+<figure class="blk slika" id="fig-rkv-krivulja"><p><span class="svgfig" role="img" aria-label="Rayleigh quotient of the bracket as a function of the angle of the displacement direction, with horizontal tangents at both modes"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='399.02pt' height='215.13pt' viewBox='-72.000004 -72.000003 295.570849 159.358565'>
+<defs>
+<path id='rkv-krivulja-g0-14' d='M3.535741-1.743462C3.535741-2.587298 2.859278-3.242839 2.036364-3.242839C1.199502-3.242839 .536986-2.566376 .536986-1.750436C.536986-.9066 1.21345-.251059 2.036364-.251059C2.873225-.251059 3.535741-.927522 3.535741-1.743462ZM2.036364-.592777C1.380822-.592777 .878705-1.12279 .878705-1.743462C.878705-2.39203 1.39477-2.901121 2.036364-2.901121C2.691905-2.901121 3.194022-2.371108 3.194022-1.750436C3.194022-1.101868 2.677958-.592777 2.036364-.592777Z'/>
+<path id='rkv-krivulja-g1-18' d='M4.533001-4.98132C4.533001-5.638854 4.353674-7.023661 3.337484-7.023661C1.952677-7.023661 .418431-4.214197 .418431-1.932752C.418431-.996264 .707347 .109589 1.613948 .109589C3.01868 .109589 4.533001-2.749689 4.533001-4.98132ZM1.474471-3.616438C1.643836-4.254047 1.843088-5.051059 2.241594-5.758406C2.510585-6.246575 2.879203-6.804483 3.327522-6.804483C3.815691-6.804483 3.875467-6.166874 3.875467-5.599004C3.875467-5.110834 3.795766-4.60274 3.556663-3.616438H1.474471ZM3.466999-3.297634C3.35741-2.839352 3.148194-1.992528 2.769614-1.275218C2.420922-.597758 2.042341-.109589 1.613948-.109589C1.285181-.109589 1.075965-.398506 1.075965-1.325031C1.075965-1.743462 1.135741-2.321295 1.39477-3.297634H3.466999Z'/>
+<path id='rkv-krivulja-g1-21' d='M3.556663-2.909091C3.965131-1.863014 4.443337-.33873 4.60274-.109589C4.762142 .109589 4.861768 .109589 5.13076 .109589H5.349938C5.449564 .099626 5.459527 .039851 5.459527 .009963S5.439601-.039851 5.409714-.079701C5.310087-.18929 5.250311-.33873 5.180573-.537983L3.148194-6.206725C2.938979-6.784558 2.400996-6.914072 1.932752-6.914072C1.882939-6.914072 1.753425-6.914072 1.753425-6.804483C1.753425-6.724782 1.833126-6.704857 1.843088-6.704857C2.171856-6.645081 2.241594-6.585305 2.49066-5.907846L3.457036-3.198007L.707347-.468244C.587796-.348692 .52802-.288917 .52802-.159402C.52802 .009963 .667497 .129514 .826899 .129514S1.075965 .019925 1.155666-.079701L3.556663-2.909091Z'/>
+<path id='rkv-krivulja-g1-82' d='M3.73599-6.117061C3.795766-6.356164 3.825654-6.455791 4.014944-6.485679C4.104608-6.495641 4.423412-6.495641 4.622665-6.495641C5.330012-6.495641 6.435866-6.495641 6.435866-5.50934C6.435866-5.17061 6.276463-4.483188 5.88792-4.094645C5.628892-3.835616 5.100872-3.516812 4.204234-3.516812H3.088418L3.73599-6.117061ZM5.17061-3.387298C6.176837-3.606476 7.362391-4.303861 7.362391-5.310087C7.362391-6.166874 6.465753-6.804483 5.160648-6.804483H2.321295C2.122042-6.804483 2.032379-6.804483 2.032379-6.60523C2.032379-6.495641 2.122042-6.495641 2.311333-6.495641C2.331258-6.495641 2.520548-6.495641 2.689913-6.475716C2.86924-6.455791 2.958904-6.445828 2.958904-6.316314C2.958904-6.276463 2.948941-6.246575 2.919054-6.127024L1.58406-.777086C1.484433-.388543 1.464508-.308842 .67746-.308842C.498132-.308842 .408468-.308842 .408468-.109589C.408468 0 .52802 0 .547945 0C.826899 0 1.524284-.029888 1.803238-.029888S2.789539 0 3.068493 0C3.148194 0 3.267746 0 3.267746-.199253C3.267746-.308842 3.178082-.308842 2.988792-.308842C2.620174-.308842 2.34122-.308842 2.34122-.488169C2.34122-.547945 2.361146-.597758 2.371108-.657534L3.028643-3.297634H4.214197C5.120797-3.297634 5.300125-2.739726 5.300125-2.391034C5.300125-2.241594 5.220423-1.932752 5.160648-1.703611C5.090909-1.424658 5.001245-1.05604 5.001245-.856787C5.001245 .219178 6.196762 .219178 6.326276 .219178C7.173101 .219178 7.521793-.787049 7.521793-.926526C7.521793-1.046077 7.412204-1.046077 7.402242-1.046077C7.312578-1.046077 7.292653-.976339 7.272727-.9066C7.023661-.169365 6.595268 0 6.366127 0C6.03736 0 5.967621-.219178 5.967621-.607721C5.967621-.916563 6.027397-1.424658 6.067248-1.743462C6.087173-1.882939 6.107098-2.072229 6.107098-2.211706C6.107098-2.978829 5.439601-3.287671 5.17061-3.387298Z'/>
+<path id='rkv-krivulja-g2-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='rkv-krivulja-g2-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='rkv-krivulja-g2-56' d='M1.62391-4.552927C1.165629-4.851806 1.125778-5.190535 1.125778-5.3599C1.125778-5.967621 1.77335-6.386052 2.480697-6.386052C3.20797-6.386052 3.845579-5.867995 3.845579-5.150685C3.845579-4.582814 3.457036-4.104608 2.859278-3.755915L1.62391-4.552927ZM3.078456-3.606476C3.795766-3.975093 4.283935-4.493151 4.283935-5.150685C4.283935-6.067248 3.39726-6.635118 2.49066-6.635118C1.494396-6.635118 .687422-5.897883 .687422-4.971357C.687422-4.79203 .707347-4.343711 1.125778-3.875467C1.235367-3.755915 1.603985-3.506849 1.853051-3.337484C1.275218-3.048568 .418431-2.49066 .418431-1.504359C.418431-.448319 1.43462 .219178 2.480697 .219178C3.606476 .219178 4.552927-.607721 4.552927-1.673724C4.552927-2.032379 4.443337-2.480697 4.064757-2.899128C3.875467-3.108344 3.716065-3.20797 3.078456-3.606476ZM2.082192-3.188045L3.307597-2.410959C3.58655-2.221669 4.054795-1.92279 4.054795-1.315068C4.054795-.577833 3.307597-.059776 2.49066-.059776C1.633873-.059776 .916563-.67746 .916563-1.504359C.916563-2.082192 1.235367-2.719801 2.082192-3.188045Z'/>
+<path id='rkv-krivulja-g2-57' d='M3.656289-3.16812V-2.849315C3.656289-.518057 2.620174-.059776 2.042341-.059776C1.872976-.059776 1.334994-.079701 1.066002-.418431C1.504359-.418431 1.58406-.707347 1.58406-.876712C1.58406-1.185554 1.344956-1.334994 1.125778-1.334994C.966376-1.334994 .667497-1.24533 .667497-.856787C.667497-.18929 1.205479 .219178 2.052304 .219178C3.337484 .219178 4.552927-1.135741 4.552927-3.277709C4.552927-5.957659 3.407223-6.635118 2.520548-6.635118C1.972603-6.635118 1.484433-6.455791 1.05604-6.007472C.647572-5.559153 .418431-5.140722 .418431-4.393524C.418431-3.148194 1.295143-2.171856 2.410959-2.171856C3.01868-2.171856 3.427148-2.590286 3.656289-3.16812ZM2.420922-2.400996C2.261519-2.400996 1.803238-2.400996 1.494396-3.028643C1.315068-3.39726 1.315068-3.895392 1.315068-4.383562C1.315068-4.921544 1.315068-5.389788 1.524284-5.758406C1.793275-6.256538 2.171856-6.386052 2.520548-6.386052C2.978829-6.386052 3.307597-6.047323 3.476961-5.599004C3.596513-5.280199 3.636364-4.652553 3.636364-4.194271C3.636364-3.367372 3.297634-2.400996 2.420922-2.400996Z'/>
+<path id='rkv-krivulja-g3-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='rkv-krivulja-g3-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+</defs>
+<g id='rkv-krivulja-page1'>
+<g stroke-miterlimit='10' transform='translate(-54.779136,60.802691)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<path d='M0 0H263.10342' fill='none'/>
+<g transform='translate(260.62697,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(271.0886,-3.47221)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.779136,60.802691)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.779136' y='60.802691' xlink:href='#rkv-krivulja-g1-18'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 0V115.14925' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,112.67279)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-3.83507,123.13441)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.779136,60.802691)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.779136' y='60.802691' xlink:href='#rkv-krivulja-g1-82'/>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='1.1'>
+<path d='M0 94.86143C0 94.86143 3.0834 92.94336 4.26773 92.13016S7.35158 89.91626 8.5359 89.00035C9.72023 88.08444 11.61931 86.53554 12.80363 85.52884C13.98796 84.52214 15.88747 82.83434 17.07181 81.74475C18.25615 80.65517 20.15527 78.83652 21.33955 77.67586S24.42296 74.59929 25.60728 73.37947C26.79161 72.15965 28.69112 70.15146 29.87546 68.88423S32.95886 65.54103 34.1432 64.24615C35.32755 62.95128 37.22705 60.8623 38.41138 59.55165C39.5957 58.241 41.49484 56.11447 42.67911 54.79984C43.86337 53.4852 45.76251 51.37943 46.94684 50.07666C48.13116 48.7739 50.03067 46.68549 51.21501 45.41037S54.29842 42.12209 55.48276 40.88649C56.6671 39.6509 58.5666 37.68536 59.75093 36.505C60.93526 35.32465 62.83438 33.49248 64.01866 32.37923S67.10207 29.51567 68.2864 28.48138C69.47075 27.4471 71.37025 25.86836 72.55458 24.9248C73.7389 23.98125 75.63799 22.52563 76.82231 21.6808C78.00664 20.83597 79.90614 19.57002 81.09048 18.83578C82.27483 18.10155 84.17395 17.00475 85.35823 16.38889S88.44164 14.88654 89.62596 14.39699C90.81029 13.90744 92.70981 13.21977 93.89413 12.86052C95.07846 12.50127 96.97754 12.03267 98.16187 11.8077C99.34619 11.58272 101.2457 11.32973 102.43004 11.23895C103.61438 11.14818 105.5135 11.10608 106.69778 11.15341S109.78119 11.39467 110.96552 11.5802C112.14984 11.76573 114.04935 12.17082 115.23369 12.49062C116.41803 12.81041 118.3171 13.4311 119.50143 13.88512C120.68578 14.33913 122.58528 15.18257 123.7696 15.76283C124.95393 16.3431 126.85307 17.36856 128.03734 18.06732C129.2216 18.76608 131.12074 19.98576 132.30507 20.79903C133.4894 21.61229 135.3889 23.013 136.57324 23.92885S139.65665 26.39328 140.84099 27.39992S143.92484 30.09442 145.10916 31.184C146.29349 32.27359 148.19261 34.09224 149.37689 35.2529S152.4603 38.3294 153.64464 39.54929C154.82898 40.76917 156.72849 42.77773 157.91281 44.04495C159.09714 45.31218 160.99622 47.38773 162.18054 48.6826C163.36487 49.97748 165.26437 52.0669 166.44872 53.37755C167.63306 54.6882 169.53218 56.81435 170.71646 58.12892C171.90074 59.4435 173.79987 61.54933 174.98419 62.8521C176.16852 64.15486 178.06804 66.24327 179.25237 67.51839C180.43669 68.7935 182.33577 70.80661 183.5201 72.04227C184.70442 73.27792 186.60393 75.24384 187.78827 76.4242C188.97261 77.60455 190.87173 79.43628 192.05602 80.54953C193.2403 81.66278 195.13942 83.41345 196.32375 84.4478C197.50807 85.48215 199.40758 87.0609 200.59192 88.0044C201.77626 88.94789 203.67532 90.40312 204.85966 91.24796C206.044 92.09279 207.94351 93.35912 209.12784 94.09341C210.31216 94.82771 212.2113 95.9245 213.39557 96.5403C214.57983 97.1561 216.47897 98.04228 217.6633 98.53177S220.74713 99.70898 221.93147 100.06824C223.11581 100.42749 225.01488 100.89603 226.19922 101.12106C227.38356 101.3461 229.28307 101.59947 230.46739 101.69025C231.65172 101.78102 233.55084 101.82274 234.73512 101.77534C235.9194 101.72795 237.81853 101.53409 239.00287 101.34856C240.18721 101.16302 242.08672 100.75787 243.27104 100.43814C244.45537 100.11841 246.35445 99.49808 247.53877 99.04407C248.7231 98.59006 250.6226 97.74625 251.80695 97.16592C252.99129 96.5856 256.07469 94.86143 256.07469 94.86143' fill='none'/>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 11.1252H261.76515' fill='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(-13.95247,8.40297)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.779136,60.802691)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.779136' y='60.802691' xlink:href='#rkv-krivulja-g1-21'/>
+<use x='-48.967571' y='62.297071' xlink:href='#rkv-krivulja-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 101.80399H261.76515' fill='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(-13.95247,99.08176)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.779136,60.802691)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.779136' y='60.802691' xlink:href='#rkv-krivulja-g1-21'/>
+<use x='-48.967571' y='62.297071' xlink:href='#rkv-krivulja-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M105.18996 0V11.1252' fill='none'/>
+</g>
+</g>
+</g>
+<path d='M107.02858 11.1252C107.02858 12.14064 106.2054 12.96382 105.18996 12.96382C104.17451 12.96382 103.35133 12.14064 103.35133 11.1252S104.17451 9.28658 105.18996 9.28658C106.2054 9.28658 107.02858 10.10976 107.02858 11.1252ZM105.18996 11.1252' stroke='none'/>
+<g transform='translate(105.18996,11.1252)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.779136,60.802691)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(100.59967,-10.57742)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.779136,60.802691)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.779136' y='60.802691' xlink:href='#rkv-krivulja-g1-18'/>
+<use x='-50.102232' y='62.297071' xlink:href='#rkv-krivulja-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M233.22731 0V101.80399' fill='none'/>
+</g>
+</g>
+</g>
+<path d='M235.06593 101.80399C235.06593 102.81943 234.24275 103.64261 233.22731 103.64261S231.38869 102.81943 231.38869 101.80399C231.38869 100.78854 232.21187 99.96536 233.22731 99.96536S235.06593 100.78854 235.06593 101.80399ZM233.22731 101.80399' stroke='none'/>
+<g transform='translate(233.22731,101.80399)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.779136,60.802691)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(228.63702,-10.57742)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.779136,60.802691)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.779136' y='60.802691' xlink:href='#rkv-krivulja-g1-18'/>
+<use x='-50.102232' y='62.297071' xlink:href='#rkv-krivulja-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 0V-2.84544' fill='none'/>
+<g transform='translate(-2.5,-22.88104)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.779136,60.802691)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.779136' y='60.802691' xlink:href='#rkv-krivulja-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M128.03734 0V-2.84544' fill='none'/>
+<g transform='translate(120.73871,-23.32248)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.779136,60.802691)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.779136' y='60.802691' xlink:href='#rkv-krivulja-g2-57'/>
+<use x='-49.797797' y='60.802691' xlink:href='#rkv-krivulja-g2-48'/>
+<use x='-44.816458' y='57.187327' xlink:href='#rkv-krivulja-g0-14'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M256.07469 0V-2.84544' fill='none'/>
+<g transform='translate(246.27606,-23.32248)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.779136,60.802691)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.779136' y='60.802691' xlink:href='#rkv-krivulja-g2-49'/>
+<use x='-49.797797' y='60.802691' xlink:href='#rkv-krivulja-g2-56'/>
+<use x='-44.816458' y='60.802691' xlink:href='#rkv-krivulja-g2-48'/>
+<use x='-39.835119' y='57.187327' xlink:href='#rkv-krivulja-g0-14'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 10.19</span>: Bracket B: the Rayleigh quotient \(R(\theta)\) for a displacement of the joint in the direction at angle \(\theta\) to the \(x\) axis (solid line, <a class="xref" href="sec-rayleighov-kolicnik.html#eq-rkv-konzola" data-knowl="eq-rkv-konzola">(10.34)</a>). The lowest value \(\lambda_1 = 869{,}77\ \text{1/s}^2\) is at <span class="nobr">\(\theta_1 = 73{,}947^\circ\),</span> the highest \(\lambda_2 = 7950{,}23\ \text{1/s}^2\) at <span class="nobr">\(\theta_2 = 163{,}947^\circ\).</span> At both the curve has a horizontal tangent: a small error of the direction gives an error of the quotient of second order. The quotient repeats after <span class="nobr">\(180^\circ\),</span> because <span class="nobr">\(R(-\vek v) = R(\vek v)\).</span></figcaption></figure>
+<h3 id="sec-minimaks"><span class="h-num">10.6.2</span> Second and higher modes, additional constraints</h3>
+<p>The quotient gave us only \(\lambda_1\) and <span class="nobr">\(\lambda_{\mathrm{n}}\).</span> What about \(\lambda_2\) and the others? At a mode \(\vek\varphi_{\mathrm{r}}\) with \(\lambda_1 &lt; \lambda_{\mathrm{r}} &lt; \lambda_{\mathrm{n}}\) the quotient has no <a class="xref auto" href="sec-ekstremi.html#def-najvecja-vrednost" data-knowl="def-najvecja-vrednost">extremum</a> (theorem <a class="xref" href="sec-rayleighov-kolicnik.html#thm-stacionarnost-kolicnika" data-knowl="thm-stacionarnost-kolicnika">10.27</a>, point 3), so we cannot write such \(\lambda_{\mathrm{r}}\) as the smallest or largest value over all columns. But if we pay attention to the columns over which we look for the value, we can. The <a class="xref auto" href="sec-spektralni-izrek.html#thm-spektralni-izrek" data-knowl="thm-spektralni-izrek">spectral theorem</a> found them in turn, \(\lambda_{\mathrm{r}}\) as the smallest value over the columns with \(\vek\varphi_{\mathrm{j}}^\T\mat M\vek v = 0\) for <span class="nobr">\(j &lt; r\).</span> This route needs the earlier modes to be known. We shall show that it is enough to restrict ourselves to columns that satisfy any \(r - 1\) linear conditions <span class="nobr">\(\vek b^\T\vek v = 0\),</span> and among all choices of conditions to take the one for which the smallest value is largest. Let us see what this means for \(r = 2\) in <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">frame</a> A, where there is a single condition. The condition \(\vek b^\T\vek v = 0\) with \(\vek b = (1, 0)\) means that the first floor is at rest. What remains is \(\vek v = (0, v_2)\) and <span class="nobr">\(R = k/m = 1003{,}52\ \text{1/s}^2\),</span> which is less than <span class="nobr">\(\lambda_2 = 2627{,}25\).</span> The condition with \(\vek b = (0, 1)\) holds the second floor, \(\vek v = (v_1, 0)\) and <span class="nobr">\(R = 2k/m = 2007{,}04\),</span> again less than <span class="nobr">\(\lambda_2\).</span> These are two of infinitely many conditions. The theorem below says that for every condition the smallest \(R\) over the columns that satisfy it is no larger than <span class="nobr">\(\lambda_2\),</span> and that the choice \(\vek b = \mat M\vek\varphi_1\) reaches the value <span class="nobr">\(\lambda_2\).</span> So \(\lambda_2\) is not the smallest value of the quotient but the largest of the smallest values over all possible conditions.</p>
+<p>For the second form of the theorem we need a notation. For linearly independent columns \(\vek w_1, \dots, \vek w_{\mathrm{r}}\) (definition <a class="xref" href="sec-skalarni-produkt-funkcij.html#def-linearna-neodvisnost" data-knowl="def-linearna-neodvisnost">6.22</a>), \(L(\vek w_1, \dots, \vek w_{\mathrm{r}})\) is the set of all linear combinations \(a_1\vek w_1 + \dots + a_{\mathrm{r}}\vek w_{\mathrm{r}}\) with numbers \(a_{\mathrm{i}}\) that are not all zero. Since the columns are independent, every such combination is nonzero and the quotient \(R\) is defined on it.</p>
+
+<div class="blk izrek" id="thm-min-max"><div class="blk-head"><span class="blk-label">Theorem 10.28</span> <span class="blk-title">Courant minimax principle (Courantov izrek o najmanjši največji vrednosti)</span></div><div class="blk-body"><p>Let \(\mat K\) and \(\mat M\) be as in theorem <a class="xref" href="sec-rayleighov-kolicnik.html#thm-rayleigh-meje" data-knowl="thm-rayleigh-meje">10.26</a> and let <span class="nobr">\(1 \le r \le n\).</span></p>
+<ol>
+<li>For columns \(\vek b_1, \dots, \vek b_{\mathrm{r}-1}\) with \(n\) elements (for \(r = 1\) there are none) let \(\beta(\vek b_1, \dots, \vek b_{\mathrm{r}-1})\) be the smallest value of \(R(\vek v)\) over the columns \(\vek v \ne \vek 0\) with \(\vek b_{\mathrm{j}}^\T\vek v = 0\) for all <span class="nobr">\(j\).</span> This smallest value exists, every choice gives <span class="nobr">\(\beta \le \lambda_{\mathrm{r}}\),</span> and for \(\vek b_{\mathrm{j}} = \mat M\vek\varphi_{\mathrm{j}}\) we have <span class="nobr">\(\beta = \lambda_{\mathrm{r}}\).</span> Hence \(\lambda_{\mathrm{r}} = \max\beta\) over all choices of <span class="nobr">\(\vek b_1, \dots, \vek b_{\mathrm{r}-1}\).</span></li>
+<li>For <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-linearna-neodvisnost" data-knowl="def-linearna-neodvisnost">linearly independent</a> columns \(\vek w_1, \dots, \vek w_{\mathrm{r}}\) let \(\gamma(\vek w_1, \dots, \vek w_{\mathrm{r}})\) be the largest value of \(R\) on the set <span class="nobr">\(L(\vek w_1, \dots, \vek w_{\mathrm{r}})\).</span> This largest value exists, every choice gives <span class="nobr">\(\gamma \ge \lambda_{\mathrm{r}}\),</span> and for \(\vek w_{\mathrm{j}} = \vek\varphi_{\mathrm{j}}\) we have <span class="nobr">\(\gamma = \lambda_{\mathrm{r}}\).</span> Hence \(\lambda_{\mathrm{r}} = \min\gamma\) over all choices of <span class="nobr">\(\vek w_1, \dots, \vek w_{\mathrm{r}}\).</span></li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>First we show that the smallest and the largest value exist, then four estimates. The estimates use the expansion <a class="xref" href="sec-rayleighov-kolicnik.html#eq-rkv-razvoj" data-knowl="eq-rkv-razvoj">(10.31)</a> and lemma <a class="xref" href="sec-spektralni-izrek.html#lem-vec-neznank" data-knowl="lem-vec-neznank">10.9</a>, by which a homogeneous system with more unknowns than equations has a nonzero solution.</p>
+<ol>
+<li>Existence in point 1. Let \(S\) be the set of columns with \(\vek v^\T\mat M\vek v = 1\) and \(\vek b_{\mathrm{j}}^\T\vek v = 0\) for all <span class="nobr">\(j\).</span> By lemma <a class="xref" href="sec-spektralni-izrek.html#lem-m-sfera" data-knowl="lem-m-sfera">10.12</a> (with the columns <span class="nobr">\(\vek b_{\mathrm{j}}\),</span> \(r - 1 &lt; n\) conditions, none for <span class="nobr">\(r = 1\))</span> \(S\) is nonempty, closed and bounded. On <span class="nobr">\(S\),</span> \(R(\vek v) = \vek v^\T\mat K\vek v\) is a <a class="xref auto" href="sec-zveznost.html#def-polinom" data-knowl="def-polinom">polynomial</a>, hence a <a class="xref auto" href="sec-zveznost.html#def-zveznost" data-knowl="def-zveznost">continuous function</a> (lemma <a class="xref" href="sec-implicitna-funkcija.html#lem-zaporedja-n" data-knowl="lem-zaporedja-n">8.24</a>, point 3), and by theorem <a class="xref" href="sec-implicitna-funkcija.html#thm-ekstremi-n" data-knowl="thm-ekstremi-n">8.26</a> it has a smallest value on <span class="nobr">\(S\).</span> Every column \(\vek v \ne \vek 0\) with the given conditions gives \(\vek v/\sqrt{\vek v^\T\mat M\vek v}\) in <span class="nobr">\(S\),</span> because the conditions are homogeneous, and since <span class="nobr">\(R(c\,\vek v) = R(\vek v)\),</span> this is also the smallest value over all such columns.</li>
+<li>Existence in point 2. The columns of \(L(\vek w_1, \dots, \vek w_{\mathrm{r}})\) are \(\vek v = \sum_{\mathrm{i}} a_{\mathrm{i}}\vek w_{\mathrm{i}}\) with a column of numbers <span class="nobr">\(\vek a \ne \vek 0\).</span> Let \(\mat M_{\mathrm{w}}\) be the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> of order \(r\) with elements <span class="nobr">\(\vek w_{\mathrm{i}}^\T\mat M\vek w_{\mathrm{j}}\).</span> It is symmetric because \(\mat M\) is symmetric, and <span class="nobr">\(\vek a^\T\mat M_{\mathrm{w}}\vek a = \vek v^\T\mat M\vek v\).</span> For \(\vek a \ne \vek 0\) we have \(\vek v \ne \vek 0\) by independence, so \(\vek a^\T\mat M_{\mathrm{w}}\vek a &gt; 0\) and \(\mat M_{\mathrm{w}}\) is <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite</a>. By lemma <a class="xref" href="sec-spektralni-izrek.html#lem-m-sfera" data-knowl="lem-m-sfera">10.12</a> (with \(\mat M_{\mathrm{w}}\) in place of <span class="nobr">\(\mat M\),</span> without conditions) the set of columns \(\vek a\) with \(\vek a^\T\mat M_{\mathrm{w}}\vek a = 1\) is nonempty, closed and bounded. On it, \(R(\sum_{\mathrm{i}} a_{\mathrm{i}}\vek w_{\mathrm{i}}) = (\sum_{\mathrm{i}} a_{\mathrm{i}}\vek w_{\mathrm{i}})^\T\mat K(\sum_{\mathrm{i}} a_{\mathrm{i}}\vek w_{\mathrm{i}})\) is a polynomial in \(a_1, \dots, a_{\mathrm{r}}\) and by theorem <a class="xref" href="sec-implicitna-funkcija.html#thm-ekstremi-n" data-knowl="thm-ekstremi-n">8.26</a> it has a largest value. Every \(\vek v\) of \(L\) is a nonzero multiple of a column with <span class="nobr">\(\vek a^\T\mat M_{\mathrm{w}}\vek a = 1\),</span> so this is the largest value of \(R\) on <span class="nobr">\(L\).</span></li>
+<li>The estimate <span class="nobr">\(\beta \le \lambda_{\mathrm{r}}\).</span> We look for a column \(\vek v = \sum_{\mathrm{j} \le \mathrm{r}}a_{\mathrm{j}}\vek\varphi_{\mathrm{j}}\) that satisfies all conditions. The conditions \(\sum_{\mathrm{j}} a_{\mathrm{j}}\,\vek b_{\mathrm{i}}^\T\vek\varphi_{\mathrm{j}} = 0\) for \(i = 1, \dots, r - 1\) are \(r - 1\) equations for \(r\) unknowns <span class="nobr">\(a_{\mathrm{j}}\),</span> so a nonzero solution exists (lemma <a class="xref" href="sec-spektralni-izrek.html#lem-vec-neznank" data-knowl="lem-vec-neznank">10.9</a>, for \(r = 1\) we take <span class="nobr">\(a_1 = 1\)).</span> Then <span class="nobr">\(\vek v \ne \vek 0\),</span> because \(a_{\mathrm{j}} = \vek\varphi_{\mathrm{j}}^\T\mat M\vek v\) (multiplication by \(\vek\varphi_{\mathrm{j}}^\T\mat M\) and \(\mat M\)-orthonormality). By <a class="xref" href="sec-rayleighov-kolicnik.html#eq-rkv-razvoj" data-knowl="eq-rkv-razvoj">(10.31)</a> with \(c_{\mathrm{j}} = a_{\mathrm{j}}\) for \(j \le r\) and \(c_{\mathrm{s}} = 0\) for <span class="nobr">\(s &gt; r\),</span> <span class="nobr">\(R(\vek v) = \sum_{\mathrm{j} \le \mathrm{r}}\lambda_{\mathrm{j}} a_{\mathrm{j}}^2/\sum_{\mathrm{j} \le \mathrm{r}}a_{\mathrm{j}}^2 \le \lambda_{\mathrm{r}}\),</span> because \(\lambda_{\mathrm{j}} \le \lambda_{\mathrm{r}}\) for <span class="nobr">\(j \le r\).</span> Hence <span class="nobr">\(\beta \le R(\vek v) \le \lambda_{\mathrm{r}}\).</span></li>
+<li>Equality. Let \(\vek b_{\mathrm{j}} = \mat M\vek\varphi_{\mathrm{j}}\) for <span class="nobr">\(j &lt; r\).</span> Since \(\mat M\) is symmetric, \(\vek b_{\mathrm{j}}^\T\vek v = \vek\varphi_{\mathrm{j}}^\T\mat M\vek v\) (lemma <a class="xref" href="sec-matrike.html#lem-transponiran-produkt" data-knowl="lem-transponiran-produkt">1.101</a>). A column \(\vek v \ne \vek 0\) with \(\vek\varphi_{\mathrm{j}}^\T\mat M\vek v = 0\) for \(j &lt; r\) has the coefficients \(c_{\mathrm{j}} = 0\) for \(j &lt; r\) in <a class="xref" href="sec-rayleighov-kolicnik.html#eq-rkv-razvoj" data-knowl="eq-rkv-razvoj">(10.31)</a>, so <span class="nobr">\(R(\vek v) = \sum_{\mathrm{s} \ge \mathrm{r}}\lambda_{\mathrm{s}} c_{\mathrm{s}}^2/\sum_{\mathrm{s} \ge \mathrm{r}}c_{\mathrm{s}}^2 \ge \lambda_{\mathrm{r}}\),</span> because \(\lambda_{\mathrm{s}} \ge \lambda_{\mathrm{r}}\) for <span class="nobr">\(s \ge r\).</span> The column \(\vek\varphi_{\mathrm{r}}\) satisfies the conditions, since <span class="nobr">\(\vek\varphi_{\mathrm{j}}^\T\mat M\vek\varphi_{\mathrm{r}} = 0\),</span> and \(R(\vek\varphi_{\mathrm{r}}) = \lambda_{\mathrm{r}}\) (<a class="xref" href="sec-rayleighov-kolicnik.html#eq-rkv-nacin" data-knowl="eq-rkv-nacin">(10.30)</a>). Hence <span class="nobr">\(\beta = \lambda_{\mathrm{r}}\).</span> Steps 3 and 4 prove point 1.</li>
+<li>The estimate <span class="nobr">\(\gamma \ge \lambda_{\mathrm{r}}\).</span> For the columns \(\vek w_1, \dots, \vek w_{\mathrm{r}}\) we look for a combination \(\vek v = \sum_{\mathrm{i}} a_{\mathrm{i}}\vek w_{\mathrm{i}} \ne \vek 0\) that satisfies \(\vek\varphi_{\mathrm{j}}^\T\mat M\vek v = 0\) for <span class="nobr">\(j &lt; r\).</span> These are \(r - 1\) equations for \(r\) unknowns <span class="nobr">\(a_{\mathrm{i}}\),</span> so a nonzero solution exists (lemma <a class="xref" href="sec-spektralni-izrek.html#lem-vec-neznank" data-knowl="lem-vec-neznank">10.9</a>, for \(r = 1\) we take <span class="nobr">\(a_1 = 1\)),</span> and \(\vek v \ne \vek 0\) by independence. By step 4, <span class="nobr">\(R(\vek v) \ge \lambda_{\mathrm{r}}\),</span> so <span class="nobr">\(\gamma \ge R(\vek v) \ge \lambda_{\mathrm{r}}\).</span></li>
+<li>Equality. The columns \(\vek\varphi_1, \dots, \vek\varphi_{\mathrm{r}}\) are independent by point 1 of corollary <a class="xref" href="sec-spektralni-izrek.html#cor-najvec-n" data-knowl="cor-najvec-n">10.11</a>, so they are an admissible choice. Every column of \(L(\vek\varphi_1, \dots, \vek\varphi_{\mathrm{r}})\) has the form \(\sum_{\mathrm{j} \le \mathrm{r}}a_{\mathrm{j}}\vek\varphi_{\mathrm{j}}\) with numbers \(a_{\mathrm{j}}\) that are not all zero, so by the computation in step 3, <span class="nobr">\(R \le \lambda_{\mathrm{r}}\),</span> and at <span class="nobr">\(\vek\varphi_{\mathrm{r}}\),</span> <span class="nobr">\(R = \lambda_{\mathrm{r}}\).</span> Hence <span class="nobr">\(\gamma = \lambda_{\mathrm{r}}\).</span> Steps 5 and 6 prove point 2.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> GR section 2.10.5, (2.217) (PDF p. 134), where Courant's theorem is stated as point 1, with the proof on PDF pp. 134-135. Point 2 (the smallest largest value over sets) and the form of the proofs with lemma <a class="xref" href="sec-spektralni-izrek.html#lem-vec-neznank" data-knowl="lem-vec-neznank">10.9</a> are not from the source.</p></div></div>
+<p>The two points describe the same number \(\lambda_{\mathrm{r}}\) from two sides. In the first we ask which conditions to add so that the smallest value is as large as possible, in the second which \(r\) columns to choose so that the largest value on their combinations is as small as possible. The best conditions are \(\vek b_{\mathrm{j}} = \mat M\vek\varphi_{\mathrm{j}}\) for <span class="nobr">\(j &lt; r\),</span> and the best columns are <span class="nobr">\(\vek\varphi_1, \dots, \vek\varphi_{\mathrm{r}}\).</span> For \(r = 1\) there is no condition and point 1 says <span class="nobr">\(\lambda_1 = \min R\),</span> as theorem <a class="xref" href="sec-rayleighov-kolicnik.html#thm-rayleigh-meje" data-knowl="thm-rayleigh-meje">10.26</a> does.</p>
+<p>What does an additional condition mean physically? A support that holds one coordinate, or a rigid link that makes two <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">coordinates</a> equal. After such a constraint the system has \(n - 1\) coordinates and its own natural frequencies. What do they tell us about the original ones?</p>
+
+<div class="blk posledica" id="cor-rayleighov-izrek-vezi"><div class="blk-head"><span class="blk-label">Corollary 10.29</span> <span class="blk-title">Rayleigh's theorem on constraints (Rayleighov izrek o vezeh)</span></div><div class="blk-body"><p>Let \(\mat K\) and \(\mat M\) be as in theorem <a class="xref" href="sec-rayleighov-kolicnik.html#thm-rayleigh-meje" data-knowl="thm-rayleigh-meje">10.26</a>, \(n \ge 2\) and \(\vek b \ne \vek 0\) a column with \(n\) elements. Let \(p\) be an index with \(b_{\mathrm{p}} \ne 0\) and \(\mat G\) the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> with \(n\) rows and \(n - 1\) columns that assigns to every column \(\vek u\) with \(n - 1\) elements <span class="nobr">\(u_{\mathrm{i}}\),</span> <span class="nobr">\(i \ne p\),</span> the column \(\vek v = \mat G\vek u\) with \(v_{\mathrm{i}} = u_{\mathrm{i}}\) for \(i \ne p\) and <span class="nobr">\(v_{\mathrm{p}} = -\frac{1}{b_{\mathrm{p}}}\sum_{\mathrm{i} \ne \mathrm{p}}b_{\mathrm{i}}u_{\mathrm{i}}\),</span> hence with <span class="nobr">\(\vek b^\T\vek v = 0\).</span> Let \(\mat K' = \mat G^\T\mat K\mat G\) and <span class="nobr">\(\mat M' = \mat G^\T\mat M\mat G\),</span> and let \(\lambda'_1 \le \dots \le \lambda'_{\mathrm{n}-1}\) be the <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">eigenvalues</a> of the pair <span class="nobr">\((\mat K', \mat M')\).</span> Then</p>
+<div class="eq" id="eq-rkv-preplet">\[\lambda_{\mathrm{r}} \le \lambda'_{\mathrm{r}} \le \lambda_{\mathrm{r}+1} \qquad \text{for } r = 1, \dots, n - 1 . \tag{10.35}\]</div>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>The <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> \(\mat K'\) and \(\mat M'\) are the stiffness and mass matrices of the system with the constraint <span class="nobr">\(\vek b^\T\vek q = 0\),</span> since the energies \(\tfrac12\vek q^\T\mat K\vek q\) and \(\tfrac12\dot{\vek q}^\T\mat M\dot{\vek q}\) at \(\vek q = \mat G\vek u\) equal \(\tfrac12\vek u^\T\mat K'\vek u\) and <span class="nobr">\(\tfrac12\dot{\vek u}^\T\mat M'\dot{\vek u}\).</span> The quotients of the two systems agree, so we bound \(\lambda'_{\mathrm{r}}\) from both sides with theorem <a class="xref" href="sec-rayleighov-kolicnik.html#thm-min-max" data-knowl="thm-min-max">10.28</a>.</p>
+<ol>
+<li>By lemma <a class="xref" href="sec-matrike.html#lem-transponiran-produkt" data-knowl="lem-transponiran-produkt">1.101</a>, <span class="nobr">\((\mat G^\T\mat K\mat G)^\T = \mat G^\T\mat K^\T\mat G = \mat G^\T\mat K\mat G\),</span> so \(\mat K'\) is symmetric, and likewise <span class="nobr">\(\mat M'\).</span> By the same lemma, \(\vek u^\T\mat M'\vek u = (\mat G\vek u)^\T\mat M(\mat G\vek u) &gt; 0\) if <span class="nobr">\(\mat G\vek u \ne \vek 0\),</span> and this holds for <span class="nobr">\(\vek u \ne \vek 0\),</span> because the elements of \(\vek u\) are among the elements of <span class="nobr">\(\mat G\vek u\).</span> The matrix \(\mat M'\) is therefore <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite</a>. By theorem <a class="xref" href="sec-spektralni-izrek.html#thm-spektralni-izrek" data-knowl="thm-spektralni-izrek">10.13</a> the pair \((\mat K', \mat M')\) has <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">eigenvalues</a> <span class="nobr">\(\lambda'_1 \le \dots \le \lambda'_{\mathrm{n}-1}\).</span> The quotient of the pair is <span class="nobr">\(R'(\vek u) = R(\mat G\vek u)\).</span> Independent columns \(\vek u_1, \dots, \vek u_{\mathrm{r}}\) go over into independent columns <span class="nobr">\(\mat G\vek u_1, \dots, \mat G\vek u_{\mathrm{r}}\):</span> from \(\sum_{\mathrm{j}} t_{\mathrm{j}}\mat G\vek u_{\mathrm{j}} = \mat G\sum_{\mathrm{j}} t_{\mathrm{j}}\vek u_{\mathrm{j}} = \vek 0\) it follows for the same reason that <span class="nobr">\(\sum_{\mathrm{j}} t_{\mathrm{j}}\vek u_{\mathrm{j}} = \vek 0\),</span> and hence all <span class="nobr">\(t_{\mathrm{j}} = 0\).</span> The set \(L(\vek u_1, \dots, \vek u_{\mathrm{r}})\) goes over into <span class="nobr">\(L(\mat G\vek u_1, \dots, \mat G\vek u_{\mathrm{r}})\),</span> because <span class="nobr">\(\mat G\sum_{\mathrm{j}} a_{\mathrm{j}}\vek u_{\mathrm{j}} = \sum_{\mathrm{j}} a_{\mathrm{j}}\mat G\vek u_{\mathrm{j}}\).</span></li>
+<li>The lower bound. By point 2 of theorem <a class="xref" href="sec-rayleighov-kolicnik.html#thm-min-max" data-knowl="thm-min-max">10.28</a> for the pair <span class="nobr">\((\mat K', \mat M')\),</span> \(\lambda'_{\mathrm{r}}\) is the smallest value of \(\gamma'\) over independent <span class="nobr">\(\vek u_1, \dots, \vek u_{\mathrm{r}}\).</span> By step 1, \(\gamma'(\vek u_1, \dots, \vek u_{\mathrm{r}}) = \gamma(\mat G\vek u_1, \dots, \mat G\vek u_{\mathrm{r}}) \ge \lambda_{\mathrm{r}}\) by point 2 of theorem <a class="xref" href="sec-rayleighov-kolicnik.html#thm-min-max" data-knowl="thm-min-max">10.28</a> for the pair <span class="nobr">\((\mat K, \mat M)\).</span> Hence <span class="nobr">\(\lambda'_{\mathrm{r}} \ge \lambda_{\mathrm{r}}\).</span></li>
+<li>The <a class="xref auto" href="sec-polnost.html#def-zgornja-meja" data-knowl="def-zgornja-meja">upper bound</a>. Since <span class="nobr">\(r \le n - 1\),</span> we have <span class="nobr">\(r + 1 \le n\).</span> We look for \(r\) independent columns of \(L(\vek\varphi_1, \dots, \vek\varphi_{\mathrm{r}+1})\) that satisfy <span class="nobr">\(\vek b^\T\vek v = 0\).</span> For \(\vek v = \sum_{\mathrm{i} \le \mathrm{r}+1}a_{\mathrm{i}}\vek\varphi_{\mathrm{i}}\) the condition is \(\sum_{\mathrm{i}} d_{\mathrm{i}}a_{\mathrm{i}} = 0\) with <span class="nobr">\(d_{\mathrm{i}} = \vek b^\T\vek\varphi_{\mathrm{i}}\),</span> one equation for \(r + 1\) unknowns. If all \(d_{\mathrm{i}}\) are zero, we take for \(j = 1, \dots, r\) the solution \(\vek a^{(j)}\) with \(a^{(j)}_{\mathrm{j}} = 1\) and all other elements zero. Otherwise \(d_{\mathrm{i}_0} \ne 0\) for some <span class="nobr">\(i_0\),</span> and for each of the \(r\) indices \(j \ne i_0\) we take the solution \(\vek a^{(j)}\) with <span class="nobr">\(a^{(j)}_{\mathrm{j}} = 1\),</span> \(a^{(j)}_{\mathrm{i}_0} = -d_{\mathrm{j}}/d_{\mathrm{i}_0}\) and all other elements zero. The solutions are independent, because \(\vek a^{(j)}\) has a one in place \(j\) and all the others have zero there. The columns \(\vek v^{(j)} = \sum_{\mathrm{i}} a^{(j)}_{\mathrm{i}}\vek\varphi_{\mathrm{i}}\) are independent too: from \(\sum_{\mathrm{j}} t_{\mathrm{j}}\vek v^{(j)} = \sum_{\mathrm{i}}\bigl(\sum_{\mathrm{j}} t_{\mathrm{j}}a^{(j)}_{\mathrm{i}}\bigr)\vek\varphi_{\mathrm{i}} = \vek 0\) it follows by point 1 of corollary <a class="xref" href="sec-spektralni-izrek.html#cor-najvec-n" data-knowl="cor-najvec-n">10.11</a> that <span class="nobr">\(\sum_{\mathrm{j}} t_{\mathrm{j}}\vek a^{(j)} = \vek 0\),</span> and hence all <span class="nobr">\(t_{\mathrm{j}} = 0\).</span></li>
+<li>The columns \(\vek v^{(j)}\) satisfy <span class="nobr">\(\vek b^\T\vek v = 0\),</span> so \(v^{(j)}_{\mathrm{p}} = -\frac{1}{b_{\mathrm{p}}}\sum_{\mathrm{i} \ne \mathrm{p}}b_{\mathrm{i}}v^{(j)}_{\mathrm{i}}\) and <span class="nobr">\(\vek v^{(j)} = \mat G\vek u_{\mathrm{j}}\),</span> where \(\vek u_{\mathrm{j}}\) is the column of the elements of \(\vek v^{(j)}\) with indices <span class="nobr">\(i \ne p\).</span> The columns \(\vek u_{\mathrm{j}}\) are independent, because from \(\sum_{\mathrm{j}} t_{\mathrm{j}}\vek u_{\mathrm{j}} = \vek 0\) it follows that \(\sum_{\mathrm{j}} t_{\mathrm{j}}\vek v^{(j)} = \mat G\sum_{\mathrm{j}} t_{\mathrm{j}}\vek u_{\mathrm{j}} = \vek 0\) and by step 3 all <span class="nobr">\(t_{\mathrm{j}} = 0\).</span> The nonzero combinations of the columns \(\vek v^{(j)}\) lie in <span class="nobr">\(L(\vek\varphi_1, \dots, \vek\varphi_{\mathrm{r}+1})\),</span> where by step 3 of the proof of theorem <a class="xref" href="sec-rayleighov-kolicnik.html#thm-min-max" data-knowl="thm-min-max">10.28</a> (with \(r + 1\) in place of <span class="nobr">\(r\)),</span> <span class="nobr">\(R \le \lambda_{\mathrm{r}+1}\).</span> By step 1, \(\gamma'(\vek u_1, \dots, \vek u_{\mathrm{r}})\) is the largest value of \(R\) on <span class="nobr">\(L(\vek v^{(1)}, \dots, \vek v^{(r)})\),</span> so <span class="nobr">\(\gamma'(\vek u_1, \dots, \vek u_{\mathrm{r}}) \le \lambda_{\mathrm{r}+1}\),</span> and by point 2 of theorem <a class="xref" href="sec-rayleighov-kolicnik.html#thm-min-max" data-knowl="thm-min-max">10.28</a> for the pair <span class="nobr">\((\mat K', \mat M')\),</span> <span class="nobr">\(\lambda'_{\mathrm{r}} \le \gamma'(\vek u_1, \dots, \vek u_{\mathrm{r}}) \le \lambda_{\mathrm{r}+1}\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> GR section 2.10.6, (2.230)-(2.240) (PDF pp. 135-136): Rayleigh's theorem on constraints from Courant's theorem, with \(m\) constraints. Here it is proved for one constraint directly from point 2 of theorem <a class="xref" href="sec-rayleighov-kolicnik.html#thm-min-max" data-knowl="thm-min-max">10.28</a>, a different proof from the source's.</p></div></div>
+<p>The corollary says that the <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">eigenvalues</a> of the constrained system interlace with the original ones, as in figure <a class="xref" href="sec-rayleighov-kolicnik.html#fig-rkv-preplet" data-knowl="fig-rkv-preplet">10.20</a>. In frame A with the second floor at rest, <span class="nobr">\(\lambda' = 2k/m = 2007{,}04\ \text{1/s}^2\),</span> between \(\lambda_1 = 383{,}31\) and <span class="nobr">\(\lambda_2 = 2627{,}25\).</span> With the first floor at rest, <span class="nobr">\(\lambda' = k/m = 1003{,}52\),</span> also in between. In the frame with three storeys of section <a class="xref" href="sec-spektralni-izrek.html">10.3</a>, a constraint on the third floor gives a frame with two storeys, <span class="nobr">\(\mat K' = k\left[\begin{smallmatrix} 2 &amp; -1 \\ -1 &amp; 2 \end{smallmatrix}\right]\),</span> <span class="nobr">\(\mat M' = m\,\mat I\),</span> with the eigenvalues \(1\) and \(3\) in units of <span class="nobr">\(k/m\).</span> The original ones are <span class="nobr">\(0{,}198\),</span> \(1{,}555\) and <span class="nobr">\(3{,}247\),</span> so <span class="nobr">\(0{,}198 \le 1 \le 1{,}555 \le 3 \le 3{,}247\).</span> In bracket B with the vertical displacement of the joint prevented <span class="nobr">(\(\vek b = (0, 1)\)),</span> what remains is <span class="nobr">\(\lambda' = K_{11}/m = 7408{,}8\ \text{1/s}^2\),</span> between \(869{,}77\) and <span class="nobr">\(7950{,}23\).</span></p>
+
+<figure class="blk slika" id="fig-rkv-preplet"><p><span class="svgfig" role="img" aria-label="Eigenvalues of the frames with two and three storeys on a number line with the constrained values between them"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='471.10pt' height='178.45pt' viewBox='-72.000004 -72.000003 348.963547 132.183313'>
+<defs>
+<path id='rkv-preplet-g0-48' d='M2.520548-4.732254C2.570361-4.851806 2.610212-4.941469 2.610212-5.041096C2.610212-5.330012 2.351183-5.569116 2.042341-5.569116C1.763387-5.569116 1.58406-5.379826 1.514321-5.120797L.328767-.767123C.328767-.747198 .288917-.637609 .288917-.627646C.288917-.518057 .547945-.448319 .627646-.448319C.687422-.448319 .697385-.478207 .757161-.607721L2.520548-4.732254Z'/>
+<path id='rkv-preplet-g1-21' d='M3.556663-2.909091C3.965131-1.863014 4.443337-.33873 4.60274-.109589C4.762142 .109589 4.861768 .109589 5.13076 .109589H5.349938C5.449564 .099626 5.459527 .039851 5.459527 .009963S5.439601-.039851 5.409714-.079701C5.310087-.18929 5.250311-.33873 5.180573-.537983L3.148194-6.206725C2.938979-6.784558 2.400996-6.914072 1.932752-6.914072C1.882939-6.914072 1.753425-6.914072 1.753425-6.804483C1.753425-6.724782 1.833126-6.704857 1.843088-6.704857C2.171856-6.645081 2.241594-6.585305 2.49066-5.907846L3.457036-3.198007L.707347-.468244C.587796-.348692 .52802-.288917 .52802-.159402C.52802 .009963 .667497 .129514 .826899 .129514S1.075965 .019925 1.155666-.079701L3.556663-2.909091Z'/>
+<path id='rkv-preplet-g1-110' d='M.876712-.587796C.846824-.438356 .787049-.209215 .787049-.159402C.787049 .019925 .926526 .109589 1.075965 .109589C1.195517 .109589 1.374844 .029888 1.444583-.169365C1.454545-.18929 1.574097-.657534 1.633873-.9066L1.853051-1.803238C1.912827-2.022416 1.972603-2.241594 2.022416-2.470735C2.062267-2.6401 2.141968-2.929016 2.15193-2.968867C2.30137-3.277709 2.82939-4.184309 3.775841-4.184309C4.224159-4.184309 4.313823-3.815691 4.313823-3.486924C4.313823-2.86924 3.825654-1.594022 3.666252-1.165629C3.576588-.936488 3.566625-.816936 3.566625-.707347C3.566625-.239103 3.915318 .109589 4.383562 .109589C5.32005 .109589 5.688667-1.344956 5.688667-1.424658C5.688667-1.524284 5.599004-1.524284 5.569116-1.524284C5.469489-1.524284 5.469489-1.494396 5.419676-1.344956C5.220423-.667497 4.891656-.109589 4.403487-.109589C4.234122-.109589 4.164384-.209215 4.164384-.438356C4.164384-.687422 4.254047-.926526 4.343711-1.145704C4.533001-1.673724 4.951432-2.769614 4.951432-3.337484C4.951432-4.004981 4.523039-4.403487 3.805729-4.403487C2.909091-4.403487 2.420922-3.765878 2.251557-3.536737C2.201743-4.094645 1.793275-4.403487 1.334994-4.403487S.687422-4.014944 .587796-3.835616C.428394-3.496887 .288917-2.909091 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.779577 .577833-2.998755C.747198-3.706102 .946451-4.184309 1.305106-4.184309C1.504359-4.184309 1.613948-4.054795 1.613948-3.726027C1.613948-3.516812 1.58406-3.407223 1.454545-2.889166L.876712-.587796Z'/>
+<path id='rkv-preplet-g2-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='rkv-preplet-g2-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='rkv-preplet-g2-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='rkv-preplet-g2-51' d='M2.889166-3.506849C3.706102-3.775841 4.283935-4.473225 4.283935-5.260274C4.283935-6.07721 3.407223-6.635118 2.450809-6.635118C1.444583-6.635118 .687422-6.03736 .687422-5.280199C.687422-4.951432 .9066-4.762142 1.195517-4.762142C1.504359-4.762142 1.703611-4.98132 1.703611-5.270237C1.703611-5.768369 1.235367-5.768369 1.085928-5.768369C1.39477-6.256538 2.052304-6.386052 2.410959-6.386052C2.819427-6.386052 3.367372-6.166874 3.367372-5.270237C3.367372-5.150685 3.347447-4.572852 3.088418-4.134496C2.789539-3.656289 2.450809-3.626401 2.201743-3.616438C2.122042-3.606476 1.882939-3.58655 1.8132-3.58655C1.733499-3.576588 1.663761-3.566625 1.663761-3.466999C1.663761-3.35741 1.733499-3.35741 1.902864-3.35741H2.34122C3.158157-3.35741 3.526775-2.67995 3.526775-1.703611C3.526775-.348692 2.839352-.059776 2.400996-.059776C1.972603-.059776 1.225405-.229141 .876712-.816936C1.225405-.767123 1.534247-.986301 1.534247-1.364882C1.534247-1.723537 1.265255-1.92279 .976339-1.92279C.737235-1.92279 .418431-1.783313 .418431-1.344956C.418431-.438356 1.344956 .219178 2.430884 .219178C3.646326 .219178 4.552927-.687422 4.552927-1.703611C4.552927-2.520548 3.92528-3.297634 2.889166-3.506849Z'/>
+<path id='rkv-preplet-g2-61' d='M6.844334-3.257783C6.993773-3.257783 7.183064-3.257783 7.183064-3.457036S6.993773-3.656289 6.854296-3.656289H.886675C.747198-3.656289 .557908-3.656289 .557908-3.457036S.747198-3.257783 .896638-3.257783H6.844334ZM6.854296-1.325031C6.993773-1.325031 7.183064-1.325031 7.183064-1.524284S6.993773-1.723537 6.844334-1.723537H.896638C.747198-1.723537 .557908-1.723537 .557908-1.524284S.747198-1.325031 .886675-1.325031H6.854296Z'/>
+<path id='rkv-preplet-g3-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='rkv-preplet-g3-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+<path id='rkv-preplet-g3-51' d='M1.903861-2.329265C2.447821-2.329265 2.838356-1.952677 2.838356-1.206476C2.838356-.341719 2.336239-.083686 1.931756-.083686C1.652802-.083686 1.039103-.160399 .746202-.571856C1.073973-.585803 1.150685-.81594 1.150685-.962391C1.150685-1.185554 .983313-1.345953 .767123-1.345953C.571856-1.345953 .376588-1.227397 .376588-.941469C.376588-.285928 1.101868 .139477 1.945704 .139477C2.915068 .139477 3.584558-.509091 3.584558-1.206476C3.584558-1.750436 3.138232-2.294396 2.371108-2.454795C3.103362-2.719801 3.368369-3.242839 3.368369-3.668244C3.368369-4.219178 2.733748-4.630635 1.959651-4.630635S.592777-4.254047 .592777-3.696139C.592777-3.459029 .746202-3.326526 .955417-3.326526C1.171606-3.326526 1.311083-3.486924 1.311083-3.682192C1.311083-3.884433 1.171606-4.030884 .955417-4.044832C1.199502-4.351681 1.680697-4.428394 1.93873-4.428394C2.252553-4.428394 2.691905-4.274969 2.691905-3.668244C2.691905-3.375342 2.594271-3.054545 2.412951-2.838356C2.182814-2.57335 1.987547-2.559402 1.638854-2.538481C1.464508-2.524533 1.45056-2.524533 1.415691-2.517559C1.401743-2.517559 1.345953-2.503611 1.345953-2.426899C1.345953-2.329265 1.408717-2.329265 1.527273-2.329265H1.903861Z'/>
+</defs>
+<g id='rkv-preplet-page1'>
+<g stroke-miterlimit='10' transform='translate(-32.311404,-54.156532)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<path d='M0 0H305.78253' fill='none'/>
+<g transform='translate(303.30608,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<path d='M34.44534 0C34.44534 1.01544 33.62216 1.83862 32.60672 1.83862S30.7681 1.01544 30.7681 0S31.59128-1.83862 32.60672-1.83862S34.44534-1.01544 34.44534 0ZM32.60672 0' stroke='none'/>
+<g transform='translate(32.60672,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.311404,-54.156532)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(27.44698,-14.57742)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.311404,-54.156532)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-32.311404' y='-54.156532' xlink:href='#rkv-preplet-g1-21'/>
+<use x='-26.499838' y='-52.662151' xlink:href='#rkv-preplet-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M225.30658 0C225.30658 1.01544 224.4834 1.83862 223.46796 1.83862C222.45251 1.83862 221.62933 1.01544 221.62933 0S222.45251-1.83862 223.46796-1.83862C224.4834-1.83862 225.30658-1.01544 225.30658 0ZM223.46796 0' stroke='none'/>
+<g transform='translate(223.46796,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.311404,-54.156532)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(218.30821,-14.57742)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.311404,-54.156532)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-32.311404' y='-54.156532' xlink:href='#rkv-preplet-g1-21'/>
+<use x='-26.499838' y='-52.662151' xlink:href='#rkv-preplet-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M87.19685 0C87.19685 1.01544 86.37367 1.83862 85.35823 1.83862S83.5196 1.01544 83.5196 0S84.34279-1.83862 85.35823-1.83862S87.19685-1.01544 87.19685 0ZM85.35823 0' stroke='none'/>
+</g>
+<g transform='translate(85.35823,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.311404,-54.156532)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(80.78879,7.63298)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.311404,-54.156532)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-32.311404' y='-54.156532' xlink:href='#rkv-preplet-g1-21'/>
+<use x='-25.946372' y='-54.156532' xlink:href='#rkv-preplet-g0-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M172.55508 0C172.55508 1.01544 171.7319 1.83862 170.71646 1.83862S168.87784 1.01544 168.87784 0S169.70102-1.83862 170.71646-1.83862S172.55508-1.01544 172.55508 0ZM170.71646 0' stroke='none'/>
+</g>
+<g transform='translate(170.71646,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.311404,-54.156532)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(166.14702,7.63298)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.311404,-54.156532)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-32.311404' y='-54.156532' xlink:href='#rkv-preplet-g1-21'/>
+<use x='-25.946372' y='-54.156532' xlink:href='#rkv-preplet-g0-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-85.35823H305.78253' fill='none'/>
+<g transform='translate(303.30608,-85.35823)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<path d='M18.73938-85.35823C18.73938-84.34279 17.9162-83.5196 16.90076-83.5196C15.88531-83.5196 15.06213-84.34279 15.06213-85.35823S15.88531-87.19685 16.90076-87.19685C17.9162-87.19685 18.73938-86.37367 18.73938-85.35823ZM16.90076-85.35823' stroke='none'/>
+<g transform='translate(16.90076,-85.35823)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.311404,-54.156532)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(11.74101,-99.93565)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.311404,-54.156532)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-32.311404' y='-54.156532' xlink:href='#rkv-preplet-g1-21'/>
+<use x='-26.499838' y='-52.662151' xlink:href='#rkv-preplet-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M134.57048-85.35823C134.57048-84.34279 133.7473-83.5196 132.73186-83.5196S130.89323-84.34279 130.89323-85.35823S131.71642-87.19685 132.73186-87.19685S134.57048-86.37367 134.57048-85.35823ZM132.73186-85.35823' stroke='none'/>
+<g transform='translate(132.73186,-85.35823)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.311404,-54.156532)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(127.57211,-99.93565)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.311404,-54.156532)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-32.311404' y='-54.156532' xlink:href='#rkv-preplet-g1-21'/>
+<use x='-26.499838' y='-52.662151' xlink:href='#rkv-preplet-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M278.99672-85.35823C278.99672-84.34279 278.17354-83.5196 277.1581-83.5196C276.14265-83.5196 275.31947-84.34279 275.31947-85.35823S276.14265-87.19685 277.1581-87.19685C278.17354-87.19685 278.99672-86.37367 278.99672-85.35823ZM277.1581-85.35823' stroke='none'/>
+<g transform='translate(277.1581,-85.35823)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.311404,-54.156532)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(271.99835,-99.93565)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.311404,-54.156532)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-32.311404' y='-54.156532' xlink:href='#rkv-preplet-g1-21'/>
+<use x='-26.499838' y='-52.662151' xlink:href='#rkv-preplet-g3-51'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M87.19685-85.35823C87.19685-84.34279 86.37367-83.5196 85.35823-83.5196S83.5196-84.34279 83.5196-85.35823S84.34279-87.19685 85.35823-87.19685S87.19685-86.37367 87.19685-85.35823ZM85.35823-85.35823' stroke='none'/>
+</g>
+<g transform='translate(85.35823,-85.35823)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.311404,-54.156532)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(80.78879,-77.72525)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.311404,-54.156532)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-32.311404' y='-54.156532' xlink:href='#rkv-preplet-g1-21'/>
+<use x='-25.946372' y='-54.156532' xlink:href='#rkv-preplet-g0-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M257.91331-85.35823C257.91331-84.34279 257.09013-83.5196 256.07469-83.5196S254.23607-84.34279 254.23607-85.35823S255.05925-87.19685 256.07469-87.19685S257.91331-86.37367 257.91331-85.35823ZM256.07469-85.35823' stroke='none'/>
+</g>
+<g transform='translate(256.07469,-85.35823)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.311404,-54.156532)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(251.50525,-77.72525)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.311404,-54.156532)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-32.311404' y='-54.156532' xlink:href='#rkv-preplet-g1-21'/>
+<use x='-25.946372' y='-54.156532' xlink:href='#rkv-preplet-g0-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 0V-2.84544' fill='none'/>
+<g transform='translate(-2.5,-26.07741)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.311404,-54.156532)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-32.311404' y='-54.156532' xlink:href='#rkv-preplet-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-85.35823V-88.20367' fill='none'/>
+<g transform='translate(-2.5,-111.43564)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.311404,-54.156532)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-32.311404' y='-54.156532' xlink:href='#rkv-preplet-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M85.35823 0V-2.84544' fill='none'/>
+<g transform='translate(82.85823,-26.07741)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.311404,-54.156532)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-32.311404' y='-54.156532' xlink:href='#rkv-preplet-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M85.35823-85.35823V-88.20367' fill='none'/>
+<g transform='translate(82.85823,-111.43564)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.311404,-54.156532)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-32.311404' y='-54.156532' xlink:href='#rkv-preplet-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M170.71646 0V-2.84544' fill='none'/>
+<g transform='translate(168.21646,-26.07741)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.311404,-54.156532)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-32.311404' y='-54.156532' xlink:href='#rkv-preplet-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M170.71646-85.35823V-88.20367' fill='none'/>
+<g transform='translate(168.21646,-111.43564)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.311404,-54.156532)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-32.311404' y='-54.156532' xlink:href='#rkv-preplet-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M256.07469 0V-2.84544' fill='none'/>
+<g transform='translate(253.57469,-26.07741)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.311404,-54.156532)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-32.311404' y='-54.156532' xlink:href='#rkv-preplet-g2-51'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M256.07469-85.35823V-88.20367' fill='none'/>
+<g transform='translate(253.57469,-111.43564)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.311404,-54.156532)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-32.311404' y='-54.156532' xlink:href='#rkv-preplet-g2-51'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-36.50446,-3.22221)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.311404,-54.156532)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-32.311404' y='-54.156532' xlink:href='#rkv-preplet-g1-110'/>
+<use x='-23.564146' y='-54.156532' xlink:href='#rkv-preplet-g2-61'/>
+<use x='-13.048066' y='-54.156532' xlink:href='#rkv-preplet-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-36.50446,-88.58044)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.311404,-54.156532)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-32.311404' y='-54.156532' xlink:href='#rkv-preplet-g1-110'/>
+<use x='-23.564146' y='-54.156532' xlink:href='#rkv-preplet-g2-61'/>
+<use x='-13.048066' y='-54.156532' xlink:href='#rkv-preplet-g2-51'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 10.20</span>: Interlacing of the eigenvalues under one additional constraint, in units of <span class="nobr">\(k/m\).</span> Top: frame A (black dots \(\lambda_1 = 0{,}382\) and <span class="nobr">\(\lambda_2 = 2{,}618\))</span> with the first floor at rest <span class="nobr">(\(\lambda' = 1\))</span> and with the second floor at rest <span class="nobr">(\(\lambda' = 2\)),</span> both orange. Bottom: the frame with three storeys <span class="nobr">(\(0{,}198\),</span> <span class="nobr">\(1{,}555\),</span> <span class="nobr">\(3{,}247\))</span> with the third floor at rest (orange \(1\) and <span class="nobr">\(3\)).</span> Every orange dot lies between two neighbouring black ones, as <a class="xref" href="sec-rayleighov-kolicnik.html#eq-rkv-preplet" data-knowl="eq-rkv-preplet">(10.35)</a> requires. The numbers below the axis are values in units of <span class="nobr">\(k/m\).</span></figcaption></figure>
+<p>One more consequence of the same theorem, for a change of stiffness or mass.</p>
+
+<div class="blk posledica" id="cor-monotonost"><div class="blk-head"><span class="blk-label">Corollary 10.30</span> <span class="blk-title">Monotonicity of the eigenvalues (monotonost lastnih vrednosti)</span></div><div class="blk-body"><p>Let \(\mat K\) be symmetric, \(\mat M\) symmetric positive definite, and \(\mat K'\) symmetric and \(\mat M'\) symmetric <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite matrices</a> of order <span class="nobr">\(n\),</span> with <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">eigenvalues</a> \(\lambda_{\mathrm{r}}\) of the pair \((\mat K, \mat M)\) and \(\lambda'_{\mathrm{r}}\) of the pair <span class="nobr">\((\mat K', \mat M')\).</span></p>
+<ol>
+<li>If \(\mat M' = \mat M\) and \(\mat K' - \mat K\) is positive semidefinite (definition <a class="xref" href="sec-robni-pogoji-mke.html#def-pozitivno-semidefinitna" data-knowl="def-pozitivno-semidefinitna">7.15</a>), then \(\lambda'_{\mathrm{r}} \ge \lambda_{\mathrm{r}}\) for every <span class="nobr">\(r\):</span> added stiffness lowers no eigenvalue.</li>
+<li>If \(\mat K' = \mat K\) is positive semidefinite and \(\mat M' - \mat M\) is positive semidefinite, then \(\lambda'_{\mathrm{r}} \le \lambda_{\mathrm{r}}\) for every <span class="nobr">\(r\):</span> added mass raises no eigenvalue.</li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We compare the quotients \(R'\) and \(R\) at every column and use point 2 of theorem <a class="xref" href="sec-rayleighov-kolicnik.html#thm-min-max" data-knowl="thm-min-max">10.28</a>.</p>
+<ol>
+<li>In the first case \(\vek v^\T\mat K'\vek v = \vek v^\T\mat K\vek v + \vek v^\T(\mat K' - \mat K)\vek v \ge \vek v^\T\mat K\vek v\) and the denominators are equal, so \(R'(\vek v) \ge R(\vek v)\) for every <span class="nobr">\(\vek v \ne \vek 0\).</span></li>
+<li>In the second case \(\vek v^\T\mat M'\vek v \ge \vek v^\T\mat M\vek v &gt; 0\) and <span class="nobr">\(\vek v^\T\mat K\vek v \ge 0\),</span> so <span class="nobr">\(R'(\vek v) = \vek v^\T\mat K\vek v/\vek v^\T\mat M'\vek v \le \vek v^\T\mat K\vek v/\vek v^\T\mat M\vek v = R(\vek v)\).</span></li>
+<li>By point 2 of theorem <a class="xref" href="sec-rayleighov-kolicnik.html#thm-min-max" data-knowl="thm-min-max">10.28</a>, \(\lambda'_{\mathrm{r}}\) is the smallest value of \(\gamma'\) over the choices of independent columns, where \(\gamma'(\vek w_1, \dots, \vek w_{\mathrm{r}})\) is the largest value of \(R'\) on <span class="nobr">\(L(\vek w_1, \dots, \vek w_{\mathrm{r}})\),</span> and likewise \(\lambda_{\mathrm{r}}\) is the smallest value of \(\gamma\) with \(R\) in place of <span class="nobr">\(R'\).</span> In the first case, by step 1, every choice gives <span class="nobr">\(\gamma'(\vek w_1, \dots, \vek w_{\mathrm{r}}) \ge \gamma(\vek w_1, \dots, \vek w_{\mathrm{r}}) \ge \lambda_{\mathrm{r}}\),</span> so the smallest value also satisfies <span class="nobr">\(\lambda'_{\mathrm{r}} \ge \lambda_{\mathrm{r}}\).</span> In the second case we take the modes \(\vek\varphi_1, \dots, \vek\varphi_{\mathrm{r}}\) of the pair <span class="nobr">\((\mat K, \mat M)\),</span> for which <span class="nobr">\(\gamma = \lambda_{\mathrm{r}}\).</span> By step 2, <span class="nobr">\(\lambda'_{\mathrm{r}} \le \gamma'(\vek\varphi_1, \dots, \vek\varphi_{\mathrm{r}}) \le \gamma(\vek\varphi_1, \dots, \vek\varphi_{\mathrm{r}}) = \lambda_{\mathrm{r}}\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> GR section 2.10.4 (PDF pp. 132-133) states the general comparison principle: additional constraints do not lower the smallest value. The corollary for a change of stiffness and mass and its proof are not from the source.</p></div></div>
+<p>The condition that \(\mat K\) is <a class="xref auto" href="sec-robni-pogoji-mke.html#def-pozitivno-semidefinitna" data-knowl="def-pozitivno-semidefinitna">positive semidefinite</a> is needed in point 2. For <span class="nobr">\(n = 1\),</span> \(K = -1\) N/m and \(M = 1\) kg we have <span class="nobr">\(\lambda = -1\ \text{1/s}^2\),</span> and with twice the mass <span class="nobr">\(\lambda' = -0{,}5\ \text{1/s}^2\),</span> which is larger: the added mass brings the negative eigenvalue closer to zero.</p>
+<p>Let us look at frame A. We add a spring of stiffness \(k\) between the first floor and the ground, so <span class="nobr">\(\mat K' = \mat K + k\left[\begin{smallmatrix} 1 &amp; 0 \\ 0 &amp; 0 \end{smallmatrix}\right]\),</span> where the added matrix is positive semidefinite. The eigenvalues rise from \(383{,}31\) and \(2627{,}25\) to \(587{,}85\) and <span class="nobr">\(3426{,}23\ \text{1/s}^2\),</span> as point 1 predicts. Each of the four columns of the frame (steel, \(\rho = 7800\) kg/m³, section \(20 \times 40\) mm, length \(1\) m) has the mass \(6{,}24\) kg, which we have neglected so far, so \(12{,}48\) kg per storey. If we assign all of it to the floors, \(\mat M' = 512{,}48\,\mat I\) kg, the difference \(\mat M' - \mat M = 12{,}48\,\mat I\) kg is positive semidefinite, and so is <span class="nobr">\(\mat K' = \mat K\),</span> so by point 2 no eigenvalue rises. Since <span class="nobr">\(\mat M' = (512{,}48/500)\,\mat M\),</span> every eigenvalue is multiplied by \(500/512{,}48 = 0{,}9756\) <span class="nobr">(\(373{,}98\)</span> and <span class="nobr">\(2563{,}27\ \text{1/s}^2\)),</span> and every natural frequency falls by \(1{,}225\) %. This is only an estimate, because the mass of a column is spread along the column and not at the floors, and the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> for this are in chapter <a class="xref stub" href="ch-mke-nosilci.html">12</a>. In bracket B the bars AC and BC have the total mass \(7{,}02\) kg. If each bar adds a third of its mass to joint \(C\) (the next section shows the reason for the third, here it is an estimate), that is \(2{,}34\) kg, the mass at the joint rises to \(1002{,}34\) kg and both natural frequencies fall by \(0{,}117\) %, as point 2 predicts.</p>
+<p>This section has shown three things, all from the expansion in modes. The quotient is a weighted mean of the eigenvalues, so it lies between the lowest and the highest. It estimates an eigenvalue with an error of second order, because the shares of the other modes enter the expansion squared. Courant's theorem, proved with the lemma on a system with more unknowns than equations, describes every \(\lambda_{\mathrm{r}}\) by a search over sets of columns, and from it follow the interlacing under an additional constraint and the monotonicity under added stiffness or mass. When we guess several shapes at once and build from them an estimate of several eigenvalues together, we obtain the <a class="xref auto" href="sec-ritzova-metoda.html#def-ritzova-metoda" data-knowl="def-ritzova-metoda">Ritz method</a> in matrix form. In the section after the next we will prove from point 2 of theorem <a class="xref" href="sec-rayleighov-kolicnik.html#thm-min-max" data-knowl="thm-min-max">10.28</a> that every such estimate is an <a class="xref auto" href="sec-polnost.html#def-zgornja-meja" data-knowl="def-zgornja-meja">upper bound</a> of the true value with the same index. The example that will need it is the bar with 16 elements.</p>
+
+</main>
+<footer><nav class="pager"><a href="sec-togi-nacini.html" rel="prev">← 10.5</a><a href="index.html">Contents</a><a href="sec-masna-matrika.html" rel="next">10.7 →</a></nav></footer>
+</body>
+</html>

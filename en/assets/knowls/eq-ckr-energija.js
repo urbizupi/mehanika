@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ckr-energija"] = {"html": "<div class=\"eq\">\\[\\mathcal{E}_{\\mathrm{k}+1} - \\mathcal{E}_{\\mathrm{k}} = -\\frac{\\Delta t}{4}\\,(\\vek v_{\\mathrm{k}} + \\vek v_{\\mathrm{k}+1})^\\T\\mat C\\,(\\vek v_{\\mathrm{k}} + \\vek v_{\\mathrm{k}+1}) . \\tag{10.79}\\]</div>", "href": "sec-casovno-korakanje.html#eq-ckr-energija"};

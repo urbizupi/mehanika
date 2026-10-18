@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ckr-v"] = {"html": "<div class=\"eq\">\\[\\vek v_{\\mathrm{k}+1} = \\vek v_{\\mathrm{k}} + \\frac{\\Delta t}{2}\\,(\\vek a_{\\mathrm{k}} + \\vek a_{\\mathrm{k}+1}) , \\tag{10.75}\\]</div>", "href": "sec-casovno-korakanje.html#eq-ckr-v"};

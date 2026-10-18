@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-spi-zamenjava"] = {"html": "<div class=\"eq\">\\[\\vek v^\\T\\mat A\\,\\vek w = (\\vek v^\\T\\mat A\\,\\vek w)^\\T = \\vek w^\\T\\mat A^\\T\\vek v = \\vek w^\\T\\mat A\\,\\vek v . \\tag{10.19}\\]</div>", "href": "sec-spektralni-izrek.html#eq-spi-zamenjava"};

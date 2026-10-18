@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ddn-odziv"] = {"html": "<div class=\"eq\">\\[\\frac{X}{Q_0/k} = \\frac{|1 - r^2|}{\\big|(1 + \\mu - r^2 + 2\\mathrm{i}\\,\\zeta r)(1 - r^2) - \\mu\\big|} . \\tag{10.71}\\]</div>", "href": "sec-dusilnik-nihanja.html#eq-ddn-odziv"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-lpn-lastni-problem"] = {"html": "<div class=\"eq\">\\[\\mat K\\boldsymbol\\varphi = \\lambda\\,\\mat M\\boldsymbol\\varphi . \\tag{10.12}\\]</div>", "href": "sec-lastni-problem.html#eq-lpn-lastni-problem"};

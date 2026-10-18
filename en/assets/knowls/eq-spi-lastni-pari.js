@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-spi-lastni-pari"] = {"html": "<div class=\"eq\">\\[\\mat K\\,\\vek\\varphi_{\\mathrm{r}} = \\lambda_{\\mathrm{r}}\\,\\mat M\\,\\vek\\varphi_{\\mathrm{r}} \\qquad (r = 1, \\dots, n) . \\tag{10.20}\\]</div>", "href": "sec-spektralni-izrek.html#eq-spi-lastni-pari"};

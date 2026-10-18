@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dsp-rayleigh-zeta"] = {"html": "<div class=\"eq\">\\[\\zeta_{\\mathrm{r}} = \\frac{a_0}{2\\omega_{\\mathrm{r}}} + \\frac{a_1\\omega_{\\mathrm{r}}}{2} , \\qquad r = 1, \\dots, n . \\tag{10.56}\\]</div>", "href": "sec-dusenje-superpozicija.html#eq-dsp-rayleigh-zeta"};

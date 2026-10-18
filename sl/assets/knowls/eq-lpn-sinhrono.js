@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-lpn-sinhrono"] = {"html": "<div class=\"eq\">\\[(\\mat M\\boldsymbol\\varphi)\\,\\ddot{g}(t) + (\\mat K\\boldsymbol\\varphi)\\,g(t) = \\vek 0 . \\tag{10.11}\\]</div>", "href": "sec-lastni-problem.html#eq-lpn-sinhrono"};

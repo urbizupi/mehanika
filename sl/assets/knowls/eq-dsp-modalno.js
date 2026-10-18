@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dsp-modalno"] = {"html": "<div class=\"eq\">\\[\\ddot{\\boldsymbol\\eta} + \\mat\\Phi^{\\T} \\mat C\\mat\\Phi\\,\\dot{\\boldsymbol\\eta} + \\mathrm{diag}(\\lambda_1, \\dots, \\lambda_{\\mathrm{n}})\\,\\boldsymbol\\eta = \\mat\\Phi^{\\T} \\vek Q(t) . \\tag{10.53}\\]</div>", "href": "sec-dusenje-superpozicija.html#eq-dsp-modalno"};

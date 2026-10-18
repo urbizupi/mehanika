@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ckr-rekurzija"] = {"html": "<div class=\"eq\">\\[u_{\\mathrm{k}+1} - 2b\\,u_{\\mathrm{k}} + u_{\\mathrm{k}-1} = 0 \\qquad (k \\ge 1) . \\tag{10.83}\\]</div>", "href": "sec-casovno-korakanje.html#eq-ckr-rekurzija"};

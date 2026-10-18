@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mko-definicija"] = {"html": "<div class=\"eq\">\\[\\eta_{\\mathrm{r}}(t) = \\boldsymbol\\varphi_{\\mathrm{r}}^\\T\\mat M\\,\\vek q(t) , \\qquad r = 1, \\dots, n , \\tag{10.22}\\]</div>", "href": "sec-modalne-koordinate.html#eq-mko-definicija"};

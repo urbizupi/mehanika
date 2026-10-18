@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-lpn-okvir"] = {"html": "<div class=\"eq\">\\[\\mat M\\ddot{\\vek q} + \\mat K\\vek q = \\vek 0 , \\qquad \\mat M = m\\begin{bmatrix} 1 &amp; 0 \\\\ 0 &amp; 1 \\end{bmatrix} , \\quad \\mat K = k\\begin{bmatrix} 2 &amp; -1 \\\\ -1 &amp; 1 \\end{bmatrix} . \\tag{10.10}\\]</div>", "href": "sec-lastni-problem.html#eq-lpn-okvir"};

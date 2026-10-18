@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-hvv-matrika-odziva"] = {"html": "<div class=\"eq\">\\[\\mat H(\\Omega) = \\mat S(\\Omega)^{-1} = \\big(\\mat K - \\Omega^2\\mat M + \\mathrm{i}\\,\\Omega\\,\\mat C\\big)^{-1} . \\tag{10.66}\\]</div>", "href": "sec-frekvencni-odziv-vec.html#eq-hvv-matrika-odziva"};

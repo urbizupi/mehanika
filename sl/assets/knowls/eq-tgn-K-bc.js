@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-tgn-K-bc"] = {"html": "<div class=\"eq\">\\[\\mat K = k\\,\\vek n\\,\\vek n^\\T = 10^6\\begin{pmatrix} 2{,}5088 &amp; -1{,}8816 \\\\ -1{,}8816 &amp; 1{,}4112 \\end{pmatrix}\\ \\text{N/m} . \\tag{10.27}\\]</div>", "href": "sec-togi-nacini.html#eq-tgn-K-bc"};

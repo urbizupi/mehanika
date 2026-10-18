@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ocena-kosinusa"] = {"html": "<div class=\"eq\">\\[\\frac{\\theta^2}{2} - \\frac{\\theta^4}{24} \\le 1 - \\cos\\theta \\le \\frac{\\theta^2}{2} . \\tag{10.46}\\]</div>", "href": "sec-masna-matrika.html#eq-ocena-kosinusa"};

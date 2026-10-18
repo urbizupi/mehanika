@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-tocne-frekvence"] = {"html": "<div class=\"eq\">\\[\\omega_{\\mathrm{r}} = \\frac{(2r - 1)\\,\\pi}{2L}\\,c , \\qquad c = \\sqrt{E/\\rho} , \\qquad r = 1, 2, \\dots , \\tag{10.42}\\]</div>", "href": "sec-masna-matrika.html#eq-tocne-frekvence"};

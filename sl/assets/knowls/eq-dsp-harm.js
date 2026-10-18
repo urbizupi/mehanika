@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dsp-harm"] = {"html": "<div class=\"eq\">\\[(\\mat K - \\Omega^2 \\mat M + \\mathrm{i}\\Omega \\mat C)\\,\\vek x = \\vek Q_0 , \\tag{10.63}\\]</div>", "href": "sec-dusenje-superpozicija.html#eq-dsp-harm"};

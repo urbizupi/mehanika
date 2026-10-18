@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rkv-razvoj"] = {"html": "<div class=\"eq\">\\[R(\\vek v) = \\frac{\\lambda_1 c_1^2 + \\dots + \\lambda_{\\mathrm{n}} c_{\\mathrm{n}}^2}{c_1^2 + \\dots + c_{\\mathrm{n}}^2} , \\qquad \\lambda_1 \\le R(\\vek v) \\le \\lambda_{\\mathrm{n}} . \\tag{10.31}\\]</div>", "href": "sec-rayleighov-kolicnik.html#eq-rkv-razvoj"};

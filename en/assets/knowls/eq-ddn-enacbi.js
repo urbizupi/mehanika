@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ddn-enacbi"] = {"html": "<div class=\"eq\">\\[\\begin{aligned} m\\,\\ddot q_1 + c\\,\\dot q_1 + k\\,q_1 + k_{\\mathrm{a}}\\,(q_1 - q_2) &amp;= Q_0\\cos\\Omega t , \\\\ m_{\\mathrm{a}}\\,\\ddot q_2 + k_{\\mathrm{a}}\\,(q_2 - q_1) &amp;= 0 , \\end{aligned} \\tag{10.69}\\]</div>", "href": "sec-dusilnik-nihanja.html#eq-ddn-enacbi"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mko-energiji"] = {"html": "<div class=\"eq\">\\[T = \\tfrac12\\sum_{\\mathrm{r}=1}^{n}\\dot\\eta_{\\mathrm{r}}^2 , \\qquad V = \\tfrac12\\sum_{\\mathrm{r}=1}^{n}\\lambda_{\\mathrm{r}}\\,\\eta_{\\mathrm{r}}^2 . \\tag{10.24}\\]</div>", "href": "sec-modalne-koordinate.html#eq-mko-energiji"};

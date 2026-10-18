@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-masa-palice-v-ravnini"] = {"html": "<div class=\"eq\">\\[\\mat m_{\\mathrm{e}} = \\frac{\\rho A L}{6}\\begin{pmatrix} 2\\mat I &amp; \\mat I \\\\ \\mat I &amp; 2\\mat I \\end{pmatrix} , \\tag{10.41}\\]</div>", "href": "sec-masna-matrika.html#eq-masa-palice-v-ravnini"};

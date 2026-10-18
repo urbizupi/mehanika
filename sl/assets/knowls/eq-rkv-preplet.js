@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rkv-preplet"] = {"html": "<div class=\"eq\">\\[\\lambda_{\\mathrm{r}} \\le \\lambda'_{\\mathrm{r}} \\le \\lambda_{\\mathrm{r}+1} \\qquad \\text{za } r = 1, \\dots, n - 1 . \\tag{10.35}\\]</div>", "href": "sec-rayleighov-kolicnik.html#eq-rkv-preplet"};

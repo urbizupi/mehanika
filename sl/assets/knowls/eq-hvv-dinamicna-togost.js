@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-hvv-dinamicna-togost"] = {"html": "<div class=\"eq\">\\[\\mat S(\\Omega) = \\mat K - \\Omega^2\\mat M + \\mathrm{i}\\,\\Omega\\,\\mat C \\tag{10.65}\\]</div>", "href": "sec-frekvencni-odziv-vec.html#eq-hvv-dinamicna-togost"};

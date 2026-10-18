@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-evp-podajnostna"] = {"html": "<div class=\"eq\">\\[\\mat D\\mat M\\,\\ddot{\\vek q} + \\mat D\\mat C\\,\\dot{\\vek q} + \\vek q = \\mat D\\vek Q(t) . \\tag{10.7}\\]</div>", "href": "sec-enacbe-vec-ps.html#eq-evp-podajnostna"};

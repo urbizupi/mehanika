@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dsp-rayleigh"] = {"html": "<div class=\"eq\">\\[\\mat C = a_0 \\mat M + a_1 \\mat K , \\qquad a_0 \\ge 0 , \\quad a_1 \\ge 0 , \\tag{10.55}\\]</div>", "href": "sec-dusenje-superpozicija.html#eq-dsp-rayleigh"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-tgn-eta"] = {"html": "<div class=\"eq\">\\[\\eta_{\\mathrm{r}}(t) = \\eta_{\\mathrm{r}}(0) + \\dot\\eta_{\\mathrm{r}}(0)\\,t + \\int_0^t\\!\\!\\int_0^s \\vek\\varphi_{\\mathrm{r}}^\\T\\vek Q(u)\\,\\mathrm{d}u\\,\\mathrm{d}s , \\tag{10.28}\\]</div>", "href": "sec-togi-nacini.html#eq-tgn-eta"};

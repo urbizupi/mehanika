@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-lpn-okvir-frekvencna"] = {"html": "<div class=\"eq\">\\[\\begin{aligned} \\det(\\mat K - \\lambda\\mat M) &amp;= (2k - \\lambda m)(k - \\lambda m) - k^2 \\\\ &amp;= m^2\\lambda^2 - 3km\\,\\lambda + k^2 = 0 . \\end{aligned} \\tag{10.14}\\]</div>", "href": "sec-lastni-problem.html#eq-lpn-okvir-frekvencna"};

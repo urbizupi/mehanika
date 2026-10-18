@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-hvv-enacba"] = {"html": "<div class=\"eq\">\\[\\mat M\\ddot{\\vek q} + \\mat C\\dot{\\vek q} + \\mat K\\vek q = \\mathrm{Re}\\big(\\vek Q_0\\,\\mathrm{e}^{\\mathrm{i}\\Omega t}\\big) \\tag{10.67}\\]</div>", "href": "sec-frekvencni-odziv-vec.html#eq-hvv-enacba"};

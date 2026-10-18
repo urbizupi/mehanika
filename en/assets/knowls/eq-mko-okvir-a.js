@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mko-okvir-a"] = {"html": "<div class=\"eq\">\\[\\vek q(t) = \\begin{bmatrix} 5{,}854 \\\\ 9{,}472 \\end{bmatrix}\\cos(19{,}578\\,t)\\ \\text{mm} + \\begin{bmatrix} -0{,}854 \\\\ 0{,}528 \\end{bmatrix}\\cos(51{,}257\\,t)\\ \\text{mm} . \\tag{10.26}\\]</div>", "href": "sec-modalne-koordinate.html#eq-mko-okvir-a"};
