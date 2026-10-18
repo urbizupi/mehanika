@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pogoji-prosti-konec"] = {"html": "<div class=\"eq\">\\[V(L) = F_{\\mathrm{y}} , \\qquad M(L) = M_0 . \\tag{5.36}\\]</div>", "href": "sec-enacba-upogibnice.html#eq-pogoji-prosti-konec"};

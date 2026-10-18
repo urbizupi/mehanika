@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-castigliano-nosilca"] = {"html": "<div class=\"eq\">\\[\\frac{\\mathrm{d}U^*}{\\mathrm{d}F_1} = v(x_{\\mathrm{P}}) \\qquad \\text{(oziroma } v'(x_{\\mathrm{P}}) \\text{ pri dvojici)} . \\tag{5.72}\\]</div>", "href": "sec-energija-nosilca.html#eq-castigliano-nosilca"};

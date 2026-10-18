@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nru-konzola-teza"] = {"html": "<div class=\"eq\">\\[v(x) = -\\frac{q_0\\,x^2\\,(6L^2 - 4L\\,x + x^2)}{24EI} , \\qquad v(L) = -\\frac{q_0\\,L^4}{8EI} . \\tag{5.55}\\]</div>", "href": "sec-upogibnice.html#eq-nru-konzola-teza"};

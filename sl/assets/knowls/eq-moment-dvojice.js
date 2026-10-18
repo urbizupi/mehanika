@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-moment-dvojice"] = {"html": "<div class=\"eq\">\\[\\vek M_0 = \\overrightarrow{A_2 A_1}\\times\\vek F , \\tag{5.3}\\]</div>", "href": "sec-model-nosilca.html#eq-moment-dvojice"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-strig-pravokotnik"] = {"html": "<div class=\"eq\">\\[\\sigma_{\\mathrm{xy}}(x, y_0) = \\frac{V(x)}{2I}\\Big(\\frac{h^2}{4} - y_0^2\\Big) = \\frac{3V(x)}{2A}\\Big(1 - \\frac{4 y_0^2}{h^2}\\Big) , \\qquad |y_0| \\le \\frac h2 , \\tag{5.30}\\]</div>", "href": "sec-strizne-napetosti.html#eq-strig-pravokotnik"};

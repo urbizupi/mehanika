@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pogoj-togi-premik"] = {"html": "<div class=\"eq\">\\[\\int_0^L q\\,w\\,\\mathrm{d}x + \\Big[V\\,w + M\\,w'\\Big]_0^L = 0 . \\tag{5.49}\\]</div>", "href": "sec-navadne-diferencialne-enacbe.html#eq-pogoj-togi-premik"};

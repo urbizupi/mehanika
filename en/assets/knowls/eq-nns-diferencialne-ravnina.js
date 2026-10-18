@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nns-diferencialne-ravnina"] = {"html": "<div class=\"eq\">\\[N' = -q_{\\mathrm{x}} , \\qquad V' = -q , \\qquad M' = -V - m . \\tag{5.13}\\]</div>", "href": "sec-notranje-sile-nosilca.html#eq-nns-diferencialne-ravnina"};

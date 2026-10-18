@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sistem-2x2"] = {"html": "<div class=\"eq\">\\[a s + b t = r_1 , \\qquad c s + d t = r_2 \\tag{5.47}\\]</div>", "href": "sec-navadne-diferencialne-enacbe.html#eq-sistem-2x2"};

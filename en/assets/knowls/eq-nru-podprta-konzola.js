@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nru-podprta-konzola"] = {"html": "<div class=\"eq\">\\[v(x) = -\\frac{q_0\\,x^2\\,(3L - 2x)\\,(L - x)}{48EI} . \\tag{5.58}\\]</div>", "href": "sec-upogibnice.html#eq-nru-podprta-konzola"};

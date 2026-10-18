@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-enotska-sila-nosilca"] = {"html": "<div class=\"eq\">\\[v(x_{\\mathrm{P}}) = \\int_0^L \\Big( \\frac{n\\,N}{EA} + \\frac{m\\,M}{EI} \\Big)\\,\\mathrm{d}x . \\tag{5.69}\\]</div>", "href": "sec-energija-nosilca.html#eq-enotska-sila-nosilca"};

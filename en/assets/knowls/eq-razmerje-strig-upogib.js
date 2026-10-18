@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-razmerje-strig-upogib"] = {"html": "<div class=\"eq\">\\[\\frac{|\\sigma_{\\mathrm{xy}}|_{\\max}}{|\\sigma_{\\mathrm{xx}}|_{\\max}} = \\frac{3F/(2bh)}{6FL/(b h^2)} = \\frac{h}{4L} , \\tag{5.31}\\]</div>", "href": "sec-strizne-napetosti.html#eq-razmerje-strig-upogib"};

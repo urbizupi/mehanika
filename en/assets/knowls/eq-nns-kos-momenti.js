@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nns-kos-momenti"] = {"html": "<div class=\"eq\">\\[\\vek M(x_2) - \\vek M(x_1) = -\\int_{\\mathrm{x}_1}^{x_2} \\big(\\vek e_{\\mathrm{x}}\\times\\vek F(t) + \\vek m(t)\\big)\\,\\mathrm{d}t . \\tag{5.10}\\]</div>", "href": "sec-notranje-sile-nosilca.html#eq-nns-kos-momenti"};

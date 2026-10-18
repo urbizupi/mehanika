@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-strizni-korekcijski-faktor"] = {"html": "<div class=\"eq\">\\[k = \\frac{1}{f_{\\mathrm{s}}} , \\qquad f_{\\mathrm{s}} = \\frac{A}{I^2}\\int \\Big(\\frac{S}{b}\\Big)^2 \\mathrm{d}A , \\tag{5.76}\\]</div>", "href": "sec-timosenkov-nosilec.html#eq-strizni-korekcijski-faktor"};

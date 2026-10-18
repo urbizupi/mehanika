@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-moment-obtezbe"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{x}_1}^{x_2} t\\,q(t)\\,\\mathrm{d}t . \\tag{5.2}\\]</div>", "href": "sec-model-nosilca.html#eq-moment-obtezbe"};

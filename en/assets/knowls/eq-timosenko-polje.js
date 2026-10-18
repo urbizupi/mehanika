@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-timosenko-polje"] = {"html": "<div class=\"eq\">\\[u_{\\mathrm{x}}(x, y) = u(x) - y\\,\\theta(x) , \\qquad u_{\\mathrm{y}}(x, y) = v(x) . \\tag{5.74}\\]</div>", "href": "sec-timosenkov-nosilec.html#eq-timosenko-polje"};

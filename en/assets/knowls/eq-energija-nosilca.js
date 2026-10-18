@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-energija-nosilca"] = {"html": "<div class=\"eq\">\\[U(u, v) = \\frac12 \\int_0^L \\Big( EA\\,(u')^2 + EI\\,(v'')^2 \\Big)\\,\\mathrm{d}x . \\tag{5.67}\\]</div>", "href": "sec-energija-nosilca.html#eq-energija-nosilca"};

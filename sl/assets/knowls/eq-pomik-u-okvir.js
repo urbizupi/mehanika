@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pomik-u-okvir"] = {"html": "<div class=\"eq\">\\[u_{\\mathrm{C}} = \\int_0^a \\frac{(-F\\,b)\\,\\big(-(a - s)\\big)}{EI}\\,\\mathrm{d}s = \\frac{F\\,b\\,a^2}{2EI} = +11{,}96\\ \\text{mm} . \\tag{5.84}\\]</div>", "href": "sec-okvirji.html#eq-pomik-u-okvir"};

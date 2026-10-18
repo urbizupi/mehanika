@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ponavljani-integral"] = {"html": "<div class=\"eq\">\\[I_0 = f , \\qquad I_{\\mathrm{k}}(x) = \\int_{\\mathrm{a}}^x I_{\\mathrm{k}-1}(t)\\,\\mathrm{d}t \\quad (k = 1, \\dots, n) . \\tag{5.43}\\]</div>", "href": "sec-navadne-diferencialne-enacbe.html#eq-ponavljani-integral"};

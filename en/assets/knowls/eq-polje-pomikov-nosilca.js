@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-polje-pomikov-nosilca"] = {"html": "<div class=\"eq\">\\[u_{\\mathrm{x}} = u(x) - y\\,v'(x) , \\qquad u_{\\mathrm{y}} = v(x) , \\qquad u_{\\mathrm{z}} = 0 . \\tag{5.16}\\]</div>", "href": "sec-kinematika-nosilca.html#eq-polje-pomikov-nosilca"};

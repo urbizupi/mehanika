@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-eb-pogoji"] = {"html": "<div class=\"eq\">\\[u_{\\mathrm{z}} = 0 , \\qquad \\varepsilon_{\\mathrm{xz}} = 0 , \\qquad \\varepsilon_{\\mathrm{yz}} = 0 , \\qquad \\varepsilon_{\\mathrm{yy}} = 0 , \\qquad \\varepsilon_{\\mathrm{xy}} = 0 . \\tag{5.15}\\]</div>", "href": "sec-kinematika-nosilca.html#eq-eb-pogoji"};

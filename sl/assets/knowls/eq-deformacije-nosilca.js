@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-deformacije-nosilca"] = {"html": "<div class=\"eq\">\\[\\varepsilon_{\\mathrm{xx}} = u'(x) - y\\,v''(x) . \\tag{5.17}\\]</div>", "href": "sec-kinematika-nosilca.html#eq-deformacije-nosilca"};

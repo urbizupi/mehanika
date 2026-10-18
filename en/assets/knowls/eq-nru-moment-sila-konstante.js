@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nru-moment-sila-konstante"] = {"html": "<div class=\"eq\">\\[M(x) = \\tfrac12\\,q\\,x^2 + C_3\\,x + C_2 , \\qquad V(x) = -q\\,x - C_3 . \\tag{5.53}\\]</div>", "href": "sec-upogibnice.html#eq-nru-moment-sila-konstante"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-euler-lagrange"] = {"html": "<div class=\"eq\">\\[\\hat F_{\\mathrm{v}} - \\frac{\\mathrm{d}\\hat F_{\\mathrm{p}}}{\\mathrm{d}x} + \\frac{\\mathrm{d}^2 \\hat F_{\\mathrm{r}}}{\\mathrm{d}x^2} = 0 \\quad \\text{na } [0, L] , \\tag{5.64}\\]</div>", "href": "sec-variacijski-racun.html#eq-euler-lagrange"};

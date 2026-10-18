@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nru-prostolezeci-sila"] = {"html": "<div class=\"eq\">\\[\\begin{aligned} v(x) &amp;= -\\frac{F\\,x\\,(3L^2 - 4x^2)}{48EI} , \\\\ v\\!\\left(\\tfrac{L}{2}\\right) &amp;= -\\frac{F\\,L^3}{48EI} , \\\\ v'(0) &amp;= -\\frac{F\\,L^2}{16EI} , \\end{aligned} \\tag{5.57}\\]</div>", "href": "sec-upogibnice.html#eq-nru-prostolezeci-sila"};

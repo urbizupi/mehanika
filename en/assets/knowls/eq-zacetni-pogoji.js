@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-zacetni-pogoji"] = {"html": "<div class=\"eq\">\\[y(x_0) = y_0 , \\quad y'(x_0) = y_1 , \\quad \\dots , \\quad y^{(n-1)}(x_0) = y_{\\mathrm{n}-1} . \\tag{5.45}\\]</div>", "href": "sec-navadne-diferencialne-enacbe.html#eq-zacetni-pogoji"};

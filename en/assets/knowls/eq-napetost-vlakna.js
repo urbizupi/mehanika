@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-napetost-vlakna"] = {"html": "<div class=\"eq\">\\[\\sigma_{\\mathrm{xx}}(x, y) = E\\,\\big(u'(x) - y\\,v''(x)\\big) . \\tag{5.21}\\]</div>", "href": "sec-napetosti-pri-upogibu.html#eq-napetost-vlakna"};

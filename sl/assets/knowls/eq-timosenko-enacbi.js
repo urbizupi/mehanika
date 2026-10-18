@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-timosenko-enacbi"] = {"html": "<div class=\"eq\">\\[\\big(k\\,G\\,A\\,(v' - \\theta)\\big)' = -q , \\qquad \\big(E I\\,\\theta'\\big)' + k\\,G\\,A\\,(v' - \\theta) = 0 . \\tag{5.78}\\]</div>", "href": "sec-timosenkov-nosilec.html#eq-timosenko-enacbi"};

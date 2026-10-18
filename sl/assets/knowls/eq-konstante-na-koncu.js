@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-konstante-na-koncu"] = {"html": "<div class=\"eq\">\\[v(0) = c_0 , \\qquad v'(0) = c_1 , \\qquad M(0) = 2EI\\,c_2 , \\qquad V(0) = -6EI\\,c_3 . \\tag{5.46}\\]</div>", "href": "sec-navadne-diferencialne-enacbe.html#eq-konstante-na-koncu"};

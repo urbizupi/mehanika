@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ravnovesje-nosilca-brez-podpor"] = {"html": "<div class=\"eq\">\\[\\begin{aligned} V(0) - V(L) &amp;= \\int_0^L q(x)\\,\\mathrm{d}x , \\\\ M(0) - M(L) - L\\,V(L) &amp;= \\int_0^L x\\,q(x)\\,\\mathrm{d}x , \\end{aligned} \\tag{5.48}\\]</div>", "href": "sec-navadne-diferencialne-enacbe.html#eq-ravnovesje-nosilca-brez-podpor"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nns-diferencialne"] = {"html": "<div class=\"eq\">\\[\\frac{\\mathrm{d}\\vek F}{\\mathrm{d}x} + \\vek q = \\vek 0 , \\qquad \\frac{\\mathrm{d}\\vek M}{\\mathrm{d}x} + \\vek e_{\\mathrm{x}}\\times\\vek F + \\vek m = \\vek 0 . \\tag{5.12}\\]</div>", "href": "sec-notranje-sile-nosilca.html#eq-nns-diferencialne"};

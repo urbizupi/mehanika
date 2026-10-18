@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nde-nosilec"] = {"html": "<div class=\"eq\">\\[EI\\,v''''(x) = q(x) , \\qquad v''''(x) = -2{,}928 \\cdot 10^{-3}\\ \\text{m}^{-3} . \\tag{5.41}\\]</div>", "href": "sec-navadne-diferencialne-enacbe.html#eq-nde-nosilec"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nns-moment-obtezbe"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{x}}^L (t - x)\\,q(t)\\,\\mathrm{d}t = -q_0\\int_{\\mathrm{x}}^L (t - x)\\,\\mathrm{d}t = -q_0\\,\\frac{(L - x)^2}{2} , \\tag{5.7}\\]</div>", "href": "sec-notranje-sile-nosilca.html#eq-nns-moment-obtezbe"};

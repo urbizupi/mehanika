@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pravokotnik"] = {"html": "<div class=\"eq\">\\[A = b\\,h , \\qquad I_{\\mathrm{z}} = \\frac{b\\,h^3}{12} , \\qquad I_{\\mathrm{y}} = \\frac{h\\,b^3}{12} , \\qquad I_{\\mathrm{yz}} = 0 . \\tag{5.18}\\]</div>", "href": "sec-geometrija-prereza.html#eq-pravokotnik"};

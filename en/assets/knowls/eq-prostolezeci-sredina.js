@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-prostolezeci-sredina"] = {"html": "<div class=\"eq\">\\[v\\!\\left(\\frac{L}{2}\\right) = -\\frac{5\\,q_0 L^4}{384\\,EI} = -9{,}965\\ \\text{mm} , \\tag{5.38}\\]</div>", "href": "sec-enacba-upogibnice.html#eq-prostolezeci-sredina"};

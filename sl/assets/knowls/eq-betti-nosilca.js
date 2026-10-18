@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-betti-nosilca"] = {"html": "<div class=\"eq\">\\[W_{12} = W_{21} = \\int_0^L \\frac{M^{(1)}\\,M^{(2)}}{EI}\\,\\mathrm{d}x , \\tag{5.73}\\]</div>", "href": "sec-energija-nosilca.html#eq-betti-nosilca"};

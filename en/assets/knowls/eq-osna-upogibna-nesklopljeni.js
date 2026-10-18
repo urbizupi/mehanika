@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-osna-upogibna-nesklopljeni"] = {"html": "<div class=\"eq\">\\[N = EA\\,u' , \\qquad M = EI\\,v'' . \\tag{5.23}\\]</div>", "href": "sec-napetosti-pri-upogibu.html#eq-osna-upogibna-nesklopljeni"};

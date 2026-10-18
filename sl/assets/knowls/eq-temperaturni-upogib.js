@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-temperaturni-upogib"] = {"html": "<div class=\"eq\">\\[N = EA\\,(u' - \\alpha\\,\\theta_{\\mathrm{m}}) , \\qquad M = EI\\,(v'' + \\alpha\\,g) , \\tag{5.26}\\]</div>", "href": "sec-napetosti-pri-upogibu.html#eq-temperaturni-upogib"};

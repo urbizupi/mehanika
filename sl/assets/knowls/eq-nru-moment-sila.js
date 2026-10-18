@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nru-moment-sila"] = {"html": "<div class=\"eq\">\\[M = EI\\,v'' , \\qquad V = -M' = -EI\\,v''' . \\tag{5.51}\\]</div>", "href": "sec-upogibnice.html#eq-nru-moment-sila"};

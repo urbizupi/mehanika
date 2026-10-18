@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nns-skok"] = {"html": "<div class=\"eq\">\\[\\vek F(x_0^+) - \\vek F(x_0^-) = -\\vek F_{\\mathrm{p}} , \\qquad \\vek M(x_0^+) - \\vek M(x_0^-) = -\\vek M_{\\mathrm{p}} . \\tag{5.14}\\]</div>", "href": "sec-notranje-sile-nosilca.html#eq-nns-skok"};

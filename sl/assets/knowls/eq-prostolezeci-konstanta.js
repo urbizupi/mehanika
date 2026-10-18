@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-prostolezeci-konstanta"] = {"html": "<div class=\"eq\">\\[\\frac{q_0}{2EI}\\left(\\frac{L^4}{6} - \\frac{L^4}{12}\\right) + c_1 L = 0 \\quad\\Rightarrow\\quad c_1 = -\\frac{q_0 L^3}{24\\,EI} = -0{,}01594 . \\tag{5.37}\\]</div>", "href": "sec-enacba-upogibnice.html#eq-prostolezeci-konstanta"};

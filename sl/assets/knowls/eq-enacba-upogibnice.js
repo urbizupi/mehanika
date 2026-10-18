@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-enacba-upogibnice"] = {"html": "<div class=\"eq\">\\[EI\\,v'''' = q \\quad \\text{na } (a, b) . \\tag{5.33}\\]</div>", "href": "sec-enacba-upogibnice.html#eq-enacba-upogibnice"};

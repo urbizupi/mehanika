@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-s-dela-prereza"] = {"html": "<div class=\"eq\">\\[S(y_0) = \\int_{\\mathrm{A}^*(\\mathrm{y}_0)} y\\,\\mathrm{d}A , \\tag{5.27}\\]</div>", "href": "sec-strizne-napetosti.html#eq-s-dela-prereza"};

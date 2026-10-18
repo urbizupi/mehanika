@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-enotska-sila-strig"] = {"html": "<div class=\"eq\">\\[\\Delta = \\int_0^L \\Big( \\frac{m\\,M}{EI} + \\frac{v_1\\,V}{kGA} \\Big)\\,\\mathrm{d}x . \\tag{5.80}\\]</div>", "href": "sec-timosenkov-nosilec.html#eq-enotska-sila-strig"};

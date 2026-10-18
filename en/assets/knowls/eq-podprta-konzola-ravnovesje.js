@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-podprta-konzola-ravnovesje"] = {"html": "<div class=\"eq\">\\[A + R - q_0 L = 0 , \\qquad M_{\\mathrm{v}} + R\\,L - q_0 L\\,\\frac{L}{2} = 0 , \\tag{5.32}\\]</div>", "href": "sec-enacba-upogibnice.html#eq-podprta-konzola-ravnovesje"};

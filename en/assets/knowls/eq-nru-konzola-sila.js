@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nru-konzola-sila"] = {"html": "<div class=\"eq\">\\[\\begin{aligned} v(x) &amp;= -\\frac{F\\,x^2\\,(3L - x)}{6EI} , \\\\ v(L) &amp;= -\\frac{F\\,L^3}{3EI} , \\\\ v'(L) &amp;= -\\frac{F\\,L^2}{2EI} . \\end{aligned} \\tag{5.54}\\]</div>", "href": "sec-upogibnice.html#eq-nru-konzola-sila"};

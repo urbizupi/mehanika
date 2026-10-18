@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-jourawski"] = {"html": "<div class=\"eq\">\\[\\sigma_{\\mathrm{xy}}(x, y_0) = \\frac{V(x)\\,S(y_0)}{I\\,b(y_0)} , \\tag{5.28}\\]</div>", "href": "sec-strizne-napetosti.html#eq-jourawski"};

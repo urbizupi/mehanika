@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nns-konzola"] = {"html": "<div class=\"eq\">\\[M(x) = -500\\,(L - x)\\ \\text{N m} = -F\\,(L - x) . \\tag{5.6}\\]</div>", "href": "sec-notranje-sile-nosilca.html#eq-nns-konzola"};

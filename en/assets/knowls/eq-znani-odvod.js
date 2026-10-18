@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-znani-odvod"] = {"html": "<div class=\"eq\">\\[y(x) = I_{\\mathrm{n}}(x) + c_0 + c_1 x + \\dots + c_{\\mathrm{n}-1} x^{n-1} \\tag{5.44}\\]</div>", "href": "sec-navadne-diferencialne-enacbe.html#eq-znani-odvod"};
