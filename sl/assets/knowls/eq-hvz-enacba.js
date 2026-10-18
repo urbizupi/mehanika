@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-hvz-enacba"] = {"html": "<div class=\"eq\">\\[m\\ddot q + c\\dot q + k q = Q_0\\cos\\Omega t \\tag{9.46}\\]</div>", "href": "sec-harmonicno-vzbujanje.html#eq-hvz-enacba"};

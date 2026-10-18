@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pike-a"] = {"html": "<div class=\"eq\">\\[\\frac{\\partial\\dot{\\vek X}_{\\mathrm{k}}}{\\partial\\dot q_{\\mathrm{s}}} = \\frac{\\partial\\vek X_{\\mathrm{k}}}{\\partial q_{\\mathrm{s}}} , \\tag{8.77}\\]</div>", "href": "sec-lagrangeeve-enacbe.html#eq-pike-a"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pos-reakcije"] = {"html": "<div class=\"eq\">\\[\\vek g(\\vek x_0) + \\mat A^{\\mathsf T}\\vek\\lambda = \\vek 0 , \\tag{8.37}\\]</div>", "href": "sec-posplosene-sile.html#eq-pos-reakcije"};

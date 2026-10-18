@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-eks-ocena-vrste"] = {"html": "<div class=\"eq\">\\[\\mathrm{e}^t \\ge 1 + t + \\frac{t^2}{2!} + \\dots + \\frac{t^n}{n!} . \\tag{9.16}\\]</div>", "href": "sec-eksponentna-funkcija.html#eq-eks-ocena-vrste"};

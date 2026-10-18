@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-odvod-z-mejo"] = {"html": "<div class=\"eq\">\\[G'(t) = g(t, t)\\,Q(t) + \\int_0^t \\frac{\\partial g}{\\partial t}(t, s)\\,Q(s)\\,\\mathrm{d}s . \\tag{9.70}\\]</div>", "href": "sec-konvolucija.html#eq-odvod-z-mejo"};

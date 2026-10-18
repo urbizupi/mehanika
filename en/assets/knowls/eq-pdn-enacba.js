@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pdn-enacba"] = {"html": "<div class=\"eq\">\\[m\\,\\ddot q + c\\,\\dot q + k\\,q = 0 , \\qquad q(0) = q_0 , \\quad \\dot q(0) = \\dot q_0 , \\tag{9.37}\\]</div>", "href": "sec-prosto-duseno-nihanje.html#eq-pdn-enacba"};

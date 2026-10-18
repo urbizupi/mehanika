@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-msk-adicija"] = {"html": "<div class=\"eq\">\\[\\begin{aligned} \\cos(\\alpha + \\beta) &amp;= \\cos\\alpha\\cos\\beta - \\sin\\alpha\\sin\\beta , \\\\ \\sin(\\alpha + \\beta) &amp;= \\sin\\alpha\\cos\\beta + \\cos\\alpha\\sin\\beta . \\end{aligned} \\tag{8.9}\\]</div>", "href": "sec-sinus-kosinus.html#eq-msk-adicija"};

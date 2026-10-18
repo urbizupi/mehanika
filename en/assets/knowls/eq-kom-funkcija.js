@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kom-funkcija"] = {"html": "<div class=\"eq\">\\[f'(t) = f_1'(t) + \\mathrm{i}\\,f_2'(t) , \\qquad \\int_{\\mathrm{a}}^b f(t)\\,\\mathrm{d}t = \\int_{\\mathrm{a}}^b f_1(t)\\,\\mathrm{d}t + \\mathrm{i}\\int_{\\mathrm{a}}^b f_2(t)\\,\\mathrm{d}t . \\tag{9.27}\\]</div>", "href": "sec-kompleksna-stevila.html#eq-kom-funkcija"};

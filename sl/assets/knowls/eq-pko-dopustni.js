@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pko-dopustni"] = {"html": "<div class=\"eq\">\\[\\frac{\\partial\\vek f}{\\partial\\vek x}(\\vek x, t)\\,\\delta\\vek x = \\vek 0 . \\tag{8.29}\\]</div>", "href": "sec-posplosene-koordinate.html#eq-pko-dopustni"};

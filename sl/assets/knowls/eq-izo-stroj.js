@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-izo-stroj"] = {"html": "<div class=\"eq\">\\[M\\,\\ddot x + c\\,\\dot x + k\\,x = m_{\\mathrm{u}} a_{\\mathrm{u}}\\,\\Omega^2\\cos\\Omega t . \\tag{9.54}\\]</div>", "href": "sec-izolacija.html#eq-izo-stroj"};

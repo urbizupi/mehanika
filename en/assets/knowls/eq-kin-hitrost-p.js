@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kin-hitrost-p"] = {"html": "<div class=\"eq\">\\[\\vek v = \\vek v_{\\mathrm{p}} + \\vek\\omega\\times(\\vek x - \\vek p) . \\tag{8.65}\\]</div>", "href": "sec-kineticna-energija.html#eq-kin-hitrost-p"};

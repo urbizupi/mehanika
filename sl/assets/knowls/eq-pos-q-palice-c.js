@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pos-q-palice-c"] = {"html": "<div class=\"eq\">\\[\\begin{aligned} Q_{\\mathrm{y}} &amp;= -m g - k_1\\,y_1 - k_2\\,y_2 , \\\\ Q_\\varphi &amp;= \\tfrac{L}{2}\\cos\\varphi\\,\\big(k_1\\,y_1 - k_2\\,y_2\\big) . \\end{aligned} \\tag{8.35}\\]</div>", "href": "sec-posplosene-sile.html#eq-pos-q-palice-c"};

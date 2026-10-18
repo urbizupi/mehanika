@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mep-linearna"] = {"html": "<div class=\"eq\">\\[m\\,\\ddot x + c_0\\,\\dot x + k\\,x = Q(t) + R , \\qquad |R| \\le C\\,\\big(x^2 + \\dot x^2 + |x|\\,|\\dot x| + |x|\\,|\\ddot x|\\big) . \\tag{9.7}\\]</div>", "href": "sec-model-ena-ps.html#eq-mep-linearna"};

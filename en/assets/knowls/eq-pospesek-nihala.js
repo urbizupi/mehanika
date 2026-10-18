@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pospesek-nihala"] = {"html": "<div class=\"eq\">\\[\\vek a = l\\,\\ddot\\theta\\,(\\cos\\theta, \\sin\\theta) + l\\,\\dot\\theta^2\\,(-\\sin\\theta, \\cos\\theta) . \\tag{8.55}\\]</div>", "href": "sec-dalembert.html#eq-pospesek-nihala"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kin-t-koordinate"] = {"html": "<div class=\"eq\">\\[T = \\tfrac12\\,\\dot{\\vek q}^\\T\\mat M(\\vek q, t)\\,\\dot{\\vek q} + \\vek b(\\vek q, t)\\cdot\\dot{\\vek q} + T_0(\\vek q, t) , \\tag{8.74}\\]</div>", "href": "sec-kineticna-energija.html#eq-kin-t-koordinate"};

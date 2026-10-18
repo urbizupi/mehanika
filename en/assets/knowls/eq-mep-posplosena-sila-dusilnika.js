@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mep-posplosena-sila-dusilnika"] = {"html": "<div class=\"eq\">\\[Q_{\\mathrm{d}} = -c\\,\\ell'(q)^2\\,\\dot q = -\\frac{\\partial\\mathcal D}{\\partial\\dot q} , \\qquad \\mathcal D = \\tfrac12\\,c\\,\\ell'(q)^2\\,\\dot q^2 . \\tag{9.5}\\]</div>", "href": "sec-model-ena-ps.html#eq-mep-posplosena-sila-dusilnika"};

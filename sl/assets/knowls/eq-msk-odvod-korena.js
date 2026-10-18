@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-msk-odvod-korena"] = {"html": "<div class=\"eq\">\\[\\big(\\sqrt{p}\\,\\big)'(t) = \\frac{p'(t)}{2\\sqrt{p(t)}} . \\tag{8.3}\\]</div>", "href": "sec-sinus-kosinus.html#eq-msk-odvod-korena"};

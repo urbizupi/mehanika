@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mif-lagrange"] = {"html": "<div class=\"eq\">\\[\\nabla V(\\vek x_0) = \\sum_{\\mathrm{r}=1}^{m}\\lambda_{\\mathrm{r}}\\,\\nabla f_{\\mathrm{r}}(\\vek x_0) . \\tag{8.21}\\]</div>", "href": "sec-implicitna-funkcija.html#eq-mif-lagrange"};

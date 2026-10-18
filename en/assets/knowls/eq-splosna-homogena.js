@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-splosna-homogena"] = {"html": "<div class=\"eq\">\\[y(t) = \\sum_{\\mathrm{k}=1}^{r} p_{\\mathrm{k}}(t)\\,\\mathrm{e}^{\\sigma_{\\mathrm{k}} t} \\tag{9.36}\\]</div>", "href": "sec-linearne-enacbe.html#eq-splosna-homogena"};

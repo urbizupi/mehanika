@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-integral-polinoma"] = {"html": "<div class=\"eq\">\\[\\int_0^t p(u)\\,\\mathrm{e}^{su}\\,\\mathrm{d}u = r(t)\\,\\mathrm{e}^{st} - r(0) . \\tag{9.35}\\]</div>", "href": "sec-linearne-enacbe.html#eq-integral-polinoma"};

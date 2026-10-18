@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-msk-hitrost-polkroga"] = {"html": "<div class=\"eq\">\\[|\\vek r'(t)|^2 = 1 + \\frac{t^2}{q(t)^2} = \\frac{q(t)^2 + t^2}{q(t)^2} = \\frac{1}{q(t)^2} , \\qquad |\\vek r'(t)| = \\frac{1}{\\sqrt{1 - t^2}} . \\tag{8.2}\\]</div>", "href": "sec-sinus-kosinus.html#eq-msk-hitrost-polkroga"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-spodnja-meja-raztezanja-n"] = {"html": "<div class=\"eq\">\\[|\\Phi(\\vek p) - \\Phi(\\vek q)| \\ge \\frac{|\\vek p - \\vek q|}{2m} \\tag{8.18}\\]</div>", "href": "sec-implicitna-funkcija.html#eq-spodnja-meja-raztezanja-n"};

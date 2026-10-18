@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-izo-xmax"] = {"html": "<div class=\"eq\">\\[X_{\\max} = \\frac{m_{\\mathrm{u}} a_{\\mathrm{u}}}{M}\\,\\frac{1}{2\\zeta\\sqrt{1 - \\zeta^2}} . \\tag{9.60}\\]</div>", "href": "sec-izolacija.html#eq-izo-xmax"};

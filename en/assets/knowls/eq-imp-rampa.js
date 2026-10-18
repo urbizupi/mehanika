@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-imp-rampa"] = {"html": "<div class=\"eq\">\\[q(t) = \\frac{Q_0}{k}\\Big(1 - \\frac{\\sin\\theta}{\\theta}\\,\\cos\\omega\\Big(t - \\frac{t_{\\mathrm{r}}}{2}\\Big)\\Big) . \\tag{9.63}\\]</div>", "href": "sec-impulzni-odziv.html#eq-imp-rampa"};

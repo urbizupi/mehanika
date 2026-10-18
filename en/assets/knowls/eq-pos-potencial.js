@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pos-potencial"] = {"html": "<div class=\"eq\">\\[Q_{\\mathrm{s}}(\\vek q) = -\\frac{\\partial V}{\\partial q_{\\mathrm{s}}}(\\vek q) \\quad \\text{for } s = 1, \\dots, n \\text{ and every } \\vek q \\text{ in } D . \\tag{8.38}\\]</div>", "href": "sec-posplosene-sile.html#eq-pos-potencial"};

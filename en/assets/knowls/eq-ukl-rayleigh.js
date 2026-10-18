@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ukl-rayleigh"] = {"html": "<div class=\"eq\">\\[R(\\eta) = \\frac{\\int_0^L \\eta''^2\\,\\mathrm{d}x}{\\int_0^L \\eta'^2\\,\\mathrm{d}x} , \\tag{8.123}\\]</div>", "href": "sec-uklon.html#eq-ukl-rayleigh"};

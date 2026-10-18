@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-eks-integral-potence"] = {"html": "<div class=\"eq\">\\[\\int_0^\\infty t^n\\,\\mathrm{e}^{-a t}\\,\\mathrm{d}t = \\frac{n!}{a^{n+1}} . \\tag{9.17}\\]</div>", "href": "sec-eksponentna-funkcija.html#eq-eks-integral-potence"};

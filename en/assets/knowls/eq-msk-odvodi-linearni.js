@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-msk-odvodi-linearni"] = {"html": "<div class=\"eq\">\\[\\big(\\cos(\\omega t + c)\\big)' = -\\omega\\sin(\\omega t + c) , \\qquad \\big(\\sin(\\omega t + c)\\big)' = \\omega\\cos(\\omega t + c) . \\tag{8.7}\\]</div>", "href": "sec-sinus-kosinus.html#eq-msk-odvodi-linearni"};

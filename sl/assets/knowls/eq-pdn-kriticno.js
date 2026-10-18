@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pdn-kriticno"] = {"html": "<div class=\"eq\">\\[q(t) = \\mathrm{e}^{-\\omega_{\\mathrm{n}} t}\\bigl( q_0 + (\\dot q_0 + \\omega_{\\mathrm{n}} q_0)\\,t \\bigr) . \\tag{9.41}\\]</div>", "href": "sec-prosto-duseno-nihanje.html#eq-pdn-kriticno"};

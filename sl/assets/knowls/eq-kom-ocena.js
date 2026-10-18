@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kom-ocena"] = {"html": "<div class=\"eq\">\\[\\Big|\\int_{\\mathrm{a}}^b f(t)\\,\\mathrm{d}t\\Big| \\le \\int_{\\mathrm{a}}^b |f(t)|\\,\\mathrm{d}t . \\tag{9.28}\\]</div>", "href": "sec-kompleksna-stevila.html#eq-kom-ocena"};

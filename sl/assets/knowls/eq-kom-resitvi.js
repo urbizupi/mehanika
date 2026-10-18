@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kom-resitvi"] = {"html": "<div class=\"eq\">\\[q_1(t) = \\mathrm{e}^{-0{,}35418\\,t}\\cos(35{,}41574\\,t) , \\qquad q_2(t) = \\mathrm{e}^{-0{,}35418\\,t}\\sin(35{,}41574\\,t) , \\tag{9.30}\\]</div>", "href": "sec-kompleksna-stevila.html#eq-kom-resitvi"};

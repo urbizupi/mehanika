@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-izo-tr-def"] = {"html": "<div class=\"eq\">\\[\\mathrm{TR} = \\frac{F_{\\mathrm{t}}}{Q_0} , \\tag{9.57}\\]</div>", "href": "sec-izolacija.html#eq-izo-tr-def"};

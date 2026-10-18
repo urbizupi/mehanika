@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-hvz-rast"] = {"html": "<div class=\"eq\">\\[q_{\\mathrm{p}}(t) = \\frac{Q_0}{2m\\omega_{\\mathrm{n}}}\\,t\\sin\\omega_{\\mathrm{n}} t . \\tag{9.48}\\]</div>", "href": "sec-harmonicno-vzbujanje.html#eq-hvz-rast"};

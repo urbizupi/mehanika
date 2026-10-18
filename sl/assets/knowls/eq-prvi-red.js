@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-prvi-red"] = {"html": "<div class=\"eq\">\\[y(t) = \\mathrm{e}^{st}\\Big(y_0 + \\int_0^t \\mathrm{e}^{-su} f(u)\\,\\mathrm{d}u\\Big) . \\tag{9.33}\\]</div>", "href": "sec-linearne-enacbe.html#eq-prvi-red"};

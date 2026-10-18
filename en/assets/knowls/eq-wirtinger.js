@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-wirtinger"] = {"html": "<div class=\"eq\">\\[\\int_0^\\ell \\eta'^2\\,\\mathrm{d}x \\ \\ge\\ k^2 \\int_0^\\ell \\eta^2\\,\\mathrm{d}x , \\tag{8.112}\\]</div>", "href": "sec-uklon.html#eq-wirtinger"};

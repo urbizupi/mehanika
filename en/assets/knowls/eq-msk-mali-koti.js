@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-msk-mali-koti"] = {"html": "<div class=\"eq\">\\[0 \\le 1 - \\cos\\theta \\le \\frac{\\theta^2}{2} , \\qquad |\\sin\\theta - \\theta| \\le \\frac{|\\theta|^3}{6} . \\tag{8.11}\\]</div>", "href": "sec-sinus-kosinus.html#eq-msk-mali-koti"};

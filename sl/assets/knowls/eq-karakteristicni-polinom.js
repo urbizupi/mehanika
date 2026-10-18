@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-karakteristicni-polinom"] = {"html": "<div class=\"eq\">\\[P(s) = a_{\\mathrm{n}} s^n + \\dots + a_1 s + a_0 \\tag{9.32}\\]</div>", "href": "sec-linearne-enacbe.html#eq-karakteristicni-polinom"};

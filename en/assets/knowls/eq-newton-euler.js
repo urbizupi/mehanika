@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-newton-euler"] = {"html": "<div class=\"eq\">\\[\\vek F = \\int_{\\mathrm{V}} \\rho\\,\\vek a\\,\\mathrm{d}V = m\\,\\vek a_{\\mathrm{G}} , \\qquad \\vek M_{\\mathrm{O}} = \\int_{\\mathrm{V}} (\\vek x - \\vek O)\\times\\rho\\,\\vek a\\,\\mathrm{d}V , \\tag{8.59}\\]</div>", "href": "sec-dalembert.html#eq-newton-euler"};

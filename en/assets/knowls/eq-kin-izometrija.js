@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kin-izometrija"] = {"html": "<div class=\"eq\">\\[\\vek f(\\vek x) = \\vek c + \\mat Q\\,\\vek x \\qquad \\text{for every } \\vek x . \\tag{8.23}\\]</div>", "href": "sec-posplosene-koordinate.html#eq-kin-izometrija"};

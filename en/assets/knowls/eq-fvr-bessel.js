@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-fvr-bessel"] = {"html": "<div class=\"eq\">\\[\\frac{a_0^2}{2} + \\sum_{\\mathrm{n}=1}^{N}\\big(a_{\\mathrm{n}}^2 + b_{\\mathrm{n}}^2\\big) \\le \\frac{2}{T_{\\mathrm{p}}}\\int_0^{T_{\\mathrm{p}}} f^2\\,\\mathrm{d}t . \\tag{9.79}\\]</div>", "href": "sec-fourierjeve-vrste.html#eq-fvr-bessel"};

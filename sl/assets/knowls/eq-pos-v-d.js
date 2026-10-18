@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pos-v-d"] = {"html": "<div class=\"eq\">\\[V(\\theta) = \\tfrac12 k\\,(2a)^2\\,(\\cos\\theta - \\cos\\theta_0)^2 + P\\,a\\sin\\theta , \\qquad Q_\\theta = -V'(\\theta) . \\tag{8.39}\\]</div>", "href": "sec-posplosene-sile.html#eq-pos-v-d"};

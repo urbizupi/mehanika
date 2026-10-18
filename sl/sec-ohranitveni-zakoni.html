@@ -1,0 +1,710 @@
+<!doctype html>
+<html lang="sl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>8.11 Ohranitveni zakoni · Poglavje 8</title>
+<script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/style.css">
+<noscript><style>#loadbar { display: none; }</style></noscript>
+<script src="assets/config.js"></script>
+<script src="assets/load.js"></script>
+<script defer src="assets/interaktivno.js"></script>
+<script defer src="assets/book.js"></script>
+<script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<div id="loadbar" aria-hidden="true"></div>
+<header class="top"><a class="home" href="index.html">Mehanika</a><nav class="pager"><a href="sec-hamiltonovo-nacelo.html" rel="prev">← 8.10</a><a href="index.html">Kazalo</a><a href="sec-dirichletov-kriterij.html" rel="next">8.12 →</a></nav>
+<span class="tools"><a class="lang" href="../en/sec-ohranitveni-zakoni.html" hreflang="en">English</a><button type="button" class="theme-toggle" title="Svetla ali temna tema" aria-label="Svetla ali temna tema"></button><button type="button" data-details="open">Razpri vse</button><button type="button" data-details="close">Skrij vse</button><button type="button" class="fig-side-toggle" aria-pressed="false">Slike ob strani</button></span></header>
+<main>
+<p class="updated">Posodobljeno 19. 10. 2026 ob 0.49</p>
+<p class="crumb"><a href="ch-analiticna-dinamika.html"><span class="h-num">Poglavje 8</span> Analitična dinamika</a></p>
+<h2 id="sec-ohranitveni-zakoni"><span class="h-num">8.11</span> Ohranitveni zakoni</h2>
+<p>Pri nihalu iz razdelka <a class="xref" href="sec-lagrangeeve-enacbe.html">8.9</a> smo gibalno enačbo \(\ddot\theta + \tfrac{g}{\ell}\sin\theta = 0\) rešili numerično z metodo RK4 (Runge-Kutta četrtega reda) in po vsakem koraku izračunali vsoto kinetične in potencialne energije. V 10 s in 20 000 korakih se je vsota spremenila za \(4{,}6 \cdot 10^{-13}\) J. Ta sprememba je napaka računa in ne lastnost gibanja, saj RK4 energije ne ohranja natančno: pri 10 000 korakih je \(6{,}5 \cdot 10^{-12}\) J, pri 20 000 korakih \(4{,}6 \cdot 10^{-13}\) J in pri 40 000 korakih \(4{,}0 \cdot 10^{-13}\) J, kjer jo omejuje že zaokrožitvena napaka računalnika. Gibalna enačba sama energijo ohranja natančno. Zakaj energija ostaja stalna in katera števila ostajajo stalna pri drugih sistemih, ki jih opišemo z <a class="xref auto" href="sec-lagrangeeve-enacbe.html#thm-lagrangeeve-enacbe" data-knowl="thm-lagrangeeve-enacbe">Lagrangeevimi enačbami</a>?</p>
+<p>Stanje sistema z \(n\) posplošenimi <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinatami</a> v času \(t\) je \(n\) koordinat \(\vek q\) in \(n\) hitrosti <span class="nobr">\(\dot{\vek q}\).</span> Gibanje je krivulja \(\vek q(t)\) in v vsaki njeni točki lahko iz stanja izračunamo veliko števil. Zanimajo nas tista, ki se vzdolž vsakega gibanja ne spreminjajo. Če jih poznamo, vemo o gibanju nekaj, ne da bi rešili enačbe. Pri nihalu na primer iz višine, od koder smo ga spustili, izvemo hitrost v spodnji legi.</p>
+
+<div class="blk definicija" id="def-ohranjena-kolicina"><div class="blk-head"><span class="blk-label">Definicija 8.102</span> <span class="blk-title">Ohranjena količina (conserved quantity)</span></div><div class="blk-body"><p>Naj bo \(F(t, \vek q, \dot{\vek q})\) <a class="xref auto" href="sec-sprememba-polja.html#def-zvezno-odvedljivo-polje" data-knowl="def-zvezno-odvedljivo-polje">zvezno odvedljiva</a> <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcija</a>, ki stanju sistema z \(n\) posplošenimi <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinatami</a> v času \(t\) priredi število. Funkcija \(F\) je ohranjena količina sistema, če je za vsako gibanje <span class="nobr">\(\vek q(t)\),</span> ki reši gibalne enačbe sistema na <a class="xref auto" href="sec-konvergenca-zaporedij.html#def-interval" data-knowl="def-interval">intervalu</a> <span class="nobr">\(I\),</span> število \(F(t, \vek q(t), \dot{\vek q}(t))\) isto za vse <span class="nobr">\(t \in I\).</span></p>
+</div></div>
+<h3 id="sec-ohr-energija"><span class="h-num">8.11.1</span> Energija</h3>
+<p>Pri sistemu, katerega vezi ne vsebujejo časa, je <a class="xref auto" href="sec-kineticna-energija.html#def-kineticna-energija" data-knowl="def-kineticna-energija">kinetična energija</a> po izreku <a class="xref" href="sec-kineticna-energija.html#thm-kineticna-energija-koordinate" data-knowl="thm-kineticna-energija-koordinate">8.84</a> kvadratna oblika hitrosti, \(T = \tfrac12\,\dot{\vek q}^\T \mat M(\vek q)\,\dot{\vek q}\) s <a class="xref auto" href="sec-matrike.html#def-simetricna-matrika" data-knowl="def-simetricna-matrika">simetrično matriko</a> mas <span class="nobr">\(\mat M\).</span> Pri nihalu je <span class="nobr">\(T = \tfrac12 m\ell^2\dot\theta^2\).</span> Če to odvajamo po hitrosti, dobimo <span class="nobr">\(m\ell^2\dot\theta\),</span> in ko pomnožimo s hitrostjo <span class="nobr">\(\dot\theta\),</span> dobimo <span class="nobr">\(m\ell^2\dot\theta^2 = 2T\).</span> Faktor \(\tfrac12\) pri \(T\) in faktor 2 od <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">odvoda</a> kvadrata se uničita, ob množenju s hitrostjo pa se potenca vrne, zato ostane \(2T\) in ne <span class="nobr">\(T\).</span> Isti račun velja za vse take sisteme.</p>
+
+<div class="blk lema" id="lem-euler-homogena"><div class="blk-head"><span class="blk-label">Lema 8.103</span> <span class="blk-title">Eulerjeva enakost za kinetično energijo (Euler's identity for the kinetic energy)</span></div><div class="blk-body"><p>Naj bo <span class="nobr">\(T(\vek q, \dot{\vek q}) = \tfrac12\,\dot{\vek q}^\T \mat M(\vek q)\,\dot{\vek q}\),</span> kjer je \(\mat M(\vek q)\) simetrična \(n \times n\) <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrika</a> števil, ki ni odvisna od <span class="nobr">\(\dot{\vek q}\).</span> Tedaj velja za vsako stanje \((\vek q, \dot{\vek q})\)</p>
+<div class="eq" id="eq-euler-homogena">\[\sum_{\mathrm{s}=1}^{n} \dot q_{\mathrm{s}}\,\frac{\partial T}{\partial \dot q_{\mathrm{s}}} = 2\,T . \tag{8.97}\]</div>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">odvod</a> po hitrostih, pomnožen s hitrostmi, da dvakratno kvadratno obliko.</p>
+<ol>
+<li>Zapišimo <span class="nobr">\(T = \tfrac12 \sum_{\mathrm{a},\mathrm{b}} M_{\mathrm{ab}}\,\dot q_{\mathrm{a}}\,\dot q_{\mathrm{b}}\),</span> kjer \(M_{\mathrm{ab}}\) ni odvisen od hitrosti.</li>
+<li>Odvod \(\partial\dot q_{\mathrm{a}}/\partial\dot q_{\mathrm{s}}\) je \(1\) pri \(a = s\) in \(0\) sicer. Po pravilih odvajanja (lema <a class="xref" href="sec-srednja-vrednost.html#lem-pravila-odvajanja" data-knowl="lem-pravila-odvajanja">1.81</a>, vsota in zmnožek) je zato <span class="nobr">\(\dfrac{\partial}{\partial\dot q_{\mathrm{s}}}\big(\dot q_{\mathrm{a}}\,\dot q_{\mathrm{b}}\big) = \delta_{\mathrm{as}}\,\dot q_{\mathrm{b}} + \dot q_{\mathrm{a}}\,\delta_{\mathrm{bs}}\),</span> kjer je \(\delta_{\mathrm{as}} = 1\) pri \(a = s\) in \(0\) sicer. Pri \(a = b = s\) to da <span class="nobr">\(2\dot q_{\mathrm{s}}\),</span> kot mora za <span class="nobr">\(\dot q_{\mathrm{s}}^2\).</span> Torej je <span class="nobr">\(\dfrac{\partial T}{\partial \dot q_{\mathrm{s}}} = \tfrac12 \Big( \sum_{\mathrm{b}} M_{\mathrm{sb}}\,\dot q_{\mathrm{b}} + \sum_{\mathrm{a}} M_{\mathrm{as}}\,\dot q_{\mathrm{a}} \Big)\).</span></li>
+<li><a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">Matrika</a> je simetrična, <span class="nobr">\(M_{\mathrm{as}} = M_{\mathrm{sa}}\),</span> zato sta vsoti enaki in <span class="nobr">\(\dfrac{\partial T}{\partial \dot q_{\mathrm{s}}} = \sum_{\mathrm{b}} M_{\mathrm{sb}}\,\dot q_{\mathrm{b}}\).</span></li>
+<li>Pomnožimo s \(\dot q_{\mathrm{s}}\) in seštejmo po <span class="nobr">\(s\):</span> <span class="nobr">\(\sum_{\mathrm{s}} \dot q_{\mathrm{s}} \sum_{\mathrm{b}} M_{\mathrm{sb}}\,\dot q_{\mathrm{b}} = \dot{\vek q}^\T \mat M\,\dot{\vek q} = 2T\).</span> To je <a class="xref" href="sec-ohranitveni-zakoni.html#eq-euler-homogena" data-knowl="eq-euler-homogena">(8.97)</a>.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> GR (1.34) (PDF str. 46), ki ga dobi iz Eulerjevega izreka o homogenih funkcijah (1.35) za stopnjo 2. Dokaz za kvadratno obliko ni iz vira.</p></div></div>
+<p>Lema je pokazala, da za kvadratno kinetično energijo velja zveza med odvodom in vrednostjo, ki jo potrebujemo za energijski zakon. Povedati moramo še, kakšne sile smemo imeti. Konservativne sile, ki imajo potencial \(V(\vek q)\) (definicija <a class="xref" href="sec-posplosene-sile.html#def-konservativne-sile" data-knowl="def-konservativne-sile">8.53</a>), vstopijo v <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcijo</a> <span class="nobr">\(\mathcal{L} = T - V\).</span> Vse druge posplošene sile zberemo v \(Q_{\mathrm{s}}^{\mathrm{nc}}\) (nekonservativne sile, non-conservative forces), kot v izreku <a class="xref" href="sec-lagrangeeve-enacbe.html#thm-lagrange-konservativne" data-knowl="thm-lagrange-konservativne">8.88</a>. Njihova moč (power), to je delo na časovno enoto, je <span class="nobr">\(\sum_{\mathrm{s}} Q_{\mathrm{s}}^{\mathrm{nc}}\,\dot q_{\mathrm{s}}\):</span> v času \(\mathrm{d}t\) se <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinata</a> \(q_{\mathrm{s}}\) spremeni za \(\dot q_{\mathrm{s}}\,\mathrm{d}t\) in sila \(Q_{\mathrm{s}}^{\mathrm{nc}}\) opravi delo \(Q_{\mathrm{s}}^{\mathrm{nc}}\,\dot q_{\mathrm{s}}\,\mathrm{d}t\) (definicija <a class="xref" href="sec-posplosene-sile.html#def-posplosena-sila" data-knowl="def-posplosena-sila">8.50</a>). Primer je viskozno dušenje, ki nasprotuje hitrosti. Nekonservativne sile so disipativne (dissipative), če je njihova moč \(\sum_{\mathrm{s}} Q_{\mathrm{s}}^{\mathrm{nc}}\,\dot q_{\mathrm{s}} \le 0\) v vsakem stanju, torej skupaj ne delajo pozitivnega dela. GR (PDF str. 52) vzame ožji primer, silo, ki je vzporedna hitrosti in nasprotna njej, kar to pogoj izpolni. Vsoto \(\mathcal{E} = T + V\) imenujemo celotna mehanska energija (total mechanical energy).</p>
+
+<div class="blk izrek" id="thm-ohranitev-energije"><div class="blk-head"><span class="blk-label">Izrek 8.104</span> <span class="blk-title">Ohranitev energije (conservation of energy)</span></div><div class="blk-body"><p>Naj ima sistem \(n\) prostostnih stopenj, idealne skleronomne holonomne vezi (definicija <a class="xref" href="sec-posplosene-koordinate.html#def-holonomna-vez" data-knowl="def-holonomna-vez">8.42</a>), <a class="xref auto" href="sec-posplosene-sile.html#def-konservativne-sile" data-knowl="def-konservativne-sile">konservativne sile</a> s potencialom <span class="nobr">\(V(\vek q)\),</span> ki ni odvisen od časa, in morebitne druge <a class="xref auto" href="sec-posplosene-sile.html#def-posplosena-sila" data-knowl="def-posplosena-sila">posplošene sile</a> <span class="nobr">\(Q_{\mathrm{s}}^{\mathrm{nc}}\).</span> Naj bo \(\vek q(t)\) dvakrat <a class="xref auto" href="sec-sprememba-polja.html#def-zvezno-odvedljivo-polje" data-knowl="def-zvezno-odvedljivo-polje">zvezno odvedljivo</a> gibanje, ki reši enačbe iz izreka <a class="xref" href="sec-lagrangeeve-enacbe.html#thm-lagrange-konservativne" data-knowl="thm-lagrange-konservativne">8.88</a>. Tedaj je \(\mathcal{E}(t) = T + V\) zvezno odvedljiva in</p>
+<div class="eq" id="eq-bilanca-moci">\[\frac{\mathrm{d}\mathcal{E}}{\mathrm{d}t} = \sum_{\mathrm{s}=1}^{n} Q_{\mathrm{s}}^{\mathrm{nc}}\,\dot q_{\mathrm{s}} . \tag{8.98}\]</div>
+<p>Če so vse <span class="nobr">\(Q_{\mathrm{s}}^{\mathrm{nc}} = 0\),</span> je \(\mathcal{E}\) ohranjena količina (definicija <a class="xref" href="sec-ohranitveni-zakoni.html#def-ohranjena-kolicina" data-knowl="def-ohranjena-kolicina">8.102</a>). Če so sile disipativne, \(\mathcal{E}\) s časom ne narašča.</p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da se \(\mathcal{E}\) spremeni le za moč sil, ki jih nismo zajeli v potencial.</p>
+<ol>
+<li>Skleronomnost pomeni \(\vek X = \vek X(\vek q)\) brez časa, zato je \(T = \tfrac12 \dot{\vek q}^\T \mat M(\vek q)\,\dot{\vek q}\) (izrek <a class="xref" href="sec-kineticna-energija.html#thm-kineticna-energija-koordinate" data-knowl="thm-kineticna-energija-koordinate">8.84</a>) in \(\mathcal{L} = T - V\) ne vsebuje <span class="nobr">\(t\).</span> Gibanje reši \(\dfrac{\mathrm{d}}{\mathrm{d}t}\dfrac{\partial\mathcal{L}}{\partial\dot q_{\mathrm{s}}} = \dfrac{\partial\mathcal{L}}{\partial q_{\mathrm{s}}} + Q_{\mathrm{s}}^{\mathrm{nc}}\) (izrek <a class="xref" href="sec-lagrangeeve-enacbe.html#thm-lagrange-konservativne" data-knowl="thm-lagrange-konservativne">8.88</a>).</li>
+<li>Po <a class="xref auto" href="sec-zamenjava-spremenljivk.html#lem-verizno-pravilo" data-knowl="lem-verizno-pravilo">verižnem pravilu</a> (lema <a class="xref" href="sec-implicitna-funkcija.html#lem-verizno-pravilo-n" data-knowl="lem-verizno-pravilo-n">8.29</a>, točka 1) je <span class="nobr">\(\dfrac{\mathrm{d}\mathcal{L}}{\mathrm{d}t} = \sum_{\mathrm{s}} \dfrac{\partial\mathcal{L}}{\partial q_{\mathrm{s}}}\,\dot q_{\mathrm{s}} + \sum_{\mathrm{s}} \dfrac{\partial\mathcal{L}}{\partial \dot q_{\mathrm{s}}}\,\ddot q_{\mathrm{s}}\).</span> Člena z \(\partial\mathcal{L}/\partial t\) ni, ker \(\mathcal{L}\) ne vsebuje časa.</li>
+<li>Po pravilu za odvod zmnožka (lema <a class="xref" href="sec-srednja-vrednost.html#lem-pravila-odvajanja" data-knowl="lem-pravila-odvajanja">1.81</a>) je <span class="nobr">\(\dfrac{\mathrm{d}}{\mathrm{d}t}\sum_{\mathrm{s}} \dot q_{\mathrm{s}}\,\dfrac{\partial\mathcal{L}}{\partial \dot q_{\mathrm{s}}} = \sum_{\mathrm{s}} \ddot q_{\mathrm{s}}\,\dfrac{\partial\mathcal{L}}{\partial \dot q_{\mathrm{s}}} + \sum_{\mathrm{s}} \dot q_{\mathrm{s}}\,\dfrac{\mathrm{d}}{\mathrm{d}t}\dfrac{\partial\mathcal{L}}{\partial \dot q_{\mathrm{s}}}\).</span></li>
+<li>Odštejmo korak 2 od koraka 3. Členi z \(\ddot q_{\mathrm{s}}\) se uničijo in po koraku 1 ostane <span class="nobr">\(\dfrac{\mathrm{d}}{\mathrm{d}t}\Big( \sum_{\mathrm{s}} \dot q_{\mathrm{s}}\,\dfrac{\partial\mathcal{L}}{\partial \dot q_{\mathrm{s}}} - \mathcal{L} \Big) = \sum_{\mathrm{s}} \dot q_{\mathrm{s}} \Big( \dfrac{\mathrm{d}}{\mathrm{d}t}\dfrac{\partial\mathcal{L}}{\partial \dot q_{\mathrm{s}}} - \dfrac{\partial\mathcal{L}}{\partial q_{\mathrm{s}}} \Big) = \sum_{\mathrm{s}} \dot q_{\mathrm{s}}\,Q_{\mathrm{s}}^{\mathrm{nc}}\).</span></li>
+<li>\(V\) ne vsebuje hitrosti, zato je \(\partial\mathcal{L}/\partial\dot q_{\mathrm{s}} = \partial T/\partial\dot q_{\mathrm{s}}\) in po lemi <a class="xref" href="sec-ohranitveni-zakoni.html#lem-euler-homogena" data-knowl="lem-euler-homogena">8.103</a> je <span class="nobr">\(\sum_{\mathrm{s}} \dot q_{\mathrm{s}}\,\partial\mathcal{L}/\partial\dot q_{\mathrm{s}} = 2T\).</span> Izraz v oklepaju v koraku 4 je torej <span class="nobr">\(2T - (T - V) = T + V = \mathcal{E}\).</span> To je <a class="xref" href="sec-ohranitveni-zakoni.html#eq-bilanca-moci" data-knowl="eq-bilanca-moci">(8.98)</a>.</li>
+<li>Če so vse <span class="nobr">\(Q_{\mathrm{s}}^{\mathrm{nc}} = 0\),</span> je \(\mathcal{E}' = 0\) na vsem <a class="xref auto" href="sec-konvergenca-zaporedij.html#def-interval" data-knowl="def-interval">intervalu</a> in po posledici <a class="xref" href="sec-srednja-vrednost.html#cor-odvod-nic" data-knowl="cor-odvod-nic">1.85</a> je \(\mathcal{E}(t)\) enaka za vse <span class="nobr">\(t\).</span> Če je <span class="nobr">\(\sum_{\mathrm{s}} Q_{\mathrm{s}}^{\mathrm{nc}}\,\dot q_{\mathrm{s}} \le 0\),</span> je za \(t_1 &lt; t_2\) po izreku <a class="xref" href="sec-srednja-vrednost.html#thm-srednja-vrednost" data-knowl="thm-srednja-vrednost">1.84</a> \(\mathcal{E}(t_2) - \mathcal{E}(t_1) = \mathcal{E}'(\xi)\,(t_2 - t_1) \le 0\) pri nekem <span class="nobr">\(\xi \in (t_1, t_2)\),</span> torej \(\mathcal{E}\) ne narašča.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> GR (1.42) do (1.46) (PDF str. 47 do 48, ohranitev energije pri skleronomnih vezeh in konservativnih silah), (1.55) (PDF str. 53, energija pri disipativnih silah) in (1.58) (PDF str. 54, odvod energije z nekonservativnimi silami). GR izpelje iz Lagrangeevih enačb po isti poti, zapis s funkcijo \(\mathcal{L}\) in koraki 2 do 4 so naši.</p></div></div>
+<p>Dokaz je pokazal, da se \(\mathcal{E}\) spremeni samo zaradi sil, ki niso iz potenciala, in da je ključ lema <a class="xref" href="sec-ohranitveni-zakoni.html#lem-euler-homogena" data-knowl="lem-euler-homogena">8.103</a>: pri kvadratni kinetični energiji je izraz \(\sum_{\mathrm{s}} \dot q_{\mathrm{s}}\,\partial\mathcal{L}/\partial \dot q_{\mathrm{s}} - \mathcal{L}\) ravno <span class="nobr">\(T + V\).</span> V koraku 2 vidimo še, od kod energijski zakon. Če bi \(\mathcal{L}\) vseboval čas, bi se tam pojavil člen \(\partial\mathcal{L}/\partial t\) in v koraku 4 bi ostal dodaten člen <span class="nobr">\(-\partial\mathcal{L}/\partial t\).</span></p>
+
+<div class="blk primer" id="ex-ohr-nihalo"><div class="blk-head"><span class="blk-label">Primer 8.105</span> <span class="blk-title">Nihalo: hitrost iz energije in izguba pri dušenju (pendulum: speed from the energy, loss by damping)</span></div><div class="blk-body"><p>Nihalo iz zgleda A: točkasta masa \(m = 1\) kg na togi lahki palici dolžine \(\ell = 1\) m, kot \(\theta\) od navpične lege navzdol, \(g = 9{,}81\) m/s<span class="nobr">\(^2\).</span> Potencial je <span class="nobr">\(V = -mg\ell\cos\theta\),</span> <a class="xref auto" href="sec-kineticna-energija.html#def-kineticna-energija" data-knowl="def-kineticna-energija">kinetična energija</a> <span class="nobr">\(T = \tfrac12 m\ell^2\dot\theta^2\).</span></p>
+<ol>
+<li>Spustimo ga iz mirovanja pri <span class="nobr">\(\theta = 90^\circ\).</span> Tedaj je \(T = 0\) in <span class="nobr">\(V = -mg\ell\cos 90^\circ = 0\),</span> torej \(\mathcal{E} = 0\) J.</li>
+<li>V spodnji legi \(\theta = 0\) je \(V = -mg\ell = -9{,}81\) J. Ker je \(\mathcal{E}\) stalna, je \(T = 9{,}81\) J, torej \(\tfrac12 m\ell^2\dot\theta^2 = 9{,}81\) J in \(|\dot\theta| = \sqrt{2g/\ell} = 4{,}4294\) 1/s. Hitrost mase je \(\ell\,|\dot\theta| = 4{,}43\) m/s.</li>
+<li>Pri \(\theta = 45^\circ\) je <span class="nobr">\(T = \mathcal{E} - V = mg\ell\cos 45^\circ\),</span> zato je \(|\dot\theta| = \sqrt{2g\cos 45^\circ/\ell} = 3{,}7247\) 1/s. Hitrost v vmesni legi smo dobili brez gibalne enačbe.</li>
+<li>Spustimo ga iz mirovanja pri \(10^\circ\) in pri <span class="nobr">\(170^\circ\).</span> Tedaj je \(\mathcal{E} = -9{,}661\) J in \(+9{,}661\) J, hitrosti v spodnji legi pa \(0{,}5460\) 1/s in \(6{,}2403\) 1/s. Višja <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">izhodiščna</a> lega pomeni več energije in zato večjo hitrost v isti legi.</li>
+</ol>
+<p>Dodajmo v zgibu moment dušenja \(Q^{\mathrm{nc}} = -c\,\dot\theta\) s \(c = 0{,}2\) N m s. Moč je <span class="nobr">\(Q^{\mathrm{nc}}\,\dot\theta = -c\,\dot\theta^2 \le 0\),</span> sila je disipativna, in po <a class="xref" href="sec-ohranitveni-zakoni.html#eq-bilanca-moci" data-knowl="eq-bilanca-moci">(8.98)</a> je <span class="nobr">\(\mathrm{d}\mathcal{E}/\mathrm{d}t = -c\,\dot\theta^2\).</span> Numerična rešitev z RK4 iz \(90^\circ\) da \(\mathcal{E} = -1{,}869\) J po 1 s, \(-3{,}279\) J po 2 s, \(-6{,}016\) J po 5 s in \(-8{,}348\) J po 10 s. Energija torej pada in se bliža \(-9{,}81\) J, ki je vrednost za mirovanje v spodnji legi. Izguba v 10 s je \(\mathcal{E}(0) - \mathcal{E}(10) = 8{,}3477\) J, <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integral</a> \(\int_0^{10} c\,\dot\theta^2\,\mathrm{d}t\) po rešitvi pa tudi \(8{,}3477\) J, kot zahteva časovni integral enačbe <a class="xref" href="sec-ohranitveni-zakoni.html#eq-bilanca-moci" data-knowl="eq-bilanca-moci">(8.98)</a>.</p>
+</div></div>
+<div class="blk primer" id="ex-ohr-mehanizem"><div class="blk-head"><span class="blk-label">Primer 8.106</span> <span class="blk-title">Kolenasti mehanizem: člen s kvadratom hitrosti (toggle mechanism: the velocity-square term)</span></div><div class="blk-body"><p>Mehanizem D (dve palici, drsnik, vzmet in breme \(P = 100\) N na členku) ima \(T = \tfrac12 m(\theta)\,\dot\theta^2\) z \(m(\theta) = \tfrac13 + 2\sin^2\theta\) kg m\(^2\) in potencial \(V(\theta)\) iz razdelka <a class="xref" href="sec-posplosene-sile.html">8.5</a>. Gibalna enačba je \(m(\theta)\,\ddot\theta + \tfrac12 m'(\theta)\,\dot\theta^2 + V'(\theta) = 0\) (razdelek <a class="xref" href="sec-lagrangeeve-enacbe.html">8.9</a>). Preverimo ohranitev \(\mathcal{E}\) in vidimo, kaj se zgodi, če člen s kvadratom hitrosti izpustimo.</p>
+<ol>
+<li>Po <a class="xref auto" href="sec-srednja-vrednost.html#lem-pravila-odvajanja" data-knowl="lem-pravila-odvajanja">pravilu za odvod zmnožka</a> in <a class="xref auto" href="sec-zamenjava-spremenljivk.html#lem-verizno-pravilo" data-knowl="lem-verizno-pravilo">verižnem pravilu</a> (lema <a class="xref" href="sec-implicitna-funkcija.html#lem-verizno-pravilo-n" data-knowl="lem-verizno-pravilo-n">8.29</a>, točka 3) je <span class="nobr">\(\dfrac{\mathrm{d}}{\mathrm{d}t}\big(\tfrac12 m(\theta)\,\dot\theta^2\big) = m\,\dot\theta\,\ddot\theta + \tfrac12 m'\,\dot\theta^3\),</span> saj se pri <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">odvodu</a> časovno spreminja tudi <span class="nobr">\(m(\theta(t))\).</span> Torej je \(\dfrac{\mathrm{d}\mathcal{E}}{\mathrm{d}t} = \dot\theta\,\big( m\,\ddot\theta + \tfrac12 m'\,\dot\theta^2 + V' \big)\) in oklepaj je gibalna enačba, torej nič.</li>
+<li>Spustimo mehanizem iz mirovanja pri \(\theta = 0{,}7\) rad. Tam je \(\mathcal{E} = V = 83{,}401\) J. Ravnovesna lega \(0{,}50523\) rad ima \(V = 24{,}609\) J in \(m = 0{,}80185\) kg m<span class="nobr">\(^2\),</span> zato je \(T = 83{,}401 - 24{,}609 = 58{,}792\) J in \(|\dot\theta| = \sqrt{2T/m} = 12{,}110\) 1/s.</li>
+<li>Drugo obračališče, kjer je \(\dot\theta = 0\) in spet \(V(\theta) = 83{,}401\) J, je pri \(0{,}14547\) rad. Nestabilna lega pri \(2{,}15^\circ = 0{,}0375\) rad leži levo od njega, zato je mehanizem ne doseže.</li>
+<li>RK4 po 3 s s 30 000 koraki: \(\mathcal{E}\) se spremeni za \(1{,}7 \cdot 10^{-9}\) J. Če člen \(\tfrac12 m'\,\dot\theta^2\) izpustimo, se računana energija spremeni za 25,5 J, ker \(\mathrm{d}\mathcal{E}/\mathrm{d}t\) iz koraka 1 ni več nič. Člen s kvadratom hitrosti je torej del zakona in ga ne smemo opustiti.</li>
+</ol>
+</div></div>
+<p>Pri dokazu izreka <a class="xref" href="sec-ohranitveni-zakoni.html#thm-ohranitev-energije" data-knowl="thm-ohranitev-energije">8.104</a> smo uporabili, da vezi ne vsebujejo časa. Kaj ostane, če se vez giblje? Pri reonomni vezi ima kinetična energija po izreku <a class="xref" href="sec-kineticna-energija.html#thm-kineticna-energija-koordinate" data-knowl="thm-kineticna-energija-koordinate">8.84</a> tri dele, <span class="nobr">\(T = T_2 + T_1 + T_0\):</span> \(T_2 = \tfrac12\,\dot{\vek q}^\T\mat M\,\dot{\vek q}\) je kvadratna oblika hitrosti, \(T_1 = \vek b\cdot\dot{\vek q}\) linearna in \(T_0\) hitrosti ne vsebuje. Lema <a class="xref" href="sec-ohranitveni-zakoni.html#lem-euler-homogena" data-knowl="lem-euler-homogena">8.103</a> velja le za <span class="nobr">\(T_2\):</span> za \(T_1\) je \(\sum_{\mathrm{s}} \dot q_{\mathrm{s}}\,\partial T_1/\partial\dot q_{\mathrm{s}} = T_1\) in za \(T_0\) je vsota nič. Zato se spremeni tudi količina, ki se ohranja, kot pokaže naslednji izrek. Dokaz ponovi korake 1 do 4 prejšnjega.</p>
+
+<div class="blk izrek" id="thm-energijski-integral"><div class="blk-head"><span class="blk-label">Izrek 8.107</span> <span class="blk-title">Energijski integral pri reonomnih vezeh (energy integral for rheonomic constraints)</span></div><div class="blk-body"><p>Naj bo \(\vek q(t)\) dvakrat <a class="xref auto" href="sec-sprememba-polja.html#def-zvezno-odvedljivo-polje" data-knowl="def-zvezno-odvedljivo-polje">zvezno odvedljivo</a> gibanje sistema z idealnimi <a class="xref auto" href="sec-posplosene-koordinate.html#def-holonomna-vez" data-knowl="def-holonomna-vez">holonomnimi vezmi</a>, ki reši enačbe iz izreka <a class="xref" href="sec-lagrangeeve-enacbe.html#thm-lagrange-konservativne" data-knowl="thm-lagrange-konservativne">8.88</a> z <span class="nobr">\(Q_{\mathrm{s}}^{\mathrm{nc}} = 0\).</span> Naj <span class="nobr">\(\mat M\),</span> <span class="nobr">\(\vek b\),</span> \(T_0\) iz izreka <a class="xref" href="sec-kineticna-energija.html#thm-kineticna-energija-koordinate" data-knowl="thm-kineticna-energija-koordinate">8.84</a> in \(V\) ne vsebujejo časa <span class="nobr">\(t\).</span> Tedaj je</p>
+<div class="eq" id="eq-energijski-integral">\[\mathcal{E}^* = T_2 - T_0 + V \tag{8.99}\]</div>
+<p>ohranjena količina (definicija <a class="xref" href="sec-ohranitveni-zakoni.html#def-ohranjena-kolicina" data-knowl="def-ohranjena-kolicina">8.102</a>).</p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da je \(\sum_{\mathrm{s}} \dot q_{\mathrm{s}}\,\partial\mathcal{L}/\partial\dot q_{\mathrm{s}} - \mathcal{L}\) stalna in enaka <span class="nobr">\(\mathcal{E}^*\).</span></p>
+<ol>
+<li>\(\mathcal{L} = T - V = T_2 + T_1 + T_0 - V\) ne vsebuje <span class="nobr">\(t\),</span> zato po <a class="xref auto" href="sec-zamenjava-spremenljivk.html#lem-verizno-pravilo" data-knowl="lem-verizno-pravilo">verižnem pravilu</a> (lema <a class="xref" href="sec-implicitna-funkcija.html#lem-verizno-pravilo-n" data-knowl="lem-verizno-pravilo-n">8.29</a>, točka 1) velja kot v koraku 2 prejšnjega dokaza <span class="nobr">\(\dfrac{\mathrm{d}\mathcal{L}}{\mathrm{d}t} = \sum_{\mathrm{s}} \dfrac{\partial\mathcal{L}}{\partial q_{\mathrm{s}}}\,\dot q_{\mathrm{s}} + \sum_{\mathrm{s}} \dfrac{\partial\mathcal{L}}{\partial \dot q_{\mathrm{s}}}\,\ddot q_{\mathrm{s}}\).</span></li>
+<li>Po pravilu za odvod zmnožka (lema <a class="xref" href="sec-srednja-vrednost.html#lem-pravila-odvajanja" data-knowl="lem-pravila-odvajanja">1.81</a>) je kot v koraku 3 <span class="nobr">\(\dfrac{\mathrm{d}}{\mathrm{d}t}\sum_{\mathrm{s}} \dot q_{\mathrm{s}}\,\dfrac{\partial\mathcal{L}}{\partial \dot q_{\mathrm{s}}} = \sum_{\mathrm{s}} \ddot q_{\mathrm{s}}\,\dfrac{\partial\mathcal{L}}{\partial \dot q_{\mathrm{s}}} + \sum_{\mathrm{s}} \dot q_{\mathrm{s}}\,\dfrac{\mathrm{d}}{\mathrm{d}t}\dfrac{\partial\mathcal{L}}{\partial \dot q_{\mathrm{s}}}\).</span></li>
+<li>Odštejemo prvo od druge. Po izreku <a class="xref" href="sec-lagrangeeve-enacbe.html#thm-lagrange-konservativne" data-knowl="thm-lagrange-konservativne">8.88</a> z \(Q_{\mathrm{s}}^{\mathrm{nc}} = 0\) je <span class="nobr">\(\dfrac{\mathrm{d}}{\mathrm{d}t}\dfrac{\partial\mathcal{L}}{\partial\dot q_{\mathrm{s}}} = \dfrac{\partial\mathcal{L}}{\partial q_{\mathrm{s}}}\),</span> zato je <span class="nobr">\(\dfrac{\mathrm{d}}{\mathrm{d}t}\Big( \sum_{\mathrm{s}} \dot q_{\mathrm{s}}\,\dfrac{\partial\mathcal{L}}{\partial \dot q_{\mathrm{s}}} - \mathcal{L} \Big) = \sum_{\mathrm{s}} \dot q_{\mathrm{s}} \Big( \dfrac{\mathrm{d}}{\mathrm{d}t}\dfrac{\partial\mathcal{L}}{\partial \dot q_{\mathrm{s}}} - \dfrac{\partial\mathcal{L}}{\partial q_{\mathrm{s}}} \Big) = 0\).</span></li>
+<li>\(V\) ne vsebuje hitrosti, zato je \(\sum_{\mathrm{s}} \dot q_{\mathrm{s}}\,\partial\mathcal{L}/\partial\dot q_{\mathrm{s}} = \sum_{\mathrm{s}} \dot q_{\mathrm{s}}\,\partial (T_2 + T_1)/\partial\dot q_{\mathrm{s}}\) <span class="nobr">(\(T_0\)</span> hitrosti ne vsebuje). Za \(T_2\) je vsota \(2T_2\) po lemi <a class="xref" href="sec-ohranitveni-zakoni.html#lem-euler-homogena" data-knowl="lem-euler-homogena">8.103</a>, za \(T_1 = \sum_{\mathrm{s}} b_{\mathrm{s}}(\vek q)\,\dot q_{\mathrm{s}}\) pa <span class="nobr">\(\sum_{\mathrm{s}} \dot q_{\mathrm{s}}\,b_{\mathrm{s}} = T_1\).</span></li>
+<li>Torej je izraz v oklepaju koraka 3 enak <span class="nobr">\(2T_2 + T_1 - (T_2 + T_1 + T_0 - V) = T_2 - T_0 + V = \mathcal{E}^*\).</span> Po posledici <a class="xref" href="sec-srednja-vrednost.html#cor-odvod-nic" data-knowl="cor-odvod-nic">1.85</a> je \(\mathcal{E}^*(t)\) enaka za vse <span class="nobr">\(t\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> Ni iz vira v tej obliki: GR (1.46) (PDF str. 48) zapiše energijski integral za skleronomne vezi, kjer je <span class="nobr">\(T_1 = T_0 = 0\).</span> GR (PDF str. 54) pri reonomnih vezeh uporablja potencial \(V^* = V - T_0\) (po besedilu strani), kar se ujema z <span class="nobr">\(\mathcal{E}^*\).</span> Dokaz je naš.</p></div></div>
+<p>Ta energijski <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integral</a> (energy integral) je različen od <span class="nobr">\(T + V\),</span> ki se zdaj spreminja. Razlika \(\mathcal{E}^* - (T + V) = -2T_0 - T_1\) je nič, kadar so vezi skleronomne.</p>
+
+<div class="blk primer" id="ex-ohr-obroc"><div class="blk-head"><span class="blk-label">Primer 8.108</span> <span class="blk-title">Obroč na vrteči se palici (ring on a rotating rod)</span></div><div class="blk-body"><p>Obroč z maso \(m = 0{,}1\) kg drsi brez trenja po ravni palici v vodoravni ravnini. Palica se vrti okoli ene svoje točke s stalno <a class="xref auto" href="sec-kineticna-energija.html#def-kotna-hitrost" data-knowl="def-kotna-hitrost">kotno hitrostjo</a> \(\Omega = 2\) 1/s, težnost ne deluje v ravnini. To je naš model. <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">Koordinata</a> je razdalja \(r\) obroča od vrtišča. Lega obroča je \((r\cos\Omega t,\ r\sin\Omega t)\) in vez je reonomna. Hitrost obroča ima komponenti <span class="nobr">\((\dot r\cos\Omega t - r\Omega\sin\Omega t,\ \dot r\sin\Omega t + r\Omega\cos\Omega t)\),</span> njen kvadrat je <span class="nobr">\(\dot r^2 + r^2\Omega^2\).</span> Torej je <span class="nobr">\(T_2 = \tfrac12 m\,\dot r^2\),</span> \(T_1 = 0\) in <span class="nobr">\(T_0 = \tfrac12 m\,\Omega^2 r^2\),</span> potenciala ni in \(\mathcal{L} = \tfrac12 m\,(\dot r^2 + \Omega^2 r^2)\) ne vsebuje <span class="nobr">\(t\).</span> <a class="xref auto" href="sec-lagrangeeve-enacbe.html#thm-lagrangeeve-enacbe" data-knowl="thm-lagrangeeve-enacbe">Lagrangeeva enačba</a> je \(m\,\ddot r = m\,\Omega^2 r\) (SymPy).</p>
+<ol>
+<li>Po izreku <a class="xref" href="sec-ohranitveni-zakoni.html#thm-energijski-integral" data-knowl="thm-energijski-integral">8.107</a> je ohranjena <span class="nobr">\(\mathcal{E}^* = T_2 - T_0 = \tfrac12 m\,(\dot r^2 - \Omega^2 r^2)\).</span> Če obroč spustimo pri \(r = 0{,}5\) m z <span class="nobr">\(\dot r = 0\),</span> je vrednost \(-\tfrac12 \cdot 0{,}1 \cdot 4 \cdot 0{,}25 = -0{,}05\) J.</li>
+<li>Iz \(\tfrac12 m\,(\dot r^2 - \Omega^2 r^2) = -0{,}05\) J je <span class="nobr">\(\dot r^2 = \Omega^2 r^2 - 2 \cdot 0{,}05/m\).</span> Pri \(r = 1\) m je to \(4 - 1 = 3\) m\(^2\)/s<span class="nobr">\(^2\),</span> torej \(\dot r = 1{,}7321\) m/s.</li>
+<li>Tedaj je \(T + V = T = \tfrac12 \cdot 0{,}1 \cdot (3 + 4) = 0{,}35\) J, na začetku pa \(\tfrac12 \cdot 0{,}1 \cdot (0 + 4 \cdot 0{,}25) = 0{,}05\) J. Vsota \(T + V\) je zrasla za 0,30 J. Palica potiska obroč v smeri vrtenja in pri dejanskem premiku opravi delo, ker se tudi sama giblje. Vez je kljub temu idealna: pri virtualnem premiku ob zamrznjenem času (razdelek <a class="xref" href="sec-posplosene-koordinate.html">8.4</a>) njena sila ne opravi dela, saj je pravokotna na palico, premik pa vzdolž nje. Zato v Lagrangeevi enačbi ni <a class="xref auto" href="sec-posplosene-sile.html#def-posplosena-sila" data-knowl="def-posplosena-sila">posplošene sile</a> vezi, v energiji \(T + V\) pa je njeno delo.</li>
+</ol>
+</div></div>
+<p>Nazadnje si poglejmo, kaj ohranitev energije pove o gibanju nihala. Stanje nihala je par \((\theta, \dot\theta)\) v ravnini, gibanje pa je krivulja v tej ravnini. Ker je \(\mathcal{E}\) stalna, leži vsako gibanje na nivojnici (level curve) funkcije <span class="nobr">\(\mathcal{E}(\theta, \dot\theta) = \tfrac12 m\ell^2\dot\theta^2 - mg\ell\cos\theta\),</span> torej na krivulji z enačbo</p>
+<div class="eq" id="eq-nihalo-hitrost">\[\dot\theta = \pm\sqrt{\frac{2\,(\mathcal{E} + mg\ell\cos\theta)}{m\ell^2}} , \tag{8.100}\]</div>
+<p>ki je realna le, kjer je <span class="nobr">\(\mathcal{E} + mg\ell\cos\theta \ge 0\).</span> Pri nihalu je gibanje pri danem stanju enolično (posledica <a class="xref" href="sec-lagrangeeve-enacbe.html#cor-obstoj-gibanja" data-knowl="cor-obstoj-gibanja">8.92</a>), zato se nivojnice ne sekajo, razen v mirovalnih legah, kjer je \(\dot\theta = 0\) in je gibanje stalno. Slika <a class="xref" href="sec-ohranitveni-zakoni.html#fig-ohr-fazni-diagram" data-knowl="fig-ohr-fazni-diagram">8.32</a> kaže nivojnice za \(m = 1\) kg in \(\ell = 1\) m.</p>
+
+<figure class="blk slika" id="fig-ohr-fazni-diagram"><p><span class="svgfig" role="img" aria-label="Nivojnice energije nihala v ravnini kota in kotne hitrosti"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='363.93pt' height='271.43pt' viewBox='-72.000004 -72.000004 269.578212 201.057086'>
+<defs>
+<path id='ohr-fazni-diagram-g0-0' d='M6.052304-2.0533C6.213699-2.0533 6.38406-2.0533 6.38406-2.25056C6.38406-2.438854 6.204732-2.438854 6.052304-2.438854H1.102864C.950436-2.438854 .771108-2.438854 .771108-2.25056C.771108-2.0533 .941469-2.0533 1.102864-2.0533H6.052304Z'/>
+<path id='ohr-fazni-diagram-g1-59' d='M1.63188-.143462C1.63188 .152428 1.63188 .887671 .968369 1.524284C.91457 1.578082 .91457 1.587049 .91457 1.622914C.91457 1.685679 .977335 1.730511 1.031133 1.730511C1.129763 1.730511 1.85604 1.031133 1.85604-.017933C1.85604-.573848 1.65878-.968369 1.273225-.968369C.968369-.968369 .789041-.735243 .789041-.484184S.968369 0 1.273225 0C1.407721 0 1.542217-.044832 1.63188-.143462Z'/>
+<path id='ohr-fazni-diagram-g2-48' d='M4.241096-2.86924C4.241096-3.469988 4.214197-4.241096 3.900374-4.913574C3.505853-5.756413 2.824408-5.971606 2.304359-5.971606C1.766376-5.971606 1.084932-5.756413 .690411-4.895641C.403487-4.276961 .358655-3.550685 .358655-2.86924C.358655-2.286426 .376588-1.416687 .762142-.708344C1.183562 .053798 1.882939 .19726 2.295392 .19726C2.878207 .19726 3.541719-.053798 3.918306-.878705C4.187298-1.479452 4.241096-2.15193 4.241096-2.86924ZM2.304359-.026899C2.035367-.026899 1.389788-.152428 1.219427-1.165629C1.129763-1.694645 1.129763-2.465753 1.129763-2.976837C1.129763-3.58655 1.129763-4.294894 1.23736-4.788045C1.416687-5.586052 1.990535-5.747447 2.295392-5.747447C2.636115-5.747447 3.200996-5.56812 3.371357-4.734247C3.469988-4.241096 3.469988-3.541719 3.469988-2.976837C3.469988-2.420922 3.469988-1.667746 3.380324-1.13873C3.19203-.116563 2.528518-.026899 2.304359-.026899Z'/>
+<path id='ohr-fazni-diagram-g2-49' d='M2.725778-5.729514C2.725778-5.953674 2.716812-5.971606 2.492653-5.971606C1.936737-5.397758 1.111831-5.397758 .833873-5.397758V-5.119801C1.004234-5.119801 1.551183-5.119801 2.035367-5.352927V-.71731C2.035367-.385554 2.008468-.277958 1.174595-.277958H.887671V0C1.210461-.026899 2.008468-.026899 2.37609-.026899S3.550685-.026899 3.873474 0V-.277958H3.58655C2.752677-.277958 2.725778-.385554 2.725778-.71731V-5.729514Z'/>
+<path id='ohr-fazni-diagram-g2-53' d='M.932503-3.0934C.932503-2.932005 .932503-2.833375 1.058032-2.833375C1.129763-2.833375 1.156663-2.86924 1.210461-2.949938C1.479452-3.326526 1.909838-3.541719 2.37609-3.541719C3.335492-3.541719 3.335492-2.160897 3.335492-1.838107C3.335492-1.560149 3.335492-1.004234 3.084433-.600747C2.842341-.224159 2.465753-.053798 2.116065-.053798C1.587049-.053798 .986301-.385554 .771108-1.049066C.780075-1.049066 .833873-1.031133 .896638-1.031133C1.075965-1.031133 1.33599-1.147696 1.33599-1.470486C1.33599-1.748443 1.13873-1.909838 .896638-1.909838C.708344-1.909838 .457285-1.802242 .457285-1.443587C.457285-.627646 1.13873 .19726 2.133998 .19726C3.218929 .19726 4.142466-.681445 4.142466-1.793275C4.142466-2.878207 3.371357-3.765878 2.394022-3.765878C1.963636-3.765878 1.524284-3.622416 1.210461-3.299626V-5.066002C1.479452-4.985305 1.75741-4.940473 2.035367-4.940473C3.138232-4.940473 3.783811-5.738481 3.783811-5.855044C3.783811-5.935741 3.730012-5.971606 3.685181-5.971606C3.667248-5.971606 3.649315-5.971606 3.568618-5.926775C3.147198-5.756413 2.734745-5.684682 2.358157-5.684682C1.972603-5.684682 1.569116-5.756413 1.156663-5.926775C1.066999-5.971606 1.049066-5.971606 1.0401-5.971606C.932503-5.971606 .932503-5.881943 .932503-5.729514V-3.0934Z'/>
+<path id='ohr-fazni-diagram-g2-56' d='M1.542217-4.070735C1.273225-4.241096 1.066999-4.483188 1.066999-4.814944C1.066999-5.397758 1.694645-5.747447 2.286426-5.747447C2.976837-5.747447 3.532752-5.263263 3.532752-4.635616S2.99477-3.595517 2.636115-3.38929L1.542217-4.070735ZM2.860274-3.245828C3.308593-3.461021 3.963138-3.90934 3.963138-4.635616C3.963138-5.478456 3.120299-5.971606 2.313325-5.971606C1.371856-5.971606 .636613-5.299128 .636613-4.474222C.636613-4.133499 .762142-3.81071 .977335-3.550685C1.129763-3.380324 1.183562-3.344458 1.703611-3.012702C.91457-2.636115 .385554-2.089166 .385554-1.353923C.385554-.403487 1.327024 .19726 2.295392 .19726C3.335492 .19726 4.214197-.537983 4.214197-1.506351C4.214197-2.37609 3.550685-2.806476 3.326526-2.949938C3.227895-3.021669 2.96787-3.183064 2.860274-3.245828ZM1.945704-2.860274L3.075467-2.160897C3.281694-2.026401 3.730012-1.739477 3.730012-1.192528C3.730012-.484184 3.012702-.053798 2.304359-.053798C1.524284-.053798 .869738-.609714 .869738-1.353923C.869738-1.999502 1.318057-2.537484 1.945704-2.860274Z'/>
+<path id='ohr-fazni-diagram-g2-57' d='M3.398257-2.824408V-2.627148C3.398257-.439352 2.402989-.053798 1.891905-.053798C1.685679-.053798 1.228394-.089664 .995268-.385554H1.031133C1.102864-.367621 1.452553-.439352 1.452553-.798007C1.452553-1.031133 1.291158-1.210461 1.0401-1.210461S.61868-1.049066 .61868-.780075C.61868-.188294 1.093898 .19726 1.900872 .19726C3.057534 .19726 4.214197-.986301 4.214197-2.949938C4.214197-5.379826 3.138232-5.971606 2.331258-5.971606C1.300125-5.971606 .385554-5.137733 .385554-3.963138C.385554-2.824408 1.210461-1.963636 2.223661-1.963636C2.878207-1.963636 3.236862-2.438854 3.398257-2.824408ZM2.241594-2.187796C2.098132-2.187796 1.65878-2.187796 1.371856-2.743711C1.201494-3.084433 1.201494-3.523786 1.201494-3.954172S1.201494-4.832877 1.389788-5.173599C1.65878-5.630884 2.008468-5.747447 2.331258-5.747447C2.940971-5.747447 3.183064-5.128767 3.218929-5.039103C3.344458-4.707347 3.380324-4.160399 3.380324-3.774844C3.380324-3.120299 3.084433-2.187796 2.241594-2.187796Z'/>
+<path id='ohr-fazni-diagram-g3-0' d='M6.56538-2.291407C6.734745-2.291407 6.914072-2.291407 6.914072-2.49066S6.734745-2.689913 6.56538-2.689913H1.175592C1.006227-2.689913 .826899-2.689913 .826899-2.49066S1.006227-2.291407 1.175592-2.291407H6.56538Z'/>
+<path id='ohr-fazni-diagram-g4-18' d='M4.533001-4.98132C4.533001-5.638854 4.353674-7.023661 3.337484-7.023661C1.952677-7.023661 .418431-4.214197 .418431-1.932752C.418431-.996264 .707347 .109589 1.613948 .109589C3.01868 .109589 4.533001-2.749689 4.533001-4.98132ZM1.474471-3.616438C1.643836-4.254047 1.843088-5.051059 2.241594-5.758406C2.510585-6.246575 2.879203-6.804483 3.327522-6.804483C3.815691-6.804483 3.875467-6.166874 3.875467-5.599004C3.875467-5.110834 3.795766-4.60274 3.556663-3.616438H1.474471ZM3.466999-3.297634C3.35741-2.839352 3.148194-1.992528 2.769614-1.275218C2.420922-.597758 2.042341-.109589 1.613948-.109589C1.285181-.109589 1.075965-.398506 1.075965-1.325031C1.075965-1.743462 1.135741-2.321295 1.39477-3.297634H3.466999Z'/>
+<path id='ohr-fazni-diagram-g4-25' d='M2.6401-3.716065H3.765878C3.437111-2.241594 3.347447-1.8132 3.347447-1.145704C3.347447-.996264 3.347447-.727273 3.427148-.388543C3.526775 .049813 3.636364 .109589 3.785803 .109589C3.985056 .109589 4.194271-.069738 4.194271-.268991C4.194271-.328767 4.194271-.348692 4.134496-.488169C3.845579-1.205479 3.845579-1.853051 3.845579-2.132005C3.845579-2.660025 3.915318-3.198007 4.024907-3.716065H5.160648C5.290162-3.716065 5.648817-3.716065 5.648817-4.054795C5.648817-4.293898 5.439601-4.293898 5.250311-4.293898H1.912827C1.693649-4.293898 1.315068-4.293898 .876712-3.825654C.52802-3.437111 .268991-2.978829 .268991-2.929016C.268991-2.919054 .268991-2.82939 .388543-2.82939C.468244-2.82939 .488169-2.86924 .547945-2.948941C1.036115-3.716065 1.613948-3.716065 1.8132-3.716065H2.381071C2.062267-2.510585 1.524284-1.305106 1.105853-.398506C1.026152-.249066 1.026152-.229141 1.026152-.159402C1.026152 .029888 1.185554 .109589 1.315068 .109589C1.613948 .109589 1.693649-.169365 1.8132-.537983C1.952677-.996264 1.952677-1.016189 2.082192-1.514321L2.6401-3.716065Z'/>
+<path id='ohr-fazni-diagram-g5-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='ohr-fazni-diagram-g5-52' d='M2.929016-1.643836V-.777086C2.929016-.418431 2.909091-.308842 2.171856-.308842H1.96264V0C2.371108-.029888 2.889166-.029888 3.307597-.029888S4.254047-.029888 4.662516 0V-.308842H4.4533C3.716065-.308842 3.696139-.418431 3.696139-.777086V-1.643836H4.692403V-1.952677H3.696139V-6.485679C3.696139-6.684932 3.696139-6.744707 3.536737-6.744707C3.447073-6.744707 3.417186-6.744707 3.337484-6.625156L.278954-1.952677V-1.643836H2.929016ZM2.988792-1.952677H.557908L2.988792-5.668742V-1.952677Z'/>
+<path id='ohr-fazni-diagram-g5-54' d='M1.315068-3.267746V-3.506849C1.315068-6.027397 2.550436-6.386052 3.058531-6.386052C3.297634-6.386052 3.716065-6.326276 3.935243-5.987547C3.785803-5.987547 3.387298-5.987547 3.387298-5.539228C3.387298-5.230386 3.626401-5.080946 3.845579-5.080946C4.004981-5.080946 4.303861-5.17061 4.303861-5.559153C4.303861-6.156912 3.865504-6.635118 3.038605-6.635118C1.763387-6.635118 .418431-5.349938 .418431-3.148194C.418431-.488169 1.574097 .219178 2.500623 .219178C3.606476 .219178 4.552927-.71731 4.552927-2.032379C4.552927-3.297634 3.666252-4.254047 2.560399-4.254047C1.882939-4.254047 1.514321-3.745953 1.315068-3.267746ZM2.500623-.059776C1.872976-.059776 1.574097-.657534 1.514321-.806974C1.334994-1.275218 1.334994-2.072229 1.334994-2.251557C1.334994-3.028643 1.653798-4.024907 2.550436-4.024907C2.709838-4.024907 3.16812-4.024907 3.476961-3.407223C3.656289-3.038605 3.656289-2.530511 3.656289-2.042341C3.656289-1.564134 3.656289-1.066002 3.486924-.707347C3.188045-.109589 2.729763-.059776 2.500623-.059776Z'/>
+<path id='ohr-fazni-diagram-g5-95' d='M1.912827-6.136986C1.912827-6.405978 1.683686-6.665006 1.384807-6.665006C1.046077-6.665006 .846824-6.386052 .846824-6.136986C.846824-5.867995 1.075965-5.608966 1.374844-5.608966C1.713574-5.608966 1.912827-5.88792 1.912827-6.136986Z'/>
+</defs>
+<g id='ohr-fazni-diagram-page1'>
+<g stroke-miterlimit='10' transform='translate(55.574554,38.332982)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<path d='M-127.75296 0H126.24579' fill='none'/>
+<g transform='translate(123.76933,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(134.23096,-3.47221)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(55.574554,38.332982)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='55.574554' y='38.332982' xlink:href='#ohr-fazni-diagram-g4-18'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-90.76431V90.11111' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,87.63466)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-2.48611,98.09628)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(55.574554,38.332982)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='57.49793' y='35.70394' xlink:href='#ohr-fazni-diagram-g5-95'/>
+<use x='55.574554' y='38.332982' xlink:href='#ohr-fazni-diagram-g4-18'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M-98.33249 1.9919V-1.9919' fill='none'/>
+<g transform='translate(-105.25092,-11.4582)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(55.574554,38.332982)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='55.574554' y='38.332982' xlink:href='#ohr-fazni-diagram-g3-0'/>
+<use x='63.323302' y='38.332982' xlink:href='#ohr-fazni-diagram-g4-25'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M98.33249 1.9919V-1.9919' fill='none'/>
+<g transform='translate(95.30296,-9.93042)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(55.574554,38.332982)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='55.574554' y='38.332982' xlink:href='#ohr-fazni-diagram-g4-25'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M1.9919-71.70103H-1.9919' fill='none'/>
+<g transform='translate(-18.40268,-74.50659)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(55.574554,38.332982)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='55.574554' y='38.332982' xlink:href='#ohr-fazni-diagram-g3-0'/>
+<use x='63.323302' y='38.332982' xlink:href='#ohr-fazni-diagram-g5-54'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M1.9919-47.8004H-1.9919' fill='none'/>
+<g transform='translate(-18.40268,-50.60596)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(55.574554,38.332982)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='55.574554' y='38.332982' xlink:href='#ohr-fazni-diagram-g3-0'/>
+<use x='63.323302' y='38.332982' xlink:href='#ohr-fazni-diagram-g5-52'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M1.9919-23.90019H-1.9919' fill='none'/>
+<g transform='translate(-18.40268,-26.70575)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(55.574554,38.332982)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='55.574554' y='38.332982' xlink:href='#ohr-fazni-diagram-g3-0'/>
+<use x='63.323302' y='38.332982' xlink:href='#ohr-fazni-diagram-g5-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M1.9919 23.90019H-1.9919' fill='none'/>
+<g transform='translate(-10.62488,20.67798)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(55.574554,38.332982)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='55.574554' y='38.332982' xlink:href='#ohr-fazni-diagram-g5-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M1.9919 47.8004H-1.9919' fill='none'/>
+<g transform='translate(-10.62488,44.57819)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(55.574554,38.332982)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='55.574554' y='38.332982' xlink:href='#ohr-fazni-diagram-g5-52'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M1.9919 71.70103H-1.9919' fill='none'/>
+<g transform='translate(-10.62488,68.47882)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(55.574554,38.332982)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='55.574554' y='38.332982' xlink:href='#ohr-fazni-diagram-g5-54'/>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.7'>
+<path d='M-12.80363 0L-12.66167 2.39001L-12.49062 3.35732L-12.31999 4.0971L-12.1776 4.72316L-12.00697 5.26369L-11.83635 5.74733L-11.69394 6.1741L-11.52332 6.60088L-11.38092 6.97078L-11.2103 7.31245L-11.03967 7.6537L-10.89726 7.96672L-10.72664 8.27975L-10.55603 8.56412L-10.41362 8.82027L-10.243 9.07643L-10.07237 9.33258L-9.92998 9.56007L-9.75935 9.78757L-9.61694 10.0155L-9.44632 10.243L-9.2757 10.44228L-9.1333 10.64111L-8.96268 10.81218L-8.79205 11.01102L-8.64966 11.18207L-8.47903 11.35269L-8.33662 11.52332L-8.166 11.69394L-7.99538 11.83635L-7.85298 11.97874L-7.68236 12.14937L-7.51173 12.29178L-7.36932 12.40552L-7.1987 12.54749L-7.0563 12.6899L-6.88568 12.80363L-6.71463 12.91739L-6.57266 13.03114L-6.40204 13.14532L-6.23097 13.25906L-6.089 13.37282L-5.91795 13.45834L-5.77599 13.5721L-5.60536 13.65718L-5.4343 13.74272L-5.29233 13.8278L-5.12128 13.91335L-4.95065 13.99887L-4.80869 14.08397L-4.63763 14.1695L-4.49567 14.22636L-4.3246 14.31189L-4.15398 14.36876L-4.01201 14.42564L-3.84096 14.51074L-3.67033 14.56761L-3.52792 14.62492L-3.35732 14.6818L-3.21535 14.71L-3.04428 14.76689L-2.87366 14.82376L-2.73126 14.85242L-2.56064 14.90929L-2.39001 14.93752L-2.2476 14.96616L-2.07698 14.99438L-1.93459 15.02304L-1.76396 15.0517L-1.59334 15.07991L-1.45094 15.10857L-1.28032 15.13678H-1.1097L-.96729 15.16544L-.79666 15.19366H-.65427H-.48364H-.31302L-.17061 15.22232H0H.17061L.31302 15.19366H.48364H.65427H.79666L.96729 15.16544L1.1097 15.13678H1.28032L1.45094 15.10857L1.59334 15.07991L1.76396 15.0517L1.93459 15.02304L2.07698 14.99438L2.2476 14.96616L2.39001 14.93752L2.56064 14.90929L2.73126 14.85242L2.87366 14.82376L3.04428 14.76689L3.21535 14.71L3.35732 14.6818L3.52792 14.62492L3.67033 14.56761L3.84096 14.51074L4.01201 14.42564L4.15398 14.36876L4.3246 14.31189L4.49567 14.22636L4.63763 14.1695L4.80869 14.08397L4.95065 13.99887L5.12128 13.91335L5.29233 13.8278L5.4343 13.74272L5.60536 13.65718L5.77599 13.5721L5.91795 13.45834L6.089 13.37282L6.23097 13.25906L6.40204 13.14532L6.57266 13.03114L6.71463 12.91739L6.88568 12.80363L7.0563 12.6899L7.1987 12.54749L7.36932 12.40552L7.51173 12.29178L7.68236 12.14937L7.85298 11.97874L7.99538 11.83635L8.166 11.69394L8.33662 11.52332L8.47903 11.35269L8.64966 11.18207L8.79205 11.01102L8.96268 10.81218L9.1333 10.64111L9.2757 10.44228L9.44632 10.243L9.61694 10.0155L9.75935 9.78757L9.92998 9.56007L10.07237 9.33258L10.243 9.07643L10.41362 8.82027L10.55603 8.56412L10.72664 8.27975L10.89726 7.96672L11.03967 7.6537L11.2103 7.31245L11.38092 6.97078L11.52332 6.60088L11.69394 6.1741L11.83635 5.74733L12.00697 5.26369L12.1776 4.72316L12.31999 4.0971L12.49062 3.35732L12.66167 2.39001L12.80363 0L12.66167-2.39001L12.49062-3.35732L12.31999-4.0971L12.1776-4.72316L12.00697-5.26369L11.83635-5.74733L11.69394-6.1741L11.52332-6.60088L11.38092-6.97078L11.2103-7.31245L11.03967-7.6537L10.89726-7.96672L10.72664-8.27975L10.55603-8.56412L10.41362-8.82027L10.243-9.07643L10.07237-9.33258L9.92998-9.56007L9.75935-9.78757L9.61694-10.0155L9.44632-10.243L9.2757-10.44228L9.1333-10.64111L8.96268-10.81218L8.79205-11.01102L8.64966-11.18207L8.47903-11.35269L8.33662-11.52332L8.166-11.69394L7.99538-11.83635L7.85298-11.97874L7.68236-12.14937L7.51173-12.29178L7.36932-12.40552L7.1987-12.54749L7.0563-12.6899L6.88568-12.80363L6.71463-12.91739L6.57266-13.03114L6.40204-13.14532L6.23097-13.25906L6.089-13.37282L5.91795-13.45834L5.77599-13.5721L5.60536-13.65718L5.4343-13.74272L5.29233-13.8278L5.12128-13.91335L4.95065-13.99887L4.80869-14.08397L4.63763-14.1695L4.49567-14.22636L4.3246-14.31189L4.15398-14.36876L4.01201-14.42564L3.84096-14.51074L3.67033-14.56761L3.52792-14.62492L3.35732-14.6818L3.21535-14.71L3.04428-14.76689L2.87366-14.82376L2.73126-14.85242L2.56064-14.90929L2.39001-14.93752L2.2476-14.96616L2.07698-14.99438L1.93459-15.02304L1.76396-15.0517L1.59334-15.07991L1.45094-15.10857L1.28032-15.13678H1.1097L.96729-15.16544L.79666-15.19366H.65427H.48364H.31302L.17061-15.22232H0H-.17061L-.31302-15.19366H-.48364H-.65427H-.79666L-.96729-15.16544L-1.1097-15.13678H-1.28032L-1.45094-15.10857L-1.59334-15.07991L-1.76396-15.0517L-1.93459-15.02304L-2.07698-14.99438L-2.2476-14.96616L-2.39001-14.93752L-2.56064-14.90929L-2.73126-14.85242L-2.87366-14.82376L-3.04428-14.76689L-3.21535-14.71L-3.35732-14.6818L-3.52792-14.62492L-3.67033-14.56761L-3.84096-14.51074L-4.01201-14.42564L-4.15398-14.36876L-4.3246-14.31189L-4.49567-14.22636L-4.63763-14.1695L-4.80869-14.08397L-4.95065-13.99887L-5.12128-13.91335L-5.29233-13.8278L-5.4343-13.74272L-5.60536-13.65718L-5.77599-13.5721L-5.91795-13.45834L-6.089-13.37282L-6.23097-13.25906L-6.40204-13.14532L-6.57266-13.03114L-6.71463-12.91739L-6.88568-12.80363L-7.0563-12.6899L-7.1987-12.54749L-7.36932-12.40552L-7.51173-12.29178L-7.68236-12.14937L-7.85298-11.97874L-7.99538-11.83635L-8.166-11.69394L-8.33662-11.52332L-8.47903-11.35269L-8.64966-11.18207L-8.79205-11.01102L-8.96268-10.81218L-9.1333-10.64111L-9.2757-10.44228L-9.44632-10.243L-9.61694-10.0155L-9.75935-9.78757L-9.92998-9.56007L-10.07237-9.33258L-10.243-9.07643L-10.41362-8.82027L-10.55603-8.56412L-10.72664-8.27975L-10.89726-7.96672L-11.03967-7.6537L-11.2103-7.31245L-11.38092-6.97078L-11.52332-6.60088L-11.69394-6.1741L-11.83635-5.74733L-12.00697-5.26369L-12.1776-4.72316L-12.31999-4.0971L-12.49062-3.35732L-12.66167-2.39001L-12.80363 0' fill='none'/>
+</g>
+<g stroke-width='0.7'>
+<path d='M-32.4361 0L-32.00932 5.5767L-31.61078 7.8812L-31.21266 9.61694L-30.8141 11.09654L-30.38733 12.37686L-29.98921 13.51521L-29.59065 14.56761L-29.19254 15.53534L-28.76576 16.44576L-28.3672 17.29932L-27.96909 18.09598L-27.57054 18.864L-27.14375 19.57558L-26.74564 20.28673L-26.34709 20.941L-25.94897 21.56705L-25.52219 22.1931L-25.12364 22.76227L-24.72552 23.33145L-24.32697 23.87198L-23.90019 24.38383L-23.50208 24.89615L-23.10352 25.37979L-22.7054 25.86343L-22.27863 26.31886L-21.88007 26.77386L-21.48195 27.20064L-21.0834 27.59918L-20.65663 27.99731L-20.2585 28.39586L-19.85995 28.79398L-19.46184 29.16388L-19.06328 29.50555L-18.6365 29.8468L-18.23839 30.18849L-17.83983 30.50151L-17.44171 30.84276L-17.01494 31.12712L-16.61638 31.44016L-16.21826 31.72496L-15.81972 32.00932L-15.39294 32.26547L-14.99438 32.52164L-14.59627 32.77734L-14.19771 33.0335L-13.77094 33.26143L-13.37282 33.48892L-12.97426 33.71643L-12.57614 33.9157L-12.14937 34.1432L-11.75081 34.34247L-11.35269 34.51309L-10.95415 34.71237L-10.52737 34.883L-10.12924 35.05362L-9.7307 35.19603L-9.33258 35.36664L-8.9058 35.50905L-8.50725 35.65144L-8.10913 35.79341L-7.71057 35.90717L-7.2838 36.02135L-6.88568 36.1351L-6.48712 36.24884L-6.089 36.33394L-5.66223 36.44812L-5.26369 36.53322L-4.86555 36.61874L-4.46701 36.67561L-4.04024 36.76115L-3.64212 36.81802L-3.24356 36.8749L-2.84544 36.90312L-2.41867 36.95999L-2.02011 36.98865L-1.622 37.01686L-1.22343 37.04552H-.79666L-.39854 37.07375H0H.39854L.79666 37.04552H1.22343L1.622 37.01686L2.02011 36.98865L2.41867 36.95999L2.84544 36.90312L3.24356 36.8749L3.64212 36.81802L4.04024 36.76115L4.46701 36.67561L4.86555 36.61874L5.26369 36.53322L5.66223 36.44812L6.089 36.33394L6.48712 36.24884L6.88568 36.1351L7.2838 36.02135L7.71057 35.90717L8.10913 35.79341L8.50725 35.65144L8.9058 35.50905L9.33258 35.36664L9.7307 35.19603L10.12924 35.05362L10.52737 34.883L10.95415 34.71237L11.35269 34.51309L11.75081 34.34247L12.14937 34.1432L12.57614 33.9157L12.97426 33.71643L13.37282 33.48892L13.77094 33.26143L14.19771 33.0335L14.59627 32.77734L14.99438 32.52164L15.39294 32.26547L15.81972 32.00932L16.21826 31.72496L16.61638 31.44016L17.01494 31.12712L17.44171 30.84276L17.83983 30.50151L18.23839 30.18849L18.6365 29.8468L19.06328 29.50555L19.46184 29.16388L19.85995 28.79398L20.2585 28.39586L20.65663 27.99731L21.0834 27.59918L21.48195 27.20064L21.88007 26.77386L22.27863 26.31886L22.7054 25.86343L23.10352 25.37979L23.50208 24.89615L23.90019 24.38383L24.32697 23.87198L24.72552 23.33145L25.12364 22.76227L25.52219 22.1931L25.94897 21.56705L26.34709 20.941L26.74564 20.28673L27.14375 19.57558L27.57054 18.864L27.96909 18.09598L28.3672 17.29932L28.76576 16.44576L29.19254 15.53534L29.59065 14.56761L29.98921 13.51521L30.38733 12.37686L30.8141 11.09654L31.21266 9.61694L31.61078 7.8812L32.00932 5.5767L32.4361 0L32.00932-5.5767L31.61078-7.8812L31.21266-9.61694L30.8141-11.09654L30.38733-12.37686L29.98921-13.51521L29.59065-14.56761L29.19254-15.53534L28.76576-16.44576L28.3672-17.29932L27.96909-18.09598L27.57054-18.864L27.14375-19.57558L26.74564-20.28673L26.34709-20.941L25.94897-21.56705L25.52219-22.1931L25.12364-22.76227L24.72552-23.33145L24.32697-23.87198L23.90019-24.38383L23.50208-24.89615L23.10352-25.37979L22.7054-25.86343L22.27863-26.31886L21.88007-26.77386L21.48195-27.20064L21.0834-27.59918L20.65663-27.99731L20.2585-28.39586L19.85995-28.79398L19.46184-29.16388L19.06328-29.50555L18.6365-29.8468L18.23839-30.18849L17.83983-30.50151L17.44171-30.84276L17.01494-31.12712L16.61638-31.44016L16.21826-31.72496L15.81972-32.00932L15.39294-32.26547L14.99438-32.52164L14.59627-32.77734L14.19771-33.0335L13.77094-33.26143L13.37282-33.48892L12.97426-33.71643L12.57614-33.9157L12.14937-34.1432L11.75081-34.34247L11.35269-34.51309L10.95415-34.71237L10.52737-34.883L10.12924-35.05362L9.7307-35.19603L9.33258-35.36664L8.9058-35.50905L8.50725-35.65144L8.10913-35.79341L7.71057-35.90717L7.2838-36.02135L6.88568-36.1351L6.48712-36.24884L6.089-36.33394L5.66223-36.44812L5.26369-36.53322L4.86555-36.61874L4.46701-36.67561L4.04024-36.76115L3.64212-36.81802L3.24356-36.8749L2.84544-36.90312L2.41867-36.95999L2.02011-36.98865L1.622-37.01686L1.22343-37.04552H.79666L.39854-37.07375H0H-.39854L-.79666-37.04552H-1.22343L-1.622-37.01686L-2.02011-36.98865L-2.41867-36.95999L-2.84544-36.90312L-3.24356-36.8749L-3.64212-36.81802L-4.04024-36.76115L-4.46701-36.67561L-4.86555-36.61874L-5.26369-36.53322L-5.66223-36.44812L-6.089-36.33394L-6.48712-36.24884L-6.88568-36.1351L-7.2838-36.02135L-7.71057-35.90717L-8.10913-35.79341L-8.50725-35.65144L-8.9058-35.50905L-9.33258-35.36664L-9.7307-35.19603L-10.12924-35.05362L-10.52737-34.883L-10.95415-34.71237L-11.35269-34.51309L-11.75081-34.34247L-12.14937-34.1432L-12.57614-33.9157L-12.97426-33.71643L-13.37282-33.48892L-13.77094-33.26143L-14.19771-33.0335L-14.59627-32.77734L-14.99438-32.52164L-15.39294-32.26547L-15.81972-32.00932L-16.21826-31.72496L-16.61638-31.44016L-17.01494-31.12712L-17.44171-30.84276L-17.83983-30.50151L-18.23839-30.18849L-18.6365-29.8468L-19.06328-29.50555L-19.46184-29.16388L-19.85995-28.79398L-20.2585-28.39586L-20.65663-27.99731L-21.0834-27.59918L-21.48195-27.20064L-21.88007-26.77386L-22.27863-26.31886L-22.7054-25.86343L-23.10352-25.37979L-23.50208-24.89615L-23.90019-24.38383L-24.32697-23.87198L-24.72552-23.33145L-25.12364-22.76227L-25.52219-22.1931L-25.94897-21.56705L-26.34709-20.941L-26.74564-20.28673L-27.14375-19.57558L-27.57054-18.864L-27.96909-18.09598L-28.3672-17.29932L-28.76576-16.44576L-29.19254-15.53534L-29.59065-14.56761L-29.98921-13.51521L-30.38733-12.37686L-30.8141-11.09654L-31.21266-9.61694L-31.61078-7.8812L-32.00932-5.5767L-32.4361 0' fill='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.0'>
+<path d='M-49.16624 0L-48.54019 7.42621L-47.9428 10.49915L-47.31674 12.83229L-46.69113 14.82376L-46.09329 16.55951L-45.46768 18.15286L-44.86986 19.6038L-44.2438 20.941L-43.61818 22.1931L-43.02036 23.38832L-42.39473 24.49759L-41.7969 25.57907L-41.1713 26.60324L-40.54524 27.57054L-39.94785 28.50961L-39.3218 29.42003L-38.72397 30.30223L-38.09834 31.12712L-37.50052 31.95245L-36.8749 32.74913L-36.24884 33.51715L-35.65144 34.25694L-35.0254 34.96852L-34.42801 35.65144L-33.80196 36.33394L-33.1759 36.98865L-32.5785 37.64291L-31.95245 38.26897L-31.35506 38.86636L-30.729 39.46376L-30.10295 40.03294L-29.50555 40.57346L-28.87952 41.11441L-28.28212 41.65494L-27.65607 42.16681L-27.03001 42.65045L-26.43262 43.13454L-25.80656 43.61818L-25.20917 44.07318L-24.58311 44.49995L-23.95706 44.95538L-23.35966 45.3535L-22.73363 45.75206L-22.13623 46.15018L-21.51018 46.54872L-20.88412 46.91862L-20.28673 47.25987L-19.66068 47.60155L-19.06328 47.9428L-18.43723 48.25581L-17.81161 48.56885L-17.21378 48.88187L-16.58772 49.16624L-15.99033 49.45105L-15.36429 49.70677L-14.73866 49.96292L-14.14084 50.21907L-13.51521 50.44656L-12.91739 50.6745L-12.29178 50.87334L-11.66573 51.07262L-11.06833 51.2719L-10.44228 51.44252L-9.84444 51.61314L-9.21883 51.7842L-8.59277 51.92616L-7.99538 52.06856L-7.36932 52.18231L-6.77193 52.32472L-6.14589 52.4098L-5.51984 52.52356L-4.92244 52.60909L-4.29639 52.69461L-3.69899 52.7515L-3.07294 52.80836L-2.44688 52.83658L-1.84949 52.89346L-1.22343 52.92212H-.62604H0H.62604H1.22343L1.84949 52.89346L2.44688 52.83658L3.07294 52.80836L3.69899 52.7515L4.29639 52.69461L4.92244 52.60909L5.51984 52.52356L6.14589 52.4098L6.77193 52.32472L7.36932 52.18231L7.99538 52.06856L8.59277 51.92616L9.21883 51.7842L9.84444 51.61314L10.44228 51.44252L11.06833 51.2719L11.66573 51.07262L12.29178 50.87334L12.91739 50.6745L13.51521 50.44656L14.14084 50.21907L14.73866 49.96292L15.36429 49.70677L15.99033 49.45105L16.58772 49.16624L17.21378 48.88187L17.81161 48.56885L18.43723 48.25581L19.06328 47.9428L19.66068 47.60155L20.28673 47.25987L20.88412 46.91862L21.51018 46.54872L22.13623 46.15018L22.73363 45.75206L23.35966 45.3535L23.95706 44.95538L24.58311 44.49995L25.20917 44.07318L25.80656 43.61818L26.43262 43.13454L27.03001 42.65045L27.65607 42.16681L28.28212 41.65494L28.87952 41.11441L29.50555 40.57346L30.10295 40.03294L30.729 39.46376L31.35506 38.86636L31.95245 38.26897L32.5785 37.64291L33.1759 36.98865L33.80196 36.33394L34.42801 35.65144L35.0254 34.96852L35.65144 34.25694L36.24884 33.51715L36.8749 32.74913L37.50052 31.95245L38.09834 31.12712L38.72397 30.30223L39.3218 29.42003L39.94785 28.50961L40.54524 27.57054L41.1713 26.60324L41.7969 25.57907L42.39473 24.49759L43.02036 23.38832L43.61818 22.1931L44.2438 20.941L44.86986 19.6038L45.46768 18.15286L46.09329 16.55951L46.69113 14.82376L47.31674 12.83229L47.9428 10.49915L48.54019 7.42621L49.16624 0L48.54019-7.42621L47.9428-10.49915L47.31674-12.83229L46.69113-14.82376L46.09329-16.55951L45.46768-18.15286L44.86986-19.6038L44.2438-20.941L43.61818-22.1931L43.02036-23.38832L42.39473-24.49759L41.7969-25.57907L41.1713-26.60324L40.54524-27.57054L39.94785-28.50961L39.3218-29.42003L38.72397-30.30223L38.09834-31.12712L37.50052-31.95245L36.8749-32.74913L36.24884-33.51715L35.65144-34.25694L35.0254-34.96852L34.42801-35.65144L33.80196-36.33394L33.1759-36.98865L32.5785-37.64291L31.95245-38.26897L31.35506-38.86636L30.729-39.46376L30.10295-40.03294L29.50555-40.57346L28.87952-41.11441L28.28212-41.65494L27.65607-42.16681L27.03001-42.65045L26.43262-43.13454L25.80656-43.61818L25.20917-44.07318L24.58311-44.49995L23.95706-44.95538L23.35966-45.3535L22.73363-45.75206L22.13623-46.15018L21.51018-46.54872L20.88412-46.91862L20.28673-47.25987L19.66068-47.60155L19.06328-47.9428L18.43723-48.25581L17.81161-48.56885L17.21378-48.88187L16.58772-49.16624L15.99033-49.45105L15.36429-49.70677L14.73866-49.96292L14.14084-50.21907L13.51521-50.44656L12.91739-50.6745L12.29178-50.87334L11.66573-51.07262L11.06833-51.2719L10.44228-51.44252L9.84444-51.61314L9.21883-51.7842L8.59277-51.92616L7.99538-52.06856L7.36932-52.18231L6.77193-52.32472L6.14589-52.4098L5.51984-52.52356L4.92244-52.60909L4.29639-52.69461L3.69899-52.7515L3.07294-52.80836L2.44688-52.83658L1.84949-52.89346L1.22343-52.92212H.62604H0H-.62604H-1.22343L-1.84949-52.89346L-2.44688-52.83658L-3.07294-52.80836L-3.69899-52.7515L-4.29639-52.69461L-4.92244-52.60909L-5.51984-52.52356L-6.14589-52.4098L-6.77193-52.32472L-7.36932-52.18231L-7.99538-52.06856L-8.59277-51.92616L-9.21883-51.7842L-9.84444-51.61314L-10.44228-51.44252L-11.06833-51.2719L-11.66573-51.07262L-12.29178-50.87334L-12.91739-50.6745L-13.51521-50.44656L-14.14084-50.21907L-14.73866-49.96292L-15.36429-49.70677L-15.99033-49.45105L-16.58772-49.16624L-17.21378-48.88187L-17.81161-48.56885L-18.43723-48.25581L-19.06328-47.9428L-19.66068-47.60155L-20.28673-47.25987L-20.88412-46.91862L-21.51018-46.54872L-22.13623-46.15018L-22.73363-45.75206L-23.35966-45.3535L-23.95706-44.95538L-24.58311-44.49995L-25.20917-44.07318L-25.80656-43.61818L-26.43262-43.13454L-27.03001-42.65045L-27.65607-42.16681L-28.28212-41.65494L-28.87952-41.11441L-29.50555-40.57346L-30.10295-40.03294L-30.729-39.46376L-31.35506-38.86636L-31.95245-38.26897L-32.5785-37.64291L-33.1759-36.98865L-33.80196-36.33394L-34.42801-35.65144L-35.0254-34.96852L-35.65144-34.25694L-36.24884-33.51715L-36.8749-32.74913L-37.50052-31.95245L-38.09834-31.12712L-38.72397-30.30223L-39.3218-29.42003L-39.94785-28.50961L-40.54524-27.57054L-41.1713-26.60324L-41.7969-25.57907L-42.39473-24.49759L-43.02036-23.38832L-43.61818-22.1931L-44.2438-20.941L-44.86986-19.6038L-45.46768-18.15286L-46.09329-16.55951L-46.69113-14.82376L-47.31674-12.83229L-47.9428-10.49915L-48.54019-7.42621L-49.16624 0' fill='none'/>
+</g>
+</g>
+<g stroke-width='0.7'>
+<path d='M-65.89638 0L-65.07149 7.99538L-64.24615 11.35269L-63.42126 13.94199L-62.59595 16.16095L-61.77104 18.1242L-60.94572 19.91682L-60.14905 21.5957L-59.32416 23.13217L-58.49883 24.61177L-57.6735 26.00584L-56.8486 27.34303L-56.02328 28.62335L-55.19838 29.8468L-54.37306 31.04204L-53.54816 32.2086L-52.72284 33.3183L-51.89795 34.39935L-51.07262 35.45218L-50.24773 36.47635L-49.4224 37.47229L-48.59706 38.43959L-47.77217 39.40689L-46.94684 40.31775L-46.12195 41.22816L-45.29663 42.10992L-44.47173 42.96349L-43.64641 43.7888L-42.84973 44.6137L-42.02484 45.41037L-41.19951 46.20705L-40.37462 46.94684L-39.54929 47.7153L-38.72397 48.42644L-37.89906 49.13802L-37.07375 49.84917L-36.24884 50.50343L-35.42352 51.18637L-34.59863 51.81241L-33.7733 52.43846L-32.94841 53.06451L-32.12308 53.66191L-31.29819 54.2311L-30.47285 54.79984L-29.64796 55.34079L-28.82263 55.8813L-27.99731 56.39317L-27.17241 56.90549L-26.34709 57.38913L-25.55042 57.87277L-24.72552 58.3282L-23.90019 58.75497L-23.0753 59.18175L-22.24997 59.60852L-21.42508 59.97842L-20.59975 60.37654L-19.77486 60.74644L-18.94952 61.08812L-18.1242 61.42937L-17.29932 61.7424L-16.47398 62.05542L-15.6491 62.33978L-14.82376 62.62459L-13.99887 62.88075L-13.17354 63.13646L-12.34865 63.3644L-11.52332 63.56323L-10.69843 63.79117L-9.8731 63.96179L-9.04778 64.13242L-8.2511 64.30304L-7.42621 64.44543L-6.60088 64.55919L-5.77599 64.67294L-4.95065 64.75847L-4.12576 64.844L-3.30043 64.9291L-2.47554 64.95775L-1.6502 65.01462L-.82532 65.04283H0H.82532L1.6502 65.01462L2.47554 64.95775L3.30043 64.9291L4.12576 64.844L4.95065 64.75847L5.77599 64.67294L6.60088 64.55919L7.42621 64.44543L8.2511 64.30304L9.04778 64.13242L9.8731 63.96179L10.69843 63.79117L11.52332 63.56323L12.34865 63.3644L13.17354 63.13646L13.99887 62.88075L14.82376 62.62459L15.6491 62.33978L16.47398 62.05542L17.29932 61.7424L18.1242 61.42937L18.94952 61.08812L19.77486 60.74644L20.59975 60.37654L21.42508 59.97842L22.24997 59.60852L23.0753 59.18175L23.90019 58.75497L24.72552 58.3282L25.55042 57.87277L26.34709 57.38913L27.17241 56.90549L27.99731 56.39317L28.82263 55.8813L29.64796 55.34079L30.47285 54.79984L31.29819 54.2311L32.12308 53.66191L32.94841 53.06451L33.7733 52.43846L34.59863 51.81241L35.42352 51.18637L36.24884 50.50343L37.07375 49.84917L37.89906 49.13802L38.72397 48.42644L39.54929 47.7153L40.37462 46.94684L41.19951 46.20705L42.02484 45.41037L42.84973 44.6137L43.64641 43.7888L44.47173 42.96349L45.29663 42.10992L46.12195 41.22816L46.94684 40.31775L47.77217 39.40689L48.59706 38.43959L49.4224 37.47229L50.24773 36.47635L51.07262 35.45218L51.89795 34.39935L52.72284 33.3183L53.54816 32.2086L54.37306 31.04204L55.19838 29.8468L56.02328 28.62335L56.8486 27.34303L57.6735 26.00584L58.49883 24.61177L59.32416 23.13217L60.14905 21.5957L60.94572 19.91682L61.77104 18.1242L62.59595 16.16095L63.42126 13.94199L64.24615 11.35269L65.07149 7.99538L65.89638 0L65.07149-7.99538L64.24615-11.35269L63.42126-13.94199L62.59595-16.16095L61.77104-18.1242L60.94572-19.91682L60.14905-21.5957L59.32416-23.13217L58.49883-24.61177L57.6735-26.00584L56.8486-27.34303L56.02328-28.62335L55.19838-29.8468L54.37306-31.04204L53.54816-32.2086L52.72284-33.3183L51.89795-34.39935L51.07262-35.45218L50.24773-36.47635L49.4224-37.47229L48.59706-38.43959L47.77217-39.40689L46.94684-40.31775L46.12195-41.22816L45.29663-42.10992L44.47173-42.96349L43.64641-43.7888L42.84973-44.6137L42.02484-45.41037L41.19951-46.20705L40.37462-46.94684L39.54929-47.7153L38.72397-48.42644L37.89906-49.13802L37.07375-49.84917L36.24884-50.50343L35.42352-51.18637L34.59863-51.81241L33.7733-52.43846L32.94841-53.06451L32.12308-53.66191L31.29819-54.2311L30.47285-54.79984L29.64796-55.34079L28.82263-55.8813L27.99731-56.39317L27.17241-56.90549L26.34709-57.38913L25.55042-57.87277L24.72552-58.3282L23.90019-58.75497L23.0753-59.18175L22.24997-59.60852L21.42508-59.97842L20.59975-60.37654L19.77486-60.74644L18.94952-61.08812L18.1242-61.42937L17.29932-61.7424L16.47398-62.05542L15.6491-62.33978L14.82376-62.62459L13.99887-62.88075L13.17354-63.13646L12.34865-63.3644L11.52332-63.56323L10.69843-63.79117L9.8731-63.96179L9.04778-64.13242L8.2511-64.30304L7.42621-64.44543L6.60088-64.55919L5.77599-64.67294L4.95065-64.75847L4.12576-64.844L3.30043-64.9291L2.47554-64.95775L1.6502-65.01462L.82532-65.04283H0H-.82532L-1.6502-65.01462L-2.47554-64.95775L-3.30043-64.9291L-4.12576-64.844L-4.95065-64.75847L-5.77599-64.67294L-6.60088-64.55919L-7.42621-64.44543L-8.2511-64.30304L-9.04778-64.13242L-9.8731-63.96179L-10.69843-63.79117L-11.52332-63.56323L-12.34865-63.3644L-13.17354-63.13646L-13.99887-62.88075L-14.82376-62.62459L-15.6491-62.33978L-16.47398-62.05542L-17.29932-61.7424L-18.1242-61.42937L-18.94952-61.08812L-19.77486-60.74644L-20.59975-60.37654L-21.42508-59.97842L-22.24997-59.60852L-23.0753-59.18175L-23.90019-58.75497L-24.72552-58.3282L-25.55042-57.87277L-26.34709-57.38913L-27.17241-56.90549L-27.99731-56.39317L-28.82263-55.8813L-29.64796-55.34079L-30.47285-54.79984L-31.29819-54.2311L-32.12308-53.66191L-32.94841-53.06451L-33.7733-52.43846L-34.59863-51.81241L-35.42352-51.18637L-36.24884-50.50343L-37.07375-49.84917L-37.89906-49.13802L-38.72397-48.42644L-39.54929-47.7153L-40.37462-46.94684L-41.19951-46.20705L-42.02484-45.41037L-42.84973-44.6137L-43.64641-43.7888L-44.47173-42.96349L-45.29663-42.10992L-46.12195-41.22816L-46.94684-40.31775L-47.77217-39.40689L-48.59706-38.43959L-49.4224-37.47229L-50.24773-36.47635L-51.07262-35.45218L-51.89795-34.39935L-52.72284-33.3183L-53.54816-32.2086L-54.37306-31.04204L-55.19838-29.8468L-56.02328-28.62335L-56.8486-27.34303L-57.6735-26.00584L-58.49883-24.61177L-59.32416-23.13217L-60.14905-21.5957L-60.94572-19.91682L-61.77104-18.1242L-62.59595-16.16095L-63.42126-13.94199L-64.24615-11.35269L-65.07149-7.99538L-65.89638 0' fill='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M-98.33249 0L-97.5076 .96729L-96.68227 1.96324L-95.85738 2.93054L-95.0607 3.92648L-94.23538 4.89378L-93.41049 5.86108L-92.58516 6.85703L-91.76027 7.82433L-90.9636 8.79205L-90.13826 9.75935L-89.31337 10.7553L-88.48804 11.7226L-87.66272 12.6899L-86.86604 13.62897L-86.04115 14.59627L-85.21582 15.56355L-84.39093 16.53085L-83.5656 17.46992L-82.76892 18.43723L-81.94403 19.3763L-81.1187 20.31538L-80.29381 21.25403L-79.46849 22.1931L-78.67181 23.13217L-77.84648 24.07082L-77.02159 24.98167L-76.19626 25.92032L-75.37137 26.83073L-74.57469 27.7416L-73.74937 28.65201L-72.92447 29.56244L-72.09915 30.44464L-71.27425 31.3264L-70.47758 32.23683L-69.65225 33.11903L-68.82736 33.97258L-68.00203 34.85478L-67.17671 35.70833L-66.38004 36.59009L-65.55515 37.41542L-64.72981 38.26897L-63.90492 39.12251L-63.07959 39.94785L-62.28291 40.77274L-61.45802 41.59807L-60.63269 42.39473L-59.8078 43.1914L-58.98247 43.98808L-58.1858 44.78476L-57.3609 45.58144L-56.53558 46.34944L-55.71025 47.1179L-54.88536 47.8577L-54.08868 48.62572L-53.26335 49.36552L-52.43846 50.07666L-51.61314 50.81647L-50.78824 51.52805L-49.99158 52.23918L-49.16624 52.92212L-48.34135 53.63326L-47.51602 54.28796L-46.69113 54.97089L-45.89445 55.62515L-45.06912 56.27943L-44.2438 56.93413L-43.4189 57.55975L-42.59358 58.1858L-41.7969 58.7832L-40.97202 59.38103L-40.14668 59.97842L-39.3218 60.5476L-38.52512 61.145L-37.69978 61.68552L-36.8749 62.2547L-36.04958 62.79521L-35.22467 63.30753L-34.42801 63.81938L-33.60268 64.3317L-32.77734 64.81534L-31.95245 65.29898L-31.12712 65.78264L-30.33046 66.23807L-29.50555 66.69305L-28.68024 67.14848L-27.85535 67.57526L-27.03001 67.97382L-26.23334 68.37193L-25.40845 68.7705L-24.58311 69.16861L-23.75822 69.5385L-22.93289 69.87975L-22.13623 70.22144L-21.3109 70.56267L-20.48601 70.8757L-19.66068 71.18872L-18.83578 71.50175L-18.03911 71.78612L-17.21378 72.04227L-16.38889 72.29843L-15.56355 72.55458L-14.73866 72.78207L-13.94199 73.00957L-13.11667 73.20885L-12.29178 73.40813L-11.46645 73.6074L-10.64111 73.77802L-9.84444 73.94864L-9.01955 74.09105L-8.19423 74.2048L-7.36932 74.3472L-6.544 74.46095L-5.74733 74.54604L-4.92244 74.63158L-4.0971 74.68845L-3.27222 74.74532L-2.44688 74.80219L-1.6502 74.83084L-.82532 74.85907H0H.82532L1.6502 74.83084L2.44688 74.80219L3.27222 74.74532L4.0971 74.68845L4.92244 74.63158L5.74733 74.54604L6.544 74.46095L7.36932 74.3472L8.19423 74.2048L9.01955 74.09105L9.84444 73.94864L10.64111 73.77802L11.46645 73.6074L12.29178 73.40813L13.11667 73.20885L13.94199 73.00957L14.73866 72.78207L15.56355 72.55458L16.38889 72.29843L17.21378 72.04227L18.03911 71.78612L18.83578 71.50175L19.66068 71.18872L20.48601 70.8757L21.3109 70.56267L22.13623 70.22144L22.93289 69.87975L23.75822 69.5385L24.58311 69.16861L25.40845 68.7705L26.23334 68.37193L27.03001 67.97382L27.85535 67.57526L28.68024 67.14848L29.50555 66.69305L30.33046 66.23807L31.12712 65.78264L31.95245 65.29898L32.77734 64.81534L33.60268 64.3317L34.42801 63.81938L35.22467 63.30753L36.04958 62.79521L36.8749 62.2547L37.69978 61.68552L38.52512 61.145L39.3218 60.5476L40.14668 59.97842L40.97202 59.38103L41.7969 58.7832L42.59358 58.1858L43.4189 57.55975L44.2438 56.93413L45.06912 56.27943L45.89445 55.62515L46.69113 54.97089L47.51602 54.28796L48.34135 53.63326L49.16624 52.92212L49.99158 52.23918L50.78824 51.52805L51.61314 50.81647L52.43846 50.07666L53.26335 49.36552L54.08868 48.62572L54.88536 47.8577L55.71025 47.1179L56.53558 46.34944L57.3609 45.58144L58.1858 44.78476L58.98247 43.98808L59.8078 43.1914L60.63269 42.39473L61.45802 41.59807L62.28291 40.77274L63.07959 39.94785L63.90492 39.12251L64.72981 38.26897L65.55515 37.41542L66.38004 36.59009L67.17671 35.70833L68.00203 34.85478L68.82736 33.97258L69.65225 33.11903L70.47758 32.23683L71.27425 31.3264L72.09915 30.44464L72.92447 29.56244L73.74937 28.65201L74.57469 27.7416L75.37137 26.83073L76.19626 25.92032L77.02159 24.98167L77.84648 24.07082L78.67181 23.13217L79.46849 22.1931L80.29381 21.25403L81.1187 20.31538L81.94403 19.3763L82.76892 18.43723L83.5656 17.46992L84.39093 16.53085L85.21582 15.56355L86.04115 14.59627L86.86604 13.62897L87.66272 12.6899L88.48804 11.7226L89.31337 10.7553L90.13826 9.75935L90.9636 8.79205L91.76027 7.82433L92.58516 6.85703L93.41049 5.86108L94.23538 4.89378L95.0607 3.92648L95.85738 2.93054L96.68227 1.96324L97.5076 .96729L98.33249 0' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M-98.33249 0L-97.5076-.96729L-96.68227-1.96324L-95.85738-2.93054L-95.0607-3.92648L-94.23538-4.89378L-93.41049-5.86108L-92.58516-6.85703L-91.76027-7.82433L-90.9636-8.79205L-90.13826-9.75935L-89.31337-10.7553L-88.48804-11.7226L-87.66272-12.6899L-86.86604-13.62897L-86.04115-14.59627L-85.21582-15.56355L-84.39093-16.53085L-83.5656-17.46992L-82.76892-18.43723L-81.94403-19.3763L-81.1187-20.31538L-80.29381-21.25403L-79.46849-22.1931L-78.67181-23.13217L-77.84648-24.07082L-77.02159-24.98167L-76.19626-25.92032L-75.37137-26.83073L-74.57469-27.7416L-73.74937-28.65201L-72.92447-29.56244L-72.09915-30.44464L-71.27425-31.3264L-70.47758-32.23683L-69.65225-33.11903L-68.82736-33.97258L-68.00203-34.85478L-67.17671-35.70833L-66.38004-36.59009L-65.55515-37.41542L-64.72981-38.26897L-63.90492-39.12251L-63.07959-39.94785L-62.28291-40.77274L-61.45802-41.59807L-60.63269-42.39473L-59.8078-43.1914L-58.98247-43.98808L-58.1858-44.78476L-57.3609-45.58144L-56.53558-46.34944L-55.71025-47.1179L-54.88536-47.8577L-54.08868-48.62572L-53.26335-49.36552L-52.43846-50.07666L-51.61314-50.81647L-50.78824-51.52805L-49.99158-52.23918L-49.16624-52.92212L-48.34135-53.63326L-47.51602-54.28796L-46.69113-54.97089L-45.89445-55.62515L-45.06912-56.27943L-44.2438-56.93413L-43.4189-57.55975L-42.59358-58.1858L-41.7969-58.7832L-40.97202-59.38103L-40.14668-59.97842L-39.3218-60.5476L-38.52512-61.145L-37.69978-61.68552L-36.8749-62.2547L-36.04958-62.79521L-35.22467-63.30753L-34.42801-63.81938L-33.60268-64.3317L-32.77734-64.81534L-31.95245-65.29898L-31.12712-65.78264L-30.33046-66.23807L-29.50555-66.69305L-28.68024-67.14848L-27.85535-67.57526L-27.03001-67.97382L-26.23334-68.37193L-25.40845-68.7705L-24.58311-69.16861L-23.75822-69.5385L-22.93289-69.87975L-22.13623-70.22144L-21.3109-70.56267L-20.48601-70.8757L-19.66068-71.18872L-18.83578-71.50175L-18.03911-71.78612L-17.21378-72.04227L-16.38889-72.29843L-15.56355-72.55458L-14.73866-72.78207L-13.94199-73.00957L-13.11667-73.20885L-12.29178-73.40813L-11.46645-73.6074L-10.64111-73.77802L-9.84444-73.94864L-9.01955-74.09105L-8.19423-74.2048L-7.36932-74.3472L-6.544-74.46095L-5.74733-74.54604L-4.92244-74.63158L-4.0971-74.68845L-3.27222-74.74532L-2.44688-74.80219L-1.6502-74.83084L-.82532-74.85907H0H.82532L1.6502-74.83084L2.44688-74.80219L3.27222-74.74532L4.0971-74.68845L4.92244-74.63158L5.74733-74.54604L6.544-74.46095L7.36932-74.3472L8.19423-74.2048L9.01955-74.09105L9.84444-73.94864L10.64111-73.77802L11.46645-73.6074L12.29178-73.40813L13.11667-73.20885L13.94199-73.00957L14.73866-72.78207L15.56355-72.55458L16.38889-72.29843L17.21378-72.04227L18.03911-71.78612L18.83578-71.50175L19.66068-71.18872L20.48601-70.8757L21.3109-70.56267L22.13623-70.22144L22.93289-69.87975L23.75822-69.5385L24.58311-69.16861L25.40845-68.7705L26.23334-68.37193L27.03001-67.97382L27.85535-67.57526L28.68024-67.14848L29.50555-66.69305L30.33046-66.23807L31.12712-65.78264L31.95245-65.29898L32.77734-64.81534L33.60268-64.3317L34.42801-63.81938L35.22467-63.30753L36.04958-62.79521L36.8749-62.2547L37.69978-61.68552L38.52512-61.145L39.3218-60.5476L40.14668-59.97842L40.97202-59.38103L41.7969-58.7832L42.59358-58.1858L43.4189-57.55975L44.2438-56.93413L45.06912-56.27943L45.89445-55.62515L46.69113-54.97089L47.51602-54.28796L48.34135-53.63326L49.16624-52.92212L49.99158-52.23918L50.78824-51.52805L51.61314-50.81647L52.43846-50.07666L53.26335-49.36552L54.08868-48.62572L54.88536-47.8577L55.71025-47.1179L56.53558-46.34944L57.3609-45.58144L58.1858-44.78476L58.98247-43.98808L59.8078-43.1914L60.63269-42.39473L61.45802-41.59807L62.28291-40.77274L63.07959-39.94785L63.90492-39.12251L64.72981-38.26897L65.55515-37.41542L66.38004-36.59009L67.17671-35.70833L68.00203-34.85478L68.82736-33.97258L69.65225-33.11903L70.47758-32.23683L71.27425-31.3264L72.09915-30.44464L72.92447-29.56244L73.74937-28.65201L74.57469-27.7416L75.37137-26.83073L76.19626-25.92032L77.02159-24.98167L77.84648-24.07082L78.67181-23.13217L79.46849-22.1931L80.29381-21.25403L81.1187-20.31538L81.94403-19.3763L82.76892-18.43723L83.5656-17.46992L84.39093-16.53085L85.21582-15.56355L86.04115-14.59627L86.86604-13.62897L87.66272-12.6899L88.48804-11.7226L89.31337-10.7553L90.13826-9.75935L90.9636-8.79205L91.76027-7.82433L92.58516-6.85703L93.41049-5.86108L94.23538-4.89378L95.0607-3.92648L95.85738-2.93054L96.68227-1.96324L97.5076-.96729L98.33249 0' fill='none'/>
+</g>
+</g>
+<g stroke-width='0.7'>
+<path d='M-122.06207 47.43092L-120.5256 46.4632L-119.01778 45.52455L-117.48131 44.6137L-115.9735 43.76015L-114.43701 42.96349L-112.90054 42.19547L-111.39229 41.51253L-109.85582 40.85826L-108.31978 40.2891L-106.81152 39.80544L-105.27505 39.37866L-103.76724 39.03699L-102.23076 38.78127L-100.69429 38.61021L-99.18604 38.52512L-97.65001 38.49646L-96.11353 38.58199L-94.60527 38.75261L-93.0688 39.00877L-91.56099 39.35L-90.02452 39.74857L-88.48804 40.23221L-86.98022 40.80139L-85.44376 41.427L-83.90727 42.10992L-82.39903 42.87839L-80.86255 43.67506L-79.35474 44.52861L-77.81827 45.41037L-76.28178 46.34944L-74.77397 47.31674L-73.2375 48.3127L-71.70103 49.36552L-70.19278 50.3897L-68.6563 51.47118L-67.11983 52.55222L-65.61201 53.66191L-64.07555 54.7716L-62.56772 55.8813L-61.03125 56.99101L-59.49478 58.10071L-57.98653 59.20998L-56.45006 60.31967L-54.94223 61.40115L-53.40576 62.51085L-51.8693 63.56323L-50.36147 64.64471L-48.825 65.69754L-47.28853 66.72171L-45.78027 67.71767L-44.2438 68.71318L-42.70776 69.68091L-41.19951 70.64821L-39.66304 71.55862L-38.15521 72.46904L-36.61874 73.3226L-35.08228 74.17615L-33.57402 75.00146L-32.03798 75.76949L-30.50151 76.53795L-28.99326 77.24908L-27.45679 77.932L-25.94897 78.58629L-24.41249 79.21233L-22.87602 79.80972L-21.36821 80.3507L-19.83173 80.8912L-18.29526 81.37486L-16.787 81.80164L-15.25053 82.22841L-13.74272 82.5983L-12.20624 82.91133L-10.66977 83.22435L-9.16196 83.4805L-7.62547 83.67935L-6.089 83.8504L-4.58075 83.99237L-3.04428 84.10612L-1.53647 84.163L0 84.19165L1.53647 84.163L3.04428 84.10612L4.58075 83.99237L6.089 83.8504L7.62547 83.67935L9.16196 83.4805L10.66977 83.22435L12.20624 82.91133L13.74272 82.5983L15.25053 82.22841L16.787 81.80164L18.32349 81.37486L19.83173 80.8912L21.36821 80.3507L22.87602 79.80972L24.41249 79.21233L25.94897 78.58629L27.45679 77.932L28.99326 77.24908L30.52972 76.53795L32.03798 75.76949L33.57402 75.00146L35.08228 74.17615L36.61874 73.3226L38.15521 72.46904L39.66304 71.55862L41.19951 70.64821L42.73598 69.68091L44.2438 68.71318L45.78027 67.71767L47.28853 66.72171L48.825 65.69754L50.36147 64.64471L51.8693 63.56323L53.40576 62.51085L54.94223 61.40115L56.45006 60.31967L57.98653 59.20998L59.49478 58.10071L61.03125 56.99101L62.56772 55.8813L64.07555 54.7716L65.61201 53.66191L67.14848 52.55222L68.6563 51.47118L70.19278 50.3897L71.70103 49.36552L73.2375 48.3127L74.77397 47.31674L76.28178 46.34944L77.81827 45.41037L79.35474 44.52861L80.86255 43.67506L82.39903 42.87839L83.90727 42.10992L85.44376 41.427L86.98022 40.80139L88.48804 40.23221L90.02452 39.74857L91.56099 39.35L93.0688 39.00877L94.60527 38.75261L96.11353 38.58199L97.65001 38.49646L99.18604 38.52512L100.69429 38.61021L102.23076 38.78127L103.76724 39.03699L105.27505 39.37866L106.81152 39.80544L108.31978 40.2891L109.85582 40.85826L111.39229 41.51253L112.90054 42.19547L114.43701 42.96349L115.9735 43.76015L117.48131 44.6137L119.01778 45.52455L120.5256 46.4632L122.06207 47.43092' fill='none'/>
+</g>
+<g stroke-width='0.7'>
+<path d='M-122.06207-47.43092L-120.5256-46.4632L-119.01778-45.52455L-117.48131-44.6137L-115.9735-43.76015L-114.43701-42.96349L-112.90054-42.19547L-111.39229-41.51253L-109.85582-40.85826L-108.31978-40.2891L-106.81152-39.80544L-105.27505-39.37866L-103.76724-39.03699L-102.23076-38.78127L-100.69429-38.61021L-99.18604-38.52512L-97.65001-38.49646L-96.11353-38.58199L-94.60527-38.75261L-93.0688-39.00877L-91.56099-39.35L-90.02452-39.74857L-88.48804-40.23221L-86.98022-40.80139L-85.44376-41.427L-83.90727-42.10992L-82.39903-42.87839L-80.86255-43.67506L-79.35474-44.52861L-77.81827-45.41037L-76.28178-46.34944L-74.77397-47.31674L-73.2375-48.3127L-71.70103-49.36552L-70.19278-50.3897L-68.6563-51.47118L-67.11983-52.55222L-65.61201-53.66191L-64.07555-54.7716L-62.56772-55.8813L-61.03125-56.99101L-59.49478-58.10071L-57.98653-59.20998L-56.45006-60.31967L-54.94223-61.40115L-53.40576-62.51085L-51.8693-63.56323L-50.36147-64.64471L-48.825-65.69754L-47.28853-66.72171L-45.78027-67.71767L-44.2438-68.71318L-42.70776-69.68091L-41.19951-70.64821L-39.66304-71.55862L-38.15521-72.46904L-36.61874-73.3226L-35.08228-74.17615L-33.57402-75.00146L-32.03798-75.76949L-30.50151-76.53795L-28.99326-77.24908L-27.45679-77.932L-25.94897-78.58629L-24.41249-79.21233L-22.87602-79.80972L-21.36821-80.3507L-19.83173-80.8912L-18.29526-81.37486L-16.787-81.80164L-15.25053-82.22841L-13.74272-82.5983L-12.20624-82.91133L-10.66977-83.22435L-9.16196-83.4805L-7.62547-83.67935L-6.089-83.8504L-4.58075-83.99237L-3.04428-84.10612L-1.53647-84.163L0-84.19165L1.53647-84.163L3.04428-84.10612L4.58075-83.99237L6.089-83.8504L7.62547-83.67935L9.16196-83.4805L10.66977-83.22435L12.20624-82.91133L13.74272-82.5983L15.25053-82.22841L16.787-81.80164L18.32349-81.37486L19.83173-80.8912L21.36821-80.3507L22.87602-79.80972L24.41249-79.21233L25.94897-78.58629L27.45679-77.932L28.99326-77.24908L30.52972-76.53795L32.03798-75.76949L33.57402-75.00146L35.08228-74.17615L36.61874-73.3226L38.15521-72.46904L39.66304-71.55862L41.19951-70.64821L42.73598-69.68091L44.2438-68.71318L45.78027-67.71767L47.28853-66.72171L48.825-65.69754L50.36147-64.64471L51.8693-63.56323L53.40576-62.51085L54.94223-61.40115L56.45006-60.31967L57.98653-59.20998L59.49478-58.10071L61.03125-56.99101L62.56772-55.8813L64.07555-54.7716L65.61201-53.66191L67.14848-52.55222L68.6563-51.47118L70.19278-50.3897L71.70103-49.36552L73.2375-48.3127L74.77397-47.31674L76.28178-46.34944L77.81827-45.41037L79.35474-44.52861L80.86255-43.67506L82.39903-42.87839L83.90727-42.10992L85.44376-41.427L86.98022-40.80139L88.48804-40.23221L90.02452-39.74857L91.56099-39.35L93.0688-39.00877L94.60527-38.75261L96.11353-38.58199L97.65001-38.49646L99.18604-38.52512L100.69429-38.61021L102.23076-38.78127L103.76724-39.03699L105.27505-39.37866L106.81152-39.80544L108.31978-40.2891L109.85582-40.85826L111.39229-41.51253L112.90054-42.19547L114.43701-42.96349L115.9735-43.76015L117.48131-44.6137L119.01778-45.52455L120.5256-46.4632L122.06207-47.43092' fill='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M51.00487 0C51.00487 1.01544 50.18169 1.83862 49.16624 1.83862C48.1508 1.83862 47.32762 1.01544 47.32762 0S48.1508-1.83862 49.16624-1.83862C50.18169-1.83862 51.00487-1.01544 51.00487 0ZM49.16624 0' stroke='none'/>
+</g>
+<g transform='translate(49.16624,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(55.574554,38.332982)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M1.83862 52.92212C1.83862 53.93756 1.01544 54.76074 0 54.76074S-1.83862 53.93756-1.83862 52.92212S-1.01544 51.0835 0 51.0835S1.83862 51.90668 1.83862 52.92212ZM0 52.92212' stroke='none'/>
+</g>
+<g transform='translate(0.0,52.92212)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(55.574554,38.332982)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M100.59543 0C100.59543 1.2498 99.58229 2.26294 98.33249 2.26294S96.06955 1.2498 96.06955 0S97.08269-2.26294 98.33249-2.26294S100.59543-1.2498 100.59543 0ZM98.33249 0'/>
+</g>
+<g transform='translate(98.33249,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(55.574554,38.332982)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M-96.06955 0C-96.06955 1.2498-97.08269 2.26294-98.33249 2.26294S-100.59543 1.2498-100.59543 0S-99.58229-2.26294-98.33249-2.26294S-96.06955-1.2498-96.06955 0ZM-98.33249 0'/>
+</g>
+<g transform='translate(-98.33249,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(55.574554,38.332982)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(13.60364,1.63332)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(55.574554,38.332982)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='55.574554' y='38.332982' xlink:href='#ohr-fazni-diagram-g0-0'/>
+<use x='62.742073' y='38.332982' xlink:href='#ohr-fazni-diagram-g2-57'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(33.2361,1.63332)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(55.574554,38.332982)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='55.574554' y='38.332982' xlink:href='#ohr-fazni-diagram-g0-0'/>
+<use x='62.742073' y='38.332982' xlink:href='#ohr-fazni-diagram-g2-53'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(49.96625,-6.59999)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(55.574554,38.332982)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='55.574554' y='38.332982' xlink:href='#ohr-fazni-diagram-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(66.69638,0.8)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(55.574554,38.332982)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='55.574554' y='38.332982' xlink:href='#ohr-fazni-diagram-g2-53'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(99.13249,2.55)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(55.574554,38.332982)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='55.574554' y='38.332982' xlink:href='#ohr-fazni-diagram-g2-57'/>
+<use x='60.182245' y='38.332982' xlink:href='#ohr-fazni-diagram-g1-59'/>
+<use x='62.742073' y='38.332982' xlink:href='#ohr-fazni-diagram-g2-56'/>
+<use x='67.349764' y='38.332982' xlink:href='#ohr-fazni-diagram-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(124.36208,44.53093)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(55.574554,38.332982)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='55.574554' y='38.332982' xlink:href='#ohr-fazni-diagram-g2-49'/>
+<use x='60.182245' y='38.332982' xlink:href='#ohr-fazni-diagram-g2-53'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 8.32</span>: Nivojnice energije \(\mathcal{E}\) nihala <span class="nobr">(\(m = 1\)</span> kg, \(\ell = 1\) m) v ravnini <span class="nobr">\((\theta, \dot\theta)\),</span> \(\theta\) v rad in \(\dot\theta\) v 1/s, pri vrednostih \(\mathcal{E} = -9, -5, 0, 5, 9{,}81, 15\) J. Zaključene krivulje okoli \((0, 0)\) pripadajo nihanju. Modra krivulja je \(\mathcal{E} = 0\) (spust iz mirovanja pri <span class="nobr">\(\theta = 90^\circ\),</span> modra pika pri \(\theta = \pi/2\) in pika na osi \(\dot\theta\) pri \(4{,}4294\) 1/s, hitrost v spodnji legi). Oranžna krivulja je \(\mathcal{E} = mg\ell = 9{,}81\) J, ki gre skozi nestabilni legi \(\theta = \pm\pi\) (krožca). Zunaj nje, pri \(\mathcal{E} = 15\) J, nihalo kroži.</figcaption></figure>
+<p>Iz enačbe <a class="xref" href="sec-ohranitveni-zakoni.html#eq-nihalo-hitrost" data-knowl="eq-nihalo-hitrost">(8.100)</a> preberemo tri območja. Ker je <span class="nobr">\(T \ge 0\),</span> je \(\mathcal{E} \ge V \ge -mg\ell\) in vrednost \(-mg\ell = -9{,}81\) J ima samo mirovanje v spodnji legi (središče krivulj na sliki). Za \(-mg\ell &lt; \mathcal{E} &lt; mg\ell\) je \(\cos\theta \ge -\mathcal{E}/(mg\ell)\) in to je <a class="xref auto" href="sec-konvergenca-zaporedij.html#def-interval" data-knowl="def-interval">interval</a> <span class="nobr">\(|\theta| \le \theta_{\max}\),</span> kjer je \(0 &lt; \theta_{\max} &lt; \pi\) in <span class="nobr">\(\cos\theta_{\max} = -\mathcal{E}/(mg\ell)\).</span> Hitrost je na krajiščih nič, vmes pa ima obe predznaka, zato je nivojnica sklenjena krivulja in nihalo niha med \(-\theta_{\max}\) in <span class="nobr">\(\theta_{\max}\).</span> Za \(\mathcal{E} = 0\) je <span class="nobr">\(\theta_{\max} = 90^\circ\),</span> kar je naš spust. Pri \(\mathcal{E} = mg\ell\) je po formuli za dvojni kot \(1 + \cos\theta = 2\cos^2(\theta/2)\) in \(\dot\theta = \pm 2\sqrt{g/\ell}\,\cos(\theta/2)\) za <span class="nobr">\(|\theta| \le \pi\),</span> v \(\theta = 0\) je \(2\sqrt{g/\ell} = 6{,}2642\) 1/s. Ta krivulja se konča v <span class="nobr">\((\pm\pi, 0)\),</span> ki je stanje mirovanja nestabilne ravnovesne lege (razdelek <a class="xref" href="sec-stabilnost-ravnovesja.html">8.6</a>). Za \(\mathcal{E} &gt; mg\ell\) je \(\mathcal{E} + mg\ell\cos\theta &gt; 0\) za vsak <span class="nobr">\(\theta\),</span> hitrost nikoli ni nič in obdrži predznak, nihalo kroži. Pri \(\mathcal{E} = 15\) J je \(|\dot\theta|\) najmanjša v zgornji legi, \(\sqrt{2\,(15 - 9{,}81)} = 3{,}2218\) 1/s, in največja v spodnji, \(7{,}0441\) 1/s. Slika kaže, kje se nihanje spremeni v kroženje: pri energiji, ki je ravno dovolj, da nihalo doseže zgornjo lego. Tam se hitrost zmanjšuje proti nič, zato je gibanje blizu te energije počasno in se nihajni čas daljša: za odmik \(170^\circ\) je \(4{,}8935\) s, 2,44-krat daljši od \(2{,}0061\) s pri majhnem odmiku (razdelek <a class="xref" href="sec-lagrangeeve-enacbe.html">8.9</a>).</p>
+
+<h3 id="sec-ohr-ciklicne"><span class="h-num">8.11.2</span> Ciklične koordinate in posplošena gibalna količina</h3>
+<p>Energija je ena <a class="xref auto" href="sec-ohranitveni-zakoni.html#def-ohranjena-kolicina" data-knowl="def-ohranjena-kolicina">ohranjena količina</a>, ki pripada \(\mathcal{L}\) brez časa. Ali obstajajo še druge? Vzemimo prosto točko mase \(m\) na ravnini \((x, y)\) brez sil v smeri osi <span class="nobr">\(x\).</span> Njena gibalna enačba v smeri \(x\) je \(m\,\ddot x = 0\) in \(m\,\dot x\) je stalno. V Lagrangeevi obliki je <span class="nobr">\(\mathcal{L} = \tfrac12 m\,(\dot x^2 + \dot y^2) - V(y)\),</span> ki \(x\) ne vsebuje, in enačba za \(x\) je <span class="nobr">\(\dfrac{\mathrm{d}}{\mathrm{d}t}\dfrac{\partial\mathcal{L}}{\partial\dot x} = 0\).</span> Ista zgradba velja za vsako <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinato</a>, ki je \(\mathcal{L}\) ne vsebuje.</p>
+
+<div class="blk definicija" id="def-posplosena-gibalna-kolicina"><div class="blk-head"><span class="blk-label">Definicija 8.109</span> <span class="blk-title">Posplošena gibalna količina (generalized momentum)</span></div><div class="blk-body"><p>Naj bo \(\mathcal{L}(t, \vek q, \dot{\vek q}) = T - V\) Lagrangeeva <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcija</a> sistema z \(n\) posplošenimi <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinatami</a>. Posplošena gibalna količina, ki pripada koordinati <span class="nobr">\(q_{\mathrm{s}}\),</span> je funkcija stanja</p>
+<div class="eq" id="eq-gibalna-kolicina">\[p_{\mathrm{s}} = \frac{\partial\mathcal{L}}{\partial\dot q_{\mathrm{s}}} , \qquad s = 1, \dots, n . \tag{8.101}\]</div>
+<p>Ker \(V\) ne vsebuje hitrosti, je <span class="nobr">\(p_{\mathrm{s}} = \partial T/\partial\dot q_{\mathrm{s}}\).</span> Pri skleronomnih vezeh je po koraku 3 dokaza leme <a class="xref" href="sec-ohranitveni-zakoni.html#lem-euler-homogena" data-knowl="lem-euler-homogena">8.103</a> <span class="nobr">\(p_{\mathrm{s}} = \sum_{\mathrm{b}} M_{\mathrm{sb}}\,\dot q_{\mathrm{b}}\).</span> Koordinata <span class="nobr">\(q_{\mathrm{s}}\),</span> ki je \(\mathcal{L}\) ne vsebuje (torej \(\partial\mathcal{L}/\partial q_{\mathrm{s}} = 0\) v vsakem stanju), je ciklična (cyclic).</p>
+</div></div>
+<p>Enota \(p_{\mathrm{s}}\) je enota <a class="xref auto" href="sec-posplosene-sile.html#def-posplosena-sila" data-knowl="def-posplosena-sila">posplošene sile</a>, pomnožena s sekundo: kg m/s, če je \(q_{\mathrm{s}}\) dolžina, in N m s, če je \(q_{\mathrm{s}}\) kot. Pri prosti točki iz uvoda je <span class="nobr">\(p_{\mathrm{x}} = m\,\dot x\),</span> kar je gibalna količina (momentum) v smeri <span class="nobr">\(x\).</span> Pri nihalu je <span class="nobr">\(p_\theta = m\ell^2\dot\theta\),</span> kar je kotna količina (angular momentum) mase glede na vrtišče: masa ima hitrost \(\ell\dot\theta\) pravokotno na palico, in razdalja \(\ell\) pomnoži <span class="nobr">\(m\,\ell\dot\theta\).</span></p>
+
+<div class="blk posledica" id="cor-ciklicna-koordinata"><div class="blk-head"><span class="blk-label">Posledica 8.110</span> <span class="blk-title">Ciklična koordinata da ohranjeno količino (a cyclic coordinate gives a conserved quantity)</span></div><div class="blk-body"><p>Naj bo \(\vek q(t)\) gibanje iz izreka <a class="xref" href="sec-lagrangeeve-enacbe.html#thm-lagrange-konservativne" data-knowl="thm-lagrange-konservativne">8.88</a> in naj bo \(q_{\mathrm{s}}\) ciklična <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinata</a>, <span class="nobr">\(Q_{\mathrm{s}}^{\mathrm{nc}} = 0\).</span> Tedaj je \(p_{\mathrm{s}}\) <a class="xref auto" href="sec-ohranitveni-zakoni.html#def-ohranjena-kolicina" data-knowl="def-ohranjena-kolicina">ohranjena količina</a>.</p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da je <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">odvod</a> \(p_{\mathrm{s}}\) po času nič.</p>
+<ol>
+<li>Enačba za \(s\) iz izreka <a class="xref" href="sec-lagrangeeve-enacbe.html#thm-lagrange-konservativne" data-knowl="thm-lagrange-konservativne">8.88</a> je <span class="nobr">\(\dfrac{\mathrm{d}}{\mathrm{d}t}\dfrac{\partial\mathcal{L}}{\partial\dot q_{\mathrm{s}}} = \dfrac{\partial\mathcal{L}}{\partial q_{\mathrm{s}}} + Q_{\mathrm{s}}^{\mathrm{nc}}\),</span> kar je \(\dot p_{\mathrm{s}}\) po <a class="xref" href="sec-ohranitveni-zakoni.html#eq-gibalna-kolicina" data-knowl="eq-gibalna-kolicina">(8.101)</a>.</li>
+<li>Desna stran je nič: <span class="nobr">\(\partial\mathcal{L}/\partial q_{\mathrm{s}} = 0\),</span> ker je <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinata</a> ciklična, in <span class="nobr">\(Q_{\mathrm{s}}^{\mathrm{nc}} = 0\).</span></li>
+<li>Torej je \(\dot p_{\mathrm{s}} = 0\) na vsem <a class="xref auto" href="sec-konvergenca-zaporedij.html#def-interval" data-knowl="def-interval">intervalu</a> in po posledici <a class="xref" href="sec-srednja-vrednost.html#cor-odvod-nic" data-knowl="cor-odvod-nic">1.85</a> je \(p_{\mathrm{s}}\) stalna.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> Ni iz vira: nobena knjiga projekta nima ciklične koordinate (iskanje po GR, SHABANA, CK, EP, CM, SPONG), enačba je Lagrangeeva enačba iz izreka <a class="xref" href="sec-lagrangeeve-enacbe.html#thm-lagrange-konservativne" data-knowl="thm-lagrange-konservativne">8.88</a>.</p></div></div>
+<p>Gibalno količino in kotno količino prostega sistema dobimo kot primera ciklične koordinate. Vzemimo \(N\) točk z masami \(m_{\mathrm{i}}\) in lego \(\vek r_{\mathrm{i}}\) v ravnini, katerih edine sile so <a class="xref auto" href="sec-sila-v-palici.html#def-notranja-sila" data-knowl="def-notranja-sila">notranje sile</a> iz potenciala <span class="nobr">\(V\),</span> ki je odvisen samo od razdalj <span class="nobr">\(|\vek r_{\mathrm{i}} - \vek r_{\mathrm{j}}|\).</span> Če vse točke premaknemo za \(a\) v smeri osi <span class="nobr">\(x\),</span> to je koordinata <span class="nobr">\(q_1 = a\),</span> in ostale koordinate opisujejo lege točk glede na to premaknjeno sliko, so <a class="xref auto" href="sec-vektorji.html#def-dolzina-vektorja" data-knowl="def-dolzina-vektorja">razdalje med točkami</a> iste, zato \(V\) ne vsebuje <span class="nobr">\(a\).</span> Tudi \(T\) ne vsebuje <span class="nobr">\(a\),</span> saj se hitrosti ne spremenijo, če vse točke premaknemo za isto razdaljo. Koordinata \(a\) je torej ciklična in <span class="nobr">\(p_{\mathrm{a}} = \sum_{\mathrm{i}} m_{\mathrm{i}}\,\dot x_{\mathrm{i}}\),</span> ker vsak \(x_{\mathrm{i}}\) vsebuje \(a\) z odvodom 1. To je \(x\)-komponenta skupne gibalne količine. Pri vrtenju vseh točk za kot \(\varphi\) okoli izhodišča se \(\vek r_{\mathrm{i}} = (x_{\mathrm{i}}, y_{\mathrm{i}})\) spremeni v <span class="nobr">\(\partial \vek r_{\mathrm{i}}/\partial\varphi = (-y_{\mathrm{i}}, x_{\mathrm{i}})\),</span> razdalje in hitrosti se ne spremenijo, zato je \(\varphi\) ciklična in <span class="nobr">\(p_\varphi = \sum_{\mathrm{i}} m_{\mathrm{i}}\,(-\dot x_{\mathrm{i}}\,y_{\mathrm{i}} + \dot y_{\mathrm{i}}\,x_{\mathrm{i}})\).</span> Po <a class="xref" href="sec-simetrija-napetosti.html#eq-vektorski-produkt" data-knowl="eq-vektorski-produkt">(2.32)</a> je to komponenta \(z\) <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vektorja</a> <span class="nobr">\(\sum_{\mathrm{i}} \vek r_{\mathrm{i}} \times m_{\mathrm{i}}\dot{\vek r}_{\mathrm{i}}\),</span> kotna količina sistema glede na izhodišče. Ohranitev gibalne in kotne količine prostega sistema je torej poseben primer posledice <a class="xref" href="sec-ohranitveni-zakoni.html#cor-ciklicna-koordinata" data-knowl="cor-ciklicna-koordinata">8.110</a>: vsaka od njiju pripada eni vrsti premika, ki ga \(\mathcal{L}\) ne zazna. Energija pripada premiku v času. Isto kaže korak 2 dokaza izreka <a class="xref" href="sec-ohranitveni-zakoni.html#thm-ohranitev-energije" data-knowl="thm-ohranitev-energije">8.104</a>: \(\mathcal{E}\) se ohranja, ker \(\mathcal{L}\) ne vsebuje <span class="nobr">\(t\).</span></p>
+
+<div class="blk primer" id="ex-ohr-prosta-palica"><div class="blk-head"><span class="blk-label">Primer 8.111</span> <span class="blk-title">Prosta palica v ravnini (free bar in the plane)</span></div><div class="blk-body"><p>Enakomerna palica iz zgleda C <span class="nobr">(\(L = 2\)</span> m, \(m = 30\) kg, \(J_{\mathrm{G}} = mL^2/12 = 10\) kg m<span class="nobr">\(^2\))</span> leti prosto v navpični ravnini, brez vezi, pod težo. To je naš model. <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">Koordinate</a> so \(x\) in \(y\) <a class="xref auto" href="sec-geometrija-prereza.html#def-tezisce" data-knowl="def-tezisce">težišča</a> \(G\) (os \(y\) navzgor) in kot \(\varphi\) palice. Po izreku <a class="xref" href="sec-kineticna-energija.html#thm-kineticna-energija-togega" data-knowl="thm-kineticna-energija-togega">8.80</a> za ravninsko gibanje je <span class="nobr">\(T = \tfrac12 m\,(\dot x^2 + \dot y^2) + \tfrac12 J_{\mathrm{G}}\dot\varphi^2\),</span> potencial teže je <span class="nobr">\(V = mg\,y\),</span> zato</p>
+<div class="eq" id="eq-prosta-palica">\[\mathcal{L} = \tfrac12 m\,(\dot x^2 + \dot y^2) + \tfrac12 J_{\mathrm{G}}\,\dot\varphi^2 - mg\,y . \tag{8.102}\]</div>
+<p>Koordinati \(x\) in \(\varphi\) sta ciklični, \(y\) pa ne.</p>
+<ol>
+<li><a class="xref auto" href="sec-ohranitveni-zakoni.html#def-posplosena-gibalna-kolicina" data-knowl="def-posplosena-gibalna-kolicina">Posplošene gibalne količine</a> po <a class="xref" href="sec-ohranitveni-zakoni.html#eq-gibalna-kolicina" data-knowl="eq-gibalna-kolicina">(8.101)</a>: <span class="nobr">\(p_{\mathrm{x}} = m\,\dot x\),</span> <span class="nobr">\(p_{\mathrm{y}} = m\,\dot y\),</span> <span class="nobr">\(p_\varphi = J_{\mathrm{G}}\,\dot\varphi\).</span> Po posledici <a class="xref" href="sec-ohranitveni-zakoni.html#cor-ciklicna-koordinata" data-knowl="cor-ciklicna-koordinata">8.110</a> sta \(p_{\mathrm{x}}\) in \(p_\varphi\) stalni, \(p_{\mathrm{y}}\) pa ne: \(\dot p_{\mathrm{y}} = -mg\) iz enačbe za <span class="nobr">\(y\).</span></li>
+<li>Palico vržemo iz \(y = 0\) s hitrostjo \((\dot x, \dot y) = (2, 5)\) m/s in <a class="xref auto" href="sec-kineticna-energija.html#def-kotna-hitrost" data-knowl="def-kotna-hitrost">kotno hitrostjo</a> \(\dot\varphi = 3\) 1/s. Tedaj je \(p_{\mathrm{x}} = 30 \cdot 2 = 60\) kg m/s, \(p_\varphi = 10 \cdot 3 = 30\) kg m\(^2\)/s in \(p_{\mathrm{y}} = 30 \cdot 5 = 150\) kg m/s. Energija je \(\mathcal{E} = \tfrac12 \cdot 30 \cdot (4 + 25) + \tfrac12 \cdot 10 \cdot 9 + 0 = 480\) J.</li>
+<li>V najvišji legi je \(\dot y = 0\) in <span class="nobr">\(\dot x = 2\),</span> \(\dot\varphi = 3\) ostaneta po koraku 1. Tedaj je <span class="nobr">\(\mathcal{E} = 480 = \tfrac12 \cdot 30 \cdot 4 + \tfrac12 \cdot 10 \cdot 9 + mg\,h = 105 + 294{,}3\,h\),</span> torej \(h = 1{,}2742\) m. To je isto kot \(\dot y_0^2/(2g) = 25/19{,}62 = 1{,}2742\) m, kar je znani rezultat za navpični met, ki smo ga zdaj dobili iz energije.</li>
+<li>Palica pade nazaj na \(y = 0\) po \(2 \dot y_0/g = 1{,}0194\) s. V tem času se težišče premakne vodoravno za \(2 \cdot 1{,}0194 = 2{,}0387\) m in palica se zavrti za \(3 \cdot 1{,}0194 = 3{,}0581\) rad. Slika <a class="xref" href="sec-ohranitveni-zakoni.html#fig-ohr-prosta-palica" data-knowl="fig-ohr-prosta-palica">8.33</a> kaže težišče na enakih časovnih razmikih: vodoravne razdalje so enake, ker je \(p_{\mathrm{x}}\) stalna, kot enakomerno narašča, ker je \(p_\varphi\) stalna, višina pa sledi paraboli, ker \(p_{\mathrm{y}}\) ni stalna.</li>
+</ol>
+</div></div>
+<figure class="blk slika" id="fig-ohr-prosta-palica"><p><span class="svgfig" role="img" aria-label="Prosta palica v treh legah in parabola težišča"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='306.86pt' height='226.93pt' viewBox='-72.000004 -72.000005 227.300394 168.094864'>
+<defs>
+<path id='ohr-prosta-palica-g0-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='ohr-prosta-palica-g0-116' d='M2.052304-3.985056H2.988792C3.188045-3.985056 3.287671-3.985056 3.287671-4.184309C3.287671-4.293898 3.188045-4.293898 3.008717-4.293898H2.132005C2.49066-5.708593 2.540473-5.907846 2.540473-5.967621C2.540473-6.136986 2.420922-6.236613 2.251557-6.236613C2.221669-6.236613 1.942715-6.22665 1.853051-5.877958L1.464508-4.293898H.52802C.328767-4.293898 .229141-4.293898 .229141-4.104608C.229141-3.985056 .308842-3.985056 .508095-3.985056H1.384807C.667497-1.155666 .627646-.986301 .627646-.806974C.627646-.268991 1.006227 .109589 1.544209 .109589C2.560399 .109589 3.128269-1.344956 3.128269-1.424658C3.128269-1.524284 3.048568-1.524284 3.008717-1.524284C2.919054-1.524284 2.909091-1.494396 2.859278-1.384807C2.430884-.348692 1.902864-.109589 1.564134-.109589C1.354919-.109589 1.255293-.239103 1.255293-.56787C1.255293-.806974 1.275218-.876712 1.315068-1.046077L2.052304-3.985056Z'/>
+<path id='ohr-prosta-palica-g1-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='ohr-prosta-palica-g1-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='ohr-prosta-palica-g1-53' d='M4.473225-2.002491C4.473225-3.188045 3.656289-4.184309 2.580324-4.184309C2.102117-4.184309 1.673724-4.024907 1.315068-3.676214V-5.618929C1.514321-5.559153 1.843088-5.489415 2.161893-5.489415C3.387298-5.489415 4.084682-6.396015 4.084682-6.525529C4.084682-6.585305 4.054795-6.635118 3.985056-6.635118C3.975093-6.635118 3.955168-6.635118 3.905355-6.60523C3.706102-6.515567 3.217933-6.316314 2.550436-6.316314C2.15193-6.316314 1.693649-6.386052 1.225405-6.595268C1.145704-6.625156 1.125778-6.625156 1.105853-6.625156C1.006227-6.625156 1.006227-6.545455 1.006227-6.386052V-3.437111C1.006227-3.257783 1.006227-3.178082 1.145704-3.178082C1.215442-3.178082 1.235367-3.20797 1.275218-3.267746C1.384807-3.427148 1.753425-3.965131 2.560399-3.965131C3.078456-3.965131 3.327522-3.506849 3.407223-3.327522C3.566625-2.958904 3.58655-2.570361 3.58655-2.072229C3.58655-1.723537 3.58655-1.125778 3.347447-.707347C3.108344-.318804 2.739726-.059776 2.281445-.059776C1.554172-.059776 .986301-.587796 .816936-1.175592C.846824-1.165629 .876712-1.155666 .986301-1.155666C1.315068-1.155666 1.484433-1.404732 1.484433-1.643836S1.315068-2.132005 .986301-2.132005C.846824-2.132005 .498132-2.062267 .498132-1.603985C.498132-.747198 1.185554 .219178 2.30137 .219178C3.457036 .219178 4.473225-.737235 4.473225-2.002491Z'/>
+<path id='ohr-prosta-palica-g1-61' d='M6.844334-3.257783C6.993773-3.257783 7.183064-3.257783 7.183064-3.457036S6.993773-3.656289 6.854296-3.656289H.886675C.747198-3.656289 .557908-3.656289 .557908-3.457036S.747198-3.257783 .896638-3.257783H6.844334ZM6.854296-1.325031C6.993773-1.325031 7.183064-1.325031 7.183064-1.524284S6.993773-1.723537 6.844334-1.723537H.896638C.747198-1.723537 .557908-1.723537 .557908-1.524284S.747198-1.325031 .886675-1.325031H6.854296Z'/>
+<path id='ohr-prosta-palica-g1-109' d='M1.09589-3.427148V-.757161C1.09589-.308842 .986301-.308842 .318804-.308842V0C.667497-.009963 1.175592-.029888 1.444583-.029888C1.703611-.029888 2.221669-.009963 2.560399 0V-.308842C1.892902-.308842 1.783313-.308842 1.783313-.757161V-2.590286C1.783313-3.626401 2.49066-4.184309 3.128269-4.184309C3.755915-4.184309 3.865504-3.646326 3.865504-3.078456V-.757161C3.865504-.308842 3.755915-.308842 3.088418-.308842V0C3.437111-.009963 3.945205-.029888 4.214197-.029888C4.473225-.029888 4.991283-.009963 5.330012 0V-.308842C4.662516-.308842 4.552927-.308842 4.552927-.757161V-2.590286C4.552927-3.626401 5.260274-4.184309 5.897883-4.184309C6.525529-4.184309 6.635118-3.646326 6.635118-3.078456V-.757161C6.635118-.308842 6.525529-.308842 5.858032-.308842V0C6.206725-.009963 6.714819-.029888 6.983811-.029888C7.242839-.029888 7.760897-.009963 8.099626 0V-.308842C7.581569-.308842 7.332503-.308842 7.32254-.607721V-2.510585C7.32254-3.367372 7.32254-3.676214 7.013699-4.034869C6.874222-4.204234 6.545455-4.403487 5.967621-4.403487C5.13076-4.403487 4.692403-3.805729 4.523039-3.427148C4.383562-4.293898 3.646326-4.403487 3.198007-4.403487C2.470735-4.403487 2.002491-3.975093 1.723537-3.35741V-4.403487L.318804-4.293898V-3.985056C1.016189-3.985056 1.09589-3.915318 1.09589-3.427148Z'/>
+<path id='ohr-prosta-palica-g1-115' d='M2.072229-1.932752C2.291407-1.892902 3.108344-1.733499 3.108344-1.016189C3.108344-.508095 2.759651-.109589 1.982565-.109589C1.145704-.109589 .787049-.67746 .597758-1.524284C.56787-1.653798 .557908-1.693649 .458281-1.693649C.328767-1.693649 .328767-1.62391 .328767-1.444583V-.129514C.328767 .039851 .328767 .109589 .438356 .109589C.488169 .109589 .498132 .099626 .687422-.089664C.707347-.109589 .707347-.129514 .886675-.318804C1.325031 .099626 1.77335 .109589 1.982565 .109589C3.128269 .109589 3.58655-.557908 3.58655-1.275218C3.58655-1.803238 3.287671-2.102117 3.16812-2.221669C2.839352-2.540473 2.450809-2.620174 2.032379-2.699875C1.474471-2.809465 .806974-2.938979 .806974-3.516812C.806974-3.865504 1.066002-4.273973 1.92279-4.273973C3.01868-4.273973 3.068493-3.377335 3.088418-3.068493C3.098381-2.978829 3.188045-2.978829 3.20797-2.978829C3.337484-2.978829 3.337484-3.028643 3.337484-3.217933V-4.224159C3.337484-4.393524 3.337484-4.463263 3.227895-4.463263C3.178082-4.463263 3.158157-4.463263 3.028643-4.343711C2.998755-4.303861 2.899128-4.214197 2.859278-4.184309C2.480697-4.463263 2.072229-4.463263 1.92279-4.463263C.707347-4.463263 .328767-3.795766 .328767-3.237858C.328767-2.889166 .488169-2.610212 .757161-2.391034C1.075965-2.132005 1.354919-2.072229 2.072229-1.932752Z'/>
+</defs>
+<g id='ohr-prosta-palica-page1'>
+<g stroke-miterlimit='10' transform='translate(-14.759167,57.297692)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 0L.96729 2.41867L1.96324 4.78003L2.93054 7.14183L3.89783 9.41766L4.86555 11.66573L5.86108 13.88512L6.82881 16.04721L7.7961 18.1815L8.7634 20.28673L9.75935 22.3355L10.72664 24.32697L11.69394 26.2902L12.66167 28.22523L13.65718 30.10295L14.62492 31.95245L15.59221 33.74507L16.58772 35.50905L17.55547 37.2448L18.52275 38.92323L19.49005 40.54524L20.48601 42.13858L21.4533 43.70328L22.4206 45.21153L23.38832 46.69113L24.38383 48.14207L25.35158 49.53615L26.31886 50.87334L27.28616 52.18231L28.28212 53.46263L29.2494 54.68608L30.2167 55.8813L31.184 57.01923L32.17995 58.12892L33.14725 59.18175L34.11497 60.20592L35.11049 61.20187L36.07822 62.14095L37.04552 63.05138L38.01282 63.90492L39.00877 64.72981L39.97606 65.49826L40.94336 66.23807L41.91109 66.92099L42.9066 67.60391L43.87433 68.20131L44.84163 68.7705L45.80893 69.311L46.80487 69.79466L47.77217 70.24965L48.73947 70.64821L49.73541 71.0181L50.70271 71.35934L51.67001 71.64415L52.63774 71.89987L53.63326 72.09915L54.60098 72.26978L55.56828 72.38396L56.53558 72.46904L57.53152 72.4977H58.49883L59.46613 72.46904L60.43341 72.38396L61.42937 72.26978L62.39667 72.09915L63.3644 71.89987L64.35991 71.64415L65.32764 71.35934L66.29494 71.0181L67.26224 70.64821L68.25818 70.24965L69.22548 69.79466L70.19278 69.311L71.1605 68.7705L72.15602 68.20131L73.12375 67.57526L74.09105 66.92099L75.05835 66.23807L76.05429 65.49826L77.02159 64.72981L77.98889 63.90492L78.98483 63.05138L79.95213 62.14095L80.91943 61.20187L81.88716 60.20592L82.88268 59.18175L83.8504 58.12892L84.8177 57.01923L85.785 55.8813L86.78094 54.68608L87.74825 53.46263L88.71555 52.18231L89.68283 50.87334L90.67879 49.50792L91.64609 48.11342L92.61382 46.69113L93.5811 45.21153L94.57706 43.70328L95.54436 42.13858L96.51164 40.54524L97.5076 38.92323L98.4749 37.21614L99.4422 35.50905L100.40993 33.74507L101.40544 31.95245L102.37317 30.10295L103.34047 28.22523L104.30775 26.2902L105.30371 24.32697L106.27101 22.30684L107.2383 20.2585L108.2056 18.1815L109.20155 16.04721L110.16884 13.88512L111.13658 11.66573L112.1321 9.41766L113.09982 7.11317L114.06712 4.78003L115.03441 2.41867L116.03036 0' fill='none'/>
+</g>
+</g>
+</g>
+<g stroke-width='1.1'>
+<path d='M-56.90549 0H56.90549' fill='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.1'>
+<path d='M52.89346 15.73418L60.9175 129.23256' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.1'>
+<path d='M170.14728-2.61751L57.47466 13.42969' fill='none'/>
+</g>
+</g>
+<path d='M1.83862 0C1.83862 1.01544 1.01544 1.83862 0 1.83862S-1.83862 1.01544-1.83862 0S-1.01544-1.83862 0-1.83862S1.83862-1.01544 1.83862 0ZM0 0' stroke='none'/>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.759167,57.297692)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+<path d='M30.29137 53.69012C30.29137 54.70557 29.46819 55.52875 28.45274 55.52875C27.4373 55.52875 26.61412 54.70557 26.61412 53.69012C26.61412 52.67468 27.4373 51.8515 28.45274 51.8515C29.46819 51.8515 30.29137 52.67468 30.29137 53.69012ZM28.45274 53.69012' stroke='none'/>
+<g transform='translate(28.45274,53.69012)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.759167,57.297692)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M58.74411 72.46904C58.74411 73.48448 57.92093 74.30766 56.90549 74.30766S55.06686 73.48448 55.06686 72.46904S55.89005 70.63042 56.90549 70.63042S58.74411 71.4536 58.74411 72.46904ZM56.90549 72.46904' stroke='none'/>
+</g>
+<g transform='translate(56.90549,72.46904)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.759167,57.297692)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M87.19685 56.39317C87.19685 57.40862 86.37367 58.2318 85.35823 58.2318S83.5196 57.40862 83.5196 56.39317C83.5196 55.37773 84.34279 54.55455 85.35823 54.55455S87.19685 55.37773 87.19685 56.39317ZM85.35823 56.39317' stroke='none'/>
+<g transform='translate(85.35823,56.39317)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.759167,57.297692)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M115.6496 5.40608C115.6496 6.42152 114.82642 7.2447 113.81097 7.2447C112.79553 7.2447 111.97235 6.42152 111.97235 5.40608S112.79553 3.56746 113.81097 3.56746C114.82642 3.56746 115.6496 4.39064 115.6496 5.40608ZM113.81097 5.40608' stroke='none'/>
+</g>
+<g transform='translate(113.81097,5.40608)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.759167,57.297692)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M.33748-25.60728H56.56801' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,6.14052,-25.60728)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,0.22499,-25.60728)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(50.76497,-25.60728)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(56.6805,-25.60728)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(20.1194,-35.60968)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.759167,57.297692)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-14.759167' y='57.297692' xlink:href='#ohr-prosta-palica-g1-49'/>
+<use x='-6.456953' y='57.297692' xlink:href='#ohr-prosta-palica-g1-109'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M57.24297-25.60728H113.4735' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,63.046,-25.60728)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,57.13048,-25.60728)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(107.67046,-25.60728)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(113.58598,-25.60728)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(77.02489,-35.60968)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.759167,57.297692)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-14.759167' y='57.297692' xlink:href='#ohr-prosta-palica-g1-49'/>
+<use x='-6.456953' y='57.297692' xlink:href='#ohr-prosta-palica-g1-109'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0-2.84544V-24.185' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M56.90549 12.88918V-24.185' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M113.81097 1.9919V-24.185' fill='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(-24.24434,-8.74443)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.759167,57.297692)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-14.759167' y='57.297692' xlink:href='#ohr-prosta-palica-g0-116'/>
+<use x='-8.3942' y='57.297692' xlink:href='#ohr-prosta-palica-g1-61'/>
+<use x='2.12188' y='57.297692' xlink:href='#ohr-prosta-palica-g1-48'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(59.20549,76.71349)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.759167,57.297692)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-14.759167' y='57.297692' xlink:href='#ohr-prosta-palica-g0-116'/>
+<use x='-8.3942' y='57.297692' xlink:href='#ohr-prosta-palica-g1-61'/>
+<use x='2.12188' y='57.297692' xlink:href='#ohr-prosta-palica-g1-48'/>
+<use x='7.103219' y='57.297692' xlink:href='#ohr-prosta-palica-g0-59'/>
+<use x='9.870628' y='57.297692' xlink:href='#ohr-prosta-palica-g1-53'/>
+<use x='18.172842' y='57.297692' xlink:href='#ohr-prosta-palica-g1-115'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(116.11098,7.70609)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.759167,57.297692)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-14.759167' y='57.297692' xlink:href='#ohr-prosta-palica-g0-116'/>
+<use x='-8.3942' y='57.297692' xlink:href='#ohr-prosta-palica-g1-61'/>
+<use x='2.12188' y='57.297692' xlink:href='#ohr-prosta-palica-g1-49'/>
+<use x='10.424094' y='57.297692' xlink:href='#ohr-prosta-palica-g1-115'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 8.33</span>: Prosta palica dolžine \(2\) m <span class="nobr">(\(m = 30\)</span> kg, \(J_{\mathrm{G}} = 10\) kg m<span class="nobr">\(^2\)),</span> vržena iz \(y = 0\) s hitrostjo težišča \((2, 5)\) m/s in kotno hitrostjo \(3\) 1/s, v legah ob časih \(t = 0\) (črno), \(0{,}5\) s (modro) in \(1\) s (oranžno). Pike so težišče ob \(t = 0, 0{,}25, 0{,}5, 0{,}75, 1\) s na črtkani paraboli. Vodoravna razdalja med legama v razmiku \(0{,}5\) s je \(1\) m <span class="nobr">(\(p_{\mathrm{x}}\)</span> je stalna), kot med njima je \(1{,}5\) rad <span class="nobr">(\(p_\varphi\)</span> je stalna), navpični del hitrosti pa se zaradi teže spreminja.</figcaption></figure>
+<p>Energijski zakon in ciklične koordinate odgovorita na naše vprašanje: pri sistemih s časovno neodvisnimi vezmi in <a class="xref auto" href="sec-posplosene-sile.html#def-konservativne-sile" data-knowl="def-konservativne-sile">konservativnimi silami</a> se ohranja <span class="nobr">\(T + V\),</span> pri vsaki koordinati, ki je \(\mathcal{L}\) ne vsebuje, pa še ena <a class="xref auto" href="sec-ohranitveni-zakoni.html#def-posplosena-gibalna-kolicina" data-knowl="def-posplosena-gibalna-kolicina">posplošena gibalna količina</a>. Prvi zakon bomo v razdelku <a class="xref" href="sec-dirichletov-kriterij.html">8.12</a> uporabili za dokaz, da gibanje blizu stabilne ravnovesne lege ostane blizu nje.</p>
+
+</main>
+<footer><nav class="pager"><a href="sec-hamiltonovo-nacelo.html" rel="prev">← 8.10</a><a href="index.html">Kazalo</a><a href="sec-dirichletov-kriterij.html" rel="next">8.12 →</a></nav></footer>
+</body>
+</html>

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kom-prosto"] = {"html": "<div class=\"eq\">\\[m\\,\\ddot q + c\\,\\dot q + k\\,q = 0 , \\tag{9.18}\\]</div>", "href": "sec-kompleksna-stevila.html#eq-kom-prosto"};

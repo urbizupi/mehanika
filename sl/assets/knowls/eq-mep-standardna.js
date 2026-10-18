@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mep-standardna"] = {"html": "<div class=\"eq\">\\[\\ddot q + 2\\zeta\\,\\omega_{\\mathrm{n}}\\,\\dot q + \\omega_{\\mathrm{n}}^2\\,q = \\frac{Q(t)}{m} . \\tag{9.12}\\]</div>", "href": "sec-model-ena-ps.html#eq-mep-standardna"};

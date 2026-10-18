@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-izo-amplituda"] = {"html": "<div class=\"eq\">\\[X = \\frac{m_{\\mathrm{u}} a_{\\mathrm{u}}}{M}\\,r^2 D(r) . \\tag{9.55}\\]</div>", "href": "sec-izolacija.html#eq-izo-amplituda"};

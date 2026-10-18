@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mesani-odvodi-n"] = {"html": "<div class=\"eq\">\\[\\frac{\\partial^2 f}{\\partial x_{\\mathrm{j}}\\,\\partial x_{\\mathrm{i}}}(\\vek p) = \\frac{\\partial^2 f}{\\partial x_{\\mathrm{i}}\\,\\partial x_{\\mathrm{j}}}(\\vek p) . \\tag{8.16}\\]</div>", "href": "sec-implicitna-funkcija.html#eq-mesani-odvodi-n"};

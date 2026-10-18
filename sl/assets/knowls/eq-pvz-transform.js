@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pvz-transform"] = {"html": "<div class=\"eq\">\\[H(\\Omega) = \\int_0^\\infty h(t)\\,\\mathrm{e}^{-\\mathrm{i}\\Omega t}\\,\\mathrm{d}t . \\tag{9.86}\\]</div>", "href": "sec-periodicno-vzbujanje.html#eq-pvz-transform"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pdn-polinom"] = {"html": "<div class=\"eq\">\\[s^2 + 2\\zeta\\omega_{\\mathrm{n}}\\,s + \\omega_{\\mathrm{n}}^2 = (s + \\zeta\\omega_{\\mathrm{n}})^2 - \\omega_{\\mathrm{n}}^2\\,(\\zeta^2 - 1) \\tag{9.38}\\]</div>", "href": "sec-prosto-duseno-nihanje.html#eq-pdn-polinom"};

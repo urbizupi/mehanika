@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-fvr-kompleksni"] = {"html": "<div class=\"eq\">\\[c_{\\mathrm{n}} = \\frac{1}{T_{\\mathrm{p}}}\\int_0^{T_{\\mathrm{p}}}f(t)\\,\\mathrm{e}^{-\\mathrm{i}n\\Omega t}\\,\\mathrm{d}t . \\tag{9.82}\\]</div>", "href": "sec-fourierjeve-vrste.html#eq-fvr-kompleksni"};

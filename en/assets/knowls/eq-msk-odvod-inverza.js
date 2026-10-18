@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-msk-odvod-inverza"] = {"html": "<div class=\"eq\">\\[h'(y_0) = \\frac{1}{g'(x_0)} . \\tag{8.5}\\]</div>", "href": "sec-sinus-kosinus.html#eq-msk-odvod-inverza"};

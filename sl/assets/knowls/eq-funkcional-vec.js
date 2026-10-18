@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-funkcional-vec"] = {"html": "<div class=\"eq\">\\[\\mathcal S(\\vek q) = \\int_{\\mathrm{t}_1}^{t_2} F\\big(t, \\vek q(t), \\dot{\\vek q}(t)\\big)\\,\\mathrm{d}t , \\tag{8.88}\\]</div>", "href": "sec-hamiltonovo-nacelo.html#eq-funkcional-vec"};

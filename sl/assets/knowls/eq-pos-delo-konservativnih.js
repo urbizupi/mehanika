@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pos-delo-konservativnih"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{t}_1}^{t_2} \\sum_{\\mathrm{s}=1}^{n} Q_{\\mathrm{s}}(\\vek q(t))\\,\\dot q_{\\mathrm{s}}(t)\\,\\mathrm{d}t = V(\\vek q(t_1)) - V(\\vek q(t_2)) . \\tag{8.40}\\]</div>", "href": "sec-posplosene-sile.html#eq-pos-delo-konservativnih"};

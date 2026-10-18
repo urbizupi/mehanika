@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kin-togo-gibanje"] = {"html": "<div class=\"eq\">\\[\\vek x(t) = \\vek c(t) + \\mat Q(t)\\,\\vek X , \\tag{8.24}\\]</div>", "href": "sec-posplosene-koordinate.html#eq-kin-togo-gibanje"};

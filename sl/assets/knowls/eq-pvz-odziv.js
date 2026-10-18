@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pvz-odziv"] = {"html": "<div class=\"eq\">\\[q_{\\mathrm{p}}(t) = \\int_0^\\infty h(u)\\,Q(t - u)\\,\\mathrm{d}u . \\tag{9.84}\\]</div>", "href": "sec-periodicno-vzbujanje.html#eq-pvz-odziv"};

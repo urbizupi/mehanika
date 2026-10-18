@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ukl-pkr-vpeti"] = {"html": "<div class=\"eq\">\\[P &lt; P_{\\mathrm{cr}} = \\frac{4\\pi^2 EI}{L^2} . \\tag{8.122}\\]</div>", "href": "sec-uklon.html#eq-ukl-pkr-vpeti"};

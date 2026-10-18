@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-msk-stopinje"] = {"html": "<div class=\"eq\">\\[\\frac{\\mathrm{d}}{\\mathrm{d}\\alpha}\\cos\\Big(\\frac{\\pi\\alpha}{180}\\Big) = -\\frac{\\pi}{180}\\sin\\Big(\\frac{\\pi\\alpha}{180}\\Big) = -0{,}017453\\,\\sin\\Big(\\frac{\\pi\\alpha}{180}\\Big) . \\tag{8.8}\\]</div>", "href": "sec-sinus-kosinus.html#eq-msk-stopinje"};

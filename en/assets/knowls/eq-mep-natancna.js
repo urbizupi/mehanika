@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mep-natancna"] = {"html": "<div class=\"eq\">\\[M(q)\\,\\ddot q + \\tfrac12\\,M'(q)\\,\\dot q^2 + c(q)\\,\\dot q + V'(q) = Q(t) . \\tag{9.6}\\]</div>", "href": "sec-model-ena-ps.html#eq-mep-natancna"};

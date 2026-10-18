@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-euler-homogena"] = {"html": "<div class=\"eq\">\\[\\sum_{\\mathrm{s}=1}^{n} \\dot q_{\\mathrm{s}}\\,\\frac{\\partial T}{\\partial \\dot q_{\\mathrm{s}}} = 2\\,T . \\tag{8.97}\\]</div>", "href": "sec-ohranitveni-zakoni.html#eq-euler-homogena"};

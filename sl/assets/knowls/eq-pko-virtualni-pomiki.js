@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pko-virtualni-pomiki"] = {"html": "<div class=\"eq\">\\[\\delta\\vek x = \\sum_{\\mathrm{s}=1}^n \\frac{\\partial\\vek X}{\\partial q_{\\mathrm{s}}}\\,\\delta q_{\\mathrm{s}} = \\frac{\\partial\\vek X}{\\partial\\vek q}\\,\\delta\\vek q \\tag{8.31}\\]</div>", "href": "sec-posplosene-koordinate.html#eq-pko-virtualni-pomiki"};

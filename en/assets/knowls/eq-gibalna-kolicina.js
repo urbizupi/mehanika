@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-gibalna-kolicina"] = {"html": "<div class=\"eq\">\\[p_{\\mathrm{s}} = \\frac{\\partial\\mathcal{L}}{\\partial\\dot q_{\\mathrm{s}}} , \\qquad s = 1, \\dots, n . \\tag{8.101}\\]</div>", "href": "sec-ohranitveni-zakoni.html#eq-gibalna-kolicina"};

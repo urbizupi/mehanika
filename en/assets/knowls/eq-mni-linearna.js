@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mni-linearna"] = {"html": "<div class=\"eq\">\\[\\mat M_0\\,\\ddot{\\vek q} + \\mat K\\,\\vek q = \\vek 0 \\tag{8.106}\\]</div>", "href": "sec-majhna-nihanja.html#eq-mni-linearna"};

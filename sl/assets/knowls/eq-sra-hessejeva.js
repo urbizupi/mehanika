@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sra-hessejeva"] = {"html": "<div class=\"eq\">\\[K_{\\mathrm{ij}}(\\vek q) = \\frac{\\partial^2 V}{\\partial q_{\\mathrm{i}}\\,\\partial q_{\\mathrm{j}}}(\\vek q) . \\tag{8.48}\\]</div>", "href": "sec-stabilnost-ravnovesja.html#eq-sra-hessejeva"};

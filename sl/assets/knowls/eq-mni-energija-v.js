@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mni-energija-v"] = {"html": "<div class=\"eq\">\\[V(\\vek q) \\approx V(\\vek 0) + \\tfrac12\\,\\vek q^\\T\\mat K\\,\\vek q , \\qquad K_{\\mathrm{sj}} = \\frac{\\partial^2 V}{\\partial q_{\\mathrm{s}}\\,\\partial q_{\\mathrm{j}}}(\\vek 0) , \\tag{8.103}\\]</div>", "href": "sec-majhna-nihanja.html#eq-mni-energija-v"};

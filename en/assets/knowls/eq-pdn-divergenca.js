@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pdn-divergenca"] = {"html": "<div class=\"eq\">\\[\\theta(t) = \\theta_0\\operatorname{cosh}\\beta t . \\tag{9.44}\\]</div>", "href": "sec-prosto-duseno-nihanje.html#eq-pdn-divergenca"};

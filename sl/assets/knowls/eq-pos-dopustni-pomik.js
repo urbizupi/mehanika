@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pos-dopustni-pomik"] = {"html": "<div class=\"eq\">\\[\\delta\\vek x = \\sum_{\\mathrm{s}=1}^{n} \\frac{\\partial\\vek X}{\\partial q_{\\mathrm{s}}}\\,\\delta q_{\\mathrm{s}} \\quad \\text{za poljubna števila } \\delta q_{\\mathrm{s}} . \\tag{8.32}\\]</div>", "href": "sec-posplosene-sile.html#eq-pos-dopustni-pomik"};

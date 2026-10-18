@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mni-ena-ps"] = {"html": "<div class=\"eq\">\\[q(t) = q(0)\\,\\cos\\omega t + \\frac{\\dot q(0)}{\\omega}\\,\\sin\\omega t . \\tag{8.107}\\]</div>", "href": "sec-majhna-nihanja.html#eq-mni-ena-ps"};

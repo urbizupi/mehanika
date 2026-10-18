@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mer-sum"] = {"html": "<div class=\"eq\">\\[\\frac{\\sigma}{n}\\sqrt{\\frac{1}{p_0^2} + \\frac{1}{p_{\\mathrm{n}}^2}} , \\qquad p_{\\mathrm{n}} = p_0\\,\\mathrm{e}^{-n\\Lambda} . \\tag{9.90}\\]</div>", "href": "sec-merjenje.html#eq-mer-sum"};

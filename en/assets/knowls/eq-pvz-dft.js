@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pvz-dft"] = {"html": "<div class=\"eq\">\\[C_{\\mathrm{k}} = \\frac{1}{N}\\sum_{\\mathrm{j} = 0}^{N-1} f_{\\mathrm{j}}\\,\\mathrm{e}^{-2\\pi\\mathrm{i}jk/N} , \\qquad k = 0, \\dots, N - 1 . \\tag{9.87}\\]</div>", "href": "sec-periodicno-vzbujanje.html#eq-pvz-dft"};

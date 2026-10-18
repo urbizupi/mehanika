@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pko-zasuk-ravnina"] = {"html": "<div class=\"eq\">\\[\\mat Q(t) = \\begin{pmatrix} \\cos\\varphi &amp; -\\sin\\varphi &amp; 0 \\\\ \\sin\\varphi &amp; \\cos\\varphi &amp; 0 \\\\ 0 &amp; 0 &amp; 1 \\end{pmatrix} . \\tag{8.25}\\]</div>", "href": "sec-posplosene-koordinate.html#eq-pko-zasuk-ravnina"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pko-lega-telesa"] = {"html": "<div class=\"eq\">\\[\\vek x = \\vek o + \\mat R(\\varphi)\\,\\vek r_0 , \\qquad \\mat R(\\varphi) = \\begin{bmatrix} \\cos\\varphi &amp; -\\sin\\varphi \\\\ \\sin\\varphi &amp; \\cos\\varphi \\end{bmatrix} , \\tag{8.26}\\]</div>", "href": "sec-posplosene-koordinate.html#eq-pko-lega-telesa"};

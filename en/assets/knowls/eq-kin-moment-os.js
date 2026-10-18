@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kin-moment-os"] = {"html": "<div class=\"eq\">\\[J_{\\mathrm{G},\\vek{n}} = \\int_{\\mathrm{B}} \\rho\\,|\\vek n\\times\\vek r|^2\\,\\mathrm{d}V = \\vek n\\cdot\\mat J_{\\mathrm{G}}\\,\\vek n . \\tag{8.68}\\]</div>", "href": "sec-kineticna-energija.html#eq-kin-moment-os"};

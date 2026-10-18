@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-msk-nihanje"] = {"html": "<div class=\"eq\">\\[y(t) = y(t_0)\\cos\\omega(t - t_0) + \\frac{y'(t_0)}{\\omega}\\sin\\omega(t - t_0) \\qquad \\text{for every } t \\in I . \\tag{8.10}\\]</div>", "href": "sec-sinus-kosinus.html#eq-msk-nihanje"};

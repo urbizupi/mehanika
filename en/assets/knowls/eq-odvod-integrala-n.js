@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-odvod-integrala-n"] = {"html": "<div class=\"eq\">\\[\\frac{\\partial G}{\\partial s_{\\mathrm{i}}}(\\vek s) = \\int_{\\mathrm{W}} \\frac{\\partial f}{\\partial s_{\\mathrm{i}}}(t, \\vek s)\\,\\mathrm{d}t . \\tag{8.17}\\]</div>", "href": "sec-implicitna-funkcija.html#eq-odvod-integrala-n"};

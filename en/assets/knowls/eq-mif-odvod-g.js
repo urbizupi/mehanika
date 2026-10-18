@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mif-odvod-g"] = {"html": "<div class=\"eq\">\\[\\frac{\\partial\\vek g}{\\partial\\vek y}(\\vek y) = -\\Big(\\frac{\\partial\\vek f}{\\partial\\vek z}\\Big)^{-1}\\frac{\\partial\\vek f}{\\partial\\vek y} , \\tag{8.19}\\]</div>", "href": "sec-implicitna-funkcija.html#eq-mif-odvod-g"};

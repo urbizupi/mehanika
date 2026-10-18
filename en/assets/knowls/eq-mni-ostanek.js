@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mni-ostanek"] = {"html": "<div class=\"eq\">\\[|R_{\\mathrm{s}}| \\le c\\,\\big(|\\vek q|^2 + |\\dot{\\vek q}|^2 + |\\vek q|\\,|\\ddot{\\vek q}|\\big) . \\tag{8.105}\\]</div>", "href": "sec-majhna-nihanja.html#eq-mni-ostanek"};

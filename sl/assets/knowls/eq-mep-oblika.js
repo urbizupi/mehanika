@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mep-oblika"] = {"html": "<div class=\"eq\">\\[\\psi(x) = \\frac{x^2\\,(3L - x)}{2L^3} , \\qquad \\psi(0) = 0 , \\quad \\psi'(0) = 0 , \\quad \\psi(L) = 1 . \\tag{9.1}\\]</div>", "href": "sec-model-ena-ps.html#eq-mep-oblika"};

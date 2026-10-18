@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ukl-energija-clenkasti"] = {"html": "<div class=\"eq\">\\[\\Pi(v) = \\int_0^L \\tfrac12\\,EI\\,v''^2\\,\\mathrm{d}x - \\frac P2\\int_0^L v'^2\\,\\mathrm{d}x , \\qquad v(0) = v(L) = 0 . \\tag{8.119}\\]</div>", "href": "sec-uklon.html#eq-ukl-energija-clenkasti"};

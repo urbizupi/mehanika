@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ukl-ojacanje"] = {"html": "<div class=\"eq\">\\[a = \\frac{q_0}{EI\\,k^4\\,(1 - P/P_{\\mathrm{cr}})} = \\frac{a_0}{1 - P/P_{\\mathrm{cr}}} , \\tag{8.125}\\]</div>", "href": "sec-uklon.html#eq-ukl-ojacanje"};

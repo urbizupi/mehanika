@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ukl-konzola-enacba"] = {"html": "<div class=\"eq\">\\[EI\\,\\theta'' + P\\sin\\theta = 0 \\quad \\text{na } [0, L] , \\qquad \\theta'(L) = 0 . \\tag{8.115}\\]</div>", "href": "sec-uklon.html#eq-ukl-konzola-enacba"};

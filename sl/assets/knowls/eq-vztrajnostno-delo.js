@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vztrajnostno-delo"] = {"html": "<div class=\"eq\">\\[I_{\\mathrm{s}} = \\sum_{\\mathrm{k}} m_{\\mathrm{k}}\\,\\ddot{\\vek x}_{\\mathrm{k}}\\cdot\\frac{\\partial\\vek X_{\\mathrm{k}}}{\\partial q_{\\mathrm{s}}} . \\tag{8.80}\\]</div>", "href": "sec-lagrangeeve-enacbe.html#eq-vztrajnostno-delo"};

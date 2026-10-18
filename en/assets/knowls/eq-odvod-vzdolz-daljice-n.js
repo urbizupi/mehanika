@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-odvod-vzdolz-daljice-n"] = {"html": "<div class=\"eq\">\\[g'(t) = \\sum_{\\mathrm{j}=1}^{n} \\frac{\\partial f}{\\partial x_{\\mathrm{j}}}(\\vek p + t\\,\\vek d)\\,d_{\\mathrm{j}} = \\nabla f(\\vek p + t\\,\\vek d)\\cdot\\vek d , \\tag{8.14}\\]</div>", "href": "sec-implicitna-funkcija.html#eq-odvod-vzdolz-daljice-n"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-emo-energija"] = {"html": "<div class=\"eq\">\\[\\mathcal{E} = \\tfrac12\\,m\\,\\dot q^2 + \\tfrac12\\,k\\,q^2 . \\tag{9.50}\\]</div>", "href": "sec-energija-moc.html#eq-emo-energija"};

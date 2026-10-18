@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-fvr-ostanek"] = {"html": "<div class=\"eq\">\\[\\|f - S_{\\mathrm{N}} f\\|^2 = \\int_0^{T_{\\mathrm{p}}} f^2\\,\\mathrm{d}t - \\frac{T_{\\mathrm{p}}}{4}a_0^2 - \\frac{T_{\\mathrm{p}}}{2}\\sum_{\\mathrm{n}=1}^{N}\\big(a_{\\mathrm{n}}^2 + b_{\\mathrm{n}}^2\\big) . \\tag{9.78}\\]</div>", "href": "sec-fourierjeve-vrste.html#eq-fvr-ostanek"};

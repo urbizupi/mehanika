@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kom-eksp"] = {"html": "<div class=\"eq\">\\[\\mathrm{e}^{z} = \\mathrm{e}^{\\sigma}\\,(\\cos\\omega + \\mathrm{i}\\sin\\omega) , \\tag{9.25}\\]</div>", "href": "sec-kompleksna-stevila.html#eq-kom-eksp"};

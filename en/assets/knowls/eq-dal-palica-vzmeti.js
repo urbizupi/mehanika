@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dal-palica-vzmeti"] = {"html": "<div class=\"eq\">\\[\\begin{aligned} m\\,\\ddot y &amp;= -k_1\\,y_1 - k_2\\,y_2 - m g , \\\\ J_{\\mathrm{G}}\\,\\ddot\\varphi &amp;= -\\cos\\varphi\\,(-k_1\\,y_1) \\\\ &amp;\\quad + \\cos\\varphi\\,(-k_2\\,y_2) , \\end{aligned} \\tag{8.61}\\]</div>", "href": "sec-dalembert.html#eq-dal-palica-vzmeti"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-msk-dolzina-krivulje"] = {"html": "<div class=\"eq\">\\[s = \\int_{\\mathrm{a}}^b \\sqrt{x'(t)^2 + y'(t)^2}\\,\\mathrm{d}t . \\tag{8.1}\\]</div>", "href": "sec-sinus-kosinus.html#eq-msk-dolzina-krivulje"};

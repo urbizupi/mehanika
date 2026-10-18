@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sprememba-polja-n"] = {"html": "<div class=\"eq\">\\[f(\\vek q) - f(\\vek p) = \\sum_{\\mathrm{j}=1}^{n} \\frac{\\partial f}{\\partial x_{\\mathrm{j}}}(\\vek p)\\,\\Delta_{\\mathrm{j}} + R(\\vek q) . \\tag{8.13}\\]</div>", "href": "sec-implicitna-funkcija.html#eq-sprememba-polja-n"};

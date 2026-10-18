@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mep-k-konzole"] = {"html": "<div class=\"eq\">\\[U = \\frac12\\,\\frac{3EI}{L^3}\\,q^2 = \\frac12\\,k\\,q^2 , \\qquad k = \\frac{3EI}{L^3} = 62\\,720\\ \\text{N/m} . \\tag{9.3}\\]</div>", "href": "sec-model-ena-ps.html#eq-mep-k-konzole"};

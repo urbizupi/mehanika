@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nihalo-hitrost"] = {"html": "<div class=\"eq\">\\[\\dot\\theta = \\pm\\sqrt{\\frac{2\\,(\\mathcal{E} + mg\\ell\\cos\\theta)}{m\\ell^2}} , \\tag{8.100}\\]</div>", "href": "sec-ohranitveni-zakoni.html#eq-nihalo-hitrost"};

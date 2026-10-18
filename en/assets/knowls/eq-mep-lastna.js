@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mep-lastna"] = {"html": "<div class=\"eq\">\\[\\omega_{\\mathrm{n}} = \\sqrt{\\frac{k}{m}} , \\tag{9.9}\\]</div>", "href": "sec-model-ena-ps.html#eq-mep-lastna"};

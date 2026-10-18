@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mer-pas"] = {"html": "<div class=\"eq\">\\[\\Omega_{1,2} = \\frac{\\mp c + \\sqrt{c^2 + 4mk}}{2m} , \\qquad \\Omega_2 - \\Omega_1 = \\frac{c}{m} = 2\\zeta\\omega_{\\mathrm{n}} \\tag{9.92}\\]</div>", "href": "sec-merjenje.html#eq-mer-pas"};

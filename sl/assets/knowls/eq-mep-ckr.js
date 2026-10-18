@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mep-ckr"] = {"html": "<div class=\"eq\">\\[c_{\\mathrm{kr}} = 2\\,m\\,\\omega_{\\mathrm{n}} = 2\\sqrt{k\\,m} , \\tag{9.10}\\]</div>", "href": "sec-model-ena-ps.html#eq-mep-ckr"};

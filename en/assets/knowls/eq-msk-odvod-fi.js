@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-msk-odvod-fi"] = {"html": "<div class=\"eq\">\\[\\varphi'(x) = -\\frac{1}{\\sqrt{1 - x^2}} . \\tag{8.4}\\]</div>", "href": "sec-sinus-kosinus.html#eq-msk-odvod-fi"};

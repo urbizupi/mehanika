@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pko-kolo"] = {"html": "<div class=\"eq\">\\[\\dot x = r\\,\\dot\\varphi\\,\\cos\\psi , \\qquad \\dot y = r\\,\\dot\\varphi\\,\\sin\\psi . \\tag{8.30}\\]</div>", "href": "sec-posplosene-koordinate.html#eq-pko-kolo"};

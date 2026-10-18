@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-izo-pravilo"] = {"html": "<div class=\"eq\">\\[f_{\\mathrm{n}} = \\frac{1}{2\\pi}\\sqrt{\\frac{g}{\\delta_{\\mathrm{st}}}} . \\tag{9.59}\\]</div>", "href": "sec-izolacija.html#eq-izo-pravilo"};

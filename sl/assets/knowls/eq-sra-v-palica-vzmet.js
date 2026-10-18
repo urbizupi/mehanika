@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sra-v-palica-vzmet"] = {"html": "<div class=\"eq\">\\[V(\\theta) = \\tfrac12 k_{\\mathrm{r}}\\,\\theta^2 + P L\\cos\\theta . \\tag{8.51}\\]</div>", "href": "sec-stabilnost-ravnovesja.html#eq-sra-v-palica-vzmet"};

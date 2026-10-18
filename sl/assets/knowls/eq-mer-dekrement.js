@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mer-dekrement"] = {"html": "<div class=\"eq\">\\[\\Lambda = \\ln\\frac{q(t)}{q(t + T_{\\mathrm{d}})} , \\tag{9.89}\\]</div>", "href": "sec-merjenje.html#eq-mer-dekrement"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sra-kriticna"] = {"html": "<div class=\"eq\">\\[V(\\theta) - V(0) = k_{\\mathrm{r}}\\,\\Big(\\frac{\\theta^2}{2} - 1 + \\cos\\theta\\Big) . \\tag{8.54}\\]</div>", "href": "sec-stabilnost-ravnovesja.html#eq-sra-kriticna"};

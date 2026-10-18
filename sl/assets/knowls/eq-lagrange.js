@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-lagrange"] = {"html": "<div class=\"eq\">\\[\\frac{\\mathrm{d}}{\\mathrm{d}t}\\Big(\\frac{\\partial T}{\\partial\\dot q_{\\mathrm{s}}}\\Big) - \\frac{\\partial T}{\\partial q_{\\mathrm{s}}} = Q_{\\mathrm{s}} . \\tag{8.79}\\]</div>", "href": "sec-lagrangeeve-enacbe.html#eq-lagrange"};

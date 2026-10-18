@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-fvr-norme"] = {"html": "<div class=\"eq\">\\[\\begin{aligned} (1, 1) &amp;= T_{\\mathrm{p}} , \\\\ (\\cos n\\Omega t, \\cos n\\Omega t) &amp;= (\\sin n\\Omega t, \\sin n\\Omega t) \\\\ &amp;= \\frac{T_{\\mathrm{p}}}{2} \\quad (n \\ge 1) . \\end{aligned} \\tag{9.74}\\]</div>", "href": "sec-fourierjeve-vrste.html#eq-fvr-norme"};

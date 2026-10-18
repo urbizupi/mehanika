@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ukl-nosilec-osna-sila"] = {"html": "<div class=\"eq\">\\[\\begin{aligned} EI\\,v'''' - N\\,v'' &amp;= q , \\\\ \\text{pri tlaku} (N = -P) : \\quad EI\\,v'''' + P\\,v'' &amp;= q . \\end{aligned} \\tag{8.124}\\]</div>", "href": "sec-uklon.html#eq-ukl-nosilec-osna-sila"};

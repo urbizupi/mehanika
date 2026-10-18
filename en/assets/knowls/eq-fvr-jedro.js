@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-fvr-jedro"] = {"html": "<div class=\"eq\">\\[S_{\\mathrm{N}}f(t) = \\frac{2}{T_{\\mathrm{p}}}\\int_0^{T_{\\mathrm{p}}/2}\\big(f(t + u) + f(t - u)\\big)\\,K_{\\mathrm{N}}(\\Omega u)\\,\\mathrm{d}u . \\tag{9.80}\\]</div>", "href": "sec-fourierjeve-vrste.html#eq-fvr-jedro"};

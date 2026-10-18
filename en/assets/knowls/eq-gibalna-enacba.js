@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-gibalna-enacba"] = {"html": "<div class=\"eq\">\\[\\sum_{\\mathrm{i}} \\frac{\\partial\\sigma_{\\mathrm{ij}}}{\\partial x_{\\mathrm{i}}} + b_{\\mathrm{j}} = \\rho\\,a_{\\mathrm{j}} , \\qquad j = x, y, z . \\tag{8.56}\\]</div>", "href": "sec-dalembert.html#eq-gibalna-enacba"};

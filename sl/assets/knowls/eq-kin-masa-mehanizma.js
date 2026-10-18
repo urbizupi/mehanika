@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kin-masa-mehanizma"] = {"html": "<div class=\"eq\">\\[m(\\theta) = \\tfrac16 + \\tfrac16 + \\sin^2\\theta + \\sin^2\\theta = \\tfrac13 + 2\\sin^2\\theta\\ \\mathrm{kg\\,m^2} . \\tag{8.75}\\]</div>", "href": "sec-kineticna-energija.html#eq-kin-masa-mehanizma"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-imp-h-razlika"] = {"html": "<div class=\"eq\">\\[h(t) = \\frac{\\mathrm{e}^{s_1 t} - \\mathrm{e}^{s_2 t}}{m\\,(s_1 - s_2)} , \\tag{9.67}\\]</div>", "href": "sec-impulzni-odziv.html#eq-imp-h-razlika"};

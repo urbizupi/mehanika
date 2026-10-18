@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-eks-logaritem"] = {"html": "<div class=\"eq\">\\[\\ln x = \\int_1^x \\frac{\\mathrm{d}t}{t} \\quad \\text{for } x \\ge 1 , \\qquad \\ln x = -\\int_{\\mathrm{x}}^1 \\frac{\\mathrm{d}t}{t} \\quad \\text{for } 0 &lt; x &lt; 1 . \\tag{9.14}\\]</div>", "href": "sec-eksponentna-funkcija.html#eq-eks-logaritem"};

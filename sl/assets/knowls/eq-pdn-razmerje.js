@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pdn-razmerje"] = {"html": "<div class=\"eq\">\\[q(t + T_{\\mathrm{d}}) = \\mathrm{e}^{-2\\pi\\zeta/\\sqrt{1 - \\zeta^2}}\\,q(t) , \\tag{9.43}\\]</div>", "href": "sec-prosto-duseno-nihanje.html#eq-pdn-razmerje"};

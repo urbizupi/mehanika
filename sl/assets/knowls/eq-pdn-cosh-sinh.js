@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pdn-cosh-sinh"] = {"html": "<div class=\"eq\">\\[\\operatorname{cosh} x = \\frac{\\mathrm{e}^x + \\mathrm{e}^{-x}}{2} , \\qquad \\operatorname{sinh} x = \\frac{\\mathrm{e}^x - \\mathrm{e}^{-x}}{2} . \\tag{9.39}\\]</div>", "href": "sec-prosto-duseno-nihanje.html#eq-pdn-cosh-sinh"};

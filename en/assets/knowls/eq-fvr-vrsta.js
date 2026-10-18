@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-fvr-vrsta"] = {"html": "<div class=\"eq\">\\[f(t) \\sim \\frac{a_0}{2} + \\sum_{\\mathrm{n}=1}^{\\infty}\\big(a_{\\mathrm{n}}\\cos n\\Omega t + b_{\\mathrm{n}}\\sin n\\Omega t\\big) , \\tag{9.76}\\]</div>", "href": "sec-fourierjeve-vrste.html#eq-fvr-vrsta"};

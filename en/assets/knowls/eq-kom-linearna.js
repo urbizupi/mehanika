@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kom-linearna"] = {"html": "<div class=\"eq\">\\[a_{\\mathrm{n}} y^{(n)} + \\dots + a_1 y' + a_0 y = f . \\tag{9.29}\\]</div>", "href": "sec-kompleksna-stevila.html#eq-kom-linearna"};

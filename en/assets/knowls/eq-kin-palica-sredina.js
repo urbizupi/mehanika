@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kin-palica-sredina"] = {"html": "<div class=\"eq\">\\[J_{\\mathrm{G}} = \\int_{-\\mathrm{L}/2}^{L/2} \\frac mL\\,s^2\\,\\mathrm{d}s = \\frac mL\\cdot\\frac{2}{3}\\Big(\\frac L2\\Big)^3 = \\frac{m\\,L^2}{12} , \\tag{8.69}\\]</div>", "href": "sec-kineticna-energija.html#eq-kin-palica-sredina"};

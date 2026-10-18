@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mer-coulomb"] = {"html": "<div class=\"eq\">\\[m\\ddot q + k q = -F_{\\mathrm{t}}\\,\\mathrm{sgn}(\\dot q) , \\qquad \\dot q \\ne 0 , \\tag{9.93}\\]</div>", "href": "sec-merjenje.html#eq-mer-coulomb"};

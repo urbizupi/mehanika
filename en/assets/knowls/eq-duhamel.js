@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-duhamel"] = {"html": "<div class=\"eq\">\\[q(t) = q_{\\mathrm{pr}}(t) + \\int_{\\mathrm{t}_0}^t h(t - s)\\,Q(s)\\,\\mathrm{d}s \\tag{9.72}\\]</div>", "href": "sec-konvolucija.html#eq-duhamel"};

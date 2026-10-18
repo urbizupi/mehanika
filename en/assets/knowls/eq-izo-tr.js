@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-izo-tr"] = {"html": "<div class=\"eq\">\\[\\mathrm{TR} = \\frac{\\sqrt{1 + (2\\zeta r)^2}}{\\sqrt{(1 - r^2)^2 + (2\\zeta r)^2}} = \\sqrt{1 + (2\\zeta r)^2}\\,D(r) . \\tag{9.58}\\]</div>", "href": "sec-izolacija.html#eq-izo-tr"};
