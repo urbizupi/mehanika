@@ -18,7 +18,7 @@
 <header class="top"><a class="home" href="index.html">Mechanics</a><nav class="pager"><a href="sec-mocna-sibka-oblika.html" rel="prev">← 6.1</a><a href="index.html">Contents</a><a href="sec-skalarni-produkt-funkcij.html" rel="next">6.3 →</a></nav>
 <span class="tools"><a class="lang" href="../sl/sec-funkcije-s-pregibi.html" hreflang="sl">Slovenščina</a><button type="button" class="theme-toggle" title="Light or dark theme" aria-label="Light or dark theme"></button><button type="button" data-details="open">Expand all</button><button type="button" data-details="close">Collapse all</button><button type="button" class="fig-side-toggle" aria-pressed="false">Figures alongside</button></span></header>
 <main>
-<p class="updated">Last updated 19 October 2026, 19:43</p>
+<p class="updated">Last updated 19 October 2026, 20:17</p>
 <p class="crumb"><a href="ch-sibka-oblika.html"><span class="h-num">Chapter 6</span> Weak form, the Ritz and Galerkin method (šibka oblika, Ritzova in Galerkinova metoda)</a></p>
 <h2 id="sec-funkcije-s-pregibi"><span class="h-num">6.2</span> Mathematics: functions with kinks</h2>
 <p>The displacement of the stepped bar (section <a class="xref" href="sec-mocna-sibka-oblika.html#sec-palica-s-stopnico">6.1.3</a>) has a kink. At \(x = 5\) m the stiffness \(EA\) changes abruptly by a factor of <span class="nobr">\(4\),</span> while the <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> \(N = EA\,u'\) is continuous there, so the <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivative</a> \(u'\) must jump. Such a displacement has no second derivative and not even a derivative at every point. The trial fields of the finite element method (chapter <a class="xref" href="ch-mke-palice.html">7</a>) will be built from straight pieces that meet in kinks, so a kink is not a rare exception but the general rule. Chapter <a class="xref" href="ch-energijski-principi.html">4</a>, however, proved the <a class="xref auto" href="sec-virtualno-delo-telesa.html#thm-virtualno-delo" data-knowl="thm-virtualno-delo">principle of virtual displacements</a> and the principle of <a class="xref auto" href="sec-polnost.html#def-supremum" data-knowl="def-supremum">minimum</a> energy for a bar for fields whose derivative is <a class="xref auto" href="sec-zveznost.html#def-zveznost" data-knowl="def-zveznost">continuous on</a> the whole bar. Do the two theorems stay true when the derivative jumps?</p>
@@ -31,7 +31,13 @@
 
 <p class="vir"><span class="vir-label">Source:</span> KREYSZIG §6.1 (PDF p. 235): a function is piecewise continuous if the interval can be divided into finitely many subintervals, on each of which the function is continuous and has finite limits as the endpoints are approached from the interior. The notation with the functions \(f_{\mathrm{k}}\) is ours.</p></div></div>
 <p>The function \(f_{\mathrm{k}}\) is determined by <span class="nobr">\(f\),</span> since its values at the ends of the piece are the <a class="xref auto" href="sec-limita-odvod.html#def-limita" data-knowl="def-limita">limits</a> of the values of \(f\) as the end is approached from inside the piece (lemma <a class="xref" href="sec-srednja-vrednost.html#lem-limita-zveznost" data-knowl="lem-limita-zveznost">1.80</a>). The values of \(f\) at the break points do not interest us, so we may leave them undefined. If a function is piecewise continuous with some <a class="xref auto" href="sec-integral.html#def-delitev" data-knowl="def-delitev">partition</a>, it is piecewise continuous with every finer partition too, since we only restrict the functions \(f_{\mathrm{k}}\) to subintervals. For finitely many <a class="xref auto" href="sec-funkcije-s-pregibi.html#def-odsekoma-zvezna" data-knowl="def-odsekoma-zvezna">piecewise continuous functions</a> there is therefore a common partition, whose break points are the union of the break points of all of them. We will always take such functions on a common partition.</p>
-<p>A piecewise continuous function is <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integrable</a> on every piece, because it is continuous there (theorem <a class="xref" href="sec-integral.html#thm-integrabilnost-zveznih" data-knowl="thm-integrabilnost-zveznih">3.38</a>). The integral over the whole <a class="xref auto" href="sec-konvergenca-zaporedij.html#def-interval" data-knowl="def-interval">interval</a> is therefore the sum of the integrals over the pieces.</p>
+<p>The requirement that \(f_{\mathrm{k}}\) is continuous on the closed piece is essential. Take \(f(x) = 1/\sqrt{x}\) on \((0, 1]\) (we do not need the value at <span class="nobr">\(0\)).</span> The function is continuous on every <a class="xref auto" href="sec-konvergenca-zaporedij.html#def-interval" data-knowl="def-interval">closed interval</a> \([c, 1]\) with <span class="nobr">\(c &gt; 0\),</span> but it is not piecewise continuous. It would be piecewise continuous if for some partition there were a function <span class="nobr">\(f_1\),</span> continuous on the closed interval <span class="nobr">\([0, x_1]\),</span> that equals \(f\) on <span class="nobr">\((0, x_1)\).</span> Such a function does not exist:</p>
+<ol>
+<li>A <a class="xref auto" href="sec-zveznost.html#def-zveznost" data-knowl="def-zveznost">continuous function</a> on a closed interval attains its greatest and least value (theorem <a class="xref" href="sec-ekstremi.html#thm-ekstremi" data-knowl="thm-ekstremi">1.73</a>), so it is bounded, \(|f_1| \le M\) for some number <span class="nobr">\(M &gt; 0\).</span></li>
+<li>We take \(x\) with \(0 &lt; x &lt; x_1\) and <span class="nobr">\(x &lt; 1/(M+1)^2\).</span> Then <span class="nobr">\(f_1(x) = f(x) = 1/\sqrt{x} &gt; M + 1\),</span> which contradicts step 1. Since this holds for every partition, \(f\) is not piecewise continuous.</li>
+</ol>
+<p>The function with a jump, \(f = 0\) on \((0, \tfrac12)\) and \(f = 1\) on <span class="nobr">\((\tfrac12, 1)\),</span> passes the test with \(f_1 = 0\) and <span class="nobr">\(f_2 = 1\).</span> The jump is therefore not an obstacle, since every piece has its own continuous function up to the endpoint. The obstacle is unboundedness at the endpoint.</p>
+<p>A piecewise continuous function is <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integrable</a> on every piece, because it is continuous there (theorem <a class="xref" href="sec-integral.html#thm-integrabilnost-zveznih" data-knowl="thm-integrabilnost-zveznih">3.38</a>). The integral over the whole interval is therefore the sum of the integrals over the pieces.</p>
 
 <div class="blk definicija" id="def-integral-odsekoma-zvezne"><div class="blk-head"><span class="blk-label">Definition 6.9</span> <span class="blk-title">Integral of a piecewise continuous function (integral odsekoma zvezne funkcije)</span></div><div class="blk-body"><p>Let \(f\) be a piecewise continuous function on \([a, b]\) with the <a class="xref auto" href="sec-integral.html#def-delitev" data-knowl="def-delitev">partition</a> \(a = x_0 &lt; \dots &lt; x_{\mathrm{m}} = b\) and the <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> \(f_{\mathrm{k}}\) of definition <a class="xref" href="sec-funkcije-s-pregibi.html#def-odsekoma-zvezna" data-knowl="def-odsekoma-zvezna">6.8</a>. Its integral (integral) is the number</p>
 <div class="eq" id="eq-integral-odsekoma">\[\int_{\mathrm{a}}^b f(x)\,\mathrm{d}x = \sum_{\mathrm{k}=1}^m \int_{\mathrm{x}_{\mathrm{k}-1}}^{x_{\mathrm{k}}} f_{\mathrm{k}}(x)\,\mathrm{d}x , \tag{6.5}\]</div>
@@ -73,10 +79,227 @@
 <p>The derivative \(u'\) is defined everywhere except at the break points and is a piecewise continuous function by definition <a class="xref" href="sec-funkcije-s-pregibi.html#def-odsekoma-zvezna" data-knowl="def-odsekoma-zvezna">6.8</a>. At a break point \(x_{\mathrm{k}}\) the function \(u\) has the left derivative \(g_{\mathrm{k}}(x_{\mathrm{k}})\) and the right derivative <span class="nobr">\(g_{\mathrm{k}+1}(x_{\mathrm{k}})\),</span> which may be different.</p>
 
 <p class="vir"><span class="vir-label">Source:</span> The definition is ours, we met a kink in section <a class="xref" href="sec-sprememba-polja.html#sec-polje-s-pregibi">1.15.5</a>. KREYSZIG §6.1 (PDF p. 235) has only piecewise continuous functions, not their derivatives.</p></div></div>
-<p>Requirement 1 is essential: a function that jumps at a break point is not piecewise continuously differentiable, because the derivative on the pieces does not register the jump (the example in the remark below lemma <a class="xref" href="sec-funkcije-s-pregibi.html#lem-osnovni-izrek-pregibi" data-knowl="lem-osnovni-izrek-pregibi">6.12</a>). A function we know from chapter <a class="xref" href="ch-energijski-principi.html">4</a>, that is a function differentiable at every point of the interval with a continuous derivative, is piecewise continuously differentiable with a single partition, <span class="nobr">\(m = 1\).</span> The stepped bar is the first example with two pieces.</p>
-<p>Definition <a class="xref" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">6.2</a> writes the same class differently, with a function that is differentiable on every closed piece with a continuous derivative, one-sided at the ends. The two classes are equal. Let \(u\) be piecewise continuously differentiable and \(x\) a point of the piece \([x_{\mathrm{k}-1}, x_{\mathrm{k}}]\) to the left of <span class="nobr">\(x_{\mathrm{k}}\).</span> By the mean value theorem (theorem <a class="xref" href="sec-srednja-vrednost.html#thm-srednja-vrednost" data-knowl="thm-srednja-vrednost">1.84</a>) \(\big(u(x_{\mathrm{k}}) - u(x)\big)/(x_{\mathrm{k}} - x) = g_{\mathrm{k}}(\xi)\) for some \(\xi\) between \(x\) and <span class="nobr">\(x_{\mathrm{k}}\).</span> As \(x\) tends to <span class="nobr">\(x_{\mathrm{k}}\),</span> \(\xi\) tends to \(x_{\mathrm{k}}\) and \(g_{\mathrm{k}}(\xi)\) to <span class="nobr">\(g_{\mathrm{k}}(x_{\mathrm{k}})\),</span> because \(g_{\mathrm{k}}\) is continuous. The left derivative of \(u\) at \(x_{\mathrm{k}}\) is therefore <span class="nobr">\(g_{\mathrm{k}}(x_{\mathrm{k}})\),</span> likewise the right derivative at \(x_{\mathrm{k}-1}\) is <span class="nobr">\(g_{\mathrm{k}}(x_{\mathrm{k}-1})\),</span> so \(u\) is differentiable on the closed piece with the continuous derivative <span class="nobr">\(g_{\mathrm{k}}\).</span> Conversely, a function of definition <a class="xref" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">6.2</a> satisfies both items of the definition, with \(g_{\mathrm{k}}\) its derivative on the closed piece. The admissible functions of a bar are therefore exactly the <a class="xref auto" href="sec-funkcije-s-pregibi.html#def-odsekoma-zvezno-odvedljiva" data-knowl="def-odsekoma-zvezno-odvedljiva">piecewise continuously differentiable functions</a> \(w\) with <span class="nobr">\(w(0) = 0\).</span></p>
+<p>Requirement 1 is essential: a function that jumps at a break point is not <a class="xref auto" href="sec-funkcije-s-pregibi.html#def-odsekoma-zvezno-odvedljiva" data-knowl="def-odsekoma-zvezno-odvedljiva">piecewise continuously differentiable</a>, because the derivative on the pieces does not register the jump (the example in the remark below lemma <a class="xref" href="sec-funkcije-s-pregibi.html#lem-osnovni-izrek-pregibi" data-knowl="lem-osnovni-izrek-pregibi">6.12</a>). A function we know from chapter <a class="xref" href="ch-energijski-principi.html">4</a>, that is a function differentiable at every point of the interval with a continuous derivative, is piecewise continuously differentiable with a single partition, <span class="nobr">\(m = 1\).</span> The stepped bar is the first example with two pieces.</p>
+<p>Requirement 2 excludes functions that are continuous and differentiable in the interior but have an unbounded derivative at an endpoint. Take \(w = \sqrt{x}\) on <span class="nobr">\([0, 1]\).</span> The function is continuous, <span class="nobr">\(w(0) = 0\),</span> it is differentiable on \((0, 1)\) and <span class="nobr">\(w' = 1/(2\sqrt{x})\).</span> It differs from the function with a kink only at the endpoint <span class="nobr">\(x = 0\),</span> where its graph has a vertical tangent (figure <a class="xref" href="sec-funkcije-s-pregibi.html#fig-sso-koren-pregib" data-knowl="fig-sso-koren-pregib">6.6</a>), whereas the derivative of the function with a kink is bounded everywhere.</p>
+
+<figure class="blk slika" id="fig-sso-koren-pregib"><p><span class="svgfig" role="img" aria-label="Square root with a vertical tangent at zero and function with a kink with a bounded derivative"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='407.10pt' height='194.24pt' viewBox='-72.000004 -72.000001 301.555666 143.880747'>
+<defs>
+<path id='sso-koren-pregib-g0-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='sso-koren-pregib-g0-119' d='M4.60274-3.377335C4.652553-3.596513 4.752179-3.965131 4.752179-4.024907C4.752179-4.204234 4.612702-4.293898 4.463263-4.293898C4.343711-4.293898 4.164384-4.214197 4.094645-4.014944C4.064757-3.945205 3.596513-2.042341 3.526775-1.783313C3.457036-1.484433 3.437111-1.305106 3.437111-1.125778C3.437111-1.016189 3.437111-.996264 3.447073-.946451C3.217933-.418431 2.919054-.109589 2.530511-.109589C1.733499-.109589 1.733499-.846824 1.733499-1.016189C1.733499-1.334994 1.783313-1.723537 2.251557-2.948941C2.361146-3.247821 2.420922-3.387298 2.420922-3.58655C2.420922-4.034869 2.092154-4.403487 1.603985-4.403487C.657534-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.836862-3.875467 1.225405-4.184309 1.574097-4.184309C1.663761-4.184309 1.823163-4.174346 1.823163-3.855542C1.823163-3.606476 1.713574-3.327522 1.643836-3.158157C1.205479-1.982565 1.085928-1.524284 1.085928-1.145704C1.085928-.239103 1.753425 .109589 2.500623 .109589C2.669988 .109589 3.138232 .109589 3.536737-.587796C3.795766 .049813 4.483188 .109589 4.782067 .109589C5.529265 .109589 5.967621-.518057 6.22665-1.115816C6.56538-1.892902 6.884184-3.227895 6.884184-3.706102C6.884184-4.254047 6.615193-4.403487 6.445828-4.403487C6.196762-4.403487 5.947696-4.144458 5.947696-3.92528C5.947696-3.795766 6.007472-3.73599 6.097136-3.656289C6.206725-3.5467 6.455791-3.287671 6.455791-2.809465C6.455791-2.470735 6.166874-1.494396 5.907846-.986301C5.648817-.458281 5.300125-.109589 4.811955-.109589C4.343711-.109589 4.07472-.408468 4.07472-.976339C4.07472-1.255293 4.144458-1.564134 4.184309-1.703611L4.60274-3.377335Z'/>
+<path id='sso-koren-pregib-g0-120' d='M3.327522-3.008717C3.387298-3.267746 3.616438-4.184309 4.313823-4.184309C4.363636-4.184309 4.60274-4.184309 4.811955-4.054795C4.533001-4.004981 4.333748-3.755915 4.333748-3.516812C4.333748-3.35741 4.443337-3.16812 4.712329-3.16812C4.931507-3.16812 5.250311-3.347447 5.250311-3.745953C5.250311-4.26401 4.662516-4.403487 4.323786-4.403487C3.745953-4.403487 3.39726-3.875467 3.277709-3.646326C3.028643-4.303861 2.49066-4.403487 2.201743-4.403487C1.165629-4.403487 .597758-3.118306 .597758-2.86924C.597758-2.769614 .697385-2.769614 .71731-2.769614C.797011-2.769614 .826899-2.789539 .846824-2.879203C1.185554-3.935243 1.843088-4.184309 2.181818-4.184309C2.371108-4.184309 2.719801-4.094645 2.719801-3.516812C2.719801-3.20797 2.550436-2.540473 2.181818-1.145704C2.022416-.52802 1.673724-.109589 1.235367-.109589C1.175592-.109589 .946451-.109589 .737235-.239103C.986301-.288917 1.205479-.498132 1.205479-.777086C1.205479-1.046077 .986301-1.125778 .836862-1.125778C.537983-1.125778 .288917-.86675 .288917-.547945C.288917-.089664 .787049 .109589 1.225405 .109589C1.882939 .109589 2.241594-.587796 2.271482-.647572C2.391034-.278954 2.749689 .109589 3.347447 .109589C4.373599 .109589 4.941469-1.175592 4.941469-1.424658C4.941469-1.524284 4.851806-1.524284 4.821918-1.524284C4.732254-1.524284 4.712329-1.484433 4.692403-1.414695C4.363636-.348692 3.686177-.109589 3.367372-.109589C2.978829-.109589 2.819427-.428394 2.819427-.767123C2.819427-.986301 2.879203-1.205479 2.988792-1.643836L3.327522-3.008717Z'/>
+<path id='sso-koren-pregib-g1-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='sso-koren-pregib-g1-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='sso-koren-pregib-g1-53' d='M4.473225-2.002491C4.473225-3.188045 3.656289-4.184309 2.580324-4.184309C2.102117-4.184309 1.673724-4.024907 1.315068-3.676214V-5.618929C1.514321-5.559153 1.843088-5.489415 2.161893-5.489415C3.387298-5.489415 4.084682-6.396015 4.084682-6.525529C4.084682-6.585305 4.054795-6.635118 3.985056-6.635118C3.975093-6.635118 3.955168-6.635118 3.905355-6.60523C3.706102-6.515567 3.217933-6.316314 2.550436-6.316314C2.15193-6.316314 1.693649-6.386052 1.225405-6.595268C1.145704-6.625156 1.125778-6.625156 1.105853-6.625156C1.006227-6.625156 1.006227-6.545455 1.006227-6.386052V-3.437111C1.006227-3.257783 1.006227-3.178082 1.145704-3.178082C1.215442-3.178082 1.235367-3.20797 1.275218-3.267746C1.384807-3.427148 1.753425-3.965131 2.560399-3.965131C3.078456-3.965131 3.327522-3.506849 3.407223-3.327522C3.566625-2.958904 3.58655-2.570361 3.58655-2.072229C3.58655-1.723537 3.58655-1.125778 3.347447-.707347C3.108344-.318804 2.739726-.059776 2.281445-.059776C1.554172-.059776 .986301-.587796 .816936-1.175592C.846824-1.165629 .876712-1.155666 .986301-1.155666C1.315068-1.155666 1.484433-1.404732 1.484433-1.643836S1.315068-2.132005 .986301-2.132005C.846824-2.132005 .498132-2.062267 .498132-1.603985C.498132-.747198 1.185554 .219178 2.30137 .219178C3.457036 .219178 4.473225-.737235 4.473225-2.002491Z'/>
+</defs>
+<g id='sso-koren-pregib-page1'>
+<g stroke-miterlimit='10' transform='translate(-47.833564,56.583269)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<path d='M-12.2911 0H113.44177' fill='none'/>
+<g transform='translate(110.96532,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(121.42694,-2.15277)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.833564,56.583269)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-47.833564' y='56.583269' xlink:href='#sso-koren-pregib-g0-120'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M-12.2911 0V113.44177' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,-12.2911,110.96532)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-16.00523,121.42694)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.833564,56.583269)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-47.833564' y='56.583269' xlink:href='#sso-koren-pregib-g0-119'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M102.43008 0V102.43008' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 102.43008H102.43008' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.1'>
+<path d='M0 0L1.29568 11.52057L2.59138 16.29228L3.88707 19.95273L5.18277 23.04114L6.47845 25.76068L7.77415 28.21922L9.06984 30.48082L10.36554 32.58456L11.66122 34.5617L12.95692 36.431L14.25261 38.20808L15.54831 39.90703L16.84401 41.53719L18.1397 43.1064L19.4354 44.61778L20.73108 46.08072L22.02678 47.49832L23.32246 48.87529L24.61816 50.21474L25.91385 51.5198L27.20955 52.79205L28.50523 54.0346L29.80093 55.24904L31.09662 56.43845L32.39232 57.60129L33.68802 58.74225L34.9837 59.86133L36.2794 60.95853L37.57509 62.03853L38.87079 63.0982L40.16647 64.14227L41.46217 65.16913L42.75786 66.17725L44.05356 67.17441L45.34924 68.15439L46.64494 69.1203L47.94063 70.0737L49.23633 71.01616L50.53203 71.94456L51.82771 72.86046L53.12341 73.76541L54.4191 74.65942L55.7148 75.5425L57.01048 76.41618L58.30618 77.2805L59.60187 78.13544L60.89757 78.97945L62.19325 79.81406L63.48895 80.64243L64.78464 81.45985L66.08034 82.27103L67.37604 83.07439L68.67172 83.86838L69.96742 84.65611L71.2631 85.43602L72.5588 86.20969L73.85449 86.97554L75.15019 87.73514L76.44588 88.48848L77.74158 89.23558L79.03726 89.97485L80.33296 90.71101L81.62866 91.43935L82.92435 92.163L84.22005 92.87883L85.51573 93.59154L86.81143 94.29643L88.10712 94.9982L89.40282 95.69373L90.6985 96.38611L91.9942 97.07225L93.28989 97.75371L94.58559 98.4289L95.88127 99.10097L97.17697 99.76836L98.47267 100.43105L99.76836 101.08905L101.06406 101.74394L102.35974 102.39413' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.1'>
+<path d='M0 0V40.9714' fill='none'/>
+</g>
+</g>
+<g transform='translate(-2.5,-10.07741)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.833564,56.583269)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-47.833564' y='56.583269' xlink:href='#sso-koren-pregib-g1-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(99.93008,-10.07741)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.833564,56.583269)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-47.833564' y='56.583269' xlink:href='#sso-koren-pregib-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-20.92409,99.20787)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.833564,56.583269)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-47.833564' y='56.583269' xlink:href='#sso-koren-pregib-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M135.66313 0H261.39601' fill='none'/>
+<g transform='translate(258.91956,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(269.38118,-2.15277)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.833564,56.583269)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-47.833564' y='56.583269' xlink:href='#sso-koren-pregib-g0-120'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M135.66313 0V113.44177' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,135.66313,110.96532)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(131.949,121.42694)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.833564,56.583269)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-47.833564' y='56.583269' xlink:href='#sso-koren-pregib-g0-119'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M250.38432 0V51.21504' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M199.16928 0V51.21504' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M147.95424 51.21504H199.16928' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.1'>
+<path d='M147.95424 0L199.16928 51.21504H250.38432' fill='none'/>
+</g>
+</g>
+<g transform='translate(145.45424,-10.07741)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.833564,56.583269)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-47.833564' y='56.583269' xlink:href='#sso-koren-pregib-g1-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(192.78038,-10.07742)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.833564,56.583269)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-47.833564' y='56.583269' xlink:href='#sso-koren-pregib-g1-48'/>
+<use x='-42.852225' y='56.583269' xlink:href='#sso-koren-pregib-g0-59'/>
+<use x='-40.084816' y='56.583269' xlink:href='#sso-koren-pregib-g1-53'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(247.88432,-10.07741)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.833564,56.583269)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-47.833564' y='56.583269' xlink:href='#sso-koren-pregib-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(119.25235,48.96504)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.833564,56.583269)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-47.833564' y='56.583269' xlink:href='#sso-koren-pregib-g1-48'/>
+<use x='-42.852225' y='56.583269' xlink:href='#sso-koren-pregib-g0-59'/>
+<use x='-40.084816' y='56.583269' xlink:href='#sso-koren-pregib-g1-53'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 6.6</span>: Left: \(w = \sqrt{x}\) on <span class="nobr">\([0, 1]\),</span> continuous, at the point \(x = 0\) it has a vertical tangent (orange), so \(w'\) is not bounded near <span class="nobr">\(x = 0\).</span> Right: the function with a kink, \(w = x\) up to \(x = 0{,}5\) and \(w = 0{,}5\) afterwards, the derivative is \(1\) and <span class="nobr">\(0\),</span> hence bounded. The vertical axis is shifted to the left so that it does not lie on the tangent.</figcaption></figure>
+<ol>
+<li>For every partition, \(w'\) on \((0, x_1)\) would have to equal a function \(g_1\) continuous on <span class="nobr">\([0, x_1]\).</span> Such a function is bounded (theorem <a class="xref" href="sec-ekstremi.html#thm-ekstremi" data-knowl="thm-ekstremi">1.73</a>), <span class="nobr">\(|g_1| \le M\).</span></li>
+<li>For \(x\) with \(0 &lt; x &lt; x_1\) and \(x &lt; 1/\big(4(M+1)^2\big)\) we have <span class="nobr">\(w'(x) = 1/(2\sqrt{x}) &gt; M + 1\).</span> This contradicts step 1, so \(w\) is not piecewise continuously differentiable.</li>
+</ol>
+<p>We see the consequence in the energy. For \(EA = 1\) we have <span class="nobr">\(\int_\varepsilon^1 w'^2\,\mathrm{d}x = \int_\varepsilon^1 \tfrac{1}{4x}\,\mathrm{d}x = \tfrac14 \ln(1/\varepsilon)\).</span> For \(\varepsilon = 10^{-4}\) this is <span class="nobr">\(2{,}30\),</span> for \(\varepsilon = 10^{-8}\) it is <span class="nobr">\(4{,}61\),</span> and as \(\varepsilon \to 0\) the value grows beyond all bounds. The function \(w\) therefore does not have a finite energy, such as the function with a kink has, since its derivative is bounded.</p>
+<p>Definition <a class="xref" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">6.2</a> writes the same class differently, with a function that is differentiable on every closed piece with a continuous derivative, one-sided at the ends. The two classes are equal. Let \(u\) be piecewise continuously differentiable and \(x\) a point of the piece \([x_{\mathrm{k}-1}, x_{\mathrm{k}}]\) to the left of <span class="nobr">\(x_{\mathrm{k}}\).</span> By the mean value theorem (theorem <a class="xref" href="sec-srednja-vrednost.html#thm-srednja-vrednost" data-knowl="thm-srednja-vrednost">1.84</a>) \(\big(u(x_{\mathrm{k}}) - u(x)\big)/(x_{\mathrm{k}} - x) = g_{\mathrm{k}}(\xi)\) for some \(\xi\) between \(x\) and <span class="nobr">\(x_{\mathrm{k}}\).</span> As \(x\) tends to <span class="nobr">\(x_{\mathrm{k}}\),</span> \(\xi\) tends to \(x_{\mathrm{k}}\) and \(g_{\mathrm{k}}(\xi)\) to <span class="nobr">\(g_{\mathrm{k}}(x_{\mathrm{k}})\),</span> because \(g_{\mathrm{k}}\) is continuous. The left derivative of \(u\) at \(x_{\mathrm{k}}\) is therefore <span class="nobr">\(g_{\mathrm{k}}(x_{\mathrm{k}})\),</span> likewise the right derivative at \(x_{\mathrm{k}-1}\) is <span class="nobr">\(g_{\mathrm{k}}(x_{\mathrm{k}-1})\),</span> so \(u\) is differentiable on the closed piece with the continuous derivative <span class="nobr">\(g_{\mathrm{k}}\).</span> Conversely, a function of definition <a class="xref" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">6.2</a> satisfies both items of the definition, with \(g_{\mathrm{k}}\) its derivative on the closed piece. The admissible functions of a bar are therefore exactly the piecewise continuously differentiable functions \(w\) with <span class="nobr">\(w(0) = 0\).</span></p>
 <p>The stepped bar (section <a class="xref" href="sec-mocna-sibka-oblika.html#sec-palica-s-stopnico">6.1.3</a>): the upper \(5\) m have a diameter of \(10\) mm, the cross-sectional area is <span class="nobr">\(A\),</span> and the lower \(5\) m have a diameter of \(5\) mm and area <span class="nobr">\(A/4\).</span> It hangs under its own weight, fixed at the top. The <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> is \(N(5) = 7{,}512\) N on both sides of the step, because it is the weight of the lower part. The derivative of the displacement \(u' = N/EA\) is therefore at \(x = 5\) m \(4{,}880 \cdot 10^{-7}\) from above and \(1{,}952 \cdot 10^{-6}\) from below, four times larger, because \(EA\) below is four times smaller. The displacement is continuous, \(u(5) = 7{,}320\) µm from both sides, but its derivative is not. This is a piecewise continuously differentiable function with the partition <span class="nobr">\(0, 5, 10\),</span> \(g_1 = N/(EA)\) on the upper piece and \(g_2 = N/(E A/4)\) on the lower one.</p>
-<p>The simplest example of a kink is a function \(w\) in the shape of a roof on an interval with points <span class="nobr">\(x_0 &lt; x_1 &lt; x_2 &lt; x_3\),</span> which is zero at \(x_0\) and from \(x_2\) on, has the value \(1\) at \(x_1\) and is a straight line between these points (figure <a class="xref" href="sec-funkcije-s-pregibi.html#fig-mpf-sotor" data-knowl="fig-mpf-sotor">6.5</a>). The points are equally spaced, <span class="nobr">\(x_1 - x_0 = x_2 - x_1 = 3/2\),</span> so the slopes are \(2/3\) and <span class="nobr">\(-2/3\).</span> The derivative is constant on three pieces, <span class="nobr">\(2/3\),</span> \(-2/3\) and <span class="nobr">\(0\),</span> and at the break points \(x_1\) and \(x_2\) it jumps by \(-4/3\) and <span class="nobr">\(2/3\).</span> Such a function is the basic building block of trial fields made of straight pieces, which we will use in the rest of the chapter and in chapter <a class="xref" href="ch-mke-palice.html">7</a>.</p>
+<p>The simplest example of a kink is a function \(w\) in the shape of a roof on an interval with points <span class="nobr">\(x_0 &lt; x_1 &lt; x_2 &lt; x_3\),</span> which is zero at \(x_0\) and from \(x_2\) on, has the value \(1\) at \(x_1\) and is a straight line between these points (figure <a class="xref" href="sec-funkcije-s-pregibi.html#fig-mpf-sotor" data-knowl="fig-mpf-sotor">6.7</a>). The points are equally spaced, <span class="nobr">\(x_1 - x_0 = x_2 - x_1 = 3/2\),</span> so the slopes are \(2/3\) and <span class="nobr">\(-2/3\).</span> The derivative is constant on three pieces, <span class="nobr">\(2/3\),</span> \(-2/3\) and <span class="nobr">\(0\),</span> and at the break points \(x_1\) and \(x_2\) it jumps by \(-4/3\) and <span class="nobr">\(2/3\).</span> Such a function is the basic building block of trial fields made of straight pieces, which we will use in the rest of the chapter and in chapter <a class="xref" href="ch-mke-palice.html">7</a>.</p>
 
 <figure class="blk slika" id="fig-mpf-sotor"><p><span class="svgfig" role="img" aria-label="A function in the shape of a roof with two kinks and its piecewise constant derivative with two jumps"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='231.76pt' height='283.53pt' viewBox='-72.000004 -72.000007 171.672558 210.021808'>
 <defs>
@@ -373,7 +596,7 @@
 </g>
 </g>
 </svg></span></p>
-<figcaption><span class="blk-label">Figure 6.5</span>: A function \(w\) in the shape of a roof with points \(x_0, x_1, x_2, x_3\) (top) and its derivative \(w'\) (bottom). The derivative is constant on every piece, <span class="nobr">\(\tfrac23\),</span> \(-\tfrac23\) and <span class="nobr">\(0\),</span> and at the break points \(x_1\) and \(x_2\) it has no value, which the open circles on both sides of the jump show. The jump of the derivative at \(x_1\) is <span class="nobr">\(-\tfrac43\),</span> at \(x_2\) it is <span class="nobr">\(\tfrac23\).</span> The function \(w\) is continuous, its derivative is not.</figcaption></figure>
+<figcaption><span class="blk-label">Figure 6.7</span>: A function \(w\) in the shape of a roof with points \(x_0, x_1, x_2, x_3\) (top) and its derivative \(w'\) (bottom). The derivative is constant on every piece, <span class="nobr">\(\tfrac23\),</span> \(-\tfrac23\) and <span class="nobr">\(0\),</span> and at the break points \(x_1\) and \(x_2\) it has no value, which the open circles on both sides of the jump show. The jump of the derivative at \(x_1\) is <span class="nobr">\(-\tfrac43\),</span> at \(x_2\) it is <span class="nobr">\(\tfrac23\).</span> The function \(w\) is continuous, its derivative is not.</figcaption></figure>
 <p>The first theorem of analysis that we need is the fundamental theorem. It says that for a piecewise continuously differentiable function the values at the break points cancel when we sum over the pieces.</p>
 
 <div class="blk lema" id="lem-osnovni-izrek-pregibi"><div class="blk-head"><span class="blk-label">Lemma 6.12</span> <span class="blk-title">Fundamental theorem of calculus for a function with kinks (osnovni izrek analize za funkcijo s pregibi)</span></div><div class="blk-body"><p>Let \(u\) be a <a class="xref auto" href="sec-funkcije-s-pregibi.html#def-odsekoma-zvezno-odvedljiva" data-knowl="def-odsekoma-zvezno-odvedljiva">piecewise continuously differentiable function</a> on <span class="nobr">\([a, b]\).</span> Then</p>
@@ -383,7 +606,7 @@
 <ol>
 <li>Let \(x_0 &lt; \dots &lt; x_{\mathrm{m}}\) be the <a class="xref auto" href="sec-funkcije-s-pregibi.html#def-odsekoma-zvezna" data-knowl="def-odsekoma-zvezna">break points</a> of definition <a class="xref" href="sec-funkcije-s-pregibi.html#def-odsekoma-zvezno-odvedljiva" data-knowl="def-odsekoma-zvezno-odvedljiva">6.11</a>. On the piece \([x_{\mathrm{k}-1}, x_{\mathrm{k}}]\) the function \(u\) is continuous (item 1 of the definition), <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">differentiable</a> at every point of the open piece, and its derivative there equals the <a class="xref auto" href="sec-zveznost.html#def-zveznost" data-knowl="def-zveznost">continuous function</a> \(g_{\mathrm{k}}\) on the closed piece (item 2).</li>
 <li>By the fundamental theorem of calculus (theorem <a class="xref" href="sec-integral.html#thm-osnovni-izrek" data-knowl="thm-osnovni-izrek">3.40</a>, item 1, with \(G = u\) and \(f = g_{\mathrm{k}}\) on the piece) <span class="nobr">\(\int_{\mathrm{x}_{\mathrm{k}-1}}^{x_{\mathrm{k}}} g_{\mathrm{k}}\,\mathrm{d}x = u(x_{\mathrm{k}}) - u(x_{\mathrm{k}-1})\).</span></li>
-<li>We sum over <span class="nobr">\(k = 1, \dots, m\).</span> By equation <a class="xref" href="sec-funkcije-s-pregibi.html#eq-integral-odsekoma" data-knowl="eq-integral-odsekoma">(6.5)</a> the left side is the <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integral</a> <span class="nobr">\(\int_{\mathrm{a}}^b u'\,\mathrm{d}x\).</span> On the right every intermediate term \(u(x_{\mathrm{k}})\) appears twice, once with a plus sign as the end of piece \(k\) and once with a minus sign as the beginning of piece <span class="nobr">\(k+1\).</span> Since \(u\) is continuous, both values are the same number. What remains is \(u(x_{\mathrm{m}}) - u(x_0) = u(b) - u(a)\) (figure <a class="xref" href="sec-funkcije-s-pregibi.html#fig-mpf-teleskop" data-knowl="fig-mpf-teleskop">6.6</a>).</li>
+<li>We sum over <span class="nobr">\(k = 1, \dots, m\).</span> By equation <a class="xref" href="sec-funkcije-s-pregibi.html#eq-integral-odsekoma" data-knowl="eq-integral-odsekoma">(6.5)</a> the left side is the <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integral</a> <span class="nobr">\(\int_{\mathrm{a}}^b u'\,\mathrm{d}x\).</span> On the right every intermediate term \(u(x_{\mathrm{k}})\) appears twice, once with a plus sign as the end of piece \(k\) and once with a minus sign as the beginning of piece <span class="nobr">\(k+1\).</span> Since \(u\) is continuous, both values are the same number. What remains is \(u(x_{\mathrm{m}}) - u(x_0) = u(b) - u(a)\) (figure <a class="xref" href="sec-funkcije-s-pregibi.html#fig-mpf-teleskop" data-knowl="fig-mpf-teleskop">6.8</a>).</li>
 </ol>
 </div></details></div>
 <p class="vir"><span class="vir-label">Source:</span> The proof is not from a source. The statement is LEBL1 exercise 5.3.3 (PDF p. 205), there for a function that is differentiable everywhere except at finitely many points. The fundamental theorem is theorem <a class="xref" href="sec-integral.html#thm-osnovni-izrek" data-knowl="thm-osnovni-izrek">3.40</a> of chapter <a class="xref" href="ch-konstitutivne-enacbe.html">3</a>.</p></div></div>
@@ -782,9 +1005,9 @@
 </g>
 </g>
 </svg></span></p>
-<figcaption><span class="blk-label">Figure 6.6</span>: Summing over the pieces. A continuous function \(u\) on \([a, b]\) with \(a = x_0\) and \(b = x_3\) has a different slope on each of the three pieces and kinks at \(x_1\) and <span class="nobr">\(x_2\).</span> On the right the increments \(\Delta_{\mathrm{k}} = u(x_{\mathrm{k}}) - u(x_{\mathrm{k}-1})\) are stacked on each other: the top of the increment \(\Delta_1\) is the start of the increment \(\Delta_2\) and so on, because the value \(u(x_{\mathrm{k}})\) is a single number. The sum \(\Delta_1 + \Delta_2 + \Delta_3\) is the difference <span class="nobr">\(u(b) - u(a)\).</span> The vertical scale equals the horizontal one, the function is only an illustration.</figcaption></figure>
+<figcaption><span class="blk-label">Figure 6.8</span>: Summing over the pieces. A continuous function \(u\) on \([a, b]\) with \(a = x_0\) and \(b = x_3\) has a different slope on each of the three pieces and kinks at \(x_1\) and <span class="nobr">\(x_2\).</span> On the right the increments \(\Delta_{\mathrm{k}} = u(x_{\mathrm{k}}) - u(x_{\mathrm{k}-1})\) are stacked on each other: the top of the increment \(\Delta_1\) is the start of the increment \(\Delta_2\) and so on, because the value \(u(x_{\mathrm{k}})\) is a single number. The sum \(\Delta_1 + \Delta_2 + \Delta_3\) is the difference <span class="nobr">\(u(b) - u(a)\).</span> The vertical scale equals the horizontal one, the function is only an illustration.</figcaption></figure>
 <p>Let us test the theorem on the stepped bar. The increments over the pieces are \(\int_0^5 u'\,\mathrm{d}x = 7{,}320\) µm and \(\int_5^{10} u'\,\mathrm{d}x = 4{,}880\) µm, and their sum is \(12{,}20\) µm, which is exactly <span class="nobr">\(u(10) - u(0)\),</span> because <span class="nobr">\(u(0) = 0\).</span> Piece by piece it is the same computation as in section <a class="xref" href="sec-mocna-sibka-oblika.html#sec-palica-s-stopnico">6.1.3</a>.</p>
-<p>The <a class="xref auto" href="sec-zveznost.html#def-zveznost" data-knowl="def-zveznost">continuity</a> of \(u\) is necessary in step 3. The function that is \(0\) on \([0, 1/2]\) and \(1\) on \((1/2, 1]\) has derivative zero wherever it is differentiable, so <span class="nobr">\(\int_0^1 u'\,\mathrm{d}x = 0\),</span> while <span class="nobr">\(u(1) - u(0) = 1\).</span> The jump of the function disappears, because the derivative on the pieces does not see it.</p>
+<p>The continuity of \(u\) is necessary in step 3. The function that is \(0\) on \([0, 1/2]\) and \(1\) on \((1/2, 1]\) has derivative zero wherever it is differentiable, so <span class="nobr">\(\int_0^1 u'\,\mathrm{d}x = 0\),</span> while <span class="nobr">\(u(1) - u(0) = 1\).</span> The jump of the function disappears, because the derivative on the pieces does not see it.</p>
 <p>From the fundamental theorem follows <a class="xref auto" href="sec-integral.html#cor-per-partes" data-knowl="cor-per-partes">integration by parts</a>, which we need for the theorem on <a class="xref auto" href="sec-virtualni-pomiki-palice.html#def-virtualni-pomik" data-knowl="def-virtualni-pomik">virtual displacements</a>.</p>
 
 <div class="blk lema" id="lem-per-partes-pregibi"><div class="blk-head"><span class="blk-label">Lemma 6.13</span> <span class="blk-title">Integration by parts for functions with kinks (integracija po delih za funkcije s pregibi)</span></div><div class="blk-body"><p>Let \(N\) and \(w\) be <a class="xref auto" href="sec-funkcije-s-pregibi.html#def-odsekoma-zvezno-odvedljiva" data-knowl="def-odsekoma-zvezno-odvedljiva">piecewise continuously differentiable functions</a> on \([a, b]\) on a common <a class="xref auto" href="sec-integral.html#def-delitev" data-knowl="def-delitev">partition</a>. Then</p>
