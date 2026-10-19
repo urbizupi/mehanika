@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-togost-prostorska-globalna"] = {"html": "<div class=\"eq\">\\[\\mat k_{\\mathrm{e}} = \\mat R^\\T\\,\\bar{\\mat k}_{\\mathrm{e}}\\,\\mat R , \\qquad \\vek f_{\\mathrm{e}} = \\mat R^\\T\\bar{\\vek f}_{\\mathrm{e}} . \\tag{12.23}\\]</div>", "href": "sec-prostorski-okvir-mke.html#eq-togost-prostorska-globalna"};

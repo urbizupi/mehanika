@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-polje-nosilca"] = {"html": "<div class=\"eq\">\\[v_{\\mathrm{h}}(x) = v_1H_1 + \\varphi_1H_2 + v_2H_3 + \\varphi_2H_4 = \\mat H_{\\mathrm{e}}(x)\\,\\vek d_{\\mathrm{e}} , \\tag{12.2}\\]</div>", "href": "sec-element-nosilca.html#eq-polje-nosilca"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-tvn-delo-kosa"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{c}}^d M\\,w''\\,\\mathrm{d}x = \\int_{\\mathrm{c}}^d p\\,w\\,\\mathrm{d}x + \\Big[V\\,w + M\\,w'\\Big]_{\\mathrm{c}}^d . \\tag{12.8}\\]</div>", "href": "sec-tocnost-vozlisc.html#eq-tvn-delo-kosa"};

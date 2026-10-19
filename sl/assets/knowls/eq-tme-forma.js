@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-tme-forma"] = {"html": "<div class=\"eq\">\\[B_{\\mathrm{T}}\\big((v, \\theta), (w, \\eta)\\big) = \\int_0^L \\Big(EI\\,\\theta'\\,\\eta' + kGA\\,(v' - \\theta)\\,(w' - \\eta)\\Big)\\,\\mathrm{d}x , \\tag{12.32}\\]</div>", "href": "sec-timosenkov-element.html#eq-tme-forma"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-masa-okvirja-odvisnost"] = {"html": "<div class=\"eq\">\\[(\\mat m_{\\mathrm{e}})_{11} = \\rho A h\\left(\\frac{\\cos^2\\alpha}{3} + \\frac{13\\sin^2\\alpha}{35}\\right) , \\tag{12.51}\\]</div>", "href": "sec-masna-matrika-nosilca.html#eq-masa-okvirja-odvisnost"};

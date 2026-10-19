@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-deformacija-prostorska"] = {"html": "<div class=\"eq\">\\[\\varepsilon_{\\mathrm{xx}} = u' - y\\,v'' - z\\,w'' . \\tag{12.20}\\]</div>", "href": "sec-prostorski-okvir-mke.html#eq-deformacija-prostorska"};

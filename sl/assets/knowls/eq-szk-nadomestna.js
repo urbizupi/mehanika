@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-szk-nadomestna"] = {"html": "<div class=\"eq\">\\[\\frac{1}{kGA^*} = \\frac{1}{kGA} + \\frac{h^2}{12\\,EI} . \\tag{12.44}\\]</div>", "href": "sec-strizno-zaklepanje.html#eq-szk-nadomestna"};

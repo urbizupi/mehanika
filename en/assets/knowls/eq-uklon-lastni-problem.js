@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-uklon-lastni-problem"] = {"html": "<div class=\"eq\">\\[\\big(\\mat K_{\\mathrm{ff}} + \\mu\\,\\mat G_{\\mathrm{ff}}\\big)\\,\\vek d = \\vek 0 \\quad\\text{for some } \\vek d \\ne \\vek 0 . \\tag{12.56}\\]</div>", "href": "sec-geometrijska-togost.html#eq-uklon-lastni-problem"};

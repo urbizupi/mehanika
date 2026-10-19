@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-zbrana-masa-nosilca"] = {"html": "<div class=\"eq\">\\[\\mat m_{\\mathrm{e}}^{\\mathrm{z}} = \\frac{\\rho A h}{2}\\,\\mathrm{diag}(1,\\ 0,\\ 1,\\ 0) , \\tag{12.48}\\]</div>", "href": "sec-masna-matrika-nosilca.html#eq-zbrana-masa-nosilca"};

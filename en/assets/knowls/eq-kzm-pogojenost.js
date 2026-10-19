@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kzm-pogojenost"] = {"html": "<div class=\"eq\">\\[\\kappa(\\mat K + \\alpha\\,\\vek c\\,\\vek c^\\T) \\ge \\frac{\\alpha\\,|\\vek c|^2}{\\rho_0} , \\qquad \\rho_0 = \\frac{\\vek v_0^\\T\\mat K\\,\\vek v_0}{|\\vek v_0|^2} . \\tag{12.31}\\]</div>", "href": "sec-kazenska-metoda.html#eq-kzm-pogojenost"};

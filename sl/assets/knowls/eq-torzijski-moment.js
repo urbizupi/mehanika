@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-torzijski-moment"] = {"html": "<div class=\"eq\">\\[M_{\\mathrm{x}} = G J\\,\\varphi_{\\mathrm{x}}' , \\tag{12.16}\\]</div>", "href": "sec-prostorski-okvir-mke.html#eq-torzijski-moment"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-hermitove-funkcije"] = {"html": "<div class=\"eq\">\\[\\begin{aligned} H_1 &amp;= 1 - 3\\xi^2 + 2\\xi^3 , &amp; H_2 &amp;= h\\,(\\xi - 2\\xi^2 + \\xi^3) , \\\\ H_3 &amp;= 3\\xi^2 - 2\\xi^3 , &amp; H_4 &amp;= h\\,(\\xi^3 - \\xi^2) . \\end{aligned} \\tag{12.1}\\]</div>", "href": "sec-element-nosilca.html#eq-hermitove-funkcije"};

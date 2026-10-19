@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-szk-kazenski"] = {"html": "<div class=\"eq\">\\[(\\mat K_{\\mathrm{b}} + \\alpha\\,\\mat C_{\\mathrm{q}}^\\T\\mat C_{\\mathrm{q}})\\,\\vek d = \\vek f \\tag{12.42}\\]</div>", "href": "sec-strizno-zaklepanje.html#eq-szk-kazenski"};

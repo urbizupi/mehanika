@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-matrika-q-okvir"] = {"html": "<div class=\"eq\">\\[\\mat Q = \\begin{bmatrix} c &amp; s \\\\ -s &amp; c \\end{bmatrix} , \\tag{12.11}\\]</div>", "href": "sec-ravninski-okvir-mke.html#eq-matrika-q-okvir"};

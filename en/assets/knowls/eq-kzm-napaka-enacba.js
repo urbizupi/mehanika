@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kzm-napaka-enacba"] = {"html": "<div class=\"eq\">\\[(\\mat K + \\alpha\\,\\mat C^\\T\\mat C)\\,\\vek e = -\\mat C^\\T\\vek\\lambda . \\tag{12.30}\\]</div>", "href": "sec-kazenska-metoda.html#eq-kzm-napaka-enacba"};

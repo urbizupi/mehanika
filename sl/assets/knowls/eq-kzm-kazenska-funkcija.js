@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kzm-kazenska-funkcija"] = {"html": "<div class=\"eq\">\\[\\Pi_\\alpha(\\vek d) = \\Pi(\\vek d) + \\tfrac12\\,\\alpha\\,|\\mat C\\,\\vek d - \\vek g|^2 . \\tag{12.27}\\]</div>", "href": "sec-kazenska-metoda.html#eq-kzm-kazenska-funkcija"};

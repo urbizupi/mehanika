@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-szk-konec"] = {"html": "<div class=\"eq\">\\[v_{\\mathrm{n}} = \\Big(1 - \\frac{1}{4n^2}\\Big)\\frac{P\\,L^3}{3\\,EI} + \\frac{P\\,L}{kGA} . \\tag{12.45}\\]</div>", "href": "sec-strizno-zaklepanje.html#eq-szk-konec"};

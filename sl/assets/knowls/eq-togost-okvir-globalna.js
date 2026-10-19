@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-togost-okvir-globalna"] = {"html": "<div class=\"eq\">\\[\\mat k_{\\mathrm{e}} = \\mat R^\\T\\,\\bar{\\mat k}_{\\mathrm{e}}\\,\\mat R \\tag{12.13}\\]</div>", "href": "sec-ravninski-okvir-mke.html#eq-togost-okvir-globalna"};

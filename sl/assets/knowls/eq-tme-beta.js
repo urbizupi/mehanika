@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-tme-beta"] = {"html": "<div class=\"eq\">\\[\\beta_{\\mathrm{h}} = \\frac{12\\,EI}{kGA\\,h^2} , \\qquad r_{\\mathrm{h}} = \\frac{\\beta_{\\mathrm{h}}}{1 + \\beta_{\\mathrm{h}}} = \\frac{1}{1 + kGA\\,h^2/(12\\,EI)} \\tag{12.40}\\]</div>", "href": "sec-timosenkov-element.html#eq-tme-beta"};

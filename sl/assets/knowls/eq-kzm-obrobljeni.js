@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kzm-obrobljeni"] = {"html": "<div class=\"eq\">\\[\\begin{pmatrix} \\mat K &amp; -\\mat C^\\T \\\\ -\\mat C &amp; \\mat 0 \\end{pmatrix}\\begin{pmatrix} \\vek d \\\\ \\vek\\lambda \\end{pmatrix} = \\begin{pmatrix} \\vek f \\\\ -\\vek g \\end{pmatrix} \\tag{12.26}\\]</div>", "href": "sec-kazenska-metoda.html#eq-kzm-obrobljeni"};

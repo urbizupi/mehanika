@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-tvn-tocnost"] = {"html": "<div class=\"eq\">\\[v_{\\mathrm{h}}(x_{\\mathrm{P}}) = v(x_{\\mathrm{P}}) , \\qquad v_{\\mathrm{h}}'(x_{\\mathrm{P}}) = v'(x_{\\mathrm{P}}) . \\tag{12.9}\\]</div>", "href": "sec-tocnost-vozlisc.html#eq-tvn-tocnost"};

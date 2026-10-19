@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-torzijska-konstanta-pravokotnika"] = {"html": "<div class=\"eq\">\\[J = \\frac{16\\,a^3 b}{3} - \\frac{1024\\,a^4}{\\pi^5}\\sum_{\\mathrm{n} = 1, 3, 5, \\dots}\\frac{1}{n^5}\\tanh\\frac{n\\pi b}{2a} , \\tag{12.17}\\]</div>", "href": "sec-prostorski-okvir-mke.html#eq-torzijska-konstanta-pravokotnika"};

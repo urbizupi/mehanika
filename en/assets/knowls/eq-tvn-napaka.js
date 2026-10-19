@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-tvn-napaka"] = {"html": "<div class=\"eq\">\\[\\begin{aligned} v - v_{\\mathrm{h}} &amp;= v_0 = \\frac{q\\,s^2\\,(h - s)^2}{24\\,EI} , \\\\ &amp;\\qquad M - EI\\,v_{\\mathrm{h}}'' = EI\\,v_0'' = \\frac{q\\,(h^2 - 6\\,h\\,s + 6\\,s^2)}{12} . \\end{aligned} \\tag{12.10}\\]</div>", "href": "sec-tocnost-vozlisc.html#eq-tvn-napaka"};

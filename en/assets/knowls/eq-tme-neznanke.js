@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-tme-neznanke"] = {"html": "<div class=\"eq\">\\[\\vek d_{\\mathrm{e}} = (v_1,\\ \\theta_1,\\ v_2,\\ \\theta_2)^\\T \\tag{12.34}\\]</div>", "href": "sec-timosenkov-element.html#eq-tme-neznanke"};

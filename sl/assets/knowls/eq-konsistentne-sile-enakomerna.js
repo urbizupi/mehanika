@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-konsistentne-sile-enakomerna"] = {"html": "<div class=\"eq\">\\[\\vek f_{\\mathrm{e}} = q\\,\\Big(\\frac h2,\\ \\frac{h^2}{12},\\ \\frac h2,\\ -\\frac{h^2}{12}\\Big)^\\T . \\tag{12.5}\\]</div>", "href": "sec-sestavljanje-nosilca.html#eq-konsistentne-sile-enakomerna"};

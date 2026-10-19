@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-tme-b"] = {"html": "<div class=\"eq\">\\[\\mat b_{\\mathrm{b}} = \\tfrac1h\\,(0,\\ -1,\\ 0,\\ 1) , \\qquad \\mat b_{\\mathrm{s}} = \\big(-\\tfrac1h,\\ -\\psi_1^e,\\ \\tfrac1h,\\ -\\psi_2^e\\big) \\tag{12.36}\\]</div>", "href": "sec-timosenkov-element.html#eq-tme-b"};

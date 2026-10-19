@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-tvn-linearna-forma"] = {"html": "<div class=\"eq\">\\[\\ell(w) = \\int_0^L q\\,w\\,\\mathrm{d}x + \\sum_{\\mathrm{j}} \\big(F_{\\mathrm{j}}^{\\mathrm{d}}\\,w(t_{\\mathrm{j}}) + C_{\\mathrm{j}}^{\\mathrm{d}}\\,w'(t_{\\mathrm{j}})\\big) \\tag{12.7}\\]</div>", "href": "sec-tocnost-vozlisc.html#eq-tvn-linearna-forma"};
