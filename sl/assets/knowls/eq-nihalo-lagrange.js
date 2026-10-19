@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-nihalo-lagrange"] = {"html": "<div class=\"eq\">\\[\\ddot\\theta + \\frac{g}{l}\\sin\\theta = 0 . \\tag{8.81}\\]</div>", "href": "sec-lagrangeeve-enacbe.html#eq-nihalo-lagrange"};
+(window.KNOWLS = window.KNOWLS || {})["eq-nihalo-lagrange"] = {"html": "<div class=\"eq\">\\[\\ddot\\theta + \\frac{g}{l}\\sin\\theta = 0 . \\tag{8.84}\\]</div>", "href": "sec-lagrangeeve-enacbe.html#eq-nihalo-lagrange"};

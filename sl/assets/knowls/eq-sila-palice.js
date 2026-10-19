@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-sila-palice"] = {"html": "<div class=\"eq\">\\[N = m\\,(g\\cos\\theta + l\\dot\\theta^2) . \\tag{8.87}\\]</div>", "href": "sec-lagrangeeve-enacbe.html#eq-sila-palice"};
+(window.KNOWLS = window.KNOWLS || {})["eq-sila-palice"] = {"html": "<div class=\"eq\">\\[N = m\\,(g\\cos\\theta + l\\dot\\theta^2) . \\tag{8.90}\\]</div>", "href": "sec-lagrangeeve-enacbe.html#eq-sila-palice"};

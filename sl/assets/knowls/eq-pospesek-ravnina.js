@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-pospesek-ravnina"] = {"html": "<div class=\"eq\">\\[\\vek a = \\vek a_{\\mathrm{G}} + \\ddot\\varphi\\,\\vek e_{\\mathrm{z}}\\times\\vek r - \\dot\\varphi^2\\,\\vek r . \\tag{8.60}\\]</div>", "href": "sec-dalembert.html#eq-pospesek-ravnina"};
+(window.KNOWLS = window.KNOWLS || {})["eq-pospesek-ravnina"] = {"html": "<div class=\"eq\">\\[\\vek a = \\vek a_{\\mathrm{G}} + \\ddot\\varphi\\,\\vek e_{\\mathrm{z}}\\times\\vek r - \\dot\\varphi^2\\,\\vek r . \\tag{8.63}\\]</div>", "href": "sec-dalembert.html#eq-pospesek-ravnina"};

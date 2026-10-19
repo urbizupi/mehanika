@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-pos-sledilna-q"] = {"html": "<div class=\"eq\">\\[Q_1 = F\\,L\\,\\sin(\\varphi_2 - \\varphi_1) , \\qquad Q_2 = 0 . \\tag{8.43}\\]</div>", "href": "sec-posplosene-sile.html#eq-pos-sledilna-q"};
+(window.KNOWLS = window.KNOWLS || {})["eq-pos-sledilna-q"] = {"html": "<div class=\"eq\">\\[Q_1 = F\\,L\\,\\sin(\\varphi_2 - \\varphi_1) , \\qquad Q_2 = 0 . \\tag{8.46}\\]</div>", "href": "sec-posplosene-sile.html#eq-pos-sledilna-q"};

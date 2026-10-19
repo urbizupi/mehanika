@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-mni-lastni-problem"] = {"html": "<div class=\"eq\">\\[\\mat K\\,\\vek u = \\omega^2\\,\\mat M\\,\\vek u . \\tag{8.109}\\]</div>", "href": "sec-majhna-nihanja.html#eq-mni-lastni-problem"};
+(window.KNOWLS = window.KNOWLS || {})["eq-mni-lastni-problem"] = {"html": "<div class=\"eq\">\\[\\mat K\\,\\vek u = \\omega^2\\,\\mat M\\,\\vek u . \\tag{8.112}\\]</div>", "href": "sec-majhna-nihanja.html#eq-mni-lastni-problem"};

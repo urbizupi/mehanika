@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-energijski-integral"] = {"html": "<div class=\"eq\">\\[\\mathcal{E}^* = T_2 - T_0 + V \\tag{8.99}\\]</div>", "href": "sec-ohranitveni-zakoni.html#eq-energijski-integral"};
+(window.KNOWLS = window.KNOWLS || {})["eq-energijski-integral"] = {"html": "<div class=\"eq\">\\[\\mathcal{E}^* = T_2 - T_0 + V \\tag{8.102}\\]</div>", "href": "sec-ohranitveni-zakoni.html#eq-energijski-integral"};

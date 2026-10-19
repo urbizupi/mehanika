@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-sra-v-palice"] = {"html": "<div class=\"eq\">\\[V(y, \\varphi) = \\tfrac12 k_1\\,(y - \\sin\\varphi)^2 + \\tfrac12 k_2\\,(y + \\sin\\varphi)^2 + m g y , \\tag{8.47}\\]</div>", "href": "sec-stabilnost-ravnovesja.html#eq-sra-v-palice"};
+(window.KNOWLS = window.KNOWLS || {})["eq-sra-v-palice"] = {"html": "<div class=\"eq\">\\[V(y, \\varphi) = \\tfrac12 k_1\\,(y - \\sin\\varphi)^2 + \\tfrac12 k_2\\,(y + \\sin\\varphi)^2 + m g y , \\tag{8.50}\\]</div>", "href": "sec-stabilnost-ravnovesja.html#eq-sra-v-palice"};

@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-kin-t-togega"] = {"html": "<div class=\"eq\">\\[T = \\tfrac12\\,m\\,|\\vek v_{\\mathrm{G}}|^2 + \\tfrac12\\,\\vek\\omega\\cdot\\mat J_{\\mathrm{G}}\\,\\vek\\omega . \\tag{8.72}\\]</div>", "href": "sec-kineticna-energija.html#eq-kin-t-togega"};
+(window.KNOWLS = window.KNOWLS || {})["eq-kin-t-togega"] = {"html": "<div class=\"eq\">\\[T = \\tfrac12\\,m\\,|\\vek v_{\\mathrm{G}}|^2 + \\tfrac12\\,\\vek\\omega\\cdot\\mat J_{\\mathrm{G}}\\,\\vek\\omega . \\tag{8.75}\\]</div>", "href": "sec-kineticna-energija.html#eq-kin-t-togega"};

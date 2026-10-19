@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-kin-tenzor-palice"] = {"html": "<div class=\"eq\">\\[\\mat J_{\\mathrm{G}} = \\frac{m\\,L^2}{12}\\,(\\mat I - \\vek u\\,\\vek u^\\T) . \\tag{8.71}\\]</div>", "href": "sec-kineticna-energija.html#eq-kin-tenzor-palice"};
+(window.KNOWLS = window.KNOWLS || {})["eq-kin-tenzor-palice"] = {"html": "<div class=\"eq\">\\[\\mat J_{\\mathrm{G}} = \\frac{m\\,L^2}{12}\\,(\\mat I - \\vek u\\,\\vek u^\\T) . \\tag{8.74}\\]</div>", "href": "sec-kineticna-energija.html#eq-kin-tenzor-palice"};

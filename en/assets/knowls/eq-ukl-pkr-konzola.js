@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-ukl-pkr-konzola"] = {"html": "<div class=\"eq\">\\[P_{\\mathrm{cr}} = EI\\,\\Big(\\frac{\\pi}{2L}\\Big)^2 = \\frac{\\pi^2 EI}{4L^2} . \\tag{8.116}\\]</div>", "href": "sec-uklon.html#eq-ukl-pkr-konzola"};
+(window.KNOWLS = window.KNOWLS || {})["eq-ukl-pkr-konzola"] = {"html": "<div class=\"eq\">\\[P_{\\mathrm{cr}} = EI\\,\\Big(\\frac{\\pi}{2L}\\Big)^2 = \\frac{\\pi^2 EI}{4L^2} . \\tag{8.119}\\]</div>", "href": "sec-uklon.html#eq-ukl-pkr-konzola"};

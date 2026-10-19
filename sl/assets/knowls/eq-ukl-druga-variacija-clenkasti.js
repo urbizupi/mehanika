@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-ukl-druga-variacija-clenkasti"] = {"html": "<div class=\"eq\">\\[\\delta^2\\Pi(0, \\eta) = \\int_0^L \\big(EI\\,\\eta''^2 - P\\,\\eta'^2\\big)\\,\\mathrm{d}x . \\tag{8.120}\\]</div>", "href": "sec-uklon.html#eq-ukl-druga-variacija-clenkasti"};
+(window.KNOWLS = window.KNOWLS || {})["eq-ukl-druga-variacija-clenkasti"] = {"html": "<div class=\"eq\">\\[\\delta^2\\Pi(0, \\eta) = \\int_0^L \\big(EI\\,\\eta''^2 - P\\,\\eta'^2\\big)\\,\\mathrm{d}x . \\tag{8.123}\\]</div>", "href": "sec-uklon.html#eq-ukl-druga-variacija-clenkasti"};

@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-mni-linearizacija"] = {"html": "<div class=\"eq\">\\[\\mat M_0\\,\\ddot{\\vek q} + \\mat K\\,\\vek q = \\vek R , \\tag{8.104}\\]</div>", "href": "sec-majhna-nihanja.html#eq-mni-linearizacija"};
+(window.KNOWLS = window.KNOWLS || {})["eq-mni-linearizacija"] = {"html": "<div class=\"eq\">\\[\\mat M_0\\,\\ddot{\\vek q} + \\mat K\\,\\vek q = \\vek R , \\tag{8.107}\\]</div>", "href": "sec-majhna-nihanja.html#eq-mni-linearizacija"};

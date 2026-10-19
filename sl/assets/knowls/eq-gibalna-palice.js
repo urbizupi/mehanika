@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-gibalna-palice"] = {"html": "<div class=\"eq\">\\[\\rho A\\,u_{\\mathrm{tt}} = EA\\,u_{\\mathrm{xx}} + q \\quad \\text{na } \\Omega , \\tag{8.94}\\]</div>", "href": "sec-hamiltonovo-nacelo.html#eq-gibalna-palice"};
+(window.KNOWLS = window.KNOWLS || {})["eq-gibalna-palice"] = {"html": "<div class=\"eq\">\\[\\rho A\\,u_{\\mathrm{tt}} = EA\\,u_{\\mathrm{xx}} + q \\quad \\text{na } \\Omega , \\tag{8.97}\\]</div>", "href": "sec-hamiltonovo-nacelo.html#eq-gibalna-palice"};

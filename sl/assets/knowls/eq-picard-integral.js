@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-picard-integral"] = {"html": "<div class=\"eq\">\\[\\vek y(t) = \\vek y_0 + \\int_{\\mathrm{t}_0}^t \\vek G(s, \\vek y(s))\\,\\mathrm{d}s . \\tag{8.85}\\]</div>", "href": "sec-lagrangeeve-enacbe.html#eq-picard-integral"};
+(window.KNOWLS = window.KNOWLS || {})["eq-picard-integral"] = {"html": "<div class=\"eq\">\\[\\vek y(t) = \\vek y_0 + \\int_{\\mathrm{t}_0}^t \\vek G(s, \\vek y(s))\\,\\mathrm{d}s . \\tag{8.88}\\]</div>", "href": "sec-lagrangeeve-enacbe.html#eq-picard-integral"};

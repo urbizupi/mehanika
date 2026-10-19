@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-prosta-palica"] = {"html": "<div class=\"eq\">\\[\\mathcal{L} = \\tfrac12 m\\,(\\dot x^2 + \\dot y^2) + \\tfrac12 J_{\\mathrm{G}}\\,\\dot\\varphi^2 - mg\\,y . \\tag{8.102}\\]</div>", "href": "sec-ohranitveni-zakoni.html#eq-prosta-palica"};
+(window.KNOWLS = window.KNOWLS || {})["eq-prosta-palica"] = {"html": "<div class=\"eq\">\\[\\mathcal{L} = \\tfrac12 m\\,(\\dot x^2 + \\dot y^2) + \\tfrac12 J_{\\mathrm{G}}\\,\\dot\\varphi^2 - mg\\,y . \\tag{8.105}\\]</div>", "href": "sec-ohranitveni-zakoni.html#eq-prosta-palica"};

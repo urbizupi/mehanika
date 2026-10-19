@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-nihalo-dalembert"] = {"html": "<div class=\"eq\">\\[\\ddot\\theta + \\frac gl\\,\\sin\\theta = 0 . \\tag{8.62}\\]</div>", "href": "sec-dalembert.html#eq-nihalo-dalembert"};
+(window.KNOWLS = window.KNOWLS || {})["eq-nihalo-dalembert"] = {"html": "<div class=\"eq\">\\[\\ddot\\theta + \\frac gl\\,\\sin\\theta = 0 . \\tag{8.65}\\]</div>", "href": "sec-dalembert.html#eq-nihalo-dalembert"};

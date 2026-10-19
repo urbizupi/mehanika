@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-wirtinger-drugi-odvod"] = {"html": "<div class=\"eq\">\\[\\int_0^L \\eta'^2\\,\\mathrm{d}x \\ \\le\\ \\Big(\\frac{L}{\\pi}\\Big)^2 \\int_0^L \\eta''^2\\,\\mathrm{d}x , \\tag{8.113}\\]</div>", "href": "sec-uklon.html#eq-wirtinger-drugi-odvod"};
+(window.KNOWLS = window.KNOWLS || {})["eq-wirtinger-drugi-odvod"] = {"html": "<div class=\"eq\">\\[\\int_0^L \\eta'^2\\,\\mathrm{d}x \\ \\le\\ \\Big(\\frac{L}{\\pi}\\Big)^2 \\int_0^L \\eta''^2\\,\\mathrm{d}x , \\tag{8.116}\\]</div>", "href": "sec-uklon.html#eq-wirtinger-drugi-odvod"};

@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-sra-taylor"] = {"html": "<div class=\"eq\">\\[f(x) = f(x_0) + f'(x_0)\\,(x - x_0) + \\tfrac12 f''(c)\\,(x - x_0)^2 . \\tag{8.46}\\]</div>", "href": "sec-stabilnost-ravnovesja.html#eq-sra-taylor"};
+(window.KNOWLS = window.KNOWLS || {})["eq-sra-taylor"] = {"html": "<div class=\"eq\">\\[f(x) = f(x_0) + f'(x_0)\\,(x - x_0) + \\tfrac12 f''(c)\\,(x - x_0)^2 . \\tag{8.49}\\]</div>", "href": "sec-stabilnost-ravnovesja.html#eq-sra-taylor"};

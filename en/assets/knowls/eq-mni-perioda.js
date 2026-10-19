@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-mni-perioda"] = {"html": "<div class=\"eq\">\\[T = 4\\sqrt{\\frac{l}{g}}\\int_0^{\\pi/2}\\frac{\\mathrm{d}u}{\\sqrt{1 - k^2\\sin^2 u}} . \\tag{8.108}\\]</div>", "href": "sec-majhna-nihanja.html#eq-mni-perioda"};
+(window.KNOWLS = window.KNOWLS || {})["eq-mni-perioda"] = {"html": "<div class=\"eq\">\\[T = 4\\sqrt{\\frac{l}{g}}\\int_0^{\\pi/2}\\frac{1}{\\sqrt{1 - k^2\\sin^2 u}}\\,\\mathrm{d}u . \\tag{8.111}\\]</div>", "href": "sec-majhna-nihanja.html#eq-mni-perioda"};

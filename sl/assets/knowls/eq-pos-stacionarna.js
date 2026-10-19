@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-pos-stacionarna"] = {"html": "<div class=\"eq\">\\[\\frac{\\partial V}{\\partial q_{\\mathrm{s}}}(\\vek q_0) = 0 \\quad \\text{za } s = 1, \\dots, n , \\tag{8.44}\\]</div>", "href": "sec-posplosene-sile.html#eq-pos-stacionarna"};
+(window.KNOWLS = window.KNOWLS || {})["eq-pos-stacionarna"] = {"html": "<div class=\"eq\">\\[\\frac{\\partial V}{\\partial q_{\\mathrm{s}}}(\\vek q_0) = 0 \\quad \\text{za } s = 1, \\dots, n , \\tag{8.47}\\]</div>", "href": "sec-posplosene-sile.html#eq-pos-stacionarna"};

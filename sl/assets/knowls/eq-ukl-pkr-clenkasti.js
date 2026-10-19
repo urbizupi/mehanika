@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-ukl-pkr-clenkasti"] = {"html": "<div class=\"eq\">\\[P &lt; P_{\\mathrm{cr}} = \\frac{\\pi^2 EI}{L^2} . \\tag{8.121}\\]</div>", "href": "sec-uklon.html#eq-ukl-pkr-clenkasti"};
+(window.KNOWLS = window.KNOWLS || {})["eq-ukl-pkr-clenkasti"] = {"html": "<div class=\"eq\">\\[P &lt; P_{\\mathrm{cr}} = \\frac{\\pi^2 EI}{L^2} . \\tag{8.124}\\]</div>", "href": "sec-uklon.html#eq-ukl-pkr-clenkasti"};
