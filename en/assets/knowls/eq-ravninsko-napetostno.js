@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ravninsko-napetostno"] = {"html": "<div class=\"eq\">\\[\\sigma_{\\mathrm{zz}} = \\sigma_{\\mathrm{xz}} = \\sigma_{\\mathrm{yz}} = 0 \\tag{11.47}\\]</div>", "href": "sec-ravninski-problemi.html#eq-ravninsko-napetostno"};

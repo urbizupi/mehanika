@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-uno-elementarna"] = {"html": "<div class=\"eq\">\\[\\sigma_{\\theta\\theta} \\approx \\frac{N}{h} + \\frac{12\\,M}{h^3}\\,(r - c) , \\tag{11.73}\\]</div>", "href": "sec-ukrivljeni-nosilec.html#eq-uno-elementarna"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ravnotezje-ortogonalne"] = {"html": "<div class=\"eq\">\\[\\sum_{\\mathrm{q}}\\frac{\\partial}{\\partial q}\\Big(\\frac{J}{h_{\\mathrm{q}}}\\,\\vek t_{\\mathrm{q}}\\Big) + J\\,\\vek b = \\vek 0 . \\tag{11.28}\\]</div>", "href": "sec-enacbe-valjne-krogelne.html#eq-ravnotezje-ortogonalne"};

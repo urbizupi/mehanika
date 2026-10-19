@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dkl-pomik"] = {"html": "<div class=\"eq\">\\[\\vek u = \\Big( \\frac{A}{3K}\\,R + \\frac{B}{2\\mu}\\,\\frac{1}{R^2} \\Big)\\,\\vek e_{\\mathrm{R}} , \\qquad K = \\lambda + \\tfrac23\\,\\mu , \\tag{11.39}\\]</div>", "href": "sec-debelostenska-krogla.html#eq-dkl-pomik"};

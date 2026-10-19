@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-laplaceov-operator"] = {"html": "<div class=\"eq\">\\[\\nabla^2 f = \\frac{\\partial^2 f}{\\partial x^2} + \\frac{\\partial^2 f}{\\partial y^2} + \\frac{\\partial^2 f}{\\partial z^2} . \\tag{11.2}\\]</div>", "href": "sec-navier-lame.html#eq-laplaceov-operator"};

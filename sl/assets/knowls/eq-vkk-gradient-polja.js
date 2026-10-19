@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vkk-gradient-polja"] = {"html": "<div class=\"eq\">\\[\\mat H\\,\\vek e_{\\mathrm{i}} = \\frac{1}{h_{\\mathrm{i}}}\\,\\frac{\\partial(\\vek u\\circ\\Phi)}{\\partial q_{\\mathrm{i}}} . \\tag{11.21}\\]</div>", "href": "sec-krivocrtne-koordinate.html#eq-vkk-gradient-polja"};

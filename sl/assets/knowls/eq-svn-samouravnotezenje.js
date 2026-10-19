@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-svn-samouravnotezenje"] = {"html": "<div class=\"eq\">\\[\\int \\sigma_{\\mathrm{xx}}\\,\\mathrm{d}y = 0 , \\qquad \\int \\sigma_{\\mathrm{xy}}\\,\\mathrm{d}y = 0 , \\qquad \\int y\\,\\sigma_{\\mathrm{xx}}\\,\\mathrm{d}y = 0 \\tag{11.56}\\]</div>", "href": "sec-saint-venantovo-nacelo.html#eq-svn-samouravnotezenje"};

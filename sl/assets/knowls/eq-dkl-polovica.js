@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dkl-polovica"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{a}}^b \\sigma_{\\theta\\theta}\\,2\\pi R\\,\\mathrm{d}R = p\\,\\pi a^2 , \\tag{11.41}\\]</div>", "href": "sec-debelostenska-krogla.html#eq-dkl-polovica"};

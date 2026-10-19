@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-svn-f"] = {"html": "<div class=\"eq\">\\[\\begin{aligned} &amp;f(y) = A\\cos\\lambda y + B\\,y\\sin\\lambda y \\\\ &amp;\\quad \\text{(symmetric)} , \\\\ &amp;f(y) = C\\sin\\lambda y + D\\,y\\cos\\lambda y \\\\ &amp;\\quad \\text{(antisymmetric)} . \\end{aligned} \\tag{11.58}\\]</div>", "href": "sec-saint-venantovo-nacelo.html#eq-svn-f"};

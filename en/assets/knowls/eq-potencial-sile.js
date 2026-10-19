@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-potencial-sile"] = {"html": "<div class=\"eq\">\\[\\vek b = -\\nabla V , \\qquad b_{\\mathrm{x}} = -\\frac{\\partial V}{\\partial x} , \\quad b_{\\mathrm{y}} = -\\frac{\\partial V}{\\partial y} , \\tag{11.50}\\]</div>", "href": "sec-airyjeva-funkcija.html#eq-potencial-sile"};

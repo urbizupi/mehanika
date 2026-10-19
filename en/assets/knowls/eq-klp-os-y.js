@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-klp-os-y"] = {"html": "<div class=\"eq\">\\[\\sigma_{\\mathrm{xx}}(0, y) = \\sigma_0\\Big(1 + \\frac{a^2}{2y^2} + \\frac{3a^4}{2y^4}\\Big) , \\tag{11.69}\\]</div>", "href": "sec-kirschov-problem.html#eq-klp-os-y"};

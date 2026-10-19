@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dbc-pomiki"] = {"html": "<div class=\"eq\">\\[\\vek u = \\Big(\\frac{(1 - \\nu)A - \\nu S}{E}\\,r + \\frac{(1 + \\nu)B}{E}\\,\\frac1r\\Big)\\vek e_{\\mathrm{r}} + \\varepsilon_0\\,z\\,\\vek e_{\\mathrm{z}} \\tag{11.35}\\]</div>", "href": "sec-debelostenska-cev.html#eq-dbc-pomiki"};

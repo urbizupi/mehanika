@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-uno-konstante"] = {"html": "<div class=\"eq\">\\[\\begin{aligned} A &amp;= \\frac{4M\\,a^2 b^2 L}{\\Delta} , \\\\ B &amp;= \\frac{2M\\,(b^2 - a^2)}{\\Delta} , \\\\ C &amp;= \\frac{M\\,(a^2 - b^2 - 2b^2 L)}{\\Delta} \\end{aligned} \\tag{11.74}\\]</div>", "href": "sec-ukrivljeni-nosilec.html#eq-uno-konstante"};

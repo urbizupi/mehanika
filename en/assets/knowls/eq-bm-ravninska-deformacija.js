@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-bm-ravninska-deformacija"] = {"html": "<div class=\"eq\">\\[\\nabla^2(\\sigma_{\\mathrm{xx}} + \\sigma_{\\mathrm{yy}}) = -\\frac{1}{1 - \\nu}\\,\\mathrm{div}\\,\\vek b . \\tag{11.46}\\]</div>", "href": "sec-ravninski-problemi.html#eq-bm-ravninska-deformacija"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-bm-ravninsko-napetostno"] = {"html": "<div class=\"eq\">\\[\\nabla^2(\\sigma_{\\mathrm{xx}} + \\sigma_{\\mathrm{yy}}) = -(1 + \\nu)\\,\\mathrm{div}\\,\\vek b . \\tag{11.48}\\]</div>", "href": "sec-ravninski-problemi.html#eq-bm-ravninsko-napetostno"};

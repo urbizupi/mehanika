@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-uno-konzola-sile"] = {"html": "<div class=\"eq\">\\[N(\\theta) = P\\,\\sin\\theta , \\qquad V(\\theta) = P\\,\\cos\\theta , \\qquad M(\\theta) = -c\\,P\\,\\sin\\theta , \\tag{11.77}\\]</div>", "href": "sec-ukrivljeni-nosilec.html#eq-uno-konzola-sile"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-klp-enakomerno"] = {"html": "<div class=\"eq\">\\[\\varphi_0 = \\frac{\\sigma_0}{2}\\,r^2\\sin^2\\theta = \\frac{\\sigma_0}{4}\\,r^2\\,(1 - \\cos 2\\theta) . \\tag{11.63}\\]</div>", "href": "sec-kirschov-problem.html#eq-klp-enakomerno"};

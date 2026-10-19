@@ -1,0 +1,564 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>11.2 The Navier-Lamé equations (Navier-Laméjeve enačbe) · Chapter 11</title>
+<script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/style.css">
+<noscript><style>#loadbar { display: none; }</style></noscript>
+<script src="assets/config.js"></script>
+<script src="assets/load.js"></script>
+<script defer src="assets/interaktivno.js"></script>
+<script defer src="assets/book.js"></script>
+<script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<div id="loadbar" aria-hidden="true"></div>
+<header class="top"><a class="home" href="index.html">Mechanics</a><nav class="pager"><a href="sec-robni-problem-telesa.html" rel="prev">← 11.1</a><a href="index.html">Contents</a><a href="sec-beltrami-michell.html" rel="next">11.3 →</a></nav>
+<span class="tools"><a class="lang" href="../sl/sec-navier-lame.html" hreflang="sl">Slovenščina</a><button type="button" class="theme-toggle" title="Light or dark theme" aria-label="Light or dark theme"></button><button type="button" data-details="open">Expand all</button><button type="button" data-details="close">Collapse all</button><button type="button" class="fig-side-toggle" aria-pressed="false">Figures alongside</button></span></header>
+<main>
+<p class="updated">Last updated 19 October 2026, 3:27</p>
+<p class="crumb"><a href="ch-robni-problem-elasticnosti.html"><span class="h-num">Chapter 11</span> The boundary value problem of linear elasticity</a></p>
+<h2 id="sec-navier-lame"><span class="h-num">11.2</span> The Navier-Lamé equations (Navier-Laméjeve enačbe)</h2>
+<p>In the previous section we wrote down the boundary value problem of elasticity (definition <a class="xref" href="sec-robni-problem-telesa.html#def-robni-problem-elasticnosti" data-knowl="def-robni-problem-elasticnosti">11.1</a>). Its unknowns are the three components of the displacement, the six components of the strain and the six components of the stress, fifteen <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> in all. For them we have fifteen equations: six relations between <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">strains</a> and displacements (chapter <a class="xref" href="ch-deformacija.html">1</a>), six equations of <a class="xref auto" href="sec-hookov-zakon.html#thm-hookov-zakon" data-knowl="thm-hookov-zakon">Hooke's law</a> (chapter <a class="xref" href="ch-konstitutivne-enacbe.html">3</a>) and three <a class="xref auto" href="sec-ravnotezne-enacbe.html#thm-ravnotezne-enacbe" data-knowl="thm-ravnotezne-enacbe">equilibrium equations</a> (chapter <a class="xref" href="ch-napetost.html">2</a>). Can the fifteen equations be replaced by three, for the three unknown components of the displacement?</p>
+<p>The idea is simple. The strains are already written with displacements, \(\varepsilon_{\mathrm{ij}} = \tfrac12(\partial u_{\mathrm{i}}/\partial x_{\mathrm{j}} + \partial u_{\mathrm{j}}/\partial x_{\mathrm{i}})\) (definition <a class="xref" href="sec-deformacija-v-prostoru.html#def-mali-tenzor-deformacij" data-knowl="def-mali-tenzor-deformacij">1.115</a>). Hooke's law (equation <a class="xref" href="sec-hookov-zakon.html#eq-hookov-zakon-lame" data-knowl="eq-hookov-zakon-lame">(3.13)</a>) gives the stresses from the strains, so the stresses are written with displacements as well. The three equilibrium equations are equations for the stresses, so they become three equations for the displacements, and the six strains and six stresses drop out of the calculation. The resulting system has the advantage that we mentioned with the <a class="xref auto" href="sec-kompatibilnost.html#thm-enacbe-kompatibilnosti" data-knowl="thm-enacbe-kompatibilnosti">compatibility equations</a> (section <a class="xref" href="sec-kompatibilnost.html#sec-enacbe-kompatibilnosti">1.18.3</a>): the strains are computed from the displacements, so they fit together by themselves and we need no compatibility equations.</p>
+<p>The equilibrium equations will contain the second <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivatives</a> of a displacement component with respect to all three <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">coordinates</a>, in the sum <span class="nobr">\(\partial^2 u_{\mathrm{i}}/\partial x^2 + \partial^2 u_{\mathrm{i}}/\partial y^2 + \partial^2 u_{\mathrm{i}}/\partial z^2\).</span> This sum appears so often in mechanics and physics that it gets a name.</p>
+
+<div class="blk definicija" id="def-laplaceov-operator"><div class="blk-head"><span class="blk-label">Definition 11.5</span> <span class="blk-title">Laplace operator (Laplaceov operator)</span></div><div class="blk-body"><p>Let \(D\) be an open set of points of space and \(f\) a <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> of three variables that has continuous <a class="xref auto" href="sec-kompatibilnost.html#def-drugi-parcialni-odvodi" data-knowl="def-drugi-parcialni-odvodi">second partial derivatives</a> at every point of <span class="nobr">\(D\).</span> The Laplace operator (Laplaceov operator) assigns to \(f\) the function whose value at every point of \(D\) is the sum of the three second partial derivatives at that point,</p>
+<div class="eq" id="eq-laplaceov-operator">\[\nabla^2 f = \frac{\partial^2 f}{\partial x^2} + \frac{\partial^2 f}{\partial y^2} + \frac{\partial^2 f}{\partial z^2} . \tag{11.2}\]</div>
+<p>For a <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vector</a> field \(\vek u = (u_{\mathrm{x}}, u_{\mathrm{y}}, u_{\mathrm{z}})\) whose components have continuous second partial derivatives, \(\nabla^2\vek u\) is the vector field with components <span class="nobr">\(\nabla^2 u_{\mathrm{x}}\),</span> \(\nabla^2 u_{\mathrm{y}}\) and <span class="nobr">\(\nabla^2 u_{\mathrm{z}}\).</span> So the operator is applied to each component separately. If \(f\) also has continuous fourth <a class="xref auto" href="sec-parcialni-odvodi.html#def-parcialni-odvod" data-knowl="def-parcialni-odvod">partial derivatives</a>, <span class="nobr">\(\nabla^4 f = \nabla^2(\nabla^2 f)\).</span></p>
+
+<p class="vir"><span class="vir-label">Source:</span> CM (2.4.36) (PDF p. 76), where \(\nabla^2 = \nabla\cdot\nabla\) is called the Laplace operator, SADD (5.4.5) (PDF p. 111), KREYSZIG §9.7 (PDF p. 427).</p></div></div>
+<p>The operator has two views. The gradient \(\nabla f\) is the column of <a class="xref auto" href="sec-parcialni-odvodi.html#def-parcialni-odvod" data-knowl="def-parcialni-odvod">partial derivatives</a> (chapter <a class="xref" href="ch-analiticna-dinamika.html">8</a>), and its divergence (definition <a class="xref" href="sec-integral-po-telesu.html#def-divergenca" data-knowl="def-divergenca">4.13</a>) is exactly <span class="nobr">\(\partial^2 f/\partial x^2 + \partial^2 f/\partial y^2 + \partial^2 f/\partial z^2\),</span> so <span class="nobr">\(\nabla^2 f = \operatorname{div}(\nabla f)\).</span> The symbol <span class="nobr">\(\Delta\),</span> which KREYSZIG gives as another name for the same operator (§9.7, PDF p. 427), is not used in this book, because \(\Delta\) means a difference <span class="nobr">(\(\Delta L\),</span> <span class="nobr">\(\Delta T\)).</span> We write <span class="nobr">\(\nabla^2\).</span> As an example take <span class="nobr">\(f = x^2 + 3yz\).</span> Its second derivatives are <span class="nobr">\(\partial^2 f/\partial x^2 = 2\),</span> \(\partial^2 f/\partial y^2 = 0\) and <span class="nobr">\(\partial^2 f/\partial z^2 = 0\),</span> so <span class="nobr">\(\nabla^2 f = 2\),</span> the same at every point.</p>
+<p>Now we can write the equations. Let the material be the same everywhere, so homogeneous (definition <a class="xref" href="sec-natezni-preizkus.html#def-homogen-material" data-knowl="def-homogen-material">3.5</a>), and let it behave the same in all directions at every point, so isotropic (definition <a class="xref" href="sec-natezni-preizkus.html#def-izotropen-material" data-knowl="def-izotropen-material">3.4</a>). The constants \(\lambda\) and \(\mu\) of definition <a class="xref" href="sec-hookov-zakon.html#def-lamejevi-konstanti" data-knowl="def-lamejevi-konstanti">3.10</a> are then the same numbers everywhere, so we may leave them in front of the derivative when we differentiate the stresses. Because \(\nu \neq -1\) and <span class="nobr">\(\nu \neq \tfrac12\),</span> Hooke's law holds in the form <a class="xref" href="sec-hookov-zakon.html#eq-hookov-zakon-lame" data-knowl="eq-hookov-zakon-lame">(3.13)</a>. The definition of the <a class="xref auto" href="sec-navadne-diferencialne-enacbe.html#def-robni-problem" data-knowl="def-robni-problem">boundary value problem</a> asks only for <a class="xref auto" href="sec-sprememba-polja.html#def-zvezno-odvedljivo-polje" data-knowl="def-zvezno-odvedljivo-polje">continuously differentiable</a> displacements and stresses, while the theorem asks for continuous second derivatives of the displacements, because the stresses will be differentiated once more. Whether the second follows from the first we do not prove. The solutions that we build in this chapter have continuous second derivatives, because they are written with smooth functions, such as <a class="xref auto" href="sec-zveznost.html#def-polinom" data-knowl="def-polinom">polynomials</a> and powers of the distance from the axis, which we check for every solution.</p>
+
+<div class="blk izrek" id="thm-navier-lame"><div class="blk-head"><span class="blk-label">Theorem 11.6</span> <span class="blk-title">Navier-Lamé equations (Navier-Laméjeve enačbe)</span></div><div class="blk-body"><p>Let the material be homogeneous, <a class="xref auto" href="sec-natezni-preizkus.html#def-izotropen-material" data-knowl="def-izotropen-material">isotropic</a> and linearly elastic, with <a class="xref auto" href="sec-hookov-zakon.html#def-lamejevi-konstanti" data-knowl="def-lamejevi-konstanti">Lamé constants</a> \(\lambda\) and \(\mu\) (theorem <a class="xref" href="sec-hookov-zakon.html#thm-hookov-zakon" data-knowl="thm-hookov-zakon">3.11</a>, \(\nu \neq -1\) and <span class="nobr">\(\nu \neq \tfrac12\)).</span> Let \(D\) be an open set of points of the <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">body</a> and \(\vek u = (u_{\mathrm{x}}, u_{\mathrm{y}}, u_{\mathrm{z}})\) a <a class="xref auto" href="sec-pomik-v-prostoru.html#def-polje-pomikov" data-knowl="def-polje-pomikov">displacement field</a> with continuous <a class="xref auto" href="sec-kompatibilnost.html#def-drugi-parcialni-odvodi" data-knowl="def-drugi-parcialni-odvodi">second partial derivatives</a> on <span class="nobr">\(D\).</span> Let \(\ten\sigma\) be the stresses that we obtain from the displacements \(\vek u\) by definition <a class="xref" href="sec-deformacija-v-prostoru.html#def-mali-tenzor-deformacij" data-knowl="def-mali-tenzor-deformacij">1.115</a> and Hooke's law <a class="xref" href="sec-hookov-zakon.html#eq-hookov-zakon-lame" data-knowl="eq-hookov-zakon-lame">(3.13)</a>, and \(\vek b\) a <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vector</a> at a point \(P\) of <span class="nobr">\(D\).</span> Then the stresses \(\ten\sigma\) at \(P\) satisfy the <a class="xref auto" href="sec-ravnotezne-enacbe.html#thm-ravnotezne-enacbe" data-knowl="thm-ravnotezne-enacbe">equilibrium equations</a> <a class="xref" href="sec-ravnotezne-enacbe.html#eq-ravnotezne-enacbe" data-knowl="eq-ravnotezne-enacbe">(2.31)</a> with body force \(\vek b\) exactly when at \(P\)</p>
+<div class="eq" id="eq-navier-lame">\[\mu\,\nabla^2\vek u + (\lambda + \mu)\,\nabla(\operatorname{div}\vek u) + \vek b = \vek 0 , \tag{11.3}\]</div>
+<p>in components, for <span class="nobr">\(\ix{i} = x, y, z\),</span></p>
+<div class="eq">\[\mu\,\nabla^2 u_{\mathrm{i}} + (\lambda + \mu)\,\frac{\partial}{\partial x_{\mathrm{i}}}\Big(\frac{\partial u_{\mathrm{x}}}{\partial x} + \frac{\partial u_{\mathrm{y}}}{\partial y} + \frac{\partial u_{\mathrm{z}}}{\partial z}\Big) + b_{\mathrm{i}} = 0 .\]</div>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that the left side of the \(\ix{i}\)-th equilibrium equation, when we insert the stresses of the field <span class="nobr">\(\vek u\),</span> equals the left side of the \(\ix{i}\)-th equation of the theorem. We write <span class="nobr">\(x_{\mathrm{x}} = x\),</span> <span class="nobr">\(x_{\mathrm{y}} = y\),</span> \(x_{\mathrm{z}} = z\) (definition <a class="xref" href="sec-deformacija-v-prostoru.html#def-gradient-pomikov" data-knowl="def-gradient-pomikov">1.109</a>).</p>
+<ol>
+<li>By definition <a class="xref" href="sec-deformacija-v-prostoru.html#def-mali-tenzor-deformacij" data-knowl="def-mali-tenzor-deformacij">1.115</a>, <span class="nobr">\(\varepsilon_{\mathrm{ij}} = \tfrac12(\partial u_{\mathrm{i}}/\partial x_{\mathrm{j}} + \partial u_{\mathrm{j}}/\partial x_{\mathrm{i}})\),</span> and the trace is \(\tr\ten\varepsilon = \sum_{\mathrm{k}} \partial u_{\mathrm{k}}/\partial x_{\mathrm{k}} = \operatorname{div}\vek u\) (definition <a class="xref" href="sec-integral-po-telesu.html#def-divergenca" data-knowl="def-divergenca">4.13</a>). The <a class="xref auto" href="sec-matrike.html#def-enotska-matrika" data-knowl="def-enotska-matrika">identity matrix</a> \(\mat I\) has the element <span class="nobr">\(\delta_{\mathrm{ij}}\),</span> which is \(1\) for \(\ix{i} = \ix{j}\) and \(0\) otherwise. So <a class="xref auto" href="sec-hookov-zakon.html#thm-hookov-zakon" data-knowl="thm-hookov-zakon">Hooke's law</a> <a class="xref" href="sec-hookov-zakon.html#eq-hookov-zakon-lame" data-knowl="eq-hookov-zakon-lame">(3.13)</a>, <span class="nobr">\(\ten\sigma = \lambda\,(\tr\ten\varepsilon)\,\mat I + 2\mu\,\ten\varepsilon\),</span> reads in components
+<div class="eq" id="eq-napetosti-iz-pomikov">\[\sigma_{\mathrm{ij}} = \lambda\,(\operatorname{div}\vek u)\,\delta_{\mathrm{ij}} + \mu\left(\frac{\partial u_{\mathrm{i}}}{\partial x_{\mathrm{j}}} + \frac{\partial u_{\mathrm{j}}}{\partial x_{\mathrm{i}}}\right) . \tag{11.4}\]</div>
+Since \(\vek u\) has continuous second <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivatives</a> on the open set <span class="nobr">\(D\),</span> the stresses have continuous first derivatives at every point of <span class="nobr">\(D\).</span></li>
+<li>The left side of the \(\ix{i}\)-th equilibrium equation <a class="xref" href="sec-ravnotezne-enacbe.html#eq-ravnotezne-enacbe" data-knowl="eq-ravnotezne-enacbe">(2.31)</a> is <span class="nobr">\(\sum_{\mathrm{j}} \partial\sigma_{\mathrm{ji}}/\partial x_{\mathrm{j}} + b_{\mathrm{i}}\).</span> For \(\sigma_{\mathrm{ji}}\) we insert <a class="xref" href="sec-navier-lame.html#eq-napetosti-iz-pomikov" data-knowl="eq-napetosti-iz-pomikov">(11.4)</a> with the indices swapped, <span class="nobr">\(\sigma_{\mathrm{ji}} = \lambda\,(\operatorname{div}\vek u)\,\delta_{\mathrm{ji}} + \mu\,(\partial u_{\mathrm{j}}/\partial x_{\mathrm{i}} + \partial u_{\mathrm{i}}/\partial x_{\mathrm{j}})\),</span> differentiate with respect to \(x_{\mathrm{j}}\) and sum over <span class="nobr">\(\ix{j}\).</span> The derivative of a sum is the sum of the derivatives and the constants <span class="nobr">\(\lambda\),</span> \(\mu\) stay in front of the derivative, so the three terms of the sum are those of steps 3 to 5.</li>
+<li>First term: <span class="nobr">\(\sum_{\mathrm{j}} \partial\big(\lambda\,(\operatorname{div}\vek u)\,\delta_{\mathrm{ji}}\big)/\partial x_{\mathrm{j}} = \lambda\,\partial(\operatorname{div}\vek u)/\partial x_{\mathrm{i}}\),</span> because \(\delta_{\mathrm{ji}}\) differs from zero only for <span class="nobr">\(\ix{j} = \ix{i}\).</span></li>
+<li>Second term: <span class="nobr">\(\mu\sum_{\mathrm{j}} \partial^2 u_{\mathrm{j}}/\partial x_{\mathrm{j}}\,\partial x_{\mathrm{i}}\).</span> For \(\ix{j} = \ix{i}\) the mixed derivative is just a second derivative with respect to one variable. For \(\ix{j} \neq \ix{i}\) the two mixed second derivatives of the component \(u_{\mathrm{j}}\) are continuous, so by theorem <a class="xref" href="sec-kompatibilnost.html#thm-mesani-odvodi" data-knowl="thm-mesani-odvodi">1.125</a> on the symmetry of <a class="xref auto" href="sec-kompatibilnost.html#def-drugi-parcialni-odvodi" data-knowl="def-drugi-parcialni-odvodi">mixed derivatives</a> we may swap them, <span class="nobr">\(\partial^2 u_{\mathrm{j}}/\partial x_{\mathrm{j}}\,\partial x_{\mathrm{i}} = \partial^2 u_{\mathrm{j}}/\partial x_{\mathrm{i}}\,\partial x_{\mathrm{j}}\).</span> In both cases the sum over \(\ix{j}\) equals <span class="nobr">\(\mu\,\dfrac{\partial}{\partial x_{\mathrm{i}}}\sum_{\mathrm{j}} \dfrac{\partial u_{\mathrm{j}}}{\partial x_{\mathrm{j}}} = \mu\,\dfrac{\partial(\operatorname{div}\vek u)}{\partial x_{\mathrm{i}}}\).</span></li>
+<li>Third term: \(\mu\sum_{\mathrm{j}} \partial^2 u_{\mathrm{i}}/\partial x_{\mathrm{j}}^2 = \mu\,\nabla^2 u_{\mathrm{i}}\) by definition <a class="xref" href="sec-navier-lame.html#def-laplaceov-operator" data-knowl="def-laplaceov-operator">11.5</a>.</li>
+<li>We add steps 3 to 5:
+<div class="eq">\[\sum_{\mathrm{j}} \frac{\partial\sigma_{\mathrm{ji}}}{\partial x_{\mathrm{j}}} = \mu\,\nabla^2 u_{\mathrm{i}} + (\lambda + \mu)\,\frac{\partial(\operatorname{div}\vek u)}{\partial x_{\mathrm{i}}} .\]</div></li>
+<li>The <a class="xref auto" href="sec-ravnotezne-enacbe.html#thm-ravnotezne-enacbe" data-knowl="thm-ravnotezne-enacbe">equilibrium equations</a> <a class="xref" href="sec-ravnotezne-enacbe.html#eq-ravnotezne-enacbe" data-knowl="eq-ravnotezne-enacbe">(2.31)</a> at the point \(P\) are \(\sum_{\mathrm{j}} \partial\sigma_{\mathrm{ji}}/\partial x_{\mathrm{j}} + b_{\mathrm{i}} = 0\) for <span class="nobr">\(\ix{i} = x, y, z\).</span> By step 6 the left side equals the left side of the equation of the theorem. All steps are equalities, so one equation holds exactly when the other does. The three equations together are the <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vector</a> equation <a class="xref" href="sec-navier-lame.html#eq-navier-lame" data-knowl="eq-navier-lame">(11.3)</a>, because \(\nabla(\operatorname{div}\vek u)\) is a vector with components <span class="nobr">\(\partial(\operatorname{div}\vek u)/\partial x_{\mathrm{i}}\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> SADD (5.4.2)-(5.4.5) (PDF p. 111), CM (7.2.16)-(7.2.17) (PDF p. 299), where CM keeps the acceleration term, zero in equilibrium. SADD writes the body force \(F\) and CM writes <span class="nobr">\(\rho_0 f_{\mathrm{i}}\),</span> which is our <span class="nobr">\(b_{\mathrm{i}}\).</span> SADD summarizes the derivation in one sentence, we wrote out the steps.</p></div></div>
+<p>The proof showed that the equilibrium equations for the stresses of a <a class="xref auto" href="sec-pomik-v-prostoru.html#def-polje-pomikov" data-knowl="def-polje-pomikov">displacement field</a> are three second-order equations for the displacement itself: we removed the stresses with Hooke's law and the strains with their definition by displacements.</p>
+
+<div class="zgodovina"><p class="zgodovina-label">From history</p><p>For a long time it did not seem that anyone had tried to obtain general equations of equilibrium and motion of elastic <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">bodies</a> (LOVE, PDF p. 23). At the end of 1820, according to Love, all the effort spent on elastic problems could be summed up as an inadequate theory of flexure, an erroneous theory of torsion, an unproved theory of the vibrations of bars and plates and the definition of <a class="xref auto" href="sec-natezni-preizkus.html#def-modul-elasticnosti" data-knowl="def-modul-elasticnosti">Young's modulus</a>, and Love at once adds that such an estimate would give a wrong impression of the value of the older researches (LOVE, PDF p. 23). Navier was the first to investigate the general equations of equilibrium and vibration of elastic bodies. His memoir was read in May 1821 and published in 1827 (LOVE, PDF p. 23). He set out from Newton's conception of bodies: he regarded the molecules as material points and assumed that the force between two molecules whose distance is slightly increased is proportional to the product of the increase of the distance and some function of the initial distance. The elastic reactions arose, in his view, from variations of the forces between molecules when the arrangement of the molecules changes (LOVE, PDF pp. 23-24). He expressed all the forces on a displaced molecule and from them obtained the equations of motion of the molecule, and with them the equations for the displacements of the molecule. He assumed the material to be isotropic, and the equations of equilibrium and vibration contained a single constant of the same kind as Young's modulus (LOVE, PDF p. 24).</p>
+<p>Navier's memoir was not generally accepted. The objections were aimed at his expression for the force between two molecules and at his replacing triple sums over molecules by <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integrals</a>, since the validity of this replacement is disputed (LOVE, PDF p. 24). By the autumn of 1822 Cauchy had discovered most of the elements of the pure theory of elasticity: stress at a point, <a class="xref auto" href="sec-deformacija-v-tocki.html#def-deformacija" data-knowl="def-deformacija">strain at a point</a>, the equilibrium equations and, from the relation between stresses and strains, the equations for the displacements (LOVE, PDF p. 25). In a later published version he obtained the relation for an isotropic material from two assumptions, that it is linear and that the principal planes of stress are normal to the <a class="xref auto" href="sec-glavne-napetosti.html#def-glavne-osi" data-knowl="def-glavne-osi">principal axes</a> of strain. He used no hypothesis of material points and central forces. His equations contain two constants, Navier's only one (LOVE, PDF pp. 25-26). Later Cauchy also used the molecular picture with central forces. In the first memoir the equations for an isotropic body contained two constants. In the second memoir he expressed the stresses across any plane, and for an isotropic body without initial stress the stress was expressed through the strain with a single constant, so one of the constants of the first memoir had to vanish. The equations then agreed with Navier's (LOVE, PDF p. 26). Cauchy's derivation from linearity and isotropy thus gave two constants, and the molecular picture with central forces gave one (LOVE, PDF pp. 25-26).</p>
+<p>Lamé and Clapeyron wrote a memoir on the internal equilibrium of homogeneous solid bodies in St. Petersburg. Poinsot and Navier reviewed it in 1828 and it was published in 1833 (TIMO, PDF p. 123). The memoir is important because it contains not only a derivation of the equilibrium equations, which Navier and Cauchy already knew, but also their application to practical problems (TIMO, PDF p. 123). In the first part they derived the equations with Navier's molecular forces and showed that Cauchy's stresses give the same ones. A single elastic constant appeared in their equations (TIMO, PDF pp. 123-124). In 1852 Lamé's book on the theory of elasticity appeared, the first book on this subject. The results of the memoir are in it, but the form of the equations is somewhat changed, because Lamé had concluded that two <a class="xref auto" href="sec-anizotropija.html#def-splosni-hookov-zakon" data-knowl="def-splosni-hookov-zakon">elastic constants</a> determine the properties of an isotropic material. Cauchy had reached this conclusion earlier (TIMO, PDF pp. 124-125).</p>
+</div>
+<p>Let us return to the three equations for the displacements in the form of theorem <a class="xref" href="sec-navier-lame.html#thm-navier-lame" data-knowl="thm-navier-lame">11.6</a>, with the two Lamé constants (definition <a class="xref" href="sec-hookov-zakon.html#def-lamejevi-konstanti" data-knowl="def-lamejevi-konstanti">3.10</a>). What do the terms \(\mu\,\nabla^2\vek u\) and \((\lambda + \mu)\,\nabla(\operatorname{div}\vek u)\) mean? Together they are the force per unit volume that the stresses give to a piece of the body because they vary from place to place. The term \(\mu\,\nabla^2\vek u\) is nonzero when the sum of the second derivatives of a displacement component is nonzero, and the term \((\lambda + \mu)\,\nabla(\operatorname{div}\vek u)\) when the <a class="xref auto" href="sec-najvecja-strizna.html#def-deviatorna-deformacija" data-knowl="def-deviatorna-deformacija">volumetric strain</a> \(\operatorname{div}\vek u\) varies from place to place. Let us look at two simple displacements of a small cube with edge \(h\) and centre at height \(z &gt; 0\) (figure <a class="xref" href="sec-navier-lame.html#fig-nle-kocka-sile" data-knowl="fig-nle-kocka-sile">11.4</a>).</p>
+<p>In the first, \(\vek u = (c\,z^2, 0, 0)\) with a constant <span class="nobr">\(c\).</span> The displacement \(u_{\mathrm{x}}\) depends only on <span class="nobr">\(z\),</span> so \(\operatorname{div}\vek u = 0\) and the cube only deforms in shear. The strains are \(\varepsilon_{\mathrm{xz}} = \tfrac12\,\partial u_{\mathrm{x}}/\partial z = c\,z\) and zero elsewhere, so by Hooke's law the only nonzero stress is <span class="nobr">\(\sigma_{\mathrm{xz}} = 2\mu\,\varepsilon_{\mathrm{xz}} = 2\mu c\,z\).</span> On the top face with normal \(\vek e_{\mathrm{z}}\) a force per unit area \(2\mu c\,(z + h/2)\) acts in the direction of the \(x\) axis, on the bottom face with normal \(-\vek e_{\mathrm{z}}\) the force is <span class="nobr">\(-2\mu c\,(z - h/2)\).</span> The total force divided by the volume \(h^3\) is</p>
+<div class="eq">\[\frac{h^2\,\big[\,2\mu c\,(z + h/2) - 2\mu c\,(z - h/2)\,\big]}{h^3} = 2\mu c = \mu\,\nabla^2 u_{\mathrm{x}} ,\]</div>
+<p>because <span class="nobr">\(\nabla^2 u_{\mathrm{x}} = \partial^2(c\,z^2)/\partial z^2 = 2c\).</span> The term with the divergence is zero, because <span class="nobr">\(\nabla(\operatorname{div}\vek u) = \vek 0\).</span> On the faces perpendicular to \(x\) and \(y\) there is no force in the direction of the \(x\) axis, because <span class="nobr">\(\sigma_{\mathrm{xx}} = \sigma_{\mathrm{xy}} = 0\).</span> The force comes from the <a class="xref auto" href="sec-posevni-prerez.html#def-normalna-strizna-napetost" data-knowl="def-normalna-strizna-napetost">shear stresses</a>, which are larger at the top than at the bottom.</p>
+<p>In the second, <span class="nobr">\(\vek u = (c\,x^2, 0, 0)\).</span> The cube stretches more along the \(x\) axis on the right than on the left, \(\varepsilon_{\mathrm{xx}} = 2c\,x\) and <span class="nobr">\(\operatorname{div}\vek u = 2c\,x\).</span> By Hooke's law <span class="nobr">\(\sigma_{\mathrm{xx}} = \lambda\cdot 2c\,x + 2\mu\cdot 2c\,x = (\lambda + 2\mu)\,2c\,x\).</span> The stress on the right face is larger than on the left, so the force per unit volume is <span class="nobr">\((\lambda + 2\mu)\,2c\).</span> The theorem splits it into two parts, \(\mu\,\nabla^2 u_{\mathrm{x}} = 2\mu c\) and <span class="nobr">\((\lambda + \mu)\,\partial(\operatorname{div}\vek u)/\partial x = (\lambda + \mu)\,2c\),</span> which together give the same, <span class="nobr">\(2c\,(\lambda + 2\mu)\).</span> Here both terms are nonzero at once. There are no shear stresses in this case, yet the term \(\mu\,\nabla^2 u_{\mathrm{x}}\) is nonzero. The split of the force into the two terms of the theorem is therefore not a split into a shear and a volumetric contribution, but a consequence of writing the equations with displacements.</p>
+
+<figure class="blk slika" id="fig-nle-kocka-sile"><p><span class="svgfig" role="img" aria-label="Cube with shear stresses on the top and bottom faces and cube with normal stresses on the left and right faces"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='549.00pt' height='189.01pt' viewBox='-72.000004 -72.000009 406.667377 140.00538'>
+<defs>
+<path id='nle-kocka-sile-g0-117' d='M4.363636-.71731V.059776L6.127024 0V-.468244C5.50934-.468244 5.439601-.468244 5.439601-.856787V-4.483188L3.616438-4.403487V-3.935243C4.234122-3.935243 4.303861-3.935243 4.303861-3.5467V-1.643836C4.303861-.826899 3.795766-.298879 3.068493-.298879C2.30137-.298879 2.271482-.547945 2.271482-1.085928V-4.483188L.448319-4.403487V-3.935243C1.066002-3.935243 1.135741-3.935243 1.135741-3.5467V-1.225405C1.135741-.159402 1.942715 .059776 2.929016 .059776C3.188045 .059776 3.905355 .059776 4.363636-.71731Z'/>
+<path id='nle-kocka-sile-g1-0' d='M6.56538-2.291407C6.734745-2.291407 6.914072-2.291407 6.914072-2.49066S6.734745-2.689913 6.56538-2.689913H1.175592C1.006227-2.689913 .826899-2.689913 .826899-2.49066S1.006227-2.291407 1.175592-2.291407H6.56538Z'/>
+<path id='nle-kocka-sile-g2-27' d='M5.160648-3.716065C5.290162-3.716065 5.648817-3.716065 5.648817-4.054795C5.648817-4.293898 5.439601-4.293898 5.260274-4.293898H2.988792C1.484433-4.293898 .37858-2.650062 .37858-1.464508C.37858-.587796 .966376 .109589 1.872976 .109589C3.048568 .109589 4.373599-1.09589 4.373599-2.630137C4.373599-2.799502 4.373599-3.277709 4.064757-3.716065H5.160648ZM1.882939-.109589C1.39477-.109589 .996264-.468244 .996264-1.185554C.996264-1.484433 1.115816-2.30137 1.464508-2.889166C1.882939-3.576588 2.480697-3.716065 2.819427-3.716065C3.656289-3.716065 3.73599-3.058531 3.73599-2.749689C3.73599-2.281445 3.536737-1.464508 3.198007-.956413C2.809465-.368618 2.271482-.109589 1.882939-.109589Z'/>
+<path id='nle-kocka-sile-g2-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='nle-kocka-sile-g2-61' d='M4.373599-7.0934C4.423412-7.222914 4.423412-7.262765 4.423412-7.272727C4.423412-7.382316 4.333748-7.47198 4.224159-7.47198C4.154421-7.47198 4.084682-7.442092 4.054795-7.382316L.597758 2.11208C.547945 2.241594 .547945 2.281445 .547945 2.291407C.547945 2.400996 .637609 2.49066 .747198 2.49066C.876712 2.49066 .9066 2.420922 .966376 2.251557L4.373599-7.0934Z'/>
+<path id='nle-kocka-sile-g2-99' d='M3.945205-3.785803C3.785803-3.785803 3.646326-3.785803 3.506849-3.646326C3.347447-3.496887 3.327522-3.327522 3.327522-3.257783C3.327522-3.01868 3.506849-2.909091 3.696139-2.909091C3.985056-2.909091 4.254047-3.148194 4.254047-3.5467C4.254047-4.034869 3.785803-4.403487 3.078456-4.403487C1.733499-4.403487 .408468-2.978829 .408468-1.574097C.408468-.67746 .986301 .109589 2.022416 .109589C3.447073 .109589 4.283935-.946451 4.283935-1.066002C4.283935-1.125778 4.224159-1.195517 4.164384-1.195517C4.11457-1.195517 4.094645-1.175592 4.034869-1.09589C3.247821-.109589 2.161893-.109589 2.042341-.109589C1.414695-.109589 1.145704-.597758 1.145704-1.195517C1.145704-1.603985 1.344956-2.570361 1.683686-3.188045C1.992528-3.755915 2.540473-4.184309 3.088418-4.184309C3.427148-4.184309 3.805729-4.054795 3.945205-3.785803Z'/>
+<path id='nle-kocka-sile-g2-104' d='M2.859278-6.804483C2.859278-6.814446 2.859278-6.914072 2.729763-6.914072C2.500623-6.914072 1.77335-6.834371 1.514321-6.814446C1.43462-6.804483 1.325031-6.794521 1.325031-6.615193C1.325031-6.495641 1.414695-6.495641 1.564134-6.495641C2.042341-6.495641 2.062267-6.425903 2.062267-6.326276L2.032379-6.127024L.587796-.388543C.547945-.249066 .547945-.229141 .547945-.169365C.547945 .059776 .747198 .109589 .836862 .109589C.996264 .109589 1.155666-.009963 1.205479-.14944L1.39477-.9066L1.613948-1.803238C1.673724-2.022416 1.733499-2.241594 1.783313-2.470735C1.803238-2.530511 1.882939-2.859278 1.892902-2.919054C1.92279-3.008717 2.231631-3.566625 2.570361-3.835616C2.789539-3.995019 3.098381-4.184309 3.526775-4.184309S4.064757-3.845579 4.064757-3.486924C4.064757-2.948941 3.686177-1.863014 3.447073-1.255293C3.367372-1.026152 3.317559-.9066 3.317559-.707347C3.317559-.239103 3.666252 .109589 4.134496 .109589C5.070984 .109589 5.439601-1.344956 5.439601-1.424658C5.439601-1.524284 5.349938-1.524284 5.32005-1.524284C5.220423-1.524284 5.220423-1.494396 5.17061-1.344956C5.021171-.816936 4.702366-.109589 4.154421-.109589C3.985056-.109589 3.915318-.209215 3.915318-.438356C3.915318-.687422 4.004981-.926526 4.094645-1.145704C4.254047-1.574097 4.702366-2.759651 4.702366-3.337484C4.702366-3.985056 4.303861-4.403487 3.556663-4.403487C2.929016-4.403487 2.450809-4.094645 2.082192-3.636364L2.859278-6.804483Z'/>
+<path id='nle-kocka-sile-g2-120' d='M3.327522-3.008717C3.387298-3.267746 3.616438-4.184309 4.313823-4.184309C4.363636-4.184309 4.60274-4.184309 4.811955-4.054795C4.533001-4.004981 4.333748-3.755915 4.333748-3.516812C4.333748-3.35741 4.443337-3.16812 4.712329-3.16812C4.931507-3.16812 5.250311-3.347447 5.250311-3.745953C5.250311-4.26401 4.662516-4.403487 4.323786-4.403487C3.745953-4.403487 3.39726-3.875467 3.277709-3.646326C3.028643-4.303861 2.49066-4.403487 2.201743-4.403487C1.165629-4.403487 .597758-3.118306 .597758-2.86924C.597758-2.769614 .697385-2.769614 .71731-2.769614C.797011-2.769614 .826899-2.789539 .846824-2.879203C1.185554-3.935243 1.843088-4.184309 2.181818-4.184309C2.371108-4.184309 2.719801-4.094645 2.719801-3.516812C2.719801-3.20797 2.550436-2.540473 2.181818-1.145704C2.022416-.52802 1.673724-.109589 1.235367-.109589C1.175592-.109589 .946451-.109589 .737235-.239103C.986301-.288917 1.205479-.498132 1.205479-.777086C1.205479-1.046077 .986301-1.125778 .836862-1.125778C.537983-1.125778 .288917-.86675 .288917-.547945C.288917-.089664 .787049 .109589 1.225405 .109589C1.882939 .109589 2.241594-.587796 2.271482-.647572C2.391034-.278954 2.749689 .109589 3.347447 .109589C4.373599 .109589 4.941469-1.175592 4.941469-1.424658C4.941469-1.524284 4.851806-1.524284 4.821918-1.524284C4.732254-1.524284 4.712329-1.484433 4.692403-1.414695C4.363636-.348692 3.686177-.109589 3.367372-.109589C2.978829-.109589 2.819427-.428394 2.819427-.767123C2.819427-.986301 2.879203-1.205479 2.988792-1.643836L3.327522-3.008717Z'/>
+<path id='nle-kocka-sile-g2-122' d='M1.325031-.826899C1.863014-1.404732 2.15193-1.653798 2.510585-1.96264C2.510585-1.972603 3.128269-2.500623 3.486924-2.859278C4.433375-3.785803 4.652553-4.26401 4.652553-4.303861C4.652553-4.403487 4.562889-4.403487 4.542964-4.403487C4.473225-4.403487 4.443337-4.383562 4.393524-4.293898C4.094645-3.815691 3.88543-3.656289 3.646326-3.656289S3.287671-3.805729 3.138232-3.975093C2.948941-4.204234 2.779577-4.403487 2.450809-4.403487C1.703611-4.403487 1.24533-3.476961 1.24533-3.267746C1.24533-3.217933 1.275218-3.158157 1.364882-3.158157S1.474471-3.20797 1.494396-3.267746C1.683686-3.726027 2.261519-3.73599 2.34122-3.73599C2.550436-3.73599 2.739726-3.666252 2.968867-3.58655C3.367372-3.437111 3.476961-3.437111 3.73599-3.437111C3.377335-3.008717 2.540473-2.291407 2.351183-2.132005L1.454545-1.295143C.777086-.627646 .428394-.059776 .428394 .009963C.428394 .109589 .52802 .109589 .547945 .109589C.627646 .109589 .647572 .089664 .707347-.019925C.936488-.368618 1.235367-.637609 1.554172-.637609C1.783313-.637609 1.882939-.547945 2.132005-.259029C2.30137-.049813 2.480697 .109589 2.769614 .109589C3.755915 .109589 4.333748-1.155666 4.333748-1.424658C4.333748-1.474471 4.293898-1.524284 4.214197-1.524284C4.124533-1.524284 4.104608-1.464508 4.07472-1.39477C3.845579-.747198 3.20797-.557908 2.879203-.557908C2.67995-.557908 2.500623-.617684 2.291407-.687422C1.952677-.816936 1.803238-.856787 1.594022-.856787C1.574097-.856787 1.414695-.856787 1.325031-.826899Z'/>
+<path id='nle-kocka-sile-g3-120' d='M1.736488-.739228C1.66675-.502117 1.436613-.125529 1.080946-.125529C1.060025-.125529 .850809-.125529 .704359-.223163C.990286-.313823 1.011208-.564882 1.011208-.606725C1.011208-.760149 .892653-.864757 .732254-.864757C.536986-.864757 .334745-.697385 .334745-.439352C.334745-.09066 .72528 .069738 1.066999 .069738C1.387796 .069738 1.673724-.132503 1.84807-.425405C2.015442-.055791 2.399004 .069738 2.677958 .069738C3.47995 .069738 3.905355-.801993 3.905355-.99726C3.905355-1.08792 3.814695-1.08792 3.793773-1.08792C3.696139-1.08792 3.689166-1.053051 3.66127-.969365C3.514819-.488169 3.096389-.125529 2.705853-.125529C2.426899-.125529 2.280448-.313823 2.280448-.578829C2.280448-.760149 2.447821-1.39477 2.643088-2.168867C2.782565-2.705853 3.096389-2.880199 3.326526-2.880199C3.340473-2.880199 3.556663-2.880199 3.703113-2.782565C3.47995-2.719801 3.396264-2.524533 3.396264-2.399004C3.396264-2.245579 3.514819-2.140971 3.675218-2.140971S4.065753-2.273474 4.065753-2.566376C4.065753-2.956912 3.619427-3.075467 3.340473-3.075467C2.991781-3.075467 2.712827-2.84533 2.559402-2.580324C2.433873-2.866252 2.113076-3.075467 1.72254-3.075467C.941469-3.075467 .495143-2.217684 .495143-2.008468C.495143-1.917808 .592777-1.917808 .613699-1.917808C.704359-1.917808 .711333-1.945704 .746202-2.036364C.920548-2.580324 1.3599-2.880199 1.701619-2.880199C1.931756-2.880199 2.12005-2.75467 2.12005-2.419925C2.12005-2.280448 2.036364-1.931756 1.973599-1.694645L1.736488-.739228Z'/>
+<path id='nle-kocka-sile-g3-122' d='M1.171606-.613699C1.352927-.795019 1.478456-.927522 2.071233-1.401743C2.217684-1.520299 2.740722-1.93873 2.942964-2.133998C3.368369-2.552428 3.633375-2.908095 3.633375-2.991781S3.542715-3.075467 3.514819-3.075467C3.452055-3.075467 3.431133-3.061519 3.396264-3.005729C3.180075-2.684932 3.033624-2.580324 2.866252-2.580324C2.782565-2.580324 2.677958-2.587298 2.468742-2.789539C2.231631-3.02665 2.078207-3.075467 1.917808-3.075467C1.3599-3.075467 .983313-2.468742 .983313-2.259527C.983313-2.196762 1.053051-2.175841 1.101868-2.175841C1.185554-2.175841 1.199502-2.196762 1.227397-2.273474C1.332005-2.517559 1.72254-2.531507 1.834122-2.531507C1.994521-2.531507 2.175841-2.489664 2.273474-2.468742C2.657036-2.385056 2.705853-2.385056 2.880199-2.385056C2.698879-2.196762 2.57335-2.071233 1.910834-1.54122C1.366874-1.108842 1.17858-.934496 1.046077-.795019C.627646-.383562 .425405-.076712 .425405-.013948C.425405 .069738 .516065 .069738 .54396 .069738C.613699 .069738 .627646 .055791 .662516 0C.850809-.265006 1.066999-.425405 1.30411-.425405C1.387796-.425405 1.492403-.418431 1.680697-.244085C1.896887-.034869 2.036364 .069738 2.259527 .069738C3.005729 .069738 3.472976-.774097 3.472976-1.011208C3.472976-1.094894 3.396264-1.101868 3.354421-1.101868C3.270735-1.101868 3.256787-1.066999 3.228892-.990286C3.096389-.641594 2.684932-.474222 2.343213-.474222C2.182814-.474222 2.008468-.509091 1.834122-.550934C1.513325-.620672 1.457534-.620672 1.332005-.620672C1.318057-.620672 1.21345-.620672 1.171606-.613699Z'/>
+<path id='nle-kocka-sile-g4-40' d='M3.297634 2.391034C3.297634 2.361146 3.297634 2.34122 3.128269 2.171856C1.882939 .916563 1.564134-.966376 1.564134-2.49066C1.564134-4.224159 1.942715-5.957659 3.16812-7.202989C3.297634-7.32254 3.297634-7.342466 3.297634-7.372354C3.297634-7.442092 3.257783-7.47198 3.198007-7.47198C3.098381-7.47198 2.201743-6.794521 1.613948-5.529265C1.105853-4.433375 .986301-3.327522 .986301-2.49066C.986301-1.713574 1.09589-.508095 1.643836 .617684C2.241594 1.843088 3.098381 2.49066 3.198007 2.49066C3.257783 2.49066 3.297634 2.460772 3.297634 2.391034Z'/>
+<path id='nle-kocka-sile-g4-41' d='M2.879203-2.49066C2.879203-3.267746 2.769614-4.473225 2.221669-5.599004C1.62391-6.824408 .767123-7.47198 .667497-7.47198C.607721-7.47198 .56787-7.43213 .56787-7.372354C.56787-7.342466 .56787-7.32254 .757161-7.143213C1.733499-6.156912 2.30137-4.572852 2.30137-2.49066C2.30137-.787049 1.932752 .966376 .697385 2.221669C.56787 2.34122 .56787 2.361146 .56787 2.391034C.56787 2.450809 .607721 2.49066 .667497 2.49066C.767123 2.49066 1.663761 1.8132 2.251557 .547945C2.759651-.547945 2.879203-1.653798 2.879203-2.49066Z'/>
+<path id='nle-kocka-sile-g4-43' d='M4.07472-2.291407H6.854296C6.993773-2.291407 7.183064-2.291407 7.183064-2.49066S6.993773-2.689913 6.854296-2.689913H4.07472V-5.479452C4.07472-5.618929 4.07472-5.808219 3.875467-5.808219S3.676214-5.618929 3.676214-5.479452V-2.689913H.886675C.747198-2.689913 .557908-2.689913 .557908-2.49066S.747198-2.291407 .886675-2.291407H3.676214V.498132C3.676214 .637609 3.676214 .826899 3.875467 .826899S4.07472 .637609 4.07472 .498132V-2.291407Z'/>
+<path id='nle-kocka-sile-g4-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='nle-kocka-sile-g4-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='nle-kocka-sile-g4-61' d='M6.844334-3.257783C6.993773-3.257783 7.183064-3.257783 7.183064-3.457036S6.993773-3.656289 6.854296-3.656289H.886675C.747198-3.656289 .557908-3.656289 .557908-3.457036S.747198-3.257783 .896638-3.257783H6.844334ZM6.854296-1.325031C6.993773-1.325031 7.183064-1.325031 7.183064-1.524284S6.993773-1.723537 6.844334-1.723537H.896638C.747198-1.723537 .557908-1.723537 .557908-1.524284S.747198-1.325031 .886675-1.325031H6.854296Z'/>
+<path id='nle-kocka-sile-g5-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+</defs>
+<g id='nle-kocka-sile-page1'>
+<g stroke-miterlimit='10' transform='translate(-29.293379,8.682057)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<path d='M-36.98865-54.06003H-24.26903' fill='none'/>
+<g transform='translate(-26.74548,-54.06003)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-16.28386,-56.2128)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-29.293379,8.682057)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-29.293379' y='8.682057' xlink:href='#nle-kocka-sile-g2-120'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M-36.98865-54.06003V-41.34041' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,-36.98865,-43.81686)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-39.5338,-33.35524)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-29.293379,8.682057)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-29.293379' y='8.682057' xlink:href='#nle-kocka-sile-g2-122'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M159.33553-54.06003H172.05515' fill='none'/>
+<g transform='translate(169.57869,-54.06003)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(180.04031,-56.2128)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-29.293379,8.682057)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-29.293379' y='8.682057' xlink:href='#nle-kocka-sile-g2-120'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M159.33553-54.06003V-41.34041' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,159.33553,-43.81686)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(156.79037,-33.35524)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-29.293379,8.682057)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-29.293379' y='8.682057' xlink:href='#nle-kocka-sile-g2-122'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 0V56.90549H56.90549V0ZM56.90549 56.90549' fill='none'/>
+<g stroke-width='0.9'>
+<path d='M2.84544 62.59595H49.83641' fill='none'/>
+<g transform='translate(47.23138,62.59595)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M54.06003-5.69046H41.21227' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,43.81729,-5.69046)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+<g transform='translate(0.59856,70.15164)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-29.293379,8.682057)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-29.293379' y='8.682057' xlink:href='#nle-kocka-sile-g2-27'/>
+<use x='-23.600587' y='10.176438' xlink:href='#nle-kocka-sile-g3-120'/>
+<use x='-19.082785' y='10.176438' xlink:href='#nle-kocka-sile-g3-122'/>
+<use x='-14.492332' y='8.682057' xlink:href='#nle-kocka-sile-g4-40'/>
+<use x='-10.617959' y='8.682057' xlink:href='#nle-kocka-sile-g2-122'/>
+<use x='-3.332808' y='8.682057' xlink:href='#nle-kocka-sile-g4-43'/>
+<use x='6.629805' y='8.682057' xlink:href='#nle-kocka-sile-g2-104'/>
+<use x='12.369875' y='8.682057' xlink:href='#nle-kocka-sile-g2-61'/>
+<use x='17.351214' y='8.682057' xlink:href='#nle-kocka-sile-g4-50'/>
+<use x='22.332553' y='8.682057' xlink:href='#nle-kocka-sile-g4-41'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(0.59856,-18.24615)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-29.293379,8.682057)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-29.293379' y='8.682057' xlink:href='#nle-kocka-sile-g2-27'/>
+<use x='-23.600587' y='10.176438' xlink:href='#nle-kocka-sile-g3-120'/>
+<use x='-19.082785' y='10.176438' xlink:href='#nle-kocka-sile-g3-122'/>
+<use x='-14.492332' y='8.682057' xlink:href='#nle-kocka-sile-g4-40'/>
+<use x='-10.617959' y='8.682057' xlink:href='#nle-kocka-sile-g2-122'/>
+<use x='-3.332808' y='8.682057' xlink:href='#nle-kocka-sile-g1-0'/>
+<use x='6.629805' y='8.682057' xlink:href='#nle-kocka-sile-g2-104'/>
+<use x='12.369875' y='8.682057' xlink:href='#nle-kocka-sile-g2-61'/>
+<use x='17.351214' y='8.682057' xlink:href='#nle-kocka-sile-g4-50'/>
+<use x='22.332553' y='8.682057' xlink:href='#nle-kocka-sile-g4-41'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-2.52693,-45.49911)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-29.293379,8.682057)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-29.293379' y='8.682057' xlink:href='#nle-kocka-sile-g0-117'/>
+<use x='-20.16106' y='8.682057' xlink:href='#nle-kocka-sile-g4-61'/>
+<use x='-9.64498' y='8.682057' xlink:href='#nle-kocka-sile-g4-40'/>
+<use x='-5.770606' y='8.682057' xlink:href='#nle-kocka-sile-g2-99'/>
+<use x='.20119' y='8.682057' xlink:href='#nle-kocka-sile-g2-122'/>
+<use x='5.272474' y='5.066693' xlink:href='#nle-kocka-sile-g5-50'/>
+<use x='9.741844' y='8.682057' xlink:href='#nle-kocka-sile-g2-59'/>
+<use x='14.169652' y='8.682057' xlink:href='#nle-kocka-sile-g4-48'/>
+<use x='19.150991' y='8.682057' xlink:href='#nle-kocka-sile-g2-59'/>
+<use x='23.578799' y='8.682057' xlink:href='#nle-kocka-sile-g4-48'/>
+<use x='28.560138' y='8.682057' xlink:href='#nle-kocka-sile-g4-41'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M199.1692 0V56.90549H256.07469V0ZM256.07469 56.90549' fill='none'/>
+<g stroke-width='0.9'>
+<path d='M199.1692 17.07181H180.63054' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,183.23557,17.07181)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M256.07469 17.07181H297.37563' fill='none'/>
+<g transform='translate(294.7706,17.07181)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M199.1692 39.83366H180.63054' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,183.23557,39.83366)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M256.07469 39.83366H297.37563' fill='none'/>
+<g transform='translate(294.7706,39.83366)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+<g transform='translate(116.01353,25.95274)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-29.293379,8.682057)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-29.293379' y='8.682057' xlink:href='#nle-kocka-sile-g2-27'/>
+<use x='-23.600587' y='10.176438' xlink:href='#nle-kocka-sile-g3-120'/>
+<use x='-19.082785' y='10.176438' xlink:href='#nle-kocka-sile-g3-120'/>
+<use x='-14.06688' y='8.682057' xlink:href='#nle-kocka-sile-g4-40'/>
+<use x='-10.192506' y='8.682057' xlink:href='#nle-kocka-sile-g2-120'/>
+<use x='-2.284708' y='8.682057' xlink:href='#nle-kocka-sile-g1-0'/>
+<use x='7.677905' y='8.682057' xlink:href='#nle-kocka-sile-g2-104'/>
+<use x='13.417975' y='8.682057' xlink:href='#nle-kocka-sile-g2-61'/>
+<use x='18.399314' y='8.682057' xlink:href='#nle-kocka-sile-g4-50'/>
+<use x='23.380653' y='8.682057' xlink:href='#nle-kocka-sile-g4-41'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(305.23222,25.95274)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-29.293379,8.682057)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-29.293379' y='8.682057' xlink:href='#nle-kocka-sile-g2-27'/>
+<use x='-23.600587' y='10.176438' xlink:href='#nle-kocka-sile-g3-120'/>
+<use x='-19.082785' y='10.176438' xlink:href='#nle-kocka-sile-g3-120'/>
+<use x='-14.06688' y='8.682057' xlink:href='#nle-kocka-sile-g4-40'/>
+<use x='-10.192506' y='8.682057' xlink:href='#nle-kocka-sile-g2-120'/>
+<use x='-2.284708' y='8.682057' xlink:href='#nle-kocka-sile-g4-43'/>
+<use x='7.677905' y='8.682057' xlink:href='#nle-kocka-sile-g2-104'/>
+<use x='13.417975' y='8.682057' xlink:href='#nle-kocka-sile-g2-61'/>
+<use x='18.399314' y='8.682057' xlink:href='#nle-kocka-sile-g4-50'/>
+<use x='23.380653' y='8.682057' xlink:href='#nle-kocka-sile-g4-41'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(196.32979,-45.49911)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-29.293379,8.682057)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-29.293379' y='8.682057' xlink:href='#nle-kocka-sile-g0-117'/>
+<use x='-20.16106' y='8.682057' xlink:href='#nle-kocka-sile-g4-61'/>
+<use x='-9.64498' y='8.682057' xlink:href='#nle-kocka-sile-g4-40'/>
+<use x='-5.770606' y='8.682057' xlink:href='#nle-kocka-sile-g2-99'/>
+<use x='.20119' y='8.682057' xlink:href='#nle-kocka-sile-g2-120'/>
+<use x='5.895122' y='5.066693' xlink:href='#nle-kocka-sile-g5-50'/>
+<use x='10.364492' y='8.682057' xlink:href='#nle-kocka-sile-g2-59'/>
+<use x='14.7923' y='8.682057' xlink:href='#nle-kocka-sile-g4-48'/>
+<use x='19.773639' y='8.682057' xlink:href='#nle-kocka-sile-g2-59'/>
+<use x='24.201447' y='8.682057' xlink:href='#nle-kocka-sile-g4-48'/>
+<use x='29.182786' y='8.682057' xlink:href='#nle-kocka-sile-g4-41'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 11.4</span>: Force per unit volume on a small cube with edge \(h\) from stresses that differ on opposite faces, schematic, front view <span class="nobr">(\(x\)</span> to the right, \(z\) up). The length of an arrow is proportional to the stress, the scale is not the same in the two pictures. Left: displacement <span class="nobr">\((c\,z^2, 0, 0)\),</span> the shear stress \(\sigma_{\mathrm{xz}} = 2\mu c\,z\) is larger at the top than at the bottom, the cube gets a force in the \(+x\) direction of magnitude <span class="nobr">\(2\mu c = \mu\,\nabla^2 u_{\mathrm{x}}\).</span> Right: displacement <span class="nobr">\((c\,x^2, 0, 0)\),</span> the normal stress \(\sigma_{\mathrm{xx}} = (\lambda + 2\mu)\,2c\,x\) is larger on the right face than on the left, the force is <span class="nobr">\((\lambda + 2\mu)\,2c = \mu\,\nabla^2 u_{\mathrm{x}} + (\lambda + \mu)\,\partial(\operatorname{div}\vek u)/\partial x\).</span></figcaption></figure>
+<p>The theorem holds in the interior of the body. On the surface either a displacement \(\bar{\vek u}\) is prescribed on a part <span class="nobr">\(S_{\mathrm{u}}\),</span> which is already a condition on the displacement, or a <a class="xref auto" href="sec-vektor-napetosti.html#def-vektor-napetosti" data-knowl="def-vektor-napetosti">traction vector</a> \(\bar{\vek t}\) on a part \(S_{\mathrm{t}}\) (definition <a class="xref" href="sec-robni-problem-telesa.html#def-robni-problem-elasticnosti" data-knowl="def-robni-problem-elasticnosti">11.1</a>). The second condition is written with stresses. We can write it with displacements too, from the same step 1 as the equations.</p>
+
+<div class="blk posledica" id="cor-robni-pogoj-pomiki"><div class="blk-head"><span class="blk-label">Corollary 11.7</span> <span class="blk-title">Traction condition in terms of displacements (robni pogoj z napetostnim vektorjem v pomikih)</span></div><div class="blk-body"><p>Let the material be as in theorem <a class="xref" href="sec-navier-lame.html#thm-navier-lame" data-knowl="thm-navier-lame">11.6</a>. Let \(P\) be a point of the part \(S_{\mathrm{t}}\) of the surface of the <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">body</a> with unit <a class="xref auto" href="sec-posevni-prerez.html#def-enotska-normala" data-knowl="def-enotska-normala">outward normal</a> \(\vek n\) and \(\bar{\vek t}\) the prescribed <a class="xref auto" href="sec-vektor-napetosti.html#def-vektor-napetosti" data-knowl="def-vektor-napetosti">traction vector</a> at <span class="nobr">\(P\).</span> Let the <a class="xref auto" href="sec-pomik-v-prostoru.html#def-polje-pomikov" data-knowl="def-polje-pomikov">displacement field</a> \(\vek u\) be <a class="xref auto" href="sec-sprememba-polja.html#def-zvezno-odvedljivo-polje" data-knowl="def-zvezno-odvedljivo-polje">continuously differentiable</a> on an open set that contains <span class="nobr">\(P\),</span> with displacement gradient \(\mat H\) (definition <a class="xref" href="sec-deformacija-v-prostoru.html#def-gradient-pomikov" data-knowl="def-gradient-pomikov">1.109</a>). Then the condition \(\ten\sigma\,\vek n = \bar{\vek t}\) at the point \(P\) holds exactly when</p>
+<div class="eq" id="eq-robni-pogoj-pomiki">\[\lambda\,(\operatorname{div}\vek u)\,\vek n + \mu\,(\mat H + \mat H^\T)\,\vek n = \bar{\vek t} , \tag{11.5}\]</div>
+<p>in components <span class="nobr">\(\sum_{\mathrm{j}} \big[\lambda\,(\operatorname{div}\vek u)\,\delta_{\mathrm{ij}} + \mu\,(\partial u_{\mathrm{i}}/\partial x_{\mathrm{j}} + \partial u_{\mathrm{j}}/\partial x_{\mathrm{i}})\big]\,n_{\mathrm{j}} = \bar t_{\mathrm{i}}\).</span></p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that \(\ten\sigma\,\vek n\) equals the left side of <a class="xref" href="sec-navier-lame.html#eq-robni-pogoj-pomiki" data-knowl="eq-robni-pogoj-pomiki">(11.5)</a>.</p>
+<ol>
+<li>By definition <a class="xref" href="sec-deformacija-v-prostoru.html#def-mali-tenzor-deformacij" data-knowl="def-mali-tenzor-deformacij">1.115</a>, \(\ten\varepsilon = \tfrac12(\mat H + \mat H^\T)\) and <span class="nobr">\(\tr\ten\varepsilon = \operatorname{div}\vek u\).</span> <a class="xref auto" href="sec-hookov-zakon.html#thm-hookov-zakon" data-knowl="thm-hookov-zakon">Hooke's law</a> <a class="xref" href="sec-hookov-zakon.html#eq-hookov-zakon-lame" data-knowl="eq-hookov-zakon-lame">(3.13)</a> gives <span class="nobr">\(\ten\sigma = \lambda\,(\operatorname{div}\vek u)\,\mat I + \mu\,(\mat H + \mat H^\T)\),</span> which is <a class="xref" href="sec-navier-lame.html#eq-napetosti-iz-pomikov" data-knowl="eq-napetosti-iz-pomikov">(11.4)</a> written with <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a>. We multiply the matrix by the <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vector</a> \(\vek n\) and use <span class="nobr">\(\mat I\vek n = \vek n\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> CM (7.2.18) (PDF p. 299), SADD (5.2.1), (5.2.2) (PDF pp. 108-109) for the boundary conditions. The matrix form is ours.</p></div></div>
+<p>Let us test the theorem and the corollary on three fields. The first is the field of the hanging bar. A steel bar of length \(L = 10\) m and diameter 10 mm, with the \(x\) axis pointing down from the centre \(O\) of the top face, is held in the idealized way of section <a class="xref" href="sec-parcialni-odvodi.html#sec-viseca-palica-prostor">1.7.1</a>: only the point \(O\) is fixed and a uniform force acts upward on the top face. The body force is the weight, \(\vek b = (\rho g, 0, 0)\) with <span class="nobr">\(\rho g = 7800 \cdot 9{,}81 = 76\,518\ \text{N/m}^3\).</span> The field <a class="xref" href="sec-parcialni-odvodi.html#eq-polje-viseca-palica" data-knowl="eq-polje-viseca-palica">(1.18)</a> of chapter <a class="xref" href="ch-deformacija.html">1</a> has \(a = \rho g/(2E) = 1{,}95199 \cdot 10^{-7}\ \text{m}^{-1}\) (chapter <a class="xref" href="ch-deformacija.html">1</a> rounded it to <span class="nobr">\(1{,}952 \cdot 10^{-7}\))</span> and <span class="nobr">\(\nu = 0{,}3\).</span> Let us examine the terms of equation <a class="xref" href="sec-navier-lame.html#eq-navier-lame" data-knowl="eq-navier-lame">(11.3)</a> for the component <span class="nobr">\(x\).</span></p>
+<ol>
+<li>The second derivatives of \(u_{\mathrm{x}} = a\,(2Lx - x^2) - 0{,}3\,a\,(y^2 + z^2)\) with respect to <span class="nobr">\(x\),</span> \(y\) and \(z\) are <span class="nobr">\(-2a\),</span> \(-0{,}6\,a\) and <span class="nobr">\(-0{,}6\,a\),</span> so <span class="nobr">\(\nabla^2 u_{\mathrm{x}} = -3{,}2\,a\).</span> The components \(u_{\mathrm{y}} = -0{,}6\,a\,(L - x)\,y\) and \(u_{\mathrm{z}}\) are linear in each coordinate, so <span class="nobr">\(\nabla^2 u_{\mathrm{y}} = \nabla^2 u_{\mathrm{z}} = 0\).</span></li>
+<li>The divergence is <span class="nobr">\(\operatorname{div}\vek u = 2a\,(L - x) - 0{,}6\,a\,(L - x) - 0{,}6\,a\,(L - x) = 0{,}8\,a\,(L - x)\).</span> It depends only on <span class="nobr">\(x\),</span> so <span class="nobr">\(\nabla(\operatorname{div}\vek u) = (-0{,}8\,a, 0, 0)\).</span></li>
+<li>With \(\mu = 75{,}385\) GPa and \(\lambda + \mu = 188{,}46\) GPa (section <a class="xref" href="sec-hookov-zakon.html#sec-hooke-zakon">3.2.6</a>) we have \(\mu\,\nabla^2 u_{\mathrm{x}} = -3{,}2 \cdot 1{,}95199 \cdot 10^{-7} \cdot 75{,}385 \cdot 10^9 = -47\,088\ \text{N/m}^3\) and <span class="nobr">\((\lambda + \mu)\,\partial(\operatorname{div}\vek u)/\partial x = -0{,}8 \cdot 1{,}95199 \cdot 10^{-7} \cdot 188{,}46 \cdot 10^9 = -29\,430\ \text{N/m}^3\).</span></li>
+<li>The sum is <span class="nobr">\(-47\,088 - 29\,430 + 76\,518 = 0\).</span> The components \(y\) and \(z\) are <span class="nobr">\(0 + 0 + 0 = 0\),</span> because <span class="nobr">\(\nabla^2 u_{\mathrm{y}} = 0\),</span> \(\partial(\operatorname{div}\vek u)/\partial y = 0\) and <span class="nobr">\(b_{\mathrm{y}} = 0\).</span> The Navier-Lamé equations hold (checked with SymPy, the residual is zero).</li>
+</ol>
+<p>Why exactly \(0{,}3\) in the field? If the number \(k\) stood in the field instead of <span class="nobr">\(0{,}3\),</span> that is \(u_{\mathrm{y}} = -2k\,a\,(L - x)\,y\) and <span class="nobr">\(u_{\mathrm{x}} = a\,(2Lx - x^2) - k\,a\,(y^2 + z^2)\),</span> the residual of the component \(x\) by the theorem would be <span class="nobr">\(2\nu\rho g\,(k - \nu)/\big((1 + \nu)(1 - 2\nu)\big)\),</span> which is zero only for \(k = \nu\) (SymPy). For <span class="nobr">\(k = 0\),</span> that is for a bar that does not get thinner, the residual would be <span class="nobr">\(-26\,487\ \text{N/m}^3\),</span> which is 35 % of the weight. Equilibrium itself requires the thinning by the Poisson's ratio of the material.</p>
+<p>Let us also examine the boundary condition. For the field \(\mat H + \mat H^\T = \operatorname{diag}(4s, -1{,}2\,s, -1{,}2\,s)\) with <span class="nobr">\(s = a\,(L - x)\),</span> because \(\partial u_{\mathrm{x}}/\partial y + \partial u_{\mathrm{y}}/\partial x = -0{,}6\,a\,y + 0{,}6\,a\,y = 0\) and the same for <span class="nobr">\(z\),</span> and <span class="nobr">\(\operatorname{div}\vek u = 0{,}8\,s\).</span> On the mantle \(\vek n = (0, n_{\mathrm{y}}, n_{\mathrm{z}})\) and by <a class="xref" href="sec-navier-lame.html#eq-robni-pogoj-pomiki" data-knowl="eq-robni-pogoj-pomiki">(11.5)</a></p>
+<div class="eq">\[\lambda \cdot 0{,}8\,s\,\vek n + \mu\,(-1{,}2\,s)\,\vek n = s\,(0{,}8 \cdot 113{,}08 - 1{,}2 \cdot 75{,}385)\ \text{GPa}\;\vek n = s\,(90{,}46 - 90{,}46)\ \text{GPa}\;\vek n = \vek 0 .\]</div>
+<p>So the mantle is free, as it must be. On the bottom face \(s = 0\) and the traction vector is zero. On the top face \(\vek n = (-1, 0, 0)\) and <span class="nobr">\(s = aL\),</span> so the traction vector is <span class="nobr">\(-aL\,(0{,}8\lambda + 4\mu)\,\vek e_{\mathrm{x}}\).</span> Here \(0{,}8\lambda + 4\mu = 392\) GPa <span class="nobr">\(= 2E\),</span> so the <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vector</a> equals</p>
+<div class="eq">\[-1{,}95199 \cdot 10^{-7}\ \text{m}^{-1} \cdot 10\ \text{m} \cdot 392\ \text{GPa}\;\vek e_{\mathrm{x}} = (-0{,}7652\ \text{MPa},\,0,\,0) = -\rho g L\,\vek e_{\mathrm{x}} .\]</div>
+<p>Since the \(x\) axis points down, this means a force upward, uniform over the top face, as we described it in chapter <a class="xref" href="ch-deformacija.html">1</a> (figure <a class="xref" href="sec-navier-lame.html#fig-nle-viseca-palica" data-knowl="fig-nle-viseca-palica">11.5</a>). The area of the top face is <span class="nobr">\(\pi\,(5\ \text{mm})^2 = 78{,}54\ \text{mm}^2\),</span> so the force is \(0{,}7652\ \text{MPa} \cdot 78{,}54\ \text{mm}^2 = 60{,}1\) N, which is the weight of the bar, \(\rho g\,L\,A\) with <span class="nobr">\(A = 78{,}54\ \text{mm}^2\).</span> The field is therefore a solution of the problem with the force prescribed on the whole surface (the traction vector is prescribed everywhere on the surface). Here we only checked the field. We will derive it in section <a class="xref" href="sec-poloinverzna-metoda.html">11.4</a>, where it is also shown that, up to a rigid displacement, it is the only solution of this problem.</p>
+
+<figure class="blk slika" id="fig-nle-viseca-palica"><p><span class="svgfig" role="img" aria-label="Hanging bar with its own weight as a body force and with a uniform pulling force on the top face"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='139.18pt' height='278.17pt' viewBox='-72.000004 -72.000009 103.094326 206.054267'>
+<defs>
+<path id='nle-viseca-palica-g0-98' d='M2.132005-3.995019V-6.914072L.368618-6.834371V-6.366127C.986301-6.366127 1.05604-6.366127 1.05604-5.977584V0H1.524284L2.012453-.557908C2.092154-.478207 2.580324 .059776 3.466999 .059776C4.951432 .059776 5.977584-.836862 5.977584-2.221669C5.977584-3.5467 5.041096-4.483188 3.596513-4.483188C2.86924-4.483188 2.371108-4.194271 2.132005-3.995019ZM2.191781-.986301V-3.486924C2.460772-3.835616 2.938979-4.124533 3.486924-4.124533C4.702366-4.124533 4.702366-2.919054 4.702366-2.221669C4.702366-1.753425 4.702366-1.205479 4.443337-.816936C4.154421-.408468 3.696139-.298879 3.377335-.298879C2.67995-.298879 2.291407-.836862 2.191781-.986301Z'/>
+<path id='nle-viseca-palica-g1-26' d='M.328767 1.723537C.298879 1.843088 .298879 1.863014 .298879 1.882939C.298879 2.032379 .408468 2.15193 .577833 2.15193C.787049 2.15193 .9066 1.972603 .926526 1.942715C.976339 1.853051 1.295143 .518057 1.564134-.557908C1.763387-.159402 2.082192 .109589 2.550436 .109589C3.716065 .109589 5.001245-1.295143 5.001245-2.779577C5.001245-3.835616 4.343711-4.403487 3.616438-4.403487C2.650062-4.403487 1.603985-3.407223 1.305106-2.191781L.328767 1.723537ZM2.540473-.109589C1.843088-.109589 1.683686-.9066 1.683686-.996264C1.683686-1.036115 1.733499-1.235367 1.763387-1.364882C2.042341-2.480697 2.141968-2.839352 2.361146-3.237858C2.789539-3.965131 3.287671-4.184309 3.596513-4.184309C3.965131-4.184309 4.283935-3.895392 4.283935-3.20797C4.283935-2.660025 3.995019-1.544209 3.726027-1.05604C3.39726-.428394 2.919054-.109589 2.540473-.109589Z'/>
+<path id='nle-viseca-palica-g1-76' d='M3.726027-6.027397C3.815691-6.386052 3.845579-6.495641 4.782067-6.495641C5.080946-6.495641 5.160648-6.495641 5.160648-6.684932C5.160648-6.804483 5.051059-6.804483 5.001245-6.804483C4.672478-6.804483 3.855542-6.774595 3.526775-6.774595C3.227895-6.774595 2.500623-6.804483 2.201743-6.804483C2.132005-6.804483 2.012453-6.804483 2.012453-6.60523C2.012453-6.495641 2.102117-6.495641 2.291407-6.495641C2.311333-6.495641 2.500623-6.495641 2.669988-6.475716C2.849315-6.455791 2.938979-6.445828 2.938979-6.316314C2.938979-6.276463 2.929016-6.246575 2.899128-6.127024L1.564134-.777086C1.464508-.388543 1.444583-.308842 .657534-.308842C.488169-.308842 .388543-.308842 .388543-.109589C.388543 0 .478207 0 .657534 0H5.270237C5.50934 0 5.519303 0 5.579078-.169365L6.366127-2.321295C6.405978-2.430884 6.405978-2.450809 6.405978-2.460772C6.405978-2.500623 6.37609-2.570361 6.286426-2.570361S6.1868-2.520548 6.117061-2.361146C5.778331-1.444583 5.339975-.308842 3.616438-.308842H2.67995C2.540473-.308842 2.520548-.308842 2.460772-.318804C2.361146-.328767 2.331258-.33873 2.331258-.418431C2.331258-.448319 2.331258-.468244 2.381071-.647572L3.726027-6.027397Z'/>
+<path id='nle-viseca-palica-g1-103' d='M4.692403-3.755915C4.702366-3.815691 4.722291-3.865504 4.722291-3.935243C4.722291-4.104608 4.60274-4.204234 4.433375-4.204234C4.333748-4.204234 4.064757-4.134496 4.024907-3.775841C3.845579-4.144458 3.496887-4.403487 3.098381-4.403487C1.96264-4.403487 .727273-3.008717 .727273-1.574097C.727273-.587796 1.334994 0 2.052304 0C2.6401 0 3.108344-.468244 3.20797-.577833L3.217933-.56787C3.008717 .318804 2.889166 .727273 2.889166 .747198C2.849315 .836862 2.510585 1.823163 1.454545 1.823163C1.265255 1.823163 .936488 1.8132 .657534 1.723537C.956413 1.633873 1.066002 1.374844 1.066002 1.205479C1.066002 1.046077 .956413 .856787 .687422 .856787C.468244 .856787 .14944 1.036115 .14944 1.43462C.14944 1.843088 .518057 2.042341 1.474471 2.042341C2.719801 2.042341 3.437111 1.265255 3.58655 .667497L4.692403-3.755915ZM3.39726-1.275218C3.337484-1.016189 3.108344-.767123 2.889166-.577833C2.67995-.398506 2.371108-.219178 2.082192-.219178C1.58406-.219178 1.43462-.737235 1.43462-1.135741C1.43462-1.613948 1.723537-2.789539 1.992528-3.297634C2.261519-3.785803 2.689913-4.184309 3.108344-4.184309C3.765878-4.184309 3.905355-3.377335 3.905355-3.327522S3.88543-3.217933 3.875467-3.178082L3.39726-1.275218Z'/>
+<path id='nle-viseca-palica-g1-120' d='M3.327522-3.008717C3.387298-3.267746 3.616438-4.184309 4.313823-4.184309C4.363636-4.184309 4.60274-4.184309 4.811955-4.054795C4.533001-4.004981 4.333748-3.755915 4.333748-3.516812C4.333748-3.35741 4.443337-3.16812 4.712329-3.16812C4.931507-3.16812 5.250311-3.347447 5.250311-3.745953C5.250311-4.26401 4.662516-4.403487 4.323786-4.403487C3.745953-4.403487 3.39726-3.875467 3.277709-3.646326C3.028643-4.303861 2.49066-4.403487 2.201743-4.403487C1.165629-4.403487 .597758-3.118306 .597758-2.86924C.597758-2.769614 .697385-2.769614 .71731-2.769614C.797011-2.769614 .826899-2.789539 .846824-2.879203C1.185554-3.935243 1.843088-4.184309 2.181818-4.184309C2.371108-4.184309 2.719801-4.094645 2.719801-3.516812C2.719801-3.20797 2.550436-2.540473 2.181818-1.145704C2.022416-.52802 1.673724-.109589 1.235367-.109589C1.175592-.109589 .946451-.109589 .737235-.239103C.986301-.288917 1.205479-.498132 1.205479-.777086C1.205479-1.046077 .986301-1.125778 .836862-1.125778C.537983-1.125778 .288917-.86675 .288917-.547945C.288917-.089664 .787049 .109589 1.225405 .109589C1.882939 .109589 2.241594-.587796 2.271482-.647572C2.391034-.278954 2.749689 .109589 3.347447 .109589C4.373599 .109589 4.941469-1.175592 4.941469-1.424658C4.941469-1.524284 4.851806-1.524284 4.821918-1.524284C4.732254-1.524284 4.712329-1.484433 4.692403-1.414695C4.363636-.348692 3.686177-.109589 3.367372-.109589C2.978829-.109589 2.819427-.428394 2.819427-.767123C2.819427-.986301 2.879203-1.205479 2.988792-1.643836L3.327522-3.008717Z'/>
+<path id='nle-viseca-palica-g1-121' d='M4.841843-3.795766C4.881694-3.935243 4.881694-3.955168 4.881694-4.024907C4.881694-4.204234 4.742217-4.293898 4.592777-4.293898C4.493151-4.293898 4.333748-4.234122 4.244085-4.084682C4.224159-4.034869 4.144458-3.726027 4.104608-3.5467C4.034869-3.287671 3.965131-3.01868 3.905355-2.749689L3.457036-.956413C3.417186-.806974 2.988792-.109589 2.331258-.109589C1.823163-.109589 1.713574-.547945 1.713574-.916563C1.713574-1.374844 1.882939-1.992528 2.221669-2.86924C2.381071-3.277709 2.420922-3.387298 2.420922-3.58655C2.420922-4.034869 2.102117-4.403487 1.603985-4.403487C.657534-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.836862-3.88543 1.235367-4.184309 1.574097-4.184309C1.653798-4.184309 1.823163-4.184309 1.823163-3.865504C1.823163-3.616438 1.723537-3.35741 1.653798-3.16812C1.255293-2.11208 1.075965-1.544209 1.075965-1.075965C1.075965-.18929 1.703611 .109589 2.291407 .109589C2.67995 .109589 3.01868-.059776 3.297634-.33873C3.16812 .179328 3.048568 .667497 2.650062 1.195517C2.391034 1.534247 2.012453 1.823163 1.554172 1.823163C1.414695 1.823163 .966376 1.793275 .797011 1.404732C.956413 1.404732 1.085928 1.404732 1.225405 1.285181C1.325031 1.195517 1.424658 1.066002 1.424658 .876712C1.424658 .56787 1.155666 .52802 1.05604 .52802C.826899 .52802 .498132 .687422 .498132 1.175592C.498132 1.673724 .936488 2.042341 1.554172 2.042341C2.580324 2.042341 3.606476 1.135741 3.88543 .009963L4.841843-3.795766Z'/>
+</defs>
+<g id='nle-viseca-palica-page1'>
+<g stroke-miterlimit='10' transform='translate(-3.47043,-33.637896)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<path d='M-17.07181 0V-142.26372H17.07181V0ZM17.07181-142.26372' fill='none'/>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M-11.09654 0L-11.2498-4.94284L-11.40306-9.85226L-11.55632-14.72781L-11.70914-19.5695L-11.8624-24.3782L-12.01566-29.15259L-12.1689-33.89355L-12.32216-38.60109L-12.47499-43.27477L-12.62823-47.91501L-12.7815-52.52095L-12.93475-57.0939L-13.08801-61.63298L-13.24083-66.13821L-13.39409-70.61043L-13.54735-75.04836L-13.7006-79.45285L-13.85387-83.82393L-14.00668-88.16112L-14.15994-92.46446L-14.3132-96.73393L-14.46645-100.97041L-14.6197-105.17259L-14.77254-109.34178L-14.92578-113.4771L-15.07904-117.57855L-15.2323-121.64659L-15.38556-125.68076L-15.53838-129.68149L-15.69164-133.64835L-15.8449-137.58179L-15.99815-141.48093L-16.1514-145.34708L-16.30423-149.1798L-16.45749-152.97821L-16.61073-156.7432L-16.76399-160.47475L-16.91725-164.17244L-17.07007-167.83627L17.07181-167.871L16.91855-164.20718L16.7653-160.50992L16.61205-156.7788L16.45879-153.01381L16.30553-149.21582L16.15271-145.38397L15.99945-141.51826L15.84619-137.6187L15.69293-133.68568L15.53969-129.71925L15.38686-125.71895L15.2336-121.68523L15.08035-117.6172L14.9271-113.51617L14.77383-109.38129L14.62102-105.21254L14.46776-101.01036L14.3145-96.77475L14.16124-92.50528L14.00798-88.20193L13.85516-83.86517L13.7019-79.49454L13.54865-75.09047L13.39539-70.65254L13.24214-66.18118L13.08931-61.6764L12.93605-57.13731L12.7828-52.5648L12.62955-47.95929L12.47629-43.31949L12.32347-38.64581L12.17021-33.9387L12.01695-29.19818L11.8637-24.42378L11.71043-19.61552L11.55762-14.77383L11.40436-9.89915L11.2511-4.99016L11.09785-.04688Z' fill='none'/>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M-8.5359-34.1432V-45.56868' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,-8.5359,-42.96365)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M8.5359-34.1432V-45.56868' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,8.5359,-42.96365)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M-8.5359-73.9773V-85.40277' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,-8.5359,-82.79774)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M8.5359-73.9773V-85.40277' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,8.5359,-82.79774)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M-8.5359-113.81097V-125.23645' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,-8.5359,-122.63142)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M8.5359-113.81097V-125.23645' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,8.5359,-122.63142)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+<g transform='translate(24.97253,-97.36635)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-3.47043,-33.637896)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-3.47043' y='-33.637896' xlink:href='#nle-viseca-palica-g0-98'/>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M-12.80363 0V17.11594' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,-12.80363,14.51091)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M-4.26773 0V17.11594' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,-4.26773,14.51091)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M4.26773 0V17.11594' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,4.26773,14.51091)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M12.80363 0V17.11594' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,12.80363,14.51091)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+<g transform='translate(-8.5521,28.33968)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-3.47043,-33.637896)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-3.47043' y='-33.637896' xlink:href='#nle-viseca-palica-g1-26'/>
+<use x='1.680409' y='-33.637896' xlink:href='#nle-viseca-palica-g1-103'/>
+<use x='6.789716' y='-33.637896' xlink:href='#nle-viseca-palica-g1-76'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M-62.59595-5.69046V-24.10054' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,-62.59595,-21.62408)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-65.45358,-36.39125)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-3.47043,-33.637896)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-3.47043' y='-33.637896' xlink:href='#nle-viseca-palica-g1-120'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M-62.59595-5.69046H-44.18587' fill='none'/>
+<g transform='translate(-46.66232,-5.69046)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-36.2007,-6.87102)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-3.47043,-33.637896)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-3.47043' y='-33.637896' xlink:href='#nle-viseca-palica-g1-121'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 11.5</span>: The hanging bar of chapter <a class="xref" href="ch-deformacija.html">1</a> as described by theorem <a class="xref" href="sec-navier-lame.html#thm-navier-lame" data-knowl="thm-navier-lame">11.6</a>, section by the plane <span class="nobr">\(z = 0\),</span> side view, before loading (black) and after it (orange). The displacements are strongly magnified and the bar is drawn much thicker than it is <span class="nobr">(\(10\)</span> m by \(10\) mm). The black arrows in the interior are the body force \(\vek b = \rho g\,\vek e_{\mathrm{x}}\) (weight), each starts at the point on which it acts. The arrows on the top face are the traction vector \(-\rho g L\,\vek e_{\mathrm{x}}\) with which the ceiling pulls the bar upward, uniform over the whole face. The mantle and the bottom face are free.</figcaption></figure>
+<p>The second field is the ball in oil of section <a class="xref" href="sec-zamenjava-spremenljivk.html#sec-ukrivljeni-kvadri">4.3.7</a> in chapter <a class="xref" href="ch-energijski-principi.html">4</a>, checked there with the divergence and here with the equations of this chapter. A steel ball of radius \(R = 10\) mm lies in oil at pressure \(p = 100\) MPa. In a fluid at rest the stress is \(-p\,\mat I\) (section <a class="xref" href="sec-hookov-zakon.html#sec-hooke-tlak">3.2.4</a>), so the traction vector of the fluid on the surface of the ball is <span class="nobr">\(\bar{\vek t} = -p\,\vek n\).</span> The weight of the ball is not important at this pressure, \(\rho g R = 0{,}77\) kPa, which is \(8 \cdot 10^{-6}\) of the pressure, so we take <span class="nobr">\(\vek b = \vek 0\).</span> For the cube in water Hooke's law gave \(\varepsilon_{\mathrm{xx}} = \varepsilon_{\mathrm{yy}} = \varepsilon_{\mathrm{zz}} = -(1 - 2\nu)\,p/E\) (section <a class="xref" href="sec-hookov-zakon.html#sec-hooke-tlak">3.2.4</a>). Let us try the same for the ball, that is the displacement \(\vek u = \varepsilon_0\,(x, y, z)\) with the origin at the centre and <span class="nobr">\(\varepsilon_0 = -(1 - 2\nu)\,p/E = -0{,}4 \cdot 100/196\,000 = -2{,}0408 \cdot 10^{-4}\).</span></p>
+<p>All components are linear, so <span class="nobr">\(\nabla^2\vek u = \vek 0\),</span> \(\operatorname{div}\vek u = 3\varepsilon_0\) is constant and <span class="nobr">\(\nabla(\operatorname{div}\vek u) = \vek 0\).</span> The Navier-Lamé equations hold with <span class="nobr">\(\vek b = \vek 0\).</span> The boundary condition: <span class="nobr">\(\mat H = \varepsilon_0\,\mat I\),</span> so the left side of <a class="xref" href="sec-navier-lame.html#eq-robni-pogoj-pomiki" data-knowl="eq-robni-pogoj-pomiki">(11.5)</a> equals <span class="nobr">\((3\lambda + 2\mu)\,\varepsilon_0\,\vek n = 490\ \text{GPa} \cdot (-2{,}0408 \cdot 10^{-4})\,\vek n = -100\ \text{MPa}\,\vek n = -p\,\vek n\).</span> The field is a solution, the ball shrinks, and its edge moves by \(\varepsilon_0 R = -2{,}041\ \mu\text{m}\) towards the centre. The solution is unique up to a rigid displacement (theorem <a class="xref" href="sec-robni-problem-telesa.html#thm-enolicnost-robnega-problema" data-knowl="thm-enolicnost-robnega-problema">11.4</a>), since this is a traction problem.</p>
+<p>The third field is uniform. The shifted cube of section <a class="xref" href="sec-pomik-v-prostoru.html#sec-zamaknjena-kocka">1.6.2</a> has <span class="nobr">\(\vek u = (0{,}001\,z, 0, 0)\).</span> The components are linear, so <span class="nobr">\(\nabla^2\vek u = \vek 0\),</span> \(\operatorname{div}\vek u = 0\) and <span class="nobr">\(\nabla(\operatorname{div}\vek u) = \vek 0\),</span> and the equations hold with <span class="nobr">\(\vek b = \vek 0\).</span> The stress is the same everywhere, \(\sigma_{\mathrm{xz}} = \mu \cdot 0{,}001 = 75{,}38\) MPa, as we computed in chapter <a class="xref" href="ch-konstitutivne-enacbe.html">3</a>. The same holds for every field \(\vek u = \vek c + \mat A\,\vek x\) with a constant vector \(\vek c\) and a constant <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> <span class="nobr">\(\mat A\):</span> the second derivatives are zero and the divergence is constant, so such a field is <a class="xref auto" href="sec-sila-v-palici.html#def-ravnovesje" data-knowl="def-ravnovesje">in equilibrium</a> without body force.</p>
+<p>Let us collect what we have. The unknowns are only the three components of the displacement. The three equations <a class="xref" href="sec-navier-lame.html#eq-navier-lame" data-knowl="eq-navier-lame">(11.3)</a> are <a class="xref auto" href="sec-model-nosilca.html#def-dvojica-sil" data-knowl="def-dvojica-sil">coupled</a>, because the term \(\nabla(\operatorname{div}\vek u)\) contains all three components in every equation. Together with the boundary conditions, the displacement on \(S_{\mathrm{u}}\) and <a class="xref" href="sec-navier-lame.html#eq-robni-pogoj-pomiki" data-knowl="eq-robni-pogoj-pomiki">(11.5)</a> on <span class="nobr">\(S_{\mathrm{t}}\),</span> they form the displacement form of the boundary value problem. Let the field \(\vek u\) have continuous second derivatives on an open set that contains the body, let it satisfy <a class="xref" href="sec-navier-lame.html#eq-navier-lame" data-knowl="eq-navier-lame">(11.3)</a> at every interior point, let \(\vek u = \bar{\vek u}\) hold on \(S_{\mathrm{u}}\) and the condition <a class="xref" href="sec-navier-lame.html#eq-robni-pogoj-pomiki" data-knowl="eq-robni-pogoj-pomiki">(11.5)</a> on <span class="nobr">\(S_{\mathrm{t}}\).</span> By theorem <a class="xref" href="sec-navier-lame.html#thm-navier-lame" data-knowl="thm-navier-lame">11.6</a> and corollary <a class="xref" href="sec-navier-lame.html#cor-robni-pogoj-pomiki" data-knowl="cor-robni-pogoj-pomiki">11.7</a> the stresses of the field are in equilibrium and satisfy the condition on <span class="nobr">\(S_{\mathrm{t}}\),</span> so \(\vek u\) is a solution of the boundary value problem by definition <a class="xref" href="sec-robni-problem-telesa.html#def-robni-problem-elasticnosti" data-knowl="def-robni-problem-elasticnosti">11.1</a>. By theorem <a class="xref" href="sec-robni-problem-telesa.html#thm-enolicnost-robnega-problema" data-knowl="thm-enolicnost-robnega-problema">11.4</a> (for steel the condition of the theorem on positive energy holds, theorem <a class="xref" href="sec-energija-deformacije.html#thm-meje-konstant" data-knowl="thm-meje-konstant">3.48</a>) it is the only solution if \(S_{\mathrm{u}}\) prevents every <a class="xref auto" href="sec-virtualni-pomiki-palice.html#lem-majhen-togi-premik" data-knowl="lem-majhen-togi-premik">small rigid displacement</a>, and otherwise unique up to a rigid displacement. Since the strains are computed from the displacements, we need no compatibility equations, so the displacement form is the natural one when displacements are prescribed (SADD, PDF p. 110). Solving three coupled second-order equations is difficult, though. According to SADD, direct integration of the field equations meets great mathematical difficulties, so it is useful only for simple shapes of the body (SADD, PDF p. 115). Later in this chapter we therefore mostly find solutions by partly assuming the form of the field and computing the rest from the equations, and then checking all equations and conditions, as we did above for the hanging bar.</p>
+
+</main>
+<footer><nav class="pager"><a href="sec-robni-problem-telesa.html" rel="prev">← 11.1</a><a href="index.html">Contents</a><a href="sec-beltrami-michell.html" rel="next">11.3 →</a></nav></footer>
+</body>
+</html>

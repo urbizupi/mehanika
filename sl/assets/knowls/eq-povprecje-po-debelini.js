@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-povprecje-po-debelini"] = {"html": "<div class=\"eq\">\\[\\langle f\\rangle (x, y) = \\frac{1}{2h}\\int_{-\\mathrm{h}}^{h} f(x, y, z)\\,\\mathrm{d}z . \\tag{11.49}\\]</div>", "href": "sec-ravninski-problemi.html#eq-povprecje-po-debelini"};

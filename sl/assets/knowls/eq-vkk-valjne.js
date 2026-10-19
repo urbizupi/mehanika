@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vkk-valjne"] = {"html": "<div class=\"eq\">\\[\\Phi(r, \\theta, z) = (r\\cos\\theta,\\ r\\sin\\theta,\\ z) . \\tag{11.11}\\]</div>", "href": "sec-krivocrtne-koordinate.html#eq-vkk-valjne"};

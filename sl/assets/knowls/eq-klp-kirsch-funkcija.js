@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-klp-kirsch-funkcija"] = {"html": "<div class=\"eq\">\\[\\varphi = \\frac{\\sigma_0}{4}\\,r^2 - \\frac{a^2\\sigma_0}{2}\\,\\ln r + \\Big(-\\frac{\\sigma_0}{4}\\,r^2 - \\frac{a^4\\sigma_0}{4}\\,r^{-2} + \\frac{a^2\\sigma_0}{2}\\Big)\\cos 2\\theta . \\tag{11.65}\\]</div>", "href": "sec-kirschov-problem.html#eq-klp-kirsch-funkcija"};

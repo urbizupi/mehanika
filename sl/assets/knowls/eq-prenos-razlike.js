@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-prenos-razlike"] = {"html": "<div class=\"eq\">\\[\\vek F\\cdot(\\vek a_{\\mathrm{m}} - \\vek a_1) + \\vek M\\cdot(\\boldsymbol\\omega_{\\mathrm{m}} - \\boldsymbol\\omega_1) = 0 . \\tag{11.82}\\]</div>", "href": "sec-vec-podpor.html#eq-prenos-razlike"};

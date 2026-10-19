@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dbc-konstante"] = {"html": "<div class=\"eq\">\\[A = \\frac{p_{\\mathrm{a}} a^2 - p_{\\mathrm{b}} b^2}{b^2 - a^2} , \\qquad B = \\frac{(p_{\\mathrm{a}} - p_{\\mathrm{b}})\\,a^2 b^2}{b^2 - a^2} , \\qquad \\varepsilon_0 = \\frac{S - 2\\nu A}{E} . \\tag{11.34}\\]</div>", "href": "sec-debelostenska-cev.html#eq-dbc-konstante"};

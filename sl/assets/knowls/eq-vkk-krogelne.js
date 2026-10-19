@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vkk-krogelne"] = {"html": "<div class=\"eq\">\\[\\Phi(R, \\varphi, \\theta) = R\\,(\\sin\\varphi\\cos\\theta,\\ \\sin\\varphi\\sin\\theta,\\ \\cos\\varphi) . \\tag{11.16}\\]</div>", "href": "sec-krivocrtne-koordinate.html#eq-vkk-krogelne"};

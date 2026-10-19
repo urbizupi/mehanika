@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-delo-kosa"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{S}_\\mathrm{m}} (\\delta\\ten\\sigma\\,\\vek n)\\cdot\\vek R_{\\mathrm{m}}\\,\\mathrm{d}A = \\vek a_{\\mathrm{m}}\\cdot\\vek F_{\\mathrm{m}} + \\boldsymbol\\omega_{\\mathrm{m}}\\cdot\\vek M_{\\mathrm{m}} . \\tag{11.81}\\]</div>", "href": "sec-vec-podpor.html#eq-delo-kosa"};

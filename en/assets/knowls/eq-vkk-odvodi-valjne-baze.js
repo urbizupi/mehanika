@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vkk-odvodi-valjne-baze"] = {"html": "<div class=\"eq\">\\[\\frac{\\partial\\vek e_{\\mathrm{r}}}{\\partial\\theta} = \\vek e_\\theta , \\qquad \\frac{\\partial\\vek e_\\theta}{\\partial\\theta} = -\\vek e_{\\mathrm{r}} , \\tag{11.17}\\]</div>", "href": "sec-krivocrtne-koordinate.html#eq-vkk-odvodi-valjne-baze"};

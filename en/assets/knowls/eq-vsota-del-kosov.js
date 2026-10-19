@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vsota-del-kosov"] = {"html": "<div class=\"eq\">\\[\\sum_{\\mathrm{m}=1}^{k} \\int_{\\mathrm{S}_\\mathrm{m}} (\\delta\\ten\\sigma\\,\\vek n)\\cdot\\vek R_{\\mathrm{m}}\\,\\mathrm{d}A = 0 . \\tag{11.80}\\]</div>", "href": "sec-vec-podpor.html#eq-vsota-del-kosov"};

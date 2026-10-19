@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vkk-lokalna-baza"] = {"html": "<div class=\"eq\">\\[\\vek e_{\\mathrm{i}} = \\frac{1}{h_{\\mathrm{i}}}\\,\\frac{\\partial\\Phi}{\\partial q_{\\mathrm{i}}} , \\qquad i = 1, 2, 3 , \\tag{11.13}\\]</div>", "href": "sec-krivocrtne-koordinate.html#eq-vkk-lokalna-baza"};

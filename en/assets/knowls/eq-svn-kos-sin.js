@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-svn-kos-sin"] = {"html": "<div class=\"eq\">\\[\\cos z = \\tfrac12\\big(\\mathrm{e}^{\\mathrm{i}z} + \\mathrm{e}^{-\\mathrm{i}z}\\big) , \\qquad \\sin z = \\tfrac{1}{2\\mathrm{i}}\\big(\\mathrm{e}^{\\mathrm{i}z} - \\mathrm{e}^{-\\mathrm{i}z}\\big) . \\tag{11.57}\\]</div>", "href": "sec-saint-venantovo-nacelo.html#eq-svn-kos-sin"};

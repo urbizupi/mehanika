@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dkl-konstanti"] = {"html": "<div class=\"eq\">\\[A = \\frac{p_{\\mathrm{a}} a^3 - p_{\\mathrm{b}} b^3}{b^3 - a^3} , \\qquad B = \\frac{(p_{\\mathrm{a}} - p_{\\mathrm{b}})\\,a^3 b^3}{2\\,(b^3 - a^3)} . \\tag{11.38}\\]</div>", "href": "sec-debelostenska-krogla.html#eq-dkl-konstanti"};

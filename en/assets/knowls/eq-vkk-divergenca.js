@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vkk-divergenca"] = {"html": "<div class=\"eq\">\\[J\\,(\\mathrm{div}\\,\\vek v)\\circ\\Phi = \\sum_{\\mathrm{i}=1}^{3}\\frac{\\partial}{\\partial q_{\\mathrm{i}}}\\Big( \\frac{J}{h_{\\mathrm{i}}}\\,(\\vek v\\circ\\Phi)\\cdot\\vek e_{\\mathrm{i}} \\Big) . \\tag{11.22}\\]</div>", "href": "sec-krivocrtne-koordinate.html#eq-vkk-divergenca"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-uno-konzola-konstante"] = {"html": "<div class=\"eq\">\\[A = \\frac{P}{2K} , \\qquad B = -\\frac{P\\,a^2 b^2}{2K} , \\qquad D = -\\frac{P\\,(a^2 + b^2)}{K} \\tag{11.76}\\]</div>", "href": "sec-ukrivljeni-nosilec.html#eq-uno-konzola-konstante"};

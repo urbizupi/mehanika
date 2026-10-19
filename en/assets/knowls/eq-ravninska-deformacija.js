@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ravninska-deformacija"] = {"html": "<div class=\"eq\">\\[\\vek u = \\big(u_{\\mathrm{x}}(x, y),\\ u_{\\mathrm{y}}(x, y),\\ 0\\big) , \\tag{11.45}\\]</div>", "href": "sec-ravninski-problemi.html#eq-ravninska-deformacija"};

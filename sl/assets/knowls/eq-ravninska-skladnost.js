@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ravninska-skladnost"] = {"html": "<div class=\"eq\">\\[E'\\,S_1 = \\nabla^2\\Theta_2 + (1 + \\nu')\\,\\mathrm{div}\\,\\vek b , \\qquad \\Theta_2 = \\sigma_{\\mathrm{xx}} + \\sigma_{\\mathrm{yy}} . \\tag{11.44}\\]</div>", "href": "sec-ravninski-problemi.html#eq-ravninska-skladnost"};

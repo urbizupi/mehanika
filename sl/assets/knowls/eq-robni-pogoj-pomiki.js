@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-robni-pogoj-pomiki"] = {"html": "<div class=\"eq\">\\[\\lambda\\,(\\operatorname{div}\\vek u)\\,\\vek n + \\mu\\,(\\mat H + \\mat H^\\T)\\,\\vek n = \\bar{\\vek t} , \\tag{11.5}\\]</div>", "href": "sec-navier-lame.html#eq-robni-pogoj-pomiki"};

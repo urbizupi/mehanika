@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-klp-obod"] = {"html": "<div class=\"eq\">\\[\\sigma_{\\theta\\theta}(a, \\theta) = \\sigma_0\\,(1 - 2\\cos 2\\theta) , \\tag{11.67}\\]</div>", "href": "sec-kirschov-problem.html#eq-klp-obod"};
