@@ -48,6 +48,11 @@
     const a = ev.target.closest("a.xref[data-knowl]");
     if (!a || ev.button !== 0 || ev.ctrlKey || ev.metaKey || ev.shiftKey || ev.altKey) return;
     ev.preventDefault();
+    if (a.classList.contains("kaz") && !a._knowl && figInView(a.dataset.knowl)) {
+      hover = a;
+      relight(true);
+      return;
+    }
 
     if (a._knowl) {
       a._knowl.remove();
@@ -86,9 +91,64 @@
     after.after(box);
     a._knowl = box;
     a.classList.add("open");
+    if (a.classList.contains("kaz")) relight();
     typeset(box);
     if (window.BookInt) BookInt.mount(box); // an interactive figure in the knowl
   };
+
+  // Pointing at a figure (book/README.md): a link a.kaz names parts of its figure in data-del, drawn in TikZ
+  // inside a scope with del=NAME (g.del in the SVG). The parts light up wherever the figure is shown (the page,
+  // the side panel, a knowl opened from the pointer) while the pointer is under the mouse or focused, and in
+  // the side panel while the reading line is in the pointer's paragraph, as a lecturer points while talking.
+  // A click on a pointer whose figure is in view only lights the parts, with a short pulse.
+  let hover = null;
+  let reading = null;
+  const figPanel = () => document.querySelector("aside.fig-panel");
+  const figInView = (fig) => {
+    const p = figPanel();
+    if (document.body.classList.contains("fig-side") && p && p.getClientRects().length && p.dataset.fig === fig) return true;
+    const f = document.getElementById(fig);
+    if (!f) return false;
+    const r = f.getBoundingClientRect();
+    return r.top > -0.3 * r.height && r.bottom < innerHeight + 0.3 * r.height;
+  };
+  const relight = (pulse = false) => {
+    document.querySelectorAll("g.del.kaz-on").forEach((g) => g.classList.remove("kaz-on", "kaz-puls"));
+    // One pointer at a time, as a lecturer points: the one under the mouse wins over the reading line.
+    const now = hover || reading;
+    document.querySelectorAll("a.kaz-now").forEach((a) => { if (a !== now) a.classList.remove("kaz-now"); });
+    if (now) now.classList.add("kaz-now");
+    for (const a of [now, ...document.querySelectorAll("a.kaz.open")]) {
+      if (!a) continue;
+      const fig = a.dataset.knowl;
+      const dels = a.dataset.del.split(",");
+      const p = figPanel();
+      for (const root of [document.getElementById(fig), p && p.dataset.fig === fig ? p : null, a._knowl]) {
+        if (!root) continue;
+        root.querySelectorAll("g.del").forEach((g) => {
+          if (!dels.includes(g.dataset.del)) return;
+          g.classList.add("kaz-on");
+          if (pulse && a === hover) g.classList.add("kaz-puls");
+        });
+      }
+    }
+  };
+  const pointerOf = (ev) => ev.target.closest && ev.target.closest("a.kaz");
+  document.addEventListener("pointerover", (ev) => {
+    const a = pointerOf(ev);
+    if (a && a !== hover) { hover = a; relight(); }
+  });
+  document.addEventListener("pointerout", (ev) => {
+    const a = pointerOf(ev);
+    if (a && a === hover && !a.contains(ev.relatedTarget)) { hover = null; relight(); }
+  });
+  document.addEventListener("focusin", (ev) => {
+    const a = pointerOf(ev);
+    if (a) { hover = a; relight(); }
+  });
+  document.addEventListener("focusout", (ev) => {
+    if (pointerOf(ev) === hover) { hover = null; relight(); }
+  });
 
   // Toolbar: open or close every born-hidden block on the page.
   document.addEventListener("click", (ev) => {
@@ -134,20 +194,30 @@
         cur = a;
       }
       const id = cur ? target(cur) : null;
-      if (id === shown) return;
+      // A pointer lights its parts while the reading line is in its paragraph.
+      const host = cur && cur.classList.contains("kaz") && cur.closest(HOSTS);
+      const now = host && host.getBoundingClientRect().bottom > line ? cur : null;
+      if (id === shown) {
+        if (now !== reading) { reading = now; relight(); }
+        return;
+      }
       shown = id;
-      if (!id) { panel.replaceChildren(); return; }
+      reading = now;
+      panel.dataset.fig = id || "";
+      if (!id) { panel.replaceChildren(); relight(); return; }
       const here = document.getElementById(id);
       if (here) {
         const fig = here.cloneNode(true);
         fig.removeAttribute("id");
         panel.replaceChildren(fig);
+        relight();
         typeset(panel);
         return;
       }
       knowl(id).then((k) => {
         if (shown !== id) return;
         panel.innerHTML = k ? k.html : "";
+        relight();
         typeset(panel);
       });
     };
