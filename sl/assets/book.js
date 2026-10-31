@@ -202,6 +202,85 @@
     if (pointerOf(ev) === hover) { hover = null; relight(); }
   });
 
+  // Drawing as at the board (book/README.md "Drawing as at the board"): the paragraphs right after a figure
+  // that point at its parts are its narration. While they are read, a figure short enough to stay on screen is
+  // pinned under the page header, and each part appears when the first sentence that names it reaches the
+  // reading line, in the order of the narration. Parts the narration never names are there from the start.
+  // Scrolling back takes the later parts away again, a tap on the figure shows it whole. A figure too tall to
+  // pin, print, knowls and pages without scripts show the whole figure.
+  const figId = (a) => a.dataset.knowl || (a.getAttribute("href") || "").split("#")[1];
+  const boards = [];
+  document.querySelectorAll("main figure.slika[id]").forEach((fig) => {
+    const mine = (el) => [...el.querySelectorAll("a.kaz")].filter((a) => figId(a) === fig.id);
+    const narr = [];
+    let held = [];
+    let gap = 0;
+    for (let el = fig.nextElementSibling; el; el = el.nextElementSibling) {
+      if (el.matches("figure, h1, h2, h3, h4, h5, details, aside")) break;
+      if (mine(el).length) { narr.push(...held, el); held = []; gap = 0; continue; }
+      // A display, a list or up to two short paragraphs (an algebra step) between paragraphs of the narration.
+      if (el.tagName === "P" && ++gap > 2) break;
+      held.push(el);
+    }
+    const ptrs = narr.flatMap(mine);
+    const named = new Set(ptrs.flatMap((a) => a.dataset.del.split(",")));
+    const gs = [...fig.querySelectorAll("g.del")].filter((g) => named.has(g.dataset.del));
+    if (!gs.length) return;
+    const board = document.createElement("div");
+    board.className = "tabla";
+    fig.before(board);
+    board.append(fig, ...narr);
+    gs.forEach((g) => g.classList.add("risba"));
+    const b = { board, fig, ptrs, whole: false };
+    fig.addEventListener("click", (ev) => {
+      if (ev.target.closest("a")) return;
+      b.whole = !b.whole;
+      draw();
+    });
+    boards.push(b);
+  });
+  const header = document.querySelector("header.top");
+  const pin = () => {
+    const h = header ? header.getBoundingClientRect().height : 0;
+    document.documentElement.style.setProperty("--hdr", `${h}px`);
+    for (const b of boards) b.board.classList.toggle("pripeta", b.fig.getBoundingClientRect().height < 0.5 * (innerHeight - h));
+  };
+  const draw = () => {
+    const p = figPanel();
+    // The side panel exists only on wide screens (style.css), so the mode counts only where it is shown.
+    const side = document.body.classList.contains("fig-side") && !!p && p.getClientRects().length > 0;
+    for (const b of boards) {
+      const rb = b.board.getBoundingClientRect();
+      if (rb.bottom < -innerHeight || rb.top > 2 * innerHeight) continue;
+      const pinned = b.board.classList.contains("pripeta") && !side;
+      const whole = b.whole || !(pinned || (side && p && p.dataset.fig === b.fig.id));
+      const top = pinned ? Math.max(b.fig.getBoundingClientRect().bottom, 0) : 0;
+      // Just below a pinned figure the reader reads the next lines, in the side panel mode at about a third of the window.
+      const line = top + (pinned ? 0.2 : 0.35) * (innerHeight - top);
+      const on = new Set();
+      for (const a of b.ptrs) if (a.getBoundingClientRect().top < line) a.dataset.del.split(",").forEach((d) => on.add(d));
+      const set = (root) => root && root.querySelectorAll("g.del.risba").forEach((g) => {
+        const now = whole || on.has(g.dataset.del);
+        if (now !== g.classList.contains("narisan")) g.classList.toggle("narisan", now);
+      });
+      set(b.fig);
+      if (p && p.dataset.fig === b.fig.id) set(p);
+    }
+  };
+  if (boards.length) {
+    let drawQueued = false;
+    const drawLater = () => {
+      if (drawQueued) return;
+      drawQueued = true;
+      requestAnimationFrame(() => { drawQueued = false; draw(); });
+    };
+    addEventListener("scroll", drawLater, { passive: true });
+    addEventListener("resize", () => { pin(); drawLater(); });
+    addEventListener("load", () => { pin(); draw(); });
+    pin();
+    draw();
+  }
+
   // Toolbar: open or close every born-hidden block on the page.
   document.addEventListener("click", (ev) => {
     const b = ev.target.closest("button[data-details]");
@@ -262,6 +341,7 @@
         const fig = here.cloneNode(true);
         fig.removeAttribute("id");
         panel.replaceChildren(fig);
+        if (typeof draw === "function") draw();
         relight();
         typeset(panel);
         return;
