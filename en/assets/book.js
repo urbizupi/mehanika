@@ -44,26 +44,78 @@
       .catch((e) => console.error(e));
   };
 
+  // A target is open in at most one knowl on the page (several pointers to one figure had each opened
+  // a copy). A link to a target that is already open uses that knowl: on screen it stays
+  // where it is, otherwise it moves below the paragraph of the link. The link that used it last owns it,
+  // and a second click on that link closes it.
+  const opened = {};
+  const waiting = new Set();
+  const openBox = (id) => {
+    const box = opened[id];
+    if (box && !box.isConnected) { // closed together with the knowl that held it
+      box._by.classList.remove("open");
+      delete opened[id];
+    }
+    return opened[id] || null;
+  };
+  const onScreen = (el) => {
+    const r = el.getBoundingClientRect();
+    const seen = Math.min(r.bottom, innerHeight) - Math.max(r.top, 0);
+    return seen >= Math.min(0.7 * r.height, 0.5 * innerHeight);
+  };
+  // Below the paragraph that holds the link. Several knowls opened from one paragraph stack in click order.
+  const place = (box, a) => {
+    const host = a.closest(HOSTS) || a.parentElement;
+    let after = host;
+    while (after.nextElementSibling && after.nextElementSibling._host === host) after = after.nextElementSibling;
+    box._host = host;
+    if (after !== box) after.after(box);
+  };
+  const own = (box, a) => {
+    if (box._by) box._by.classList.remove("open");
+    box._by = a;
+    a.classList.add("open");
+  };
+  const flash = (box) => {
+    box.classList.remove("flash");
+    void box.offsetWidth; // restart the animation
+    box.classList.add("flash");
+  };
+
   document.addEventListener("click", (ev) => {
     const a = ev.target.closest("a.xref[data-knowl]");
     if (!a || ev.button !== 0 || ev.ctrlKey || ev.metaKey || ev.shiftKey || ev.altKey) return;
     ev.preventDefault();
-    if (a.classList.contains("kaz") && !a._knowl && figInView(a.dataset.knowl)) {
+    const id = a.dataset.knowl;
+    const pointer = a.classList.contains("kaz");
+    const box = openBox(id);
+    if (box && box._by === a) {
+      box.remove();
+      Object.keys(opened).forEach(openBox);
+      relight();
+      return;
+    }
+    if (box && (box.contains(a) || onScreen(box))) {
+      own(box, a);
+      if (pointer) { hover = a; relight(true); } else flash(box);
+      return;
+    }
+    if (pointer && figInView(id)) {
       hover = a;
       relight(true);
       return;
     }
-
-    if (a._knowl) {
-      a._knowl.remove();
-      a._knowl = null;
-      a.classList.remove("open");
+    if (box) {
+      place(box, a);
+      own(box, a);
+      if (pointer) hover = a;
+      relight(pointer);
       return;
     }
-    if (a._waiting) return;
-    a._waiting = true;
-    knowl(a.dataset.knowl).then((k) => {
-      a._waiting = false;
+    if (waiting.has(id)) return;
+    waiting.add(id);
+    knowl(id).then((k) => {
+      waiting.delete(id);
       if (k) openKnowl(a, k);
       else location.href = a.href; // no knowl (not loaded): follow the link
     });
@@ -81,16 +133,9 @@
     foot.appendChild(link);
     box.appendChild(foot);
 
-    // Several knowls opened from one paragraph stack in click order.
-    const host = a.closest(HOSTS) || a.parentElement;
-    let after = host;
-    while (after.nextElementSibling && after.nextElementSibling._host === host) {
-      after = after.nextElementSibling;
-    }
-    box._host = host;
-    after.after(box);
-    a._knowl = box;
-    a.classList.add("open");
+    place(box, a);
+    opened[a.dataset.knowl] = box;
+    own(box, a);
     if (a.classList.contains("kaz")) relight();
     typeset(box);
     if (window.BookInt) BookInt.mount(box); // an interactive figure in the knowl
@@ -100,7 +145,7 @@
   // inside a scope with del=NAME (g.del in the SVG). The parts light up wherever the figure is shown (the page,
   // the side panel, a knowl opened from the pointer) while the pointer is under the mouse or focused, and in
   // the side panel while the reading line is in the pointer's paragraph, as a lecturer points while talking.
-  // A click on a pointer whose figure is in view only lights the parts, with a short pulse.
+  // A click on a pointer whose figure is in view (also in its knowl) only lights the parts, with a short pulse.
   let hover = null;
   let reading = null;
   const figPanel = () => document.querySelector("aside.fig-panel");
@@ -118,19 +163,26 @@
     const now = hover || reading;
     document.querySelectorAll("a.kaz-now").forEach((a) => { if (a !== now) a.classList.remove("kaz-now"); });
     if (now) now.classList.add("kaz-now");
-    for (const a of [now, ...document.querySelectorAll("a.kaz.open")]) {
-      if (!a) continue;
-      const fig = a.dataset.knowl;
+    const light = (root, a) => {
+      if (!root || !a || !a.classList.contains("kaz")) return;
       const dels = a.dataset.del.split(",");
-      const p = figPanel();
-      for (const root of [document.getElementById(fig), p && p.dataset.fig === fig ? p : null, a._knowl]) {
-        if (!root) continue;
-        root.querySelectorAll("g.del").forEach((g) => {
-          if (!dels.includes(g.dataset.del)) return;
-          g.classList.add("kaz-on");
-          if (pulse && a === hover) g.classList.add("kaz-puls");
-        });
-      }
+      root.querySelectorAll("g.del").forEach((g) => {
+        if (!dels.includes(g.dataset.del)) return;
+        g.classList.add("kaz-on");
+        if (pulse && a === hover) g.classList.add("kaz-puls");
+      });
+    };
+    // One pointer in each picture of a figure: the one under the mouse, then (page and side panel) the
+    // reading line, then the link that owns the figure's knowl.
+    const to = (a, fig) => (a && a.dataset.knowl === fig ? a : null);
+    const p = figPanel();
+    const figs = new Set([now, ...Object.values(opened).map((b) => b._by)].filter(Boolean).map((a) => a.dataset.knowl));
+    for (const fig of figs) {
+      const box = openBox(fig);
+      const owner = box && box._by;
+      light(document.getElementById(fig), to(now, fig) || owner);
+      light(p && p.dataset.fig === fig ? p : null, to(now, fig) || owner);
+      light(box, to(hover, fig) || owner);
     }
   };
   const pointerOf = (ev) => ev.target.closest && ev.target.closest("a.kaz");
