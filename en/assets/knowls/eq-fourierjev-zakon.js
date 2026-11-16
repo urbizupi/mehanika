@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-fourierjev-zakon"] = {"html": "<div class=\"eq\">\\[\\vek q = -k\\,\\nabla T , \\tag{14.3}\\]</div>", "href": "sec-fourierjev-zakon.html#eq-fourierjev-zakon"};

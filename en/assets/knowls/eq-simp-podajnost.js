@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-simp-podajnost"] = {"html": "<div class=\"eq\">\\[C(\\vek\\rho) = \\vek F^\\T\\vek u = \\sum_{\\mathrm{e}=1}^{N}\\rho_{\\mathrm{e}}^{\\,p}\\,\\vek u_{\\mathrm{e}}^\\T\\mat k_0\\,\\vek u_{\\mathrm{e}} , \\tag{29.54}\\]</div>", "href": "sec-topologija.html#eq-simp-podajnost"};

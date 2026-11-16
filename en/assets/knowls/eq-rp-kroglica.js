@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rp-kroglica"] = {"html": "<div class=\"eq\">\\[\\rho c\\,V_{\\mathrm{V}}\\,T' = -h\\,A_{\\mathrm{S}}\\,(T - T_\\infty) , \\tag{14.15}\\]</div>", "href": "sec-robni-pogoji-toplote.html#eq-rp-kroglica"};

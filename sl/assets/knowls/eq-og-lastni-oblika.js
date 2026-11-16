@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-og-lastni-oblika"] = {"html": "<div class=\"eq\">\\[\\lambda^2\\mu\\,\\varphi + \\lambda\\,\\mathcal G\\varphi + \\mathcal K\\varphi = 0 , \\qquad \\varphi(0) = \\varphi(L) = 0 . \\tag{26.37}\\]</div>", "href": "sec-ortogonalnost-gibajoce.html#eq-og-lastni-oblika"};

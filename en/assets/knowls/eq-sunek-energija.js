@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sunek-energija"] = {"html": "<div class=\"eq\">\\[\\tfrac12\\,m\\,\\dot\\delta^2 + \\tfrac25\\,K\\,\\delta^{5/2} = \\tfrac12\\,m\\,v^2 . \\tag{25.48}\\]</div>", "href": "sec-povezave-kontakt.html#eq-sunek-energija"};

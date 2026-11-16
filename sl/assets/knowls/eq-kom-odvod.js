@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-kom-odvod"] = {"html": "<div class=\"eq\">\\[\\frac{\\mathrm{d}}{\\mathrm{d}t}\\,\\mathrm{e}^{st} = s\\,\\mathrm{e}^{st} . \\tag{9.26}\\]</div>", "href": "sec-kompleksna-stevila.html#eq-kom-odvod"};
+(window.KNOWLS = window.KNOWLS || {})["eq-kom-odvod"] = {"html": "<div class=\"eq\">\\[\\frac{\\mathrm{d}}{\\mathrm{d}t}\\,\\mathrm{e}^{st} = s\\,\\mathrm{e}^{st} . \\tag{9.27}\\]</div>", "href": "sec-kompleksna-stevila.html#eq-kom-odvod"};

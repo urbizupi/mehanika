@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-zakon-lezaja"] = {"html": "<div class=\"eq\">\\[F_{\\mathrm{r}}(\\delta) = \\kappa_{\\mathrm{b}}\\,\\delta^{3/2} , \\qquad \\kappa_{\\mathrm{b}} = Z\\,J_{\\mathrm{r}}\\big(\\tfrac12\\big)\\,K_{\\mathrm{n}} = 2{,}549\\cdot 10^{10}\\ \\text{N/m}^{3/2} . \\tag{25.43}\\]</div>", "href": "sec-lezaj-v-mke.html#eq-zakon-lezaja"};

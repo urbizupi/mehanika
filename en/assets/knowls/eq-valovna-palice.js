@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-valovna-palice"] = {"html": "<div class=\"eq\">\\[u_{\\mathrm{tt}} = c^2\\,u_{\\mathrm{xx}} , \\qquad c = \\sqrt{\\frac{E}{\\rho}} . \\tag{13.13}\\]</div>", "href": "sec-palica-gred.html#eq-valovna-palice"};

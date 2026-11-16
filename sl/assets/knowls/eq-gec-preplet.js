@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-gec-preplet"] = {"html": "<div class=\"eq\">\\[\\omega_{\\mathrm{r}} \\le \\omega_{\\mathrm{r}}' \\le \\omega_{\\mathrm{r}+1} . \\tag{28.37}\\]</div>", "href": "sec-gibalne-enacbe-clena.html#eq-gec-preplet"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-momenti-osnosimetricni"] = {"html": "<div class=\"eq\">\\[M_{\\mathrm{r}} = D\\Big(F'' + \\nu\\,\\frac{F'}{r}\\Big) , \\qquad M_\\theta = D\\Big(\\frac{F'}{r} + \\nu\\,F''\\Big) , \\qquad M_{\\mathrm{r}\\theta} = 0 , \\tag{18.39}\\]</div>", "href": "sec-krozne-plosce.html#eq-momenti-osnosimetricni"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vm-razlika"] = {"html": "<div class=\"eq\">\\[J^{(2)} - J = (m_3\\,l_{\\mathrm{A}}\\,l_{\\mathrm{B}} - J_{\\mathrm{G}})\\,\\beta'^2 . \\tag{23.20}\\]</div>", "href": "sec-vrtilni-moment.html#eq-vm-razlika"};

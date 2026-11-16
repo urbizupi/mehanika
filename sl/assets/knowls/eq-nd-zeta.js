@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nd-zeta"] = {"html": "<div class=\"eq\">\\[\\zeta_{\\mathrm{num},\\mathrm{r}} = -\\frac{\\ln\\rho_{\\mathrm{r}}}{\\Omega_{\\mathrm{r}}} \\tag{17.38}\\]</div>", "href": "sec-nelinearna-dinamika.html#eq-nd-zeta"};

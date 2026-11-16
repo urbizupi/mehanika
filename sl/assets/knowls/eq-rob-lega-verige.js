@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rob-lega-verige"] = {"html": "<div class=\"eq\">\\[x_1 = y_1 = 0 , \\quad x_{\\mathrm{i}+1} = x_{\\mathrm{i}} + l_{\\mathrm{i}}\\cos\\varphi_{\\mathrm{i}} , \\quad y_{\\mathrm{i}+1} = y_{\\mathrm{i}} + l_{\\mathrm{i}}\\sin\\varphi_{\\mathrm{i}} . \\tag{27.2}\\]</div>", "href": "sec-robotske-verige.html#eq-rob-lega-verige"};

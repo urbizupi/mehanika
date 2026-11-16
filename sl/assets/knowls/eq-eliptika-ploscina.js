@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-eliptika-ploscina"] = {"html": "<div class=\"eq\">\\[A = \\pi a b = \\pi\\Big(\\frac{3FR_{\\mathrm{e}}}{\\pi E^*}\\Big)^{2/3}\\Big(\\frac{R_2}{R_1}\\Big)^{1/3}\\frac{\\sqrt{1 - e^2}}{e^{4/3}}\\,\\big(K(e) - E(e)\\big)^{2/3} , \\tag{25.27}\\]</div>", "href": "sec-hertz-tockovni.html#eq-eliptika-ploscina"};

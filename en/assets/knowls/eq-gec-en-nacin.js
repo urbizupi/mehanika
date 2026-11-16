@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-gec-en-nacin"] = {"html": "<div class=\"eq\">\\[\\Big(1 - \\frac{b_1^2}{J_{\\mathrm{tot}}}\\Big)\\ddot q + \\omega_1'^2\\,q = 0 . \\tag{28.36}\\]</div>", "href": "sec-gibalne-enacbe-clena.html#eq-gec-en-nacin"};

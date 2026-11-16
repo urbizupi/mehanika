@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-npal-nacin"] = {"html": "<div class=\"eq\">\\[\\varphi(x) = C\\sin\\frac{n\\pi x}{L} , \\qquad g(t) = A\\,\\mathrm{e}^{-\\kappa n^2\\pi^2 t/L^2} . \\tag{14.26}\\]</div>", "href": "sec-nestacionarno-palica.html#eq-npal-nacin"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-chi"] = {"html": "<div class=\"eq\">\\[\\chi = \\frac12\\Big(1 - \\frac{P_{\\mathrm{d}}}{2\\delta_{\\mathrm{r}}}\\Big) \\tag{25.30}\\]</div>", "href": "sec-obremenitev-lezaja.html#eq-chi"};

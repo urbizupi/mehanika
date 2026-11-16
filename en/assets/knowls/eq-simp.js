@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-simp"] = {"html": "<div class=\"eq\">\\[E(\\rho_{\\mathrm{e}}) = \\rho_{\\mathrm{e}}^{\\,p}\\,E_0 , \\tag{29.53}\\]</div>", "href": "sec-topologija.html#eq-simp"};

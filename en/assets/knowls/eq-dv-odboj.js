@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dv-odboj"] = {"html": "<div class=\"eq\">\\[F\\big(-(c + v)t\\big) = -G\\big((c - v)t\\big) , \\qquad F\\big(L - (c + v)t\\big) = -G\\big(L + (c - v)t\\big) . \\tag{26.9}\\]</div>", "href": "sec-dva-valova.html#eq-dv-odboj"};

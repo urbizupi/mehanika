@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-f-krog"] = {"html": "<div class=\"eq\">\\[F(c\\,yz) = (c - 1)^2\\int_{\\mathrm{S}} z^2\\,\\mathrm{d}A + (c + 1)^2\\int_{\\mathrm{S}} y^2\\,\\mathrm{d}A = (c^2 + 1)\\,I_{\\mathrm{p}} , \\tag{16.51}\\]</div>", "href": "sec-meje-mke-torzije.html#eq-f-krog"};

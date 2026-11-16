@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pronyjeva-vrsta"] = {"html": "<div class=\"eq\">\\[E_{\\mathrm{rel}}(t) = E_\\infty + \\sum_{\\mathrm{j}=1}^N E_{\\mathrm{j}}\\,\\mathrm{e}^{-t/\\tau_{\\mathrm{j}}} , \\tag{20.18}\\]</div>", "href": "sec-dedni-integral.html#eq-pronyjeva-vrsta"};

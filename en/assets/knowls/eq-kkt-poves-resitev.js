@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kkt-poves-resitev"] = {"html": "<div class=\"eq\">\\[A_{\\mathrm{k}} = \\sqrt{\\frac{c_{\\mathrm{k}}}{L_{\\mathrm{k}}}}\\,\\frac{S}{\\Delta_0} , \\qquad \\mu = \\Big(\\frac{S}{\\Delta_0}\\Big)^2 = 2{,}382\\ \\frac{\\text{m}^3}{\\text{m}} . \\tag{29.23}\\]</div>", "href": "sec-kkt.html#eq-kkt-poves-resitev"};

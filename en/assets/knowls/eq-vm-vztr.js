@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vm-vztr"] = {"html": "<div class=\"eq\">\\[M_{\\mathrm{b}} = Q_{\\mathrm{g}} - T_{\\mathrm{i}} . \\tag{23.19}\\]</div>", "href": "sec-vrtilni-moment.html#eq-vm-vztr"};

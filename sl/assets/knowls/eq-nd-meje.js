@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nd-meje"] = {"html": "<div class=\"eq\">\\[\\rho(\\mat A) \\to 1 \\ \\ (\\Omega \\to 0) , \\qquad \\rho(\\mat A) \\to \\frac{\\tfrac32 - \\gamma}{\\gamma + \\tfrac12} \\ \\ (\\Omega \\to \\infty) . \\tag{17.39}\\]</div>", "href": "sec-nelinearna-dinamika.html#eq-nd-meje"};

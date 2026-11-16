@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rebro-temperatura"] = {"html": "<div class=\"eq\">\\[\\theta(x) = \\theta_0\\,\\frac{\\cosh m\\,(L - x)}{\\cosh m L} . \\tag{14.20}\\]</div>", "href": "sec-stacionarno-1d.html#eq-rebro-temperatura"};

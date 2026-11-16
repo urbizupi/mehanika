@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-struna-nacini"] = {"html": "<div class=\"eq\">\\[\\omega = \\omega_{\\mathrm{n}} = \\frac{n\\pi c}{L} , \\qquad \\varphi(x) = C\\sin\\frac{n\\pi x}{L} \\tag{13.6}\\]</div>", "href": "sec-nacini-strune.html#eq-struna-nacini"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-g-lezaja"] = {"html": "<div class=\"eq\">\\[g(x) = 2\\,\\kappa_{\\mathrm{b}}\\,x^{3/2} - W = 0 , \\qquad x &gt; 0 . \\tag{25.45}\\]</div>", "href": "sec-lezaj-v-mke.html#eq-g-lezaja"};

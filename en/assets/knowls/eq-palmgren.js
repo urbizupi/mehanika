@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-palmgren"] = {"html": "<div class=\"eq\">\\[\\delta_{\\mathrm{r}} = C_{\\mathrm{P}}\\,\\frac{Q_{\\max}^{2/3}}{D^{1/3}\\cos\\alpha} , \\qquad C_{\\mathrm{P}} = 4{,}36\\cdot 10^{-4} , \\tag{25.37}\\]</div>", "href": "sec-togost-lezaja.html#eq-palmgren"};

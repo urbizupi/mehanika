@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sing-j-roke-a"] = {"html": "<div class=\"eq\">\\[\\mat J = \\begin{pmatrix} -l_1\\sin q_1 - l_2\\sin(q_1+q_2) &amp; -l_2\\sin(q_1+q_2) \\\\ l_1\\cos q_1 + l_2\\cos(q_1+q_2) &amp; l_2\\cos(q_1+q_2) \\end{pmatrix} . \\tag{27.26}\\]</div>", "href": "sec-singularnosti-statika.html#eq-sing-j-roke-a"};

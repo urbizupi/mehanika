@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-parseval"] = {"html": "<div class=\"eq\">\\[\\sum_{\\mathrm{n}=1}^{\\infty}h_{\\mathrm{n}}^2 = \\frac{2}{L}\\int_0^L h(x)^2\\,\\mathrm{d}x . \\tag{13.12}\\]</div>", "href": "sec-nacini-strune.html#eq-parseval"};

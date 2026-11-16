@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sila-1-harmonik"] = {"html": "<div class=\"eq\">\\[\\vek F_1(\\theta) = F_0\\,\\big((1 - p)\\cos\\theta,\\ -p\\sin\\theta\\big) . \\tag{23.31}\\]</div>", "href": "sec-uravnotezenje-enovaljnega.html#eq-sila-1-harmonik"};

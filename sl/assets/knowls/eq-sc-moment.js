@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sc-moment"] = {"html": "<div class=\"eq\">\\[\\vek Q_{\\mathrm{o}} = \\vek 0 , \\qquad Q_\\theta = \\tau , \\qquad \\vek Q_{\\mathrm{d}} = \\tau\\,\\vek\\psi'(0) = \\vek 0 . \\tag{28.30}\\]</div>", "href": "sec-sile-clena.html#eq-sc-moment"};

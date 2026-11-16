@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-gibalna-palice-telo"] = {"html": "<div class=\"eq\">\\[E\\,\\frac{\\partial^2 u}{\\partial x^2} + b_{\\mathrm{x}} = \\rho\\,\\frac{\\partial^2 u}{\\partial t^2} . \\tag{13.27}\\]</div>", "href": "sec-elastodinamika.html#eq-gibalna-palice-telo"};

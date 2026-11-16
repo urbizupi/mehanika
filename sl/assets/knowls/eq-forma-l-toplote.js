@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-forma-l-toplote"] = {"html": "<div class=\"eq\">\\[\\ell(w) = \\int_{\\mathrm{V}} Q\\,w\\,\\mathrm{d}V + \\int_{\\mathrm{S}_\\mathrm{q}} \\bar q\\,w\\,\\mathrm{d}A + \\int_{\\mathrm{S}_\\mathrm{h}} h\\,T_\\infty\\,w\\,\\mathrm{d}A . \\tag{14.47}\\]</div>", "href": "sec-sibka-oblika-toplote.html#eq-forma-l-toplote"};

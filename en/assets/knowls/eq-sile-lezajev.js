@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sile-lezajev"] = {"html": "<div class=\"eq\">\\[B = -\\frac{\\Omega^2 W}{L}\\,\\mathrm{e}^{\\mathrm{i}\\Omega t} , \\qquad A = -\\Omega^2\\Big(U - \\frac{W}{L}\\Big)\\mathrm{e}^{\\mathrm{i}\\Omega t} , \\tag{23.3}\\]</div>", "href": "sec-uravnotezenje-rotorja.html#eq-sile-lezajev"};

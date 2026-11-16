@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-simp-obcutljivost"] = {"html": "<div class=\"eq\">\\[\\frac{\\partial C}{\\partial\\rho_{\\mathrm{e}}} = -\\,p\\,\\rho_{\\mathrm{e}}^{\\,p-1}\\,\\vek u_{\\mathrm{e}}^\\T\\mat k_0\\,\\vek u_{\\mathrm{e}} \\le 0 . \\tag{29.56}\\]</div>", "href": "sec-topologija.html#eq-simp-obcutljivost"};

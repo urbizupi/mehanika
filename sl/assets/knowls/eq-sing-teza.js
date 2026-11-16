@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sing-teza"] = {"html": "<div class=\"eq\">\\[\\vek g(\\vek q) = \\sum_{\\mathrm{k}} m_{\\mathrm{k}}\\,g\\,\\mat A_{\\mathrm{k}}^\\T\\vek e . \\tag{27.30}\\]</div>", "href": "sec-singularnosti-statika.html#eq-sing-teza"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-torzija-kroga-polje"] = {"html": "<div class=\"eq\">\\[u_{\\mathrm{x}} = 0 , \\qquad u_{\\mathrm{y}} = -\\alpha\\,x\\,z , \\qquad u_{\\mathrm{z}} = \\alpha\\,x\\,y \\tag{16.7}\\]</div>", "href": "sec-torzija-kroga.html#eq-torzija-kroga-polje"};

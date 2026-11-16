@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-lu-lupina"] = {"html": "<div class=\"eq\">\\[\\vek x(q_1, q_2, z) = \\vek r(q_1, q_2) + z\\,\\vek n(q_1, q_2) , \\qquad (q_1, q_2) \\in M , \\quad -\\frac{h}{2} \\le z \\le \\frac{h}{2} , \\tag{22.1}\\]</div>", "href": "sec-srednja-ploskev.html#eq-lu-lupina"};

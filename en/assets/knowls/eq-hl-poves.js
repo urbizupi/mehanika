@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-hl-poves"] = {"html": "<div class=\"eq\">\\[w(x) = -\\frac{2}{\\pi E^*}\\int_{-\\mathrm{b}}^{b} p(s)\\,\\ln|x - s|\\,\\mathrm{d}s + C_0 , \\tag{25.16}\\]</div>", "href": "sec-hertz-linijski.html#eq-hl-poves"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-km-napaka-konca"] = {"html": "<div class=\"eq\">\\[u_{\\mathrm{h}}'(0) = \\frac{2c^2 - \\frac12}{2c - \\frac12} . \\tag{17.20}\\]</div>", "href": "sec-kakovost-mreze.html#eq-km-napaka-konca"};

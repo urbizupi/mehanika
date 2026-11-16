@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-podajnost-N"] = {"html": "<div class=\"eq\">\\[C(A) = \\frac1E \\int_0^L N(x)\\,\\sigma(x)\\,\\mathrm{d}x = \\frac1E \\int_0^L \\frac{N(x)^2}{A(x)}\\,\\mathrm{d}x , \\tag{29.49}\\]</div>", "href": "sec-najtogja-palica.html#eq-podajnost-N"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mmc-skoraj-togi"] = {"html": "<div class=\"eq\">\\[\\begin{bmatrix} J_{\\text{člen}}\\,(1 + q^2/L^2) &amp; J_{\\text{člen}}/L \\\\ J_{\\text{člen}}/L &amp; J_{\\text{člen}}/L^2 \\end{bmatrix} , \\qquad \\det = \\frac{J_{\\text{člen}}^2\\,q^2}{L^4} . \\tag{28.24}\\]</div>", "href": "sec-masna-matrika-clena.html#eq-mmc-skoraj-togi"};

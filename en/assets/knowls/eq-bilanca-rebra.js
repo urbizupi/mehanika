@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-bilanca-rebra"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{a}}^b \\Big( (kA\\,T')' + hP\\,(T_\\infty - T) + A\\,Q \\Big)\\,\\mathrm{d}x = 0 \\qquad \\text{for every piece } [a, b] \\subseteq [0, L] . \\tag{14.43}\\]</div>", "href": "sec-sibka-oblika-toplote.html#eq-bilanca-rebra"};

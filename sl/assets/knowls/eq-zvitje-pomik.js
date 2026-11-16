@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-zvitje-pomik"] = {"html": "<div class=\"eq\">\\[u_{\\mathrm{x}} = \\alpha\\,\\psi(y, z) , \\qquad u_{\\mathrm{y}} = -\\alpha\\,x\\,z , \\qquad u_{\\mathrm{z}} = \\alpha\\,x\\,y , \\tag{16.10}\\]</div>", "href": "sec-funkcija-zvitja.html#eq-zvitje-pomik"};

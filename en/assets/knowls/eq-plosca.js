@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-plosca"] = {"html": "<div class=\"eq\">\\[P = \\{ (x, y, z) : (x, y) \\in \\Omega,\\ -h/2 \\le z \\le h/2 \\} . \\tag{18.1}\\]</div>", "href": "sec-kirchhoffova-plosca.html#eq-plosca"};

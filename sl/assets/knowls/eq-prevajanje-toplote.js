@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-prevajanje-toplote"] = {"html": "<div class=\"eq\">\\[\\rho c\\,T_{\\mathrm{t}} = k\\,\\nabla^2 T + Q , \\tag{14.7}\\]</div>", "href": "sec-enacba-prevajanja.html#eq-prevajanje-toplote"};

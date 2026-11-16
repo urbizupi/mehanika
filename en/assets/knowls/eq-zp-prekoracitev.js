@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-zp-prekoracitev"] = {"html": "<div class=\"eq\">\\[q_{\\max} = \\frac{Q_0}{k}\\Big(1 + \\frac{|\\sin\\theta|}{\\theta}\\Big) , \\qquad \\theta = \\frac{\\omega_{\\mathrm{n}}\\,t_{\\mathrm{r}}}{2} , \\tag{28.3}\\]</div>", "href": "sec-zakaj-podajni.html#eq-zp-prekoracitev"};

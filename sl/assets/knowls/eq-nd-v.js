@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nd-v"] = {"html": "<div class=\"eq\">\\[\\vek v_{\\mathrm{k}+1} = \\vek v_{\\mathrm{k}} + \\Delta t\\,\\Big((1 - \\gamma)\\,\\vek a_{\\mathrm{k}} + \\gamma\\,\\vek a_{\\mathrm{k}+1}\\Big) , \\tag{17.34}\\]</div>", "href": "sec-nelinearna-dinamika.html#eq-nd-v"};

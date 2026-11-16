@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-red-iz-treh"] = {"html": "<div class=\"eq\">\\[\\left|\\frac{d_1}{d_2} - 2^q\\right| \\le K\\,h , \\qquad K = \\frac{9\\cdot 2^{q-1}\\,M}{|C|\\,(1 - 2^{-q})} . \\tag{17.7}\\]</div>", "href": "sec-konvergenca-mreze.html#eq-red-iz-treh"};

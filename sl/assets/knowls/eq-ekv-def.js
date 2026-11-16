@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ekv-def"] = {"html": "<div class=\"eq\">\\[c_{\\mathrm{eq}} = \\frac{W_{\\mathrm{izg}}}{\\pi\\,\\Omega\\,X^2} \\quad (\\mathrm{N\\,s/m}) \\tag{20.5}\\]</div>", "href": "sec-ekvivalentno-viskozno.html#eq-ekv-def"};

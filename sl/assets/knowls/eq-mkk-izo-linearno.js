@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mkk-izo-linearno"] = {"html": "<div class=\"eq\">\\[\\vek u_{\\mathrm{h}}(\\vek x) = \\vek a_0 + \\mat G\\,\\vek x . \\tag{15.28}\\]</div>", "href": "sec-mkk-izoparametricni.html#eq-mkk-izo-linearno"};

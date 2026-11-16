@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-razvoj-ocena-sinusi"] = {"html": "<div class=\"eq\">\\[\\sum_{\\mathrm{n}=1}^{\\infty}|c_{\\mathrm{n}}| \\le \\frac{2L}{\\pi}\\sqrt{B} , \\tag{13.51}\\]</div>", "href": "sec-razvoj-po-nacinih.html#eq-razvoj-ocena-sinusi"};

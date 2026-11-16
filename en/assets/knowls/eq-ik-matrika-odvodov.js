@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ik-matrika-odvodov"] = {"html": "<div class=\"eq\">\\[\\mat F_\\Phi(q_1, q_2) = \\begin{pmatrix} -l_1\\sin q_1 - l_2\\sin(q_1 + q_2) &amp; -l_2\\sin(q_1 + q_2) \\\\ l_1\\cos q_1 + l_2\\cos(q_1 + q_2) &amp; l_2\\cos(q_1 + q_2) \\end{pmatrix} . \\tag{27.19}\\]</div>", "href": "sec-inverzna-kinematika.html#eq-ik-matrika-odvodov"};

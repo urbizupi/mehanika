@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-zp-deformacija-korena"] = {"html": "<div class=\"eq\">\\[|\\varepsilon_{\\max}| = \\frac{M_0\\,h/2}{EI} = \\frac{6{,}24 \\cdot 0{,}003}{141{,}12} = 1{,}327 \\cdot 10^{-4} . \\tag{28.5}\\]</div>", "href": "sec-zakaj-podajni.html#eq-zp-deformacija-korena"};

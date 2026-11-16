@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mp-polje"] = {"html": "<div class=\"eq\">\\[u_{\\mathrm{x}} = -z\\,\\theta_{\\mathrm{x}}(x, y) , \\qquad u_{\\mathrm{y}} = -z\\,\\theta_{\\mathrm{y}}(x, y) , \\qquad u_{\\mathrm{z}} = w(x, y) , \\tag{18.59}\\]</div>", "href": "sec-mindlinove-plosce.html#eq-mp-polje"};

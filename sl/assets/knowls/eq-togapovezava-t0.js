@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-togapovezava-t0"] = {"html": "<div class=\"eq\">\\[\\vek d_{\\mathrm{Z}} = \\mat T_0\\,\\vek d_{\\mathrm{M}} , \\qquad \\mat T_0 = \\begin{pmatrix} 1 &amp; 0 &amp; -b \\\\ 0 &amp; 1 &amp; a \\\\ 0 &amp; 0 &amp; 1 \\end{pmatrix} . \\tag{19.9}\\]</div>", "href": "sec-toge-povezave.html#eq-togapovezava-t0"};

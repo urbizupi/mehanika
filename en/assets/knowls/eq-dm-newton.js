@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dm-newton"] = {"html": "<div class=\"eq\">\\[\\ddot q_2 = \\ddot u_{\\mathrm{g}} - \\frac{R}{M_0} . \\tag{21.20}\\]</div>", "href": "sec-dodatna-masa.html#eq-dm-newton"};

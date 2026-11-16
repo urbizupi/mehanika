@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rz-ritz-matrike"] = {"html": "<div class=\"eq\">\\[\\tilde K_{\\mathrm{ij}} = B(\\psi_{\\mathrm{i}}, \\psi_{\\mathrm{j}}) , \\qquad \\tilde M_{\\mathrm{ij}} = \\mathcal{M}(\\psi_{\\mathrm{i}}, \\psi_{\\mathrm{j}}) \\tag{13.64}\\]</div>", "href": "sec-ritz-zvezni.html#eq-rz-ritz-matrike"};

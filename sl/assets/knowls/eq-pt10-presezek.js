@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pt10-presezek"] = {"html": "<div class=\"eq\">\\[Q_{\\mathrm{h}} - Q = \\frac{B(T - T_{\\mathrm{h}},\\ T - T_{\\mathrm{h}})}{T_0} \\ge 0 , \\tag{14.56}\\]</div>", "href": "sec-mke-toplote.html#eq-pt10-presezek"};

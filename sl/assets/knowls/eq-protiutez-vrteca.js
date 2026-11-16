@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-protiutez-vrteca"] = {"html": "<div class=\"eq\">\\[\\vek F_{\\mathrm{rot}}(\\theta) = (m_{\\mathrm{A}} - m_{\\mathrm{c}})\\,a\\Omega^2\\,(\\cos\\theta, \\sin\\theta) \\tag{23.29}\\]</div>", "href": "sec-uravnotezenje-enovaljnega.html#eq-protiutez-vrteca"};

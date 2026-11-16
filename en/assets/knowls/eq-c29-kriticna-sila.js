@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-c29-kriticna-sila"] = {"html": "<div class=\"eq\">\\[P_{\\mathrm{cr}}(A) = \\frac{\\pi^2 E}{L^2}\\cdot\\frac{A^2}{4\\pi} = \\frac{\\pi E A^2}{4 L^2} . \\tag{29.9}\\]</div>", "href": "sec-palicje-z-napetostmi.html#eq-c29-kriticna-sila"};

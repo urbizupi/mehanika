@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mkk-diagonalna-prevlada"] = {"html": "<div class=\"eq\">\\[\\frac{\\partial\\Phi_{\\mathrm{i}}}{\\partial x_{\\mathrm{i}}} &gt; \\sum_{\\mathrm{j} \\ne \\mathrm{i}} \\Big|\\frac{\\partial\\Phi_{\\mathrm{i}}}{\\partial x_{\\mathrm{j}}}\\Big| . \\tag{15.10}\\]</div>", "href": "sec-mkk-telo-iz-elementov.html#eq-mkk-diagonalna-prevlada"};

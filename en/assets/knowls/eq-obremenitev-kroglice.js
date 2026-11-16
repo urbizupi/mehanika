@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-obremenitev-kroglice"] = {"html": "<div class=\"eq\">\\[Q_\\psi = Q_{\\max}\\Big[1 - \\frac{1 - \\cos\\psi}{2\\chi}\\Big]^n , \\tag{25.31}\\]</div>", "href": "sec-obremenitev-lezaja.html#eq-obremenitev-kroglice"};

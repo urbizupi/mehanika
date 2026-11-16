@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rpl-energija"] = {"html": "<div class=\"eq\">\\[U(w) = \\frac12 \\int_{\\mathrm{R}} D\\,\\big[ (\\nabla^2 w)^2 - 2\\,(1 - \\nu)\\,(w_{\\mathrm{xx}}\\,w_{\\mathrm{yy}} - w_{\\mathrm{xy}}^2) \\big]\\,\\mathrm{d}A , \\tag{18.21}\\]</div>", "href": "sec-robni-pogoji-plosce.html#eq-rpl-energija"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mr-modalne"] = {"html": "<div class=\"eq\">\\[\\vek q_{\\mathrm{d}} = \\mat\\Phi_{\\mathrm{m}}\\,\\boldsymbol\\eta = \\sum_{\\mathrm{r}=1}^{m}\\vek\\varphi_{\\mathrm{r}}\\,\\eta_{\\mathrm{r}} . \\tag{28.46}\\]</div>", "href": "sec-modalna-redukcija-clena.html#eq-mr-modalne"};

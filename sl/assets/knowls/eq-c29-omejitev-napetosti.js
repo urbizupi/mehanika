@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-c29-omejitev-napetosti"] = {"html": "<div class=\"eq\">\\[g_{\\mathrm{e}}(A_{\\mathrm{e}}) = \\frac{|N_{\\mathrm{e}}|}{A_{\\mathrm{e}}} - \\sigma_0 \\le 0 , \\qquad e \\in \\{AC, BC\\} . \\tag{29.6}\\]</div>", "href": "sec-palicje-z-napetostmi.html#eq-c29-omejitev-napetosti"};

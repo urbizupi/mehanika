@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mkk-integral-ploskovnih"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{T}} L_1^a\\,L_2^b\\,L_3^c\\,\\mathrm{d}A = \\frac{a!\\,b!\\,c!}{(a + b + c + 2)!}\\;2A . \\tag{15.7}\\]</div>", "href": "sec-mkk-trikotnik.html#eq-mkk-integral-ploskovnih"};

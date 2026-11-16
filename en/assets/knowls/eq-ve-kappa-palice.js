@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ve-kappa-palice"] = {"html": "<div class=\"eq\">\\[\\kappa(\\mat T_{\\mathrm{n}}) = \\frac{\\sin^2\\!\\big((2n - 1)\\theta\\big)}{\\sin^2\\theta} = \\frac{\\cos^2\\!\\big(\\pi/(2n + 1)\\big)}{\\sin^2\\theta} . \\tag{17.22}\\]</div>", "href": "sec-velike-enacbe.html#eq-ve-kappa-palice"};

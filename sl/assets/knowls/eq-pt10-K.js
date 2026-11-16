@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pt10-K"] = {"html": "<div class=\"eq\">\\[\\mat K = \\begin{pmatrix} 13/6 &amp; -23/12 &amp; 0 \\\\ -23/12 &amp; 13/3 &amp; -23/12 \\\\ 0 &amp; -23/12 &amp; 13/6 \\end{pmatrix} , \\tag{14.55}\\]</div>", "href": "sec-mke-toplote.html#eq-pt10-K"};

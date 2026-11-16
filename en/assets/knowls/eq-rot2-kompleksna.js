@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rot2-kompleksna"] = {"html": "<div class=\"eq\">\\[m\\ddot p + c\\dot p + k p = m\\,a_{\\mathrm{u}}\\Omega^2\\,\\mathrm{e}^{\\mathrm{i}\\Omega t} . \\tag{24.8}\\]</div>", "href": "sec-neuravnotezenost-rotorja.html#eq-rot2-kompleksna"};

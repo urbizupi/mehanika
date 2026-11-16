@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vzt-j"] = {"html": "<div class=\"eq\">\\[J\\,\\delta_{\\mathrm{s}}\\,\\Omega_{\\mathrm{m}}^2 = \\Delta E , \\qquad J = \\frac{\\Delta E}{\\delta_{\\mathrm{s}}\\,\\Omega_{\\mathrm{m}}^2} . \\tag{23.28}\\]</div>", "href": "sec-vztrajnik.html#eq-vzt-j"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-membrana"] = {"html": "<div class=\"eq\">\\[N\\,\\nabla^2\\zeta = N\\,(\\zeta_{\\mathrm{yy}} + \\zeta_{\\mathrm{zz}}) = -p \\quad \\text{in } S , \\qquad \\zeta = 0 \\quad \\text{on } \\partial S . \\tag{16.27}\\]</div>", "href": "sec-membranska-analogija.html#eq-membrana"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ts-enacba"] = {"html": "<div class=\"eq\">\\[\\mat M\\ddot{\\vek\\varphi} + \\mat K\\vek\\varphi = \\vek Q(t) . \\tag{23.46}\\]</div>", "href": "sec-torzija-gredi.html#eq-ts-enacba"};

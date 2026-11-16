@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-hist-faktor"] = {"html": "<div class=\"eq\">\\[D_{\\mathrm{h}}(r) = \\frac{1}{\\sqrt{(1 - r^2)^2 + \\gamma^2}} . \\tag{20.13}\\]</div>", "href": "sec-histerezno-dusenje.html#eq-hist-faktor"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-tvm-energija-w"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{r} \\le \\mathrm{R}} |\\nabla w_\\rho|^2\\,\\mathrm{d}A = \\frac{2\\pi}{\\ln(R/\\rho)} . \\tag{17.5}\\]</div>", "href": "sec-telo-v-model.html#eq-tvm-energija-w"};

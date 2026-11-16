@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-tvm-razmerje"] = {"html": "<div class=\"eq\">\\[\\frac{z(a)}{z(c)} = \\frac{a + k\\,a}{c + k\\,a^2/c} = \\frac{40 \\cdot 3{,}5}{50 + 2{,}5 \\cdot 1600/50} = \\frac{140}{130} = 1{,}0769 . \\tag{17.3}\\]</div>", "href": "sec-telo-v-model.html#eq-tvm-razmerje"};

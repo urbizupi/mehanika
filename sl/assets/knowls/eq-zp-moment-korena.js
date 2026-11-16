@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-zp-moment-korena"] = {"html": "<div class=\"eq\">\\[M_0 = \\frac{\\rho A\\,\\alpha\\,L^3}{3} = 1{,}872 \\cdot 10 \\cdot \\frac{1}{3}\\ \\text{N m} = 6{,}24\\ \\text{N m} . \\tag{28.4}\\]</div>", "href": "sec-zakaj-podajni.html#eq-zp-moment-korena"};

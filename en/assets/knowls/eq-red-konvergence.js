@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-red-konvergence"] = {"html": "<div class=\"eq\">\\[e(h) = Q_{\\mathrm{h}} - Q = C\\,h^q + R(h) , \\qquad |R(h)| \\le M\\,h^{q+1} . \\tag{17.6}\\]</div>", "href": "sec-konvergenca-mreze.html#eq-red-konvergence"};

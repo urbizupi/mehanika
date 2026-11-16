@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-em-ms"] = {"html": "<div class=\"eq\">\\[m_{\\mathrm{S}} = M_{22} - \\mat M_{21}\\,\\mat M_{11}^{-1}\\mat M_{12} . \\tag{21.15}\\]</div>", "href": "sec-efektivna-masa.html#eq-em-ms"};

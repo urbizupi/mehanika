@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-izguba-obhod"] = {"html": "<div class=\"eq\">\\[w_{\\mathrm{izg}} = \\int_0^{T_{\\mathrm{p}}}\\sigma\\,\\dot\\varepsilon\\,\\mathrm{d}t = \\pi\\,E_{\\mathrm{izg}}\\,\\varepsilon_0^2 . \\tag{20.29}\\]</div>", "href": "sec-kompleksni-modul.html#eq-izguba-obhod"};

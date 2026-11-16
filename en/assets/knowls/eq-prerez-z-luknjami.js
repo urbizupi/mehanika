@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-prerez-z-luknjami"] = {"html": "<div class=\"eq\">\\[S = \\overline{D_0} \\setminus (H_1 \\cup \\dots \\cup H_{\\mathrm{m}}) , \\tag{16.44}\\]</div>", "href": "sec-votli-prerezi.html#eq-prerez-z-luknjami"};

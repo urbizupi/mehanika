@@ -1,0 +1,1815 @@
+<!doctype html>
+<html lang="sl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>17.2 Telo v modelu: geometrija, podpore in obremenitve · Poglavje 17</title>
+<script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/style.css">
+<noscript><style>#loadbar { display: none; }</style></noscript>
+<script src="assets/config.js"></script>
+<script src="assets/load.js"></script>
+<script defer src="assets/interaktivno.js"></script>
+<script defer src="assets/book.js"></script>
+<script defer src="assets/predavanje.js"></script>
+<script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<div id="loadbar" aria-hidden="true"></div>
+<header class="top"><a class="home" href="index.html">Mehanika</a><nav class="pager"><a href="sec-hierarhija-modelov.html" rel="prev">← 17.1</a><a href="index.html">Kazalo</a><a href="sec-konvergenca-mreze.html" rel="next">17.3 →</a></nav>
+<span class="tools"><a class="lang" href="../en/sec-telo-v-model.html" hreflang="en">English</a><button type="button" class="theme-toggle" title="Svetla ali temna tema" aria-label="Svetla ali temna tema"></button><button type="button" data-details="open">Razpri vse</button><button type="button" data-details="close">Skrij vse</button><button type="button" class="fig-side-toggle" aria-pressed="false">Slike ob strani</button></span></header>
+<main>
+<p class="updated">Posodobljeno 16. 11. 2026 ob 10.52</p>
+<p class="crumb"><a href="ch-modeliranje.html"><span class="h-num">Poglavje 17</span> Modeliranje z MKE v praksi</a></p>
+<h2 id="sec-telo-v-model"><span class="h-num">17.2</span> Telo v modelu: geometrija, podpore in obremenitve</h2>
+<!-- nofig: signpost -->
+<p>Konzolni <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">nosilec</a> iz tankih pločevin, ki ga s tremi vijaki pritrdimo na steber, ima na prehodih med stebrom in krakom zaobljene robove, v krakih luknje, na koncu čep, na katerem visi breme, in pod vijaki podložke. Računalnik tega ne vidi. Vidi samo to, kar mu v model vpišemo: obliko, kje je telo držano in kje obremenjeno. V razdelku <a class="xref" href="sec-hierarhija-modelov.html">17.1</a> smo razločili tri napake in model, ki je njihov začetek. Ta razdelek obravnava prvo izmed njih, <a class="xref auto" href="sec-hierarhija-modelov.html#def-vrste-napak" data-knowl="def-vrste-napak">napako modela</a> (modelling error): kaj od <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">telesa</a>, podpor in bremen vzamemo v model in kaj izpustimo. Te napake gostejša mreža ne odpravi, ker mreža približuje rešitev modela, ne telesa. Obratno ne odpravi napake modela tudi nobena natančna rešitev. Odgovor na vprašanje, ki ga zastavimo, določa, kaj je podrobnost in kaj ni.</p>
+<p>BATHE to pokaže na konzolnem nosilcu, pritrjenem z dvema vijakoma, z zaobljenimi robovi in luknjo, ki ga obremenjuje breme (PDF str. 22-26). Z modelom nosilca dobi <a class="xref auto" href="sec-notranje-sile-nosilca.html#def-upogibni-moment" data-knowl="def-upogibni-moment">upogibni moment</a> v prerezu AA, ki se od modela ravninskega napetostnega stanja razlikuje za manj kot en odstotek, pomik bremena pa za \(17\) % manj, \(0{,}053\) cm namesto \(0{,}064\) cm (BATHE, PDF str. 22 in 26). BATHE zato model nosilca za pomik šteje za zanesljiv le na dvajset odstotkov natančno. Če vprašamo po največji napetosti v nosilcu, model nosilca ne zadošča, ker »povsem zanemari povečanje napetosti zaradi zaobljenj« (BATHE, PDF str. 26). Isti vir zapiše, da mora izbira modela slediti vprašanju, in da končni elementi rešujejo le izbrani model ter ne morejo napovedati več, kot je v njem (BATHE, PDF str. 26, točki 1 in 3). Ta razdelek da te trditve za tri odločitve: koliko geometrije obdržati, kdaj del telesa izrezati in podrobneje izračunati ter kako zapisati podpore in sile.</p>
+
+<h3 id="sec-geometrija-model"><span class="h-num">17.2.1</span> Kaj od telesa vzamemo v model</h3>
+<p>Prvo vprašanje je, katero podrobnost lahko izpustimo. Odgovor je skrit v poglavju <a class="xref" href="ch-robni-problem-elasticnosti.html">11</a>: motnja zaradi luknje pada z oddaljenostjo od nje, in kjer je dovolj majhna, luknje ne potrebujemo. <a class="xref auto forward" href="sec-kirchhoffova-plosca.html#def-plosca" data-knowl="def-plosca" title="Definirano kasneje v knjigi">Plošča</a> iz poglavja <a class="xref" href="ch-robni-problem-elasticnosti.html">11</a> ima luknjo s polmerom \(a = 10\) mm in enakomeren vlek \(\sigma_0 = 50\) MPa v smeri <span class="nobr">\(x\).</span> Kot tam jo vzamemo za neskončno in računamo s <a class="xref auto" href="sec-kirschov-problem.html#thm-kirsch" data-knowl="thm-kirsch">Kirschovo rešitvijo</a>. Pri plošči \(200 \times 200\) mm to na njenem robu da napako največ \(2{,}5\) % od \(\sigma_0\) (razdelek <a class="xref" href="sec-kirschov-problem.html#sec-klp-koncna">11.13.6</a>). Nad njo vprašamo, kako daleč od luknje je njen vpliv na napetost \(\sigma_{\mathrm{xx}}\) manjši od izbrane meje. Slika <a class="xref" href="sec-telo-v-model.html#fig-tvm-motnja" data-knowl="fig-tvm-motnja">17.5</a> kaže odstopanje napetosti \(\sigma_{\mathrm{xx}}\) od \(\sigma_0\) po enačbah <a class="xref" href="sec-kirschov-problem.html#eq-klp-os-y" data-knowl="eq-klp-os-y">(11.69)</a> in <a class="xref" href="sec-kirschov-problem.html#eq-klp-os-x" data-knowl="eq-klp-os-x">(11.70)</a>.</p>
+
+<figure class="blk slika" id="fig-tvm-motnja"><p><span class="svgfig" role="img" aria-label="Odstopanje napetosti od vlečne napetosti na osi x in osi y v odvisnosti od razdalje od luknje"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='331.73pt' height='193.03pt' viewBox='-72.000004 -72.000003 245.723606 142.986002'>
+<defs>
+<path id='c17-02-motnja-g0-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='c17-02-motnja-g0-61' d='M4.373599-7.0934C4.423412-7.222914 4.423412-7.262765 4.423412-7.272727C4.423412-7.382316 4.333748-7.47198 4.224159-7.47198C4.154421-7.47198 4.084682-7.442092 4.054795-7.382316L.597758 2.11208C.547945 2.241594 .547945 2.281445 .547945 2.291407C.547945 2.400996 .637609 2.49066 .747198 2.49066C.876712 2.49066 .9066 2.420922 .966376 2.251557L4.373599-7.0934Z'/>
+<path id='c17-02-motnja-g0-97' d='M3.716065-3.765878C3.536737-4.134496 3.247821-4.403487 2.799502-4.403487C1.633873-4.403487 .398506-2.938979 .398506-1.484433C.398506-.547945 .946451 .109589 1.723537 .109589C1.92279 .109589 2.420922 .069738 3.01868-.637609C3.098381-.219178 3.447073 .109589 3.92528 .109589C4.273973 .109589 4.503113-.119552 4.662516-.438356C4.83188-.797011 4.961395-1.404732 4.961395-1.424658C4.961395-1.524284 4.871731-1.524284 4.841843-1.524284C4.742217-1.524284 4.732254-1.484433 4.702366-1.344956C4.533001-.697385 4.353674-.109589 3.945205-.109589C3.676214-.109589 3.646326-.368618 3.646326-.56787C3.646326-.787049 3.666252-.86675 3.775841-1.305106C3.88543-1.723537 3.905355-1.823163 3.995019-2.201743L4.353674-3.596513C4.423412-3.875467 4.423412-3.895392 4.423412-3.935243C4.423412-4.104608 4.303861-4.204234 4.134496-4.204234C3.895392-4.204234 3.745953-3.985056 3.716065-3.765878ZM3.068493-1.185554C3.01868-1.006227 3.01868-.986301 2.86924-.816936C2.430884-.268991 2.022416-.109589 1.743462-.109589C1.24533-.109589 1.105853-.657534 1.105853-1.046077C1.105853-1.544209 1.424658-2.769614 1.653798-3.227895C1.96264-3.815691 2.410959-4.184309 2.809465-4.184309C3.457036-4.184309 3.596513-3.367372 3.596513-3.307597S3.576588-3.188045 3.566625-3.138232L3.068493-1.185554Z'/>
+<path id='c17-02-motnja-g0-114' d='M.876712-.587796C.846824-.438356 .787049-.209215 .787049-.159402C.787049 .019925 .926526 .109589 1.075965 .109589C1.195517 .109589 1.374844 .029888 1.444583-.169365C1.464508-.209215 1.803238-1.564134 1.843088-1.743462C1.92279-2.072229 2.102117-2.769614 2.161893-3.038605C2.201743-3.16812 2.480697-3.636364 2.719801-3.855542C2.799502-3.92528 3.088418-4.184309 3.516812-4.184309C3.775841-4.184309 3.92528-4.064757 3.935243-4.064757C3.636364-4.014944 3.417186-3.775841 3.417186-3.516812C3.417186-3.35741 3.526775-3.16812 3.795766-3.16812S4.343711-3.39726 4.343711-3.755915C4.343711-4.104608 4.024907-4.403487 3.516812-4.403487C2.86924-4.403487 2.430884-3.915318 2.241594-3.636364C2.161893-4.084682 1.803238-4.403487 1.334994-4.403487C.876712-4.403487 .687422-4.014944 .597758-3.835616C.418431-3.496887 .288917-2.899128 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.779577 .577833-2.998755C.747198-3.706102 .946451-4.184309 1.305106-4.184309C1.474471-4.184309 1.613948-4.104608 1.613948-3.726027C1.613948-3.516812 1.58406-3.407223 1.454545-2.889166L.876712-.587796Z'/>
+<path id='c17-02-motnja-g1-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='c17-02-motnja-g1-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c17-02-motnja-g1-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='c17-02-motnja-g1-51' d='M2.889166-3.506849C3.706102-3.775841 4.283935-4.473225 4.283935-5.260274C4.283935-6.07721 3.407223-6.635118 2.450809-6.635118C1.444583-6.635118 .687422-6.03736 .687422-5.280199C.687422-4.951432 .9066-4.762142 1.195517-4.762142C1.504359-4.762142 1.703611-4.98132 1.703611-5.270237C1.703611-5.768369 1.235367-5.768369 1.085928-5.768369C1.39477-6.256538 2.052304-6.386052 2.410959-6.386052C2.819427-6.386052 3.367372-6.166874 3.367372-5.270237C3.367372-5.150685 3.347447-4.572852 3.088418-4.134496C2.789539-3.656289 2.450809-3.626401 2.201743-3.616438C2.122042-3.606476 1.882939-3.58655 1.8132-3.58655C1.733499-3.576588 1.663761-3.566625 1.663761-3.466999C1.663761-3.35741 1.733499-3.35741 1.902864-3.35741H2.34122C3.158157-3.35741 3.526775-2.67995 3.526775-1.703611C3.526775-.348692 2.839352-.059776 2.400996-.059776C1.972603-.059776 1.225405-.229141 .876712-.816936C1.225405-.767123 1.534247-.986301 1.534247-1.364882C1.534247-1.723537 1.265255-1.92279 .976339-1.92279C.737235-1.92279 .418431-1.783313 .418431-1.344956C.418431-.438356 1.344956 .219178 2.430884 .219178C3.646326 .219178 4.552927-.687422 4.552927-1.703611C4.552927-2.520548 3.92528-3.297634 2.889166-3.506849Z'/>
+<path id='c17-02-motnja-g1-53' d='M4.473225-2.002491C4.473225-3.188045 3.656289-4.184309 2.580324-4.184309C2.102117-4.184309 1.673724-4.024907 1.315068-3.676214V-5.618929C1.514321-5.559153 1.843088-5.489415 2.161893-5.489415C3.387298-5.489415 4.084682-6.396015 4.084682-6.525529C4.084682-6.585305 4.054795-6.635118 3.985056-6.635118C3.975093-6.635118 3.955168-6.635118 3.905355-6.60523C3.706102-6.515567 3.217933-6.316314 2.550436-6.316314C2.15193-6.316314 1.693649-6.386052 1.225405-6.595268C1.145704-6.625156 1.125778-6.625156 1.105853-6.625156C1.006227-6.625156 1.006227-6.545455 1.006227-6.386052V-3.437111C1.006227-3.257783 1.006227-3.178082 1.145704-3.178082C1.215442-3.178082 1.235367-3.20797 1.275218-3.267746C1.384807-3.427148 1.753425-3.965131 2.560399-3.965131C3.078456-3.965131 3.327522-3.506849 3.407223-3.327522C3.566625-2.958904 3.58655-2.570361 3.58655-2.072229C3.58655-1.723537 3.58655-1.125778 3.347447-.707347C3.108344-.318804 2.739726-.059776 2.281445-.059776C1.554172-.059776 .986301-.587796 .816936-1.175592C.846824-1.165629 .876712-1.155666 .986301-1.155666C1.315068-1.155666 1.484433-1.404732 1.484433-1.643836S1.315068-2.132005 .986301-2.132005C.846824-2.132005 .498132-2.062267 .498132-1.603985C.498132-.747198 1.185554 .219178 2.30137 .219178C3.457036 .219178 4.473225-.737235 4.473225-2.002491Z'/>
+<path id='c17-02-motnja-g1-55' d='M4.742217-6.067248C4.83188-6.1868 4.83188-6.206725 4.83188-6.41594H2.410959C1.195517-6.41594 1.175592-6.545455 1.135741-6.734745H.886675L.557908-4.682441H.806974C.836862-4.841843 .926526-5.469489 1.05604-5.589041C1.125778-5.648817 1.902864-5.648817 2.032379-5.648817H4.094645C3.985056-5.489415 3.198007-4.403487 2.978829-4.07472C2.082192-2.729763 1.753425-1.344956 1.753425-.328767C1.753425-.229141 1.753425 .219178 2.211706 .219178S2.669988-.229141 2.669988-.328767V-.836862C2.669988-1.384807 2.699875-1.932752 2.779577-2.470735C2.819427-2.699875 2.958904-3.556663 3.39726-4.174346L4.742217-6.067248Z'/>
+<path id='c17-02-motnja-g1-57' d='M3.656289-3.16812V-2.849315C3.656289-.518057 2.620174-.059776 2.042341-.059776C1.872976-.059776 1.334994-.079701 1.066002-.418431C1.504359-.418431 1.58406-.707347 1.58406-.876712C1.58406-1.185554 1.344956-1.334994 1.125778-1.334994C.966376-1.334994 .667497-1.24533 .667497-.856787C.667497-.18929 1.205479 .219178 2.052304 .219178C3.337484 .219178 4.552927-1.135741 4.552927-3.277709C4.552927-5.957659 3.407223-6.635118 2.520548-6.635118C1.972603-6.635118 1.484433-6.455791 1.05604-6.007472C.647572-5.559153 .418431-5.140722 .418431-4.393524C.418431-3.148194 1.295143-2.171856 2.410959-2.171856C3.01868-2.171856 3.427148-2.590286 3.656289-3.16812ZM2.420922-2.400996C2.261519-2.400996 1.803238-2.400996 1.494396-3.028643C1.315068-3.39726 1.315068-3.895392 1.315068-4.383562C1.315068-4.921544 1.315068-5.389788 1.524284-5.758406C1.793275-6.256538 2.171856-6.386052 2.520548-6.386052C2.978829-6.386052 3.307597-6.047323 3.476961-5.599004C3.596513-5.280199 3.636364-4.652553 3.636364-4.194271C3.636364-3.367372 3.297634-2.400996 2.420922-2.400996Z'/>
+</defs>
+<g id='c17-02-motnja-page1'>
+<g stroke-miterlimit='10' transform='translate(-49.495194,54.224286)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='osi'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 0H200.59192' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 0V126.47264' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M0 85.10207C0 85.10207 1.74359 83.12538 2.41867 82.39903S4.19054 80.54604 4.86555 79.86703C5.54057 79.18803 6.60878 78.14478 7.2838 77.50523C7.95882 76.86569 9.05562 75.86162 9.7307 75.25761C10.40578 74.65361 11.47429 73.72043 12.14937 73.15198S13.92119 71.6974 14.59627 71.1605C15.27135 70.62361 16.33986 69.79556 17.01494 69.28235C17.69002 68.76913 18.78682 67.951 19.46184 67.46152C20.13686 66.97203 21.20895 66.22023 21.88007 65.75441C22.55118 65.28859 23.62367 64.55031 24.29875 64.10419S26.07062 62.96542 26.74564 62.53906C27.42065 62.1127 28.48886 61.44182 29.16388 61.03125S30.9357 59.97466 31.61078 59.57986C32.28586 59.18507 33.35437 58.56476 34.02945 58.1858C34.70453 57.80685 35.80127 57.21574 36.47635 56.8486S38.21994 55.8949 38.89502 55.53963S40.6669 54.63138 41.34192 54.28796C42.01694 53.94455 43.08904 53.39612 43.76015 53.06451C44.43126 52.73291 45.50375 52.21774 46.17883 51.89795S47.95064 51.07149 48.62572 50.75958C49.3008 50.44768 50.36931 49.95384 51.04439 49.64989C51.71947 49.34593 52.81627 48.86491 53.49129 48.56885C54.1663 48.27278 55.23451 47.8042 55.90953 47.51602S57.68135 46.77214 58.35643 46.49185S60.10002 45.76828 60.7751 45.4959C61.45018 45.22351 62.5469 44.7931 63.22198 44.52861C63.89706 44.26411 64.96956 43.84613 65.64067 43.58952C66.31178 43.33292 67.38388 42.93173 68.0589 42.67911C68.73392 42.42648 69.83072 42.01343 70.5058 41.76869C71.18088 41.52396 72.24939 41.15598 72.92447 40.91515S74.69635 40.26979 75.37137 40.03294C76.04639 39.7961 77.11453 39.437 77.78961 39.20804S79.56186 38.60776 80.23694 38.38272S81.98016 37.80711 82.65518 37.58604S84.42699 37.00645 85.10207 36.78937C85.77715 36.57228 86.84964 36.23453 87.52075 36.02135S89.26396 35.46216 89.93898 35.2529S91.7108 34.7144 92.38588 34.51309S94.12947 33.99934 94.80455 33.80196C95.47963 33.60457 96.57637 33.28777 97.25145 33.09038S98.99504 32.57265 99.67012 32.37923C100.3452 32.1858 101.442 31.8858 102.11702 31.6963S103.86415 31.19891 104.53526 31.01338C105.20638 30.82785 106.27885 30.54065 106.95393 30.3591S108.72581 29.88644 109.40083 29.70483S111.14398 29.22781 111.81906 29.05013C112.49414 28.87244 113.59131 28.59775 114.26639 28.42409S116.00961 27.97212 116.68463 27.79846S118.45645 27.34215 119.13153 27.17241S120.87512 26.74084 121.5502 26.57501S123.32208 26.13904 123.9971 25.97719S125.74423 25.56633 126.41534 25.40845C127.08646 25.25056 128.15894 24.99721 128.83401 24.83926C129.5091 24.68132 130.60582 24.42804 131.2809 24.2701C131.95598 24.11215 133.0245 23.85487 133.69958 23.70091S135.47145 23.3143 136.14647 23.1604S137.8897 22.74164 138.56471 22.59164C139.23973 22.44165 140.33653 22.22542 141.01161 22.07935C141.68669 21.93327 142.7552 21.6849 143.43028 21.53883S145.2021 21.16867 145.87718 21.02652S147.62474 20.65631 148.29585 20.51422S150.03908 20.14444 150.7141 20.00235C151.38911 19.86026 152.4859 19.62823 153.16098 19.49005S154.90459 19.14459 155.57967 19.00641S157.35147 18.6283 158.02655 18.4941S159.77014 18.16933 160.44522 18.03911S162.2171 17.68967 162.89212 17.55547C163.56714 17.42126 164.63535 17.2021 165.31036 17.07181C165.98538 16.94151 167.08218 16.74275 167.75726 16.61638C168.43234 16.49 169.50482 16.28726 170.17593 16.16095C170.84705 16.03464 171.91916 15.83228 172.59418 15.70596C173.2692 15.57965 174.36598 15.37685 175.04106 15.25053C175.71614 15.12422 176.78467 14.91788 177.45975 14.79555S179.23155 14.49115 179.90663 14.36876S181.65022 14.03574 182.3253 13.91335C183.00038 13.79095 184.09718 13.605 184.7722 13.48657C185.44722 13.36815 186.51543 13.17422 187.19044 13.05978C187.86546 12.94534 188.96227 12.77617 189.63734 12.66167C190.31242 12.54716 192.05602 12.23447 192.05602 12.23447' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M0 109.88448C0 109.88448 1.74359 108.38837 2.41867 107.8357C3.09375 107.28302 4.19054 106.43005 4.86555 105.90111C5.54057 105.37216 6.60878 104.53264 7.2838 104.02339S9.05562 102.71634 9.7307 102.23076S11.47429 100.98949 12.14937 100.52367S13.92119 99.32347 14.59627 98.87344C15.27135 98.42342 16.33986 97.71043 17.01494 97.2801C17.69002 96.84978 18.78682 96.1864 19.46184 95.77185S21.20895 94.69487 21.88007 94.29225C22.55118 93.88963 23.62367 93.2568 24.29875 92.86996S26.07062 91.87915 26.74564 91.50412C27.42065 91.12909 28.48886 90.53015 29.16388 90.16692C29.8389 89.80368 30.9357 89.2336 31.61078 88.88615C32.28586 88.53871 33.35437 88.00221 34.02945 87.66272S35.80127 86.77087 36.47635 86.43927S38.21994 85.59242 38.89502 85.27269S40.6669 84.44662 41.34192 84.13478S43.08904 83.32903 43.76015 83.02507C44.43126 82.72112 45.50375 82.2401 46.17883 81.94403S47.95064 81.17938 48.62572 80.8912C49.3008 80.60303 50.36931 80.14731 51.04439 79.86703C51.71947 79.58676 52.81627 79.14348 53.49129 78.8711C54.1663 78.59871 55.23451 78.17227 55.90953 77.9038C56.58455 77.63531 57.68135 77.20056 58.35643 76.93607C59.03151 76.67157 60.10002 76.25005 60.7751 75.99742C61.45018 75.7448 62.5469 75.36394 63.22198 75.11522S64.96956 74.44954 65.64067 74.2048C66.31178 73.96007 67.38388 73.58809 68.0589 73.35124C68.73392 73.1144 69.83072 72.73062 70.5058 72.4977C71.18088 72.26477 72.24939 71.90134 72.92447 71.67238S74.69635 71.07245 75.37137 70.84747C76.04639 70.6225 77.11453 70.27188 77.78961 70.05081S79.56186 69.47128 80.23694 69.25414C80.91202 69.03699 81.98016 68.69495 82.65518 68.48569S84.42699 67.95116 85.10207 67.74588S86.84964 67.21136 87.52075 67.00609C88.19186 66.80081 89.26396 66.46759 89.93898 66.26628S91.7108 65.74857 92.38588 65.55515C93.06096 65.36172 94.12947 65.06563 94.80455 64.87221S96.57637 64.35057 97.25145 64.16107S98.99504 63.69196 99.67012 63.50636C100.3452 63.32077 101.442 63.00897 102.11702 62.82344S103.86415 62.3468 104.53526 62.16917C105.20638 61.99155 106.27885 61.72076 106.95393 61.54312S108.72581 61.06647 109.40083 60.88884S111.14398 60.43254 111.81906 60.2628S113.59131 59.83118 114.26639 59.6654C114.94147 59.49963 116.00961 59.23384 116.68463 59.06801S118.45645 58.636 119.13153 58.47017S120.87512 58.03456 121.5502 57.87277S123.32208 57.46191 123.9971 57.30403S125.74423 56.8928 126.41534 56.73486C127.08646 56.57692 128.15894 56.32362 128.83401 56.16568C129.5091 56.00774 130.60582 55.75046 131.2809 55.5965S133.0245 55.20596 133.69958 55.05598S135.47145 54.66153 136.14647 54.51546C136.82149 54.36938 137.8897 54.14923 138.56471 54.00316C139.23973 53.85709 140.33653 53.6087 141.01161 53.46263S142.7552 53.09242 143.43028 52.95033S145.2021 52.58055 145.87718 52.43846S147.62474 52.06435 148.29585 51.92616C148.96696 51.78798 150.03908 51.5807 150.7141 51.44252C151.38911 51.30434 152.4859 51.06839 153.16098 50.9302C153.83606 50.79202 154.90459 50.58076 155.57967 50.44656S157.35147 50.09315 158.02655 49.96292S159.77014 49.63815 160.44522 49.50792S162.2171 49.15456 162.89212 49.02428S164.63535 48.69522 165.31036 48.56885C165.98538 48.44247 167.08218 48.23973 167.75726 48.11342C168.43234 47.9871 169.50482 47.78474 170.17593 47.65843C170.84705 47.53212 171.91916 47.3254 172.59418 47.203C173.2692 47.08061 174.36598 46.89856 175.04106 46.77623S176.78467 46.44356 177.45975 46.32123S179.23155 46.01288 179.90663 45.89445C180.58171 45.77603 181.65022 45.58617 182.3253 45.46768C183.00038 45.3492 184.09718 45.15895 184.7722 45.04047C185.44722 44.92198 186.51543 44.72813 187.19044 44.6137C187.86546 44.49925 188.96227 44.33002 189.63734 44.21558C190.31242 44.10114 192.05602 43.7888 192.05602 43.7888' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='meje'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 77.33461H192.05602' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 45.52455H192.05602' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M-2.27626 0H2.27626' fill='none'/>
+</g>
+<g transform='translate(-19.25623,-2.25)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.495194,54.224286)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-49.495194' y='54.224286' xlink:href='#c17-02-motnja-g1-48'/>
+<use x='-44.513855' y='54.224286' xlink:href='#c17-02-motnja-g0-59'/>
+<use x='-41.746447' y='54.224286' xlink:href='#c17-02-motnja-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M-2.27626 45.52455H2.27626' fill='none'/>
+</g>
+<g transform='translate(-11.47842,42.30234)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.495194,54.224286)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-49.495194' y='54.224286' xlink:href='#c17-02-motnja-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M-2.27626 91.04869H2.27626' fill='none'/>
+</g>
+<g transform='translate(-16.47845,87.82648)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.495194,54.224286)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-49.495194' y='54.224286' xlink:href='#c17-02-motnja-g1-49'/>
+<use x='-44.513855' y='54.224286' xlink:href='#c17-02-motnja-g1-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-11.47842,74.1124)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.495194,54.224286)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-49.495194' y='54.224286' xlink:href='#c17-02-motnja-g1-53'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M9.23618 77.33461C9.23618 78.35005 8.413 79.17323 7.39755 79.17323C6.38211 79.17323 5.55893 78.35005 5.55893 77.33461S6.38211 75.49599 7.39755 75.49599C8.413 75.49599 9.23618 76.31917 9.23618 77.33461ZM7.39755 77.33461' stroke='none'/>
+</g>
+<g transform='translate(7.39755,77.33461)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.495194,54.224286)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(11.03053,84.9035)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.495194,54.224286)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-49.495194' y='54.224286' xlink:href='#c17-02-motnja-g1-51'/>
+<use x='-44.513855' y='54.224286' xlink:href='#c17-02-motnja-g0-59'/>
+<use x='-41.746447' y='54.224286' xlink:href='#c17-02-motnja-g1-53'/>
+<use x='-36.765108' y='54.224286' xlink:href='#c17-02-motnja-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M59.17088 77.33461C59.17088 78.35005 58.3477 79.17323 57.33226 79.17323S55.49364 78.35005 55.49364 77.33461S56.31682 75.49599 57.33226 75.49599S59.17088 76.31917 59.17088 77.33461ZM57.33226 77.33461' stroke='none'/>
+</g>
+<g transform='translate(57.33226,77.33461)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.495194,54.224286)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(60.96524,84.9035)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.495194,54.224286)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-49.495194' y='54.224286' xlink:href='#c17-02-motnja-g1-55'/>
+<use x='-44.513855' y='54.224286' xlink:href='#c17-02-motnja-g0-59'/>
+<use x='-41.746447' y='54.224286' xlink:href='#c17-02-motnja-g1-48'/>
+<use x='-36.765108' y='54.224286' xlink:href='#c17-02-motnja-g1-51'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M62.58507 45.52455C62.58507 46.54 61.76189 47.36317 60.74644 47.36317C59.731 47.36317 58.90782 46.54 58.90782 45.52455C58.90782 44.50911 59.731 43.68593 60.74644 43.68593C61.76189 43.68593 62.58507 44.50911 62.58507 45.52455ZM60.74644 45.52455' stroke='none'/>
+</g>
+<g transform='translate(60.74644,45.52455)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.495194,54.224286)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(64.37943,53.09344)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.495194,54.224286)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-49.495194' y='54.224286' xlink:href='#c17-02-motnja-g1-55'/>
+<use x='-44.513855' y='54.224286' xlink:href='#c17-02-motnja-g0-59'/>
+<use x='-41.746447' y='54.224286' xlink:href='#c17-02-motnja-g1-50'/>
+<use x='-36.765108' y='54.224286' xlink:href='#c17-02-motnja-g1-55'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M183.79404 45.52455C183.79404 46.54 182.97086 47.36317 181.95541 47.36317C180.93997 47.36317 180.11679 46.54 180.11679 45.52455C180.11679 44.50911 180.93997 43.68593 181.95541 43.68593C182.97086 43.68593 183.79404 44.50911 183.79404 45.52455ZM181.95541 45.52455' stroke='none'/>
+</g>
+<g transform='translate(181.95541,45.52455)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.495194,54.224286)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(170.5665,53.09344)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.495194,54.224286)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-49.495194' y='54.224286' xlink:href='#c17-02-motnja-g1-49'/>
+<use x='-44.513855' y='54.224286' xlink:href='#c17-02-motnja-g1-53'/>
+<use x='-39.532516' y='54.224286' xlink:href='#c17-02-motnja-g0-59'/>
+<use x='-36.765108' y='54.224286' xlink:href='#c17-02-motnja-g1-55'/>
+<use x='-31.783769' y='54.224286' xlink:href='#c17-02-motnja-g1-57'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='razdalja'>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M0-2.27626V2.27626' fill='none'/>
+</g>
+<g transform='translate(-2.5,-13.4916)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.495194,54.224286)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-49.495194' y='54.224286' xlink:href='#c17-02-motnja-g1-51'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M28.45274-2.27626V2.27626' fill='none'/>
+</g>
+<g transform='translate(25.95274,-13.4916)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.495194,54.224286)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-49.495194' y='54.224286' xlink:href='#c17-02-motnja-g1-53'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M99.5846-2.27626V2.27626' fill='none'/>
+</g>
+<g transform='translate(94.58458,-13.4916)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.495194,54.224286)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-49.495194' y='54.224286' xlink:href='#c17-02-motnja-g1-49'/>
+<use x='-44.513855' y='54.224286' xlink:href='#c17-02-motnja-g1-48'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M170.71646-2.27626V2.27626' fill='none'/>
+</g>
+<g transform='translate(165.71645,-13.4916)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.495194,54.224286)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-49.495194' y='54.224286' xlink:href='#c17-02-motnja-g1-49'/>
+<use x='-44.513855' y='54.224286' xlink:href='#c17-02-motnja-g1-53'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(205.64763,-2.5)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.495194,54.224286)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-49.495194' y='54.224286' xlink:href='#c17-02-motnja-g0-114'/>
+<use x='-44.723706' y='54.224286' xlink:href='#c17-02-motnja-g0-61'/>
+<use x='-39.742367' y='54.224286' xlink:href='#c17-02-motnja-g0-97'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 17.5</span>: Odstopanje napetosti \(\sigma_{\mathrm{xx}}\) od \(\sigma_0\) v odstotkih na obeh oseh plošče z luknjo polmera <span class="nobr">\(a\),</span> v odvisnosti od razdalje \(r/a\) od središča. Navpična skala je logaritemska. Modro: os <span class="nobr">\(y\),</span> oranžno: os <span class="nobr">\(x\).</span> Črtkani črti sta pri \(5\) % in \(1\) %, pike so presečišča s krivuljama, številke ob njih so razdalje <span class="nobr">\(r/a\),</span> kjer odstopanje pade pod mejo. Izračunano z enačbama Kirschove rešitve iz poglavja o robnem problemu, razlike do \(3\) ali \(4\) mest.</figcaption></figure>
+<p>Na sliki so <a data-del="osi" class="xref kaz" href="sec-telo-v-model.html#fig-tvm-motnja" data-knowl="fig-tvm-motnja">osi</a>, po vodoravni teče razdalja \(r/a\) od središča luknje v polmerih luknje, po navpični odstopanje \(\sigma_{\mathrm{xx}}\) od \(\sigma_0\) v odstotkih. Odstopanje na osi \(y\) (modro) je pozitivno in na osi \(x\) (oranžno) negativno, na sliki pa risano po absolutni vrednosti. Skala je logaritemska zato, ker obe krivulji padata približno po potenci \((a/r)^2\) in sta zato na takem grafu blizu premic. Zakaj ravno ta potenca? Vodilni člen odstopanja je po enačbah <a class="xref" href="sec-kirschov-problem.html#eq-klp-os-y" data-knowl="eq-klp-os-y">(11.69)</a> in <a class="xref" href="sec-kirschov-problem.html#eq-klp-os-x" data-knowl="eq-klp-os-x">(11.70)</a> enak \(+\tfrac12(a/r)^2\) na osi \(y\) in \(-\tfrac52(a/r)^2\) na osi <span class="nobr">\(x\),</span> zato je na osi \(x\) vodilni člen petkrat večji pri isti razdalji. Če bi veljal samo vodilni člen, bi bila pri isti meji razdalja na osi \(x\) \(\sqrt5 \approx 2{,}24\)-krat večja. Naslednji člen, \(+\tfrac32(a/r)^4\) na obeh oseh, odstopanje na osi \(y\) poveča in na osi \(x\) zmanjša, zato je razmerje razdalj manjše: pri meji \(1\) % je <span class="nobr">\(2{,}17\),</span> pri meji \(5\) %, ki leži bliže luknji, le <span class="nobr">\(2{,}00\).</span> <a data-del="meje" class="xref kaz" href="sec-telo-v-model.html#fig-tvm-motnja" data-knowl="fig-tvm-motnja">Črtkani meji</a> \(5\) % in \(1\) % prerežeta krivulji pri razdaljah, ki jih kažejo <a data-del="meje" class="xref kaz" href="sec-telo-v-model.html#fig-tvm-motnja" data-knowl="fig-tvm-motnja">pike</a> s številkami: na osi \(y\) pri \(3{,}52\,a\) in <span class="nobr">\(7{,}27\,a\),</span> na osi \(x\) pri \(7{,}03\,a\) in <span class="nobr">\(15{,}79\,a\).</span> Poglavje <a class="xref" href="ch-robni-problem-elasticnosti.html">11</a> je te številke že izračunalo, tu jih uporabimo kot merilo za odločitev. <a data-del="razdalja" class="xref kaz" href="sec-telo-v-model.html#fig-tvm-motnja" data-knowl="fig-tvm-motnja">Razdalje</a> na vodoravni osi so izražene v polmerih luknje, zato isto merilo velja za vsako krožno luknjo v veliki plošči pod enoosnim vlekom, pri \(a = 10\) mm je \(7{,}03\,a\) razdalja \(70{,}3\) mm.</p>
+
+<div class="blk primer" id="ex-luknja-odstranjena"><div class="blk-head"><span class="blk-label">Primer 17.4</span> <span class="blk-title">Luknjo izpustimo, ko je vprašanje daleč od nje (dropping the hole when the question is far from it)</span></div><div class="blk-body"><p><a class="xref auto forward" href="sec-kirchhoffova-plosca.html#def-plosca" data-knowl="def-plosca" title="Definirano kasneje v knjigi">Plošča</a> z luknjo ima po slikah <a class="xref" href="sec-telo-v-model.html#fig-tvm-motnja" data-knowl="fig-tvm-motnja">17.5</a> in poglavja <a class="xref" href="ch-robni-problem-elasticnosti.html">11</a> dve vprašanji z različnima odgovoroma.</p>
+<ol>
+<li>Vprašanje A: kolikšna je napetost \(\sigma_{\mathrm{xx}}\) v točki na osi <span class="nobr">\(x\),</span> ki je \(r = 10\,a = 100\) mm od središča luknje? Če luknjo izpustimo, je v celi plošči \(\sigma_{\mathrm{xx}} = \sigma_0 = 50\) MPa. S Kirschovo rešitvijo (izrek <a class="xref" href="sec-kirschov-problem.html#thm-kirsch" data-knowl="thm-kirsch">11.51</a>) je \(\sigma_{\mathrm{xx}} = 0{,}97515\,\sigma_0 = 48{,}758\) MPa. <a class="xref auto" href="sec-hierarhija-modelov.html#def-vrste-napak" data-knowl="def-vrste-napak">Napaka modela</a> brez luknje je \(1{,}242\) MPa ali \(2{,}5\) % napetosti <span class="nobr">\(\sigma_0\),</span> kolikor sliko <a class="xref" href="sec-telo-v-model.html#fig-tvm-motnja" data-knowl="fig-tvm-motnja">17.5</a> kaže pri \(r/a = 10\) na osi <span class="nobr">\(x\).</span></li>
+<li>Vprašanje B: kolikšna je največja napetost v plošči? Brez luknje je \(50\) MPa. S Kirschovo rešitvijo je ob luknji \(3\,\sigma_0 = 150\) MPa (poglavje <a class="xref" href="ch-robni-problem-elasticnosti.html">11</a>, razdelek <a class="xref" href="sec-kirschov-problem.html#sec-klp-stevila">11.13.4</a>). Napaka modela brez luknje je \(100\) MPa ali dve tretjini prave vrednosti, model pa napove trikrat premalo, v smeri, ki je za trdnost nevarna.</li>
+</ol>
+<p>Pri vprašanju A je izpustitev podrobnosti upravičena, pri vprašanju B ne. Pri obeh smo izračunali iz iste rešitve, in razlika med njima ni v modelu, ampak v točki, po kateri sprašujemo: razdalja \(10\,a\) je daleč, razdalja \(a\) je ob luknji. Pri vprašanju B tudi gostejša mreža modela brez luknje ne pomaga, ker se njegova rešitev bliža \(50\) MPa, ne \(150\) MPa.</p>
+</div></div>
+<p>Zadnja trditev primera je splošna: gostejša mreža zmanjša <a class="xref auto" href="sec-hierarhija-modelov.html#def-vrste-napak" data-knowl="def-vrste-napak">napako diskretizacije</a> (discretization error), ne pa napake modela. COOK to zapiše za zaobljene robove: če začetna mreža izhaja iz poenostavljene geometrije, na primer brez zaobljenj, lahko prilagodljivo gostenje mreže vodi k rešitvi, ki <a class="xref auto" href="sec-zaporedja.html#def-limita-zaporedja" data-knowl="def-limita-zaporedja">konvergira</a> k napačnemu rezultatu (COOK, PDF str. 345). Če te napake ne moremo ocenjevati s številom, ki ga izračuna računalnik, jo moramo pogledati v virih: tablice faktorjev <a class="xref auto forward" href="sec-vrteci-disk.html#cor-luknja-podvoji" data-knowl="cor-luknja-podvoji" title="Definirano kasneje v knjigi">koncentracije napetosti</a> za zaobljenje ali luknjo (COOK, PDF str. 370), ali izračun z modelom, ki podrobnost vsebuje. Zaobljenega roba tu ne računamo, ker knjiga zanj še nima vira številke, in ga kot primer zato le imenujemo (BATHE, PDF str. 26).</p>
+<p>Geometrija v pravem delu pride iz programa za oblikovanje, ki je narejen za izdelavo in zato vsebuje več, kot analiza potrebuje: ONATE1 piše, da poenostavitve običajno vnesemo že pred ustvarjanjem mreže, in da je treba podatke očistiti napak in odvečnih podatkov (ONATE1, PDF str. 382). Tudi to je odločitev o napaki modela, ki jo naredimo, preden se mreža začne.</p>
+
+<h3 id="sec-podmodel"><span class="h-num">17.2.2</span> Podmodel</h3>
+<p>Drugo vprašanje: kaj, če podrobnost, ki jo vprašanje potrebuje, leži v majhnem delu <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">telesa</a>, celo telo pa je preveliko, da bi ga razdelili povsod enako na majhne elemente? Računamo celo telo z grobo mrežo, nato iz njega izrežemo del okoli podrobnosti in ga izračunamo še enkrat z drobno mrežo, pri čemer mu na rezu predpišemo pomike, ki jih je dal grob izračun. To imenujemo <a class="xref auto forward" href="sec-telo-v-model.html#lem-podmodel" data-knowl="lem-podmodel" title="Definirano kasneje v knjigi">podmodel</a> (submodel, COOK, PDF str. 370-371). Zanj velja vprašanje, ki ga COOK zastavi s pogojem, da mora biti rez »dovolj daleč« od motnje, in ki ga mi razčlenimo: kaj podmodel natančno reši in kako velika je njegova napaka.</p>
+<p>Vzemimo cev iz poglavja <a class="xref" href="ch-robni-problem-elasticnosti.html">11</a> (izrek <a class="xref" href="sec-debelostenska-cev.html#thm-lamejeva-cev" data-knowl="thm-lamejeva-cev">11.27</a>) v ravninskem deformacijskem stanju (definicija <a class="xref" href="sec-ravninski-problemi.html#def-ravninsko-deformacijsko-stanje" data-knowl="def-ravninsko-deformacijsko-stanje">11.30</a>), iz jekla z \(E = 196\) GPa in <span class="nobr">\(\nu = 0{,}3\),</span> z notranjim polmerom \(a = 40\) mm, zunanjim \(b = 60\) mm in oljem s tlakom \(p = 30\) MPa v izvrtini. Slika <a class="xref" href="sec-telo-v-model.html#fig-tvm-podmodel" data-knowl="fig-tvm-podmodel">17.6</a> kaže njen prečni prerez.</p>
+
+<figure class="blk slika" id="fig-tvm-podmodel"><p><span class="svgfig" role="img" aria-label="Prerez cevi z rezom, podmodelom in napako pomika v obroču"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='547.93pt' height='276.33pt' viewBox='-72.000004 -72.000001 405.87725 204.692483'>
+<defs>
+<path id='c17-02-podmodel-g0-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='c17-02-podmodel-g0-61' d='M4.373599-7.0934C4.423412-7.222914 4.423412-7.262765 4.423412-7.272727C4.423412-7.382316 4.333748-7.47198 4.224159-7.47198C4.154421-7.47198 4.084682-7.442092 4.054795-7.382316L.597758 2.11208C.547945 2.241594 .547945 2.281445 .547945 2.291407C.547945 2.400996 .637609 2.49066 .747198 2.49066C.876712 2.49066 .9066 2.420922 .966376 2.251557L4.373599-7.0934Z'/>
+<path id='c17-02-podmodel-g0-97' d='M3.716065-3.765878C3.536737-4.134496 3.247821-4.403487 2.799502-4.403487C1.633873-4.403487 .398506-2.938979 .398506-1.484433C.398506-.547945 .946451 .109589 1.723537 .109589C1.92279 .109589 2.420922 .069738 3.01868-.637609C3.098381-.219178 3.447073 .109589 3.92528 .109589C4.273973 .109589 4.503113-.119552 4.662516-.438356C4.83188-.797011 4.961395-1.404732 4.961395-1.424658C4.961395-1.524284 4.871731-1.524284 4.841843-1.524284C4.742217-1.524284 4.732254-1.484433 4.702366-1.344956C4.533001-.697385 4.353674-.109589 3.945205-.109589C3.676214-.109589 3.646326-.368618 3.646326-.56787C3.646326-.787049 3.666252-.86675 3.775841-1.305106C3.88543-1.723537 3.905355-1.823163 3.995019-2.201743L4.353674-3.596513C4.423412-3.875467 4.423412-3.895392 4.423412-3.935243C4.423412-4.104608 4.303861-4.204234 4.134496-4.204234C3.895392-4.204234 3.745953-3.985056 3.716065-3.765878ZM3.068493-1.185554C3.01868-1.006227 3.01868-.986301 2.86924-.816936C2.430884-.268991 2.022416-.109589 1.743462-.109589C1.24533-.109589 1.105853-.657534 1.105853-1.046077C1.105853-1.544209 1.424658-2.769614 1.653798-3.227895C1.96264-3.815691 2.410959-4.184309 2.809465-4.184309C3.457036-4.184309 3.596513-3.367372 3.596513-3.307597S3.576588-3.188045 3.566625-3.138232L3.068493-1.185554Z'/>
+<path id='c17-02-podmodel-g0-98' d='M2.381071-6.804483C2.381071-6.814446 2.381071-6.914072 2.251557-6.914072C2.022416-6.914072 1.295143-6.834371 1.036115-6.814446C.956413-6.804483 .846824-6.794521 .846824-6.615193C.846824-6.495641 .936488-6.495641 1.085928-6.495641C1.564134-6.495641 1.58406-6.425903 1.58406-6.326276C1.58406-6.256538 1.494396-5.917808 1.444583-5.708593L.627646-2.460772C.508095-1.96264 .468244-1.803238 .468244-1.454545C.468244-.508095 .996264 .109589 1.733499 .109589C2.909091 .109589 4.134496-1.374844 4.134496-2.809465C4.134496-3.716065 3.606476-4.403487 2.809465-4.403487C2.351183-4.403487 1.942715-4.11457 1.643836-3.805729L2.381071-6.804483ZM1.444583-3.038605C1.504359-3.257783 1.504359-3.277709 1.594022-3.387298C2.082192-4.034869 2.530511-4.184309 2.789539-4.184309C3.148194-4.184309 3.417186-3.88543 3.417186-3.247821C3.417186-2.660025 3.088418-1.514321 2.909091-1.135741C2.580324-.468244 2.122042-.109589 1.733499-.109589C1.39477-.109589 1.066002-.37858 1.066002-1.115816C1.066002-1.305106 1.066002-1.494396 1.225405-2.122042L1.444583-3.038605Z'/>
+<path id='c17-02-podmodel-g0-99' d='M3.945205-3.785803C3.785803-3.785803 3.646326-3.785803 3.506849-3.646326C3.347447-3.496887 3.327522-3.327522 3.327522-3.257783C3.327522-3.01868 3.506849-2.909091 3.696139-2.909091C3.985056-2.909091 4.254047-3.148194 4.254047-3.5467C4.254047-4.034869 3.785803-4.403487 3.078456-4.403487C1.733499-4.403487 .408468-2.978829 .408468-1.574097C.408468-.67746 .986301 .109589 2.022416 .109589C3.447073 .109589 4.283935-.946451 4.283935-1.066002C4.283935-1.125778 4.224159-1.195517 4.164384-1.195517C4.11457-1.195517 4.094645-1.175592 4.034869-1.09589C3.247821-.109589 2.161893-.109589 2.042341-.109589C1.414695-.109589 1.145704-.597758 1.145704-1.195517C1.145704-1.603985 1.344956-2.570361 1.683686-3.188045C1.992528-3.755915 2.540473-4.184309 3.088418-4.184309C3.427148-4.184309 3.805729-4.054795 3.945205-3.785803Z'/>
+<path id='c17-02-podmodel-g0-112' d='M.448319 1.215442C.368618 1.554172 .348692 1.62391-.089664 1.62391C-.209215 1.62391-.318804 1.62391-.318804 1.8132C-.318804 1.892902-.268991 1.932752-.18929 1.932752C.079701 1.932752 .368618 1.902864 .647572 1.902864C.976339 1.902864 1.315068 1.932752 1.633873 1.932752C1.683686 1.932752 1.8132 1.932752 1.8132 1.733499C1.8132 1.62391 1.713574 1.62391 1.574097 1.62391C1.075965 1.62391 1.075965 1.554172 1.075965 1.464508C1.075965 1.344956 1.494396-.278954 1.564134-.52802C1.693649-.239103 1.972603 .109589 2.480697 .109589C3.636364 .109589 4.881694-1.344956 4.881694-2.809465C4.881694-3.745953 4.313823-4.403487 3.556663-4.403487C3.058531-4.403487 2.580324-4.044832 2.251557-3.656289C2.15193-4.194271 1.723537-4.403487 1.354919-4.403487C.896638-4.403487 .707347-4.014944 .617684-3.835616C.438356-3.496887 .308842-2.899128 .308842-2.86924C.308842-2.769614 .408468-2.769614 .428394-2.769614C.52802-2.769614 .537983-2.779577 .597758-2.998755C.767123-3.706102 .966376-4.184309 1.325031-4.184309C1.494396-4.184309 1.633873-4.104608 1.633873-3.726027C1.633873-3.496887 1.603985-3.387298 1.564134-3.217933L.448319 1.215442ZM2.201743-3.108344C2.271482-3.377335 2.540473-3.656289 2.719801-3.805729C3.068493-4.11457 3.35741-4.184309 3.526775-4.184309C3.92528-4.184309 4.164384-3.835616 4.164384-3.247821S3.835616-1.514321 3.656289-1.135741C3.317559-.438356 2.839352-.109589 2.470735-.109589C1.8132-.109589 1.683686-.936488 1.683686-.996264C1.683686-1.016189 1.683686-1.036115 1.713574-1.155666L2.201743-3.108344Z'/>
+<path id='c17-02-podmodel-g0-114' d='M.876712-.587796C.846824-.438356 .787049-.209215 .787049-.159402C.787049 .019925 .926526 .109589 1.075965 .109589C1.195517 .109589 1.374844 .029888 1.444583-.169365C1.464508-.209215 1.803238-1.564134 1.843088-1.743462C1.92279-2.072229 2.102117-2.769614 2.161893-3.038605C2.201743-3.16812 2.480697-3.636364 2.719801-3.855542C2.799502-3.92528 3.088418-4.184309 3.516812-4.184309C3.775841-4.184309 3.92528-4.064757 3.935243-4.064757C3.636364-4.014944 3.417186-3.775841 3.417186-3.516812C3.417186-3.35741 3.526775-3.16812 3.795766-3.16812S4.343711-3.39726 4.343711-3.755915C4.343711-4.104608 4.024907-4.403487 3.516812-4.403487C2.86924-4.403487 2.430884-3.915318 2.241594-3.636364C2.161893-4.084682 1.803238-4.403487 1.334994-4.403487C.876712-4.403487 .687422-4.014944 .597758-3.835616C.418431-3.496887 .288917-2.899128 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.779577 .577833-2.998755C.747198-3.706102 .946451-4.184309 1.305106-4.184309C1.474471-4.184309 1.613948-4.104608 1.613948-3.726027C1.613948-3.516812 1.58406-3.407223 1.454545-2.889166L.876712-.587796Z'/>
+<path id='c17-02-podmodel-g0-117' d='M3.486924-.557908C3.596513-.14944 3.945205 .109589 4.373599 .109589C4.722291 .109589 4.951432-.119552 5.110834-.438356C5.280199-.797011 5.409714-1.404732 5.409714-1.424658C5.409714-1.524284 5.32005-1.524284 5.290162-1.524284C5.190535-1.524284 5.180573-1.484433 5.150685-1.344956C5.011208-.787049 4.821918-.109589 4.403487-.109589C4.194271-.109589 4.094645-.239103 4.094645-.56787C4.094645-.787049 4.214197-1.255293 4.293898-1.603985L4.572852-2.67995C4.60274-2.82939 4.702366-3.20797 4.742217-3.35741C4.79203-3.58655 4.891656-3.965131 4.891656-4.024907C4.891656-4.204234 4.752179-4.293898 4.60274-4.293898C4.552927-4.293898 4.293898-4.283935 4.214197-3.945205C4.024907-3.217933 3.58655-1.474471 3.466999-.946451C3.457036-.9066 3.058531-.109589 2.331258-.109589C1.8132-.109589 1.713574-.557908 1.713574-.926526C1.713574-1.484433 1.992528-2.271482 2.251557-2.958904C2.371108-3.257783 2.420922-3.39726 2.420922-3.58655C2.420922-4.034869 2.102117-4.403487 1.603985-4.403487C.657534-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.816936-3.815691 1.195517-4.184309 1.574097-4.184309C1.663761-4.184309 1.823163-4.174346 1.823163-3.855542C1.823163-3.616438 1.713574-3.327522 1.653798-3.178082C1.285181-2.191781 1.075965-1.574097 1.075965-1.085928C1.075965-.139477 1.763387 .109589 2.30137 .109589C2.958904 .109589 3.317559-.33873 3.486924-.557908Z'/>
+<path id='c17-02-podmodel-g0-122' d='M1.325031-.826899C1.863014-1.404732 2.15193-1.653798 2.510585-1.96264C2.510585-1.972603 3.128269-2.500623 3.486924-2.859278C4.433375-3.785803 4.652553-4.26401 4.652553-4.303861C4.652553-4.403487 4.562889-4.403487 4.542964-4.403487C4.473225-4.403487 4.443337-4.383562 4.393524-4.293898C4.094645-3.815691 3.88543-3.656289 3.646326-3.656289S3.287671-3.805729 3.138232-3.975093C2.948941-4.204234 2.779577-4.403487 2.450809-4.403487C1.703611-4.403487 1.24533-3.476961 1.24533-3.267746C1.24533-3.217933 1.275218-3.158157 1.364882-3.158157S1.474471-3.20797 1.494396-3.267746C1.683686-3.726027 2.261519-3.73599 2.34122-3.73599C2.550436-3.73599 2.739726-3.666252 2.968867-3.58655C3.367372-3.437111 3.476961-3.437111 3.73599-3.437111C3.377335-3.008717 2.540473-2.291407 2.351183-2.132005L1.454545-1.295143C.777086-.627646 .428394-.059776 .428394 .009963C.428394 .109589 .52802 .109589 .547945 .109589C.627646 .109589 .647572 .089664 .707347-.019925C.936488-.368618 1.235367-.637609 1.554172-.637609C1.783313-.637609 1.882939-.547945 2.132005-.259029C2.30137-.049813 2.480697 .109589 2.769614 .109589C3.755915 .109589 4.333748-1.155666 4.333748-1.424658C4.333748-1.474471 4.293898-1.524284 4.214197-1.524284C4.124533-1.524284 4.104608-1.464508 4.07472-1.39477C3.845579-.747198 3.20797-.557908 2.879203-.557908C2.67995-.557908 2.500623-.617684 2.291407-.687422C1.952677-.816936 1.803238-.856787 1.594022-.856787C1.574097-.856787 1.414695-.856787 1.325031-.826899Z'/>
+<path id='c17-02-podmodel-g1-40' d='M3.297634 2.391034C3.297634 2.361146 3.297634 2.34122 3.128269 2.171856C1.882939 .916563 1.564134-.966376 1.564134-2.49066C1.564134-4.224159 1.942715-5.957659 3.16812-7.202989C3.297634-7.32254 3.297634-7.342466 3.297634-7.372354C3.297634-7.442092 3.257783-7.47198 3.198007-7.47198C3.098381-7.47198 2.201743-6.794521 1.613948-5.529265C1.105853-4.433375 .986301-3.327522 .986301-2.49066C.986301-1.713574 1.09589-.508095 1.643836 .617684C2.241594 1.843088 3.098381 2.49066 3.198007 2.49066C3.257783 2.49066 3.297634 2.460772 3.297634 2.391034Z'/>
+<path id='c17-02-podmodel-g1-41' d='M2.879203-2.49066C2.879203-3.267746 2.769614-4.473225 2.221669-5.599004C1.62391-6.824408 .767123-7.47198 .667497-7.47198C.607721-7.47198 .56787-7.43213 .56787-7.372354C.56787-7.342466 .56787-7.32254 .757161-7.143213C1.733499-6.156912 2.30137-4.572852 2.30137-2.49066C2.30137-.787049 1.932752 .966376 .697385 2.221669C.56787 2.34122 .56787 2.361146 .56787 2.391034C.56787 2.450809 .607721 2.49066 .667497 2.49066C.767123 2.49066 1.663761 1.8132 2.251557 .547945C2.759651-.547945 2.879203-1.653798 2.879203-2.49066Z'/>
+<path id='c17-02-podmodel-g1-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='c17-02-podmodel-g1-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c17-02-podmodel-g1-55' d='M4.742217-6.067248C4.83188-6.1868 4.83188-6.206725 4.83188-6.41594H2.410959C1.195517-6.41594 1.175592-6.545455 1.135741-6.734745H.886675L.557908-4.682441H.806974C.836862-4.841843 .926526-5.469489 1.05604-5.589041C1.125778-5.648817 1.902864-5.648817 2.032379-5.648817H4.094645C3.985056-5.489415 3.198007-4.403487 2.978829-4.07472C2.082192-2.729763 1.753425-1.344956 1.753425-.328767C1.753425-.229141 1.753425 .219178 2.211706 .219178S2.669988-.229141 2.669988-.328767V-.836862C2.669988-1.384807 2.699875-1.932752 2.779577-2.470735C2.819427-2.699875 2.958904-3.556663 3.39726-4.174346L4.742217-6.067248Z'/>
+</defs>
+<g id='c17-02-podmodel-page1'>
+<g stroke-miterlimit='10' transform='translate(30.346239,30.346239)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='stena'>
+<g fill='#b3ffb3'>
+<g fill-rule='evenodd'>
+<path d='M102.43004 0C102.43004 56.57127 56.57127 102.43004 0 102.43004S-102.43004 56.57127-102.43004 0S-56.57127-102.43004 0-102.43004S102.43004-56.57127 102.43004 0ZM68.2864 0C68.2864 37.71402 37.71402 68.2864 0 68.2864S-68.2864 37.71402-68.2864 0S-37.71402-68.2864 0-68.2864S68.2864-37.71402 68.2864 0ZM0 0' stroke='none'/>
+</g>
+</g>
+<path d='M102.43004 0C102.43004 56.57127 56.57127 102.43004 0 102.43004S-102.43004 56.57127-102.43004 0S-56.57127-102.43004 0-102.43004S102.43004-56.57127 102.43004 0ZM0 0' fill='none'/>
+<path d='M68.2864 0C68.2864 37.71402 37.71402 68.2864 0 68.2864S-68.2864 37.71402-68.2864 0S-37.71402-68.2864 0-68.2864S68.2864-37.71402 68.2864 0ZM0 0' fill='none'/>
+</g>
+<g class='del' data-del='podmodel'>
+<g fill='#d9d9ff'>
+<g fill-rule='evenodd'>
+<path d='M85.35823 0C85.35823 47.14265 47.14265 85.35823 0 85.35823S-85.35823 47.14265-85.35823 0S-47.14265-85.35823 0-85.35823S85.35823-47.14265 85.35823 0ZM68.2864 0C68.2864 37.71402 37.71402 68.2864 0 68.2864S-68.2864 37.71402-68.2864 0S-37.71402-68.2864 0-68.2864S68.2864-37.71402 68.2864 0ZM0 0' stroke='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M68.2864 0C68.2864 37.71402 37.71402 68.2864 0 68.2864S-68.2864 37.71402-68.2864 0S-37.71402-68.2864 0-68.2864S68.2864-37.71402 68.2864 0ZM0 0' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='rez'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.9'>
+<path d='M85.35823 0C85.35823 47.14265 47.14265 85.35823 0 85.35823S-85.35823 47.14265-85.35823 0S-47.14265-85.35823 0-85.35823S85.35823-47.14265 85.35823 0ZM0 0' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='pomik'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<g fill='#00f' stroke='#00f'>
+<path d='M85.69571 0H93.55666' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,91.49875,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,85.58322,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(87.75362,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(93.66914,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<g fill='#00f' stroke='#00f'>
+<path d='M60.58696 60.58696L66.1414 66.1414' fill='none'/>
+<g transform='matrix(-0.7071,-0.7071,0.7071,-0.7071,64.69032,64.69032)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-0.7071,-0.7071,0.7071,-0.7071,60.50742,60.50742)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.7071,0.7071,-0.7071,0.7071,62.03804,62.03804)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.7071,0.7071,-0.7071,0.7071,66.22095,66.22095)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<g fill='#00f' stroke='#00f'>
+<path d='M0 85.69571V93.55666' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,0.0,91.49875)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,0.0,85.58322)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,87.75362)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,93.66914)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<g fill='#00f' stroke='#00f'>
+<path d='M-60.58696 60.58696L-66.1414 66.1414' fill='none'/>
+<g transform='matrix(0.7071,-0.7071,0.7071,0.7071,-64.69032,64.69032)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.7071,-0.7071,0.7071,0.7071,-60.50742,60.50742)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-0.7071,0.7071,-0.7071,-0.7071,-62.03804,62.03804)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-0.7071,0.7071,-0.7071,-0.7071,-66.22095,66.22095)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<g fill='#00f' stroke='#00f'>
+<path d='M-85.69571 0H-93.55666' fill='none'/>
+<g transform='translate(-91.49875,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-85.58322,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,-87.75362,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,-93.66914,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<g fill='#00f' stroke='#00f'>
+<path d='M-60.58696-60.58696L-66.1414-66.1414' fill='none'/>
+<g transform='matrix(0.7071,0.7071,-0.7071,0.7071,-64.69032,-64.69032)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.7071,0.7071,-0.7071,0.7071,-60.50742,-60.50742)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-0.7071,-0.7071,0.7071,-0.7071,-62.03804,-62.03804)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-0.7071,-0.7071,0.7071,-0.7071,-66.22095,-66.22095)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<g fill='#00f' stroke='#00f'>
+<path d='M0-85.69571V-93.55666' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,-91.49875)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,-85.58322)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,0.0,-87.75362)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,0.0,-93.66914)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<g fill='#00f' stroke='#00f'>
+<path d='M60.58696-60.58696L66.1414-66.1414' fill='none'/>
+<g transform='matrix(-0.7071,0.7071,-0.7071,-0.7071,64.69032,-64.69032)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-0.7071,0.7071,-0.7071,-0.7071,60.50742,-60.50742)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.7071,-0.7071,0.7071,0.7071,62.03804,-62.03804)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.7071,-0.7071,0.7071,0.7071,66.22095,-66.22095)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(98.66504,9.54716)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(30.346239,30.346239)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='30.346239' y='30.346239' xlink:href='#c17-02-podmodel-g0-117'/>
+<use x='36.049435' y='30.346239' xlink:href='#c17-02-podmodel-g1-40'/>
+<use x='39.923808' y='30.346239' xlink:href='#c17-02-podmodel-g0-99'/>
+<use x='44.235205' y='30.346239' xlink:href='#c17-02-podmodel-g1-41'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='tlak'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M46.71935 12.51927L61.87343 16.57683' fill='none'/>
+<g transform='matrix(0.96596,0.25864,-0.25864,0.96596,59.35709,15.90308)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M34.20007 34.20007L45.29793 45.29793' fill='none'/>
+<g transform='matrix(0.7071,0.7071,-0.7071,0.7071,43.45589,43.45589)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M12.51927 46.71935L16.57683 61.87343' fill='none'/>
+<g transform='matrix(0.25864,0.96596,-0.96596,0.25864,15.90308,59.35709)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M-12.51927 46.71935L-16.57683 61.87343' fill='none'/>
+<g transform='matrix(-0.25864,0.96596,-0.96596,-0.25864,-15.90308,59.35709)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M-34.20007 34.20007L-45.29793 45.29793' fill='none'/>
+<g transform='matrix(-0.7071,0.7071,-0.7071,-0.7071,-43.45589,43.45589)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M-46.71935 12.51927L-61.87343 16.57683' fill='none'/>
+<g transform='matrix(-0.96596,0.25864,-0.25864,-0.96596,-59.35709,15.90308)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M-46.71935-12.51927L-61.87343-16.57683' fill='none'/>
+<g transform='matrix(-0.96596,-0.25864,0.25864,-0.96596,-59.35709,-15.90308)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M-34.20007-34.20007L-45.29793-45.29793' fill='none'/>
+<g transform='matrix(-0.7071,-0.7071,0.7071,-0.7071,-43.45589,-43.45589)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M-12.51927-46.71935L-16.57683-61.87343' fill='none'/>
+<g transform='matrix(-0.25864,-0.96596,0.96596,-0.25864,-15.90308,-59.35709)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M12.51927-46.71935L16.57683-61.87343' fill='none'/>
+<g transform='matrix(0.25864,-0.96596,0.96596,0.25864,15.90308,-59.35709)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M34.20007-34.20007L45.29793-45.29793' fill='none'/>
+<g transform='matrix(0.7071,-0.7071,0.7071,0.7071,43.45589,-43.45589)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M46.71935-12.51927L61.87343-16.57683' fill='none'/>
+<g transform='matrix(0.96596,-0.25864,0.25864,0.96596,59.35709,-15.90308)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(-2.51563,27.27219)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(30.346239,30.346239)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='30.346239' y='30.346239' xlink:href='#c17-02-podmodel-g0-112'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='polmeri'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-.30586-.14258L-61.57893-28.70871' fill='none'/>
+<g transform='matrix(0.90634,0.42252,-0.42252,0.90634,-5.5654,-2.59445)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.90634,0.42252,-0.42252,0.90634,-0.20392,-0.09508)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-0.90634,-0.42252,0.42252,-0.90634,-56.3194,-26.25684)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-0.90634,-0.42252,0.42252,-0.90634,-61.68088,-28.75621)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M-27.27478-4.4073L-34.78462-7.90822L-31.69792-14.52953L-24.18808-11.02861ZM-31.69792-14.52953' stroke='none'/>
+</g>
+<g transform='matrix(0.90634,0.42252,-0.42252,0.90634,-30.97218,-12.53624)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(30.346239,30.346239)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='30.346239' y='30.346239' xlink:href='#c17-02-podmodel-g0-97'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-.1936-.2764L-48.77336-69.632' fill='none'/>
+<g transform='matrix(0.57368,0.81905,-0.81905,0.57368,-3.52272,-5.02936)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.57368,0.81905,-0.81905,0.57368,-0.12909,-0.1843)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-0.57368,-0.81905,0.81905,-0.57368,-45.44424,-64.87904)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-0.57368,-0.81905,0.81905,-0.57368,-48.83788,-69.7241)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M-26.10097-24.13762L-30.30466-30.1392L-24.32109-34.33026L-20.1174-28.32867ZM-24.32109-34.33026' stroke='none'/>
+</g>
+<g transform='matrix(0.57368,0.81905,-0.81905,0.57368,-24.68913,-32.24118)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(30.346239,30.346239)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='30.346239' y='30.346239' xlink:href='#c17-02-podmodel-g0-99'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-.02942-.33617L-8.9046-101.69533' fill='none'/>
+<g transform='matrix(0.0872,0.99615,-0.99615,0.0872,-0.53548,-6.1169)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0872,0.99615,-0.99615,0.0872,-0.01964,-0.22414)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-0.0872,-0.99615,0.99615,-0.0872,-8.39854,-95.9146)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-0.0872,-0.99615,0.99615,-0.0872,-8.91438,-101.80736)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M-13.83266-41.39525L-14.4685-48.65886L-4.56232-49.52603L-3.92647-42.26242ZM-4.56232-49.52603' stroke='none'/>
+</g>
+<g transform='matrix(0.0872,0.99615,-0.99615,0.0872,-5.92575,-47.901)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(30.346239,30.346239)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='30.346239' y='30.346239' xlink:href='#c17-02-podmodel-g0-98'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='napaka'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M210.55013-42.67911H304.44426' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M210.55013-42.67911V38.41138' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M210.55013 22.98978C210.55013 22.98978 213.63397 19.46352 214.8183 18.15286C216.00262 16.84221 217.9017 14.7988 219.08603 13.54344C220.27036 12.28809 222.16986 10.31308 223.3542 9.10507S226.43767 5.99365 227.62195 4.83691C228.80623 3.68018 230.70535 1.87337 231.88968 .768C233.074-.33736 234.97353-2.07185 236.15785-3.1298C237.34218-4.18776 239.24126-5.84244 240.42558-6.85703C241.60991-7.87161 243.50941-9.47113 244.69376-10.44228C245.8781-11.41342 247.77722-12.92482 248.9615-13.85646S252.0449-16.26472 253.22923-17.1569C254.41356-18.04909 256.31306-19.43797 257.4974-20.28673C258.68175-21.13548 260.58081-22.46484 261.76515-23.27414C262.9495-24.08344 264.849-25.34576 266.03333-26.11958C267.21765-26.8934 269.11679-28.11308 270.30106-28.85129C271.48532-29.5895 273.38446-30.73749 274.56879-31.44016C275.75311-32.14282 277.65262-33.24458 278.83696-33.9157C280.0213-34.5868 281.92036-35.63753 283.1047-36.27707C284.28905-36.91661 286.18855-37.91714 287.37288-38.52512C288.5572-39.13309 290.45633-40.08263 291.64061-40.65898C292.82489-41.23534 295.90836-42.67911 295.90836-42.67911' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M210.55013 22.98978H295.90836' fill='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(182.71703,20.73978)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(30.346239,30.346239)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='30.346239' y='30.346239' xlink:href='#c17-02-podmodel-g1-49'/>
+<use x='35.327578' y='30.346239' xlink:href='#c17-02-podmodel-g0-59'/>
+<use x='38.094986' y='30.346239' xlink:href='#c17-02-podmodel-g1-48'/>
+<use x='43.076325' y='30.346239' xlink:href='#c17-02-podmodel-g1-55'/>
+<use x='48.057664' y='30.346239' xlink:href='#c17-02-podmodel-g1-55'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(200.49486,-45.90132)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(30.346239,30.346239)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='30.346239' y='30.346239' xlink:href='#c17-02-podmodel-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M210.55013-44.95538V-40.40283' fill='none'/>
+</g>
+<g transform='translate(207.90718,-54.03181)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(30.346239,30.346239)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='30.346239' y='30.346239' xlink:href='#c17-02-podmodel-g0-97'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M295.90836-44.95538V-40.40283' fill='none'/>
+</g>
+<g transform='translate(293.74458,-54.03181)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(30.346239,30.346239)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='30.346239' y='30.346239' xlink:href='#c17-02-podmodel-g0-99'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(254.0172,11.82344)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(30.346239,30.346239)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='30.346239' y='30.346239' xlink:href='#c17-02-podmodel-g0-122'/>
+<use x='35.417523' y='30.346239' xlink:href='#c17-02-podmodel-g1-40'/>
+<use x='39.291897' y='30.346239' xlink:href='#c17-02-podmodel-g0-114'/>
+<use x='44.063385' y='30.346239' xlink:href='#c17-02-podmodel-g1-41'/>
+<use x='47.937759' y='30.346239' xlink:href='#c17-02-podmodel-g0-61'/>
+<use x='52.919098' y='30.346239' xlink:href='#c17-02-podmodel-g0-122'/>
+<use x='57.990382' y='30.346239' xlink:href='#c17-02-podmodel-g1-40'/>
+<use x='61.864756' y='30.346239' xlink:href='#c17-02-podmodel-g0-99'/>
+<use x='66.176152' y='30.346239' xlink:href='#c17-02-podmodel-g1-41'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 17.6</span>: Levo: prerez cevi z \(a = 40\) mm in \(b = 60\) mm, z rezom pri \(c = 50\) mm. Sivo je stena cevi, modro področje podmodela med \(a\) in <span class="nobr">\(c\),</span> modra črtkana krožnica je rez, modre kratke črte ob njem so predpisani radialni pomiki \(u(c)\) (močno povečani), oranžne puščice so tlak \(p\) olja. Sive črte z zapornicama so polmeri <span class="nobr">\(a\),</span> \(b\) in <span class="nobr">\(c\).</span> Desno: napaka pomika \(z(r)\) v obroču, če je napaka podatka na rezu <span class="nobr">\(1\),</span> tlak na notranjem robu pa nič: pri \(r = a\) je \(1{,}077\) (izračunano v lemi o podmodelu in v primeru po njej).</figcaption></figure>
+<p>Najprej narišemo <a data-del="stena" class="xref kaz" href="sec-telo-v-model.html#fig-tvm-podmodel" data-knowl="fig-tvm-podmodel">steno cevi</a>: dva soosna kroga s polmeroma \(a\) in <span class="nobr">\(b\),</span> med njima je snov. <a data-del="tlak" class="xref kaz" href="sec-telo-v-model.html#fig-tvm-podmodel" data-knowl="fig-tvm-podmodel">Tlak olja</a> deluje na notranji rob in ga potiska navzven, zato so puščice na notranjem krogu usmerjene v steno in se končajo na njem. Zunanji rob je prost. <a data-del="polmeri" class="xref kaz" href="sec-telo-v-model.html#fig-tvm-podmodel" data-knowl="fig-tvm-podmodel">Polmeri</a> <span class="nobr">\(a\),</span> \(b\) in \(c\) so merjeni od središča in imajo na obeh koncih zapornici. Nato izrežemo <a data-del="podmodel" class="xref kaz" href="sec-telo-v-model.html#fig-tvm-podmodel" data-knowl="fig-tvm-podmodel">podmodel</a>, obroč med \(a\) in <span class="nobr">\(c\),</span> ki ima prosti notranji rob s tlakom in <a data-del="rez" class="xref kaz" href="sec-telo-v-model.html#fig-tvm-podmodel" data-knowl="fig-tvm-podmodel">rez</a> pri <span class="nobr">\(c\).</span> Rez je črtkan, ker ga v pravem telesu ni: na njem moramo nadomestiti, kar je zunaj, in to je <a data-del="pomik" class="xref kaz" href="sec-telo-v-model.html#fig-tvm-podmodel" data-knowl="fig-tvm-podmodel">pomik</a> <span class="nobr">\(u(c)\),</span> ki ga predpišemo v vsaki točki reza. Pomike smo narisali močno povečane, da jih vidimo. Desno je <a data-del="napaka" class="xref kaz" href="sec-telo-v-model.html#fig-tvm-podmodel" data-knowl="fig-tvm-podmodel">napaka</a> v obroču, ki jo razložimo po lemi.</p>
+<p>Najprej povemo, kaj podmodel reši, in to je izrek o enoličnosti iz poglavja <a class="xref" href="ch-robni-problem-elasticnosti.html">11</a> v drugi obleki. Telo \(\Omega\) ima <a class="xref auto" href="sec-navadne-diferencialne-enacbe.html#def-robni-problem" data-knowl="def-robni-problem">robni problem</a> (definicija <a class="xref" href="sec-robni-problem-telesa.html#def-robni-problem-elasticnosti" data-knowl="def-robni-problem-elasticnosti">11.1</a>) s podatki <span class="nobr">\((\vek b, \bar{\vek t}, \bar{\vek u})\).</span> Rez je ploskev \(\Gamma\) v notranjosti telesa, ki del \(\Omega'\) loči od ostalega telesa. Rob dela \(\Omega'\) je rez \(\Gamma\) in del roba telesa <span class="nobr">\(\Omega\),</span> na katerem veljajo isti podatki kot prej.</p>
+
+<div class="blk lema" id="lem-podmodel"><div class="blk-head"><span class="blk-label">Lema 17.5</span> <span class="blk-title">Podmodel (submodel)</span></div><div class="blk-body"><p>Naj bo \(\vek u\) rešitev <a class="xref auto" href="sec-navadne-diferencialne-enacbe.html#def-robni-problem" data-knowl="def-robni-problem">robnega problema</a> <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">telesa</a> \(\Omega\) za podatke \((\vek b, \bar{\vek t}, \bar{\vek u})\) iz <a class="xref auto" href="sec-natezni-preizkus.html#def-izotropen-material" data-knowl="def-izotropen-material">izotropnega</a>, <a class="xref auto" href="sec-natezni-preizkus.html#def-linearno-elasticen" data-knowl="def-linearno-elasticen">linearno elastičnega</a> materiala z \(E &gt; 0\) in <span class="nobr">\(-1 &lt; \nu &lt; \tfrac12\).</span> Naj bo \(\Omega'\) del telesa, omejen z ploskvijo reza \(\Gamma\) in z delom roba telesa <span class="nobr">\(\Omega\),</span> in naj bo edini <a class="xref auto" href="sec-virtualni-pomiki-palice.html#lem-majhen-togi-premik" data-knowl="lem-majhen-togi-premik">majhen togi premik</a>, ki je nič na delu roba z danim pomikom in na <span class="nobr">\(\Gamma\),</span> polje <span class="nobr">\(\vek 0\).</span> Naj bo \(\vek g\) zvezno <a class="xref auto" href="sec-pomik-v-prostoru.html#def-polje-pomikov" data-knowl="def-polje-pomikov">polje pomikov</a> na <span class="nobr">\(\Gamma\).</span> Podmodel (submodel) je robni problem za \(\Omega'\) s prostorninsko silo <span class="nobr">\(\vek b\),</span> z istimi podatki \(\bar{\vek t}\) in \(\bar{\vek u}\) na delu roba telesa \(\Omega\) in s predpisanim pomikom \(\vek g\) na <span class="nobr">\(\Gamma\).</span> Tedaj velja:</p>
+<ol>
+<li>za \(\vek g = \vek u|_\Gamma\) je zožitev \(\vek u|_{\Omega'}\) rešitev podmodela in edina,</li>
+<li>če podmodel za \(\vek g = \vek u|_\Gamma + \vek e\) in za polje \(\vek e\) na \(\Gamma\) ima rešitev <span class="nobr">\(\tilde{\vek u}\),</span> je <span class="nobr">\(\tilde{\vek u} = \vek u|_{\Omega'} + \vek z\),</span> kjer je \(\vek z\) rešitev robnega problema za \(\Omega'\) brez prostorninske sile, z ničelnimi silami in pomiki na delu roba telesa \(\Omega\) ter s pomikom \(\vek e\) na <span class="nobr">\(\Gamma\).</span> Napaka podmodela je torej rešitev problema, v katerem je napaka podatka na rezu edini vzrok obremenitve.</li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da zožitev reši podmodel, nato uporabiti enoličnost in nazadnje seštevanje.</p>
+<ol>
+<li>Zahteve <a class="xref auto" href="sec-navadne-diferencialne-enacbe.html#def-robni-problem" data-knowl="def-robni-problem">robnega problema</a> (definicija <a class="xref" href="sec-robni-problem-telesa.html#def-robni-problem-elasticnosti" data-knowl="def-robni-problem-elasticnosti">11.1</a>) so lokalne: <a class="xref auto" href="sec-ravnotezne-enacbe.html#thm-ravnotezne-enacbe" data-knowl="thm-ravnotezne-enacbe">ravnotežne enačbe</a> in <a class="xref auto" href="sec-hookov-zakon.html#thm-hookov-zakon" data-knowl="thm-hookov-zakon">Hookov zakon</a> veljajo v vsaki notranji točki, pogoj sile na \(S_{\mathrm{t}}\) in pomika na \(S_{\mathrm{u}}\) v vsaki točki roba. Polje \(\vek u\) jih izpolnjuje v vseh točkah <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">telesa</a> <span class="nobr">\(\Omega\),</span> zato tudi v točkah dela \(\Omega'\) in na delu njegovega roba, ki leži na robu telesa <span class="nobr">\(\Omega\),</span> saj je <a class="xref auto" href="sec-posevni-prerez.html#def-enotska-normala" data-knowl="def-enotska-normala">normala</a> tam ista.</li>
+<li>Na \(\Gamma\) je \(\vek u = \vek g\) po izbiri <span class="nobr">\(\vek g = \vek u|_\Gamma\).</span> Zožitev \(\vek u|_{\Omega'}\) je zato rešitev podmodela.</li>
+<li>Po izreku <a class="xref" href="sec-robni-problem-telesa.html#thm-enolicnost-robnega-problema" data-knowl="thm-enolicnost-robnega-problema">11.4</a>, točka 3, je rešitev podmodela edina, ker je edini <a class="xref auto" href="sec-virtualni-pomiki-palice.html#lem-majhen-togi-premik" data-knowl="lem-majhen-togi-premik">majhen togi premik</a> z ničem na delu roba z danim pomikom polje \(\vek 0\) po predpostavki. To je točka 1.</li>
+<li>Naj bo \(\tilde{\vek u}\) rešitev podmodela s podatkom \(\vek g = \vek u|_\Gamma + \vek e\) in <span class="nobr">\(\vek z = \tilde{\vek u} - \vek u|_{\Omega'}\).</span> Po posledici <a class="xref" href="sec-robni-problem-telesa.html#cor-superpozicija-robni" data-knowl="cor-superpozicija-robni">11.3</a> z \(\alpha = 1\) in \(\beta = -1\) je \(\vek z\) rešitev za podatke \((\vek 0, \vek 0, \vek 0)\) na delu roba telesa \(\Omega\) in \(\vek g - \vek u|_\Gamma = \vek e\) na <span class="nobr">\(\Gamma\).</span></li>
+<li>Po koraku 4 je <span class="nobr">\(\tilde{\vek u} = \vek u|_{\Omega'} + \vek z\),</span> kar je točka 2.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> Podmodel po COOK razdelku 10.10 (PDF str. 370-372), kjer je opisan postopek. Lema in dokaz sta naša, nista iz vira. Obstoja rešitve \(\tilde{\vek u}\) v knjigi ne dokazujemo (poglavje <a class="xref" href="ch-robni-problem-elasticnosti.html">11</a>, razdelek <a class="xref" href="sec-robni-problem-telesa.html">11.1</a>).</p></div></div>
+<p>Lema pove dvoje. Če so pomiki na rezu natančni, je podmodel natančen v celem obroču, ne glede na to, kako drobno mrežo uporabimo, in je napaka podmodela le <a class="xref auto" href="sec-hierarhija-modelov.html#def-vrste-napak" data-knowl="def-vrste-napak">napaka diskretizacije</a> podmodela. Če niso natančni, je napaka vse, kar napaka reza povzroči. Ali pada z oddaljenostjo od reza, lema ne pove. Preizkusimo na cevi.</p>
+
+<div class="blk primer" id="ex-podmodel-cev"><div class="blk-head"><span class="blk-label">Primer 17.6</span> <span class="blk-title">Podmodel cevi z grobimi pomiki na rezu (submodel of the tube with coarse data on the cut)</span></div><div class="blk-body"><p>Za cev s slike <a class="xref" href="sec-telo-v-model.html#fig-tvm-podmodel" data-knowl="fig-tvm-podmodel">17.6</a> je natančen pomik na notranjem robu \(u(a) = 16{,}8735\) \(\mu\)m in na rezu pri \(c = 50\) mm \(u(c) = 14{,}6449\) \(\mu\)m (poglavje <a class="xref" href="ch-robni-problem-elasticnosti.html">11</a>, izrek <a class="xref" href="sec-debelostenska-cev.html#thm-lamejeva-cev" data-knowl="thm-lamejeva-cev">11.27</a>). Grob model cevi ima \(n\) linearnih elementov po polmeru: pomik je odsekoma linearen v \(r\) in Ritzova metoda (definicija <a class="xref" href="sec-ritzova-metoda.html#def-ritzova-metoda" data-knowl="def-ritzova-metoda">6.32</a>) izbere vozliščne pomike z najmanjšo <a class="xref auto" href="sec-potencialna-energija.html#def-potencialna-energija" data-knowl="def-potencialna-energija">celotno potencialno energijo</a>. Pri \(n = 2\) ima vozlišča pri <span class="nobr">\(40\),</span> \(50\) in \(60\) mm, zato je pomik na rezu kar vozliščna vrednost.</p>
+<p>Podmodel je obroč \(40 \le r \le 50\) mm z tlakom \(p\) pri \(r = a\) in predpisanim pomikom \(g = u_{\mathrm{n}}(c)\) pri <span class="nobr">\(r = c\).</span> Zanj obstaja rešitev v zaključeni obliki, ker je osnosimetričen: polje \(u = \alpha r + \beta/r\) ima po \(\varepsilon_{\mathrm{rr}} = u'\) in \(\varepsilon_{\theta\theta} = u/r\) (posledica <a class="xref" href="sec-enacbe-valjne-krogelne.html#cor-deformacije-valjne" data-knowl="cor-deformacije-valjne">11.21</a>) in <a class="xref auto" href="sec-hookov-zakon.html#thm-hookov-zakon" data-knowl="thm-hookov-zakon">Hookovem zakonu</a> z <a class="xref auto" href="sec-hookov-zakon.html#def-lamejevi-konstanti" data-knowl="def-lamejevi-konstanti">Laméjevima konstantama</a> \(\lambda\) in \(\mu\) radialno napetost</p>
+<div class="eq" id="eq-tvm-cev-sigma">\[\sigma_{\mathrm{rr}} = 2(\lambda + \mu)\,\alpha - \frac{2\mu\,\beta}{r^2} . \tag{17.2}\]</div>
+<p>Obroč ima torej dva pogoja: \(\sigma_{\mathrm{rr}}(a) = -p\) in <span class="nobr">\(u(c) = g\),</span> in iz njiju sledita \(\alpha\) in <span class="nobr">\(\beta\).</span> Za napako \(z\) po lemi <a class="xref" href="sec-telo-v-model.html#lem-podmodel" data-knowl="lem-podmodel">17.5</a> velja isto z \(p = 0\) in <span class="nobr">\(g = e\):</span> iz \(\sigma_{\mathrm{rr}}(a) = 0\) je \(\beta = (\lambda + \mu)\,\alpha\,a^2/\mu\) in \(z(r) = \alpha\,\big(r + k\,a^2/r\big)\) s \(k = (\lambda + \mu)/\mu = 1/(1 - 2\nu) = 2{,}5\) pri <span class="nobr">\(\nu = 0{,}3\).</span> Iz \(z(c) = e\) je</p>
+<div class="eq" id="eq-tvm-razmerje">\[\frac{z(a)}{z(c)} = \frac{a + k\,a}{c + k\,a^2/c} = \frac{40 \cdot 3{,}5}{50 + 2{,}5 \cdot 1600/50} = \frac{140}{130} = 1{,}0769 . \tag{17.3}\]</div>
+<p>Račun z NumPy, z <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integrali</a> v togostni <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matriki</a> izračunanimi na vsa prikazana mesta natančno, da:</p>
+<table>
+<thead>
+<tr>
+<th>grobi model</th>
+<th>\(u_{\mathrm{n}}(c)\) <span class="nobr">(\(\mu\)</span>m)</th>
+<th>napaka na rezu <span class="nobr">(\(\mu\)</span>m)</th>
+<th>grob \(u_{\mathrm{n}}(a)\) <span class="nobr">(\(\mu\)</span>m)</th>
+<th>napaka grobega \(u_{\mathrm{n}}(a)\) <span class="nobr">(\(\mu\)</span>m)</th>
+<th>podmodel \(u(a)\) <span class="nobr">(\(\mu\)</span>m)</th>
+<th>napaka podmodela <span class="nobr">(\(\mu\)</span>m)</th>
+<th>razmerje</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>\(n = 2\)</td>
+<td>\(14{,}5030\)</td>
+<td>\(-0{,}1419\)</td>
+<td>\(16{,}6922\)</td>
+<td>\(-0{,}1812\)</td>
+<td>\(16{,}7206\)</td>
+<td>\(-0{,}1528\)</td>
+<td>\(1{,}0769\)</td>
+</tr>
+<tr>
+<td>\(n = 4\)</td>
+<td>\(14{,}6084\)</td>
+<td>\(-0{,}0365\)</td>
+<td>\(16{,}8268\)</td>
+<td>\(-0{,}0467\)</td>
+<td>\(16{,}8341\)</td>
+<td>\(-0{,}0393\)</td>
+<td>\(1{,}0769\)</td>
+</tr>
+<tr>
+<td>\(n = 8\)</td>
+<td>\(14{,}6357\)</td>
+<td>\(-0{,}0092\)</td>
+<td>\(16{,}8617\)</td>
+<td>\(-0{,}0118\)</td>
+<td>\(16{,}8636\)</td>
+<td>\(-0{,}0099\)</td>
+<td>\(1{,}0769\)</td>
+</tr>
+</tbody>
+</table>
+<p>Če rez dobi natančen pomik \(14{,}6449\) \(\mu\)m, podmodel da natančnih \(16{,}8735\) \(\mu\)m, kot pravi točka 1 leme. Razmerje napak v zadnjem stolpcu je v vseh vrsticah enako <a class="xref" href="sec-telo-v-model.html#eq-tvm-razmerje" data-knowl="eq-tvm-razmerje">(17.3)</a>, kot pravi točka 2: napaka na notranjem robu je \(1{,}077\)-kratnik napake na rezu.</p>
+</div></div>
+<p>Primer odgovarja na COOK-ovo vprašanje, kdaj je rez »dovolj daleč«. Podmodel napake ne zmanjša do konca, ker ima napako reza v celoti, celo povečano. Pri \(n = 2\) je bila napaka grobega \(u_{\mathrm{n}}(a)\) \(-0{,}1812\) \(\mu\)m, podmodela \(-0{,}1528\) \(\mu\)m: izboljšanje je le \(16\) %, ker podmodel popravi izračun obroča, ne pa pomika na rezu. Zakaj napaka proti notranjemu robu ne pada? Desni del <a data-del="napaka" class="xref kaz" href="sec-telo-v-model.html#fig-tvm-podmodel" data-knowl="fig-tvm-podmodel">slike</a> kaže <span class="nobr">\(z(r)/z(c)\):</span> je enaka \(1\) pri \(r = c\) in \(1{,}077\) pri <span class="nobr">\(r = a\).</span> Napaka podatka na rezu je enakomeren radialni pomik, ki obroč stisne ali raztegne kot celoto, in od notranjega roba je ne loči nobena razdalja. Saint-Venantovo načelo tu ne pomaga, čeprav je enakomerna radialna obremenitev reza samouravnotežena: načelo govori o točkah daleč od obremenjenega dela roba (razdelek <a class="xref" href="sec-saint-venantovo-nacelo.html">11.11</a>), napaka pa deluje po celem rezu, krožnici s premerom \(100\) mm, in vsaka točka obroča je od reza oddaljena največ \(10\) mm. Zato pomen »dovolj daleč« ni samo geometrijski: rez mora ležati tam, kjer je izračun grobe mreže natančen, in COOK predlaga preverjanje, da se napetosti na rezu v grobem modelu in v podmodelu bistveno ne razlikujejo (COOK, PDF str. 372). COOK še zapiše, da podmodel lahko podceni največjo napetost, ker je grob model običajno pretog in zato podceni pomike na rezu (COOK, PDF str. 372). Napaka grobega \(u_{\mathrm{n}}(a)\) je negativna, kot pravi izrek <a class="xref" href="sec-ritzova-metoda.html#thm-ritz-energija" data-knowl="thm-ritz-energija">6.34</a>, točka 2: delo olja na pomiku \(\ell(u_{\mathrm{n}}) = 2\pi a\,p\,u_{\mathrm{n}}(a)\) za Ritzovo polje ni večje kot za pravo, torej je <span class="nobr">\(u_{\mathrm{n}}(a) \le u(a)\).</span> Da je negativna tudi napaka na rezu, izrek ne pove, ker govori le o delu olja na notranjem robu. To kaže tabela.</p>
+<p>Napake modela ob rezu zato ne odpravimo z gostejšo mrežo podmodela. Odpravimo jo z boljšim podatkom na rezu: z gostejšo mrežo grobega modela ali z rezom tam, kjer grobi model pomike pozna bolje. Tudi to je odločitev o tem, kaj od telesa vzamemo v model: katere pomike na rezu prevzamemo od zunaj.</p>
+
+<h3 id="sec-modeliranje-podpore"><span class="h-num">17.2.3</span> Podpore in sile v modelu</h3>
+<p>Ko je geometrija določena, je treba <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">telo</a> držati in obremeniti. Pri podporah COOK opozarja, da so robni pogoji pogosto napačno predstavljeni v <a class="xref auto" href="sec-hierarhija-modelov.html#def-fizikalni-matematicni-model" data-knowl="def-fizikalni-matematicni-model">matematičnem modelu</a> ali napačno vneseni, in da lahko spremembe, ki se zdijo majhne, bistveno spremenijo rezultat (COOK, PDF str. 366). Najlažji zgled je ravni <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">nosilec</a>, ki ga kos stene drži na obeh koncih z neznano togostjo: ne vemo, ali je podpora členkasta ali vpeta, in vemo le, da je nekje vmes.</p>
+<p>Preverimo to na prostoležečem nosilcu iz poglavja <a class="xref" href="ch-nosilci.html">5</a>. Nosilec dolžine \(L\) in upogibne togosti \(EI\) naj nosi enakomerno obtežbo \(q_0\) in naj bo na vsakem koncu vrtljivo vpet z vzmetjo togosti <span class="nobr">\(k\),</span> tako da vzmet ob zasuku konca ustvari moment \(M_{\mathrm{e}}\) nasproti zasuku. Pri \(k = 0\) je podpora členkasta (prostoležeči nosilec), pri \(k \to \infty\) vpeta. Označimo <span class="nobr">\(s = kL/(2EI)\).</span></p>
+
+<div class="blk lema" id="lem-dve-podpori"><div class="blk-head"><span class="blk-label">Lema 17.7</span> <span class="blk-title">Podpora med dvema mejama (a support between two bounds)</span></div><div class="blk-body"><p>Naj bo <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">nosilec</a> dolžine \(L\) s stalno upogibno togostjo \(EI\) pod enakomerno obtežbo \(q_0 &gt; 0\) navzdol, z majhnimi pomiki, podprt na obeh koncih s prečno podporo in vzmetjo za zasuk togosti <span class="nobr">\(k \ge 0\),</span> ki deluje z momentom \(M_{\mathrm{e}}\) nasproti zasuku konca, na levem koncu \(M_{\mathrm{e}} = -k\,v'(0)\) in na desnem \(M_{\mathrm{e}} = k\,v'(L)\) <span class="nobr">(\(v\)</span> je prečni pomik, pozitiven navzgor, kot v poglavju <a class="xref" href="ch-nosilci.html">5</a>). Za \(s = kL/(2EI)\) je moment na koncu in na sredini razpona</p>
+<div class="eq" id="eq-tvm-podpora">\[M_{\mathrm{e}} = \frac{q_0 L^2}{12}\,\frac{s}{1 + s} , \qquad M\!\left(\tfrac L2\right) = \frac{q_0 L^2}{8} - M_{\mathrm{e}} . \tag{17.4}\]</div>
+<p>Moment na sredini pada z naraščajočim \(s\) in leži za vsak \(k\) med \(q_0 L^2/24\) (vpetje) in \(q_0 L^2/8\) (členkasta podpora). <a class="xref auto" href="sec-polnost.html#def-zgornja-meja" data-knowl="def-zgornja-meja">Zgornja meja</a> je dosežena pri <span class="nobr">\(s = 0\),</span> spodnji se moment približuje, ko gre <span class="nobr">\(s \to \infty\).</span></p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da ravnovesje in podpora določita moment \(M_{\mathrm{e}}\) z eno enačbo, in nato preučiti odvisnost od <span class="nobr">\(s\).</span></p>
+<ol>
+<li><a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">Nosilec</a> in podpori sta simetrična glede na sredino, zato sta momenta vzmeti na obeh koncih enaka, <span class="nobr">\(M_{\mathrm{e}}\),</span> in naj bo \(R = q_0 L/2\) reakcija na vsakem koncu (ravnovesje celega nosilca, simetrija). Moment v prerezu \(x\) dobimo iz ravnovesja levega kosa, ki ima reakcijo \(R\) in moment podpore \(M_{\mathrm{e}}\) nasproti zasuku: <span class="nobr">\(M(x) = R x - \tfrac12 q_0 x^2 - M_{\mathrm{e}} = \tfrac12 q_0 x (L - x) - M_{\mathrm{e}}\).</span></li>
+<li><a class="xref auto" href="sec-enacba-upogibnice.html#thm-enacba-upogibnice" data-knowl="thm-enacba-upogibnice">Enačba upogibnice</a> \(EI\,v'' = M\) (kot v izreku <a class="xref" href="sec-upogibnice.html#thm-upogibnica-prostolezeci" data-knowl="thm-upogibnica-prostolezeci">5.57</a>) da z integriranjem \(EI\,v' = \tfrac14 q_0 L x^2 - \tfrac16 q_0 x^3 - M_{\mathrm{e}} x + C_1\) in <span class="nobr">\(EI\,v = \tfrac1{12} q_0 L x^3 - \tfrac1{24} q_0 x^4 - \tfrac12 M_{\mathrm{e}} x^2 + C_1 x\),</span> saj je <span class="nobr">\(v(0) = 0\).</span></li>
+<li>Pogoj \(v(L) = 0\) da <span class="nobr">\(0 = \tfrac1{12} q_0 L^4 - \tfrac1{24} q_0 L^4 - \tfrac12 M_{\mathrm{e}} L^2 + C_1 L\),</span> torej \(C_1 = -\tfrac1{24} q_0 L^3 + \tfrac12 M_{\mathrm{e}} L\) in <span class="nobr">\(v'(0) = C_1/(EI)\).</span></li>
+<li>Podpora da <span class="nobr">\(M_{\mathrm{e}} = -k\,v'(0) = k\,\big(\tfrac1{24} q_0 L^3 - \tfrac12 M_{\mathrm{e}} L\big)/(EI)\),</span> torej \(M_{\mathrm{e}}\,(1 + s) = \tfrac{1}{12} q_0 L^2\,s\) s <span class="nobr">\(s = kL/(2EI)\),</span> in to je prva enačba <a class="xref" href="sec-telo-v-model.html#eq-tvm-podpora" data-knowl="eq-tvm-podpora">(17.4)</a>. Druga je \(M(L/2) = \tfrac18 q_0 L^2 - M_{\mathrm{e}}\) iz koraka 1.</li>
+<li><a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">Funkcija</a> \(s/(1 + s) = 1 - 1/(1 + s)\) narašča od \(0\) pri \(s = 0\) proti <span class="nobr">\(1\),</span> ker \(1/(1 + s)\) pada. Zato \(M_{\mathrm{e}}\) narašča od \(0\) proti <span class="nobr">\(q_0 L^2/12\),</span> moment na sredini pa pada od \(q_0 L^2/8\) proti <span class="nobr">\(q_0 L^2/8 - q_0 L^2/12 = q_0 L^2/24\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> COOK razdelek 10.8 (PDF str. 366): analiza s členkastimi in z vpetimi podporami omeji pravi moment na sredini razpona. Lema z vzmetjo in dokaz nista iz vira. Izrek <a class="xref" href="sec-upogibnice.html#thm-upogibnica-prostolezeci" data-knowl="thm-upogibnica-prostolezeci">5.57</a> je poglavje <a class="xref" href="ch-nosilci.html">5</a>.</p></div></div>
+<p>Za \(L = 2\) m in \(q_0 = 1\) kN/m je \(q_0 L^2/8 = 0{,}5000\) kNm in \(q_0 L^2/24 = 0{,}1667\) kNm. Med njima leže vrednosti \(M(L/2)\) za vmesne <span class="nobr">\(s\):</span> \(0{,}4697\) <span class="nobr">(\(s = 0{,}1\)),</span> \(0{,}3889\) <span class="nobr">(\(0{,}5\)),</span> \(0{,}3333\) <span class="nobr">(\(1\)),</span> \(0{,}2778\) <span class="nobr">(\(2\)),</span> \(0{,}2222\) <span class="nobr">(\(5\)),</span> \(0{,}1970\) <span class="nobr">(\(10\)),</span> \(0{,}1700\) <span class="nobr">(\(100\))</span> kNm. Slika <a class="xref" href="sec-telo-v-model.html#fig-tvm-podpora" data-knowl="fig-tvm-podpora">17.7</a> kaže momente po nosilcu.</p>
+
+<figure class="blk slika" id="fig-tvm-podpora"><p><span class="svgfig" role="img" aria-label="Momentni diagrami nosilca z vzmetema na koncih"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='409.70pt' height='187.46pt' viewBox='-72.000004 -72 303.484403 138.857484'>
+<defs>
+<path id='c17-02-podpora-g0-0' d='M6.56538-2.291407C6.734745-2.291407 6.914072-2.291407 6.914072-2.49066S6.734745-2.689913 6.56538-2.689913H1.175592C1.006227-2.689913 .826899-2.689913 .826899-2.49066S1.006227-2.291407 1.175592-2.291407H6.56538Z'/>
+<path id='c17-02-podpora-g0-33' d='M8.308842-2.291407C7.760897-1.872976 7.491905-1.464508 7.412204-1.334994C6.963885-.647572 6.884184-.019925 6.884184-.009963C6.884184 .109589 7.003736 .109589 7.083437 .109589C7.252802 .109589 7.262765 .089664 7.302615-.089664C7.531756-1.066002 8.119552-1.902864 9.24533-2.361146C9.364882-2.400996 9.39477-2.420922 9.39477-2.49066S9.334994-2.590286 9.315068-2.600249C8.876712-2.769614 7.671233-3.267746 7.292653-4.941469C7.262765-5.061021 7.252802-5.090909 7.083437-5.090909C7.003736-5.090909 6.884184-5.090909 6.884184-4.971357C6.884184-4.951432 6.973848-4.323786 7.392279-3.656289C7.591532-3.35741 7.880448-3.008717 8.308842-2.689913H.9066C.727273-2.689913 .547945-2.689913 .547945-2.49066S.727273-2.291407 .9066-2.291407H8.308842Z'/>
+<path id='c17-02-podpora-g0-49' d='M5.061021-2.699875C4.523039-3.377335 4.403487-3.526775 4.094645-3.775841C3.536737-4.224159 2.978829-4.403487 2.470735-4.403487C1.305106-4.403487 .547945-3.307597 .547945-2.141968C.547945-.996264 1.285181 .109589 2.430884 .109589S4.403487-.797011 4.891656-1.594022C5.429639-.916563 5.549191-.767123 5.858032-.518057C6.41594-.069738 6.973848 .109589 7.481943 .109589C8.647572 .109589 9.404732-.986301 9.404732-2.15193C9.404732-3.297634 8.667497-4.403487 7.521793-4.403487S5.549191-3.496887 5.061021-2.699875ZM5.32005-2.361146C5.728518-3.078456 6.465753-4.084682 7.591532-4.084682C8.647572-4.084682 9.185554-3.048568 9.185554-2.15193C9.185554-1.175592 8.518057-.368618 7.641345-.368618C7.063512-.368618 6.615193-.787049 6.405978-.996264C6.156912-1.265255 5.927771-1.574097 5.32005-2.361146ZM4.632628-1.932752C4.224159-1.215442 3.486924-.209215 2.361146-.209215C1.305106-.209215 .767123-1.24533 .767123-2.141968C.767123-3.118306 1.43462-3.92528 2.311333-3.92528C2.889166-3.92528 3.337484-3.506849 3.5467-3.297634C3.795766-3.028643 4.024907-2.719801 4.632628-1.932752Z'/>
+<path id='c17-02-podpora-g1-115' d='M3.895392-3.726027C3.616438-3.716065 3.417186-3.496887 3.417186-3.277709C3.417186-3.138232 3.506849-2.988792 3.726027-2.988792S4.184309-3.158157 4.184309-3.5467C4.184309-3.995019 3.755915-4.403487 2.998755-4.403487C1.683686-4.403487 1.315068-3.387298 1.315068-2.948941C1.315068-2.171856 2.052304-2.022416 2.34122-1.96264C2.859278-1.863014 3.377335-1.753425 3.377335-1.205479C3.377335-.946451 3.148194-.109589 1.952677-.109589C1.8132-.109589 1.046077-.109589 .816936-.637609C1.195517-.587796 1.444583-.886675 1.444583-1.165629C1.444583-1.39477 1.285181-1.514321 1.075965-1.514321C.816936-1.514321 .518057-1.305106 .518057-.856787C.518057-.288917 1.085928 .109589 1.942715 .109589C3.556663 .109589 3.945205-1.09589 3.945205-1.544209C3.945205-1.902864 3.755915-2.15193 3.636364-2.271482C3.367372-2.550436 3.078456-2.600249 2.6401-2.689913C2.281445-2.769614 1.882939-2.839352 1.882939-3.287671C1.882939-3.576588 2.122042-4.184309 2.998755-4.184309C3.247821-4.184309 3.745953-4.11457 3.895392-3.726027Z'/>
+<path id='c17-02-podpora-g2-76' d='M2.873225-4.191283C2.93599-4.442341 2.956912-4.51208 3.598506-4.51208C3.814695-4.51208 3.884433-4.51208 3.884433-4.665504C3.884433-4.672478 3.87746-4.763138 3.765878-4.763138C3.605479-4.763138 3.417186-4.749191 3.249813-4.742217C3.075467-4.735243 2.866252-4.735243 2.691905-4.735243C2.545455-4.735243 2.357161-4.742217 2.21071-4.742217S1.896887-4.763138 1.75741-4.763138C1.715567-4.763138 1.610959-4.763138 1.610959-4.609714C1.610959-4.51208 1.694645-4.51208 1.834122-4.51208C1.841096-4.51208 1.973599-4.51208 2.099128-4.498132C2.245579-4.484184 2.259527-4.470237 2.259527-4.400498C2.259527-4.38655 2.259527-4.351681 2.231631-4.247073L1.30411-.54396C1.241345-.306849 1.227397-.251059 .690411-.251059C.571856-.251059 .481196-.251059 .481196-.104608C.481196 0 .564882 0 .690411 0H4.198257C4.372603 0 4.379577-.006974 4.435367-.139477C4.505106-.327771 5.028144-1.680697 5.028144-1.736488C5.028144-1.75741 5.014197-1.834122 4.909589-1.834122C4.825903-1.834122 4.811955-1.799253 4.770112-1.687671C4.505106-1.025156 4.198257-.251059 2.922042-.251059H2.133998C1.917808-.251059 1.910834-.258032 1.910834-.320797C1.910834-.327771 1.910834-.36264 1.93873-.467248L2.873225-4.191283Z'/>
+<path id='c17-02-podpora-g2-113' d='M3.549689-2.873225C3.556663-2.901121 3.563636-2.942964 3.563636-2.977833C3.563636-3.019676 3.535741-3.075467 3.472976-3.075467C3.403238-3.075467 3.110336-2.838356 2.970859-2.615193C2.901121-2.75467 2.670984-3.075467 2.224658-3.075467C1.332005-3.075467 .425405-2.092154 .425405-1.08792C.425405-.411457 .878705 .069738 1.478456 .069738C1.875965 .069738 2.203736-.18132 2.357161-.313823C2.350187-.292902 2.133998 .585803 2.106102 .704359C2.008468 1.08792 2.001494 1.094894 1.569116 1.101868C1.48543 1.101868 1.387796 1.101868 1.387796 1.255293C1.387796 1.297136 1.422665 1.352927 1.492403 1.352927C1.72254 1.352927 1.980573 1.325031 2.217684 1.325031S2.747696 1.352927 2.963885 1.352927C3.02665 1.352927 3.103362 1.332005 3.103362 1.199502C3.103362 1.101868 3.005729 1.101868 2.922042 1.101868C2.768618 1.101868 2.580324 1.101868 2.580324 1.018182C2.580324 .99726 2.580324 .983313 2.615193 .864757L3.549689-2.873225ZM2.496638-.878705C2.461768-.760149 2.461768-.746202 2.371108-.63462C2.099128-.313823 1.771357-.125529 1.499377-.125529C1.241345-.125529 .990286-.306849 .990286-.801993C.990286-1.171606 1.192528-1.93873 1.352927-2.217684C1.673724-2.775592 2.02939-2.880199 2.224658-2.880199C2.712827-2.880199 2.84533-2.343213 2.84533-2.273474C2.84533-2.238605 2.831382-2.196762 2.824408-2.168867L2.496638-.878705Z'/>
+<path id='c17-02-podpora-g3-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='c17-02-podpora-g3-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c17-02-podpora-g3-61' d='M6.844334-3.257783C6.993773-3.257783 7.183064-3.257783 7.183064-3.457036S6.993773-3.656289 6.854296-3.656289H.886675C.747198-3.656289 .557908-3.656289 .557908-3.457036S.747198-3.257783 .896638-3.257783H6.844334ZM6.854296-1.325031C6.993773-1.325031 7.183064-1.325031 7.183064-1.524284S6.993773-1.723537 6.844334-1.723537H.896638C.747198-1.723537 .557908-1.723537 .557908-1.524284S.747198-1.325031 .886675-1.325031H6.854296Z'/>
+<path id='c17-02-podpora-g4-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='c17-02-podpora-g4-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+<path id='c17-02-podpora-g4-52' d='M3.689166-1.143711V-1.39477H2.915068V-4.505106C2.915068-4.651557 2.915068-4.700374 2.761644-4.700374C2.677958-4.700374 2.650062-4.700374 2.580324-4.60274L.27198-1.39477V-1.143711H2.322291V-.571856C2.322291-.334745 2.322291-.251059 1.75741-.251059H1.569116V0C1.917808-.013948 2.364134-.027895 2.615193-.027895C2.873225-.027895 3.319552-.013948 3.668244 0V-.251059H3.47995C2.915068-.251059 2.915068-.334745 2.915068-.571856V-1.143711H3.689166ZM2.371108-3.947198V-1.39477H.530012L2.371108-3.947198Z'/>
+<path id='c17-02-podpora-g4-56' d='M2.475716-2.517559C3.019676-2.782565 3.368369-3.110336 3.368369-3.591532C3.368369-4.267995 2.66401-4.630635 1.987547-4.630635C1.220423-4.630635 .592777-4.128518 .592777-3.466002C.592777-3.138232 .746202-2.901121 .871731-2.761644C.99726-2.615193 1.046077-2.587298 1.457534-2.343213C1.066999-2.175841 .376588-1.799253 .376588-1.066999C.376588-.292902 1.17858 .139477 1.973599 .139477C2.859278 .139477 3.584558-.425405 3.584558-1.17858C3.584558-1.638854 3.312578-2.02939 2.908095-2.266501C2.817435-2.322291 2.57335-2.461768 2.475716-2.517559ZM1.338979-3.180075C1.157659-3.284682 .962391-3.472976 .962391-3.731009C.962391-4.170361 1.471482-4.428394 1.973599-4.428394C2.517559-4.428394 2.998755-4.086675 2.998755-3.591532C2.998755-2.970859 2.273474-2.657036 2.259527-2.657036S2.231631-2.66401 2.182814-2.691905L1.338979-3.180075ZM1.680697-2.21071L2.636115-1.659776C2.817435-1.555168 3.166127-1.345953 3.166127-.934496C3.166127-.411457 2.587298-.083686 1.987547-.083686C1.345953-.083686 .795019-.495143 .795019-1.066999C.795019-1.583064 1.17858-1.980573 1.680697-2.21071Z'/>
+<path id='c17-02-podpora-g5-48' d='M2.993773-1.594022C2.993773-1.952677 2.993773-3.317559 1.693649-3.317559S.393524-1.952677 .393524-1.594022C.393524-1.230386 .393524 .109589 1.693649 .109589S2.993773-1.230386 2.993773-1.594022ZM1.693649-.054795C1.50934-.054795 1.090909-.119552 .966376-.622665C.896638-.891656 .891656-1.24533 .891656-1.653798C.891656-2.022416 .891656-2.366127 .971357-2.650062C1.09589-3.068493 1.479452-3.153176 1.693649-3.153176C2.062267-3.153176 2.326276-2.963885 2.425903-2.615193C2.495641-2.361146 2.495641-1.947696 2.495641-1.653798C2.495641-1.315068 2.495641-.911582 2.420922-.612702C2.291407-.129514 1.892902-.054795 1.693649-.054795Z'/>
+<path id='c17-02-podpora-g5-50' d='M2.933998-.961395H2.724782C2.709838-.86675 2.660025-.557908 2.580324-.508095C2.540473-.478207 2.122042-.478207 2.047323-.478207H1.070984C1.399751-.722291 1.768369-1.001245 2.067248-1.200498C2.515567-1.50934 2.933998-1.798257 2.933998-2.326276C2.933998-2.963885 2.331258-3.317559 1.618929-3.317559C.946451-3.317559 .4533-2.929016 .4533-2.440847C.4533-2.181818 .672478-2.136986 .742217-2.136986C.876712-2.136986 1.036115-2.22665 1.036115-2.430884C1.036115-2.610212 .9066-2.709838 .752179-2.724782C.891656-2.948941 1.180573-3.098381 1.514321-3.098381C1.997509-3.098381 2.400996-2.809465 2.400996-2.321295C2.400996-1.902864 2.11208-1.58406 1.728518-1.260274L.513076-.229141C.463263-.184309 .458281-.184309 .4533-.14944V0H2.769614L2.933998-.961395Z'/>
+</defs>
+<g id='c17-02-podpora-page1'>
+<g stroke-miterlimit='10' transform='translate(-32.095295,9.234931)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='nosilec'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 0H199.1692' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.9'>
+<path d='M0-7.11317V7.11317' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.9'>
+<path d='M199.1692-7.11317V7.11317' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='s0'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M0 0C0 0 2.45035 3.46092 3.38596 4.75182C4.32156 6.04271 5.80768 8.05646 6.74329 9.30392C7.6789 10.55139 9.18965 12.53864 10.12924 13.74272C11.06883 14.94681 12.5796 16.82556 13.51521 17.98224S15.93692 20.9661 16.87253 22.07935S19.31897 24.93994 20.2585 26.00584C21.19803 27.07175 22.70844 28.74323 23.64404 29.76172C24.57965 30.78021 26.06618 32.37146 27.00179 33.34653S29.45172 35.85767 30.38733 36.78937S32.80946 39.17729 33.74507 40.06158C34.68068 40.94588 36.19109 42.32587 37.13062 43.16275C38.07014 43.99963 39.58092 45.29979 40.51659 46.09329C41.45226 46.8868 42.93872 48.13179 43.87433 48.88187C44.80994 49.63194 46.32034 50.79672 47.25987 51.49939S49.71024 53.29097 50.64584 53.94629C51.58145 54.60161 53.06755 55.61066 54.00316 56.22255S56.44954 57.78796 57.38913 58.35643S59.8395 59.79855 60.7751 60.31967C61.71071 60.84079 63.19681 61.63461 64.13242 62.11229C65.06802 62.58997 66.5788 63.33218 67.51839 63.76251S69.96875 64.83098 70.90436 65.2139S73.32607 66.17902 74.26167 66.52243C75.19728 66.86584 76.71204 67.39294 77.64764 67.68901C78.58325 67.98508 80.06935 68.40758 81.00496 68.6563C81.94057 68.90501 83.45134 69.27635 84.39093 69.48163C85.33052 69.6869 86.8413 69.97801 87.7769 70.1359C88.71251 70.29378 90.19861 70.50505 91.13422 70.61955C92.06982 70.73405 93.58066 70.89413 94.52019 70.96123C95.45972 71.02832 96.97011 71.08351 97.90572 71.1032C98.84132 71.12288 100.32787 71.12288 101.26347 71.1032C102.19908 71.08351 103.70947 71.02832 104.649 70.96123C105.58853 70.89413 107.09937 70.73405 108.03497 70.61955C108.97058 70.50505 110.45668 70.29378 111.39229 70.1359C112.3279 69.97801 113.83867 69.6869 114.77826 69.48163C115.71785 69.27635 117.22862 68.90501 118.16423 68.6563C119.09984 68.40758 120.58594 67.98508 121.52155 67.68901C122.45715 67.39294 123.97191 66.86584 124.90752 66.52243C125.84312 66.17902 127.32922 65.59682 128.26483 65.2139S130.71121 64.19284 131.6508 63.76251C132.5904 63.33218 134.10117 62.58997 135.03677 62.11229C135.97238 61.63461 137.45848 60.84079 138.39409 60.31967S140.84047 58.9249 141.78006 58.35643S144.23042 56.83444 145.16603 56.22255S147.58774 54.60161 148.52335 53.94629C149.45895 53.29097 150.96979 52.20206 151.90932 51.49939S154.35925 49.63194 155.29486 48.88187C156.23047 48.13179 157.71693 46.8868 158.6526 46.09329C159.58827 45.29979 161.09904 43.99963 162.03857 43.16275S164.48851 40.94588 165.42412 40.06158C166.35973 39.17729 167.84625 37.72107 168.78186 36.78937S171.2318 34.3216 172.1674 33.34653C173.10301 32.37146 174.58954 30.78021 175.52515 29.76172C176.46075 28.74323 177.97116 27.07175 178.91069 26.00584C179.85022 24.93994 181.36105 23.1926 182.29666 22.07935S184.71837 19.13892 185.65398 17.98224C186.58958 16.82556 188.10036 14.94681 189.03995 13.74272C189.97954 12.53864 191.4903 10.55139 192.4259 9.30392C193.36151 8.05646 194.84763 6.04271 195.78323 4.75182C196.71884 3.46092 199.1692 0 199.1692 0' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(-29.49915,-3.22221)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.095295,9.234931)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-32.095295' y='9.234931' xlink:href='#c17-02-podpora-g1-115'/>
+<use x='-24.657975' y='9.234931' xlink:href='#c17-02-podpora-g3-61'/>
+<use x='-14.141895' y='9.234931' xlink:href='#c17-02-podpora-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='s1'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.9'>
+<path d='M0-23.70091C0-23.70091 2.45035-20.26907 3.38596-18.97818C4.32156-17.68729 5.80768-15.64452 6.74329-14.39699S9.18965-11.19089 10.12924-9.98685C11.06883-8.7828 12.5796-6.8758 13.51521-5.7191C14.45082-4.56241 15.93692-2.75954 16.87253-1.6502C17.80814-.54088 19.31897 1.21036 20.2585 2.27626S22.70844 5.00966 23.64404 6.03214C24.57965 7.05461 26.06618 8.67053 27.00179 9.6456S29.45172 12.13206 30.38733 13.05978S32.80946 15.44772 33.74507 16.33202C34.68068 17.21631 36.19109 18.59233 37.13062 19.43318C38.07014 20.27403 39.58092 21.59496 40.51659 22.39238S42.93872 24.43442 43.87433 25.18051S46.32034 27.06708 47.25987 27.7698C48.1994 28.47253 49.71024 29.58606 50.64584 30.24536C51.58145 30.90466 53.06755 31.90974 54.00316 32.52164C54.93877 33.13353 56.44954 34.08705 57.38913 34.6555S59.8395 36.09763 60.7751 36.61874C61.71071 37.13986 63.19681 37.93767 64.13242 38.41138C65.06802 38.88509 66.5788 39.60268 67.51839 40.03294C68.45798 40.46321 69.96875 41.12563 70.90436 41.51253S73.32607 42.48201 74.26167 42.8215C75.19728 43.161 76.71204 43.66336 77.64764 43.95943C78.58325 44.2555 80.06935 44.70667 81.00496 44.95538C81.94057 45.2041 83.45134 45.55075 84.39093 45.75206S86.8413 46.24448 87.7769 46.40633C88.71251 46.56818 90.19861 46.80412 91.13422 46.91862C92.06982 47.03313 93.58066 47.16455 94.52019 47.23164C95.45972 47.29874 96.97011 47.3786 97.90572 47.40227C98.84132 47.42593 100.32787 47.42593 101.26347 47.40227C102.19908 47.3786 103.70947 47.29874 104.649 47.23164C105.58853 47.16455 107.09937 47.03313 108.03497 46.91862C108.97058 46.80412 110.45668 46.56818 111.39229 46.40633S113.83867 45.95337 114.77826 45.75206S117.22862 45.2041 118.16423 44.95538C119.09984 44.70667 120.58594 44.2555 121.52155 43.95943C122.45715 43.66336 123.97191 43.161 124.90752 42.8215C125.84312 42.48201 127.32922 41.89943 128.26483 41.51253S130.71121 40.46321 131.6508 40.03294C132.5904 39.60268 134.10117 38.88509 135.03677 38.41138C135.97238 37.93767 137.45848 37.13986 138.39409 36.61874C139.3297 36.09763 140.84047 35.22395 141.78006 34.6555S144.23042 33.13353 145.16603 32.52164C146.10164 31.90974 147.58774 30.90466 148.52335 30.24536C149.45895 29.58606 150.96979 28.47253 151.90932 27.7698C152.84885 27.06708 154.35925 25.9266 155.29486 25.18051S157.71693 23.1898 158.6526 22.39238S161.09904 20.27403 162.03857 19.43318S164.48851 17.21631 165.42412 16.33202C166.35973 15.44772 167.84625 13.9875 168.78186 13.05978S171.2318 10.62067 172.1674 9.6456C173.10301 8.67053 174.58954 7.05461 175.52515 6.03214C176.46075 5.00966 177.97116 3.34216 178.91069 2.27626S181.36105-.54088 182.29666-1.6502C183.23227-2.75954 184.71837-4.56241 185.65398-5.7191C186.58958-6.8758 188.10036-8.7828 189.03995-9.98685C189.97954-11.19089 191.4903-13.14946 192.4259-14.39699C193.36151-15.64452 194.84763-17.68729 195.78323-18.97818C196.71884-20.26907 199.1692-23.70091 199.1692-23.70091' fill='none'/>
+</g>
+</g>
+<g fill='#000' stroke='#000'>
+<g fill='#000' stroke='#000'>
+</g>
+<g transform='translate(-29.49915,-26.92313)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.095295,9.234931)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-32.095295' y='9.234931' xlink:href='#c17-02-podpora-g1-115'/>
+<use x='-24.657975' y='9.234931' xlink:href='#c17-02-podpora-g3-61'/>
+<use x='-14.141895' y='9.234931' xlink:href='#c17-02-podpora-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='sneskoncno'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M0-47.43092C0-47.43092 2.45035-43.97398 3.38596-42.67911C4.32156-41.38423 5.80768-39.34581 6.74329-38.09834C7.6789-36.85088 9.18965-34.88832 10.12924-33.6882S12.5796-30.60536 13.51521-29.44868S15.93692-26.46483 16.87253-25.35158S19.31897-22.49098 20.2585-21.42508S22.70844-18.68776 23.64404-17.6692C24.57965-16.65065 26.06618-15.0591 27.00179-14.08397S29.45172-11.57275 30.38733-10.64111S32.80946-8.25362 33.74507-7.36932C34.68068-6.48503 36.19109-5.10858 37.13062-4.26773C38.07014-3.42688 39.58092-2.10242 40.51659-1.30898C41.45226-.51553 42.93872 .70479 43.87433 1.45094C44.80994 2.1971 46.32034 3.36617 47.25987 4.0689C48.1994 4.77162 49.71024 5.85654 50.64584 6.51578C51.58145 7.17502 53.06755 8.20837 54.00316 8.82027C54.93877 9.43216 56.44954 10.36137 57.38913 10.92592C58.32872 11.49046 59.8395 12.36415 60.7751 12.88918C61.71071 13.4142 63.19681 14.23233 64.13242 14.71C65.06802 15.18768 66.5788 15.90169 67.51839 16.33202C68.45798 16.76234 69.96875 17.42477 70.90436 17.81161C71.83997 18.19846 73.32607 18.78065 74.26167 19.12015C75.19728 19.45964 76.71204 19.96635 77.64764 20.2585C78.58325 20.55064 80.06935 20.97714 81.00496 21.2258S83.45134 21.84541 84.39093 22.05069S86.8413 22.54745 87.7769 22.7054C88.71251 22.86334 90.19861 23.0746 91.13422 23.18904C92.06982 23.30348 93.58066 23.45927 94.52019 23.53029C95.45972 23.6013 96.97011 23.67725 97.90572 23.70091C98.84132 23.72458 100.32787 23.72458 101.26347 23.70091C102.19908 23.67725 103.70947 23.6013 104.649 23.53029C105.58853 23.45927 107.09937 23.30348 108.03497 23.18904C108.97058 23.0746 110.45668 22.86334 111.39229 22.7054C112.3279 22.54745 113.83867 22.25597 114.77826 22.05069S117.22862 21.47446 118.16423 21.2258S120.58594 20.55064 121.52155 20.2585C122.45715 19.96635 123.97191 19.45964 124.90752 19.12015C125.84312 18.78065 127.32922 18.19846 128.26483 17.81161C129.20044 17.42477 130.71121 16.76234 131.6508 16.33202C132.5904 15.90169 134.10117 15.18768 135.03677 14.71C135.97238 14.23233 137.45848 13.4142 138.39409 12.88918C139.3297 12.36415 140.84047 11.49046 141.78006 10.92592C142.71965 10.36137 144.23042 9.43216 145.16603 8.82027C146.10164 8.20837 147.58774 7.17502 148.52335 6.51578C149.45895 5.85654 150.96979 4.77162 151.90932 4.0689C152.84885 3.36617 154.35925 2.1971 155.29486 1.45094C156.23047 .70479 157.71693-.51553 158.6526-1.30898C159.58827-2.10242 161.09904-3.42688 162.03857-4.26773S164.48851-6.48503 165.42412-7.36932C166.35973-8.25362 167.84625-9.70947 168.78186-10.64111S171.2318-13.10884 172.1674-14.08397C173.10301-15.0591 174.58954-16.65065 175.52515-17.6692C176.46075-18.68776 177.97116-20.35918 178.91069-21.42508S181.36105-24.23833 182.29666-25.35158S184.71837-28.292 185.65398-29.44868C186.58958-30.60536 188.10036-32.48808 189.03995-33.6882S191.4903-36.85088 192.4259-38.09834C193.36151-39.34581 194.84763-41.38423 195.78323-42.67911C196.71884-43.97398 199.1692-47.43092 199.1692-47.43092' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(-36.72137,-49.5837)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.095295,9.234931)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-32.095295' y='9.234931' xlink:href='#c17-02-podpora-g1-115'/>
+<use x='-24.657975' y='9.234931' xlink:href='#c17-02-podpora-g0-33'/>
+<use x='-11.927974' y='9.234931' xlink:href='#c17-02-podpora-g0-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='sredina'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M99.5846 71.13185H229.04466' fill='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(234.10037,67.50551)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.095295,9.234931)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-30.899781' y='4.790522' xlink:href='#c17-02-podpora-g2-113'/>
+<use x='-27.248284' y='5.786786' xlink:href='#c17-02-podpora-g5-48'/>
+<use x='-23.360033' y='4.790522' xlink:href='#c17-02-podpora-g2-76'/>
+<use x='-17.894382' y='1.784005' xlink:href='#c17-02-podpora-g5-50'/>
+<rect x='-30.899781' y='6.545021' height='.398484' width='16.893634'/>
+<use x='-24.438583' y='12.670442' xlink:href='#c17-02-podpora-g4-56'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M99.5846 23.70091H229.04466' fill='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(234.10037,20.07457)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.095295,9.234931)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-30.899781' y='4.790522' xlink:href='#c17-02-podpora-g2-113'/>
+<use x='-27.248284' y='5.786786' xlink:href='#c17-02-podpora-g5-48'/>
+<use x='-23.360033' y='4.790522' xlink:href='#c17-02-podpora-g2-76'/>
+<use x='-17.894382' y='1.784005' xlink:href='#c17-02-podpora-g5-50'/>
+<rect x='-30.899781' y='6.545021' height='.398484' width='16.893634'/>
+<use x='-26.424194' y='12.670442' xlink:href='#c17-02-podpora-g4-50'/>
+<use x='-22.452954' y='12.670442' xlink:href='#c17-02-podpora-g4-52'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M215.10266 24.03839V70.79437' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,215.10266,29.84143)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,215.10266,23.9259)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,215.10266,64.99133)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,215.10266,70.90686)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='krajisce'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M199.1692-47.43092H229.04466' fill='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(234.10037,-51.05727)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-32.095295,9.234931)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-32.095295' y='9.234931' xlink:href='#c17-02-podpora-g0-0'/>
+<use x='-23.151034' y='4.790522' xlink:href='#c17-02-podpora-g2-113'/>
+<use x='-19.499536' y='5.786786' xlink:href='#c17-02-podpora-g5-48'/>
+<use x='-15.611285' y='4.790522' xlink:href='#c17-02-podpora-g2-76'/>
+<use x='-10.145634' y='1.784005' xlink:href='#c17-02-podpora-g5-50'/>
+<rect x='-23.151034' y='6.545021' height='.398484' width='16.893634'/>
+<use x='-18.675447' y='12.670442' xlink:href='#c17-02-podpora-g4-49'/>
+<use x='-14.704206' y='12.670442' xlink:href='#c17-02-podpora-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 17.7</span>: Upogibni moment nosilca z vzmetema za zasuk na koncih, \(M/(q_0 L^2)\) po razponu <span class="nobr">\(L\),</span> za \(s = 0\) (modro), \(s = 1\) (<span class="ink-l">črno</span><span class="ink-d">belo</span>) in \(s \to \infty\) (oranžno). Moment je pozitiven navzgor, ko nosilec poveša. Črtkani črti desno sta sredinska momenta \(q_0 L^2/8\) in <span class="nobr">\(q_0 L^2/24\),</span> njuna razlika je dimenzijska črta. Skrajna črtkana črta je moment na koncu pri vpetju, <span class="nobr">\(-q_0 L^2/12\).</span> Narisano po lemi o podpori.</figcaption></figure>
+<p><a data-del="nosilec" class="xref kaz" href="sec-telo-v-model.html#fig-tvm-podpora" data-knowl="fig-tvm-podpora">Nosilec</a> je siva vodoravna črta, na krajih je podprt. Prva krivulja, <span class="nobr"><a data-del="s0" class="xref kaz" href="sec-telo-v-model.html#fig-tvm-podpora" data-knowl="fig-tvm-podpora">\(s = 0\)</a>,</span> je členkasta podpora: moment je parabola z vrhom \(q_0 L^2/8\) in ničlama na koncih. Druga, <span class="nobr"><a data-del="s1" class="xref kaz" href="sec-telo-v-model.html#fig-tvm-podpora" data-knowl="fig-tvm-podpora">\(s = 1\)</a>,</span> je vzmet s togostjo <span class="nobr">\(k = 2EI/L\):</span> moment ima v krajiščih negativno vrednost \(-q_0 L^2/24\) in na sredini <span class="nobr">\(q_0 L^2/12\).</span> Tretja, <span class="nobr"><a data-del="sneskoncno" class="xref kaz" href="sec-telo-v-model.html#fig-tvm-podpora" data-knowl="fig-tvm-podpora">\(s \to \infty\)</a>,</span> je vpetje: v krajiščih je <a data-del="krajisce" class="xref kaz" href="sec-telo-v-model.html#fig-tvm-podpora" data-knowl="fig-tvm-podpora">moment</a> \(-q_0 L^2/12\) in na <a data-del="sredina" class="xref kaz" href="sec-telo-v-model.html#fig-tvm-podpora" data-knowl="fig-tvm-podpora">sredini</a> <span class="nobr">\(q_0 L^2/24\).</span> Sredinska momenta obeh mejnih podpor se razlikujeta za faktor <span class="nobr">\(3\),</span> <span class="nobr">\(\tfrac18 : \tfrac1{24} = 3\).</span> Pravi moment leži med njima, zato ga s samo členkasto podporo precenimo do trikrat, s samim vpetjem pa podcenimo do trikrat.</p>
+<p>To je bližnji primer iz razdelka: ena analiza z izbrano podporo, ki je nikoli ne bo, je lahko napačna do faktorja \(3\) pri sredinskem momentu, ne glede na to, kako drobna je mreža. Dve analizi z mejnima podporama pa pravi moment zajameta, kot pravi lema, in COOK jih za to priporoča (COOK, PDF str. 366). Pri tem COOK opozarja še na dva zgleda: podpora, ki preprečuje raztezanje spodnjega pasu nosilca, ustvari vodoravne sile po vsem nosilcu in je ne smemo nadomestiti s prosto členkasto (COOK, PDF str. 366), in podpore morajo biti na vozliščih, ker omejitev pomika med vozlišči zahteva dodatne pogoje (COOK, PDF str. 367). Enote in podatke o materialu preverimo, kot smo se naučili pri <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">paličju</a> (razdelek <a class="xref" href="sec-koraki-analize.html#sec-preverjanja">7.10.2</a>, preverjanje (g)), saj enak pomen kot nepravilna podpora ima nepravilen sistem enot.</p>
+
+<h3 id="sec-tockovna-sila"><span class="h-num">17.2.4</span> Točkovna sila v ravnini</h3>
+<p>Zadnja odločitev je, kako zapišemo breme. Za silo, ki deluje na majhnem področju, je naravna misel, da jo vzamemo v točko: v modelu palice smo to naredili brez težav, pomik pod silo je bil končen (poglavje <a class="xref" href="ch-mke-palice.html">7</a>). COOK pa zapiše tri trditve o sili \(P\) v točki: v nosilcu so pomik in napetost končna, v ravni <a class="xref auto forward" href="sec-kirchhoffova-plosca.html#def-plosca" data-knowl="def-plosca" title="Definirano kasneje v knjigi">plošči</a> pod <a class="xref auto" href="sec-notranje-sile-nosilca.html#def-precna-sila" data-knowl="def-precna-sila">prečno silo</a> je pomik končen in napetost neskončna, v ravninskem ali prostorskem <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">telesu</a> sta pomik in napetost neskončna (COOK, PDF str. 361). Če gostenje mreže v okolici sile ponavljamo, pomik v telesu narašča (COOK, PDF str. 361). Dokazali bomo zadnjo trditev za pomik v ravnini. Vprašanje je, zakaj ravnina, ne pa palica.</p>
+<p>Zamisel pride iz energije. Če poiščemo polje s pomikom \(1\) v točki sile in z majhno energijo, nam sila na njem opravi delo, <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">deformacijska</a> energija pa je majhna, in izravnava je ugodna. V palici to ni mogoče: pomik pada z razdaljo, in naklon, ki ga to pomeni, je energijsko drag. V ravnini pa pomik pada v vse smeri hkrati, polmer krogov pa raste, in energija ostane majhna. Slika <a class="xref" href="sec-telo-v-model.html#fig-tvm-tockovna-sila" data-knowl="fig-tvm-tockovna-sila">17.8</a> kaže polje, ki ga bomo uporabili.</p>
+
+<figure class="blk slika" id="fig-tvm-tockovna-sila"><p><span class="svgfig" role="img" aria-label="Profil polja in energija polja okoli točke sile"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='552.86pt' height='151.49pt' viewBox='-72.000004 -72.000002 409.523806 112.218461'>
+<defs>
+<path id='c17-02-tockovna-sila-g0-0' d='M5.188543-1.57609C5.300125-1.57609 5.467497-1.57609 5.467497-1.743462C5.467497-1.917808 5.307098-1.917808 5.188543-1.917808H1.03213C.920548-1.917808 .753176-1.917808 .753176-1.750436C.753176-1.57609 .913574-1.57609 1.03213-1.57609H5.188543Z'/>
+<path id='c17-02-tockovna-sila-g1-25' d='M2.6401-3.716065H3.765878C3.437111-2.241594 3.347447-1.8132 3.347447-1.145704C3.347447-.996264 3.347447-.727273 3.427148-.388543C3.526775 .049813 3.636364 .109589 3.785803 .109589C3.985056 .109589 4.194271-.069738 4.194271-.268991C4.194271-.328767 4.194271-.348692 4.134496-.488169C3.845579-1.205479 3.845579-1.853051 3.845579-2.132005C3.845579-2.660025 3.915318-3.198007 4.024907-3.716065H5.160648C5.290162-3.716065 5.648817-3.716065 5.648817-4.054795C5.648817-4.293898 5.439601-4.293898 5.250311-4.293898H1.912827C1.693649-4.293898 1.315068-4.293898 .876712-3.825654C.52802-3.437111 .268991-2.978829 .268991-2.929016C.268991-2.919054 .268991-2.82939 .388543-2.82939C.468244-2.82939 .488169-2.86924 .547945-2.948941C1.036115-3.716065 1.613948-3.716065 1.8132-3.716065H2.381071C2.062267-2.510585 1.524284-1.305106 1.105853-.398506C1.026152-.249066 1.026152-.229141 1.026152-.159402C1.026152 .029888 1.185554 .109589 1.315068 .109589C1.613948 .109589 1.693649-.169365 1.8132-.537983C1.952677-.996264 1.952677-1.016189 2.082192-1.514321L2.6401-3.716065Z'/>
+<path id='c17-02-tockovna-sila-g1-26' d='M.328767 1.723537C.298879 1.843088 .298879 1.863014 .298879 1.882939C.298879 2.032379 .408468 2.15193 .577833 2.15193C.787049 2.15193 .9066 1.972603 .926526 1.942715C.976339 1.853051 1.295143 .518057 1.564134-.557908C1.763387-.159402 2.082192 .109589 2.550436 .109589C3.716065 .109589 5.001245-1.295143 5.001245-2.779577C5.001245-3.835616 4.343711-4.403487 3.616438-4.403487C2.650062-4.403487 1.603985-3.407223 1.305106-2.191781L.328767 1.723537ZM2.540473-.109589C1.843088-.109589 1.683686-.9066 1.683686-.996264C1.683686-1.036115 1.733499-1.235367 1.763387-1.364882C2.042341-2.480697 2.141968-2.839352 2.361146-3.237858C2.789539-3.965131 3.287671-4.184309 3.596513-4.184309C3.965131-4.184309 4.283935-3.895392 4.283935-3.20797C4.283935-2.660025 3.995019-1.544209 3.726027-1.05604C3.39726-.428394 2.919054-.109589 2.540473-.109589Z'/>
+<path id='c17-02-tockovna-sila-g1-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='c17-02-tockovna-sila-g1-61' d='M4.373599-7.0934C4.423412-7.222914 4.423412-7.262765 4.423412-7.272727C4.423412-7.382316 4.333748-7.47198 4.224159-7.47198C4.154421-7.47198 4.084682-7.442092 4.054795-7.382316L.597758 2.11208C.547945 2.241594 .547945 2.281445 .547945 2.291407C.547945 2.400996 .637609 2.49066 .747198 2.49066C.876712 2.49066 .9066 2.420922 .966376 2.251557L4.373599-7.0934Z'/>
+<path id='c17-02-tockovna-sila-g1-82' d='M3.73599-6.117061C3.795766-6.356164 3.825654-6.455791 4.014944-6.485679C4.104608-6.495641 4.423412-6.495641 4.622665-6.495641C5.330012-6.495641 6.435866-6.495641 6.435866-5.50934C6.435866-5.17061 6.276463-4.483188 5.88792-4.094645C5.628892-3.835616 5.100872-3.516812 4.204234-3.516812H3.088418L3.73599-6.117061ZM5.17061-3.387298C6.176837-3.606476 7.362391-4.303861 7.362391-5.310087C7.362391-6.166874 6.465753-6.804483 5.160648-6.804483H2.321295C2.122042-6.804483 2.032379-6.804483 2.032379-6.60523C2.032379-6.495641 2.122042-6.495641 2.311333-6.495641C2.331258-6.495641 2.520548-6.495641 2.689913-6.475716C2.86924-6.455791 2.958904-6.445828 2.958904-6.316314C2.958904-6.276463 2.948941-6.246575 2.919054-6.127024L1.58406-.777086C1.484433-.388543 1.464508-.308842 .67746-.308842C.498132-.308842 .408468-.308842 .408468-.109589C.408468 0 .52802 0 .547945 0C.826899 0 1.524284-.029888 1.803238-.029888S2.789539 0 3.068493 0C3.148194 0 3.267746 0 3.267746-.199253C3.267746-.308842 3.178082-.308842 2.988792-.308842C2.620174-.308842 2.34122-.308842 2.34122-.488169C2.34122-.547945 2.361146-.597758 2.371108-.657534L3.028643-3.297634H4.214197C5.120797-3.297634 5.300125-2.739726 5.300125-2.391034C5.300125-2.241594 5.220423-1.932752 5.160648-1.703611C5.090909-1.424658 5.001245-1.05604 5.001245-.856787C5.001245 .219178 6.196762 .219178 6.326276 .219178C7.173101 .219178 7.521793-.787049 7.521793-.926526C7.521793-1.046077 7.412204-1.046077 7.402242-1.046077C7.312578-1.046077 7.292653-.976339 7.272727-.9066C7.023661-.169365 6.595268 0 6.366127 0C6.03736 0 5.967621-.219178 5.967621-.607721C5.967621-.916563 6.027397-1.424658 6.067248-1.743462C6.087173-1.882939 6.107098-2.072229 6.107098-2.211706C6.107098-2.978829 5.439601-3.287671 5.17061-3.387298Z'/>
+<path id='c17-02-tockovna-sila-g1-114' d='M.876712-.587796C.846824-.438356 .787049-.209215 .787049-.159402C.787049 .019925 .926526 .109589 1.075965 .109589C1.195517 .109589 1.374844 .029888 1.444583-.169365C1.464508-.209215 1.803238-1.564134 1.843088-1.743462C1.92279-2.072229 2.102117-2.769614 2.161893-3.038605C2.201743-3.16812 2.480697-3.636364 2.719801-3.855542C2.799502-3.92528 3.088418-4.184309 3.516812-4.184309C3.775841-4.184309 3.92528-4.064757 3.935243-4.064757C3.636364-4.014944 3.417186-3.775841 3.417186-3.516812C3.417186-3.35741 3.526775-3.16812 3.795766-3.16812S4.343711-3.39726 4.343711-3.755915C4.343711-4.104608 4.024907-4.403487 3.516812-4.403487C2.86924-4.403487 2.430884-3.915318 2.241594-3.636364C2.161893-4.084682 1.803238-4.403487 1.334994-4.403487C.876712-4.403487 .687422-4.014944 .597758-3.835616C.418431-3.496887 .288917-2.899128 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.779577 .577833-2.998755C.747198-3.706102 .946451-4.184309 1.305106-4.184309C1.474471-4.184309 1.613948-4.104608 1.613948-3.726027C1.613948-3.516812 1.58406-3.407223 1.454545-2.889166L.876712-.587796Z'/>
+<path id='c17-02-tockovna-sila-g2-40' d='M3.297634 2.391034C3.297634 2.361146 3.297634 2.34122 3.128269 2.171856C1.882939 .916563 1.564134-.966376 1.564134-2.49066C1.564134-4.224159 1.942715-5.957659 3.16812-7.202989C3.297634-7.32254 3.297634-7.342466 3.297634-7.372354C3.297634-7.442092 3.257783-7.47198 3.198007-7.47198C3.098381-7.47198 2.201743-6.794521 1.613948-5.529265C1.105853-4.433375 .986301-3.327522 .986301-2.49066C.986301-1.713574 1.09589-.508095 1.643836 .617684C2.241594 1.843088 3.098381 2.49066 3.198007 2.49066C3.257783 2.49066 3.297634 2.460772 3.297634 2.391034Z'/>
+<path id='c17-02-tockovna-sila-g2-41' d='M2.879203-2.49066C2.879203-3.267746 2.769614-4.473225 2.221669-5.599004C1.62391-6.824408 .767123-7.47198 .667497-7.47198C.607721-7.47198 .56787-7.43213 .56787-7.372354C.56787-7.342466 .56787-7.32254 .757161-7.143213C1.733499-6.156912 2.30137-4.572852 2.30137-2.49066C2.30137-.787049 1.932752 .966376 .697385 2.221669C.56787 2.34122 .56787 2.361146 .56787 2.391034C.56787 2.450809 .607721 2.49066 .667497 2.49066C.767123 2.49066 1.663761 1.8132 2.251557 .547945C2.759651-.547945 2.879203-1.653798 2.879203-2.49066Z'/>
+<path id='c17-02-tockovna-sila-g2-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='c17-02-tockovna-sila-g2-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c17-02-tockovna-sila-g2-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='c17-02-tockovna-sila-g2-61' d='M6.844334-3.257783C6.993773-3.257783 7.183064-3.257783 7.183064-3.457036S6.993773-3.656289 6.854296-3.656289H.886675C.747198-3.656289 .557908-3.656289 .557908-3.457036S.747198-3.257783 .896638-3.257783H6.844334ZM6.854296-1.325031C6.993773-1.325031 7.183064-1.325031 7.183064-1.524284S6.993773-1.723537 6.844334-1.723537H.896638C.747198-1.723537 .557908-1.723537 .557908-1.524284S.747198-1.325031 .886675-1.325031H6.854296Z'/>
+<path id='c17-02-tockovna-sila-g2-108' d='M1.763387-6.914072L.328767-6.804483V-6.495641C1.026152-6.495641 1.105853-6.425903 1.105853-5.937733V-.757161C1.105853-.308842 .996264-.308842 .328767-.308842V0C.657534-.009963 1.185554-.029888 1.43462-.029888S2.171856-.009963 2.540473 0V-.308842C1.872976-.308842 1.763387-.308842 1.763387-.757161V-6.914072Z'/>
+<path id='c17-02-tockovna-sila-g2-110' d='M1.09589-3.427148V-.757161C1.09589-.308842 .986301-.308842 .318804-.308842V0C.667497-.009963 1.175592-.029888 1.444583-.029888C1.703611-.029888 2.221669-.009963 2.560399 0V-.308842C1.892902-.308842 1.783313-.308842 1.783313-.757161V-2.590286C1.783313-3.626401 2.49066-4.184309 3.128269-4.184309C3.755915-4.184309 3.865504-3.646326 3.865504-3.078456V-.757161C3.865504-.308842 3.755915-.308842 3.088418-.308842V0C3.437111-.009963 3.945205-.029888 4.214197-.029888C4.473225-.029888 4.991283-.009963 5.330012 0V-.308842C4.811955-.308842 4.562889-.308842 4.552927-.607721V-2.510585C4.552927-3.367372 4.552927-3.676214 4.244085-4.034869C4.104608-4.204234 3.775841-4.403487 3.198007-4.403487C2.470735-4.403487 2.002491-3.975093 1.723537-3.35741V-4.403487L.318804-4.293898V-3.985056C1.016189-3.985056 1.09589-3.915318 1.09589-3.427148Z'/>
+<path id='c17-02-tockovna-sila-g3-48' d='M3.598506-2.224658C3.598506-2.991781 3.507846-3.542715 3.187049-4.030884C2.970859-4.351681 2.538481-4.630635 1.980573-4.630635C.36264-4.630635 .36264-2.726775 .36264-2.224658S.36264 .139477 1.980573 .139477S3.598506-1.72254 3.598506-2.224658ZM1.980573-.055791C1.659776-.055791 1.234371-.244085 1.094894-.81594C.99726-1.227397 .99726-1.799253 .99726-2.315318C.99726-2.824408 .99726-3.354421 1.101868-3.737983C1.248319-4.288917 1.694645-4.435367 1.980573-4.435367C2.357161-4.435367 2.719801-4.20523 2.84533-3.800747C2.956912-3.424159 2.963885-2.922042 2.963885-2.315318C2.963885-1.799253 2.963885-1.283188 2.873225-.843836C2.733748-.209215 2.259527-.055791 1.980573-.055791Z'/>
+<path id='c17-02-tockovna-sila-g3-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+<path id='c17-02-tockovna-sila-g3-52' d='M3.689166-1.143711V-1.39477H2.915068V-4.505106C2.915068-4.651557 2.915068-4.700374 2.761644-4.700374C2.677958-4.700374 2.650062-4.700374 2.580324-4.60274L.27198-1.39477V-1.143711H2.322291V-.571856C2.322291-.334745 2.322291-.251059 1.75741-.251059H1.569116V0C1.917808-.013948 2.364134-.027895 2.615193-.027895C2.873225-.027895 3.319552-.013948 3.668244 0V-.251059H3.47995C2.915068-.251059 2.915068-.334745 2.915068-.571856V-1.143711H3.689166ZM2.371108-3.947198V-1.39477H.530012L2.371108-3.947198Z'/>
+<path id='c17-02-tockovna-sila-g3-54' d='M1.046077-2.280448C1.046077-2.852304 1.094894-3.368369 1.3599-3.793773C1.597011-4.170361 1.973599-4.428394 2.419925-4.428394C2.629141-4.428394 2.908095-4.372603 3.047572-4.184309C2.873225-4.170361 2.726775-4.051806 2.726775-3.849564C2.726775-3.675218 2.84533-3.521793 3.054545-3.521793S3.38929-3.66127 3.38929-3.863512C3.38929-4.267995 3.096389-4.630635 2.405978-4.630635C1.401743-4.630635 .376588-3.710087 .376588-2.21071C.376588-.404483 1.227397 .139477 1.994521 .139477C2.84533 .139477 3.584558-.509091 3.584558-1.422665C3.584558-2.308344 2.880199-2.963885 2.064259-2.963885C1.506351-2.963885 1.199502-2.594271 1.046077-2.280448ZM1.994521-.083686C1.645828-.083686 1.373848-.285928 1.227397-.592777C1.12279-.801993 1.066999-1.150685 1.066999-1.569116C1.066999-2.245579 1.471482-2.768618 2.02939-2.768618C2.350187-2.768618 2.566376-2.643088 2.740722-2.385056C2.908095-2.12005 2.915068-1.827148 2.915068-1.422665C2.915068-1.025156 2.915068-.732254 2.726775-.460274C2.559402-.216189 2.336239-.083686 1.994521-.083686Z'/>
+</defs>
+<g id='c17-02-tockovna-sila-page1'>
+<g stroke-miterlimit='10' transform='translate(-58.661352,21.767493)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='profil'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 0H179.25237' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 0V93.89413' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M0 85.35823C0 85.35823 2.90886 85.55954 3.41418 85.35823C3.91951 85.15692 3.57503 84.30995 3.64212 83.90727C3.70921 83.5046 3.82681 82.85858 3.89783 82.4559C3.96884 82.05322 4.07893 81.40367 4.15398 81.00496C4.22902 80.60625 4.35583 79.98094 4.43878 79.58223S4.66104 78.5339 4.75182 78.13129C4.84259 77.72867 4.99838 77.08302 5.09306 76.68034S5.33563 75.63165 5.4343 75.22897C5.53296 74.8263 5.69759 74.18063 5.8042 73.77802C5.91081 73.3754 6.08826 72.72578 6.20276 72.32707S6.5072 71.30313 6.62953 70.90436C6.75186 70.50558 6.95424 69.85565 7.08452 69.45297C7.2148 69.0503 7.43042 68.40465 7.5686 68.00203C7.70679 67.59941 7.93048 66.95377 8.08047 66.55109C8.23047 66.1484 8.49171 65.5024 8.64966 65.09972C8.8076 64.69704 9.04909 64.05139 9.21883 63.64877S9.69154 62.59653 9.8731 62.19781C10.05464 61.7991 10.33395 61.17381 10.52737 60.7751C10.7208 60.37639 11.0579 59.72684 11.26717 59.32416C11.47643 58.92148 11.81454 58.27545 12.03561 57.87277C12.25668 57.4701 12.62367 56.82445 12.86052 56.42183S13.49004 55.37357 13.74272 54.97089C13.9954 54.5682 14.41338 53.91829 14.6818 53.51952C14.95021 53.12074 15.38913 52.4955 15.6773 52.09679C15.96548 51.69807 16.44688 51.04846 16.75879 50.64584C17.0707 50.24323 17.59375 49.59758 17.92535 49.1949C18.25696 48.79222 18.7975 48.1462 19.1488 47.74352S20.08232 46.69519 20.45735 46.29257S21.44917 45.24431 21.85185 44.84163S22.9294 43.78897 23.35966 43.39026C23.78993 42.99155 24.4951 42.36667 24.95302 41.96796C25.41093 41.56924 26.16664 40.91927 26.66011 40.51659C27.15358 40.1139 27.98453 39.46826 28.50961 39.06564C29.0347 38.66302 29.88408 38.01738 30.44464 37.6147S31.94983 36.566 32.54985 36.16331C33.14987 35.76064 34.1297 35.11499 34.76924 34.71237S36.4763 33.66014 37.15927 33.26143S38.96138 32.23747 39.6917 31.8387C40.42201 31.43993 41.64131 30.79001 42.42296 30.38733C43.2046 29.98465 44.49231 29.339 45.32527 28.93639C46.15823 28.53377 47.53426 27.88812 48.42644 27.48544S50.80017 26.43674 51.75554 26.03406C52.7109 25.63138 54.29364 24.98183 55.31213 24.58311C56.33063 24.1844 58.01062 23.55911 59.09622 23.1604S61.9758 22.11206 63.13646 21.70944S66.21797 20.66118 67.46152 20.2585C68.70506 19.85582 70.7688 19.20981 72.09915 18.80713S75.63252 17.7588 77.0498 17.35619C78.46709 16.95357 80.79799 16.30792 82.31393 15.90524C83.82988 15.50256 86.35323 14.85263 87.97574 14.45386C89.59825 14.05508 92.27876 13.42986 94.00789 13.03114C95.73701 12.63243 98.59059 11.98282 100.43814 11.5802S105.346 10.53192 107.32384 10.12924S112.5811 9.08055 114.69316 8.67787S120.29199 7.62955 122.54616 7.22693C124.80032 6.82431 128.52762 6.1747 130.93967 5.77599C133.35172 5.37727 137.35268 4.75197 139.93056 4.35326C142.50844 3.95454 146.76768 3.305 149.5193 2.90231C152.27092 2.49963 156.82124 1.85362 159.7623 1.45094C162.70335 1.04826 170.71646 0 170.71646 0' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M0 85.35823C0 85.35823 .02467 85.55954 .02864 85.35823S.02473 84.30995 .02864 83.90727C.03255 83.5046 .05296 82.85858 .05687 82.4559S.05687 81.40367 .05687 81.00496S.05687 79.98094 .05687 79.58223S.0529 78.5339 .05687 78.13129C.06084 77.72867 .08156 77.08302 .08553 76.68034S.08162 75.63165 .08553 75.22897C.08943 74.8263 .10983 74.18063 .11374 73.77802C.11765 73.3754 .10977 72.72578 .11374 72.32707C.1177 71.92836 .1345 71.30313 .1424 70.90436C.15028 70.50558 .16272 69.85565 .17061 69.45297C.1785 69.0503 .19138 68.40465 .19926 68.00203C.20715 67.59941 .2196 66.95377 .2275 66.55109C.23538 66.1484 .24826 65.5024 .25615 65.09972S.27257 64.05139 .28436 63.64877C.29616 63.24615 .3254 62.59653 .34123 62.19781C.35707 61.7991 .3827 61.17381 .39854 60.7751S.43573 59.72684 .45541 59.32416C.4751 58.92148 .51685 58.27545 .54051 57.87277C.56418 57.4701 .60237 56.82445 .62604 56.42183C.6497 56.01921 .68349 55.37357 .71114 54.97089C.73878 54.5682 .7937 53.91829 .82532 53.51952C.85693 53.12074 .9036 52.4955 .93907 52.09679C.97455 51.69807 1.03761 51.04846 1.08104 50.64584C1.12447 50.24323 1.20078 49.59758 1.25209 49.1949S1.39174 48.1462 1.45094 47.74352C1.51015 47.34084 1.61177 46.69519 1.67886 46.29257C1.74596 45.88995 1.85568 45.24431 1.93459 44.84163C2.01349 44.43895 2.15677 43.78897 2.2476 43.39026C2.33844 42.99155 2.48665 42.36667 2.5893 41.96796C2.69194 41.56924 2.86508 40.91927 2.98741 40.51659C3.10974 40.1139 3.3289 39.46826 3.47105 39.06564S3.85406 38.01738 4.01201 37.6147C4.16995 37.21202 4.42387 36.566 4.6094 36.16331C4.79494 35.76064 5.13213 35.11499 5.34921 34.71237C5.5663 34.30975 5.92538 33.66014 6.1741 33.26143S6.85757 32.23747 7.14183 31.8387S7.89525 30.79001 8.22287 30.38733S9.12027 29.339 9.5032 28.93639C9.88614 28.53377 10.54066 27.88812 10.9828 27.48544S12.17668 26.43674 12.6899 26.03406C13.20311 25.63138 14.08966 24.98183 14.6818 24.58311C15.27393 24.1844 16.27863 23.55911 16.95763 23.1604S18.78996 22.11206 19.57558 21.70944C20.36119 21.30682 21.70793 20.66118 22.61987 20.2585S25.09811 19.20981 26.14824 18.80713C27.19836 18.40445 28.97656 17.7588 30.18849 17.35619C31.40042 16.95357 33.48157 16.30792 34.883 15.90524C36.28442 15.50256 38.6705 14.85263 40.2891 14.45386C41.90768 14.05508 44.67352 13.42986 46.54872 13.03114C48.42392 12.63243 51.64093 11.98282 53.80432 11.5802S59.64601 10.53192 62.14095 10.12924C64.63588 9.72656 68.90036 9.08055 71.78612 8.67787S79.60368 7.62955 82.93954 7.22693S91.97565 6.1747 95.82872 5.77599C99.6818 5.37727 106.26068 4.75197 110.70981 4.35326C115.15894 3.95454 122.755 3.305 127.89494 2.90231C133.03488 2.49963 141.81349 1.85362 147.7549 1.45094C153.6963 1.04826 170.71646 0 170.71646 0' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 85.35823L170.71646 0' fill='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(-10.0557,82.13602)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.661352,21.767493)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-58.661352' y='21.767493' xlink:href='#c17-02-tockovna-sila-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-10.0557,-3.22221)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.661352,21.767493)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-58.661352' y='21.767493' xlink:href='#c17-02-tockovna-sila-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M170.71646-2.27626V2.27626' fill='none'/>
+</g>
+<g transform='translate(166.8814,-13.88048)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.661352,21.767493)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-58.661352' y='21.767493' xlink:href='#c17-02-tockovna-sila-g1-82'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(184.30807,-2.15277)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.661352,21.767493)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-58.661352' y='21.767493' xlink:href='#c17-02-tockovna-sila-g1-114'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='rozice'>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(30.9478,45.8352)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.661352,21.767493)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-58.661352' y='21.767493' xlink:href='#c17-02-tockovna-sila-g1-26'/>
+<use x='-50.743181' y='21.767493' xlink:href='#c17-02-tockovna-sila-g2-61'/>
+<use x='-40.227101' y='21.767493' xlink:href='#c17-02-tockovna-sila-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(51.43338,3.44046)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.661352,21.767493)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-58.661352' y='21.767493' xlink:href='#c17-02-tockovna-sila-g1-26'/>
+<use x='-50.743181' y='21.767493' xlink:href='#c17-02-tockovna-sila-g2-61'/>
+<use x='-40.227101' y='21.767493' xlink:href='#c17-02-tockovna-sila-g2-48'/>
+<use x='-35.245762' y='21.767493' xlink:href='#c17-02-tockovna-sila-g1-59'/>
+<use x='-32.478353' y='21.767493' xlink:href='#c17-02-tockovna-sila-g2-48'/>
+<use x='-27.497014' y='21.767493' xlink:href='#c17-02-tockovna-sila-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='energija'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M239.00287 0H384.11203' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M239.00287 0V89.62596' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M239.00287 18.15286C239.00287 18.15286 240.25696 18.27217 240.73862 18.32349C241.22028 18.3748 241.99669 18.47144 242.47437 18.52275C242.95204 18.57407 243.70378 18.64206 244.18146 18.69337C244.65913 18.74469 245.43561 18.83736 245.9172 18.89265C246.3988 18.94795 247.17093 19.0367 247.65253 19.09193C248.13412 19.14717 248.9106 19.23553 249.38828 19.29077C249.86595 19.34601 250.61769 19.43085 251.09537 19.49005C251.57304 19.54926 252.34946 19.65834 252.83112 19.71754C253.31277 19.77675 254.08527 19.85762 254.56686 19.91682C255.04846 19.97603 255.82457 20.08113 256.30219 20.14432C256.7798 20.2075 257.5316 20.30907 258.00928 20.37225C258.48695 20.43544 259.26337 20.53662 259.74503 20.59975C260.22668 20.66287 260.99911 20.76407 261.48077 20.82726C261.96243 20.89044 262.73885 20.98808 263.21652 21.05518C263.6942 21.12227 264.446 21.23988 264.92361 21.3109C265.40123 21.38191 266.17734 21.49597 266.65894 21.56705C267.14053 21.63812 267.91302 21.75212 268.39468 21.8232C268.87634 21.89427 269.65276 22.00827 270.13043 22.07935C270.60811 22.15042 271.35985 22.2605 271.83752 22.3355C272.3152 22.41049 273.09167 22.54097 273.57327 22.61987C274.05487 22.69878 274.827 22.82527 275.3086 22.90424C275.79019 22.9832 276.56667 23.11008 277.04434 23.18904C277.52202 23.268 278.27376 23.39053 278.75143 23.47342C279.22911 23.5563 280.00552 23.69958 280.48718 23.78644C280.96884 23.87329 281.74133 24.01262 282.22293 24.09947C282.70453 24.18633 283.48064 24.32172 283.95825 24.41249C284.43587 24.50327 285.18767 24.66296 285.66534 24.75374C286.14302 24.84451 286.91943 24.97203 287.4011 25.06677C287.88275 25.16151 288.65518 25.33794 289.13684 25.43666C289.6185 25.53539 290.39099 25.67963 290.87259 25.77835C291.35419 25.87708 292.1303 26.04561 292.60791 26.14824C293.08553 26.25087 293.83733 26.41159 294.315 26.51814C294.79268 26.6247 295.56909 26.80573 296.05075 26.91626C296.53241 27.0268 297.3049 27.20428 297.7865 27.31482C298.2681 27.42535 299.04414 27.5985 299.52182 27.71294S300.75168 28.01732 301.22935 28.13971C301.70703 28.2621 302.48306 28.46883 302.96466 28.59514S304.21875 28.92381 304.70041 29.05013C305.18207 29.17644 305.95848 29.37526 306.43616 29.50555C306.91383 29.63585 307.66557 29.85501 308.14325 29.98921S309.39742 30.33467 309.87901 30.47285C310.36061 30.61104 311.13272 30.83908 311.61432 30.98515C312.09592 31.13123 312.87239 31.37569 313.35007 31.52568C313.82774 31.67567 314.57948 31.91225 315.05716 32.06621S316.31125 32.47353 316.79291 32.63538S318.04707 33.067 318.52867 33.23277S319.78636 33.65645 320.26398 33.83017S321.4934 34.30327 321.97107 34.48488C322.44875 34.66649 323.22516 34.95361 323.70682 35.13914C324.18848 35.32468 324.96098 35.62865 325.44258 35.82207S326.70021 36.33191 327.17789 36.53322C327.65556 36.73453 328.40775 37.06375 328.88542 37.27301C329.3631 37.48227 330.13913 37.82433 330.62073 38.04147C331.10233 38.25862 331.87482 38.60919 332.35648 38.83815C332.83813 39.06711 333.61456 39.45485 334.09224 39.6917C334.56992 39.92854 335.32166 40.29659 335.79933 40.54524C336.27701 40.7939 337.05348 41.22336 337.53508 41.48389S338.78879 42.15448 339.27039 42.42296C339.75198 42.69144 340.52448 43.13464 341.00613 43.4189C341.4878 43.70316 342.26422 44.17169 342.7419 44.47173C343.21957 44.77176 343.97131 45.26561 344.44899 45.58144C344.92667 45.89726 345.70314 46.42038 346.18474 46.748S347.43845 47.59541 347.92004 47.9428C348.40164 48.29018 349.17812 48.88463 349.65579 49.25177C350.13347 49.61891 350.88522 50.20605 351.3629 50.58897C351.84058 50.9719 352.61705 51.60112 353.09865 52.01169S354.35236 53.1139 354.83395 53.54816C355.31555 53.9824 356.09203 54.6836 356.5697 55.14151C357.04738 55.59943 357.79913 56.35912 358.27681 56.8486C358.75449 57.33809 359.5309 58.15231 360.01256 58.66945C360.49422 59.18658 361.26671 60.02315 361.7483 60.57582C362.2299 61.1285 363.00594 62.06062 363.48361 62.65282C363.96129 63.24501 364.71347 64.20837 365.19115 64.844C365.66882 65.47961 366.44487 66.5511 366.92647 67.23401S368.18056 69.03177 368.66222 69.766C369.14388 70.50024 369.92029 71.72844 370.39796 72.52592C370.87564 73.32341 371.62738 74.65317 372.10506 75.51378C372.58273 76.37439 373.3592 77.79308 373.8408 78.72868C374.3224 79.66429 375.57613 82.25706 375.57613 82.25706' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M239.00287-2.27626V2.27626' fill='none'/>
+</g>
+<g transform='translate(228.63478,-15.18718)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.661352,21.767493)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-58.661352' y='21.767493' xlink:href='#c17-02-tockovna-sila-g2-49'/>
+<use x='-53.680013' y='21.767493' xlink:href='#c17-02-tockovna-sila-g2-48'/>
+<use x='-48.698674' y='18.152129' xlink:href='#c17-02-tockovna-sila-g0-0'/>
+<use x='-42.471995' y='18.152129' xlink:href='#c17-02-tockovna-sila-g3-54'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M284.52744-2.27626V2.27626' fill='none'/>
+</g>
+<g transform='translate(274.15935,-15.18718)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.661352,21.767493)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-58.661352' y='21.767493' xlink:href='#c17-02-tockovna-sila-g2-49'/>
+<use x='-53.680013' y='21.767493' xlink:href='#c17-02-tockovna-sila-g2-48'/>
+<use x='-48.698674' y='18.152129' xlink:href='#c17-02-tockovna-sila-g0-0'/>
+<use x='-42.471995' y='18.152129' xlink:href='#c17-02-tockovna-sila-g3-52'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M330.05199-2.27626V2.27626' fill='none'/>
+</g>
+<g transform='translate(319.6839,-15.18718)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.661352,21.767493)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-58.661352' y='21.767493' xlink:href='#c17-02-tockovna-sila-g2-49'/>
+<use x='-53.680013' y='21.767493' xlink:href='#c17-02-tockovna-sila-g2-48'/>
+<use x='-48.698674' y='18.152129' xlink:href='#c17-02-tockovna-sila-g0-0'/>
+<use x='-42.471995' y='18.152129' xlink:href='#c17-02-tockovna-sila-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M375.57613-2.27626V2.27626' fill='none'/>
+</g>
+<g transform='translate(368.33305,-15.18718)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.661352,21.767493)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-58.661352' y='21.767493' xlink:href='#c17-02-tockovna-sila-g2-49'/>
+<use x='-53.680013' y='21.767493' xlink:href='#c17-02-tockovna-sila-g2-48'/>
+<use x='-48.698674' y='18.152129' xlink:href='#c17-02-tockovna-sila-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(251.17175,51.48648)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.661352,21.767493)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-58.661352' y='21.767493' xlink:href='#c17-02-tockovna-sila-g2-50'/>
+<use x='-53.680013' y='21.767493' xlink:href='#c17-02-tockovna-sila-g1-25'/>
+<use x='-47.643596' y='21.767493' xlink:href='#c17-02-tockovna-sila-g1-61'/>
+<use x='-41.001858' y='21.767493' xlink:href='#c17-02-tockovna-sila-g2-108'/>
+<use x='-38.234449' y='21.767493' xlink:href='#c17-02-tockovna-sila-g2-110'/>
+<use x='-32.699632' y='21.767493' xlink:href='#c17-02-tockovna-sila-g2-40'/>
+<use x='-28.825259' y='21.767493' xlink:href='#c17-02-tockovna-sila-g1-82'/>
+<use x='-21.183762' y='21.767493' xlink:href='#c17-02-tockovna-sila-g1-61'/>
+<use x='-16.202423' y='21.767493' xlink:href='#c17-02-tockovna-sila-g1-26'/>
+<use x='-11.051584' y='21.767493' xlink:href='#c17-02-tockovna-sila-g2-41'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M236.72702 51.21501H241.27913' fill='none'/>
+</g>
+<g transform='translate(227.52487,47.9928)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.661352,21.767493)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-58.661352' y='21.767493' xlink:href='#c17-02-tockovna-sila-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(389.16774,-1.18056)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.661352,21.767493)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-58.661352' y='21.767493' xlink:href='#c17-02-tockovna-sila-g1-26'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 17.8</span>: Levo: profil polja \(w_\rho(r)\) vzdolž polmera, \(w_\rho = 1\) za \(r \le \rho\) in \(w_\rho = \ln(R/r)/\ln(R/\rho)\) za <span class="nobr">\(\rho \le r \le R\),</span> \(R = 50\) mm, za \(\rho = 1\) mm (modro) in \(\rho = 0{,}01\) mm (oranžno). Siva črtkana premica je profil polja v palici, ki pade linearno od \(1\) do <span class="nobr">\(0\).</span> Desno: energija polja \(2\pi/\ln(R/\rho)\) v odvisnosti od \(\rho\) (logaritemska skala), ki pada proti nič, ko <span class="nobr">\(\rho \to 0\).</span> Izračunano v num-02.py.</figcaption></figure>
+<p>Na levi je <a data-del="profil" class="xref kaz" href="sec-telo-v-model.html#fig-tvm-tockovna-sila" data-knowl="fig-tvm-tockovna-sila">profil</a> polja \(w_\rho\) po polmeru \(r\) od točke sile, ki leži v <span class="nobr">\(r = 0\).</span> Polje ima vrednost \(1\) v krogu s polmerom \(\rho\) okoli točke, nato pada z logaritmom polmera in pri polmeru \(R\) doseže \(0\) ter je zunaj njega nič. Narisali smo dve <span class="nobr"><a data-del="rozice" class="xref kaz" href="sec-telo-v-model.html#fig-tvm-tockovna-sila" data-knowl="fig-tvm-tockovna-sila">vrednosti \(\rho\)</a>:</span> pri manjši je vrh tanjši in padec hitrejši na začetku, a dolg rep do <span class="nobr">\(R\).</span> Črtkana premica je polje v palici, ki pade linearno. Desno je <a data-del="energija" class="xref kaz" href="sec-telo-v-model.html#fig-tvm-tockovna-sila" data-knowl="fig-tvm-tockovna-sila">energija</a> polja, \(\int |\nabla w_\rho|^2\) po krogu, kot <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcija</a> <span class="nobr">\(\rho\):</span> pada, ko manjšamo <span class="nobr">\(\rho\).</span> To bomo dokazali v naslednji lemi, v kateri računamo s krožnimi kolobarji.</p>
+
+<div class="blk lema" id="lem-energija-polja-w"><div class="blk-head"><span class="blk-label">Lema 17.8</span> <span class="blk-title">Energija polja okoli točke (energy of the field around a point)</span></div><div class="blk-body"><p>Naj bo \(0 &lt; \rho &lt; R\) in \(w_\rho(r) = 1\) za <span class="nobr">\(r \le \rho\),</span> \(w_\rho(r) = \ln(R/r)/\ln(R/\rho)\) za \(\rho \le r \le R\) in \(w_\rho(r) = 0\) za <span class="nobr">\(r \ge R\),</span> kjer je \(r\) razdalja od izbrane točke ravnine. Polje je zvezno, po kosih <a class="xref auto" href="sec-sprememba-polja.html#def-zvezno-odvedljivo-polje" data-knowl="def-zvezno-odvedljivo-polje">zvezno odvedljivo</a>, ima vrednost \(1\) v točki in je nič zunaj kroga s polmerom <span class="nobr">\(R\).</span> Za gradient \(\nabla w_\rho\) velja</p>
+<div class="eq" id="eq-tvm-energija-w">\[\int_{\mathrm{r} \le \mathrm{R}} |\nabla w_\rho|^2\,\mathrm{d}A = \frac{2\pi}{\ln(R/\rho)} . \tag{17.5}\]</div>
+<p>To število pade proti nič, ko gre \(\rho \to 0\) pri stalnem <span class="nobr">\(R\).</span></p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da je gradient na kolobarju znan in da sledi <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integral</a> krožnih kolobarjev.</p>
+<ol>
+<li>Na \(\rho &lt; r &lt; R\) je <span class="nobr">\(w_\rho = \ln(R/r)/\ln(R/\rho)\),</span> zato je po pravilu za <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">odvod</a> logaritma \(w_\rho'(r) = -1/(r\,\ln(R/\rho))\) (lema <a class="xref" href="sec-srednja-vrednost.html#lem-pravila-odvajanja" data-knowl="lem-pravila-odvajanja">1.81</a>). Gradient polja, ki je odvisno samo od <span class="nobr">\(r\),</span> kaže po polmeru in ima velikost <span class="nobr">\(|w_\rho'(r)|\),</span> torej <span class="nobr">\(|\nabla w_\rho|^2 = 1/(r^2\,\ln^2(R/\rho))\).</span> Za \(r &lt; \rho\) in \(r &gt; R\) je \(w_\rho\) stalna in <span class="nobr">\(\nabla w_\rho = \vek 0\).</span></li>
+<li><a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">Funkcija</a> \(|\nabla w_\rho|^2\) je odvisna le od <span class="nobr">\(r\),</span> zato je integral po krogu s polmerom \(R\) enak integralu po \(r\) s težo ploščine krožnega kolobarja \(2\pi r\) na enoto polmera, \(\int_\rho^R |w_\rho'(r)|^2\,2\pi r\,\mathrm{d}r\) (integral po krožnem kolobarju kot <a class="xref auto" href="sec-cauchyjeva-formula.html#lem-limita-vsote" data-knowl="lem-limita-vsote">limita vsot</a> ploščin tankih kolobarjev, ne pa kot izdelek s števili).</li>
+<li>Vstavimo korak 1: <span class="nobr">\(\int_\rho^R \dfrac{2\pi r}{r^2\,\ln^2(R/\rho)}\,\mathrm{d}r = \dfrac{2\pi}{\ln^2(R/\rho)}\int_\rho^R \dfrac{1}{r}\,\mathrm{d}r = \dfrac{2\pi}{\ln^2(R/\rho)}\,\big(\ln R - \ln\rho\big) = \dfrac{2\pi}{\ln(R/\rho)}\),</span> po definiciji naravnega logaritma (definicija <a class="xref" href="sec-eksponentna-funkcija.html#def-logaritem" data-knowl="def-logaritem">9.10</a>) in pravilu za logaritem količnika.</li>
+<li>Ko gre <span class="nobr">\(\rho \to 0\),</span> gre \(R/\rho \to \infty\) in <span class="nobr">\(\ln(R/\rho) \to \infty\),</span> torej <span class="nobr">\(2\pi/\ln(R/\rho) \to 0\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> Funkcija \(w_\rho\) je tako imenovana logaritemska preizkusna funkcija. Lema in dokaz nista iz vira.</p></div></div>
+<p>Številke: \(2\pi/\ln(R/\rho)\) je <span class="nobr">\(1{,}606\),</span> <span class="nobr">\(1{,}011\),</span> <span class="nobr">\(0{,}738\),</span> \(0{,}581\) in \(0{,}354\) za <span class="nobr">\(\rho = 1\),</span> <span class="nobr">\(0{,}1\),</span> <span class="nobr">\(0{,}01\),</span> \(0{,}001\) in \(10^{-6}\) mm pri \(R = 50\) mm (num-02.py). Padajo počasi: za to, da pade pod <span class="nobr">\(0{,}354\),</span> moramo \(\rho\) zmanjšati milijonkrat. Zdaj sestavimo izrek.</p>
+<p>Vzemimo ravninsko deformacijsko stanje (definicija <a class="xref" href="sec-ravninski-problemi.html#def-ravninsko-deformacijsko-stanje" data-knowl="def-ravninsko-deformacijsko-stanje">11.30</a>) debeline \(b\) iz <a class="xref auto" href="sec-natezni-preizkus.html#def-izotropen-material" data-knowl="def-izotropen-material">izotropnega</a> materiala z <a class="xref auto" href="sec-hookov-zakon.html#def-modul-stisljivosti" data-knowl="def-modul-stisljivosti">modulom stisljivosti</a> \(K\) in <a class="xref auto" href="sec-hookov-zakon.html#def-strizni-modul" data-knowl="def-strizni-modul">strižnim modulom</a> \(G\) (izrek <a class="xref" href="sec-energija-deformacije.html#thm-meje-konstant" data-knowl="thm-meje-konstant">3.48</a>, <span class="nobr">\(K, G &gt; 0\)).</span> Telo vsebuje krog s polmerom \(R\) okoli točke <span class="nobr">\(P_0\),</span> in tam deluje sila \(F\) v smeri osi <span class="nobr">\(x\).</span> Podpore stojijo zunaj kroga. Pri točkovni sili je <a class="xref auto" href="sec-delo-sil-na-palici.html#def-delo-sile" data-knowl="def-delo-sile">delo sile</a> na polju \(\vek v\) enako <span class="nobr">\(F\,v_{\mathrm{x}}(P_0)\).</span></p>
+
+<div class="blk izrek" id="thm-tockovna-sila-ravnina"><div class="blk-head"><span class="blk-label">Izrek 17.9</span> <span class="blk-title">Točkovna sila v ravnini (point force in the plane)</span></div><div class="blk-body"><p>V opisanem <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">telesu</a> (<a class="xref auto" href="sec-ravninski-problemi.html#def-ravninsko-deformacijsko-stanje" data-knowl="def-ravninsko-deformacijsko-stanje">ravninsko deformacijsko stanje</a> z debelino <span class="nobr">\(b\),</span> <span class="nobr">\(K, G &gt; 0\),</span> krog s polmerom \(R\) okoli \(P_0\) v telesu, podpore zunaj kroga) naj bo \(\Pi(\vek v) = U(\vek v) - F\,v_{\mathrm{x}}(P_0)\) celotna potencialna energija (definicija <a class="xref" href="sec-potencialna-energija.html#def-potencialna-energija" data-knowl="def-potencialna-energija">4.89</a>) za zvezno, po kosih <a class="xref auto" href="sec-sprememba-polja.html#def-zvezno-odvedljivo-polje" data-knowl="def-zvezno-odvedljivo-polje">zvezno odvedljivo polje</a> pomikov \(\vek v\) in <span class="nobr">\(M' = (K + G)\,b\).</span> Tedaj velja:</p>
+<ol>
+<li>za vsak \(\rho \in (0, R)\) in polje \(\vek v_{\mathrm{t}} = t\,w_\rho\,\vek e_{\mathrm{x}}\) je <span class="nobr">\(U(\vek v_{\mathrm{t}}) \le M'\,t^2\,\dfrac{2\pi}{\ln(R/\rho)}\),</span></li>
+<li>za ista polja velja <span class="nobr">\(\min_{\mathrm{t}} \Pi(\vek v_{\mathrm{t}}) \le -\dfrac{F^2\,\ln(R/\rho)}{8\pi\,M'}\),</span></li>
+<li>celotna potencialna energija na teh poljih ni <a class="xref auto" href="sec-polnost.html#def-zgornja-meja" data-knowl="def-zgornja-meja">navzdol omejena</a>, zato ni polja s končno energijo, ki bi rešilo <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">šibko obliko</a> \(B(\vek u, \vek v) = F\,v_{\mathrm{x}}(P_0)\) za vsako <span class="nobr">\(\vek v\).</span></li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da je energija polja \(\vek v_{\mathrm{t}}\) <a class="xref auto" href="sec-polnost.html#def-zgornja-meja" data-knowl="def-zgornja-meja">navzgor omejena</a> z energijo gradienta, ki je majhna po lemi, in nato, da potencialna energija ni navzdol omejena.</p>
+<ol>
+<li>Energija na enoto prostornine je po enačbi <a class="xref" href="sec-energija-deformacije.html#eq-energija-prostornina-oblika" data-knowl="eq-energija-prostornina-oblika">(3.43)</a> <span class="nobr">\(w = \tfrac12 K\,\varepsilon_{\mathrm{v}}^2 + G \sum_{\mathrm{i}}\sum_{\mathrm{j}} e_{\mathrm{ij}}^2\),</span> kjer je \(\varepsilon_{\mathrm{v}} = \varepsilon_{\mathrm{xx}} + \varepsilon_{\mathrm{yy}}\) za <a class="xref auto" href="sec-ravninski-problemi.html#def-ravninsko-deformacijsko-stanje" data-knowl="def-ravninsko-deformacijsko-stanje">ravninsko deformacijsko stanje</a> <span class="nobr">(\(\varepsilon_{\mathrm{zz}} = 0\))</span> in \(e_{\mathrm{ij}}\) so komponente <a class="xref auto" href="sec-najvecja-strizna.html#def-sfericni-deviatorni" data-knowl="def-sfericni-deviatorni">deviatorja</a> <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">deformacije</a>. Po Cauchy-Schwarzovi neenakosti za dve števili je <span class="nobr">\(\varepsilon_{\mathrm{v}}^2 \le 2(\varepsilon_{\mathrm{xx}}^2 + \varepsilon_{\mathrm{yy}}^2) \le 2\sum\varepsilon_{\mathrm{ij}}^2\).</span> Ker je <span class="nobr">\(\sum\varepsilon_{\mathrm{ij}}^2 = \sum e_{\mathrm{ij}}^2 + \tfrac13\varepsilon_{\mathrm{v}}^2\),</span> je <span class="nobr">\(\sum e_{\mathrm{ij}}^2 \le \sum\varepsilon_{\mathrm{ij}}^2\).</span> Zato je <span class="nobr">\(w \le (K + G)\sum\varepsilon_{\mathrm{ij}}^2\).</span></li>
+<li>Deformacija je simetrični del gradienta \(\nabla\vek v\) in je njena vsota kvadratov komponent ne večja od vsote kvadratov vseh komponent gradienta, ker je vsota kvadratov komponent <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrike</a> enaka vsoti kvadratov simetričnega in <a class="xref auto" href="sec-matrike.html#def-simetricna-matrika" data-knowl="def-simetricna-matrika">antisimetričnega dela</a>. Za \(\vek v_{\mathrm{t}}\) ima gradient samo komponenti \(t\,\partial w_\rho/\partial x\) in <span class="nobr">\(t\,\partial w_\rho/\partial y\),</span> zato je <span class="nobr">\(\sum\varepsilon_{\mathrm{ij}}^2 \le t^2\,|\nabla w_\rho|^2\).</span></li>
+<li>Integriramo po <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">telesu</a> z debelino <span class="nobr">\(b\):</span> \(U(\vek v_{\mathrm{t}}) = b\int w\,\mathrm{d}A \le (K + G)\,b\,t^2 \int |\nabla w_\rho|^2\,\mathrm{d}A = M'\,t^2\,2\pi/\ln(R/\rho)\) po lemi <a class="xref" href="sec-telo-v-model.html#lem-energija-polja-w" data-knowl="lem-energija-polja-w">17.8</a>. To je točka 1.</li>
+<li>Polje \(\vek v_{\mathrm{t}}\) ima v točki \(P_0\) vrednost <span class="nobr">\(v_{\mathrm{x}} = t\),</span> zato je \(\Pi(\vek v_{\mathrm{t}}) \le M'\,I\,t^2 - F t\) z <span class="nobr">\(I = 2\pi/\ln(R/\rho)\).</span> <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">Funkcija</a> \(q(t) = M' I\,t^2 - F t\) ima po preurejanju v popolni kvadrat najmanjšo vrednost \(-F^2/(4 M' I)\) pri <span class="nobr">\(t = F/(2 M' I)\).</span> To je točka 2.</li>
+<li>Pri \(\rho \to 0\) gre \(I \to 0\) (lema <a class="xref" href="sec-telo-v-model.html#lem-energija-polja-w" data-knowl="lem-energija-polja-w">17.8</a>), torej <span class="nobr">\(-F^2/(4M'I) \to -\infty\).</span> Potencialna energija na dopustnih poljih zato ni navzdol omejena.</li>
+<li>Denimo, da je \(\vek u\) polje s končno energijo, ki za vsako polje \(\vek v\) reši <span class="nobr">\(B(\vek u, \vek v) = F\,v_{\mathrm{x}}(P_0)\).</span> Po izreku <a class="xref" href="sec-ritzova-metoda.html#thm-ritz-energija" data-knowl="thm-ritz-energija">6.34</a>, točka 1, je tedaj \(\Pi(\vek v) \ge \Pi(\vek u)\) za vsako <span class="nobr">\(\vek v\),</span> in \(\Pi(\vek u)\) je končno število. To je v nasprotju s korakom 5, zato takega \(\vek u\) ni. To je točka 3.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> COOK razdelek 10.6 (PDF str. 361) navede trditev za ravninsko ali prostorsko telo brez dokaza. Izrek in dokaz nista iz vira. Meja \(K + G\) iz energije <a class="xref" href="sec-energija-deformacije.html#eq-energija-prostornina-oblika" data-knowl="eq-energija-prostornina-oblika">(3.43)</a> je naša.</p></div></div>
+<p>Zdaj mreža. Naj bo \(\mathcal V_1 \subset \mathcal V_2 \subset \dots\) <a class="xref auto" href="sec-zaporedja.html#def-zaporedje" data-knowl="def-zaporedje">zaporedje</a> poskusnih prostorov (definicija <a class="xref" href="sec-ritzova-metoda.html#def-ritzova-metoda" data-knowl="def-ritzova-metoda">6.32</a>) polj iz izreka, ki imajo v \(P_0\) vozlišče, in naj velja ena predpostavka (H): za vsak \(\rho\) in \(t\) obstajajo polja <span class="nobr">\(\vek v_{\mathrm{n}} \in \mathcal V_{\mathrm{n}}\),</span> za katera gre \(\|\nabla(\vek v_{\mathrm{n}} - \vek v_{\mathrm{t}})\|^2 = \int \sum_{\mathrm{i},\mathrm{j}} \big(\partial(v_{\mathrm{n},\mathrm{i}} - v_{\mathrm{t},\mathrm{i}})/\partial x_{\mathrm{j}}\big)^2\,\mathrm{d}A\) proti nič in \(v_{\mathrm{n},\mathrm{x}}(P_0)\) proti <span class="nobr">\(t\),</span> kjer je <span class="nobr">\(\vek v_{\mathrm{t}} = t\,w_\rho\,\vek e_{\mathrm{x}}\).</span> Za odsekoma linearne elemente z vozliščem v točki sile, katerih velikost gre proti nič, to velja z interpolacijo polja \(w_\rho\) v vozliščih. Dokaza ne zapišemo, ker ravninski elementi niso del tega razdelka (poglavje <a class="xref" href="ch-mke-kontinuum.html">15</a>).</p>
+
+<div class="blk posledica" id="cor-pomik-pod-silo"><div class="blk-head"><span class="blk-label">Posledica 17.10</span> <span class="blk-title">Pomik pod točkovno silo na gnezdenih mrežah (displacement under a point force on nested meshes)</span></div><div class="blk-body"><p>Naj bo \(\vek u_{\mathrm{n}}\) Ritzova rešitev (definicija <a class="xref" href="sec-ritzova-metoda.html#def-ritzova-metoda" data-knowl="def-ritzova-metoda">6.32</a>) v \(\mathcal V_{\mathrm{n}}\) za silo \(F &gt; 0\) v točki <span class="nobr">\(P_0\),</span> pri predpostavki (H). Tedaj \(u_{\mathrm{n},\mathrm{x}}(P_0)\) ne pada z \(n\) in je navzgor neomejen: za vsak \(\rho\) je \(\liminf_{\mathrm{n}} u_{\mathrm{n},\mathrm{x}}(P_0) \ge F\,\ln(R/\rho)/(4\pi\,M')\) in torej raste čez vsako mejo, ko se \(\rho\) manjša.</p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da energija pada, z njo pa narašča pomik, in nato, da pade pod mejo izreka.</p>
+<ol>
+<li>Ritzova rešitev izpolnjuje Ritzove enačbe \(B(\vek u_{\mathrm{n}}, \vek w) = F\,w_{\mathrm{x}}(P_0)\) za vsako \(\vek w \in \mathcal V_{\mathrm{n}}\) (definicija <a class="xref" href="sec-ritzova-metoda.html#def-ritzova-metoda" data-knowl="def-ritzova-metoda">6.32</a>, ničelni bistveni pogoji). Z \(\vek w = \vek u_{\mathrm{n}}\) je <span class="nobr">\(B(\vek u_{\mathrm{n}}, \vek u_{\mathrm{n}}) = F\,u_{\mathrm{n},\mathrm{x}}(P_0)\),</span> zato je <span class="nobr">\(\Pi(\vek u_{\mathrm{n}}) = \tfrac12 B(\vek u_{\mathrm{n}}, \vek u_{\mathrm{n}}) - F\,u_{\mathrm{n},\mathrm{x}}(P_0) = -\tfrac12 F\,u_{\mathrm{n},\mathrm{x}}(P_0)\).</span> To je račun izreka <a class="xref" href="sec-ritzova-metoda.html#thm-ritz-energija" data-knowl="thm-ritz-energija">6.34</a>, točka 2, ki prave rešitve ne potrebuje.</li>
+<li>Ker je \(\mathcal V_{\mathrm{n}} \subset \mathcal V_{\mathrm{n}+1}\) in ima \(\vek u_{\mathrm{n}+1}\) najmanjšo energijo v večjem prostoru, je <span class="nobr">\(\Pi(\vek u_{\mathrm{n}+1}) \le \Pi(\vek u_{\mathrm{n}})\),</span> kot v koraku 1 dokaza izreka <a class="xref" href="sec-ritzova-metoda.html#thm-ritz-konvergenca" data-knowl="thm-ritz-konvergenca">6.35</a>. S korakom 1 in \(F &gt; 0\) torej \(u_{\mathrm{n},\mathrm{x}}(P_0)\) ne pada z <span class="nobr">\(n\).</span></li>
+<li>Izberimo \(\rho\) in \(t = F/(2M'I)\) kot v izreku <a class="xref" href="sec-telo-v-model.html#thm-tockovna-sila-ravnina" data-knowl="thm-tockovna-sila-ravnina">17.9</a>, točka 2. Po (H) obstajajo <span class="nobr">\(\vek v_{\mathrm{n}} \in \mathcal V_{\mathrm{n}}\),</span> ki se približujejo <span class="nobr">\(\vek v_{\mathrm{t}}\).</span> <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">Funkcija</a> \(\sqrt{U}\) je polnorma, ker je \(U\) nenegativna kvadratna oblika, zato po trikotniški neenakosti <span class="nobr">\(\sqrt{U(\vek v_{\mathrm{n}})} \le \sqrt{U(\vek v_{\mathrm{t}})} + \sqrt{U(\vek v_{\mathrm{n}} - \vek v_{\mathrm{t}})}\),</span> in zadnji člen gre proti nič po (H), ker koraka 1 in 2 dokaza izreka <a class="xref" href="sec-telo-v-model.html#thm-tockovna-sila-ravnina" data-knowl="thm-tockovna-sila-ravnina">17.9</a> za vsako polje \(\vek w\) dasta <span class="nobr">\(U(\vek w) \le M'\,\|\nabla \vek w\|^2\).</span></li>
+<li>Zato je \(\limsup_{\mathrm{n}} U(\vek v_{\mathrm{n}}) \le U(\vek v_{\mathrm{t}})\) in \(\limsup_{\mathrm{n}} \Pi(\vek v_{\mathrm{n}}) \le \Pi(\vek v_{\mathrm{t}}) \le -F^2/(4M'I)\) (izrek <a class="xref" href="sec-telo-v-model.html#thm-tockovna-sila-ravnina" data-knowl="thm-tockovna-sila-ravnina">17.9</a>, točka 2).</li>
+<li>Ritzova rešitev ima najmanjšo energijo v \(\mathcal V_{\mathrm{n}}\) (definicija <a class="xref" href="sec-ritzova-metoda.html#def-ritzova-metoda" data-knowl="def-ritzova-metoda">6.32</a>), zato je <span class="nobr">\(\Pi(\vek u_{\mathrm{n}}) \le \Pi(\vek v_{\mathrm{n}})\),</span> in <span class="nobr">\(\limsup_{\mathrm{n}} \Pi(\vek u_{\mathrm{n}}) \le -F^2/(4M'I)\).</span> S korakom 1 je <span class="nobr">\(\liminf_{\mathrm{n}} u_{\mathrm{n},\mathrm{x}}(P_0) \ge F/(2M'I) = F\,\ln(R/\rho)/(4\pi M')\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> COOK razdelek 10.6 (PDF str. 361) zapiše, da pomik v telesu pri ponavljanju gostenja mreže ob sili narašča. Dokaz ni iz vira.</p></div></div>
+<p>Posledica pove, da <a class="xref auto" href="sec-telo-v-model.html#cor-pomik-pod-silo" data-knowl="cor-pomik-pod-silo">pomik pod točkovno silo na gnezdenih mrežah</a> ne <a class="xref auto" href="sec-zaporedja.html#def-limita-zaporedja" data-knowl="def-limita-zaporedja">konvergira</a>, ampak raste. Kako hitro? Vzemimo jeklo z \(E = 196\) GPa in \(\nu = 0{,}3\) (ravninsko deformacijsko stanje), torej \(K = 163{,}3\) GPa in \(G = 75{,}38\) GPa, debelino \(b = 10\) mm in \(F = 1\) kN. Tedaj je \(M' = 2{,}387 \cdot 10^6\) N/mm. Spodnje meje pomika po posledici so <span class="nobr">\(0{,}130\),</span> <span class="nobr">\(0{,}207\),</span> <span class="nobr">\(0{,}284\),</span> \(0{,}361\) in \(0{,}591\) \(\mu\)m za <span class="nobr">\(\rho = 1\),</span> <span class="nobr">\(0{,}1\),</span> <span class="nobr">\(0{,}01\),</span> \(0{,}001\) in \(10^{-6}\) mm (num-02.py). To so majhne vrednosti, a rastejo za vsako desetkrat manjši \(\rho\) za enak korak \(0{,}077\) \(\mu\)m, kot pravi logaritem v posledici.</p>
+<p>Preizkusimo na pravi mreži. Kvadrat \(100 \times 100\) mm <span class="nobr">(\(R = 50\)</span> mm) iz tega jekla, vpet po robu, ima sredi sile \(F\) v smeri <span class="nobr">\(x\).</span> Razdelimo ga na \(n \times n\) kvadratov, vsakega z diagonalo na dva trikotnika, in vzamemo odsekoma <a class="xref auto" href="sec-mkk-izoparametricni.html#lem-linearna-polja-izoparametricni" data-knowl="lem-linearna-polja-izoparametricni">linearno polje</a> na trikotnikih. Pri <span class="nobr">\(n = 4\),</span> <span class="nobr">\(8\),</span> <span class="nobr">\(16\),</span> \(32\) (do \(1922\) neznank) je pomik v točki sile <span class="nobr">\(0{,}2534\),</span> <span class="nobr">\(0{,}3517\),</span> \(0{,}4472\) in \(0{,}5417\) \(\mu\)m. Povečanje ob vsaki razpolovitvi velikosti elementa je <span class="nobr">\(0{,}0983\),</span> \(0{,}0955\) in \(0{,}0945\) \(\mu\)m: skoraj stalno, kar je znamenje logaritemske rasti. Vzrok je v posledici: razpolovitev velikosti elementa zmanjša \(\rho\) na polovico, in \(\ln(R/\rho)\) naraste za <span class="nobr">\(\ln 2\).</span> Izmerjeno povečanje je približno štirikrat večje od spodnje meje \(F\,\ln 2/(4\pi M') = 0{,}023\) \(\mu\)m na razpolovitev, ker je \(M'\) le gruba zgornja meja energije in polje \(w_\rho\,\vek e_{\mathrm{x}}\) ni polje z najmanjšo energijo. Pomika pod silo zato nobena gostota mreže ne ustali.</p>
+<p>Lema <a class="xref" href="sec-telo-v-model.html#lem-energija-polja-w" data-knowl="lem-energija-polja-w">17.8</a> ima pomemben bližnji primer. V palici (poglavje <a class="xref" href="ch-mke-palice.html">7</a>) je pomik pod silo končen. Zamislimo si polje, ki ima v točki sile vrednost \(1\) in je nič na razdalji \(R\) na eni strani. Po Cauchy-Schwarzovi neenakosti za <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integral</a> je <span class="nobr">\(1 = -\int_0^R w'\,\mathrm{d}x \le \sqrt{R}\,\sqrt{\int_0^R w'^2\,\mathrm{d}x}\),</span> torej <span class="nobr">\(\int_0^R w'^2\,\mathrm{d}x \ge 1/R\).</span> Energija vsakega takega polja je torej <a class="xref auto" href="sec-polnost.html#def-zgornja-meja" data-knowl="def-zgornja-meja">navzdol omejena</a> z <span class="nobr">\(1/R\),</span> mejo, ki ni odvisna od tega, kako ozek je vrh. V palici zato ni polj z vrednostjo \(1\) v točki sile, katerih energija bi šla proti nič, in razmislek izreka <a class="xref" href="sec-telo-v-model.html#thm-tockovna-sila-ravnina" data-knowl="thm-tockovna-sila-ravnina">17.9</a> v palici ne deluje. Najmanjšo energijo \(1/R\) ima prav linearni padec, <a data-del="profil" class="xref kaz" href="sec-telo-v-model.html#fig-tvm-tockovna-sila" data-knowl="fig-tvm-tockovna-sila">črtkana premica</a> na sliki, in pomik pod silo je v palici končen, kot smo ga izračunali v poglavju <a class="xref" href="ch-mke-palice.html">7</a>. V ravnini je tako polje z energijo, ki gre proti nič: to je razlika med dimenzijama.</p>
+<p>Drug bližnji primer je breme na majhnem področju. Če silo \(F\) enakomerno porazdelimo med vozlišča kvadrata \(|x|, |y| \le 12{,}5\) mm okoli sile, je pomik v središču za <span class="nobr">\(n = 8\),</span> <span class="nobr">\(16\),</span> \(32\) enak <span class="nobr">\(0{,}1596\),</span> \(0{,}1818\) in \(0{,}1952\) \(\mu\)m, spremembi pa sta \(0{,}0222\) in \(0{,}0134\) \(\mu\)m: manjšata se, pomik se ustali. Delo take sile na polju \(w_\rho\) je omejeno z njegovim povprečjem in energija ostane končna (tu je mrežna ustreznica področja kvadrat s fiksno velikostjo, ne točka). Po načelu Saint-Venanta (razdelek <a class="xref" href="sec-saint-venantovo-nacelo.html">11.11</a>) se pomiki in napetosti zunaj majhnega področja le malo razlikujejo od tistih pod točkovno silo, in COOK zapiše, da se različni statično enakovredni porazdelitvi obremenitev razlikujeta le blizu obremenjenega področja (COOK, PDF str. 128). COOK k temu pripomni, da je točkovna sila priročna zamisel, saj so vse prave sile porazdeljene po ploščini, večji od nič (COOK, PDF str. 361). Velikost tega področja je prava dolžina, ki nadomesti <span class="nobr">\(\rho\).</span> Kako velika je, določa stik teles, ki ga obravnava poglavje <a class="xref" href="ch-kontakt-lezaji.html">25</a>.</p>
+<p>Posledica za modeliranje: če se pomik pod silo ob vsakem gostenju mreže poveča za stalen korak, to ni napaka mreže, ampak znamenje, da model nima končnega pomika pod silo. Odgovor je v modelu, ne v mreži: silo porazdelimo na področje z velikostjo, ki jo pozna fizikalni problem, ali jo vzamemo kot statično enakovredno obremenitev (definicija <a class="xref" href="sec-saint-venantovo-nacelo.html#def-staticno-enakovredni" data-knowl="def-staticno-enakovredni">11.44</a>) tam, kjer nas rezultat v bližini sile ne zanima.</p>
+
+<h3 id="sec-telo-v-model-povzetek"><span class="h-num">17.2.5</span> Kaj smo pokazali</h3>
+<!-- nofig: signpost -->
+<p>Ta razdelek je obravnaval napako modela pri <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">telesu</a>, podporah in silah. Pri geometriji smo pokazali na luknji v <a class="xref auto forward" href="sec-kirchhoffova-plosca.html#def-plosca" data-knowl="def-plosca" title="Definirano kasneje v knjigi">plošči</a>, da je izpustitev podrobnosti upravičena le za vprašanja, ki ležijo daleč od nje: pri \(r = 10\,a\) ima napaka \(2{,}5\) %, pri največji napetosti pa je napaka \(67\) % (primer <a class="xref" href="sec-telo-v-model.html#ex-luknja-odstranjena" data-knowl="ex-luknja-odstranjena">17.4</a>, slika <a class="xref" href="sec-telo-v-model.html#fig-tvm-motnja" data-knowl="fig-tvm-motnja">17.5</a>). Pri podmodelu smo z lemo <a class="xref" href="sec-telo-v-model.html#lem-podmodel" data-knowl="lem-podmodel">17.5</a> dokazali, da je napaka podmodela rešitev problema s podatkom napake reza, in na cevi izračunali, da jo notranji rob poveča za faktor \(1{,}077\) (slika <a class="xref" href="sec-telo-v-model.html#fig-tvm-podmodel" data-knowl="fig-tvm-podmodel">17.6</a>). Pri podporah smo dokazali, da pravi moment na sredini leži med momentoma členkaste in vpete podpore, ki se razlikujeta za trikrat (lema <a class="xref" href="sec-telo-v-model.html#lem-dve-podpori" data-knowl="lem-dve-podpori">17.7</a>, slika <a class="xref" href="sec-telo-v-model.html#fig-tvm-podpora" data-knowl="fig-tvm-podpora">17.7</a>). Pri točkovni sili smo dokazali, da v ravninskem telesu pomik pod njo na <a class="xref auto" href="sec-ritz-lastne-vrednosti.html#cor-gnezdene-mreze" data-knowl="cor-gnezdene-mreze">gnezdenih mrežah</a> raste čez vsako mejo (izrek <a class="xref" href="sec-telo-v-model.html#thm-tockovna-sila-ravnina" data-knowl="thm-tockovna-sila-ravnina">17.9</a>, posledica <a class="xref" href="sec-telo-v-model.html#cor-pomik-pod-silo" data-knowl="cor-pomik-pod-silo">17.10</a>, slika <a class="xref" href="sec-telo-v-model.html#fig-tvm-tockovna-sila" data-knowl="fig-tvm-tockovna-sila">17.8</a>), in to potrdili s številkami. Vse te napake so napake modela: gostejša mreža jih ne odpravi, v zadnjem primeru jih celo pokaže.</p>
+<p>Za nadaljevanje: <a class="xref auto" href="sec-hierarhija-modelov.html#def-vrste-napak" data-knowl="def-vrste-napak">napako diskretizacije</a>, to je razliko med rešitvijo na mreži in pravo rešitvijo modela, obravnava razdelek <a class="xref" href="sec-konvergenca-mreze.html">17.3</a>, kjer iz <a class="xref auto" href="sec-zaporedja.html#def-zaporedje" data-knowl="def-zaporedje">zaporedja</a> mrež ocenimo <a class="xref auto forward" href="sec-konvergenca-mreze.html#def-red-konvergence" data-knowl="def-red-konvergence" title="Definirano kasneje v knjigi">red konvergence</a>. Ravninski in prostorski elementi so v poglavju <a class="xref" href="ch-mke-kontinuum.html">15</a>, simetrija in vezi v poglavju <a class="xref" href="ch-simetrija-vezi.html">19</a>, stik teles v poglavju <a class="xref" href="ch-kontakt-lezaji.html">25</a>.</p>
+
+</main>
+<footer><nav class="pager"><a href="sec-hierarhija-modelov.html" rel="prev">← 17.1</a><a href="index.html">Kazalo</a><a href="sec-konvergenca-mreze.html" rel="next">17.3 →</a></nav></footer>
+</body>
+</html>

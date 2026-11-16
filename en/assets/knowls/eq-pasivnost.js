@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pasivnost"] = {"html": "<div class=\"eq\">\\[\\int_0^T \\dot{\\vek q}^\\T\\vek\\tau\\,\\mathrm{d}t \\ge -\\beta , \\qquad \\beta = E(0) - V_{\\min} \\ge 0 . \\tag{27.44}\\]</div>", "href": "sec-lastnosti-gibalnih-enacb.html#eq-pasivnost"};

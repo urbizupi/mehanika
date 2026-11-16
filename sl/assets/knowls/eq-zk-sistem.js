@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-zk-sistem"] = {"html": "<div class=\"eq\">\\[\\big(G\\,\\mat K_{\\mathrm{G}} + K\\,\\mat C^\\T\\mat C\\big)\\,\\vek d_\\nu = \\vek f , \\tag{15.42}\\]</div>", "href": "sec-mkk-zaklepanje.html#eq-zk-sistem"};

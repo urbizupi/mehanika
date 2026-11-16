@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-razvoj-strune"] = {"html": "<div class=\"eq\">\\[w(x, t) = \\sum_{\\mathrm{n}=1}^{\\infty}\\sin\\frac{n\\pi x}{L}\\Big(p_{\\mathrm{n}}\\cos\\omega_{\\mathrm{n}} t + \\frac{q_{\\mathrm{n}}}{\\omega_{\\mathrm{n}}}\\sin\\omega_{\\mathrm{n}} t\\Big) \\tag{13.10}\\]</div>", "href": "sec-nacini-strune.html#eq-razvoj-strune"};

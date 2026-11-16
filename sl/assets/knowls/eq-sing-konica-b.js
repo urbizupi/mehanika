@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sing-konica-b"] = {"html": "<div class=\"eq\">\\[\\vek o_3 = (c_1 r,\\ s_1 r,\\ d_1 + w) . \\tag{27.28}\\]</div>", "href": "sec-singularnosti-statika.html#eq-sing-konica-b"};

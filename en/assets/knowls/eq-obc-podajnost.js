@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-obc-podajnost"] = {"html": "<div class=\"eq\">\\[\\frac{\\partial C}{\\partial A_{\\mathrm{e}}} = -\\,\\vek u^\\T\\mat K_{\\mathrm{e}}\\,\\vek u = -E\\,\\varepsilon_{\\mathrm{e}}^2\\,L_{\\mathrm{e}} = -\\frac{2\\,U_{\\mathrm{e}}}{A_{\\mathrm{e}}} , \\tag{29.40}\\]</div>", "href": "sec-obcutljivost.html#eq-obc-podajnost"};

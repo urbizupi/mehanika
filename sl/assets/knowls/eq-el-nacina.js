@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-el-nacina"] = {"html": "<div class=\"eq\">\\[(\\mathrm a)\\ \\ w = x\\,y ,\\ \\ \\theta_{\\mathrm{x}} = \\theta_{\\mathrm{y}} = 0 , \\qquad (\\mathrm b)\\ \\ w = 0 ,\\ \\ \\theta_{\\mathrm{x}} = y ,\\ \\ \\theta_{\\mathrm{y}} = -x \\tag{18.77}\\]</div>", "href": "sec-elementi-plosc.html#eq-el-nacina"};

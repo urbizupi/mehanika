@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-prony-notranje"] = {"html": "<div class=\"eq\">\\[\\dot\\alpha_{\\mathrm{j}} = \\frac{\\varepsilon - \\alpha_{\\mathrm{j}}}{\\tau_{\\mathrm{j}}} , \\qquad \\alpha_{\\mathrm{j}}(0) = 0 \\qquad (j = 1, \\dots, N) . \\tag{20.20}\\]</div>", "href": "sec-dedni-integral.html#eq-prony-notranje"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dm-stevilo"] = {"html": "<div class=\"eq\">\\[m_{\\mathrm{d}}(2\\pi\\cdot 4\\ \\mathrm{Hz}) = 1500 - 2000{,}65 + 76{,}38 + 3{,}98 = -420{,}29\\ \\mathrm{kg} = -0{,}8406\\,m . \\tag{21.27}\\]</div>", "href": "sec-dodatna-masa.html#eq-dm-stevilo"};

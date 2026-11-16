@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-Jr"] = {"html": "<div class=\"eq\">\\[J_{\\mathrm{r}}(\\chi) = \\frac{1}{2\\pi}\\int_{-\\psi_\\mathrm{l}}^{\\psi_{\\mathrm{l}}} \\Big[1 - \\frac{1 - \\cos\\psi}{2\\chi}\\Big]^n\\cos\\psi\\;\\mathrm{d}\\psi . \\tag{25.33}\\]</div>", "href": "sec-obremenitev-lezaja.html#eq-Jr"};

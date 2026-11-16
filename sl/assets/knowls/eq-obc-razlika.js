@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-obc-razlika"] = {"html": "<div class=\"eq\">\\[D_{\\mathrm{h}} = \\frac{\\hat g(\\vek A + h\\,\\vek e_{\\mathrm{e}}) - \\hat g(\\vek A)}{h} . \\tag{29.35}\\]</div>", "href": "sec-obcutljivost.html#eq-obc-razlika"};

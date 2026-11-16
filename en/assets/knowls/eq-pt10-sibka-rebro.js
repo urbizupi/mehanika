@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pt10-sibka-rebro"] = {"html": "<div class=\"eq\">\\[B(T, w) = \\int_0^L \\big(kA\\,T'\\,w' + hP\\,T\\,w\\big)\\,\\mathrm{d}x = 0 \\qquad \\text{for every } w,\\ w(0) = 0 . \\tag{14.52}\\]</div>", "href": "sec-mke-toplote.html#eq-pt10-sibka-rebro"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-c20-modalna-dusena"] = {"html": "<div class=\"eq\">\\[\\rho A\\,\\big(\\omega_{\\mathrm{n}}^2 - \\Omega^2 + 2\\mathrm{i}\\,\\zeta_{\\mathrm{n}}\\omega_{\\mathrm{n}}\\Omega\\big)\\,C_{\\mathrm{n}} = Q_{\\mathrm{n}} . \\tag{20.50}\\]</div>", "href": "sec-dusenje-zveznih.html#eq-c20-modalna-dusena"};

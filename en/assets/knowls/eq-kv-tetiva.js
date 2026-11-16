@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kv-tetiva"] = {"html": "<div class=\"eq\">\\[f\\big((1 - t)\\,\\vek x + t\\,\\vek y\\big) \\le (1 - t)\\,f(\\vek x) + t\\,f(\\vek y) . \\tag{29.12}\\]</div>", "href": "sec-konveksnost.html#eq-kv-tetiva"};

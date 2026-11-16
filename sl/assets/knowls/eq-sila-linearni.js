@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sila-linearni"] = {"html": "<div class=\"eq\">\\[N_{\\mathrm{h}} = \\frac1h\\int_0^h N(x)\\,\\mathrm{d}x = \\frac{q_{\\mathrm{L}}}{2L}\\Big(L^2 - \\frac{h^2}{3}\\Big) , \\qquad e(h) = -\\frac{q_{\\mathrm{L}}}{6L}\\,h^2 . \\tag{17.11}\\]</div>", "href": "sec-konvergenca-mreze.html#eq-sila-linearni"};

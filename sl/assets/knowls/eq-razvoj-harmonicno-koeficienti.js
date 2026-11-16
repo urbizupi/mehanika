@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-razvoj-harmonicno-koeficienti"] = {"html": "<div class=\"eq\">\\[C_{\\mathrm{n}} = -\\frac{4q_0L^4}{\\pi^5EI\\,n^5}\\cdot\\frac{1}{1 - r^2/n^4} \\qquad (n\\ \\text{lih}) , \\tag{13.59}\\]</div>", "href": "sec-razvoj-po-nacinih.html#eq-razvoj-harmonicno-koeficienti"};

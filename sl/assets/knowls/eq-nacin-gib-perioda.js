@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nacin-gib-perioda"] = {"html": "<div class=\"eq\">\\[\\tau = \\frac{2\\pi}{\\omega_1} = \\frac{L}{c + v} + \\frac{L}{c - v} = \\frac{2Lc}{c^2 - v^2} , \\tag{26.15}\\]</div>", "href": "sec-nacini-gibajoce-strune.html#eq-nacin-gib-perioda"};

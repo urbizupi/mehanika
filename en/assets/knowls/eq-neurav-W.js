@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-neurav-W"] = {"html": "<div class=\"eq\">\\[W = \\int_{\\mathrm{V}} \\rho\\,z\\,\\zeta_0\\,\\mathrm{d}V . \\tag{23.2}\\]</div>", "href": "sec-uravnotezenje-rotorja.html#eq-neurav-W"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-faktor-izgub-materiala"] = {"html": "<div class=\"eq\">\\[\\gamma(\\Omega) = \\frac{E_{\\mathrm{izg}}(\\Omega)}{E_{\\mathrm{shr}}(\\Omega)} \\qquad (E_{\\mathrm{shr}} &gt; 0) \\tag{20.25}\\]</div>", "href": "sec-kompleksni-modul.html#eq-faktor-izgub-materiala"};

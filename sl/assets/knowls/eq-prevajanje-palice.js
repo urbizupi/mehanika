@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-prevajanje-palice"] = {"html": "<div class=\"eq\">\\[\\rho c\\,T_{\\mathrm{t}} = k\\,T_{\\mathrm{xx}} + Q . \\tag{14.10}\\]</div>", "href": "sec-enacba-prevajanja.html#eq-prevajanje-palice"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-slp-omejitev"] = {"html": "<div class=\"eq\">\\[\\underline A_{\\mathrm{e}}^{\\,k} \\le A_{\\mathrm{e}} \\le \\overline A_{\\mathrm{e}}^{\\,k} , \\qquad e = 1, \\dots, n . \\tag{29.43}\\]</div>", "href": "sec-zaporedne-aproksimacije.html#eq-slp-omejitev"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-npal-kosinusna"] = {"html": "<div class=\"eq\">\\[T(x, t) = \\frac{a_0}{2} + \\sum_{\\mathrm{n}=1}^{\\infty}a_{\\mathrm{n}}\\cos\\frac{n\\pi x}{L}\\,\\mathrm{e}^{-\\kappa n^2\\pi^2 t/L^2} \\tag{14.28}\\]</div>", "href": "sec-nestacionarno-palica.html#eq-npal-kosinusna"};

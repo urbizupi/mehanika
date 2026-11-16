@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pt10-rebro-tocno"] = {"html": "<div class=\"eq\">\\[T(x) = T_0\\,\\frac{\\cosh m(L - x)}{\\cosh mL} , \\qquad m^2 = \\frac{hP}{kA} . \\tag{14.51}\\]</div>", "href": "sec-mke-toplote.html#eq-pt10-rebro-tocno"};

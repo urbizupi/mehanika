@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-hertz-krogla"] = {"html": "<div class=\"eq\">\\[a = \\Big(\\frac{3FR}{4E^*}\\Big)^{1/3} , \\qquad h = \\frac{a^2}{R} = \\Big(\\frac{9F^2}{16\\,R\\,E^{*2}}\\Big)^{1/3} , \\qquad p_0 = \\frac{3F}{2\\pi a^2} = \\Big(\\frac{6F\\,E^{*2}}{\\pi^3R^2}\\Big)^{1/3} , \\tag{25.25}\\]</div>", "href": "sec-hertz-tockovni.html#eq-hertz-krogla"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-strizne-plosce"] = {"html": "<div class=\"eq\">\\[\\sigma_{\\mathrm{xz}} = \\frac{3\\,Q_{\\mathrm{x}}}{2h}\\Big( 1 - \\frac{4z^2}{h^2} \\Big) , \\qquad \\sigma_{\\mathrm{yz}} = \\frac{3\\,Q_{\\mathrm{y}}}{2h}\\Big( 1 - \\frac{4z^2}{h^2} \\Big) . \\tag{18.19}\\]</div>", "href": "sec-ravnotezje-plosce.html#eq-strizne-plosce"};

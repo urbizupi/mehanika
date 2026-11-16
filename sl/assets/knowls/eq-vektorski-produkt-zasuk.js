@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vektorski-produkt-zasuk"] = {"html": "<div class=\"eq\">\\[(\\mat R\\,\\vek a)\\times(\\mat R\\,\\vek b) = \\mat R\\,(\\vek a\\times\\vek b) . \\tag{27.22}\\]</div>", "href": "sec-jacobijeva-matrika-robota.html#eq-vektorski-produkt-zasuk"};

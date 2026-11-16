@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mkk-linearni-trikotnik"] = {"html": "<div class=\"eq\">\\[u_{\\mathrm{h}}(x, y) = L_1(x, y)\\,d_1 + L_2(x, y)\\,d_2 + L_3(x, y)\\,d_3 = \\mat N_{\\mathrm{e}}(x, y)\\,\\vek d_{\\mathrm{e}} , \\tag{15.5}\\]</div>", "href": "sec-mkk-trikotnik.html#eq-mkk-linearni-trikotnik"};

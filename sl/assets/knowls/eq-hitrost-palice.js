@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-hitrost-palice"] = {"html": "<div class=\"eq\">\\[c_{\\mathrm{B}}^2 = \\frac{E}{\\rho} , \\tag{13.28}\\]</div>", "href": "sec-elastodinamika.html#eq-hitrost-palice"};

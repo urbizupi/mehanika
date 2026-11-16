@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-lupina-C-D"] = {"html": "<div class=\"eq\">\\[C = \\frac{E\\,h}{1 - \\nu^2} , \\qquad D = \\frac{E\\,h^3}{12\\,(1 - \\nu^2)} . \\tag{22.24}\\]</div>", "href": "sec-kinematika-lupine.html#eq-lupina-C-D"};

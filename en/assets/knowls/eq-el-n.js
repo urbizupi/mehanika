@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-el-n"] = {"html": "<div class=\"eq\">\\[N_1 = \\tfrac14(1-s)(1-t) , \\quad N_2 = \\tfrac14(1+s)(1-t) , \\quad N_3 = \\tfrac14(1+s)(1+t) , \\quad N_4 = \\tfrac14(1-s)(1+t) . \\tag{18.71}\\]</div>", "href": "sec-elementi-plosc.html#eq-el-n"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-lokalna-oblika"] = {"html": "<div class=\"eq\">\\[\\zeta = \\tfrac12\\,(\\kappa_1x^2 + \\kappa_2y^2) + \\varepsilon(\\lambda)\\,\\lambda^2 , \\qquad \\varepsilon(\\lambda) \\to 0 \\text{ ko } \\lambda \\to 0 . \\tag{22.17}\\]</div>", "href": "sec-ukrivljenost-ploskve.html#eq-lokalna-oblika"};

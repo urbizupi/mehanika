@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rotor-ravnotezje"] = {"html": "<div class=\"eq\">\\[\\mat K\\,\\vek d + \\vek f_{\\mathrm{b}}(\\vek d) = \\vek F . \\tag{25.44}\\]</div>", "href": "sec-lezaj-v-mke.html#eq-rotor-ravnotezje"};

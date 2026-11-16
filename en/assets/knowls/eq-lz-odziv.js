@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-lz-odziv"] = {"html": "<div class=\"eq\">\\[\\big(\\mat Q_{\\mathrm{m}}^\\T\\mat K\\mat Q_{\\mathrm{m}} - \\Omega^2\\mat I\\big)\\,\\vek a = \\mat Q_{\\mathrm{m}}^\\T\\vek F \\tag{21.48}\\]</div>", "href": "sec-lanczos.html#eq-lz-odziv"};

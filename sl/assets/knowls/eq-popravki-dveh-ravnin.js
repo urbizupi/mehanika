@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-popravki-dveh-ravnin"] = {"html": "<div class=\"eq\">\\[U_{\\mathrm{c}1} = \\frac{W - z_{\\mathrm{c}2}U}{z_{\\mathrm{c}2} - z_{\\mathrm{c}1}} , \\qquad U_{\\mathrm{c}2} = \\frac{z_{\\mathrm{c}1}U - W}{z_{\\mathrm{c}2} - z_{\\mathrm{c}1}} . \\tag{23.4}\\]</div>", "href": "sec-uravnotezenje-rotorja.html#eq-popravki-dveh-ravnin"};

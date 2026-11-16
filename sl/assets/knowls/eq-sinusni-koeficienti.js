@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sinusni-koeficienti"] = {"html": "<div class=\"eq\">\\[h_{\\mathrm{n}} = \\frac{2}{L}\\int_0^L h(x)\\,\\sin\\frac{n\\pi x}{L}\\,\\mathrm{d}x \\qquad (n = 1, 2, \\dots) . \\tag{13.8}\\]</div>", "href": "sec-nacini-strune.html#eq-sinusni-koeficienti"};

@@ -1,0 +1,1185 @@
+<!doctype html>
+<html lang="sl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>15.7 Preizkus z zaplato in nekompatibilni načini · Poglavje 15</title>
+<script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/style.css">
+<noscript><style>#loadbar { display: none; }</style></noscript>
+<script src="assets/config.js"></script>
+<script src="assets/load.js"></script>
+<script defer src="assets/interaktivno.js"></script>
+<script defer src="assets/book.js"></script>
+<script defer src="assets/predavanje.js"></script>
+<script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<div id="loadbar" aria-hidden="true"></div>
+<header class="top"><a class="home" href="index.html">Mehanika</a><nav class="pager"><a href="sec-mkk-gauss.html" rel="prev">← 15.6</a><a href="index.html">Kazalo</a><a href="sec-mkk-zaklepanje.html" rel="next">15.8 →</a></nav>
+<span class="tools"><a class="lang" href="../en/sec-mkk-zaplata.html" hreflang="en">English</a><button type="button" class="theme-toggle" title="Svetla ali temna tema" aria-label="Svetla ali temna tema"></button><button type="button" data-details="open">Razpri vse</button><button type="button" data-details="close">Skrij vse</button><button type="button" class="fig-side-toggle" aria-pressed="false">Slike ob strani</button></span></header>
+<main>
+<p class="updated">Posodobljeno 16. 11. 2026 ob 10.52</p>
+<p class="crumb"><a href="ch-mke-kontinuum.html"><span class="h-num">Poglavje 15</span> Končni elementi kontinuuma</a></p>
+<h2 id="sec-mkk-zaplata"><span class="h-num">15.7</span> Preizkus z zaplato in nekompatibilni načini</h2>
+<p>Imamo trikotnik (razdelek <a class="xref" href="sec-mkk-ravninski-trikotnik.html">15.4</a>) in štirikotnik (razdelek <a class="xref" href="sec-mkk-izoparametricni.html">15.5</a>), <a class="xref auto" href="sec-kvadratni-element.html#def-gaussovo-pravilo" data-knowl="def-gaussovo-pravilo">Gaussova pravila</a> za njuno togostno <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matriko</a> (razdelek <a class="xref" href="sec-mkk-gauss.html">15.6</a>) in nalogo, na kateri smo ju primerjali: konzolo iz poglavja <a class="xref" href="ch-robni-problem-elasticnosti.html">11</a>. Taka primerjava je draga, saj ima mreža \(40 \times 8\) celic \(720\) neznank, in ne pove, ali je napaka v elementu, v integraciji ali v mreži. Iščemo najmanjši preizkus, ki ga novi element mora opraviti, preden mu zaupamo konzolo, ohišje motorja ali karkoli, česar rešitve ne poznamo. Ta preizkus je v tem razdelku, in odgovoril bo še na drugo vprašanje: zakaj <a class="xref auto" href="sec-mkk-izoparametricni.html#def-oblikovne-q4" data-knowl="def-oblikovne-q4">štirikotnik s štirimi vozlišči</a> pri upogibu odpove in kako ga popravimo, ne da bi pokvarili tisto, kar zna.</p>
+<p>Model je <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">telo</a> iz jekla <span class="nobr">(\(E = 196\)</span> GPa, <span class="nobr">\(\nu = 0{,}3\)),</span> <a class="xref auto" href="sec-natezni-preizkus.html#def-linearno-elasticen" data-knowl="def-linearno-elasticen">linearno elastično</a>, <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">deformacije</a> majhne (poglavje <a class="xref" href="ch-deformacija.html">1</a>), ravninsko napetostno stanje (izrek <a class="xref" href="sec-ravninski-problemi.html#thm-ravninsko-napetostno" data-knowl="thm-ravninsko-napetostno">11.33</a>), brez prostorninskih sil. Vsi računi so s SymPy in NumPy (num-07.out).</p>
+
+<h3 id="sec-zaplata"><span class="h-num">15.7.1</span> Zaplata</h3>
+<p>Preizkus se imenuje preizkus z zaplato (patch test). Zaplata je v šivanju kos blaga, ki pokrije majhen del površine, in tako se imenuje tudi tu: majhen kos <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">telesa</a>, pokrit z nekaj elementi, med katerimi ima vsaj eno vozlišče v notranjosti, da ni vsa mreža na robu.</p>
+
+<div class="zgodovina"><p class="zgodovina-label">Iz zgodovine</p><p>Preizkus z zaplato je zasnoval Irons. COOK (PDF str. 252) piše, da je bil od tedaj obsežno analiziran, razložen in na novo razumljen. Vprašanje, na katero odgovarja, je naslednje (PDF str. 253): če nalogo rešujemo vedno znova z vedno finejšo mrežo, ali <a class="xref auto" href="sec-zaporedja.html#def-zaporedje" data-knowl="def-zaporedje">zaporedje</a> rešitev <a class="xref auto" href="sec-zaporedja.html#def-limita-zaporedja" data-knowl="def-limita-zaporedja">konvergira</a> k pravim pomikom, <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">deformacijam</a> in napetostim? Odgovor je pritrdilen za stabilne elemente, ki opravijo preizkus z zaplato (PDF str. 253-254). Preizkus vpraša, ali sestav elementov zmore stalno stanje deformacije.</p>
+</div>
+<p>Vrnimo se k zaplati in vprašanju, zakaj je stalna deformacija prava stvar za preizkus. Poglejmo konzolo iz poglavja <a class="xref" href="ch-robni-problem-elasticnosti.html">11</a> <span class="nobr">(\(L = 1\)</span> m, deformacija \(\varepsilon_{\mathrm{xx}} = \kappa y\) z napetostjo, ki pojema linearno z <span class="nobr">\(L - x\)).</span> Na celici dolžine \(100\) mm ob vpetju se deformacija po dolžini spremeni za \(100/1000 = 10\) %, pri celici dolžine \(25\) mm za \(2{,}5\) %. Pri vsaki podvojitvi števila celic se odstopanje od stalne deformacije v celici prepolovi. Mreža, ki stalne deformacije ne zmore, torej tudi pri finem drobljenju ne more doseči prave rešitve, saj ne zmore niti tistega, kar se bo na vsaki celici vse bolj približevalo pravemu polju. Preizkusimo to na najpreprostejšem polju s stalnimi deformacijami.</p>
+<p>Vzemimo pravokotnik \(240 \times 120\) mm in ga razdelimo na pet štirikotnikov, kot kaže slika <a class="xref" href="sec-mkk-zaplata.html#fig-mkk-zaplata" data-knowl="fig-mkk-zaplata">15.26</a>.</p>
+
+<figure class="blk slika" id="fig-mkk-zaplata"><p><span class="svgfig" role="img" aria-label="Zaplata iz petih štirikotnikov, predpisani pomiki na robu in rešitev"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='318.23pt' height='175.58pt' viewBox='-72.000004 -72.000002 235.728857 130.056917'>
+<defs>
+<path id='c15-07-zaplata-g0-101' d='M1.228394-2.0533C1.775342-2.0533 2.358157-2.0533 2.833375-2.169863C3.676214-2.37609 3.828643-2.878207 3.828643-3.183064C3.828643-3.694147 3.353425-3.963138 2.824408-3.963138C1.784309-3.963138 .42142-3.084433 .42142-1.542217C.42142-.690411 .923537 .09863 1.891905 .09863C3.236862 .09863 3.990037-.833873 3.990037-.950436C3.990037-1.004234 3.927273-1.075965 3.864508-1.075965C3.819676-1.075965 3.81071-1.066999 3.730012-.968369C3.19203-.304857 2.37609-.125529 1.909838-.125529C1.273225-.125529 1.102864-.726276 1.102864-1.174595C1.102864-1.192528 1.102864-1.506351 1.228394-2.0533ZM1.291158-2.27746C1.685679-3.694147 2.680946-3.738979 2.824408-3.738979C3.129265-3.738979 3.496887-3.595517 3.496887-3.183064C3.496887-2.27746 2.142964-2.27746 1.291158-2.27746Z'/>
+<path id='c15-07-zaplata-g1-49' d='M2.145953-3.795766C2.145953-3.975093 2.122042-3.975093 1.942715-3.975093C1.548194-3.592528 .938481-3.592528 .723288-3.592528V-3.359402C.878705-3.359402 1.273225-3.359402 1.63188-3.526775V-.508095C1.63188-.310834 1.63188-.233126 1.016189-.233126H.759153V0C1.08792-.02391 1.554172-.02391 1.888917-.02391S2.689913-.02391 3.01868 0V-.233126H2.761644C2.145953-.233126 2.145953-.310834 2.145953-.508095V-3.795766Z'/>
+<path id='c15-07-zaplata-g1-50' d='M3.21594-1.117808H2.99477C2.982814-1.034122 2.923039-.639601 2.833375-.573848C2.791532-.537983 2.307347-.537983 2.223661-.537983H1.105853L1.870984-1.159651C2.074222-1.321046 2.606227-1.703611 2.791532-1.882939C2.970859-2.062267 3.21594-2.367123 3.21594-2.791532C3.21594-3.53873 2.540473-3.975093 1.739477-3.975093C.968369-3.975093 .430386-3.466999 .430386-2.905106C.430386-2.600249 .687422-2.564384 .753176-2.564384C.902615-2.564384 1.075965-2.67198 1.075965-2.887173C1.075965-3.01868 .998257-3.209963 .735243-3.209963C.872727-3.514819 1.23736-3.741968 1.649813-3.741968C2.27746-3.741968 2.612204-3.275716 2.612204-2.791532C2.612204-2.367123 2.331258-1.93076 1.912827-1.548194L.496139-.251059C.436364-.191283 .430386-.185305 .430386 0H3.030635L3.21594-1.117808Z'/>
+<path id='c15-07-zaplata-g1-51' d='M1.75741-1.984558C2.265504-1.984558 2.606227-1.643836 2.606227-1.034122C2.606227-.376588 2.211706-.089664 1.775342-.089664C1.613948-.089664 .998257-.125529 .729265-.472229C.962391-.496139 1.058032-.651557 1.058032-.812951C1.058032-1.016189 .91457-1.153674 .71731-1.153674C.555915-1.153674 .376588-1.052055 .376588-.800996C.376588-.209215 1.034122 .125529 1.793275 .125529C2.677958 .125529 3.269738-.442341 3.269738-1.034122C3.269738-1.470486 2.934994-1.93076 2.223661-2.110087C2.69589-2.265504 3.078456-2.64807 3.078456-3.138232C3.078456-3.616438 2.516563-3.975093 1.799253-3.975093C1.099875-3.975093 .56787-3.652304 .56787-3.162142C.56787-2.905106 .765131-2.833375 .884682-2.833375C1.0401-2.833375 1.201494-2.940971 1.201494-3.150187C1.201494-3.335492 1.069988-3.443088 .908593-3.466999C1.189539-3.777833 1.733499-3.777833 1.787298-3.777833C2.092154-3.777833 2.47472-3.634371 2.47472-3.138232C2.47472-2.809465 2.289415-2.235616 1.691656-2.199751C1.58406-2.193773 1.422665-2.181818 1.368867-2.181818C1.309091-2.175841 1.243337-2.169863 1.243337-2.080199C1.243337-1.984558 1.309091-1.984558 1.41071-1.984558H1.75741Z'/>
+<path id='c15-07-zaplata-g1-52' d='M3.371357-.980324V-1.21345H2.67198V-3.855542C2.67198-3.993026 2.67198-4.034869 2.52254-4.034869C2.414944-4.034869 2.402989-4.016936 2.349191-3.945205L.274969-1.21345V-.980324H2.133998V-.502117C2.133998-.304857 2.133998-.233126 1.63188-.233126H1.458531V0C1.578082-.005978 2.139975-.02391 2.402989-.02391S3.227895-.005978 3.347447 0V-.233126H3.174097C2.67198-.233126 2.67198-.304857 2.67198-.502117V-.980324H3.371357ZM2.175841-3.383313V-1.21345H.532005L2.175841-3.383313Z'/>
+<path id='c15-07-zaplata-g1-53' d='M1.016189-3.317559C1.21345-3.263761 1.422665-3.239851 1.625903-3.239851C1.75741-3.239851 2.092154-3.239851 2.468742-3.449066C2.570361-3.508842 2.940971-3.753923 2.940971-3.879452C2.940971-3.957161 2.881196-3.975093 2.857285-3.975093C2.839352-3.975093 2.833375-3.975093 2.767621-3.951183C2.552428-3.867497 2.247572-3.783811 1.859029-3.783811C1.566127-3.783811 1.243337-3.837609 .974346-3.939228C.91457-3.963138 .89066-3.975093 .86675-3.975093C.783064-3.975093 .783064-3.90934 .783064-3.813699V-2.020423C.783064-1.918804 .783064-1.847073 .89066-1.847073C.944458-1.847073 .962391-1.870984 1.004234-1.918804C1.153674-2.110087 1.416687-2.313325 1.882939-2.313325C2.618182-2.313325 2.618182-1.416687 2.618182-1.225405C2.618182-.992279 2.600249-.657534 2.402989-.412453C2.217684-.185305 1.942715-.089664 1.685679-.089664C1.273225-.089664 .860772-.316812 .71731-.663512C1.010212-.669489 1.046077-.902615 1.046077-.974346C1.046077-1.135741 .920548-1.279203 .735243-1.279203C.681445-1.279203 .430386-1.249315 .430386-.950436C.430386-.400498 .950436 .125529 1.703611 .125529C2.52254 .125529 3.21594-.454296 3.21594-1.201494C3.21594-1.882939 2.666002-2.504608 1.894894-2.504608C1.506351-2.504608 1.207472-2.379078 1.016189-2.217684V-3.317559Z'/>
+<path id='c15-07-zaplata-g2-49' d='M2.725778-5.729514C2.725778-5.953674 2.716812-5.971606 2.492653-5.971606C1.936737-5.397758 1.111831-5.397758 .833873-5.397758V-5.119801C1.004234-5.119801 1.551183-5.119801 2.035367-5.352927V-.71731C2.035367-.385554 2.008468-.277958 1.174595-.277958H.887671V0C1.210461-.026899 2.008468-.026899 2.37609-.026899S3.550685-.026899 3.873474 0V-.277958H3.58655C2.752677-.277958 2.725778-.385554 2.725778-.71731V-5.729514Z'/>
+<path id='c15-07-zaplata-g2-50' d='M4.142466-1.587049H3.891407C3.873474-1.470486 3.801743-.941469 3.685181-.798007C3.631382-.71731 3.012702-.71731 2.833375-.71731H1.23736L2.125031-1.560149C3.595517-2.833375 4.142466-3.308593 4.142466-4.223163C4.142466-5.254296 3.29066-5.971606 2.187796-5.971606C1.156663-5.971606 .457285-5.155666 .457285-4.339726C.457285-3.891407 .842839-3.846575 .923537-3.846575C1.120797-3.846575 1.389788-3.990037 1.389788-4.312827C1.389788-4.581818 1.201494-4.779078 .923537-4.779078C.878705-4.779078 .851806-4.779078 .81594-4.770112C1.031133-5.406725 1.604981-5.693649 2.089166-5.693649C3.003736-5.693649 3.317559-4.841843 3.317559-4.223163C3.317559-3.308593 2.627148-2.564384 2.196762-2.098132L.555915-.32279C.457285-.224159 .457285-.206227 .457285 0H3.891407L4.142466-1.587049Z'/>
+<path id='c15-07-zaplata-g2-51' d='M2.734745-3.156164C3.568618-3.469988 3.963138-4.124533 3.963138-4.743213C3.963138-5.433624 3.200996-5.971606 2.268493-5.971606S.636613-5.44259 .636613-4.761146C.636613-4.465255 .833873-4.294894 1.093898-4.294894S1.542217-4.483188 1.542217-4.743213C1.542217-5.057036 1.327024-5.191532 1.022167-5.191532C1.255293-5.56812 1.802242-5.747447 2.241594-5.747447C2.985803-5.747447 3.129265-5.155666 3.129265-4.734247C3.129265-4.465255 3.075467-4.034869 2.851308-3.694147C2.57335-3.29066 2.259527-3.272727 1.999502-3.254795C1.775342-3.236862 1.75741-3.236862 1.685679-3.236862C1.604981-3.227895 1.53325-3.218929 1.53325-3.120299C1.53325-3.003736 1.604981-3.003736 1.75741-3.003736H2.178829C2.958904-3.003736 3.299626-2.37609 3.299626-1.524284C3.299626-.376588 2.689913-.053798 2.232628-.053798C2.062267-.053798 1.192528-.09863 .789041-.762142C1.111831-.71731 1.362889-.941469 1.362889-1.246326C1.362889-1.542217 1.13873-1.730511 .878705-1.730511C.654545-1.730511 .385554-1.596015 .385554-1.219427C.385554-.42142 1.219427 .19726 2.259527 .19726C3.380324 .19726 4.214197-.609714 4.214197-1.524284C4.214197-2.304359 3.595517-2.96787 2.734745-3.156164Z'/>
+<path id='c15-07-zaplata-g2-52' d='M.260025-1.75741V-1.479452H2.707846V-.708344C2.707846-.376588 2.680946-.277958 2.008468-.277958H1.811208V0C2.37609-.026899 3.003736-.026899 3.066501-.026899C3.111333-.026899 3.756912-.026899 4.321793 0V-.277958H4.124533C3.452055-.277958 3.425156-.376588 3.425156-.708344V-1.479452H4.339726V-1.75741H3.425156V-5.828144C3.425156-6.007472 3.425156-6.070237 3.254795-6.070237C3.147198-6.070237 3.138232-6.06127 3.057534-5.935741L.260025-1.75741ZM.546949-1.75741L2.761644-5.074969V-1.75741H.546949Z'/>
+<path id='c15-07-zaplata-g2-53' d='M.932503-3.0934C.932503-2.932005 .932503-2.833375 1.058032-2.833375C1.129763-2.833375 1.156663-2.86924 1.210461-2.949938C1.479452-3.326526 1.909838-3.541719 2.37609-3.541719C3.335492-3.541719 3.335492-2.160897 3.335492-1.838107C3.335492-1.560149 3.335492-1.004234 3.084433-.600747C2.842341-.224159 2.465753-.053798 2.116065-.053798C1.587049-.053798 .986301-.385554 .771108-1.049066C.780075-1.049066 .833873-1.031133 .896638-1.031133C1.075965-1.031133 1.33599-1.147696 1.33599-1.470486C1.33599-1.748443 1.13873-1.909838 .896638-1.909838C.708344-1.909838 .457285-1.802242 .457285-1.443587C.457285-.627646 1.13873 .19726 2.133998 .19726C3.218929 .19726 4.142466-.681445 4.142466-1.793275C4.142466-2.878207 3.371357-3.765878 2.394022-3.765878C1.963636-3.765878 1.524284-3.622416 1.210461-3.299626V-5.066002C1.479452-4.985305 1.75741-4.940473 2.035367-4.940473C3.138232-4.940473 3.783811-5.738481 3.783811-5.855044C3.783811-5.935741 3.730012-5.971606 3.685181-5.971606C3.667248-5.971606 3.649315-5.971606 3.568618-5.926775C3.147198-5.756413 2.734745-5.684682 2.358157-5.684682C1.972603-5.684682 1.569116-5.756413 1.156663-5.926775C1.066999-5.971606 1.049066-5.971606 1.0401-5.971606C.932503-5.971606 .932503-5.881943 .932503-5.729514V-3.0934Z'/>
+<path id='c15-07-zaplata-g2-54' d='M1.201494-2.96787C1.201494-3.882441 1.300125-4.393524 1.542217-4.859776C1.721544-5.227397 2.160897-5.747447 2.824408-5.747447C3.003736-5.747447 3.416189-5.711582 3.622416-5.388792C3.29066-5.388792 3.147198-5.218431 3.147198-4.976339C3.147198-4.743213 3.308593-4.563885 3.559651-4.563885S3.981071-4.72528 3.981071-4.994271C3.981071-5.496389 3.622416-5.971606 2.806476-5.971606C1.649813-5.971606 .385554-4.832877 .385554-2.833375C.385554-.403487 1.479452 .19726 2.322291 .19726C3.317559 .19726 4.214197-.636613 4.214197-1.820174C4.214197-2.958904 3.38929-3.819676 2.37609-3.819676C1.838107-3.819676 1.452553-3.505853 1.201494-2.96787ZM2.313325-.053798C1.802242-.053798 1.506351-.475218 1.398755-.735243C1.228394-1.13873 1.219427-1.882939 1.219427-2.026401C1.219427-2.627148 1.497385-3.595517 2.358157-3.595517C2.501619-3.595517 2.940971-3.595517 3.227895-3.039601C3.398257-2.698879 3.398257-2.259527 3.398257-1.829141S3.398257-.959402 3.227895-.627646C2.949938-.116563 2.555417-.053798 2.313325-.053798Z'/>
+<path id='c15-07-zaplata-g2-55' d='M4.393524-5.469489C4.474222-5.56812 4.474222-5.586052 4.474222-5.774346H2.241594C1.111831-5.774346 1.084932-5.890909 1.058032-6.06127H.806974L.511083-4.187298H.762142C.798007-4.393524 .869738-4.895641 .986301-5.003238C1.049066-5.057036 1.75741-5.057036 1.882939-5.057036H3.765878L2.905106-3.882441C1.739477-2.27746 1.63188-.81594 1.63188-.304857C1.63188-.206227 1.63188 .19726 2.044334 .19726C2.465753 .19726 2.465753-.19726 2.465753-.313823V-.753176C2.465753-2.071233 2.663014-3.111333 3.138232-3.756912L4.393524-5.469489Z'/>
+<path id='c15-07-zaplata-g2-56' d='M1.542217-4.070735C1.273225-4.241096 1.066999-4.483188 1.066999-4.814944C1.066999-5.397758 1.694645-5.747447 2.286426-5.747447C2.976837-5.747447 3.532752-5.263263 3.532752-4.635616S2.99477-3.595517 2.636115-3.38929L1.542217-4.070735ZM2.860274-3.245828C3.308593-3.461021 3.963138-3.90934 3.963138-4.635616C3.963138-5.478456 3.120299-5.971606 2.313325-5.971606C1.371856-5.971606 .636613-5.299128 .636613-4.474222C.636613-4.133499 .762142-3.81071 .977335-3.550685C1.129763-3.380324 1.183562-3.344458 1.703611-3.012702C.91457-2.636115 .385554-2.089166 .385554-1.353923C.385554-.403487 1.327024 .19726 2.295392 .19726C3.335492 .19726 4.214197-.537983 4.214197-1.506351C4.214197-2.37609 3.550685-2.806476 3.326526-2.949938C3.227895-3.021669 2.96787-3.183064 2.860274-3.245828ZM1.945704-2.860274L3.075467-2.160897C3.281694-2.026401 3.730012-1.739477 3.730012-1.192528C3.730012-.484184 3.012702-.053798 2.304359-.053798C1.524284-.053798 .869738-.609714 .869738-1.353923C.869738-1.999502 1.318057-2.537484 1.945704-2.860274Z'/>
+</defs>
+<g id='c15-07-zaplata-page1'>
+<g stroke-miterlimit='10' transform='translate(-57.87162,44.76063)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='mreza'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.9'>
+<path d='M0 0H204.85966L153.64464 25.60728L34.1432 17.07181Z' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.9'>
+<path d='M204.85966 0V102.43004L136.57324 68.2864L153.64464 25.60728Z' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.9'>
+<path d='M204.85966 102.43004H0L68.2864 68.2864H136.57324Z' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.9'>
+<path d='M0 102.43004V0L34.1432 17.07181L68.2864 68.2864Z' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.9'>
+<path d='M34.1432 17.07181L153.64464 25.60728L136.57324 68.2864H68.2864Z' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='robni'>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M-1.8-1.8H1.8V1.8H-1.8Z'/>
+</g>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.87162,44.76063)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.8'>
+<path d='M204.85966 0L214.70102 4.92084' fill='none'/>
+<g transform='matrix(0.89438,0.4472,-0.4472,0.89438,212.40947,3.77502)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.6305 0L1.34029 1.53198L2.76216 0L1.34029-1.53198Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M203.05966-1.8H206.65966V1.8H203.05966Z'/>
+</g>
+<g transform='translate(204.85966,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.87162,44.76063)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.8'>
+<path d='M204.85966 102.43004L218.60005 113.42226' fill='none'/>
+<g transform='matrix(0.78084,0.62463,-0.62463,0.78084,216.59941,111.82184)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.6305 0L1.34029 1.53198L2.76216 0L1.34029-1.53198Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M203.05966 100.63004H206.65966V104.23004H203.05966Z'/>
+</g>
+<g transform='translate(204.85966,102.43004)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.87162,44.76063)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.8'>
+<path d='M0 102.43004L1.50633 105.44264' fill='none'/>
+<g transform='matrix(0.44717,0.89436,-0.89436,0.44717,0.3606,103.15114)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.6305 0L1.34029 1.53198L2.76216 0L1.34029-1.53198Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M-1.8 100.63004H1.8V104.23004H-1.8Z'/>
+</g>
+<g transform='translate(0.0,102.43004)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.87162,44.76063)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='notranji'>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M36.40614 17.07181C36.40614 18.32161 35.393 19.33475 34.1432 19.33475S31.88026 18.32161 31.88026 17.07181C31.88026 15.822 32.8934 14.80887 34.1432 14.80887S36.40614 15.822 36.40614 17.07181ZM34.1432 17.07181'/>
+</g>
+<g transform='translate(34.1432,17.07181)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.87162,44.76063)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M155.90758 25.60728C155.90758 26.85709 154.89444 27.87022 153.64464 27.87022S151.3817 26.85709 151.3817 25.60728C151.3817 24.35748 152.39484 23.34435 153.64464 23.34435S155.90758 24.35748 155.90758 25.60728ZM153.64464 25.60728'/>
+</g>
+<g transform='translate(153.64464,25.60728)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.87162,44.76063)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M138.83618 68.2864C138.83618 69.53621 137.82304 70.54935 136.57324 70.54935S134.3103 69.53621 134.3103 68.2864C134.3103 67.0366 135.32344 66.02347 136.57324 66.02347S138.83618 67.0366 138.83618 68.2864ZM136.57324 68.2864'/>
+</g>
+<g transform='translate(136.57324,68.2864)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.87162,44.76063)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M70.54935 68.2864C70.54935 69.53621 69.53621 70.54935 68.2864 70.54935C67.0366 70.54935 66.02347 69.53621 66.02347 68.2864C66.02347 67.0366 67.0366 66.02347 68.2864 66.02347C69.53621 66.02347 70.54935 67.0366 70.54935 68.2864ZM68.2864 68.2864'/>
+</g>
+<g transform='translate(68.2864,68.2864)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.87162,44.76063)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='nova'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M0 0L218.51686 6.82881L164.74118 32.4361L36.98865 19.34766Z' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M218.51686 6.82881L221.93147 116.08723L147.95418 77.3915L164.74118 32.4361Z' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M221.93147 116.08723L3.41418 109.25842L75.11522 75.11522L147.95418 77.3915Z' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M3.41418 109.25842L0 0L36.98865 19.34766L75.11522 75.11522Z' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M36.98865 19.34766L164.74118 32.4361L147.95418 77.3915L75.11522 75.11522Z' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M38.82727 19.34766C38.82727 20.3631 38.00409 21.18628 36.98865 21.18628C35.9732 21.18628 35.15002 20.3631 35.15002 19.34766C35.15002 18.33221 35.9732 17.50903 36.98865 17.50903C38.00409 17.50903 38.82727 18.33221 38.82727 19.34766ZM36.98865 19.34766' stroke='none'/>
+</g>
+<g transform='translate(36.98865,19.34766)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.87162,44.76063)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M166.5798 32.4361C166.5798 33.45154 165.75662 34.27472 164.74118 34.27472S162.90256 33.45154 162.90256 32.4361C162.90256 31.42065 163.72574 30.59747 164.74118 30.59747S166.5798 31.42065 166.5798 32.4361ZM164.74118 32.4361' stroke='none'/>
+</g>
+<g transform='translate(164.74118,32.4361)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.87162,44.76063)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M149.7928 77.3915C149.7928 78.40694 148.96962 79.23012 147.95418 79.23012S146.11555 78.40694 146.11555 77.3915C146.11555 76.37605 146.93874 75.55287 147.95418 75.55287S149.7928 76.37605 149.7928 77.3915ZM147.95418 77.3915' stroke='none'/>
+</g>
+<g transform='translate(147.95418,77.3915)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.87162,44.76063)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M76.95384 75.11522C76.95384 76.13066 76.13066 76.95384 75.11522 76.95384S73.2766 76.13066 73.2766 75.11522S74.09978 73.2766 75.11522 73.2766S76.95384 74.09978 76.95384 75.11522ZM75.11522 75.11522' stroke='none'/>
+</g>
+<g transform='translate(75.11522,75.11522)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.87162,44.76063)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='oznake'>
+<g transform='translate(-10.84839,-10.01317)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.87162,44.76063)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.87162' y='44.76063' xlink:href='#c15-07-zaplata-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(211.08308,-10.01317)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.87162,44.76063)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.87162' y='44.76063' xlink:href='#c15-07-zaplata-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(211.08308,92.41687)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.87162,44.76063)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.87162' y='44.76063' xlink:href='#c15-07-zaplata-g2-51'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-10.84839,108.06552)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.87162,44.76063)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.87162' y='44.76063' xlink:href='#c15-07-zaplata-g2-52'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(30.40799,6.20508)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.87162,44.76063)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.87162' y='44.76063' xlink:href='#c15-07-zaplata-g2-53'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(159.29889,19.2931)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.87162,44.76063)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.87162' y='44.76063' xlink:href='#c15-07-zaplata-g2-54'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(139.95123,72.49959)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.87162,44.76063)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.87162' y='44.76063' xlink:href='#c15-07-zaplata-g2-55'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(58.00719,71.64604)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.87162,44.76063)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.87162' y='44.76063' xlink:href='#c15-07-zaplata-g2-56'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='elementi'>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(93.9284,9.23227)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.87162,44.76063)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-57.87162' y='44.76063' xlink:href='#c15-07-zaplata-g0-101'/>
+<use x='-53.587362' y='45.756879' xlink:href='#c15-07-zaplata-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(170.75073,47.64365)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.87162,44.76063)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-57.87162' y='44.76063' xlink:href='#c15-07-zaplata-g0-101'/>
+<use x='-53.587362' y='45.756879' xlink:href='#c15-07-zaplata-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(98.19658,83.92073)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.87162,44.76063)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-57.87162' y='44.76063' xlink:href='#c15-07-zaplata-g0-101'/>
+<use x='-53.587362' y='45.756879' xlink:href='#c15-07-zaplata-g1-51'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(21.37383,45.50934)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.87162,44.76063)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-57.87162' y='44.76063' xlink:href='#c15-07-zaplata-g0-101'/>
+<use x='-53.587362' y='45.756879' xlink:href='#c15-07-zaplata-g1-52'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(93.9284,43.37547)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.87162,44.76063)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-57.87162' y='44.76063' xlink:href='#c15-07-zaplata-g0-101'/>
+<use x='-53.587362' y='45.756879' xlink:href='#c15-07-zaplata-g1-53'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 15.26</span>: Zaplata iz petih štirikotnikov \(e_1\) do \(e_5\) na pravokotniku \(240 \times 120\) mm. Sivo: mreža pred obremenitvijo. <span class="ink-l">Črne</span><span class="ink-d">Bele</span> puščice: predpisani pomiki robnih vozlišč \(2\) do \(4\) (polje <span class="nobr">\(u = 10^{-3}(x + y/2)\),</span> <span class="nobr">\(v = 10^{-3}(x/2 + y)\)),</span> povečani \(67\)-krat. Vozlišče \(1\) je v izhodišču, kjer je pomik polja nič. Oranžno: rešitev elementa Q4, ki leži na pravem polju. Notranja vozlišča \(5\) do \(8\) so prosta.</figcaption></figure>
+<p><a data-del="mreza" class="xref kaz" href="sec-mkk-zaplata.html#fig-mkk-zaplata" data-knowl="fig-mkk-zaplata">Mreža</a> ima <a data-del="robni" class="xref kaz" href="sec-mkk-zaplata.html#fig-mkk-zaplata" data-knowl="fig-mkk-zaplata">štiri robna vozlišča</a> (po <a data-del="oznake" class="xref kaz" href="sec-mkk-zaplata.html#fig-mkk-zaplata" data-knowl="fig-mkk-zaplata">številkah</a> \(1\) do <span class="nobr">\(4\))</span> v ogliščih pravokotnika in <a data-del="notranji" class="xref kaz" href="sec-mkk-zaplata.html#fig-mkk-zaplata" data-knowl="fig-mkk-zaplata">štiri notranja</a> v točkah <span class="nobr">\((40, 20)\),</span> <span class="nobr">\((180, 30)\),</span> \((160, 80)\) in \((80, 80)\) mm. <a data-del="elementi" class="xref kaz" href="sec-mkk-zaplata.html#fig-mkk-zaplata" data-knowl="fig-mkk-zaplata">Elementi</a> so namenoma popačeni: razmerje med najmanjšo in največjo vrednostjo \(J\) v ogliščih elementa je od \(0{,}17\) do \(0{,}50\) (num-07.out, del 2), nobeden ni pravokotnik. V <a data-del="robni" class="xref kaz" href="sec-mkk-zaplata.html#fig-mkk-zaplata" data-knowl="fig-mkk-zaplata">robnih vozliščih</a> predpišemo pomike linearnega polja</p>
+<div class="eq" id="eq-zaplata-polje">\[u = 10^{-3}\Big(x + \frac{y}{2}\Big) , \qquad v = 10^{-3}\Big(\frac{x}{2} + y\Big) , \tag{15.35}\]</div>
+<p>ki ima povsod deformacije \(\varepsilon_{\mathrm{xx}} = \varepsilon_{\mathrm{yy}} = 10^{-3}\) in <span class="nobr">\(\gamma_{\mathrm{xy}} = 10^{-3}\).</span> Po <a class="xref auto" href="sec-hookov-zakon.html#thm-hookov-zakon" data-knowl="thm-hookov-zakon">Hookovem zakonu</a> (izrek <a class="xref" href="sec-ravninski-problemi.html#thm-ravninsko-napetostno" data-knowl="thm-ravninsko-napetostno">11.33</a>) so napetosti povsod enake, \(\sigma_{\mathrm{xx}} = \sigma_{\mathrm{yy}} = 280{,}0\) MPa in \(\sigma_{\mathrm{xy}} = 75{,}38\) MPa. Ravnotežne enačbe (izrek <a class="xref" href="sec-ravnotezne-enacbe.html#thm-ravnotezne-enacbe" data-knowl="thm-ravnotezne-enacbe">2.28</a>) brez prostorninskih sil so izpolnjene, ker so <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">odvodi</a> stalnih napetosti nič. Polje <a class="xref" href="sec-mkk-zaplata.html#eq-zaplata-polje" data-knowl="eq-zaplata-polje">(15.35)</a> je torej prava rešitev naloge, v kateri je na vsem robu predpisan pomik tega polja. Mreža ne dobi nobene sile, le robne pomike, in vprašanje je, ali v <a data-del="notranji" class="xref kaz" href="sec-mkk-zaplata.html#fig-mkk-zaplata" data-knowl="fig-mkk-zaplata">notranjih vozliščih</a> izračuna pravo polje. Rešitev <a class="xref auto" href="sec-mkk-izoparametricni.html#def-oblikovne-q4" data-knowl="def-oblikovne-q4">elementa Q4</a> z \(2 \times 2\) <a class="xref auto" href="sec-kvadratni-element.html#def-gaussovo-pravilo" data-knowl="def-gaussovo-pravilo">Gaussovimi točkami</a> (razdelek <a class="xref" href="sec-mkk-gauss.html">15.6</a>) je <a data-del="nova" class="xref kaz" href="sec-mkk-zaplata.html#fig-mkk-zaplata" data-knowl="fig-mkk-zaplata">oranžna mreža</a>: največja relativna napaka pomikov notranjih vozlišč je <span class="nobr">\(2{,}7 \cdot 10^{-16}\),</span> kar je zaokrožitev računalnika, in enako pri eni sami točki <span class="nobr">(\(5{,}6 \cdot 10^{-16}\)).</span> Isto velja za vseh šest osnovnih <a class="xref auto" href="sec-mkk-izoparametricni.html#lem-linearna-polja-izoparametricni" data-knowl="lem-linearna-polja-izoparametricni">linearnih polj</a> posebej: dva premika, zasuk in tri deformacije (napake od \(10^{-16}\) do <span class="nobr">\(10^{-15}\),</span> num-07.out, del 1). Je to naključje popačene mreže ali izrek?</p>
+
+<h3 id="sec-izrek-o-zaplati"><span class="h-num">15.7.2</span> Izrek o zaplati</h3>
+<p>Natančno vprašanje je tako. Vzemimo <a class="xref auto" href="sec-mkk-telo-iz-elementov.html#def-mreza-elementov" data-knowl="def-mreza-elementov">mrežo elementov</a> in prostor \(V_{\mathrm{h}}\) <a class="xref auto" href="sec-pomik-v-prostoru.html#def-polje-pomikov" data-knowl="def-polje-pomikov">polj pomikov</a>, ki jih družina elementov da na tej mreži. Rešitev naloge zaplate je polje <span class="nobr">\(u_{\mathrm{h}} \in V_{\mathrm{h}}\),</span> ki ima v robnih vozliščih predpisane vrednosti polja \(\vek a + \mat G\,\vek x\) (konstanten <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vektor</a> \(\vek a\) in konstantna <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrika</a> <span class="nobr">\(\mat G\)),</span> in izpolnjuje šibko enačbo \(B(u_{\mathrm{h}}, w) = 0\) za vsako polje <span class="nobr">\(w \in V_{\mathrm{h}}\),</span> ki je nič v vseh robnih vozliščih. To je naloga iz poglavja <a class="xref" href="ch-sibka-oblika.html">6</a> z <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-bilinearna-forma" data-knowl="def-bilinearna-forma">bilinearno formo</a> \(B\) <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">telesa</a> (definicija <a class="xref" href="sec-mocna-sibka-oblika.html#def-sibka-oblika-splosna" data-knowl="def-sibka-oblika-splosna">6.6</a>) in brez obremenitve, <span class="nobr">\(\ell = 0\).</span> Izrek pove, kdaj je rešitev točno polje <span class="nobr">\(\vek a + \mat G\,\vek x\).</span></p>
+
+<div class="blk izrek" id="thm-preizkus-z-zaplato"><div class="blk-head"><span class="blk-label">Izrek 15.47</span> <span class="blk-title">Izrek o zaplati (patch theorem)</span></div><div class="blk-body"><p>Naj bo <a class="xref auto" href="sec-mkk-telo-iz-elementov.html#def-mreza-elementov" data-knowl="def-mreza-elementov">mreža elementov</a> povezana prek skupnih robov (v prostoru prek skupnih ploskev) in naj telo iz <a class="xref auto" href="sec-natezni-preizkus.html#def-izotropen-material" data-knowl="def-izotropen-material">izotropnega</a> materiala <span class="nobr">(\(E &gt; 0\),</span> <span class="nobr">\(-1 &lt; \nu &lt; \tfrac12\))</span> zapolni z zaplato. Naj bo \(V_{\mathrm{h}}\) prostor <a class="xref auto" href="sec-pomik-v-prostoru.html#def-polje-pomikov" data-knowl="def-polje-pomikov">polj pomikov</a>, ki jih da družina elementov, in naj velja:</p>
+<ol>
+<li>Skladnost (conformity): vsako polje iz \(V_{\mathrm{h}}\) je odsekoma gladko polje (definicija <a class="xref" href="sec-mkk-telo-iz-elementov.html#def-odsekoma-gladko-polje" data-knowl="def-odsekoma-gladko-polje">15.13</a>), in na vsakem robu elementa je določeno z vrednostmi v vozliščih tega roba (lema <a class="xref" href="sec-mkk-trikotnik.html#lem-zveznost-cez-rob" data-knowl="lem-zveznost-cez-rob">15.7</a>).</li>
+<li>Polnost za <a class="xref auto" href="sec-mkk-izoparametricni.html#lem-linearna-polja-izoparametricni" data-knowl="lem-linearna-polja-izoparametricni">linearna polja</a>: za vsak konstanten <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vektor</a> \(\vek a\) in konstantno <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matriko</a> \(\mat G\) je polje \(\vek x \mapsto \vek a + \mat G\,\vek x\) element prostora <span class="nobr">\(V_{\mathrm{h}}\).</span></li>
+<li>Podpora: edino togo gibanje, ki je nič v vseh robnih vozliščih, je nič (kot v lemi <a class="xref" href="sec-mocna-sibka-oblika.html#lem-pozitivnost-energije" data-knowl="lem-pozitivnost-energije">6.7</a>, točka 3).</li>
+</ol>
+<p>Tedaj ima naloga zaplate natanko eno rešitev, in ta je \(u_{\mathrm{h}} = \vek a + \mat G\,\vek x\) na vsem <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">telesu</a>. Pomiki, <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">deformacije</a> in napetosti so točni v vsaki točki.</p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da je polje \(u_{\mathrm{lin}} = \vek a + \mat G\,\vek x\) dopustno, da zadošča šibki enačbi in da je rešitev ena sama.</p>
+<ol>
+<li>Po predpostavki 2 je <span class="nobr">\(u_{\mathrm{lin}} \in V_{\mathrm{h}}\),</span> in v robnih vozliščih ima predpisane vrednosti. Je torej dopustno.</li>
+<li><a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">Deformacija</a> je \(\varepsilon_{\mathrm{ij}}(u_{\mathrm{lin}}) = \tfrac12(G_{\mathrm{ij}} + G_{\mathrm{ji}})\) (definicija <a class="xref" href="sec-deformacija-v-prostoru.html#def-mali-tenzor-deformacij" data-knowl="def-mali-tenzor-deformacij">1.115</a>), stalna. Po Hookovem zakonu (izrek <a class="xref" href="sec-hookov-zakon.html#thm-hookov-zakon" data-knowl="thm-hookov-zakon">3.11</a>) je napetost \(\sigma^0_{\mathrm{ij}}\) stalna. Zato je <span class="nobr">\(\sum_{\mathrm{i}} \partial\sigma^0_{\mathrm{ij}}/\partial x_{\mathrm{i}} = 0\),</span> in ravnotežne enačbe (izrek <a class="xref" href="sec-ravnotezne-enacbe.html#thm-ravnotezne-enacbe" data-knowl="thm-ravnotezne-enacbe">2.28</a>) brez prostorninskih sil veljajo. Polje \(u_{\mathrm{lin}}\) je torej prava rešitev naloge brez obremenitve in s tem robnim pomikom.</li>
+<li>Naj bo \(w \in V_{\mathrm{h}}\) nič v vseh robnih vozliščih. Po predpostavki 1 je \(w\) nič na vsem robu <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">telesa</a>, ker rob elementa določajo vozlišča tega roba, in je <a class="xref auto" href="sec-fourierjeve-vrste.html#def-odsekoma-gladka" data-knowl="def-odsekoma-gladka">odsekoma gladko</a>. Po izreku <a class="xref" href="sec-mkk-telo-iz-elementov.html#thm-sibka-oblika-po-elementih" data-knowl="thm-sibka-oblika-po-elementih">15.15</a> prava rešitev zadošča šibki enačbi z vsakim <a class="xref auto" href="sec-mkk-telo-iz-elementov.html#def-odsekoma-gladko-polje" data-knowl="def-odsekoma-gladko-polje">odsekoma gladkim poljem</a>: pri razrezu po elementih se členi na skupnih ploskvah odštejejo, ker je \(w\) zvezen in napetost \(\sigma^0\) stalna, na robu telesa pa je <span class="nobr">\(w = 0\).</span> Torej <span class="nobr">\(B(u_{\mathrm{lin}}, w) = \ell(w) = 0\).</span></li>
+<li>Naj bosta \(u_1\) in \(u_2\) rešitvi in <span class="nobr">\(d = u_1 - u_2\).</span> Polje \(d \in V_{\mathrm{h}}\) je nič v robnih vozliščih, zato je po koraku 3 in bilinearnosti \(B(d, w) = B(u_1, w) - B(u_2, w) = 0\) za vsak tak <span class="nobr">\(w\),</span> tudi za <span class="nobr">\(w = d\):</span> <span class="nobr">\(B(d, d) = 0\).</span></li>
+<li>Po lemi <a class="xref" href="sec-mkk-telo-iz-elementov.html#lem-energija-po-elementih" data-knowl="lem-energija-po-elementih">15.14</a> je \(B(d, d)\) vsota po elementih energij <span class="nobr">\(2\int_{\mathrm{e}} \Phi\,\mathrm{d}A\),</span> in gostota \(\Phi\) je pozitivna pri vsaki deformaciji, ki ni nič (izrek <a class="xref" href="sec-energija-deformacije.html#thm-meje-konstant" data-knowl="thm-meje-konstant">3.48</a>, točka 1). Zato je deformacija polja \(d\) nič na vsakem elementu in po izreku <a class="xref" href="sec-kompatibilnost.html#thm-polje-brez-deformacij" data-knowl="thm-polje-brez-deformacij">1.134</a> je \(d\) na vsakem elementu togo gibanje.</li>
+<li>Dva elementa s skupnim robom imata isto togo gibanje. Polje \(d\) je zvezno, zato se togi gibanji \(\vek b + \mat W\,\vek x\) (antisimetrična <span class="nobr">\(\mat W\))</span> ujemata na vsem skupnem robu, to je v ravnini v dveh različnih točkah, v prostoru v treh točkah, ki niso na premici, in s tem sta enaki (razlika \(\vek b' + \mat W'\,\vek x\) je nič v teh točkah in po istem sklepu kot v dokazu leme <a class="xref" href="sec-mocna-sibka-oblika.html#lem-pozitivnost-energije" data-knowl="lem-pozitivnost-energije">6.7</a> nič povsod). Mreža je povezana prek skupnih robov, zato je \(d\) eno samo togo gibanje na vsem telesu. Je nič v vseh robnih vozliščih, zato je po predpostavki 3 enak nič. Rešitev je ena in je <span class="nobr">\(u_{\mathrm{lin}}\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> ONATE1 razdelek 6.10 (PDF str. 237-238) opiše preizkus A (znano linearno polje predpisano v vseh vozliščih zaplate) in preizkus B (predpisana le robna vozlišča) ter pravi, da je njuna izpolnitev potrebna za konvergenco elementa. COOK razdelek 6.13 (PDF str. 253) opiše postopek z zaplato in notranjim vozliščem. Izrek in dokaz v korakih nista iz virov: viri preizkus navedejo, ne dokažejo ga.</p></div></div>
+<p>Izrek pove več, kot smo preizkusili: preizkusa ni treba delati za vsako zaplato posebej, ker zadostujeta dve lastnosti elementa, skladnost in polnost za <a class="xref auto" href="sec-mkk-izoparametricni.html#lem-linearna-polja-izoparametricni" data-knowl="lem-linearna-polja-izoparametricni">linearna polja</a>. Preverimo ju za štirikotnik.</p>
+
+<div class="blk lema" id="lem-q4-za-zaplato"><div class="blk-head"><span class="blk-label">Lema 15.48</span> <span class="blk-title">Štirikotnik s štirimi vozlišči opravi zaplato (the four-node quadrilateral passes the patch test)</span></div><div class="blk-body"><p>Naj bo <a class="xref auto" href="sec-mkk-izoparametricni.html#def-oblikovne-q4" data-knowl="def-oblikovne-q4">štirikotnik s štirimi vozlišči</a> (definicija <a class="xref" href="sec-mkk-izoparametricni.html#def-izoparametricni-element" data-knowl="def-izoparametricni-element">15.30</a>) na mreži s \(J &gt; 0\) v vseh ogliščih vseh elementov. Tedaj izpolnjuje predpostavki 1 in 2 izreka <a class="xref" href="sec-mkk-zaplata.html#thm-preizkus-z-zaplato" data-knowl="thm-preizkus-z-zaplato">15.47</a>. Silo na vozlišča pri stalni napetosti \(\sigma^0\) da vsako Gaussovo produktno pravilo z vsaj eno točko v vsaki smeri natanko, zato \(u_{\mathrm{lin}}\) zadošča diskretnim enačbam tudi pri numerični integraciji z \(1 \times 1\) in \(2 \times 2\) točkami. Da je rešitev ena sama, je pri numerični integraciji preverjeno le na zaplati (num-07.out, del 1).</p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo skladnost, polnost in točnost integracije sile.</p>
+<ol>
+<li>Naj bo rob \(\eta = -1\) elementa. Na njem je <span class="nobr">\(N_3 = N_4 = 0\),</span> zato sta lega in pomik \(\vek x = (1 - t)\,\vek x_1 + t\,\vek x_2\) in \(\vek u = (1 - t)\,\vek u_1 + t\,\vek u_2\) z <span class="nobr">\(t = (1 + \xi)/2\).</span> Rob je daljica, polje na njem je linearno in ga določata vozlišči roba. Sosedni element ima na istem robu iste vrednosti vozlišč in isto <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcijo</a> lege, zato se polji ujemata. Enako velja za ostale tri robove.</li>
+<li>Na elementu je polje <a class="xref auto" href="sec-zveznost.html#def-polinom" data-knowl="def-polinom">polinom</a> v \(\xi\) in <span class="nobr">\(\eta\),</span> preslikava pa je pri \(J &gt; 0\) v ogliščih <a class="xref auto" href="sec-zamenjava-spremenljivk.html#def-inverzna-preslikava" data-knowl="def-inverzna-preslikava">injektivna</a> (izrek <a class="xref" href="sec-mkk-izoparametricni.html#thm-izoparametricni-ukrivljen-kvader" data-knowl="thm-izoparametricni-ukrivljen-kvader">15.32</a>) in ima po izreku <a class="xref" href="sec-zamenjava-spremenljivk.html#thm-inverzna-preslikava" data-knowl="thm-inverzna-preslikava">4.51</a> gladek obrat, zato je polje na elementu <a class="xref auto" href="sec-sprememba-polja.html#def-zvezno-odvedljivo-polje" data-knowl="def-zvezno-odvedljivo-polje">zvezno odvedljivo</a> do roba. S korakom 1 je to predpostavka 1.</li>
+<li>Po lemi <a class="xref" href="sec-mkk-izoparametricni.html#lem-linearna-polja-izoparametricni" data-knowl="lem-linearna-polja-izoparametricni">15.35</a> je \(\sum_{\mathrm{i}} N_{\mathrm{i}} = 1\) in <span class="nobr">\(\sum_{\mathrm{i}} N_{\mathrm{i}}\,\vek x_{\mathrm{i}} = \vek x\),</span> zato je <span class="nobr">\(\sum_{\mathrm{i}} N_{\mathrm{i}}\,(\vek a + \mat G\,\vek x_{\mathrm{i}}) = \vek a + \mat G\,\vek x\).</span> To je predpostavka 2.</li>
+<li>Za silo \(\vek f_{\mathrm{i}} = \int \nabla N_{\mathrm{i}}\cdot\sigma^0\,\mathrm{d}A = \iint_{[-1,1]^2} J\,\nabla N_{\mathrm{i}}\cdot\sigma^0\,\mathrm{d}\xi\,\mathrm{d}\eta\) (izrek <a class="xref" href="sec-zamenjava-spremenljivk.html#thm-zamenjava-spremenljivk" data-knowl="thm-zamenjava-spremenljivk">4.59</a>) velja \(J\,\partial N_{\mathrm{i}}/\partial x = y_\eta N_{\mathrm{i},\xi} - y_\xi N_{\mathrm{i},\eta}\) in \(J\,\partial N_{\mathrm{i}}/\partial y = -x_\eta N_{\mathrm{i},\xi} + x_\xi N_{\mathrm{i},\eta}\) (po <a class="xref auto" href="sec-zamenjava-spremenljivk.html#lem-verizno-pravilo" data-knowl="lem-verizno-pravilo">verižnem pravilu</a> je \((N_{,\xi}, N_{,\eta})^\T = \mat F^\T\,(N_{,\mathrm{x}}, N_{,\mathrm{y}})^\T\) z <a class="xref auto" href="sec-zamenjava-spremenljivk.html#def-preslikava" data-knowl="def-preslikava">Jacobijevo matriko</a> \(\mat F = \begin{bmatrix} x_\xi &amp; x_\eta \\ y_\xi &amp; y_\eta\end{bmatrix}\) in <span class="nobr">\(J = \det\mat F\),</span> obrat <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrike</a> \(2 \times 2\) pa da ti dve enakosti). <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">Odvod</a> \(N_{\mathrm{i},\xi}\) je polinom stopnje \(0\) v \(\xi\) in \(1\) v <span class="nobr">\(\eta\),</span> \(y_\eta\) pa stopnje \(1\) v \(\xi\) in \(0\) v <span class="nobr">\(\eta\).</span> Produkt ima torej v vsaki spremenljivki stopnjo največ <span class="nobr">\(1\).</span> <a class="xref auto" href="sec-kvadratni-element.html#def-gaussovo-pravilo" data-knowl="def-gaussovo-pravilo">Gaussovo pravilo</a> s \(q \ge 1\) točkami je natančno do stopnje \(2q - 1 \ge 1\) (izrek <a class="xref" href="sec-mkk-gauss.html#thm-gauss-splosno" data-knowl="thm-gauss-splosno">15.41</a>), produktno pravilo pa v vsaki spremenljivki posebej (posledica <a class="xref" href="sec-mkk-gauss.html#cor-gauss-kvadrat-kocka" data-knowl="cor-gauss-kvadrat-kocka">15.42</a>). Pri \(u_{\mathrm{lin}} \in V_{\mathrm{h}}\) je \(\mat B\,\vek u_{\mathrm{e}} = \{\varepsilon^0\}\) v vsaki Gaussovi točki, zato je numerična sila \(\sum_{\mathrm{g}} w_{\mathrm{g}}\,J_{\mathrm{g}}\,\mat B_{\mathrm{g}}^\T\,\sigma^0\) enaka natančni. Diskretne enačbe pri \(u_{\mathrm{lin}}\) so tako iste kot natančne, in koraki 1 do 3 izreka <a class="xref" href="sec-mkk-zaplata.html#thm-preizkus-z-zaplato" data-knowl="thm-preizkus-z-zaplato">15.47</a> veljajo. Enolična rešljivost (koraka 4 do 6) pri numerični integraciji ni dokazana, preverjena pa je na zaplati (num-07.out, del 1).</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> COOK razdelek 6.12 (PDF str. 252, konec razdelka) pokaže, da polje izoparametričnega elementa vsebuje poln linearni polinom. Skladnost robov in točnost integracije sta naši, ne iz vira.</p></div></div>
+<p>Zaplata iz slike <a class="xref" href="sec-mkk-zaplata.html#fig-mkk-zaplata" data-knowl="fig-mkk-zaplata">15.26</a> je s tem pojasnjena: napaka \(10^{-16}\) je pričakovana, ne naključna. Pri eni integracijski točki je enako, vendar ima tak element lažne načine (definicija <a class="xref" href="sec-mkk-gauss.html#def-lazni-nacin" data-knowl="def-lazni-nacin">15.45</a>, lema <a class="xref" href="sec-mkk-gauss.html#lem-rang-reducirane" data-knowl="lem-rang-reducirane">15.46</a>), ki jih zaplata ne pokaže: COOK (PDF str. 254) opozarja, da element lahko opravi preizkus, čeprav je nestabilen, ker ima premalo <a class="xref auto" href="sec-kvadratni-element.html#def-gaussovo-pravilo" data-knowl="def-gaussovo-pravilo">Gaussovih točk</a>. Preizkus je torej nujen za konvergenco (ONATE1, PDF str. 238), in po COOK (PDF str. 253-254) zadošča, če ga opravi stabilen element (navedeno, v tej knjigi ni dokazano). O točnosti na grobi mreži ne pove nič, kar pokaže naslednji primer.</p>
+
+<h3 id="sec-stirikotnik-in-upogib"><span class="h-num">15.7.3</span> Štirikotnik in upogib</h3>
+<p>Konzola iz poglavja <a class="xref" href="ch-robni-problem-elasticnosti.html">11</a>, razdeljena na \(10 \times 2\) štirikotnikov Q4 (celica \(100 \times 20\) mm), da \(0{,}292\) pravega poves konca. Trikotniki iz razdelka <a class="xref" href="sec-mkk-ravninski-trikotnik.html">15.4</a> so dali <span class="nobr">\(0{,}115\),</span> in vzrok smo poznali: stalna <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">deformacija</a> ne more slediti <span class="nobr">\(\kappa y\).</span> Štirikotnik ima v pomiku tudi člen <span class="nobr">\(\xi\eta\),</span> njegova deformacija ni stalna. Zakaj je še vedno pretog?</p>
+<p>Poglejmo eno samo celico \(2a \times 2b\) v čistem upogibu z ukrivljenostjo \(\kappa\) (slika <a class="xref" href="sec-mkk-zaplata.html#fig-mkk-q4-upogib" data-knowl="fig-mkk-q4-upogib">15.27</a>). Točno polje je tisto, ki smo ga uporabili pri trikotniku, \(u = \kappa x y\) in <span class="nobr">\(v = -\kappa(x^2 + \nu y^2)/2\).</span> Njegove deformacije so <span class="nobr">\(\varepsilon_{\mathrm{xx}} = \kappa y\),</span> \(\varepsilon_{\mathrm{yy}} = -\nu\kappa y\) in <span class="nobr">\(\gamma_{\mathrm{xy}} = \kappa x - \kappa x = 0\),</span> napetost je \(\sigma_{\mathrm{xx}} = E\kappa y\) in druge nič, kar ustreza ravnotežju in <a class="xref auto" href="sec-hookov-zakon.html#thm-hookov-zakon" data-knowl="thm-hookov-zakon">Hookovemu zakonu</a> (izreka <a class="xref" href="sec-ravnotezne-enacbe.html#thm-ravnotezne-enacbe" data-knowl="thm-ravnotezne-enacbe">2.28</a> in <a class="xref" href="sec-ravninski-problemi.html#thm-ravninsko-napetostno" data-knowl="thm-ravninsko-napetostno">11.33</a>).</p>
+
+<figure class="blk slika" id="fig-mkk-q4-upogib"><p><span class="svgfig" role="img" aria-label="Celica v čistem upogibu: točno polje in štirikotnik Q4 s parazitnim strigom"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='551.41pt' height='145.31pt' viewBox='-72.000004 -72.000002 408.451128 107.636902'>
+<defs>
+<path id='c15-07-q4-upogib-g0-13' d='M3.568618-1.183562C3.541719-1.838107 3.407223-2.483686 3.138232-3.075467C2.842341-3.71208 2.420922-3.963138 1.945704-3.963138C.806974-3.963138 .161395-2.627148 .161395-2.331258C.161395-2.232628 .260025-2.232628 .286924-2.232628C.358655-2.232628 .385554-2.25056 .412453-2.322291C.699377-3.156164 1.53325-3.299626 1.829141-3.299626C3.272727-3.299626 3.317559-1.578082 3.317559-1.004234C3.317559-.466252 3.281694-.340722 3.236862-.215193C3.003736 .573848 2.761644 1.497385 2.761644 1.739477C2.761644 1.802242 2.761644 1.936737 2.887173 1.936737C2.949938 1.936737 3.030635 1.936737 3.183064 1.389788C3.416189 .564882 3.478954 .080697 3.532752-.286924C3.541719-.385554 4.016936-1.838107 4.82391-3.443088C4.976339-3.730012 4.976339-3.747945 4.976339-3.765878C4.976339-3.828643 4.931507-3.864508 4.859776-3.864508C4.841843-3.864508 4.779078-3.864508 4.743213-3.81071C4.536986-3.443088 4.321793-2.976837 4.133499-2.555417C4.088667-2.465753 3.846575-1.909838 3.568618-1.183562Z'/>
+<path id='c15-07-q4-upogib-g1-97' d='M3.716065-3.765878C3.536737-4.134496 3.247821-4.403487 2.799502-4.403487C1.633873-4.403487 .398506-2.938979 .398506-1.484433C.398506-.547945 .946451 .109589 1.723537 .109589C1.92279 .109589 2.420922 .069738 3.01868-.637609C3.098381-.219178 3.447073 .109589 3.92528 .109589C4.273973 .109589 4.503113-.119552 4.662516-.438356C4.83188-.797011 4.961395-1.404732 4.961395-1.424658C4.961395-1.524284 4.871731-1.524284 4.841843-1.524284C4.742217-1.524284 4.732254-1.484433 4.702366-1.344956C4.533001-.697385 4.353674-.109589 3.945205-.109589C3.676214-.109589 3.646326-.368618 3.646326-.56787C3.646326-.787049 3.666252-.86675 3.775841-1.305106C3.88543-1.723537 3.905355-1.823163 3.995019-2.201743L4.353674-3.596513C4.423412-3.875467 4.423412-3.895392 4.423412-3.935243C4.423412-4.104608 4.303861-4.204234 4.134496-4.204234C3.895392-4.204234 3.745953-3.985056 3.716065-3.765878ZM3.068493-1.185554C3.01868-1.006227 3.01868-.986301 2.86924-.816936C2.430884-.268991 2.022416-.109589 1.743462-.109589C1.24533-.109589 1.105853-.657534 1.105853-1.046077C1.105853-1.544209 1.424658-2.769614 1.653798-3.227895C1.96264-3.815691 2.410959-4.184309 2.809465-4.184309C3.457036-4.184309 3.596513-3.367372 3.596513-3.307597S3.576588-3.188045 3.566625-3.138232L3.068493-1.185554Z'/>
+<path id='c15-07-q4-upogib-g1-98' d='M2.381071-6.804483C2.381071-6.814446 2.381071-6.914072 2.251557-6.914072C2.022416-6.914072 1.295143-6.834371 1.036115-6.814446C.956413-6.804483 .846824-6.794521 .846824-6.615193C.846824-6.495641 .936488-6.495641 1.085928-6.495641C1.564134-6.495641 1.58406-6.425903 1.58406-6.326276C1.58406-6.256538 1.494396-5.917808 1.444583-5.708593L.627646-2.460772C.508095-1.96264 .468244-1.803238 .468244-1.454545C.468244-.508095 .996264 .109589 1.733499 .109589C2.909091 .109589 4.134496-1.374844 4.134496-2.809465C4.134496-3.716065 3.606476-4.403487 2.809465-4.403487C2.351183-4.403487 1.942715-4.11457 1.643836-3.805729L2.381071-6.804483ZM1.444583-3.038605C1.504359-3.257783 1.504359-3.277709 1.594022-3.387298C2.082192-4.034869 2.530511-4.184309 2.789539-4.184309C3.148194-4.184309 3.417186-3.88543 3.417186-3.247821C3.417186-2.660025 3.088418-1.514321 2.909091-1.135741C2.580324-.468244 2.122042-.109589 1.733499-.109589C1.39477-.109589 1.066002-.37858 1.066002-1.115816C1.066002-1.305106 1.066002-1.494396 1.225405-2.122042L1.444583-3.038605Z'/>
+<path id='c15-07-q4-upogib-g2-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+</defs>
+<g id='c15-07-q4-upogib-page1'>
+<g stroke-miterlimit='10' transform='translate(34.063546,-23.652985)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='prvotnaa'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-71.13185-28.45274V28.45274H71.13185V-28.45274ZM71.13185 28.45274' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='prvotnab'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M145.10916-28.45274V28.45274H287.37288V-28.45274ZM287.37288 28.45274' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='tocno'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.0'>
+<path d='M-55.48276-28.45274L-51.7842-25.92032L-48.0852-23.58717L-44.3862-21.39642L-40.68721-19.40495L-36.98865-17.58368L-33.28966-15.93346L-29.59065-14.45386L-25.89209-13.14532L-22.1931-12.00697L-18.4941-11.06833L-14.79555-10.27122L-11.09654-9.67383L-7.39755-9.24704L-3.69899-8.99089L0-8.87715L3.69899-8.99089L7.39755-9.24704L11.09654-9.67383L14.79555-10.27122L18.4941-11.06833L22.1931-12.00697L25.89209-13.14532L29.59065-14.45386L33.28966-15.93346L36.98865-17.58368L40.68721-19.40495L44.3862-21.39642L48.0852-23.58717L51.7842-25.92032L55.48276-28.45274' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.7'>
+<path d='M-71.13185 .93907L-66.38004 3.47105L-61.6573 5.8042L-56.90549 7.99538L-52.15366 9.98685L-47.43092 11.8077L-42.67911 13.45834L-37.92729 14.93752L-33.20456 16.24649L-28.45274 17.3844L-23.70091 18.32349L-18.97818 19.12015L-14.22636 19.71754L-9.47455 20.14432L-4.75182 20.40047L0 20.51422L4.75182 20.40047L9.47455 20.14432L14.22636 19.71754L18.97818 19.12015L23.70091 18.32349L28.45274 17.3844L33.20456 16.24649L37.92729 14.93752L42.67911 13.45834L47.43092 11.8077L52.15366 9.98685L56.90549 7.99538L61.6573 5.8042L66.38004 3.47105L71.13185 .93907' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.0'>
+<path d='M-86.78094 28.45274L-81.00496 30.98515L-75.20074 33.3183L-69.42476 35.50905L-63.64877 37.50052L-57.84456 39.3218L-52.06856 40.97202L-46.29257 42.45161L-40.48836 43.76015L-34.71237 44.8985L-28.93639 45.83714L-23.13217 46.63425L-17.35619 47.23164L-11.5802 47.65843L-5.77599 47.91458L0 48.02832L5.77599 47.91458L11.5802 47.65843L17.35619 47.23164L23.13217 46.63425L28.93639 45.83714L34.71237 44.8985L40.48836 43.76015L46.29257 42.45161L52.06856 40.97202L57.84456 39.3218L63.64877 37.50052L69.42476 35.50905L75.20074 33.3183L81.00496 30.98515L86.78094 28.45274' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.0'>
+<path d='M-55.48276-28.45274L-58.61258-22.4206L-61.7424-16.47398L-64.87221-10.58424L-68.00203-4.78003L-71.13185 .93907L-74.26167 6.60088L-77.3915 12.1776L-80.5213 17.6692L-83.65112 23.10352L-86.78094 28.45274' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.7'>
+<path d='M0-8.87715V-2.87366V3.10115V8.96268V14.76689V20.51422V26.14824V31.72496V37.2448V42.65045V48.02832' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.0'>
+<path d='M55.48276-28.45274L58.61258-22.4206L61.7424-16.47398L64.87221-10.58424L68.00203-4.78003L71.13185 .93907L74.26167 6.60088L77.3915 12.1776L80.5213 17.6692L83.65112 23.10352L86.78094 28.45274' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='q4'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M160.75781-28.45274H164.45682H168.1558H171.85437H175.55338H179.25237H182.95093H186.64992H190.34892H194.04791H197.74648H201.44547H205.14447H208.84303H212.54202H216.24101H219.93958H223.63858H227.33757H231.03613H234.73512H238.43413H242.13269H245.83168H249.53067H253.22923H256.92824H260.62723H264.32579H268.02478H271.72379' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.7'>
+<path d='M145.10916 0H149.86055H154.58371H159.33553H164.08691H168.81009H173.5619H178.3133H183.03645H187.78827H192.53966H197.26283H202.01465H206.76604H211.4892H216.24101H220.9924H225.71558H230.46739H235.21878H239.94194H244.69376H249.44514H254.16832H258.92014H263.67152H268.39468H273.1465H277.89789H282.62106H287.37288' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M129.46007 28.45274H135.23605H141.04027H146.81625H152.59224H158.39645H164.17244H169.94844H175.75264H181.52864H187.30418H193.10884H198.88483H204.66039H210.46503H216.24101H222.01657H227.82121H233.59721H239.37276H245.17741H250.9534H256.72896H262.5336H268.30916H274.08514H279.88979H285.66534H291.44133H297.24599H303.02153' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M160.75781-28.45274L157.628-22.76227L154.49818-17.07181L151.36879-11.38092L148.23898-5.69046L145.10916 0L141.97934 5.69046L138.84952 11.38092L135.7197 17.07181L132.58987 22.76227L129.46007 28.45274' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.7'>
+<path d='M216.24101-28.45274V-22.76227V-17.07181V-11.38092V-5.69046V0V5.69046V11.38092V17.07181V22.76227V28.45274' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M271.72379-28.45274L274.85359-22.76227L277.98341-17.07181L281.11324-11.38092L284.24306-5.69046L287.37288 0L290.5027 5.69046L293.6325 11.38092L296.7619 17.07181L299.89172 22.76227L303.02153 28.45274' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='strig'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M303.02153 28.45274V1.42271' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.6'>
+<path d='M293.43324 11.01102C296.3717 9.39577 299.67427 8.54663 303.02788 8.54663' fill='none'/>
+</g>
+</g>
+<g transform='translate(293.83179,1.21378)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(34.063546,-23.652985)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='34.063546' y='-23.652985' xlink:href='#c15-07-q4-upogib-g0-13'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='mere'>
+<path d='M-70.68185-44.10184H70.68185' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,-70.83185,-44.10184)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.69885V-3.69885' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(63.7032,-44.10184)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(70.83185,-44.10184)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.69885V-3.69885' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(-5.14294,-56.17924)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(34.063546,-23.652985)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='34.063546' y='-23.652985' xlink:href='#c15-07-q4-upogib-g2-50'/>
+<use x='39.044885' y='-23.652985' xlink:href='#c15-07-q4-upogib-g1-97'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M-88.20367-28.00275V28.00275' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,-88.20367,-28.15274)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.69885V-3.69885' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,-88.20367,21.0241)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,-88.20367,28.15274)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.69885V-3.69885' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(-103.12831,-3.47221)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(34.063546,-23.652985)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='34.063546' y='-23.652985' xlink:href='#c15-07-q4-upogib-g2-50'/>
+<use x='39.044885' y='-23.652985' xlink:href='#c15-07-q4-upogib-g1-98'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 15.27</span>: Celica \(2a \times 2b\) <span class="nobr">(\(a/b = 2{,}5\))</span> v čistem upogibu, ukrivljenost je zelo povečana. Levo: točno polje (modro), vodoravne črte se ukrivijo, navpične se nagnejo in ostanejo pravokotne nanje. Desno: štirikotnik Q4 z vozliščnimi vrednostmi istega polja (oranžno), vodoravne črte ostanejo ravne, pravi kot med njimi in nagnjeno stranico se spremeni za \(\gamma = \kappa a\) (parazitni strig), označen med stranico in navpičnico. Sivo: celica pred upogibom. Skupni togi premik v \(y\) je na obeh delih odštet.</figcaption></figure>
+<p><a data-del="prvotnaa,prvotnab" class="xref kaz" href="sec-mkk-zaplata.html#fig-mkk-q4-upogib" data-knowl="fig-mkk-q4-upogib">Sivi pravokotnik</a> je celica, <a data-del="mere" class="xref kaz" href="sec-mkk-zaplata.html#fig-mkk-q4-upogib" data-knowl="fig-mkk-q4-upogib">mera \(2a\) in \(2b\)</a> je njena velikost. <a data-del="tocno" class="xref kaz" href="sec-mkk-zaplata.html#fig-mkk-q4-upogib" data-knowl="fig-mkk-q4-upogib">Točno polje</a> ukrivi <a data-del="tocno" class="xref kaz" href="sec-mkk-zaplata.html#fig-mkk-q4-upogib" data-knowl="fig-mkk-q4-upogib">vodoravne črte</a> navzdol na obeh straneh (člen \(-\kappa x^2/2\) v <span class="nobr">\(v\))</span> in nagne <a data-del="tocno" class="xref kaz" href="sec-mkk-zaplata.html#fig-mkk-q4-upogib" data-knowl="fig-mkk-q4-upogib">navpične</a>, ker je <span class="nobr">\(u = \kappa x y\).</span> Štirikotnik Q4 ima na vsaki stranici polje, ki je linearno vzdolž nje (lema <a class="xref" href="sec-mkk-zaplata.html#lem-q4-za-zaplato" data-knowl="lem-q4-za-zaplato">15.48</a>, korak 1), zato <a data-del="q4" class="xref kaz" href="sec-mkk-zaplata.html#fig-mkk-q4-upogib" data-knowl="fig-mkk-q4-upogib">njegove vodoravne črte</a> ostanejo ravne. Štirje vogali imajo isto vrednost \(v = -\kappa(a^2 + \nu b^2)/2\) (vsi imajo isti \(x^2\) in <span class="nobr">\(y^2\)),</span> torej je \(v\) stalen: vse točke celice se v \(y\) premaknejo za isti <span class="nobr">\(v\).</span> To je <a class="xref auto" href="sec-deformacija-v-tocki.html#def-togo-telo" data-knowl="def-togo-telo">tog premik</a>, ki celice ne deformira, zato je na obeh delih slike odštet, in vodoravne stranice ostanejo vodoravne. Polje \(u = \kappa x y\) je dvolinearno, zato ga štirikotnik reproducira natanko, in <a data-del="q4" class="xref kaz" href="sec-mkk-zaplata.html#fig-mkk-q4-upogib" data-knowl="fig-mkk-q4-upogib">navpični stranici</a> se nagneta kot v pravem polju. Toda vodoravne črte so ravne, navpične pa nagnjene, zato se pravi kot med njimi spremeni za <span class="nobr">\(\gamma_{\mathrm{xy}} = \kappa x\),</span> kar je pri \(x = a\) enako <span class="nobr">\(\kappa a\).</span> To je <a data-del="strig" class="xref kaz" href="sec-mkk-zaplata.html#fig-mkk-q4-upogib" data-knowl="fig-mkk-q4-upogib">kot med nagnjeno stranico in navpičnico</a> v desnem zgornjem vogalu. Točno polje ima strig nič.</p>
+
+<div class="blk lema" id="lem-q4-upogib"><div class="blk-head"><span class="blk-label">Lema 15.49</span> <span class="blk-title">Energija štirikotnika Q4 v čistem upogibu (energy of the Q4 element in pure bending)</span></div><div class="blk-body"><p>Naj bo celica \([-a, a] \times [-b, b]\) iz <a class="xref auto" href="sec-natezni-preizkus.html#def-izotropen-material" data-knowl="def-izotropen-material">izotropnega</a> materiala v ravninskem napetostnem stanju <span class="nobr">(\(E\),</span> <span class="nobr">\(\nu\)).</span> Naj bo \(u_{\mathrm{h}}\) polje štirikotnika Q4 z vozliščnimi vrednostmi točnega polja čistega upogiba <span class="nobr">\(u = \kappa x y\),</span> <span class="nobr">\(v = -\kappa(x^2 + \nu y^2)/2\).</span> Tedaj je razmerje med energijo polja \(u_{\mathrm{h}}\) in energijo točnega polja na celici</p>
+<div class="eq" id="eq-q4-upogib">\[\frac{U_{\mathrm{h}}}{U} = \frac{1}{1 - \nu^2} + \frac{a^2}{2\,(1 + \nu)\,b^2} . \tag{15.36}\]</div>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">deformacije</a> polja <span class="nobr">\(u_{\mathrm{h}}\),</span> izraziti energijo in jo primerjati s točno.</p>
+<ol>
+<li>Vogali \((\pm a, \pm b)\) imajo isto vrednost <span class="nobr">\(v\),</span> zato je \(v_{\mathrm{h}}\) stalen <span class="nobr">(\(\sum_{\mathrm{i}} N_{\mathrm{i}} = 1\),</span> lema <a class="xref" href="sec-element-palice.html#lem-vsota-oblikovnih" data-knowl="lem-vsota-oblikovnih">7.3</a>). Pri preslikavi pravokotnika <span class="nobr">\(x = a\xi\),</span> \(y = b\eta\) je \(u = \kappa ab\,\xi\eta\) z vozliščnimi vrednostmi <span class="nobr">\(\kappa ab\,\xi_{\mathrm{i}}\eta_{\mathrm{i}}\).</span> Z \(N_{\mathrm{i}} = \tfrac14(1 + \xi_{\mathrm{i}}\xi)(1 + \eta_{\mathrm{i}}\eta)\) je <span class="nobr">\(\sum_{\mathrm{i}} N_{\mathrm{i}}\,\xi_{\mathrm{i}}\eta_{\mathrm{i}} = \tfrac14\big(\sum_{\mathrm{i}} \xi_{\mathrm{i}}\eta_{\mathrm{i}} + \xi\sum_{\mathrm{i}} \eta_{\mathrm{i}} + \eta\sum_{\mathrm{i}} \xi_{\mathrm{i}} + 4\,\xi\eta\big) = \xi\eta\),</span> ker je \(\xi_{\mathrm{i}}^2 = \eta_{\mathrm{i}}^2 = 1\) in <span class="nobr">\(\sum_{\mathrm{i}} \xi_{\mathrm{i}} = \sum_{\mathrm{i}} \eta_{\mathrm{i}} = \sum_{\mathrm{i}} \xi_{\mathrm{i}}\eta_{\mathrm{i}} = 0\).</span> Zato je <span class="nobr">\(u_{\mathrm{h}} = \kappa x y\).</span> Deformacije so <span class="nobr">\(\varepsilon_{\mathrm{xx}} = \kappa y\),</span> \(\varepsilon_{\mathrm{yy}} = 0\) in <span class="nobr">\(\gamma_{\mathrm{xy}} = \kappa x\).</span></li>
+<li>Po lemi <a class="xref" href="sec-mkk-ravninski-trikotnik.html#lem-ravninska-matrika-materiala" data-knowl="lem-ravninska-matrika-materiala">15.23</a> je gostota energije <span class="nobr">\(\tfrac12\{\varepsilon\}^\T\mat C\{\varepsilon\}\).</span> Z \(\varepsilon_{\mathrm{yy}} = 0\) je <span class="nobr">\(\tfrac12\big(\tfrac{E}{1 - \nu^2}\,\kappa^2 y^2 + \tfrac{E}{2(1 + \nu)}\,\kappa^2 x^2\big)\).</span></li>
+<li><a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">Integral</a> po celici da z \(\int y^2\,\mathrm{d}A = 4ab^3/3\) in \(\int x^2\,\mathrm{d}A = 4a^3 b/3\) (izrek <a class="xref" href="sec-integral-po-telesu.html#thm-fubini" data-knowl="thm-fubini">4.9</a>) energijo <span class="nobr">\(U_{\mathrm{h}} = \tfrac12 E\kappa^2\,\tfrac{4ab^3}{3}\big(\tfrac{1}{1 - \nu^2} + \tfrac{a^2}{2(1 + \nu)b^2}\big)\).</span></li>
+<li>Točno polje ima <span class="nobr">\(\sigma_{\mathrm{xx}} = E\kappa y\),</span> zato je <span class="nobr">\(U = \tfrac12 E\kappa^2\,\tfrac{4ab^3}{3}\).</span> Količnik je enačba <a class="xref" href="sec-mkk-zaplata.html#eq-q4-upogib" data-knowl="eq-q4-upogib">(15.36)</a>.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> Račun je naš, SymPy in NumPy (num-07.out, del 7). COOK (PDF str. 233) pravi, da štirivozliščni ravninski element zaradi parazitnega striga pretogo prikaže upogibni način.</p></div></div>
+<p>Razmerje ima dva dela, vsak ima svoj vzrok. Prvi, <span class="nobr">\(1/(1 - \nu^2) = 1{,}099\),</span> pride od <span class="nobr">\(\varepsilon_{\mathrm{yy}} = 0\):</span> Q4 ne more pokazati prečne kontrakcije <span class="nobr">\(-\nu\kappa y\),</span> ker je \(v\) stalen, in element je zato za \(9{,}9\) % pretog. Drugi, <span class="nobr">\(a^2/(2(1+\nu)b^2)\),</span> je energija parazitnega striga <span class="nobr">\(\gamma_{\mathrm{xy}} = \kappa x\):</span> količina, ki je v pravem polju nič. Pri \(a/b = 1\) je <span class="nobr">\(0{,}385\),</span> skupaj <span class="nobr">\(1{,}484\),</span> pri \(a/b = 2{,}5\) je <span class="nobr">\(2{,}404\),</span> skupaj <span class="nobr">\(3{,}503\),</span> pri \(a/b = 5\) je <span class="nobr">\(9{,}615\),</span> skupaj \(10{,}714\) (num-07.out, del 7). Celica konzole \(100 \times 20\) mm ima <span class="nobr">\(a/b = 5\):</span> polje, ki ga Q4 sestavi iz vozliščnih vrednosti pravega upogiba, hrani \(10{,}7\)-krat preveč energije, zato mreža takega polja ne izbere in se upogne manj. To je vzrok, ki ga lema pokaže, ne izpeljava števila <span class="nobr">\(0{,}292\),</span> ki ga da celotna mreža. Strig je tem večji, čim daljša je celica glede na višino, kar kaže kvadrat razmerja \(a/b\) v enačbi <a class="xref" href="sec-mkk-zaplata.html#eq-q4-upogib" data-knowl="eq-q4-upogib">(15.36)</a>.</p>
+<p>Štirikotnik je boljši od trikotnika <span class="nobr">(\(0{,}292\)</span> proti <span class="nobr">\(0{,}115\)),</span> ker ima člen <span class="nobr">\(\xi\eta\),</span> s katerim natanko pokaže <span class="nobr">\(u = \kappa x y\).</span> Pravo polje pa ima v \(v\) tudi kvadratna člena \(x^2\) in <span class="nobr">\(y^2\),</span> in prav ta dva manjkata obema.</p>
+
+<h3 id="sec-nekompatibilni-nacini"><span class="h-num">15.7.4</span> Nekompatibilni načini</h3>
+<p>Člena \(x^2\) in \(y^2\) dodamo elementu kot dodatni <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkciji</a>. Pri <a class="xref auto" href="sec-mkk-izoparametricni.html#def-izoparametricni-element" data-knowl="def-izoparametricni-element">izoparametričnem elementu</a> sta to \(1 - \xi^2\) in <span class="nobr">\(1 - \eta^2\):</span> na robovih \(\xi = \pm 1\) prva izgine, na robovih \(\eta = \pm 1\) druga, in v ogliščih sta obe nič.</p>
+
+<div class="blk definicija" id="def-nekompatibilni-nacini"><div class="blk-head"><span class="blk-label">Definicija 15.50</span> <span class="blk-title">Element z nekompatibilnimi načini Q6 in QM6 (element with incompatible modes Q6 and QM6)</span></div><div class="blk-body"><p>Naj bo <a class="xref auto" href="sec-mkk-izoparametricni.html#def-oblikovne-q4" data-knowl="def-oblikovne-q4">štirikotnik s štirimi vozlišči</a> (definicija <a class="xref" href="sec-mkk-izoparametricni.html#def-izoparametricni-element" data-knowl="def-izoparametricni-element">15.30</a>) z vozliščnimi pomiki <span class="nobr">\(\vek u_{\mathrm{i}}\).</span> Element Q6 ima pomik</p>
+<div class="eq" id="eq-q6-polje">\[\vek u(\xi, \eta) = \sum_{\mathrm{i}=1}^{4} N_{\mathrm{i}}(\xi, \eta)\,\vek u_{\mathrm{i}} + (1 - \xi^2)\,\vek c_1 + (1 - \eta^2)\,\vek c_2 , \tag{15.37}\]</div>
+<p>kjer sta \(\vek c_1\) in \(\vek c_2\) <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vektorja</a> po dveh številih, notranji prostostni stopnji tega elementa (štiri števila, brez vozlišča). <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">Deformacija</a> je \(\{\varepsilon\} = \mat B\,\vek u_{\mathrm{e}} + \mat B_{\mathrm{c}}\,\vek c\) z <span class="nobr">\(\vek c = (\vek c_1, \vek c_2)\),</span> kjer \(\mat B_{\mathrm{c}}\) dobimo iz <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">odvodov</a> <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcij</a> \(1 - \xi^2\) in \(1 - \eta^2\) po \(x\) in \(y\) z obratom <a class="xref auto" href="sec-zamenjava-spremenljivk.html#def-preslikava" data-knowl="def-preslikava">Jacobijeve matrike</a> \(\mat F\) preslikave (po <a class="xref auto" href="sec-zamenjava-spremenljivk.html#lem-verizno-pravilo" data-knowl="lem-verizno-pravilo">verižnem pravilu</a>, kot pri <span class="nobr">\(\mat B\)).</span> Notranji prostostni stopnji eliminiramo na elementu, zato je \(\partial\Pi/\partial\vek c = \vek 0\) in</p>
+<div class="eq" id="eq-q6-kondenzacija">\[\vek c = -\mat K_{\mathrm{cc}}^{-1}\,\mat K_{\mathrm{cu}}\,\vek u_{\mathrm{e}} , \qquad \mat k_{\mathrm{e}} = \mat K_{\mathrm{uu}} - \mat K_{\mathrm{uc}}\,\mat K_{\mathrm{cc}}^{-1}\,\mat K_{\mathrm{cu}} , \tag{15.38}\]</div>
+<p>kjer so <span class="nobr">\(\mat K_{\mathrm{uu}}\),</span> <span class="nobr">\(\mat K_{\mathrm{uc}}\),</span> \(\mat K_{\mathrm{cc}}\) bloki togostne <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrike</a> elementa z vektorjem <span class="nobr">\((\vek u_{\mathrm{e}}, \vek c)\).</span> Element QM6 je Q6, v katerem v \(\mat B_{\mathrm{c}}\) povsod uporabimo Jacobijevo matriko \(\mat F_0\) in <a class="xref auto" href="sec-determinanta.html#def-determinanta" data-knowl="def-determinanta">determinanto</a> \(J_0\) v središču elementa \(\xi = \eta = 0\) namesto \(\mat F\) in <span class="nobr">\(J\):</span> <span class="nobr">\(\mat B_{\mathrm{c}} = (J_0/J)\,\mat B_{\mathrm{c}}|_{\mat{F} = \mat{F}_0}\).</span></p>
+
+<p class="vir"><span class="vir-label">Vir:</span> COOK razdelek 6.6 (PDF str. 233-234): polje elementa Q6, notranje (»nodeless«) prostostne stopnje in popravek, ki da QM6. Eliminacija je po COOK razdelku 6.7 (PDF str. 235). Zapis z \(\vek c\) je naš.</p></div></div>
+<p>Ime Q6 je COOK-ovo (PDF str. 233). Črko Q beremo kot štirikotnik (quadrilateral) in številko šest kot število funkcij v vsaki komponenti pomika, štiri oblikovne in dve dodatni, vendar je to branje naše, vir ga ne razlaga. Črka M v QM6 pomeni popravljen (modified, PDF str. 234). Načini se imenujejo nekompatibilni zato, ker na robu elementa niso določeni z vozlišči roba: dodatna funkcija \((1 - \eta^2)\,\vek c_2\) je na robu \(\xi = 1\) nič le v ogliščih, vmes pa ne, in sosednji element ima svoj <span class="nobr">\(\vek c_2\).</span> COOK (PDF str. 233) pravi, da jim rečemo nekompatibilni ali neskladni, ker na mestih zunaj vozlišč dopuščajo prekrivanje ali reže med sosednjimi elementi.</p>
+<p><a class="xref auto" href="sec-mkk-zaplata.html#def-nekompatibilni-nacini" data-knowl="def-nekompatibilni-nacini">Elementa Q6</a> in QM6 integriramo kot Q4 z \(2 \times 2\) <a class="xref auto" href="sec-kvadratni-element.html#def-gaussovo-pravilo" data-knowl="def-gaussovo-pravilo">Gaussovimi točkami</a> (razdelek <a class="xref" href="sec-mkk-gauss.html">15.6</a>), in tako so narejeni vsi računi tega razdelka. Eliminacija <a class="xref" href="sec-mkk-zaplata.html#eq-q6-kondenzacija" data-knowl="eq-q6-kondenzacija">(15.38)</a> potrebuje obrat <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrike</a> <span class="nobr">\(\mat K_{\mathrm{cc}}\).</span> Pokažimo več: matrika je pozitivno definitna, zato eliminacija ni deljenje z ničlo.</p>
+
+<div class="blk lema" id="lem-kcc-pozitivna"><div class="blk-head"><span class="blk-label">Lema 15.51</span> <span class="blk-title">Matrika \(\mat K_{\mathrm{cc}}\) nekompatibilnih načinov je pozitivno definitna (the matrix of the incompatible modes is positive definite)</span></div><div class="blk-body"><p>Naj bo štirikotnik s \(J &gt; 0\) v vseh ogliščih in naj bo \(\mat K_{\mathrm{cc}}\) blok togostne <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrike</a> elementa Q6 ali QM6 (definicija <a class="xref" href="sec-mkk-zaplata.html#def-nekompatibilni-nacini" data-knowl="def-nekompatibilni-nacini">15.50</a>), integriran natančno ali z \(2 \times 2\) <a class="xref auto" href="sec-kvadratni-element.html#def-gaussovo-pravilo" data-knowl="def-gaussovo-pravilo">Gaussovimi točkami</a>. Tedaj je \(\vek c^\T\mat K_{\mathrm{cc}}\,\vek c &gt; 0\) za vsak <span class="nobr">\(\vek c \ne \vek 0\).</span></p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da je dodatno polje \(\varphi_1\,\vek c_1 + \varphi_2\,\vek c_2\) z \(\varphi_1 = 1 - \xi^2\) in \(\varphi_2 = 1 - \eta^2\) brez <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">deformacije</a> v dveh <a class="xref auto" href="sec-kvadratni-element.html#def-gaussovo-pravilo" data-knowl="def-gaussovo-pravilo">Gaussovih točkah</a> le pri <span class="nobr">\(\vek c = \vek 0\).</span></p>
+<ol>
+<li>Količina \(\vek c^\T\mat K_{\mathrm{cc}}\,\vek c\) je vsota po Gaussovih točkah členov <span class="nobr">\(w_{\mathrm{g}}\,J_{\mathrm{g}}\,\{\varepsilon\}_{\mathrm{g}}^\T\mat C\{\varepsilon\}_{\mathrm{g}}\),</span> kjer je \(\{\varepsilon\}_{\mathrm{g}} = (\mat B_{\mathrm{c}}\,\vek c)_{\mathrm{g}}\) deformacija dodatnega polja. Uteži \(w_{\mathrm{g}}\) in \(J_{\mathrm{g}}\) so pozitivne (izrek <a class="xref" href="sec-mkk-izoparametricni.html#thm-izoparametricni-ukrivljen-kvader" data-knowl="thm-izoparametricni-ukrivljen-kvader">15.32</a>, točka 1), gostota pa je pozitivna pri vsaki deformaciji, ki ni nič (izrek <a class="xref" href="sec-energija-deformacije.html#thm-meje-konstant" data-knowl="thm-meje-konstant">3.48</a>, točka 1). Če je vsota nič, je deformacija dodatnega polja nič v vsaki Gaussovi točki. Pri natančni integraciji je tedaj nič povsod, torej tudi v teh točkah.</li>
+<li><a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">Odvod</a> dodatnega polja po \((\xi, \eta)\) je <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrika</a> s stolpcema \(-2\xi\,\vek c_1\) in <span class="nobr">\(-2\eta\,\vek c_2\).</span> Odvod po \((x, y)\) je ta matrika, z desne pomnožena z <span class="nobr">\(\mat F^{-1}\),</span> pri QM6 z \(\mat F_0^{-1}\) in s pozitivnim številom <span class="nobr">\(J_0/J\),</span> ki ničle ne spremeni. Deformacija je simetrični del odvoda (definicija <a class="xref" href="sec-deformacija-v-prostoru.html#def-mali-tenzor-deformacij" data-knowl="def-mali-tenzor-deformacij">1.115</a>), zato je nič natanko tedaj, ko je odvod antisimetričen. <a class="xref auto" href="sec-matrike.html#def-simetricna-matrika" data-knowl="def-simetricna-matrika">Antisimetrična matrika</a> \(2 \times 2\) je \(\omega\mat R\) z \(\mat R = \begin{bmatrix} 0 &amp; -1 \\ 1 &amp; 0 \end{bmatrix}\) in nekim številom <span class="nobr">\(\omega\).</span> Po množenju z \(\mat F\) (pri QM6 z <span class="nobr">\(\mat F_0\))</span> z desne to da \(-2\xi\,\vek c_1 = \omega\,\mat R\,\vek x_{,\xi}\) in <span class="nobr">\(-2\eta\,\vek c_2 = \omega\,\mat R\,\vek x_{,\eta}\),</span> kjer sta \(\vek x_{,\xi}\) in \(\vek x_{,\eta}\) stolpca matrike \(\mat F\) (pri QM6 stalna stolpca matrike <span class="nobr">\(\mat F_0\)).</span></li>
+<li>Pri dvolinearni preslikavi je \(\vek x_{,\eta} = \sum_{\mathrm{i}} \tfrac14\eta_{\mathrm{i}}(1 + \xi_{\mathrm{i}}\xi)\,\vek x_{\mathrm{i}}\) odvisen le od <span class="nobr">\(\xi\),</span> \(\vek x_{,\xi} = \sum_{\mathrm{i}} \tfrac14\xi_{\mathrm{i}}(1 + \eta_{\mathrm{i}}\eta)\,\vek x_{\mathrm{i}}\) pa le od <span class="nobr">\(\eta\),</span> v katerem je afin. Vzemimo točki \((g, g)\) in \((g, -g)\) z \(g = 1/\sqrt3\) in njuni števili \(\omega_1\) in <span class="nobr">\(\omega_2\).</span> V obeh je isti <span class="nobr">\(\vek x_{,\eta}\),</span> in druga enačba koraka 2 da \(-2g\,\vek c_2 = \omega_1\mat R\,\vek x_{,\eta}\) ter <span class="nobr">\(2g\,\vek c_2 = \omega_2\mat R\,\vek x_{,\eta}\).</span> Vsota je <span class="nobr">\((\omega_1 + \omega_2)\,\mat R\,\vek x_{,\eta} = \vek 0\).</span> Stolpec \(\vek x_{,\eta}\) ni nič, ker je <span class="nobr">\(J \ne 0\),</span> in \(\mat R\) je <a class="xref auto" href="sec-matrike.html#def-inverzna-matrika" data-knowl="def-inverzna-matrika">obrnljiva</a>, zato je <span class="nobr">\(\omega_2 = -\omega_1\).</span></li>
+<li>Prva enačba koraka 2 da \(-2g\,\vek c_1 = \omega_1\mat R\,\vek x_{,\xi}(g)\) in <span class="nobr">\(-2g\,\vek c_1 = \omega_2\mat R\,\vek x_{,\xi}(-g) = -\omega_1\mat R\,\vek x_{,\xi}(-g)\),</span> kjer je v oklepaju vrednost <span class="nobr">\(\eta\).</span> Razlika enačb je <span class="nobr">\(\omega_1\mat R\,\big(\vek x_{,\xi}(g) + \vek x_{,\xi}(-g)\big) = \vek 0\).</span> Ker je \(\vek x_{,\xi}\) afin v <span class="nobr">\(\eta\),</span> je vsota v oklepaju <span class="nobr">\(2\,\vek x_{,\xi}(0)\),</span> prvi stolpec matrike <span class="nobr">\(\mat F_0\),</span> ki ni nič, ker je <span class="nobr">\(J_0 &gt; 0\).</span> Torej je <span class="nobr">\(\omega_1 = \omega_2 = 0\),</span> in enačbi koraka 2 dasta <span class="nobr">\(\vek c_1 = \vek c_2 = \vek 0\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> Dokaz ni iz vira. Na zaplati je najmanjša lastna vrednost matrike \(\mat K_{\mathrm{cc}}\) pri Q6 od \(2{,}1 \cdot 10^{11}\) do \(4{,}6 \cdot 10^{11}\) N/m, pri QM6 od \(6{,}3 \cdot 10^{10}\) do \(3{,}5 \cdot 10^{11}\) N/m (num-07.out, del 9).</p></div></div>
+<p>Vrnimo se k čistemu upogibu. Ali novi element sploh vsebuje pravo polje?</p>
+
+<div class="blk lema" id="lem-q6-upogib"><div class="blk-head"><span class="blk-label">Lema 15.52</span> <span class="blk-title">Element Q6 vsebuje polje čistega upogiba (the Q6 element contains the pure bending field)</span></div><div class="blk-body"><p>Na pravokotniku \([-a, a] \times [-b, b]\) z \(x = a\xi\) in \(y = b\eta\) je polje <span class="nobr">\(u = \kappa x y\),</span> \(v = -\kappa(x^2 + \nu y^2)/2\) polje <a class="xref auto" href="sec-mkk-zaplata.html#def-nekompatibilni-nacini" data-knowl="def-nekompatibilni-nacini">elementa Q6</a> z vozliščnimi vrednostmi tega polja in <span class="nobr">\(\vek c_1 = (0, \kappa a^2/2)\),</span> <span class="nobr">\(\vek c_2 = (0, \nu\kappa b^2/2)\).</span></p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da je vsaka komponenta oblike <a class="xref" href="sec-mkk-zaplata.html#eq-q6-polje" data-knowl="eq-q6-polje">(15.37)</a>.</p>
+<ol>
+<li>Komponenta \(u = \kappa a b\,\xi\eta\) je dvolinearna in vozliščne vrednosti so <span class="nobr">\(\kappa x_{\mathrm{i}} y_{\mathrm{i}}\),</span> torej je \(u = \sum_{\mathrm{i}} N_{\mathrm{i}} u_{\mathrm{i}}\) (korak 1 leme <a class="xref" href="sec-mkk-zaplata.html#lem-q4-upogib" data-knowl="lem-q4-upogib">15.49</a>) z \(\vek c = \vek 0\) v komponenti <span class="nobr">\(u\).</span></li>
+<li>Komponenta <span class="nobr">\(v = -\tfrac{\kappa}{2}(a^2\xi^2 + \nu b^2\eta^2) = -\tfrac{\kappa}{2}(a^2 + \nu b^2) + \tfrac{\kappa a^2}{2}(1 - \xi^2) + \tfrac{\nu\kappa b^2}{2}(1 - \eta^2)\).</span> Konstanta je vrednost \(v\) v vseh vogalih, in \(\sum_{\mathrm{i}} N_{\mathrm{i}} = 1\) (lema <a class="xref" href="sec-element-palice.html#lem-vsota-oblikovnih" data-knowl="lem-vsota-oblikovnih">7.3</a>), torej je enaka <span class="nobr">\(\sum_{\mathrm{i}} N_{\mathrm{i}} v_{\mathrm{i}}\).</span> Druga dva člena sta dodatni <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkciji</a> z \(c_{1\mathrm{y}} = \kappa a^2/2\) in <span class="nobr">\(c_{2\mathrm{y}} = \nu\kappa b^2/2\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> Dokaz ni iz vira. Račun energije (num-07.out, del 7): razmerje \(U_{\mathrm{h}}/U\) pri elementu Q6 je \(1{,}000000\) pri <span class="nobr">\(a/b = 1\),</span> \(2{,}5\) in <span class="nobr">\(5\).</span> Eliminacija izbere \(\vek c\) z najmanjšo energijo pri danih vozliščnih pomikih <span class="nobr">(\(\mat K_{\mathrm{cc}}\)</span> je pozitivno definitna, lema <a class="xref" href="sec-mkk-zaplata.html#lem-kcc-pozitivna" data-knowl="lem-kcc-pozitivna">15.51</a>), zato je energija <span class="nobr">\(\le U\),</span> ker je točno polje v družini. Enakost velja, ker je točno polje v \(\vek c\) stacionarno: \(\int \sigma : \varepsilon(\varphi\,\vek c')\,\mathrm{d}A = 0\) za vsak <span class="nobr">\(\vek c'\),</span> saj je \(\sigma_{\mathrm{xx}} = E\kappa y\) liha v <span class="nobr">\(y\),</span> odvoda \(\partial\varphi_1/\partial x\) in \(\partial\varphi_2/\partial x\) sta neodvisna od \(y\) ali enaka nič, in \(\sigma_{\mathrm{yy}} = \sigma_{\mathrm{xy}} = 0\) (preverjeno s SymPy).</p></div></div>
+<p>Element Q6 torej upogib zna: razmerje energij je 1 namesto <span class="nobr">\(1{,}48\),</span> \(3{,}50\) in \(10{,}7\) (Q4). Na konzoli se to pozna takoj, kot kaže tabela. Pri QM6, ki je na pravokotnikih enak Q6, saj sta tam \(\mat F\) in \(J\) stalna, so rezultati taki:</p>
+<table>
+<thead>
+<tr>
+<th>mreža</th>
+<th>neznank</th>
+<th>trikotniki (CST)</th>
+<th>Q4</th>
+<th>QM6</th>
+<th>Q8 \(3 \times 3\)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>\(10 \times 2\)</td>
+<td>\(60\) <span class="nobr">(\(160\)</span> pri Q8)</td>
+<td>\(0{,}115\)</td>
+<td>\(0{,}292\)</td>
+<td>\(0{,}998\)</td>
+<td>\(0{,}999\)</td>
+</tr>
+<tr>
+<td>\(20 \times 4\)</td>
+<td>\(200\) <span class="nobr">(\(560\))</span></td>
+<td>\(0{,}341\)</td>
+<td>\(0{,}623\)</td>
+<td>\(0{,}999\)</td>
+<td>\(1{,}000\)</td>
+</tr>
+<tr>
+<td>\(40 \times 8\)</td>
+<td>\(720\) <span class="nobr">(\(2080\))</span></td>
+<td>\(0{,}673\)</td>
+<td>\(0{,}868\)</td>
+<td>\(1{,}000\)</td>
+<td>\(1{,}000\)</td>
+</tr>
+</tbody>
+</table>
+<p>: Razmerje med izračunanim in pravim pomikom konca konzole iz poglavja <a class="xref" href="ch-robni-problem-elasticnosti.html">11</a> <span class="nobr">(\(-7{,}9719\)</span> mm po Airyjevi funkciji, vpetje s pravimi pomiki, ravninsko napetostno stanje). V oklepaju število neznank <a class="xref auto" href="sec-mkk-izoparametricni.html#def-q8" data-knowl="def-q8">elementa Q8</a> (razdelek <a class="xref" href="sec-mkk-izoparametricni.html">15.5</a>). (mkk.out, del E)</p>
+<p>QM6 da pri \(60\) neznankah \(0{,}998\) (natančneje <span class="nobr">\(0{,}99753\)),</span> Q4 pa pri \(720\) neznankah še vedno le <span class="nobr">\(0{,}868\).</span> Razlog je v lemi <a class="xref" href="sec-mkk-zaplata.html#lem-q6-upogib" data-knowl="lem-q6-upogib">15.52</a>: celica \(100 \times 20\) mm je pravokotnik, ki v svojem prostoru polj vsebuje polje upogiba.</p>
+<p>Je torej Q6 rešitev? Dodatni funkciji sta nič v ogliščih, vmes pa ne, in vsak element ima svoji <span class="nobr">\(\vek c_1\),</span> <span class="nobr">\(\vek c_2\).</span> Skladnost je izgubljena, zato izrek <a class="xref" href="sec-mkk-zaplata.html#thm-preizkus-z-zaplato" data-knowl="thm-preizkus-z-zaplato">15.47</a> ne velja več. Preizkusimo zaplato iz slike <a class="xref" href="sec-mkk-zaplata.html#fig-mkk-zaplata" data-knowl="fig-mkk-zaplata">15.26</a> z elementom Q6 namesto Q4.</p>
+
+<figure class="blk slika" id="fig-mkk-q6-skok"><p><span class="svgfig" role="img" aria-label="Zaplata z elementi Q6: robovi elementov se ne ujemajo, skok polja vzdolž roba"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='514.61pt' height='171.17pt' viewBox='-72.000004 -72.000005 381.196204 126.790406'>
+<defs>
+<path id='c15-07-q6-skok-g0-0' d='M6.052304-2.0533C6.213699-2.0533 6.38406-2.0533 6.38406-2.25056C6.38406-2.438854 6.204732-2.438854 6.052304-2.438854H1.102864C.950436-2.438854 .771108-2.438854 .771108-2.25056C.771108-2.0533 .941469-2.0533 1.102864-2.0533H6.052304Z'/>
+<path id='c15-07-q6-skok-g1-120' d='M3.36538-2.349191C3.156164-2.289415 3.108344-2.116065 3.108344-2.026401C3.108344-1.835118 3.263761-1.793275 3.347447-1.793275C3.520797-1.793275 3.694147-1.936737 3.694147-2.169863C3.694147-2.492653 3.341469-2.636115 3.036613-2.636115C2.642092-2.636115 2.402989-2.331258 2.337235-2.217684C2.259527-2.367123 2.032379-2.636115 1.58406-2.636115C.896638-2.636115 .490162-1.924782 .490162-1.715567C.490162-1.685679 .514072-1.63188 .597758-1.63188S.699377-1.667746 .71731-1.721544C.86675-2.205729 1.273225-2.438854 1.566127-2.438854S1.948692-2.247572 1.948692-2.050311C1.948692-1.97858 1.948692-1.924782 1.900872-1.739477C1.763387-1.183562 1.63188-.639601 1.601993-.56787C1.512329-.340722 1.297136-.137484 1.046077-.137484C1.010212-.137484 .842839-.137484 .705355-.227148C.938481-.304857 .962391-.502117 .962391-.549938C.962391-.705355 .842839-.783064 .723288-.783064C.555915-.783064 .376588-.651557 .376588-.406476C.376588-.065753 .753176 .059776 1.034122 .059776C1.374844 .059776 1.619925-.17335 1.733499-.358655C1.853051-.107597 2.139975 .059776 2.480697 .059776C3.186052 .059776 3.580573-.663512 3.580573-.860772C3.580573-.872727 3.574595-.944458 3.466999-.944458C3.383313-.944458 3.371357-.902615 3.353425-.848817C3.180075-.328767 2.755666-.137484 2.504608-.137484C2.27746-.137484 2.116065-.268991 2.116065-.52005C2.116065-.633624 2.145953-.765131 2.199751-.974346L2.391034-1.751432C2.450809-1.984558 2.480697-2.092154 2.606227-2.235616C2.689913-2.32528 2.833375-2.438854 3.024658-2.438854C3.054545-2.438854 3.233873-2.438854 3.36538-2.349191Z'/>
+<path id='c15-07-q6-skok-g1-121' d='M3.56264-2.295392C3.574595-2.337235 3.580573-2.361146 3.580573-2.379078C3.580573-2.450809 3.526775-2.576339 3.36538-2.576339C3.263761-2.576339 3.162142-2.510585 3.120299-2.426899C3.096389-2.385056 3.054545-2.199751 3.024658-2.086177L2.899128-1.590037L2.713823-.842839C2.67198-.675467 2.64807-.579826 2.408966-.352677C2.343213-.292902 2.15193-.137484 1.894894-.137484C1.452553-.137484 1.452553-.526027 1.452553-.633624C1.452553-.896638 1.524284-1.165629 1.787298-1.823163C1.847073-1.966625 1.865006-2.008468 1.865006-2.116065C1.865006-2.450809 1.566127-2.636115 1.267248-2.636115C.657534-2.636115 .364633-1.847073 .364633-1.715567C.364633-1.685679 .388543-1.63188 .472229-1.63188S.573848-1.667746 .591781-1.721544C.759153-2.30137 1.075965-2.438854 1.243337-2.438854C1.362889-2.438854 1.404732-2.361146 1.404732-2.223661C1.404732-2.098132 1.327024-1.894894 1.26127-1.733499C1.052055-1.207472 .980324-.932503 .980324-.71731C.980324-.14944 1.404732 .059776 1.870984 .059776C1.95467 .059776 2.235616 .059776 2.552428-.215193C2.47472 .113574 2.420922 .3467 2.133998 .657534C2.026401 .777086 1.75741 1.022167 1.398755 1.022167C1.344956 1.022167 1.08792 1.016189 .950436 .860772C1.21345 .812951 1.249315 .579826 1.249315 .526027C1.249315 .364633 1.117808 .298879 1.004234 .298879C.854795 .298879 .657534 .418431 .657534 .6934C.657534 .980324 .938481 1.219427 1.404732 1.219427C2.038356 1.219427 2.803487 .753176 2.988792 .005978L3.56264-2.295392Z'/>
+<path id='c15-07-q6-skok-g2-22' d='M2.125031-3.200996C2.169863-3.362391 2.25056-3.667248 2.25056-3.703113C2.25056-3.846575 2.133998-3.963138 1.972603-3.963138C1.685679-3.963138 1.613948-3.703113 1.596015-3.61345L.313823 1.479452C.277958 1.604981 .277958 1.622914 .277958 1.676712C.277958 1.829141 .385554 1.936737 .555915 1.936737C.842839 1.936737 .91457 1.667746 .941469 1.53325L1.371856-.170361C1.604981 .017933 1.963636 .09863 2.259527 .09863C2.582316 .09863 3.012702 0 3.478954-.546949C3.58655-.071731 4.00797 .09863 4.312827 .09863C4.572852 .09863 4.797011-.017933 4.994271-.394521C5.155666-.690411 5.281196-1.246326 5.281196-1.282192C5.281196-1.327024 5.254296-1.389788 5.164633-1.389788C5.057036-1.389788 5.04807-1.344956 5.012204-1.174595C4.814944-.394521 4.617684-.125529 4.339726-.125529C4.115567-.125529 4.061768-.340722 4.061768-.537983C4.061768-.708344 4.1066-.887671 4.187298-1.201494L4.411457-2.125031L4.617684-2.923039C4.671482-3.156164 4.779078-3.568618 4.779078-3.604483C4.779078-3.721046 4.698381-3.864508 4.501121-3.864508C4.214197-3.864508 4.151432-3.622416 4.088667-3.371357L3.900374-2.627148C3.81071-2.268493 3.550685-1.228394 3.48792-.995268C3.478954-.959402 3.039601-.125529 2.295392-.125529C1.622914-.125529 1.622914-.753176 1.622914-.91457C1.622914-1.120797 1.649813-1.282192 1.748443-1.694645L2.125031-3.200996Z'/>
+<path id='c15-07-q6-skok-g2-59' d='M1.63188-.143462C1.63188 .152428 1.63188 .887671 .968369 1.524284C.91457 1.578082 .91457 1.587049 .91457 1.622914C.91457 1.685679 .977335 1.730511 1.031133 1.730511C1.129763 1.730511 1.85604 1.031133 1.85604-.017933C1.85604-.573848 1.65878-.968369 1.273225-.968369C.968369-.968369 .789041-.735243 .789041-.484184S.968369 0 1.273225 0C1.407721 0 1.542217-.044832 1.63188-.143462Z'/>
+<path id='c15-07-q6-skok-g2-101' d='M1.228394-2.0533C1.775342-2.0533 2.358157-2.0533 2.833375-2.169863C3.676214-2.37609 3.828643-2.878207 3.828643-3.183064C3.828643-3.694147 3.353425-3.963138 2.824408-3.963138C1.784309-3.963138 .42142-3.084433 .42142-1.542217C.42142-.690411 .923537 .09863 1.891905 .09863C3.236862 .09863 3.990037-.833873 3.990037-.950436C3.990037-1.004234 3.927273-1.075965 3.864508-1.075965C3.819676-1.075965 3.81071-1.066999 3.730012-.968369C3.19203-.304857 2.37609-.125529 1.909838-.125529C1.273225-.125529 1.102864-.726276 1.102864-1.174595C1.102864-1.192528 1.102864-1.506351 1.228394-2.0533ZM1.291158-2.27746C1.685679-3.694147 2.680946-3.738979 2.824408-3.738979C3.129265-3.738979 3.496887-3.595517 3.496887-3.183064C3.496887-2.27746 2.142964-2.27746 1.291158-2.27746Z'/>
+<path id='c15-07-q6-skok-g3-49' d='M2.145953-3.795766C2.145953-3.975093 2.122042-3.975093 1.942715-3.975093C1.548194-3.592528 .938481-3.592528 .723288-3.592528V-3.359402C.878705-3.359402 1.273225-3.359402 1.63188-3.526775V-.508095C1.63188-.310834 1.63188-.233126 1.016189-.233126H.759153V0C1.08792-.02391 1.554172-.02391 1.888917-.02391S2.689913-.02391 3.01868 0V-.233126H2.761644C2.145953-.233126 2.145953-.310834 2.145953-.508095V-3.795766Z'/>
+<path id='c15-07-q6-skok-g3-50' d='M3.21594-1.117808H2.99477C2.982814-1.034122 2.923039-.639601 2.833375-.573848C2.791532-.537983 2.307347-.537983 2.223661-.537983H1.105853L1.870984-1.159651C2.074222-1.321046 2.606227-1.703611 2.791532-1.882939C2.970859-2.062267 3.21594-2.367123 3.21594-2.791532C3.21594-3.53873 2.540473-3.975093 1.739477-3.975093C.968369-3.975093 .430386-3.466999 .430386-2.905106C.430386-2.600249 .687422-2.564384 .753176-2.564384C.902615-2.564384 1.075965-2.67198 1.075965-2.887173C1.075965-3.01868 .998257-3.209963 .735243-3.209963C.872727-3.514819 1.23736-3.741968 1.649813-3.741968C2.27746-3.741968 2.612204-3.275716 2.612204-2.791532C2.612204-2.367123 2.331258-1.93076 1.912827-1.548194L.496139-.251059C.436364-.191283 .430386-.185305 .430386 0H3.030635L3.21594-1.117808Z'/>
+<path id='c15-07-q6-skok-g4-1' d='M4.097634-6.213699C4.016936-6.375093 3.972105-6.419925 3.828643-6.419925C3.703113-6.419925 3.649315-6.375093 3.58655-6.249564L.493151-.215193C.457285-.143462 .439352-.09863 .439352-.080697C.439352 0 .502117 0 .645579 0H7.020672C7.164134 0 7.226899 0 7.226899-.080697C7.226899-.089664 7.226899-.107597 7.182067-.19726L4.097634-6.213699ZM3.532752-5.532254L6.025405-.690411H1.049066L3.532752-5.532254Z'/>
+<path id='c15-07-q6-skok-g4-49' d='M2.725778-5.729514C2.725778-5.953674 2.716812-5.971606 2.492653-5.971606C1.936737-5.397758 1.111831-5.397758 .833873-5.397758V-5.119801C1.004234-5.119801 1.551183-5.119801 2.035367-5.352927V-.71731C2.035367-.385554 2.008468-.277958 1.174595-.277958H.887671V0C1.210461-.026899 2.008468-.026899 2.37609-.026899S3.550685-.026899 3.873474 0V-.277958H3.58655C2.752677-.277958 2.725778-.385554 2.725778-.71731V-5.729514Z'/>
+<path id='c15-07-q6-skok-g4-50' d='M4.142466-1.587049H3.891407C3.873474-1.470486 3.801743-.941469 3.685181-.798007C3.631382-.71731 3.012702-.71731 2.833375-.71731H1.23736L2.125031-1.560149C3.595517-2.833375 4.142466-3.308593 4.142466-4.223163C4.142466-5.254296 3.29066-5.971606 2.187796-5.971606C1.156663-5.971606 .457285-5.155666 .457285-4.339726C.457285-3.891407 .842839-3.846575 .923537-3.846575C1.120797-3.846575 1.389788-3.990037 1.389788-4.312827C1.389788-4.581818 1.201494-4.779078 .923537-4.779078C.878705-4.779078 .851806-4.779078 .81594-4.770112C1.031133-5.406725 1.604981-5.693649 2.089166-5.693649C3.003736-5.693649 3.317559-4.841843 3.317559-4.223163C3.317559-3.308593 2.627148-2.564384 2.196762-2.098132L.555915-.32279C.457285-.224159 .457285-.206227 .457285 0H3.891407L4.142466-1.587049Z'/>
+<path id='c15-07-q6-skok-g4-54' d='M1.201494-2.96787C1.201494-3.882441 1.300125-4.393524 1.542217-4.859776C1.721544-5.227397 2.160897-5.747447 2.824408-5.747447C3.003736-5.747447 3.416189-5.711582 3.622416-5.388792C3.29066-5.388792 3.147198-5.218431 3.147198-4.976339C3.147198-4.743213 3.308593-4.563885 3.559651-4.563885S3.981071-4.72528 3.981071-4.994271C3.981071-5.496389 3.622416-5.971606 2.806476-5.971606C1.649813-5.971606 .385554-4.832877 .385554-2.833375C.385554-.403487 1.479452 .19726 2.322291 .19726C3.317559 .19726 4.214197-.636613 4.214197-1.820174C4.214197-2.958904 3.38929-3.819676 2.37609-3.819676C1.838107-3.819676 1.452553-3.505853 1.201494-2.96787ZM2.313325-.053798C1.802242-.053798 1.506351-.475218 1.398755-.735243C1.228394-1.13873 1.219427-1.882939 1.219427-2.026401C1.219427-2.627148 1.497385-3.595517 2.358157-3.595517C2.501619-3.595517 2.940971-3.595517 3.227895-3.039601C3.398257-2.698879 3.398257-2.259527 3.398257-1.829141S3.398257-.959402 3.227895-.627646C2.949938-.116563 2.555417-.053798 2.313325-.053798Z'/>
+<path id='c15-07-q6-skok-g4-56' d='M1.542217-4.070735C1.273225-4.241096 1.066999-4.483188 1.066999-4.814944C1.066999-5.397758 1.694645-5.747447 2.286426-5.747447C2.976837-5.747447 3.532752-5.263263 3.532752-4.635616S2.99477-3.595517 2.636115-3.38929L1.542217-4.070735ZM2.860274-3.245828C3.308593-3.461021 3.963138-3.90934 3.963138-4.635616C3.963138-5.478456 3.120299-5.971606 2.313325-5.971606C1.371856-5.971606 .636613-5.299128 .636613-4.474222C.636613-4.133499 .762142-3.81071 .977335-3.550685C1.129763-3.380324 1.183562-3.344458 1.703611-3.012702C.91457-2.636115 .385554-2.089166 .385554-1.353923C.385554-.403487 1.327024 .19726 2.295392 .19726C3.335492 .19726 4.214197-.537983 4.214197-1.506351C4.214197-2.37609 3.550685-2.806476 3.326526-2.949938C3.227895-3.021669 2.96787-3.183064 2.860274-3.245828ZM1.945704-2.860274L3.075467-2.160897C3.281694-2.026401 3.730012-1.739477 3.730012-1.192528C3.730012-.484184 3.012702-.053798 2.304359-.053798C1.524284-.053798 .869738-.609714 .869738-1.353923C.869738-1.999502 1.318057-2.537484 1.945704-2.860274Z'/>
+<path id='c15-07-q6-skok-g4-57' d='M3.398257-2.824408V-2.627148C3.398257-.439352 2.402989-.053798 1.891905-.053798C1.685679-.053798 1.228394-.089664 .995268-.385554H1.031133C1.102864-.367621 1.452553-.439352 1.452553-.798007C1.452553-1.031133 1.291158-1.210461 1.0401-1.210461S.61868-1.049066 .61868-.780075C.61868-.188294 1.093898 .19726 1.900872 .19726C3.057534 .19726 4.214197-.986301 4.214197-2.949938C4.214197-5.379826 3.138232-5.971606 2.331258-5.971606C1.300125-5.971606 .385554-5.137733 .385554-3.963138C.385554-2.824408 1.210461-1.963636 2.223661-1.963636C2.878207-1.963636 3.236862-2.438854 3.398257-2.824408ZM2.241594-2.187796C2.098132-2.187796 1.65878-2.187796 1.371856-2.743711C1.201494-3.084433 1.201494-3.523786 1.201494-3.954172S1.201494-4.832877 1.389788-5.173599C1.65878-5.630884 2.008468-5.747447 2.331258-5.747447C2.940971-5.747447 3.183064-5.128767 3.218929-5.039103C3.344458-4.707347 3.380324-4.160399 3.380324-3.774844C3.380324-3.120299 3.084433-2.187796 2.241594-2.187796Z'/>
+<path id='c15-07-q6-skok-g4-91' d='M2.349191 2.241594V1.85604H1.461519V-6.339228H2.349191V-6.724782H1.075965V2.241594H2.349191Z'/>
+<path id='c15-07-q6-skok-g4-93' d='M1.470486 2.241594V-6.724782H.19726V-6.339228H1.084932V1.85604H.19726V2.241594H1.470486Z'/>
+<path id='c15-07-q6-skok-g4-109' d='M1.667746-2.322291C1.667746-3.29066 2.367123-3.738979 2.905106-3.738979C3.398257-3.738979 3.559651-3.38929 3.559651-2.761644V-.690411C3.559651-.277958 3.461021-.277958 2.86924-.277958V0C3.29066-.017933 3.461021-.026899 3.891407-.026899S4.438356-.017933 4.913574 0V-.277958C4.321793-.277958 4.223163-.277958 4.223163-.690411V-2.322291C4.223163-3.29066 4.92254-3.738979 5.460523-3.738979C5.953674-3.738979 6.115068-3.38929 6.115068-2.761644V-.690411C6.115068-.277958 6.016438-.277958 5.424658-.277958V0C5.846077-.017933 6.016438-.026899 6.446824-.026899S6.993773-.017933 7.468991 0V-.277958C7.011706-.277958 6.787547-.277958 6.77858-.555915V-2.27746C6.77858-3.057534 6.77858-3.308593 6.48269-3.640349C6.294396-3.855542 5.935741-3.963138 5.523288-3.963138C4.877709-3.963138 4.438356-3.58655 4.187298-3.111333C4.079701-3.640349 3.721046-3.963138 2.96787-3.963138C2.25056-3.963138 1.811208-3.496887 1.622914-3.084433H1.613948V-3.963138L.313823-3.864508V-3.58655C.923537-3.58655 1.004234-3.523786 1.004234-3.084433V-.690411C1.004234-.277958 .905604-.277958 .313823-.277958V0C.735243-.017933 .905604-.026899 1.33599-.026899S1.882939-.017933 2.358157 0V-.277958C1.766376-.277958 1.667746-.277958 1.667746-.690411V-2.322291Z'/>
+<path id='c15-07-q6-skok-g5-17' d='M4.861768-2.759651C4.911582-2.938979 4.941469-3.068493 4.941469-3.337484C4.941469-3.985056 4.542964-4.403487 3.795766-4.403487C3.008717-4.403487 2.49066-3.88543 2.251557-3.536737C2.201743-4.104608 1.783313-4.403487 1.334994-4.403487C.876712-4.403487 .687422-4.014944 .597758-3.835616C.418431-3.496887 .288917-2.899128 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.779577 .577833-2.998755C.747198-3.706102 .946451-4.184309 1.305106-4.184309C1.474471-4.184309 1.613948-4.104608 1.613948-3.726027C1.613948-3.516812 1.58406-3.407223 1.454545-2.889166L.876712-.587796C.846824-.438356 .787049-.209215 .787049-.159402C.787049 .019925 .926526 .109589 1.075965 .109589C1.195517 .109589 1.374844 .029888 1.444583-.169365C1.454545-.18929 1.574097-.657534 1.633873-.9066L1.853051-1.803238C1.912827-2.022416 1.972603-2.241594 2.022416-2.470735C2.042341-2.530511 2.122042-2.859278 2.132005-2.919054C2.161893-3.008717 2.470735-3.566625 2.809465-3.835616C3.028643-3.995019 3.337484-4.184309 3.765878-4.184309S4.303861-3.845579 4.303861-3.486924C4.303861-3.437111 4.303861-3.257783 4.204234-2.859278L3.068493 1.723537C3.038605 1.843088 3.038605 1.863014 3.038605 1.882939C3.038605 2.032379 3.148194 2.15193 3.317559 2.15193C3.626401 2.15193 3.696139 1.863014 3.726027 1.753425L4.861768-2.759651Z'/>
+</defs>
+<g id='c15-07-q6-skok-page1'>
+<g stroke-miterlimit='10' transform='translate(-71.551688,38.659288)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='tocna'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.7'>
+<path d='M0 0L213.05432 4.0971L160.30283 29.70483L35.8503 18.43723Z' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.7'>
+<path d='M213.05432 4.0971L215.10266 110.62427L143.40163 73.74937L160.30283 29.70483Z' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.7'>
+<path d='M215.10266 110.62427L2.04877 106.52716L72.38396 72.38396L143.40163 73.74937Z' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.7'>
+<path d='M2.04877 106.52716L0 0L35.8503 18.43723L72.38396 72.38396Z' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.7'>
+<path d='M35.8503 18.43723L160.30283 29.70483L143.40163 73.74937L72.38396 72.38396Z' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='q6'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M0 0L15.44981 1.59334L30.84276 2.95918L46.2357 4.15398L61.57178 5.14993L76.87918 5.91795L92.13016 6.51578L107.3807 6.9139L122.57437 7.11317H137.73982L152.87662 6.88568L167.95653 6.48712L183.03645 5.88972L198.0595 5.09306L213.05432 4.0971L209.32668 6.00348L205.62811 7.90985L201.92912 9.81622L198.2019 11.7226L194.5029 13.65718L190.80391 15.59221L187.10535 17.52681L183.40636 19.46184L179.70735 21.39642L176.00879 23.33145L172.33846 25.2947L168.63947 27.2293L164.94046 29.19254L161.27013 31.15578L152.47806 31.5539L143.65778 31.78183H134.80928L125.93169 31.58255L117.02632 31.184L108.06363 30.58661L99.0723 29.81859L90.05273 28.82263L81.00496 27.62741L71.89987 26.23334L62.76657 24.66864L53.63326 22.87602L44.41486 20.88412L35.19603 18.72203L32.6636 17.35619L30.1316 15.99033L27.62741 14.62492L25.09541 13.2873L22.563 11.92188L20.05923 10.58424L17.55547 9.24704L15.02304 7.90985L12.51927 6.57266L10.0155 5.26369L7.51173 3.92648L5.00752 2.61751L2.50375 1.30898L0 0Z' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M213.05432 4.0971L213.13942 11.7226L213.25317 19.34766L213.36691 26.97314L213.4811 34.59863L213.59485 42.22368L213.73682 49.82095L213.87921 57.446L214.02162 65.04283L214.19225 72.63966L214.36287 80.26515L214.5335 87.86198L214.70454 95.4306L214.90338 103.02744L215.10266 110.62427L210.09512 107.9781L205.08716 105.33192L200.05139 102.65755L195.01521 99.98315L189.95036 97.30832L184.88596 94.63393L179.7929 91.9309L174.72847 89.22784L169.60675 86.5248L164.51369 83.82175L159.39241 81.09048L154.24246 78.35878L149.09253 75.62752L143.94258 72.8676L145.13737 69.9084L146.33261 66.9492L147.5274 63.99L148.72263 61.03125L149.94608 58.0434L151.16953 55.08464L152.42119 52.09679L153.64464 49.10938L154.89673 46.12195L156.14883 43.13454L157.42915 40.14668L158.70947 37.15927L159.9898 34.17184L161.27013 31.15578L165.05421 29.27806L168.81009 27.39992L172.56595 25.49355L176.29317 23.58717L180.02039 21.6808L183.7476 19.7462L187.4466 17.81161L191.14558 15.87659L194.81593 13.94199L198.48627 11.97874L202.15662 10.0155L205.79874 8.05226L209.44043 6.089L213.05432 4.0971Z' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M215.10266 110.62427L199.6815 109.4577L184.28856 108.40488L168.95248 107.49446L153.61641 106.72644L138.33722 106.10039L123.05801 105.58809L107.8357 105.24684L92.64203 105.0189L77.44836 104.9338L62.31157 104.96204L47.203 105.1613L32.12308 105.47433L17.07181 105.92976L2.04877 106.52716L7.0563 104.10849L12.06384 101.66159L17.04315 99.18604L22.02248 96.71092L27.00179 94.23538L31.98067 91.73161L36.93178 89.22784L41.88243 86.69542L46.8331 84.163L51.7842 81.60236L56.7062 79.01306L61.62865 76.45241L66.55109 73.8349L71.44487 71.2456L76.4242 70.47758L81.43173 69.82288L86.46793 69.33923L91.56099 68.96933L96.65405 68.74184L101.77534 68.6563L106.95393 68.71318L112.1321 68.91246L117.36755 69.22548L122.63124 69.68091L127.89494 70.2783L133.21593 70.98946L138.56471 71.87164L143.94258 72.8676L149.06387 75.65575L154.1856 78.41566L159.30687 81.17558L164.42859 83.9355L169.52122 86.6672L174.61429 89.37024L179.70735 92.07286L184.80043 94.7759L189.86526 97.45073L194.92967 100.12512L199.96587 102.77129L205.03029 105.38881L210.06647 108.00676L215.10266 110.62427Z' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M2.04877 106.52716V99.01541V91.50412L1.9919 83.96416L1.93459 76.39554L1.84949 68.82736L1.73575 61.23009L1.59334 53.63326L1.45094 46.03642L1.25209 38.38272L1.05281 30.75723L.82532 23.0753L.56917 15.39294L.31302 7.71057L0 0L2.44688 1.25209L4.89378 2.50375L7.36932 3.78409L9.84444 5.0644L12.34865 6.37338L14.85242 7.68236L17.35619 9.01955L19.85995 10.35675L22.39238 11.7226L24.9248 13.08844L27.48544 14.48251L30.04608 15.87659L32.60672 17.29932L35.19603 18.72203L37.92729 22.563L40.65898 26.40396L43.36203 30.2167L46.03642 34.02945L48.6826 37.81354L51.30011 41.59807L53.91806 45.3535L56.4787 49.10938L59.03935 52.83658L61.57178 56.53558L64.07555 60.23457L66.55109 63.93314L69.0262 67.57526L71.44487 71.2456L66.43733 73.66428L61.40115 76.11118L56.42183 78.55806L51.41429 81.03362L46.43498 83.53738L41.45566 86.0125L36.505 88.54492L31.5539 91.07733L26.60324 93.60933L21.6808 96.17041L16.75879 98.73105L11.83635 101.32034L6.94255 103.90921L2.04877 106.52716Z' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M35.19603 18.72203L44.21558 19.7462L53.23514 20.77037L62.22604 21.7381L71.2456 22.7054L80.26515 23.6727L89.25606 24.58311L98.27562 25.49355L107.26695 26.37575L116.28651 27.2293L125.27742 28.05418L134.26833 28.85129L143.28789 29.64796L152.27922 30.41599L161.27013 31.15578L159.9898 34.1432L158.7377 37.1024L157.48604 40.08981L156.23393 43.04901L154.98227 46.03642L153.73016 49.02428L152.50671 51.98303L151.25461 54.97089L150.03117 57.9583L148.80772 60.94572L147.58427 63.93314L146.36082 66.89233L145.13737 69.87975L143.94258 72.8676L138.76399 72.89581H133.61404H128.4359L123.2573 72.83894L118.0787 72.78207L112.90054 72.69655L107.72195 72.61145L102.5438 72.46904L97.3652 72.32707L92.18704 72.15602L87.00844 71.95718L81.83029 71.72925L76.65169 71.50175L71.44487 71.2456L68.82736 67.48973L66.20941 63.7343L63.62012 59.97842L61.0026 56.22255L58.4133 52.46669L55.82443 48.71124L53.20648 44.95538L50.64584 41.19951L48.05655 37.44363L45.46768 33.71643L42.9066 29.96056L40.31775 26.20512L37.75667 22.47746L35.19603 18.72203Z' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='rob'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='1.6'>
+<path d='M213.05432 4.0971L209.32668 6.00348L205.62811 7.90985L201.92912 9.81622L198.2019 11.7226L194.5029 13.65718L190.80391 15.59221L187.10535 17.52681L183.40636 19.46184L179.70735 21.39642L176.00879 23.33145L172.33846 25.2947L168.63947 27.2293L164.94046 29.19254L161.27013 31.15578' fill='none'/>
+</g>
+</g>
+<g fill='#000' stroke='#000'>
+<g fill='#000' stroke='#000'>
+</g>
+<g transform='translate(212.50581,-12.85863)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.551688,38.659288)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-71.551688' y='38.659288' xlink:href='#c15-07-q6-skok-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#000' stroke='#000'>
+<g fill='#000' stroke='#000'>
+</g>
+<g transform='translate(166.98125,34.08865)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.551688,38.659288)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-71.551688' y='38.659288' xlink:href='#c15-07-q6-skok-g4-54'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='e1'>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(86.81523,12.78886)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.551688,38.659288)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-71.551688' y='38.659288' xlink:href='#c15-07-q6-skok-g2-101'/>
+<use x='-67.267431' y='39.655537' xlink:href='#c15-07-q6-skok-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='e2'>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(184.9771,47.64365)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.551688,38.659288)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-71.551688' y='38.659288' xlink:href='#c15-07-q6-skok-g2-101'/>
+<use x='-67.267431' y='39.655537' xlink:href='#c15-07-q6-skok-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='skok'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.6'>
+<path d='M256.07469 45.52455H365.53348' fill='none'/>
+<g transform='translate(363.05702,45.52455)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(373.51865,44.344)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.551688,38.659288)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-71.551688' y='38.659288' xlink:href='#c15-07-q6-skok-g5-17'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M264.6106 42.67911V48.36957' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M355.65929 42.67911V48.36957' fill='none'/>
+</g>
+</g>
+<g transform='translate(258.70091,33.24614)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.551688,38.659288)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-71.551688' y='38.659288' xlink:href='#c15-07-q6-skok-g0-0'/>
+<use x='-64.38417' y='38.659288' xlink:href='#c15-07-q6-skok-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(353.3468,33.24614)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.551688,38.659288)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-71.551688' y='38.659288' xlink:href='#c15-07-q6-skok-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M264.6106 45.52455L269.16313 37.47229L273.71524 30.27357L278.26779 23.92885L282.82033 18.40901L287.37288 13.77094L291.92499 9.95863L296.47752 6.97078L301.03008 4.86555L305.58261 3.58524L310.13472 3.15804L314.68727 3.58524L319.2398 4.86555L323.79236 6.97078L328.34447 9.95863L332.897 13.77094L337.44955 18.40901L342.00209 23.92885L346.5542 30.27357L351.10675 37.47229L355.65929 45.52455' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(334.25371,6.33081)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.551688,38.659288)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-71.551688' y='38.659288' xlink:href='#c15-07-q6-skok-g4-1'/>
+<use x='-63.872204' y='39.655537' xlink:href='#c15-07-q6-skok-g1-120'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M264.6106 45.52455L269.16313 38.24031L273.71524 31.6963L278.26779 25.94897L282.82033 20.96965L287.37288 16.73013L291.92499 13.2873L296.47752 10.6129L301.03008 8.67787L305.58261 7.53995L310.13472 7.14183L314.68727 7.53995L319.2398 8.67787L323.79236 10.6129L328.34447 13.2873L332.897 16.73013L337.44955 20.96965L342.00209 25.94897L346.5542 31.6963L351.10675 38.24031L355.65929 45.52455' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(334.25371,15.76265)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.551688,38.659288)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-71.551688' y='38.659288' xlink:href='#c15-07-q6-skok-g4-1'/>
+<use x='-63.872204' y='39.655537' xlink:href='#c15-07-q6-skok-g1-121'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(244.31433,61.36574)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.551688,38.659288)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-71.551688' y='38.659288' xlink:href='#c15-07-q6-skok-g4-1'/>
+<use x='-60.80041' y='38.659288' xlink:href='#c15-07-q6-skok-g4-91'/>
+<use x='-58.240582' y='38.659288' xlink:href='#c15-07-q6-skok-g2-22'/>
+<use x='-52.68851' y='38.659288' xlink:href='#c15-07-q6-skok-g4-109'/>
+<use x='-45.009026' y='38.659288' xlink:href='#c15-07-q6-skok-g4-93'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='vrh'>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M311.97334 3.15804C311.97334 4.17348 311.15016 4.99666 310.13472 4.99666S308.2961 4.17348 308.2961 3.15804S309.11928 1.31941 310.13472 1.31941S311.97334 2.1426 311.97334 3.15804ZM310.13472 3.15804' stroke='none'/>
+</g>
+<g transform='translate(310.13472,3.15804)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.551688,38.659288)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(298.31535,-8.29506)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.551688,38.659288)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-71.551688' y='38.659288' xlink:href='#c15-07-q6-skok-g0-0'/>
+<use x='-64.38417' y='38.659288' xlink:href='#c15-07-q6-skok-g4-57'/>
+<use x='-59.776479' y='38.659288' xlink:href='#c15-07-q6-skok-g2-59'/>
+<use x='-57.216651' y='38.659288' xlink:href='#c15-07-q6-skok-g4-57'/>
+<use x='-52.60896' y='38.659288' xlink:href='#c15-07-q6-skok-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M311.97334 7.14183C311.97334 8.15727 311.15016 8.98045 310.13472 8.98045S308.2961 8.15727 308.2961 7.14183S309.11928 5.3032 310.13472 5.3032S311.97334 6.12639 311.97334 7.14183ZM310.13472 7.14183' stroke='none'/>
+</g>
+<g transform='translate(310.13472,7.14183)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.551688,38.659288)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(298.31535,14.77243)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.551688,38.659288)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-71.551688' y='38.659288' xlink:href='#c15-07-q6-skok-g0-0'/>
+<use x='-64.38417' y='38.659288' xlink:href='#c15-07-q6-skok-g4-56'/>
+<use x='-59.776479' y='38.659288' xlink:href='#c15-07-q6-skok-g2-59'/>
+<use x='-57.216651' y='38.659288' xlink:href='#c15-07-q6-skok-g4-57'/>
+<use x='-52.60896' y='38.659288' xlink:href='#c15-07-q6-skok-g4-57'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 15.28</span>: Zaplata iz slike <a class="xref" href="sec-mkk-zaplata.html#fig-mkk-zaplata" data-knowl="fig-mkk-zaplata">15.26</a> z elementi Q6 (oranžno: rob vsakega elementa s svojimi dodatnimi funkcijami, premiki \(40\)-krat povečani) in pravo polje (modro črtkano). Roba sosednjih elementov se ne ujemata. Desno: razlika polj elementov \(e_1\) in \(e_2\) vzdolž roba \(2\)-<span class="nobr">\(6\),</span> \(\Delta_{\mathrm{x}}\) in \(\Delta_{\mathrm{y}}\) v mikrometrih, ki sta \((1 - \eta^2)\)-krat konstanta, s točkama vrha pri <span class="nobr">\(\eta = 0\).</span></figcaption></figure>
+<p>Slika <a class="xref" href="sec-mkk-zaplata.html#fig-mkk-q6-skok" data-knowl="fig-mkk-q6-skok">15.28</a> kaže <a data-del="tocna" class="xref kaz" href="sec-mkk-zaplata.html#fig-mkk-q6-skok" data-knowl="fig-mkk-q6-skok">pravo polje</a> in <a data-del="q6" class="xref kaz" href="sec-mkk-zaplata.html#fig-mkk-q6-skok" data-knowl="fig-mkk-q6-skok">rob vsakega elementa Q6</a>, narisan z njegovimi dodatnimi funkcijami. Elementa <a data-del="e1" class="xref kaz" href="sec-mkk-zaplata.html#fig-mkk-q6-skok" data-knowl="fig-mkk-q6-skok">\(e_1\)</a> in <a data-del="e2" class="xref kaz" href="sec-mkk-zaplata.html#fig-mkk-q6-skok" data-knowl="fig-mkk-q6-skok">\(e_2\)</a> imata skupen <span class="nobr"><a data-del="rob" class="xref kaz" href="sec-mkk-zaplata.html#fig-mkk-q6-skok" data-knowl="fig-mkk-q6-skok">rob \(2\)-\(6\)</a>,</span> a vsak ga dodatno ukrivi po svoje, ker ima vsak svoj <span class="nobr">\(\vek c_2\).</span> Rob ima na obeh straneh iste vozliščne vrednosti, zato je razlika polj samo razlika dodatnih členov, <span class="nobr">\((1 - \eta^2)\,(\vek c_2^{(1)} - \vek c_2^{(2)})\),</span> <a data-del="skok" class="xref kaz" href="sec-mkk-zaplata.html#fig-mkk-q6-skok" data-knowl="fig-mkk-q6-skok">parabola</a> z <a data-del="vrh" class="xref kaz" href="sec-mkk-zaplata.html#fig-mkk-q6-skok" data-knowl="fig-mkk-q6-skok">vrhom</a> \((-9{,}92;\,-8{,}99)\) µm, to je \(13{,}4\) µm, ko je največja komponenta pomika v zaplati \(300\) µm (vozlišče <span class="nobr">\(3\),</span> num-07.out, del 4). Polje skoči čez rob in ni element razreda <a class="xref auto" href="sec-mkk-telo-iz-elementov.html#def-odsekoma-gladko-polje" data-knowl="def-odsekoma-gladko-polje">odsekoma gladkih polj</a>, v katerem velja izrek <a class="xref" href="sec-mkk-telo-iz-elementov.html#thm-sibka-oblika-po-elementih" data-knowl="thm-sibka-oblika-po-elementih">15.15</a>.</p>
+<p>In računalnik pokaže, kaj se zgodi. Pri polju <a class="xref" href="sec-mkk-zaplata.html#eq-zaplata-polje" data-knowl="eq-zaplata-polje">(15.35)</a> da Q6 relativno napako pomikov notranjih vozlišč <span class="nobr">\(0{,}142\),</span> to je 14,2 %, QM6 pa <span class="nobr">\(2{,}3 \cdot 10^{-16}\).</span> Pri posameznih poljih: premika in zasuk Q6 reproducira (napake od \(2 \cdot 10^{-16}\) do <span class="nobr">\(6 \cdot 10^{-16}\)),</span> tri <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">deformacije</a> pa ne: \(\varepsilon_{\mathrm{xx}}\) z napako <span class="nobr">\(0{,}022\),</span> \(\varepsilon_{\mathrm{yy}}\) z \(0{,}271\) in \(\gamma_{\mathrm{xy}}\) z \(0{,}061\) (num-07.out, del 1). Napetost v središču elementa \(e_1\) je \(\sigma_{\mathrm{xx}} = 373\) MPa namesto \(280\) in \(\sigma_{\mathrm{yy}} = 512\) namesto \(280\) MPa, element \(e_3\) ima \(357\) in \(448\) MPa (del 4). Dodatne prostostne stopnje, ki bi morale biti nič, imajo pri \(e_1\) vrednosti do \(142{,}5\) µm. Togo gibanje ne vzbudi dodatnih funkcij, ker ima nič deformacije, in zato je Q6 pri premikih in zasuku natančen.</p>
+<p>Vzrok najdemo z istim računom kot pri izreku o zaplati. Če bi bilo \(\vek u = u_{\mathrm{lin}}\) in \(\vek c = \vek 0\) rešitev, bi moral veljati pogoj \(\partial\Pi/\partial\vek c = \vek 0\) pri stalni napetosti <span class="nobr">\(\sigma^0\):</span> \(\sigma^0 : \int_{\mathrm{e}} \varepsilon(\varphi\,\vek c)\,\mathrm{d}A = 0\) za dodatni funkciji \(\varphi_1 = 1 - \xi^2\) in <span class="nobr">\(\varphi_2 = 1 - \eta^2\).</span> Izračunajmo ta <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integral</a>.</p>
+
+<div class="blk lema" id="lem-integral-nacinov"><div class="blk-head"><span class="blk-label">Lema 15.53</span> <span class="blk-title">Integrali dodatnih funkcij po štirikotniku (integrals of the extra functions over the quadrilateral)</span></div><div class="blk-body"><p>Naj bo štirikotnik z vozlišči <span class="nobr">\(\vek p_{\mathrm{k}} = (x_{\mathrm{k}}, y_{\mathrm{k}})\),</span> <span class="nobr">\(k = 1, \dots, 4\),</span> v ogliščih \((\xi, \eta) = (-1, -1), (1, -1), (1, 1), (-1, 1)\) <a class="xref auto" href="sec-mkk-izoparametricni.html#def-izoparametricni-element" data-knowl="def-izoparametricni-element">izoparametrično</a> preslikan s <span class="nobr">\(J &gt; 0\).</span> Naj bo \(\vek q = \vek p_1 - \vek p_2 + \vek p_3 - \vek p_4 = (q_{\mathrm{x}}, q_{\mathrm{y}})\) in <span class="nobr">\(\varphi_1 = 1 - \xi^2\),</span> <span class="nobr">\(\varphi_2 = 1 - \eta^2\).</span> Tedaj</p>
+<div class="eq" id="eq-mehurcki-integrali">\[\int \frac{\partial\varphi_1}{\partial x}\,\mathrm{d}A = -\tfrac23\,q_{\mathrm{y}} , \quad \int \frac{\partial\varphi_1}{\partial y}\,\mathrm{d}A = \tfrac23\,q_{\mathrm{x}} , \quad \int \frac{\partial\varphi_2}{\partial x}\,\mathrm{d}A = \tfrac23\,q_{\mathrm{y}} , \quad \int \frac{\partial\varphi_2}{\partial y}\,\mathrm{d}A = -\tfrac23\,q_{\mathrm{x}} , \tag{15.39}\]</div>
+<p>in vsi štirje so nič natanko tedaj, ko je <span class="nobr">\(\vek q = \vek 0\),</span> to je <span class="nobr">\(\vek p_2 - \vek p_1 = \vek p_3 - \vek p_4\):</span> štirikotnik je paralelogram.</p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da je \(J\,\varphi_{,\mathrm{x}}\) in \(J\,\varphi_{,\mathrm{y}}\) <a class="xref auto" href="sec-zveznost.html#def-polinom" data-knowl="def-polinom">polinom</a> v \(\xi\) in <span class="nobr">\(\eta\),</span> ga integrirati čez kvadrat in prebrati pogoj.</p>
+<ol>
+<li>Kot v koraku 4 leme <a class="xref" href="sec-mkk-zaplata.html#lem-q4-za-zaplato" data-knowl="lem-q4-za-zaplato">15.48</a> je \(\varphi_{,\mathrm{x}} = (y_\eta\,\varphi_{,\xi} - y_\xi\,\varphi_{,\eta})/J\) in <span class="nobr">\(\varphi_{,\mathrm{y}} = (-x_\eta\,\varphi_{,\xi} + x_\xi\,\varphi_{,\eta})/J\).</span></li>
+<li>Dvolinearna preslikava ima <span class="nobr">\(y_\eta = \tfrac14[-(1 - \xi)y_1 - (1 + \xi)y_2 + (1 + \xi)y_3 + (1 - \xi)y_4]\),</span> kar je <span class="nobr">\(\tfrac14(y_3 + y_4 - y_1 - y_2) + \tfrac14\,\xi\,(y_1 - y_2 + y_3 - y_4)\).</span> Koeficient pri \(\xi\) je <span class="nobr">\(q_{\mathrm{y}}/4\).</span> Enako račun pokaže, da je v \(y_\xi\) koeficient pri \(\eta\) enak <span class="nobr">\(q_{\mathrm{y}}/4\),</span> v \(x_\eta\) koeficient pri \(\xi\) enak \(q_{\mathrm{x}}/4\) in v \(x_\xi\) koeficient pri \(\eta\) enak <span class="nobr">\(q_{\mathrm{x}}/4\).</span></li>
+<li>Za \(\varphi_1\) je \(\varphi_{1,\xi} = -2\xi\) in <span class="nobr">\(\varphi_{1,\eta} = 0\),</span> zato je <span class="nobr">\(J\,\varphi_{1,\mathrm{x}} = -2\xi\,y_\eta\).</span> Po izreku <a class="xref" href="sec-zamenjava-spremenljivk.html#thm-zamenjava-spremenljivk" data-knowl="thm-zamenjava-spremenljivk">4.59</a> je <span class="nobr">\(\int \varphi_{1,\mathrm{x}}\,\mathrm{d}A = \iint_{[-1,1]^2}J\,\varphi_{1,\mathrm{x}}\,\mathrm{d}\xi\,\mathrm{d}\eta\),</span> in po izreku <a class="xref" href="sec-integral-po-telesu.html#thm-fubini" data-knowl="thm-fubini">4.9</a> je to <span class="nobr">\(-2\int_{-1}^{1}\xi\,(c_0 + \tfrac{q_{\mathrm{y}}}{4}\xi)\,\mathrm{d}\xi\cdot 2 = -2\cdot\tfrac{q_{\mathrm{y}}}{4}\cdot\tfrac23\cdot 2 = -\tfrac23 q_{\mathrm{y}}\),</span> ker je \(\int_{-1}^{1}\xi\,\mathrm{d}\xi = 0\) in <span class="nobr">\(\int_{-1}^{1}\xi^2\,\mathrm{d}\xi = \tfrac23\).</span></li>
+<li>Enako: \(J\,\varphi_{1,\mathrm{y}} = 2\xi\,x_\eta\) da <span class="nobr">\(\tfrac23 q_{\mathrm{x}}\),</span> \(J\,\varphi_{2,\mathrm{x}} = 2\eta\,y_\xi\) da \(\tfrac23 q_{\mathrm{y}}\) in \(J\,\varphi_{2,\mathrm{y}} = -2\eta\,x_\xi\) da <span class="nobr">\(-\tfrac23 q_{\mathrm{x}}\).</span></li>
+<li>\(\vek q = \vek 0\) je ekvivalentno <span class="nobr">\(\vek p_2 - \vek p_1 = \vek p_3 - \vek p_4\),</span> kar je pogoj, da je štirikotnik paralelogram.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> Dokaz ni iz vira. COOK (PDF str. 234) pravi, da pogoj velja samodejno za paralelograme in paralelepipede, ker je \(\mat B_{\mathrm{c}}\) tam sestavljen iz prvih potenc \(\xi\) in <span class="nobr">\(\eta\),</span> in da ne velja za splošne oblike. Račun enačb <a class="xref" href="sec-mkk-zaplata.html#eq-mehurcki-integrali" data-knowl="eq-mehurcki-integrali">(15.39)</a> je preverjen na petih elementih zaplate (num-07.out, del 8).</p></div></div>
+<p>Pri elementih zaplate je \(\vek q\) (v mm) <span class="nobr">\((-100, 10)\),</span> <span class="nobr">\((-20, -70)\),</span> <span class="nobr">\((160, 0)\),</span> \((-40, 60)\) in <span class="nobr">\((-60, -10)\),</span> nobeden ni nič, in integrali so na primer pri \(e_1\) \(-6{,}67\) in \(-66{,}7\) mm (num-07.out, del 8). Pri paralelogramu in pravokotniku so nič, in res: na paralelogramski zaplati \(3 \times 2\) <span class="nobr">(\(x = 80 i + 30 j\),</span> \(y = 60 j\) mm) je napaka elementa Q6 <span class="nobr">\(1{,}5 \cdot 10^{-16}\),</span> na pravokotni \(1{,}8 \cdot 10^{-16}\) (del 5 in 6). Pogoj pri elementu QM6 pa je izpolnjen na vsakem štirikotniku, ker sta pri njem \(\mat F_0\) in \(J_0\) stalni in se \(J\) pokrajša, kot pokaže korak 4 naslednjega izreka. Povzemimo to kot izrek.</p>
+
+<div class="blk izrek" id="thm-zaplata-nekompatibilni"><div class="blk-head"><span class="blk-label">Izrek 15.54</span> <span class="blk-title">Zaplata z nekompatibilnimi načini (patch theorem with incompatible modes)</span></div><div class="blk-body"><p>Naj izpolnjuje Q4 del elementov predpostavke 1 do 3 izreka <a class="xref" href="sec-mkk-zaplata.html#thm-preizkus-z-zaplato" data-knowl="thm-preizkus-z-zaplato">15.47</a> in naj bodo vsi elementi zaplate Q6 ali QM6 z <span class="nobr">\(J &gt; 0\).</span></p>
+<ol>
+<li>Če je na vsakem elementu <span class="nobr">\(\int_{\mathrm{e}} \mat B_{\mathrm{c}}\,\mathrm{d}A = \mat 0\),</span> je par <span class="nobr">(\(u_{\mathrm{lin}}\),</span> \(\vek c = \vek 0\) na vseh elementih) rešitev naloge zaplate z eliminacijo <a class="xref" href="sec-mkk-zaplata.html#eq-q6-kondenzacija" data-knowl="eq-q6-kondenzacija">(15.38)</a>, in edina, če je sistem za vozliščne pomike enolično rešljiv.</li>
+<li>Pogoj velja pri QM6 na vsakem štirikotniku s \(J &gt; 0\) in pri Q6 na vsakem paralelogramu.</li>
+<li>Pri Q6 na štirikotniku, ki ni paralelogram, je <span class="nobr">\(\int_{\mathrm{e}} \mat B_{\mathrm{c}}\,\mathrm{d}A \ne \mat 0\),</span> in za splošno stalno napetost \(\sigma^0\) par <span class="nobr">(\(u_{\mathrm{lin}}\),</span> <span class="nobr">\(\vek 0\))</span> ni rešitev.</li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da par <span class="nobr">(\(u_{\mathrm{lin}}\),</span> <span class="nobr">\(\vek 0\))</span> reši diskretne enačbe, če je pogoj izpolnjen, nato pogoj izračunati in nazadnje pokazati, da brez njega par ni rešitev.</p>
+<ol>
+<li>Diskretne enačbe so \(\sum_{\mathrm{e}} \int_{\mathrm{e}} \sigma_{\mathrm{e}} : \varepsilon(w + \varphi\,\vek c_{\mathrm{e}}')\,\mathrm{d}A = 0\) za vsako polje \(w\) iz dela Q4, ki je nič v robnih vozliščih, in vsaka <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vektorja</a> \(\vek c_{\mathrm{e}}'\) elementov. Eliminacija <a class="xref" href="sec-mkk-zaplata.html#eq-q6-kondenzacija" data-knowl="eq-q6-kondenzacija">(15.38)</a> je enaka tem enačbam, saj iz enačb pri \(\vek c_{\mathrm{e}}'\) sledi prva enakost v <a class="xref" href="sec-mkk-zaplata.html#eq-q6-kondenzacija" data-knowl="eq-q6-kondenzacija">(15.38)</a>, in ko jo vstavimo v enačbe pri <span class="nobr">\(w\),</span> dobimo <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matriko</a> \(\mat k_{\mathrm{e}}\) iz druge.</li>
+<li>Pri \(u_{\mathrm{lin}}\) in \(\vek c = \vek 0\) je \(\sigma_{\mathrm{e}} = \sigma^0\) na vsakem elementu (korak 2 izreka <a class="xref" href="sec-mkk-zaplata.html#thm-preizkus-z-zaplato" data-knowl="thm-preizkus-z-zaplato">15.47</a>). Leva stran je vsota <span class="nobr">\(\sum_{\mathrm{e}} \int_{\mathrm{e}} \sigma^0 : \varepsilon(w)\,\mathrm{d}A + \sum_{\mathrm{e}} \sigma^0 : \int_{\mathrm{e}} \varepsilon(\varphi\,\vek c_{\mathrm{e}}')\,\mathrm{d}A\).</span></li>
+<li>Prvi del je \(B(u_{\mathrm{lin}}, w) = 0\) po koraku 3 izreka <a class="xref" href="sec-mkk-zaplata.html#thm-preizkus-z-zaplato" data-knowl="thm-preizkus-z-zaplato">15.47</a>, ker je \(w\) polje Q4. Drugi del je nič po predpostavki <span class="nobr">\(\int_{\mathrm{e}} \mat B_{\mathrm{c}}\,\mathrm{d}A = \mat 0\).</span> Par je torej rešitev, in če je sistem enolično rešljiv, edina. To je točka 1.</li>
+<li>Pri QM6 je <span class="nobr">\(\mat B_{\mathrm{c}} = (J_0/J)\,\mat B_{\mathrm{c}}^0\),</span> kjer je \(\mat B_{\mathrm{c}}^0\) matrika, izračunana z \(\mat F_0\) (<a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">odvodi</a> po \(x\) in \(y\) kot v koraku 1 leme <a class="xref" href="sec-mkk-zaplata.html#lem-integral-nacinov" data-knowl="lem-integral-nacinov">15.53</a>, z \(\mat F_0\) namesto <span class="nobr">\(\mat F\)):</span> njeni elementi so stalni koeficienti, pomnoženi z \(\varphi_{1,\xi} = -2\xi\) ali \(\varphi_{2,\eta} = -2\eta\) ali nič. Po izreku <a class="xref" href="sec-zamenjava-spremenljivk.html#thm-zamenjava-spremenljivk" data-knowl="thm-zamenjava-spremenljivk">4.59</a> je <span class="nobr">\(\int_{\mathrm{e}} \mat B_{\mathrm{c}}\,\mathrm{d}A = \iint_{[-1,1]^2}(J_0/J)\,\mat B_{\mathrm{c}}^0\,J\,\mathrm{d}\xi\,\mathrm{d}\eta = J_0\iint_{[-1,1]^2}\mat B_{\mathrm{c}}^0\,\mathrm{d}\xi\,\mathrm{d}\eta = \mat 0\),</span> ker \(J\) izpade in je <span class="nobr">\(\int_{-1}^{1}\xi\,\mathrm{d}\xi = 0\).</span> Pri Q6 je to lema <a class="xref" href="sec-mkk-zaplata.html#lem-integral-nacinov" data-knowl="lem-integral-nacinov">15.53</a>: vsi štirje <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integrali</a> izginejo natanko pri <span class="nobr">\(\vek q = \vek 0\).</span> To je točka 2.</li>
+<li>Če je pri Q6 <span class="nobr">\(\vek q \ne \vek 0\),</span> je po enačbi <a class="xref" href="sec-mkk-zaplata.html#eq-mehurcki-integrali" data-knowl="eq-mehurcki-integrali">(15.39)</a> npr. <span class="nobr">\(\sigma^0 : \int \varepsilon(\varphi_1\,\vek e_{\mathrm{x}})\,\mathrm{d}A = \sigma^0_{\mathrm{xx}}\int\varphi_{1,\mathrm{x}}\,\mathrm{d}A + \sigma^0_{\mathrm{xy}}\int\varphi_{1,\mathrm{y}}\,\mathrm{d}A = \tfrac23\,(-\sigma^0_{\mathrm{xx}}\,q_{\mathrm{y}} + \sigma^0_{\mathrm{xy}}\,q_{\mathrm{x}})\),</span> kar je pri splošni napetosti različno od nič. Z \(\vek c_{\mathrm{e}}' = \vek e_{\mathrm{x}}\) za ta način enačba iz koraka 1 ni izpolnjena, par <span class="nobr">(\(u_{\mathrm{lin}}\),</span> <span class="nobr">\(\vek 0\))</span> torej ni rešitev. To je točka 3.</li>
+<li>Pravilo <span class="nobr">\(2 \times 2\),</span> s katerim so narejeni računi tega razdelka, da integrale dodatnih <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcij</a> v korakih 3 do 5 točno. Pri Q6 je \(J\,\mat B_{\mathrm{c}}\) <a class="xref auto" href="sec-zveznost.html#def-polinom" data-knowl="def-polinom">polinom</a> stopnje največ \(2\) v vsaki spremenljivki (korak 3 leme <a class="xref" href="sec-mkk-zaplata.html#lem-integral-nacinov" data-knowl="lem-integral-nacinov">15.53</a>), pri QM6 je \(J\,\mat B_{\mathrm{c}} = J_0\,\mat B_{\mathrm{c}}^0\) linearen, pravilo pa je točno do stopnje \(3\) (posledica <a class="xref" href="sec-mkk-gauss.html#cor-gauss-kvadrat-kocka" data-knowl="cor-gauss-kvadrat-kocka">15.42</a>). Del Q4 integrira točno po lemi <a class="xref" href="sec-mkk-zaplata.html#lem-q4-za-zaplato" data-knowl="lem-q4-za-zaplato">15.48</a>, korak 4. Točke 1 do 3 zato veljajo tudi pri tej integraciji.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> COOK razdelek 6.6 (PDF str. 234): Q6 ne predstavi stalne deformacije, če ni pravokotnik (po lemi velja za vse paralelograme), popravek QM6 pa izpolni pogoj, da obremenitve, ki pripadajo notranjim prostostnim stopnjam, izginejo pri stalni napetosti. Dokaz v korakih je naš in ne dokaže, da QM6 konvergira: COOK (PDF str. 234) to trdi, mi ne dokažemo.</p></div></div>
+<p>Izrek povzema primer: Q6 odpove tam, kjer pogoj ne drži, to je na popačenih štirikotnikih zaplate, QM6 pa opravi. QM6 ostane nekompatibilen. Razlika polj sosednjih elementov na skupnem robu je še vedno \((1 - \eta^2)\,(\vek c_2^{(1)} - \vek c_2^{(2)})\) in je pri splošni nalogi različna od nič. Preizkus ga ne zazna, ker je v zaplati <span class="nobr">\(\vek c = \vek 0\).</span> Zakaj kljub temu konvergenca drži, v tej knjigi ni dokazano, COOK (PDF str. 234) trdi, da QM6 preizkus opravi in zato <a class="xref auto" href="sec-zaporedja.html#def-limita-zaporedja" data-knowl="def-limita-zaporedja">konvergira</a>.</p>
+<p>Preizkus z zaplato torej loči štirikotnike, ki jih smemo uporabljati, od tistih, ki jih ne: Q4 (z \(2 \times 2\) točkami) in QM6 sta ga opravila, Q6 ni. Ne pove pa, kako dobro element deluje v drugih nalogah (COOK, PDF str. 254): Q4 ga opravi, a je pri upogibu \(0{,}292\) pravega. COOK (PDF str. 254) omenja še šibki preizkus: element, ki ga opravi le na oblikah, ki nastanejo z vedno ponavljanim drobljenjem (paralelogrami, \(J\) skoraj stalen), lahko še vedno konvergira, ker drobljenje vsak štirikotnik vse bolj približa paralelogramu. Q6 bi tak preizkus opravil. Pri končnem številu elementov pa je napaka Q6 na popačenih mrežah vseeno velika, kot kaže slika <a class="xref" href="sec-mkk-zaplata.html#fig-mkk-q6-skok" data-knowl="fig-mkk-q6-skok">15.28</a>.</p>
+<p>Povzemimo razdelek. Preizkus z zaplato je naloga z nekaj elementi in <a class="xref auto" href="sec-mkk-izoparametricni.html#lem-linearna-polja-izoparametricni" data-knowl="lem-linearna-polja-izoparametricni">linearnim poljem</a>, predpisanim na robu: rešitev mora biti to polje. Izrek <a class="xref" href="sec-mkk-zaplata.html#thm-preizkus-z-zaplato" data-knowl="thm-preizkus-z-zaplato">15.47</a> dokaže, da jo opravi vsaka skladna družina elementov, ki vsebuje linearna polja, ne glede na obliko elementov (lema <a class="xref" href="sec-mkk-zaplata.html#lem-q4-za-zaplato" data-knowl="lem-q4-za-zaplato">15.48</a> za Q4). Q4 je pretog v upogibu zaradi parazitnega striga in odsotne prečne kontrakcije (lema <a class="xref" href="sec-mkk-zaplata.html#lem-q4-upogib" data-knowl="lem-q4-upogib">15.49</a>, razmerje energij \(1{,}48\) do <span class="nobr">\(10{,}7\)).</span> Dodatni funkciji elementa Q6 upogib omogočita (lema <a class="xref" href="sec-mkk-zaplata.html#lem-q6-upogib" data-knowl="lem-q6-upogib">15.52</a>), a razbijeta skladnost in zaplato pri popačenih štirikotnikih (lema <a class="xref" href="sec-mkk-zaplata.html#lem-integral-nacinov" data-knowl="lem-integral-nacinov">15.53</a>, napaka <span class="nobr">\(0{,}142\)),</span> pogoj \(\int\mat B_{\mathrm{c}}\,\mathrm{d}A = \mat 0\) pa izpolni QM6 (izrek <a class="xref" href="sec-mkk-zaplata.html#thm-zaplata-nekompatibilni" data-knowl="thm-zaplata-nekompatibilni">15.54</a>), ki da na konzoli \(0{,}998\) pravega poves pri \(60\) neznankah.</p>
+
+</main>
+<footer><nav class="pager"><a href="sec-mkk-gauss.html" rel="prev">← 15.6</a><a href="index.html">Kazalo</a><a href="sec-mkk-zaklepanje.html" rel="next">15.8 →</a></nav></footer>
+</body>
+</html>

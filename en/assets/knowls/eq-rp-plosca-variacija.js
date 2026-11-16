@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rp-plosca-variacija"] = {"html": "<div class=\"eq\">\\[D\\,\\nabla^4 w = q \\quad \\text{on } R , \\tag{18.27}\\]</div>", "href": "sec-robni-pogoji-plosce.html#eq-rp-plosca-variacija"};

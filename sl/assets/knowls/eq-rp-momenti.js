@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rp-momenti"] = {"html": "<div class=\"eq\">\\[M_{\\mathrm{x}} = D\\,(w_{\\mathrm{xx}} + \\nu\\,w_{\\mathrm{yy}}) , \\qquad M_{\\mathrm{y}} = D\\,(w_{\\mathrm{yy}} + \\nu\\,w_{\\mathrm{xx}}) , \\qquad M_{\\mathrm{xy}} = D\\,(1 - \\nu)\\,w_{\\mathrm{xy}} , \\tag{18.20}\\]</div>", "href": "sec-robni-pogoji-plosce.html#eq-rp-momenti"};

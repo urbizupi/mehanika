@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kkt-poves-ploscine"] = {"html": "<div class=\"eq\">\\[L_{\\mathrm{k}} - \\mu\\,\\frac{c_{\\mathrm{k}}}{A_{\\mathrm{k}}^2} = 0 \\quad (k = AC, BC) , \\qquad\\text{so}\\qquad A_{\\mathrm{k}} = \\sqrt{\\mu\\,c_{\\mathrm{k}}/L_{\\mathrm{k}}} . \\tag{29.22}\\]</div>", "href": "sec-kkt.html#eq-kkt-poves-ploscine"};

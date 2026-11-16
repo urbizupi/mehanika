@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-deformacije-plosce"] = {"html": "<div class=\"eq\">\\[\\varepsilon_{\\mathrm{xx}} = -z\\,w_{\\mathrm{xx}} , \\qquad \\varepsilon_{\\mathrm{yy}} = -z\\,w_{\\mathrm{yy}} , \\qquad \\varepsilon_{\\mathrm{xy}} = -z\\,w_{\\mathrm{xy}} . \\tag{18.3}\\]</div>", "href": "sec-kirchhoffova-plosca.html#eq-deformacije-plosce"};

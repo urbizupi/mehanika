@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-c20-prisiljeni-dusen"] = {"html": "<div class=\"eq\">\\[-\\rho A\\,\\Omega^2\\,W + EI\\,(1 + \\mathrm{i}\\,\\Omega\\,\\tau_\\varepsilon)\\,W'''' + \\mathrm{i}\\,\\Omega\\,c_{\\mathrm{z}}\\,W = Q . \\tag{20.49}\\]</div>", "href": "sec-dusenje-zveznih.html#eq-c20-prisiljeni-dusen"};

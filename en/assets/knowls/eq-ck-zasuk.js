@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ck-zasuk"] = {"html": "<div class=\"eq\">\\[\\vek d' = \\cos 120^\\circ\\,\\vek\\varphi_{\\mathrm{a}} + \\sin 120^\\circ\\,\\vek\\varphi_{\\mathrm{b}} = -\\tfrac{1}{2}\\,\\vek\\varphi_{\\mathrm{a}} + \\tfrac{\\sqrt 3}{2}\\,\\vek\\varphi_{\\mathrm{b}} , \\tag{19.20}\\]</div>", "href": "sec-ciklicno-nihanje.html#eq-ck-zasuk"};

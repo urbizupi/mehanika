@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ocena-podajnosti"] = {"html": "<div class=\"eq\">\\[C(A) \\ge \\frac{S^2}{E\\,V} , \\tag{29.50}\\]</div>", "href": "sec-najtogja-palica.html#eq-ocena-podajnosti"};

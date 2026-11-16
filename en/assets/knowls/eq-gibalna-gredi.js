@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-gibalna-gredi"] = {"html": "<div class=\"eq\">\\[\\varphi_{\\mathrm{tt}} = c_{\\mathrm{T}}^2\\,\\varphi_{\\mathrm{xx}} , \\qquad c_{\\mathrm{T}} = \\sqrt{\\frac{G}{\\rho}} . \\tag{13.15}\\]</div>", "href": "sec-palica-gred.html#eq-gibalna-gredi"};

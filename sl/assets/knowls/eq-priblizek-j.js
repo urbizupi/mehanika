@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-priblizek-j"] = {"html": "<div class=\"eq\">\\[\\delta_{\\mathrm{j}}(\\vek u) = \\vek e_{\\mathrm{j}}\\cdot\\vek u - \\frac{P_{\\mathrm{d}}}{2} , \\tag{25.38}\\]</div>", "href": "sec-togost-lezaja.html#eq-priblizek-j"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-tvm-cev-sigma"] = {"html": "<div class=\"eq\">\\[\\sigma_{\\mathrm{rr}} = 2(\\lambda + \\mu)\\,\\alpha - \\frac{2\\mu\\,\\beta}{r^2} . \\tag{17.2}\\]</div>", "href": "sec-telo-v-model.html#eq-tvm-cev-sigma"};

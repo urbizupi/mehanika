@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-izl-transformacija"] = {"html": "<div class=\"eq\">\\[\\vek d = \\mat T\\,\\vek d_{\\mathrm{m}} + \\vek d_0 , \\tag{19.6}\\]</div>", "href": "sec-izlocanje-vezi.html#eq-izl-transformacija"};

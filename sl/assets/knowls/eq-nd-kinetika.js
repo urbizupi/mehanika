@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nd-kinetika"] = {"html": "<div class=\"eq\">\\[T_2 = \\tfrac12 m(\\dot\\xi^2 + \\dot\\eta^2) , \\quad T_1 = m\\Omega(\\xi\\dot\\eta - \\eta\\dot\\xi) , \\quad T_0 = \\tfrac12 m\\Omega^2(\\xi^2 + \\eta^2) , \\tag{24.38}\\]</div>", "href": "sec-notranje-dusenje.html#eq-nd-kinetika"};

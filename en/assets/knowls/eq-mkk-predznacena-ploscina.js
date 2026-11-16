@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mkk-predznacena-ploscina"] = {"html": "<div class=\"eq\">\\[\\Delta(P_1, P_2, P_3) = \\tfrac12\\,(u_{\\mathrm{x}} v_{\\mathrm{y}} - v_{\\mathrm{x}} u_{\\mathrm{y}}) = \\tfrac12\\,\\big(x_1 y_2 - x_2 y_1 + x_2 y_3 - x_3 y_2 + x_3 y_1 - x_1 y_3\\big) . \\tag{15.2}\\]</div>", "href": "sec-mkk-trikotnik.html#eq-mkk-predznacena-ploscina"};

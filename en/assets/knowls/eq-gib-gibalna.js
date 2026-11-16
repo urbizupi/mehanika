@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-gib-gibalna"] = {"html": "<div class=\"eq\">\\[\\mat M(\\vek q)\\,\\ddot{\\vek q} + \\mat C(\\vek q, \\dot{\\vek q})\\,\\dot{\\vek q} + \\vek g(\\vek q) = \\boldsymbol\\tau + \\mat J(\\vek q)^\\T\\vek F , \\tag{27.40}\\]</div>", "href": "sec-gibalne-enacbe-robota.html#eq-gib-gibalna"};

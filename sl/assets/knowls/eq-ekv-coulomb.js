@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ekv-coulomb"] = {"html": "<div class=\"eq\">\\[c_{\\mathrm{eq}} = \\frac{4F_{\\mathrm{t}}}{\\pi\\,\\Omega\\,X} , \\qquad \\zeta_{\\mathrm{eq}} = \\frac{2F_{\\mathrm{t}}}{\\pi\\,k\\,X}\\,\\frac{\\omega_{\\mathrm{n}}}{\\Omega} . \\tag{20.6}\\]</div>", "href": "sec-ekvivalentno-viskozno.html#eq-ekv-coulomb"};

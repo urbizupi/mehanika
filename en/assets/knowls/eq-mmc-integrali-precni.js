@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mmc-integrali-precni"] = {"html": "<div class=\"eq\">\\[\\vek b = \\int_0^L \\mu\\,x\\,\\vek\\psi\\,\\mathrm{d}x , \\qquad \\mat M_{\\mathrm{dd}} = \\int_0^L \\mu\\,\\vek\\psi\\vek\\psi^\\T\\,\\mathrm{d}x . \\tag{28.19}\\]</div>", "href": "sec-masna-matrika-clena.html#eq-mmc-integrali-precni"};

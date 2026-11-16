@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-obc-ocena"] = {"html": "<div class=\"eq\">\\[\\big|\\tilde D_{\\mathrm{h}} - \\varphi'(0)\\big| \\le \\tfrac12\\,M\\,h + \\frac{2\\,\\delta}{h} . \\tag{29.36}\\]</div>", "href": "sec-obcutljivost.html#eq-obc-ocena"};

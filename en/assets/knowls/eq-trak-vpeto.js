@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-trak-vpeto"] = {"html": "<div class=\"eq\">\\[w(x) = \\frac{q}{24\\,D}\\,x^2\\,(L - x)^2 , \\tag{18.31}\\]</div>", "href": "sec-plosca-trak.html#eq-trak-vpeto"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-izguba-v-periodi"] = {"html": "<div class=\"eq\">\\[W_{\\mathrm{izg}} = -\\int_0^T f(t)\\,\\dot q(t)\\,\\mathrm{d}t , \\tag{20.1}\\]</div>", "href": "sec-izgube-energije.html#eq-izguba-v-periodi"};

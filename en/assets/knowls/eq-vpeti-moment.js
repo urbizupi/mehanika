@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vpeti-moment"] = {"html": "<div class=\"eq\">\\[M(0) = \\frac{p}{2\\beta^2}\\Big(1 - \\frac{\\nu}{2}\\Big) , \\qquad Q(0) = \\frac{p}{\\beta}\\Big(1 - \\frac{\\nu}{2}\\Big) . \\tag{22.46}\\]</div>", "href": "sec-upogib-valja.html#eq-vpeti-moment"};

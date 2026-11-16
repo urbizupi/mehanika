@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-meje-mase"] = {"html": "<div class=\"eq\">\\[\\lambda_{\\mathrm{m}}\\,|\\vek z|^2 \\le \\vek z^\\T\\mat M(\\vek q)\\,\\vek z \\le \\lambda_{\\mathrm{M}}\\,|\\vek z|^2 . \\tag{27.45}\\]</div>", "href": "sec-lastnosti-gibalnih-enacb.html#eq-meje-mase"};

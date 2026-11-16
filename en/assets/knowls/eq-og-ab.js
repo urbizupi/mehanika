@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-og-ab"] = {"html": "<div class=\"eq\">\\[\\mathcal A\\,\\vek z = \\begin{pmatrix} \\mu\\,p \\\\ \\mathcal K\\,w \\end{pmatrix} , \\qquad \\mathcal B\\,\\vek z = \\begin{pmatrix} \\mathcal G\\,p + \\mathcal K\\,w \\\\ -\\mathcal K\\,p \\end{pmatrix} , \\tag{26.32}\\]</div>", "href": "sec-ortogonalnost-gibajoce.html#eq-og-ab"};

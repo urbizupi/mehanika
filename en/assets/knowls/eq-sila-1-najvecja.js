@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sila-1-najvecja"] = {"html": "<div class=\"eq\">\\[\\max_\\theta |\\vek F_1| = F_0\\,\\max\\big(|1 - p|,\\ |p|\\big) . \\tag{23.32}\\]</div>", "href": "sec-uravnotezenje-enovaljnega.html#eq-sila-1-najvecja"};

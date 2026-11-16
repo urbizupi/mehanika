@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-hist-enacba"] = {"html": "<div class=\"eq\">\\[m\\ddot q + \\frac{\\gamma k}{\\Omega}\\,\\dot q + k q = Q_0\\cos\\Omega t . \\tag{20.10}\\]</div>", "href": "sec-histerezno-dusenje.html#eq-hist-enacba"};

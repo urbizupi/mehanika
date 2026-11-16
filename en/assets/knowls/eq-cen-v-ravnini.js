@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-cen-v-ravnini"] = {"html": "<div class=\"eq\">\\[\\mat M_{\\mathrm{dd}}\\,\\ddot{\\vek q}_{\\mathrm{d}} + \\big(\\mat K_{\\mathrm{dd}} + \\Omega^2\\,(\\mat G - \\mat M_{\\mathrm{dd}})\\big)\\,\\vek q_{\\mathrm{d}} = \\vek 0 , \\tag{28.42}\\]</div>", "href": "sec-centrifugalna-ojacitev.html#eq-cen-v-ravnini"};

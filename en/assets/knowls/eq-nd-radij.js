@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nd-radij"] = {"html": "<div class=\"eq\">\\[\\rho(\\mat A)^2 = \\det\\mat A = 1 - \\frac{(\\gamma - \\frac12)\\,\\Omega^2}{1 + \\beta\\,\\Omega^2} . \\tag{17.37}\\]</div>", "href": "sec-nelinearna-dinamika.html#eq-nd-radij"};

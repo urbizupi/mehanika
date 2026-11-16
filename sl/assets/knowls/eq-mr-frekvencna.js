@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mr-frekvencna"] = {"html": "<div class=\"eq\">\\[J_{\\mathrm{h}} + J_{\\mathrm{link}} = \\sum_{\\mathrm{r}=1}^{m}\\frac{b_{\\mathrm{r}}^2\\,\\lambda}{\\lambda - \\omega_{\\mathrm{r}}'^2} . \\tag{28.49}\\]</div>", "href": "sec-modalna-redukcija-clena.html#eq-mr-frekvencna"};

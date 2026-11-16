@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nosilec-na-podlagi"] = {"html": "<div class=\"eq\">\\[EI\\,v'''' + k\\,v = q \\quad \\text{na } (a, b) . \\tag{25.3}\\]</div>", "href": "sec-elasticna-podlaga.html#eq-nosilec-na-podlagi"};

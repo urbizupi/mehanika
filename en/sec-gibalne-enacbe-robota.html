@@ -1,0 +1,1456 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>27.8 Equations of motion of a robot · Chapter 27</title>
+<script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/style.css">
+<noscript><style>#loadbar { display: none; }</style></noscript>
+<script src="assets/config.js"></script>
+<script src="assets/load.js"></script>
+<script defer src="assets/interaktivno.js"></script>
+<script defer src="assets/book.js"></script>
+<script defer src="assets/predavanje.js"></script>
+<script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<div id="loadbar" aria-hidden="true"></div>
+<header class="top"><a class="home" href="index.html">Mechanics</a><nav class="pager"><a href="sec-singularnosti-statika.html" rel="prev">← 27.7</a><a href="index.html">Contents</a><a href="sec-lastnosti-gibalnih-enacb.html" rel="next">27.9 →</a></nav>
+<span class="tools"><a class="lang" href="../sl/sec-gibalne-enacbe-robota.html" hreflang="sl">Slovenščina</a><button type="button" class="theme-toggle" title="Light or dark theme" aria-label="Light or dark theme"></button><button type="button" data-details="open">Expand all</button><button type="button" data-details="close">Collapse all</button><button type="button" class="fig-side-toggle" aria-pressed="false">Figures alongside</button></span></header>
+<main>
+<p class="updated">Last updated 16 November 2026, 10:52</p>
+<p class="crumb"><a href="ch-roboti.html"><span class="h-num">Chapter 27</span> Robot kinematics and dynamics</a></p>
+<h2 id="sec-gibalne-enacbe-robota"><span class="h-num">27.8</span> Equations of motion of a robot</h2>
+<p>Until now the arm was at rest or we prescribed its velocities. Section <a class="xref" href="sec-jacobijeva-matrika-robota.html">27.6</a> connected the joint velocities with the velocity of the tip, and section <a class="xref" href="sec-singularnosti-statika.html">27.7</a> connected the motor torques with the load when the arm is at rest: \(\boldsymbol\tau = \vek g(\vek q) - \mat J^\T\vek F\) (theorem <a class="xref" href="sec-singularnosti-statika.html#thm-sile-v-zglobih" data-knowl="thm-sile-v-zglobih">27.50</a>). In motion something else happens. Arm A of section <a class="xref" href="sec-robotske-verige.html">27.1</a> holds the configuration \(\vek q = (30^\circ, 60^\circ)\) without a load with the torques \((84{,}957,\ 0)\) N m. If the first link turns with angular acceleration \(2\) rad/s\(^2\) and <a class="xref auto" href="sec-kineticna-energija.html#def-kotna-hitrost" data-knowl="def-kotna-hitrost">angular velocity</a> \(1\) rad/s, and the second with \(0{,}5\) rad/s and acceleration \(-1\) rad/s<span class="nobr">\(^2\),</span> the motor of the first joint needs \(102{,}562\) N m and the motor of the second \(2{,}749\) N m, which is more than for holding. What torques do the motors need for a prescribed motion <span class="nobr">\(\vek q(t)\),</span> and conversely, how does the arm move if we prescribe the torques of the motors? We call this inverse and direct dynamics (obratna in neposredna dinamika). In the inverse problem we compute the torques from the motion, in the direct problem the motion from the torques.</p>
+<p>The idea is not new. The <a class="xref auto" href="sec-robotske-verige.html#def-spremenljivke-zglobov" data-knowl="def-spremenljivke-zglobov">joint variables</a> are generalized <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">coordinates</a> of the chain (lemma <a class="xref" href="sec-robotske-verige.html#lem-zglobi-so-koordinate" data-knowl="lem-zglobi-so-koordinate">27.4</a>), the links are rigid bodies (definition <a class="xref" href="sec-deformacija-v-tocki.html#def-togo-telo" data-knowl="def-togo-telo">1.11</a>) and the joints are ideal constraints (definition <a class="xref" href="sec-virtualno-delo-sistemov.html#def-idealna-vez" data-knowl="def-idealna-vez">8.2</a>), so the arm is a system of chapter <a class="xref" href="ch-analiticna-dinamika.html">8</a>. <a class="xref auto" href="sec-lagrangeeve-enacbe.html#thm-lagrangeeve-enacbe" data-knowl="thm-lagrangeeve-enacbe">Lagrange's equations</a> hold for it (theorem <a class="xref" href="sec-lagrangeeve-enacbe.html#thm-lagrange-konservativne" data-knowl="thm-lagrange-konservativne">8.90</a>), and they need the kinetic energy \(T\) and the potential energy \(V\) as <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> of \(\vek q\) and \(\dot{\vek q}\) and the <a class="xref auto" href="sec-posplosene-sile.html#def-posplosena-sila" data-knowl="def-posplosena-sila">generalized forces</a> of the remaining forces, here of the motors and the load. The work of this section is therefore to write \(T\) and \(V\) with the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> we already have and to carry the differentiation through to the end.</p>
+<p>The model has four idealizations (idealizacije), and a real arm violates each of them.</p>
+<ol>
+<li>The links are rigid (definition <a class="xref" href="sec-deformacija-v-tocki.html#def-togo-telo" data-knowl="def-togo-telo">1.11</a>). Flexible links belong to chapter <a class="xref" href="ch-podajni-cleni.html">28</a>.</li>
+<li>The joints are ideal and each has one degree of freedom, without friction and without play. A real joint has friction, and the equation we shall derive does not contain it.</li>
+<li>A motor gives between links \(i - 1\) and \(i\) a torque (revolute joint) or a force (prismatic joint) <span class="nobr">\(\tau_{\mathrm{i}}\).</span> We do not model the inertia of the motor and of the gearbox. For one link with a gearbox of ratio <span class="nobr">\(r : 1\),</span> <span class="nobr">\(\theta_{\mathrm{m}} = r\theta_\ell\),</span> the motor adds \(r^2 J_{\mathrm{m}}\) to the inertia of the link, with the moment of inertia of the motor \(J_{\mathrm{m}}\) (SPONG, PDF pp. 189-190), so at \(r = 100\) it is \(10^4\,J_{\mathrm{m}}\) and is not small.</li>
+<li>Apart from the load the arm is free: only the weight, which is constant, and the torques of the motors act on the links.</li>
+</ol>
+<p>Arm A has the same links as before: lengths \(l_1 = 1\) m and \(l_2 = 0{,}5\) m, uniform thin rods with masses \(m_1 = 10\) kg and \(m_2 = 5\) kg (the masses are ours, not from the source), <a class="xref auto" href="sec-dalembert.html#def-masa-tezisce" data-knowl="def-masa-tezisce">centres of mass</a> \(G_1\) and \(G_2\) in the middle of the links, so at distances \(l_{\mathrm{c}1} = 0{,}5\) m and \(l_{\mathrm{c}2} = 0{,}25\) m from the joint, and moments of inertia about the centre of mass \(m_{\mathrm{k}}l_{\mathrm{k}}^2/12\) (equation <a class="xref" href="sec-kineticna-energija.html#eq-kin-palica-sredina" data-knowl="eq-kin-palica-sredina">(8.72)</a>), that is \(0{,}8333\) and \(0{,}1042\) kg m<span class="nobr">\(^2\).</span></p>
+
+<h3 id="sec-gib-kineticna"><span class="h-num">27.8.1</span> Kinetic energy of a robot</h3>
+<p>Theorem <a class="xref" href="sec-kineticna-energija.html#thm-kineticna-energija-togega" data-knowl="thm-kineticna-energija-togega">8.82</a> requires the velocity of the <a class="xref auto" href="sec-dalembert.html#def-masa-tezisce" data-knowl="def-masa-tezisce">centre of mass</a> and the <a class="xref auto" href="sec-kineticna-energija.html#def-kotna-hitrost" data-knowl="def-kotna-hitrost">angular velocity</a> of every link. Take arm A in the configuration \((30^\circ, 60^\circ)\) (figure <a class="xref" href="sec-gibalne-enacbe-robota.html#fig-gib-roka-tezisca" data-knowl="fig-gib-roka-tezisca">27.34</a>) and ask how fast the centre of mass of the second link moves.</p>
+
+<figure class="blk slika" id="fig-gib-roka-tezisca"><p><span class="svgfig" role="img" aria-label="Arm A with the centres of mass of the links and the velocities of the centre of mass of the second link due to each joint"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='152.61pt' height='179.20pt' viewBox='-72.000004 -72.000009 113.047123 132.737833'>
+<defs>
+<path id='c27-08-roka-tezisca-g0-106' d='M.826899-4.403487V-3.935243C.996264-3.935243 1.215442-3.935243 1.364882-3.915318C1.58406-3.875467 1.58406-3.745953 1.58406-3.536737V.418431C1.58406 .916563 1.43462 1.633873 .836862 1.633873C.67746 1.633873 .597758 1.613948 .448319 1.574097C.637609 1.43462 .687422 1.225405 .687422 1.075965C.687422 .727273 .428394 .458281 .069738 .458281C-.308842 .458281-.557908 .727273-.557908 1.085928C-.557908 1.653798 .039851 1.992528 .856787 1.992528C1.713574 1.992528 2.660025 1.474471 2.660025 .418431V-4.483188L.826899-4.403487ZM2.660025-6.146949C2.660025-6.575342 2.311333-6.924035 1.882939-6.924035S1.105853-6.575342 1.105853-6.146949S1.454545-5.369863 1.882939-5.369863S2.660025-5.718555 2.660025-6.146949Z'/>
+<path id='c27-08-roka-tezisca-g1-71' d='M7.571606-6.924035C7.571606-6.953923 7.551681-7.023661 7.462017-7.023661C7.43213-7.023661 7.422167-7.013699 7.312578-6.90411L6.615193-6.136986C6.525529-6.276463 6.067248-7.023661 4.961395-7.023661C2.739726-7.023661 .498132-4.821918 .498132-2.510585C.498132-.926526 1.603985 .219178 3.217933 .219178C3.656289 .219178 4.104608 .129514 4.463263-.019925C4.961395-.219178 5.150685-.428394 5.330012-.627646C5.419676-.37858 5.678705-.009963 5.778331-.009963C5.828144-.009963 5.84807-.039851 5.84807-.049813C5.867995-.069738 5.967621-.448319 6.017435-.657534L6.206725-1.424658C6.246575-1.594022 6.296389-1.763387 6.336239-1.932752C6.445828-2.381071 6.455791-2.400996 7.023661-2.410959C7.073474-2.410959 7.183064-2.420922 7.183064-2.610212C7.183064-2.67995 7.13325-2.719801 7.053549-2.719801C6.824408-2.719801 6.236613-2.689913 6.007472-2.689913C5.69863-2.689913 4.921544-2.719801 4.612702-2.719801C4.523039-2.719801 4.403487-2.719801 4.403487-2.520548C4.403487-2.410959 4.483188-2.410959 4.702366-2.410959C4.712329-2.410959 5.001245-2.410959 5.230386-2.391034C5.489415-2.361146 5.539228-2.331258 5.539228-2.201743C5.539228-2.11208 5.429639-1.663761 5.330012-1.295143C5.051059-.199253 3.755915-.089664 3.407223-.089664C2.450809-.089664 1.404732-.657534 1.404732-2.181818C1.404732-2.49066 1.504359-4.134496 2.550436-5.429639C3.088418-6.107098 4.054795-6.714819 5.041096-6.714819C6.057285-6.714819 6.645081-5.947696 6.645081-4.79203C6.645081-4.393524 6.615193-4.383562 6.615193-4.283935S6.724782-4.184309 6.764633-4.184309C6.894147-4.184309 6.894147-4.204234 6.94396-4.383562L7.571606-6.924035Z'/>
+<path id='c27-08-roka-tezisca-g1-113' d='M4.503113-4.293898C4.503113-4.333748 4.473225-4.393524 4.403487-4.393524C4.293898-4.393524 3.895392-3.995019 3.726027-3.706102C3.506849-4.244085 3.118306-4.403487 2.799502-4.403487C1.62391-4.403487 .398506-2.929016 .398506-1.484433C.398506-.508095 .986301 .109589 1.713574 .109589C2.141968 .109589 2.530511-.129514 2.889166-.488169C2.799502-.139477 2.470735 1.205479 2.440847 1.295143C2.361146 1.574097 2.281445 1.613948 1.723537 1.62391C1.594022 1.62391 1.494396 1.62391 1.494396 1.823163C1.494396 1.833126 1.494396 1.932752 1.62391 1.932752C1.942715 1.932752 2.291407 1.902864 2.620174 1.902864C2.958904 1.902864 3.317559 1.932752 3.646326 1.932752C3.696139 1.932752 3.825654 1.932752 3.825654 1.733499C3.825654 1.62391 3.726027 1.62391 3.566625 1.62391C3.088418 1.62391 3.088418 1.554172 3.088418 1.464508C3.088418 1.39477 3.108344 1.334994 3.128269 1.24533L4.503113-4.293898ZM1.743462-.109589C1.145704-.109589 1.105853-.876712 1.105853-1.046077C1.105853-1.524284 1.39477-2.610212 1.564134-3.028643C1.872976-3.765878 2.391034-4.184309 2.799502-4.184309C3.447073-4.184309 3.58655-3.377335 3.58655-3.307597C3.58655-3.247821 3.038605-1.066002 3.008717-1.026152C2.859278-.747198 2.30137-.109589 1.743462-.109589Z'/>
+<path id='c27-08-roka-tezisca-g1-120' d='M3.327522-3.008717C3.387298-3.267746 3.616438-4.184309 4.313823-4.184309C4.363636-4.184309 4.60274-4.184309 4.811955-4.054795C4.533001-4.004981 4.333748-3.755915 4.333748-3.516812C4.333748-3.35741 4.443337-3.16812 4.712329-3.16812C4.931507-3.16812 5.250311-3.347447 5.250311-3.745953C5.250311-4.26401 4.662516-4.403487 4.323786-4.403487C3.745953-4.403487 3.39726-3.875467 3.277709-3.646326C3.028643-4.303861 2.49066-4.403487 2.201743-4.403487C1.165629-4.403487 .597758-3.118306 .597758-2.86924C.597758-2.769614 .697385-2.769614 .71731-2.769614C.797011-2.769614 .826899-2.789539 .846824-2.879203C1.185554-3.935243 1.843088-4.184309 2.181818-4.184309C2.371108-4.184309 2.719801-4.094645 2.719801-3.516812C2.719801-3.20797 2.550436-2.540473 2.181818-1.145704C2.022416-.52802 1.673724-.109589 1.235367-.109589C1.175592-.109589 .946451-.109589 .737235-.239103C.986301-.288917 1.205479-.498132 1.205479-.777086C1.205479-1.046077 .986301-1.125778 .836862-1.125778C.537983-1.125778 .288917-.86675 .288917-.547945C.288917-.089664 .787049 .109589 1.225405 .109589C1.882939 .109589 2.241594-.587796 2.271482-.647572C2.391034-.278954 2.749689 .109589 3.347447 .109589C4.373599 .109589 4.941469-1.175592 4.941469-1.424658C4.941469-1.524284 4.851806-1.524284 4.821918-1.524284C4.732254-1.524284 4.712329-1.484433 4.692403-1.414695C4.363636-.348692 3.686177-.109589 3.367372-.109589C2.978829-.109589 2.819427-.428394 2.819427-.767123C2.819427-.986301 2.879203-1.205479 2.988792-1.643836L3.327522-3.008717Z'/>
+<path id='c27-08-roka-tezisca-g1-121' d='M4.841843-3.795766C4.881694-3.935243 4.881694-3.955168 4.881694-4.024907C4.881694-4.204234 4.742217-4.293898 4.592777-4.293898C4.493151-4.293898 4.333748-4.234122 4.244085-4.084682C4.224159-4.034869 4.144458-3.726027 4.104608-3.5467C4.034869-3.287671 3.965131-3.01868 3.905355-2.749689L3.457036-.956413C3.417186-.806974 2.988792-.109589 2.331258-.109589C1.823163-.109589 1.713574-.547945 1.713574-.916563C1.713574-1.374844 1.882939-1.992528 2.221669-2.86924C2.381071-3.277709 2.420922-3.387298 2.420922-3.58655C2.420922-4.034869 2.102117-4.403487 1.603985-4.403487C.657534-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.836862-3.88543 1.235367-4.184309 1.574097-4.184309C1.653798-4.184309 1.823163-4.184309 1.823163-3.865504C1.823163-3.616438 1.723537-3.35741 1.653798-3.16812C1.255293-2.11208 1.075965-1.544209 1.075965-1.075965C1.075965-.18929 1.703611 .109589 2.291407 .109589C2.67995 .109589 3.01868-.059776 3.297634-.33873C3.16812 .179328 3.048568 .667497 2.650062 1.195517C2.391034 1.534247 2.012453 1.823163 1.554172 1.823163C1.414695 1.823163 .966376 1.793275 .797011 1.404732C.956413 1.404732 1.085928 1.404732 1.225405 1.285181C1.325031 1.195517 1.424658 1.066002 1.424658 .876712C1.424658 .56787 1.155666 .52802 1.05604 .52802C.826899 .52802 .498132 .687422 .498132 1.175592C.498132 1.673724 .936488 2.042341 1.554172 2.042341C2.580324 2.042341 3.606476 1.135741 3.88543 .009963L4.841843-3.795766Z'/>
+<path id='c27-08-roka-tezisca-g2-48' d='M3.598506-2.224658C3.598506-2.991781 3.507846-3.542715 3.187049-4.030884C2.970859-4.351681 2.538481-4.630635 1.980573-4.630635C.36264-4.630635 .36264-2.726775 .36264-2.224658S.36264 .139477 1.980573 .139477S3.598506-1.72254 3.598506-2.224658ZM1.980573-.055791C1.659776-.055791 1.234371-.244085 1.094894-.81594C.99726-1.227397 .99726-1.799253 .99726-2.315318C.99726-2.824408 .99726-3.354421 1.101868-3.737983C1.248319-4.288917 1.694645-4.435367 1.980573-4.435367C2.357161-4.435367 2.719801-4.20523 2.84533-3.800747C2.956912-3.424159 2.963885-2.922042 2.963885-2.315318C2.963885-1.799253 2.963885-1.283188 2.873225-.843836C2.733748-.209215 2.259527-.055791 1.980573-.055791Z'/>
+<path id='c27-08-roka-tezisca-g2-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='c27-08-roka-tezisca-g2-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+</defs>
+<g id='c27-08-roka-tezisca-page1'>
+<g stroke-miterlimit='10' transform='translate(-64.002544,54.525388)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='okvir'>
+<path d='M0 0H41.17236' fill='none'/>
+<g transform='translate(38.6959,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(49.15753,-1.40279)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.002544,54.525388)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-64.002544' y='54.525388' xlink:href='#c27-08-roka-tezisca-g1-120'/>
+<use x='-58.308612' y='56.019769' xlink:href='#c27-08-roka-tezisca-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 0V26.946' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,24.46954)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-4.69447,36.8756)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.002544,54.525388)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-64.002544' y='54.525388' xlink:href='#c27-08-roka-tezisca-g1-121'/>
+<use x='-59.11804' y='56.019769' xlink:href='#c27-08-roka-tezisca-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='clena'>
+<g stroke-width='2.4'>
+<path d='M0 0L73.92043 42.67911' fill='none'/>
+</g>
+<g stroke-width='2.4'>
+<path d='M73.92043 42.67911V85.35823' fill='none'/>
+</g>
+</g>
+<g class='del' data-del='zgloba'>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M2.26294 0C2.26294 1.2498 1.2498 2.26294 0 2.26294S-2.26294 1.2498-2.26294 0S-1.2498-2.26294 0-2.26294S2.26294-1.2498 2.26294 0ZM0 0'/>
+</g>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.002544,54.525388)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M76.18336 42.67911C76.18336 43.92891 75.17023 44.94205 73.92043 44.94205C72.67062 44.94205 71.65749 43.92891 71.65749 42.67911C71.65749 41.4293 72.67062 40.41617 73.92043 40.41617C75.17023 40.41617 76.18336 41.4293 76.18336 42.67911ZM73.92043 42.67911'/>
+</g>
+<g transform='translate(73.92043,42.67911)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.002544,54.525388)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='tezisca'>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M38.79861 21.33955C38.79861 22.355 37.97543 23.17818 36.95999 23.17818S35.12137 22.355 35.12137 21.33955C35.12137 20.32411 35.94455 19.50093 36.95999 19.50093S38.79861 20.32411 38.79861 21.33955ZM36.95999 21.33955' stroke='none'/>
+</g>
+<g transform='translate(36.95999,21.33955)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.002544,54.525388)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(40.42657,10.78351)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.002544,54.525388)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-64.002544' y='54.525388' xlink:href='#c27-08-roka-tezisca-g1-71'/>
+<use x='-56.169427' y='56.019769' xlink:href='#c27-08-roka-tezisca-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M75.75905 64.01866C75.75905 65.0341 74.93587 65.85728 73.92043 65.85728C72.90498 65.85728 72.0818 65.0341 72.0818 64.01866S72.90498 62.18004 73.92043 62.18004C74.93587 62.18004 75.75905 63.00322 75.75905 64.01866ZM73.92043 64.01866' stroke='none'/>
+</g>
+<g transform='translate(73.92043,64.01866)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.002544,54.525388)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(77.98439,52.60909)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.002544,54.525388)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-64.002544' y='54.525388' xlink:href='#c27-08-roka-tezisca-g1-71'/>
+<use x='-56.169427' y='56.019769' xlink:href='#c27-08-roka-tezisca-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='kota'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M73.92043 42.67911L105.21861 60.74643' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M22.76227 0C22.76227 3.99457 21.70987 7.92178 19.71275 11.38113' fill='none'/>
+</g>
+</g>
+<g transform='translate(28.24535,8.2089)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.002544,54.525388)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-64.002544' y='54.525388' xlink:href='#c27-08-roka-tezisca-g1-113'/>
+<use x='-59.555082' y='56.019769' xlink:href='#c27-08-roka-tezisca-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M96.09703 55.48274C91.52347 63.40453 83.06793 68.28639 73.92041 68.28639' fill='none'/>
+</g>
+</g>
+<g transform='translate(91.69528,68.52856)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.002544,54.525388)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-64.002544' y='54.525388' xlink:href='#c27-08-roka-tezisca-g1-113'/>
+<use x='-59.555082' y='56.019769' xlink:href='#c27-08-roka-tezisca-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='polmera'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 0L73.92043 64.01866' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M73.92043 42.67911V64.01866' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='hitrosti'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M73.92043 64.01866L34.00629 110.10608' fill='none'/>
+<g transform='matrix(-0.65465,0.75589,-0.75589,-0.65465,35.71167,108.13696)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(19.57545,118.05542)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.002544,54.525388)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-64.002544' y='54.525388' xlink:href='#c27-08-roka-tezisca-g0-106'/>
+<use x='-60.501802' y='56.019769' xlink:href='#c27-08-roka-tezisca-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M73.92043 64.01866H63.91768' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,66.5227,64.01866)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(49.45093,69.11665)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.002544,54.525388)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-64.002544' y='54.525388' xlink:href='#c27-08-roka-tezisca-g0-106'/>
+<use x='-60.501802' y='56.019769' xlink:href='#c27-08-roka-tezisca-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 27.34</span>: Arm A at \(\vek q = (30^\circ, 60^\circ)\) in the plane <span class="nobr">\(x_0y_0\):</span> links (thick), joints at \(O\) and \(o_1\) (circles), centres of mass \(G_1\) and \(G_2\) (blue), angles \(q_1\) and <span class="nobr">\(q_2\),</span> radii \(OG_2\) and \(o_1G_2\) (dashed) and velocities of the centre of mass \(G_2\) for \(\dot q_1 = 1\) rad/s <span class="nobr">(\(\vek j_1\),</span> blue) and for \(\dot q_2 = 1\) rad/s <span class="nobr">(\(\vek j_2\),</span> orange). The scale of the geometry is \(3\) cm for \(1\) m, the scale of the arrows \(2\) cm for \(1\) m/s.</figcaption></figure>
+<p>We start with <a data-del="okvir" class="xref kaz" href="sec-gibalne-enacbe-robota.html#fig-gib-roka-tezisca" data-knowl="fig-gib-roka-tezisca">frame 0</a>, the axes \(x_0\) and \(y_0\) at the base, which stays at rest. In it we place <a data-del="clena" class="xref kaz" href="sec-gibalne-enacbe-robota.html#fig-gib-roka-tezisca" data-knowl="fig-gib-roka-tezisca">both links</a> as thick lines: the first goes from <a data-del="zgloba" class="xref kaz" href="sec-gibalne-enacbe-robota.html#fig-gib-roka-tezisca" data-knowl="fig-gib-roka-tezisca">the joint</a> at \(O\) to the joint at <span class="nobr">\(o_1\),</span> the second from \(o_1\) to the tip. <a data-del="kota" class="xref kaz" href="sec-gibalne-enacbe-robota.html#fig-gib-roka-tezisca" data-knowl="fig-gib-roka-tezisca">The angles</a> are the same as in section <a class="xref" href="sec-robotske-verige.html">27.1</a>: \(q_1\) from the axis \(x_0\) to the first link and \(q_2\) from the extension of the first link to the second. Every link has a <a data-del="tezisca" class="xref kaz" href="sec-gibalne-enacbe-robota.html#fig-gib-roka-tezisca" data-knowl="fig-gib-roka-tezisca">centre of mass</a>, the point in which theorem <a class="xref" href="sec-kineticna-energija.html#thm-kineticna-energija-togega" data-knowl="thm-kineticna-energija-togega">8.82</a> gathers all the mass for the translational motion: \(G_1\) in the middle of the first and \(G_2\) in the middle of the second link. Their positions are \(\vek c_1 = (0{,}433,\ 0{,}25)\) m and \(\vek c_2 = (0{,}866,\ 0{,}75)\) m.</p>
+<p>The centre of mass \(G_2\) moves because of both joints. If only the first one turns, with \(\dot q_1 = 1\) rad/s, the whole arm turns like one <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">body</a> about \(O\) and by equation <a class="xref" href="sec-kineticna-energija.html#eq-kin-hitrost-p" data-knowl="eq-kin-hitrost-p">(8.68)</a> of lemma <a class="xref" href="sec-kineticna-energija.html#lem-hitrost-togega" data-knowl="lem-hitrost-togega">8.78</a> (the point \(O\) is at rest, <span class="nobr">\(\vek\omega = \dot q_1\vek z_0\))</span> the velocity of the centre of mass is <span class="nobr">\(\vek z_0\times(\vek c_2 - \vek o_0)\).</span> This is <span class="nobr"><a data-del="hitrosti" class="xref kaz" href="sec-gibalne-enacbe-robota.html#fig-gib-roka-tezisca" data-knowl="fig-gib-roka-tezisca">the arrow \(\vek j_1\)</a>,</span> perpendicular to <a data-del="polmera" class="xref kaz" href="sec-gibalne-enacbe-robota.html#fig-gib-roka-tezisca" data-knowl="fig-gib-roka-tezisca">the radius</a> \(OG_2\) of length \(|OG_2| = 1{,}1456\) m, so \(\vek j_1 = (-0{,}75,\ 0{,}866)\) m. If only the second joint turns, only the second link turns about <span class="nobr">\(o_1\),</span> and the velocity of \(G_2\) is \(\vek z_0\times(\vek c_2 - \vek o_1) = (-0{,}25,\ 0)\) m, which is <span class="nobr"><a data-del="hitrosti" class="xref kaz" href="sec-gibalne-enacbe-robota.html#fig-gib-roka-tezisca" data-knowl="fig-gib-roka-tezisca">the arrow \(\vek j_2\)</a>,</span> perpendicular to the radius <span class="nobr">\(o_1G_2\),</span> whose length is \(l_{\mathrm{c}2} = 0{,}25\) m. When both turn at once the velocities add, <span class="nobr">\(\vek v_{\mathrm{G}2} = \dot q_1\vek j_1 + \dot q_2\vek j_2\).</span> This is the product of a matrix and a vector (definition <a class="xref" href="sec-matrike.html#def-produkt-matrike-in-vektorja" data-knowl="def-produkt-matrike-in-vektorja">1.96</a>) with the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat A_2\) made of the columns \(\vek j_1\) and <span class="nobr">\(\vek j_2\).</span></p>
+<p>The same holds for every arm, as theorem <a class="xref" href="sec-jacobijeva-matrika-robota.html#thm-stolpci-jacobijeve" data-knowl="thm-stolpci-jacobijeve">27.42</a> says. Its proof speaks about a point of the last link that is fixed in the axis of this link, so it holds also for the centre of mass \(\vek c_{\mathrm{k}}\) of link \(k\) with the chain of the first \(k\) joints. Column \(i\) of the matrix \(\mat A_{\mathrm{k}}\) of size \(3 \times n\) is for a revolute joint <span class="nobr">\(\vek z_{\mathrm{i}-1}\times(\vek c_{\mathrm{k}} - \vek o_{\mathrm{i}-1})\),</span> for a prismatic joint <span class="nobr">\(\vek z_{\mathrm{i}-1}\),</span> and column \(i\) of the matrix \(\mat W_{\mathrm{k}}\) (angular velocity) is \(\vek z_{\mathrm{i}-1}\) or \(\vek 0\) respectively. For \(i &gt; k\) both columns are zero, because link \(k\) does not move if only the joints after it turn. So \(\vek v_{\mathrm{G},\mathrm{k}} = \mat A_{\mathrm{k}}\dot{\vek q}\) and \(\vek\omega_{\mathrm{k}} = \mat W_{\mathrm{k}}\dot{\vek q}\) are exactly the velocities of step 1 of the proof of theorem <a class="xref" href="sec-kineticna-energija.html#thm-kineticna-energija-koordinate" data-knowl="thm-kineticna-energija-koordinate">8.86</a>. For arm A</p>
+<div class="eq" id="eq-gib-roka-a-jacobi">\[\mat A_1 = \begin{pmatrix} -0{,}25 &amp; 0 \\ 0{,}433 &amp; 0 \\ 0 &amp; 0 \end{pmatrix}\text{ m}, \quad \mat A_2 = \begin{pmatrix} -0{,}75 &amp; -0{,}25 \\ 0{,}866 &amp; 0 \\ 0 &amp; 0 \end{pmatrix}\text{ m}, \quad \mat W_1 = \begin{pmatrix} 0 &amp; 0 \\ 0 &amp; 0 \\ 1 &amp; 0 \end{pmatrix}, \quad \mat W_2 = \begin{pmatrix} 0 &amp; 0 \\ 0 &amp; 0 \\ 1 &amp; 1 \end{pmatrix} . \tag{27.33}\]</div>
+<p>The second column of the matrix \(\mat A_1\) is zero, because the first link does not move if only the second joint turns. The <a class="xref auto" href="sec-kineticna-energija.html#def-tenzor-vztrajnosti" data-knowl="def-tenzor-vztrajnosti">inertia tensor</a> of link \(k\) is constant in an axis attached to the link, so in <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">frame</a> \(k\) (lemma <a class="xref" href="sec-kineticna-energija.html#lem-lastnosti-tenzorja" data-knowl="lem-lastnosti-tenzorja">8.81</a>, point 3), and we write it <span class="nobr">\(\mat J_{\mathrm{G},\mathrm{k}}\).</span> The letter \(G\) separates it from the matrix \(\mat J\) of section <a class="xref" href="sec-jacobijeva-matrika-robota.html">27.6</a>. From it we get the tensor in frame 0, in which the velocities are written, and this is the last component of the energy.</p>
+
+<div class="blk izrek" id="thm-masna-matrika-robota"><div class="blk-head"><span class="blk-label">Theorem 27.52</span> <span class="blk-title">Mass matrix of a robot (masna matrika robota)</span></div><div class="blk-body"><p>Let the robot be an open chain of \(n\) joints with ideal joints and <a class="xref auto" href="sec-toge-povezave.html#def-toga-povezava" data-knowl="def-toga-povezava">rigid links</a> \(k = 1, \dots, n\) with masses \(m_{\mathrm{k}} &gt; 0\) and <a class="xref auto" href="sec-kineticna-energija.html#def-tenzor-vztrajnosti" data-knowl="def-tenzor-vztrajnosti">inertia tensors</a> \(\mat J_{\mathrm{G},\mathrm{k}}\) about the <a class="xref auto" href="sec-dalembert.html#def-masa-tezisce" data-knowl="def-masa-tezisce">centre of mass</a> in the axis of link \(k\) (section <a class="xref" href="sec-robotske-verige.html">27.1</a>). Let \(\mat R_{\mathrm{k}} = \mat R^0_{\mathrm{k}}(\vek q)\) be the orientation matrix of link \(k\) (definition <a class="xref" href="sec-orientacija-clenov.html#def-matrika-orientacije" data-knowl="def-matrika-orientacije">27.8</a>), \(\mat A_{\mathrm{k}}\) and \(\mat W_{\mathrm{k}}\) the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> of size \(3 \times n\) from the description above. The kinetic energy of the robot is</p>
+<div class="eq" id="eq-gib-masna">\[T = \tfrac12\,\dot{\vek q}^\T\mat M(\vek q)\,\dot{\vek q} , \qquad \mat M = \sum_{\mathrm{k}=1}^{n}\Big(m_{\mathrm{k}}\,\mat A_{\mathrm{k}}^\T\mat A_{\mathrm{k}} + \mat W_{\mathrm{k}}^\T\mat R_{\mathrm{k}}\mat J_{\mathrm{G},\mathrm{k}}\mat R_{\mathrm{k}}^\T\mat W_{\mathrm{k}}\Big) , \tag{27.34}\]</div>
+<p>where \(\mat M(\vek q)\) is a symmetric <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite matrix</a> of size \(n \times n\) with <a class="xref auto" href="sec-sprememba-polja.html#def-zvezno-odvedljivo-polje" data-knowl="def-zvezno-odvedljivo-polje">continuously differentiable</a> elements that depend only on <span class="nobr">\(\vek q\).</span> We call it the mass matrix of the robot (masna matrika).</p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that the robot satisfies the assumptions of theorem <a class="xref" href="sec-kineticna-energija.html#thm-kineticna-energija-koordinate" data-knowl="thm-kineticna-energija-koordinate">8.86</a> and that the tensor of the link is written with <span class="nobr">\(\mat R_{\mathrm{k}}\).</span></p>
+<ol>
+<li>The <a class="xref auto" href="sec-robotske-verige.html#def-spremenljivke-zglobov" data-knowl="def-spremenljivke-zglobov">joint variables</a> are generalized <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">coordinates</a> of a chain with \(n\) degrees of freedom (lemma <a class="xref" href="sec-robotske-verige.html#lem-zglobi-so-koordinate" data-knowl="lem-zglobi-so-koordinate">27.4</a>). The constraints do not contain time, because the arm moves only by its motors and not by a prescribed law, so \(\vek b = \vek 0\) and \(T_0 = 0\) in theorem <a class="xref" href="sec-kineticna-energija.html#thm-kineticna-energija-koordinate" data-knowl="thm-kineticna-energija-koordinate">8.86</a>. The position of the <a class="xref auto" href="sec-dalembert.html#def-masa-tezisce" data-knowl="def-masa-tezisce">centre of mass</a> \(\vek c_{\mathrm{k}}(\vek q)\) and the <a class="xref auto" href="sec-determinanta.html#def-orientacija" data-knowl="def-orientacija">orientation</a> \(\mat R_{\mathrm{k}}(\vek q)\) are <a class="xref auto" href="sec-sprememba-polja.html#def-zvezno-odvedljivo-polje" data-knowl="def-zvezno-odvedljivo-polje">continuously differentiable</a> <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> of \(\vek q\) (products and sums of sines and cosines of the joint angles, lemma <a class="xref" href="sec-homogene-transformacije.html#lem-lega-clena" data-knowl="lem-lega-clena">27.25</a>).</li>
+<li>By step 3 of the proof of theorem <a class="xref" href="sec-kineticna-energija.html#thm-kineticna-energija-koordinate" data-knowl="thm-kineticna-energija-koordinate">8.86</a>, <span class="nobr">\(\mat M = \sum_{\mathrm{k}}\big(m_{\mathrm{k}}\mat A_{\mathrm{k}}^\T\mat A_{\mathrm{k}} + \mat W_{\mathrm{k}}^\T\mat J_{\mathrm{k}}\mat W_{\mathrm{k}}\big)\),</span> where \(\mat J_{\mathrm{k}}\) is the inertia tensor of link \(k\) in frame 0 and \(\mat A_{\mathrm{k}}\) is exactly the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\partial\vek c_{\mathrm{k}}/\partial\vek q\) (step 1 of the same proof).</li>
+<li>Let \(\vek r^0\) be the <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vector</a> from the centre of mass to a point of link \(k\) in frame 0 and \(\vek r^k\) the same vector in <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">frame</a> <span class="nobr">\(k\).</span> By lemma <a class="xref" href="sec-orientacija-clenov.html#lem-orientacija-in-zasuk" data-knowl="lem-orientacija-in-zasuk">27.9</a>, <span class="nobr">\(\vek r^0 = \mat R_{\mathrm{k}}\vek r^k\).</span> An <a class="xref auto" href="sec-vrtenje-osi.html#def-ortogonalna-matrika" data-knowl="def-ortogonalna-matrika">orthogonal matrix</a> preserves lengths, <span class="nobr">\(|\mat R_{\mathrm{k}}\vek r^k|^2 = |\vek r^k|^2\),</span> and <span class="nobr">\(\vek r^0(\vek r^0)^\T = \mat R_{\mathrm{k}}\vek r^k(\vek r^k)^\T\mat R_{\mathrm{k}}^\T\).</span> Hence <span class="nobr">\(|\vek r^0|^2\mat I - \vek r^0(\vek r^0)^\T = \mat R_{\mathrm{k}}\big(|\vek r^k|^2\mat I - \vek r^k(\vek r^k)^\T\big)\mat R_{\mathrm{k}}^\T\),</span> and by definition <a class="xref" href="sec-kineticna-energija.html#def-tenzor-vztrajnosti" data-knowl="def-tenzor-vztrajnosti">8.80</a>, taking \(\mat R_{\mathrm{k}}\) out of the <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integral</a>, <span class="nobr">\(\mat J_{\mathrm{k}} = \mat R_{\mathrm{k}}\mat J_{\mathrm{G},\mathrm{k}}\mat R_{\mathrm{k}}^\T\).</span> The tensor \(\mat J_{\mathrm{G},\mathrm{k}}\) is constant, because the vector \(\vek r^k\) is constant (the link is a <a class="xref auto" href="sec-deformacija-v-tocki.html#def-togo-telo" data-knowl="def-togo-telo">rigid body</a>).</li>
+<li>Equation <a class="xref" href="sec-gibalne-enacbe-robota.html#eq-gib-masna" data-knowl="eq-gib-masna">(27.34)</a> follows from steps 2 and 3. Symmetry, <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definiteness</a> and continuous differentiability follow from theorem <a class="xref" href="sec-kineticna-energija.html#thm-kineticna-energija-koordinate" data-knowl="thm-kineticna-energija-koordinate">8.86</a>, since <span class="nobr">\(\mat A_{\mathrm{k}}\),</span> <span class="nobr">\(\mat W_{\mathrm{k}}\),</span> \(\mat R_{\mathrm{k}}\) are continuously differentiable and \(\mat J_{\mathrm{G},\mathrm{k}}\) is constant. The dependence on \(\vek q\) only is a consequence of step 1.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> SPONG (6.50)-(6.53) (PDF pp. 202-203), where \(\mat M\) is denoted \(D\) and positive definiteness is left as an exercise (problem 6-6, PDF p. 203). Here they follow from theorem <a class="xref" href="sec-kineticna-energija.html#thm-kineticna-energija-koordinate" data-knowl="thm-kineticna-energija-koordinate">8.86</a>. The proof by steps is not from the source.</p></div></div>
+<p>The name mass matrix has a reason. For one point of mass \(m\) on a line <span class="nobr">\(T = \tfrac12 m\dot q^2\),</span> so \(\mat M = m\) and the equation we shall derive has \(m\ddot q\) on the left, which is the force by Newton. For a robot the mass is a matrix because the accelerations of different joints are not independent: an acceleration of the first joint in general requires a torque also on the second.</p>
+<p>We test the theorem on arm A. For a planar arm the angular velocity has only a component along <span class="nobr">\(z_0\),</span> and \(\mat R_{\mathrm{k}}\) is a rotation about this axis, so \(\mat R_{\mathrm{k}}^\T\vek e_{\mathrm{z}} = \vek e_{\mathrm{z}}\) and \(\vek\omega_{\mathrm{k}}\cdot\mat R_{\mathrm{k}}\mat J_{\mathrm{G},\mathrm{k}}\mat R_{\mathrm{k}}^\T\vek\omega_{\mathrm{k}} = \omega_{\mathrm{k}}^2\,J_{\mathrm{zz},\mathrm{k}} = I_{\mathrm{k}}\omega_{\mathrm{k}}^2\) with the moment <span class="nobr">\(I_{\mathrm{k}} = m_{\mathrm{k}}l_{\mathrm{k}}^2/12\).</span> The second part of the sum is therefore \(I_{\mathrm{k}}\,\vek w_{\mathrm{k}}^\T\vek w_{\mathrm{k}}\) with the row \(\vek w_{\mathrm{k}}\) of the component \(z\) of the matrix <span class="nobr">\(\mat W_{\mathrm{k}}\).</span></p>
+
+<div class="blk primer" id="ex-gib-masna-roka-a"><div class="blk-head"><span class="blk-label">Example 27.53</span> <span class="blk-title">Mass matrix of arm A (masna matrika roke A)</span></div><div class="blk-body"><p>Arm A at <span class="nobr">\(\vek q = (30^\circ, 60^\circ)\),</span> <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> <a class="xref" href="sec-gibalne-enacbe-robota.html#eq-gib-roka-a-jacobi" data-knowl="eq-gib-roka-a-jacobi">(27.33)</a>, \(m_1 = 10\) kg, \(m_2 = 5\) kg, \(I_1 = 0{,}8333\) kg m<span class="nobr">\(^2\),</span> \(I_2 = 0{,}1042\) kg m<span class="nobr">\(^2\).</span></p>
+<ol>
+<li>First link, translation: \(m_1\mat A_1^\T\mat A_1 = 10\begin{pmatrix} 0{,}0625 + 0{,}1875 &amp; 0 \\ 0 &amp; 0 \end{pmatrix} = \begin{pmatrix} 2{,}5 &amp; 0 \\ 0 &amp; 0 \end{pmatrix}\) kg m<span class="nobr">\(^2\),</span> since <span class="nobr">\(0{,}25^2 + 0{,}433^2 = 0{,}25\).</span></li>
+<li>Second link, translation: \(m_2\mat A_2^\T\mat A_2 = 5\begin{pmatrix} 0{,}75^2 + 0{,}866^2 &amp; 0{,}75\cdot 0{,}25 \\ 0{,}75\cdot 0{,}25 &amp; 0{,}25^2 \end{pmatrix} = \begin{pmatrix} 6{,}5625 &amp; 0{,}9375 \\ 0{,}9375 &amp; 0{,}3125 \end{pmatrix}\) kg m<span class="nobr">\(^2\).</span></li>
+<li>Rotation: \(I_1\vek w_1^\T\vek w_1 = \begin{pmatrix} 0{,}8333 &amp; 0 \\ 0 &amp; 0 \end{pmatrix}\) and <span class="nobr">\(I_2\vek w_2^\T\vek w_2 = 0{,}1042\begin{pmatrix} 1 &amp; 1 \\ 1 &amp; 1 \end{pmatrix}\),</span> since \(\vek w_1 = (1,\ 0)\) and <span class="nobr">\(\vek w_2 = (1,\ 1)\).</span></li>
+<li>The sum of the four parts is
+<div class="eq">\[\mat M(30^\circ, 60^\circ) = \begin{pmatrix} 10 &amp; 1{,}0417 \\ 1{,}0417 &amp; 0{,}4167 \end{pmatrix}\text{ kg m}^2 .\]</div></li>
+<li>For an arbitrary \(\vek q\) the same computation with SymPy (written in num-08.py) gives
+<div class="eq" id="eq-gib-masna-roka-a">\[\mat M(\vek q) = \begin{pmatrix} \tfrac{35}{4} + \tfrac52\cos q_2 &amp; \tfrac{5}{12} + \tfrac54\cos q_2 \\ \tfrac{5}{12} + \tfrac54\cos q_2 &amp; \tfrac{5}{12} \end{pmatrix}\text{ kg m}^2 . \tag{27.35}\]</div></li>
+</ol>
+
+<p class="vir"><span class="vir-label">Source:</span> The computation is ours (SymPy). SPONG, equation (6.86) (PDF p. 209) gives the same formula for the same kind of arm in its own notation.</p></div></div>
+<p>The matrix does not depend on <span class="nobr">\(q_1\):</span> turning the whole arm about \(O\) changes neither the distances of the centres of mass from the axis nor the moments of inertia. It does depend on <span class="nobr">\(q_2\),</span> which changes the distance of the centre of mass \(G_2\) from \(O\) (figure <a class="xref" href="sec-gibalne-enacbe-robota.html#fig-gib-masna-matrika" data-knowl="fig-gib-masna-matrika">27.35</a>).</p>
+
+<figure class="blk slika" id="fig-gib-masna-matrika"><p><span class="svgfig" role="img" aria-label="Elements of the mass matrix of arm A as functions of the angle of the second joint"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='377.73pt' height='229.11pt' viewBox='-72.000004 -72.000003 279.802959 169.7092'>
+<defs>
+<path id='c27-08-masna-matrika-g0-14' d='M3.535741-1.743462C3.535741-2.587298 2.859278-3.242839 2.036364-3.242839C1.199502-3.242839 .536986-2.566376 .536986-1.750436C.536986-.9066 1.21345-.251059 2.036364-.251059C2.873225-.251059 3.535741-.927522 3.535741-1.743462ZM2.036364-.592777C1.380822-.592777 .878705-1.12279 .878705-1.743462C.878705-2.39203 1.39477-2.901121 2.036364-2.901121C2.691905-2.901121 3.194022-2.371108 3.194022-1.750436C3.194022-1.101868 2.677958-.592777 2.036364-.592777Z'/>
+<path id='c27-08-masna-matrika-g1-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='c27-08-masna-matrika-g1-77' d='M9.225405-6.03736C9.315068-6.396015 9.334994-6.495641 10.082192-6.495641C10.311333-6.495641 10.400996-6.495641 10.400996-6.694894C10.400996-6.804483 10.30137-6.804483 10.132005-6.804483H8.816936C8.557908-6.804483 8.547945-6.804483 8.428394-6.615193L4.79203-.936488L4.014944-6.575342C3.985056-6.804483 3.965131-6.804483 3.706102-6.804483H2.34122C2.15193-6.804483 2.042341-6.804483 2.042341-6.615193C2.042341-6.495641 2.132005-6.495641 2.331258-6.495641C2.460772-6.495641 2.6401-6.485679 2.759651-6.475716C2.919054-6.455791 2.978829-6.425903 2.978829-6.316314C2.978829-6.276463 2.968867-6.246575 2.938979-6.127024L1.673724-1.05604C1.574097-.657534 1.404732-.33873 .597758-.308842C.547945-.308842 .418431-.298879 .418431-.119552C.418431-.029888 .478207 0 .557908 0C.876712 0 1.225405-.029888 1.554172-.029888C1.892902-.029888 2.251557 0 2.580324 0C2.630137 0 2.759651 0 2.759651-.199253C2.759651-.308842 2.650062-.308842 2.580324-.308842C2.012453-.318804 1.902864-.518057 1.902864-.747198C1.902864-.816936 1.912827-.86675 1.942715-.976339L3.297634-6.405978H3.307597L4.164384-.229141C4.184309-.109589 4.194271 0 4.313823 0C4.423412 0 4.483188-.109589 4.533001-.179328L8.557908-6.485679H8.56787L7.143213-.777086C7.043587-.388543 7.023661-.308842 6.236613-.308842C6.067248-.308842 5.957659-.308842 5.957659-.119552C5.957659 0 6.07721 0 6.107098 0C6.386052 0 7.063512-.029888 7.342466-.029888C7.750934-.029888 8.179328 0 8.587796 0C8.647572 0 8.777086 0 8.777086-.199253C8.777086-.308842 8.687422-.308842 8.498132-.308842C8.129514-.308842 7.85056-.308842 7.85056-.488169C7.85056-.52802 7.85056-.547945 7.900374-.727273L9.225405-6.03736Z'/>
+<path id='c27-08-masna-matrika-g1-113' d='M4.503113-4.293898C4.503113-4.333748 4.473225-4.393524 4.403487-4.393524C4.293898-4.393524 3.895392-3.995019 3.726027-3.706102C3.506849-4.244085 3.118306-4.403487 2.799502-4.403487C1.62391-4.403487 .398506-2.929016 .398506-1.484433C.398506-.508095 .986301 .109589 1.713574 .109589C2.141968 .109589 2.530511-.129514 2.889166-.488169C2.799502-.139477 2.470735 1.205479 2.440847 1.295143C2.361146 1.574097 2.281445 1.613948 1.723537 1.62391C1.594022 1.62391 1.494396 1.62391 1.494396 1.823163C1.494396 1.833126 1.494396 1.932752 1.62391 1.932752C1.942715 1.932752 2.291407 1.902864 2.620174 1.902864C2.958904 1.902864 3.317559 1.932752 3.646326 1.932752C3.696139 1.932752 3.825654 1.932752 3.825654 1.733499C3.825654 1.62391 3.726027 1.62391 3.566625 1.62391C3.088418 1.62391 3.088418 1.554172 3.088418 1.464508C3.088418 1.39477 3.108344 1.334994 3.128269 1.24533L4.503113-4.293898ZM1.743462-.109589C1.145704-.109589 1.105853-.876712 1.105853-1.046077C1.105853-1.524284 1.39477-2.610212 1.564134-3.028643C1.872976-3.765878 2.391034-4.184309 2.799502-4.184309C3.447073-4.184309 3.58655-3.377335 3.58655-3.307597C3.58655-3.247821 3.038605-1.066002 3.008717-1.026152C2.859278-.747198 2.30137-.109589 1.743462-.109589Z'/>
+<path id='c27-08-masna-matrika-g2-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='c27-08-masna-matrika-g2-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c27-08-masna-matrika-g2-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='c27-08-masna-matrika-g2-51' d='M2.889166-3.506849C3.706102-3.775841 4.283935-4.473225 4.283935-5.260274C4.283935-6.07721 3.407223-6.635118 2.450809-6.635118C1.444583-6.635118 .687422-6.03736 .687422-5.280199C.687422-4.951432 .9066-4.762142 1.195517-4.762142C1.504359-4.762142 1.703611-4.98132 1.703611-5.270237C1.703611-5.768369 1.235367-5.768369 1.085928-5.768369C1.39477-6.256538 2.052304-6.386052 2.410959-6.386052C2.819427-6.386052 3.367372-6.166874 3.367372-5.270237C3.367372-5.150685 3.347447-4.572852 3.088418-4.134496C2.789539-3.656289 2.450809-3.626401 2.201743-3.616438C2.122042-3.606476 1.882939-3.58655 1.8132-3.58655C1.733499-3.576588 1.663761-3.566625 1.663761-3.466999C1.663761-3.35741 1.733499-3.35741 1.902864-3.35741H2.34122C3.158157-3.35741 3.526775-2.67995 3.526775-1.703611C3.526775-.348692 2.839352-.059776 2.400996-.059776C1.972603-.059776 1.225405-.229141 .876712-.816936C1.225405-.767123 1.534247-.986301 1.534247-1.364882C1.534247-1.723537 1.265255-1.92279 .976339-1.92279C.737235-1.92279 .418431-1.783313 .418431-1.344956C.418431-.438356 1.344956 .219178 2.430884 .219178C3.646326 .219178 4.552927-.687422 4.552927-1.703611C4.552927-2.520548 3.92528-3.297634 2.889166-3.506849Z'/>
+<path id='c27-08-masna-matrika-g2-53' d='M4.473225-2.002491C4.473225-3.188045 3.656289-4.184309 2.580324-4.184309C2.102117-4.184309 1.673724-4.024907 1.315068-3.676214V-5.618929C1.514321-5.559153 1.843088-5.489415 2.161893-5.489415C3.387298-5.489415 4.084682-6.396015 4.084682-6.525529C4.084682-6.585305 4.054795-6.635118 3.985056-6.635118C3.975093-6.635118 3.955168-6.635118 3.905355-6.60523C3.706102-6.515567 3.217933-6.316314 2.550436-6.316314C2.15193-6.316314 1.693649-6.386052 1.225405-6.595268C1.145704-6.625156 1.125778-6.625156 1.105853-6.625156C1.006227-6.625156 1.006227-6.545455 1.006227-6.386052V-3.437111C1.006227-3.257783 1.006227-3.178082 1.145704-3.178082C1.215442-3.178082 1.235367-3.20797 1.275218-3.267746C1.384807-3.427148 1.753425-3.965131 2.560399-3.965131C3.078456-3.965131 3.327522-3.506849 3.407223-3.327522C3.566625-2.958904 3.58655-2.570361 3.58655-2.072229C3.58655-1.723537 3.58655-1.125778 3.347447-.707347C3.108344-.318804 2.739726-.059776 2.281445-.059776C1.554172-.059776 .986301-.587796 .816936-1.175592C.846824-1.165629 .876712-1.155666 .986301-1.155666C1.315068-1.155666 1.484433-1.404732 1.484433-1.643836S1.315068-2.132005 .986301-2.132005C.846824-2.132005 .498132-2.062267 .498132-1.603985C.498132-.747198 1.185554 .219178 2.30137 .219178C3.457036 .219178 4.473225-.737235 4.473225-2.002491Z'/>
+<path id='c27-08-masna-matrika-g2-54' d='M1.315068-3.267746V-3.506849C1.315068-6.027397 2.550436-6.386052 3.058531-6.386052C3.297634-6.386052 3.716065-6.326276 3.935243-5.987547C3.785803-5.987547 3.387298-5.987547 3.387298-5.539228C3.387298-5.230386 3.626401-5.080946 3.845579-5.080946C4.004981-5.080946 4.303861-5.17061 4.303861-5.559153C4.303861-6.156912 3.865504-6.635118 3.038605-6.635118C1.763387-6.635118 .418431-5.349938 .418431-3.148194C.418431-.488169 1.574097 .219178 2.500623 .219178C3.606476 .219178 4.552927-.71731 4.552927-2.032379C4.552927-3.297634 3.666252-4.254047 2.560399-4.254047C1.882939-4.254047 1.514321-3.745953 1.315068-3.267746ZM2.500623-.059776C1.872976-.059776 1.574097-.657534 1.514321-.806974C1.334994-1.275218 1.334994-2.072229 1.334994-2.251557C1.334994-3.028643 1.653798-4.024907 2.550436-4.024907C2.709838-4.024907 3.16812-4.024907 3.476961-3.407223C3.656289-3.038605 3.656289-2.530511 3.656289-2.042341C3.656289-1.564134 3.656289-1.066002 3.486924-.707347C3.188045-.109589 2.729763-.059776 2.500623-.059776Z'/>
+<path id='c27-08-masna-matrika-g2-55' d='M4.742217-6.067248C4.83188-6.1868 4.83188-6.206725 4.83188-6.41594H2.410959C1.195517-6.41594 1.175592-6.545455 1.135741-6.734745H.886675L.557908-4.682441H.806974C.836862-4.841843 .926526-5.469489 1.05604-5.589041C1.125778-5.648817 1.902864-5.648817 2.032379-5.648817H4.094645C3.985056-5.489415 3.198007-4.403487 2.978829-4.07472C2.082192-2.729763 1.753425-1.344956 1.753425-.328767C1.753425-.229141 1.753425 .219178 2.211706 .219178S2.669988-.229141 2.669988-.328767V-.836862C2.669988-1.384807 2.699875-1.932752 2.779577-2.470735C2.819427-2.699875 2.958904-3.556663 3.39726-4.174346L4.742217-6.067248Z'/>
+<path id='c27-08-masna-matrika-g2-56' d='M1.62391-4.552927C1.165629-4.851806 1.125778-5.190535 1.125778-5.3599C1.125778-5.967621 1.77335-6.386052 2.480697-6.386052C3.20797-6.386052 3.845579-5.867995 3.845579-5.150685C3.845579-4.582814 3.457036-4.104608 2.859278-3.755915L1.62391-4.552927ZM3.078456-3.606476C3.795766-3.975093 4.283935-4.493151 4.283935-5.150685C4.283935-6.067248 3.39726-6.635118 2.49066-6.635118C1.494396-6.635118 .687422-5.897883 .687422-4.971357C.687422-4.79203 .707347-4.343711 1.125778-3.875467C1.235367-3.755915 1.603985-3.506849 1.853051-3.337484C1.275218-3.048568 .418431-2.49066 .418431-1.504359C.418431-.448319 1.43462 .219178 2.480697 .219178C3.606476 .219178 4.552927-.607721 4.552927-1.673724C4.552927-2.032379 4.443337-2.480697 4.064757-2.899128C3.875467-3.108344 3.716065-3.20797 3.078456-3.606476ZM2.082192-3.188045L3.307597-2.410959C3.58655-2.221669 4.054795-1.92279 4.054795-1.315068C4.054795-.577833 3.307597-.059776 2.49066-.059776C1.633873-.059776 .916563-.67746 .916563-1.504359C.916563-2.082192 1.235367-2.719801 2.082192-3.188045Z'/>
+<path id='c27-08-masna-matrika-g2-57' d='M3.656289-3.16812V-2.849315C3.656289-.518057 2.620174-.059776 2.042341-.059776C1.872976-.059776 1.334994-.079701 1.066002-.418431C1.504359-.418431 1.58406-.707347 1.58406-.876712C1.58406-1.185554 1.344956-1.334994 1.125778-1.334994C.966376-1.334994 .667497-1.24533 .667497-.856787C.667497-.18929 1.205479 .219178 2.052304 .219178C3.337484 .219178 4.552927-1.135741 4.552927-3.277709C4.552927-5.957659 3.407223-6.635118 2.520548-6.635118C1.972603-6.635118 1.484433-6.455791 1.05604-6.007472C.647572-5.559153 .418431-5.140722 .418431-4.393524C.418431-3.148194 1.295143-2.171856 2.410959-2.171856C3.01868-2.171856 3.427148-2.590286 3.656289-3.16812ZM2.420922-2.400996C2.261519-2.400996 1.803238-2.400996 1.494396-3.028643C1.315068-3.39726 1.315068-3.895392 1.315068-4.383562C1.315068-4.921544 1.315068-5.389788 1.524284-5.758406C1.793275-6.256538 2.171856-6.386052 2.520548-6.386052C2.978829-6.386052 3.307597-6.047323 3.476961-5.599004C3.596513-5.280199 3.636364-4.652553 3.636364-4.194271C3.636364-3.367372 3.297634-2.400996 2.420922-2.400996Z'/>
+<path id='c27-08-masna-matrika-g3-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='c27-08-masna-matrika-g3-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+</defs>
+<g id='c27-08-masna-matrika-page1'>
+<g stroke-miterlimit='10' transform='translate(-51.833381,80.645106)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='osi'>
+<path d='M0 0H240.34157' fill='none'/>
+<g transform='translate(237.86511,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(248.32674,-1.18056)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.833381,80.645106)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.833381' y='80.645106' xlink:href='#c27-08-masna-matrika-g1-113'/>
+<use x='-47.385919' y='82.139487' xlink:href='#c27-08-masna-matrika-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-12.80363V135.06607' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,132.58961)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-5.39583,143.05124)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.833381,80.645106)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.833381' y='80.645106' xlink:href='#c27-08-masna-matrika-g1-77'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 0V-2.27626' fill='none'/>
+<g transform='translate(-4.79861,-13.7951)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.833381,80.645106)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.833381' y='80.645106' xlink:href='#c27-08-masna-matrika-g2-48'/>
+<use x='-46.852042' y='77.029742' xlink:href='#c27-08-masna-matrika-g0-14'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M56.90549 0V-2.27626' fill='none'/>
+<g transform='translate(49.60686,-13.7951)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.833381,80.645106)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.833381' y='80.645106' xlink:href='#c27-08-masna-matrika-g2-57'/>
+<use x='-46.852042' y='80.645106' xlink:href='#c27-08-masna-matrika-g2-48'/>
+<use x='-41.870702' y='77.029742' xlink:href='#c27-08-masna-matrika-g0-14'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M113.81097 0V-2.27626' fill='none'/>
+<g transform='translate(104.01234,-13.7951)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.833381,80.645106)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.833381' y='80.645106' xlink:href='#c27-08-masna-matrika-g2-49'/>
+<use x='-46.852042' y='80.645106' xlink:href='#c27-08-masna-matrika-g2-56'/>
+<use x='-41.870702' y='80.645106' xlink:href='#c27-08-masna-matrika-g2-48'/>
+<use x='-36.889363' y='77.029742' xlink:href='#c27-08-masna-matrika-g0-14'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M170.71646 0V-2.27626' fill='none'/>
+<g transform='translate(160.91783,-13.7951)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.833381,80.645106)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.833381' y='80.645106' xlink:href='#c27-08-masna-matrika-g2-50'/>
+<use x='-46.852042' y='80.645106' xlink:href='#c27-08-masna-matrika-g2-55'/>
+<use x='-41.870702' y='80.645106' xlink:href='#c27-08-masna-matrika-g2-48'/>
+<use x='-36.889363' y='77.029742' xlink:href='#c27-08-masna-matrika-g0-14'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M227.62195 0V-2.27626' fill='none'/>
+<g transform='translate(217.82332,-13.7951)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.833381,80.645106)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.833381' y='80.645106' xlink:href='#c27-08-masna-matrika-g2-51'/>
+<use x='-46.852042' y='80.645106' xlink:href='#c27-08-masna-matrika-g2-54'/>
+<use x='-41.870702' y='80.645106' xlink:href='#c27-08-masna-matrika-g2-48'/>
+<use x='-36.889363' y='77.029742' xlink:href='#c27-08-masna-matrika-g0-14'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 54.0609H-2.27626' fill='none'/>
+<g transform='translate(-11.90924,50.83868)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.833381,80.645106)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.833381' y='80.645106' xlink:href='#c27-08-masna-matrika-g2-53'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 108.12181H-2.27626' fill='none'/>
+<g transform='translate(-16.90927,104.8996)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.833381,80.645106)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.833381' y='80.645106' xlink:href='#c27-08-masna-matrika-g2-49'/>
+<use x='-46.852042' y='80.645106' xlink:href='#c27-08-masna-matrika-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='cleni'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M0 121.6353C0 121.6353 4.5637 121.46216 6.3165 121.23718C8.06929 121.0122 10.87624 120.45985 12.63301 120.01373C14.38979 119.56761 17.2214 118.67325 18.97818 118.02184C20.73495 117.37042 23.54195 116.15567 25.2947 115.31879C27.04744 114.4819 29.85803 112.98888 31.61078 111.99013S36.17052 109.2496 37.92729 108.1205C39.68407 106.9914 42.51569 105.07611 44.27246 103.85233C46.02924 102.62854 48.83617 100.58322 50.58897 99.30022C52.34178 98.01721 55.1527 95.90804 56.90549 94.60527S61.4692 91.19377 63.22198 89.91077C64.97478 88.62776 67.78172 86.58202 69.5385 85.35823C71.29527 84.13445 74.12689 82.21953 75.88367 81.09048C77.64044 79.96144 80.44743 78.21967 82.20018 77.22087C83.95293 76.22208 86.76352 74.72871 88.51627 73.89177C90.26901 73.05482 93.076 71.84007 94.83278 71.18872C96.58955 70.53737 99.42117 69.64333 101.17795 69.19727C102.93472 68.7512 105.74165 68.19885 107.49446 67.97382C109.24727 67.74878 112.05818 67.57526 113.81097 67.57526C115.56377 67.57526 118.37468 67.74878 120.12747 67.97382C121.88026 68.19885 124.68721 68.7512 126.44398 69.19727C128.20076 69.64333 131.03238 70.53737 132.78915 71.18872C134.54593 71.84007 137.35292 73.05482 139.10567 73.89177C140.85841 74.72871 143.669 76.22208 145.42175 77.22087C147.1745 78.21967 149.98149 79.96144 151.73827 81.09048C153.49504 82.21953 156.32666 84.13445 158.08344 85.35823C159.84021 86.58202 162.64714 88.62776 164.39995 89.91077C166.15276 91.19377 168.96367 93.3025 170.71646 94.60527S175.28017 98.01721 177.03296 99.30022C178.78575 100.58322 181.5927 102.62854 183.34947 103.85233C185.10625 105.07611 187.93787 106.9914 189.69464 108.1205C191.45142 109.2496 194.2584 110.99138 196.01115 111.99013S200.5745 114.4819 202.32724 115.31879C204.07999 116.15567 206.88698 117.37042 208.64375 118.02184C210.40053 118.67325 213.23215 119.56761 214.98892 120.01373C216.7457 120.45985 219.55263 121.0122 221.30544 121.23718C223.05824 121.46216 227.62195 121.6353 227.62195 121.6353' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M0 18.01045C0 18.01045 4.5637 17.92215 6.3165 17.81161C8.06929 17.70108 10.87624 17.43484 12.63301 17.21378C14.38979 16.9927 17.2214 16.54588 18.97818 16.21826C20.73495 15.89064 23.54195 15.27089 25.2947 14.85242C27.04744 14.43394 29.85803 13.69963 31.61078 13.2022C33.36353 12.70476 36.17052 11.83171 37.92729 11.26717C39.68407 10.70262 42.51569 9.7452 44.27246 9.1333C46.02924 8.52141 48.83617 7.50049 50.58897 6.85703C52.34178 6.21356 55.1527 5.14702 56.90549 4.49567C58.65828 3.84431 61.4692 2.80206 63.22198 2.16252C64.97478 1.52298 67.78172 .49815 69.5385-.11374C71.29527-.72563 74.12689-1.68306 75.88367-2.2476C77.64044-2.81215 80.44743-3.68127 82.20018-4.18263S86.76352-5.44261 88.51627-5.86108C90.26901-6.27956 93.076-6.87498 94.83278-7.1987C96.58955-7.52242 99.42117-7.97316 101.17795-8.19423C102.93472-8.4153 105.74165-8.67755 107.49446-8.79205C109.24727-8.90656 112.05818-9.01955 113.81097-9.01955C115.56377-9.01955 118.37468-8.90656 120.12747-8.79205C121.88026-8.67755 124.68721-8.4153 126.44398-8.19423C128.20076-7.97316 131.03238-7.52242 132.78915-7.1987C134.54593-6.87498 137.35292-6.27956 139.10567-5.86108C140.85841-5.44261 143.669-4.68399 145.42175-4.18263S149.98149-2.81215 151.73827-2.2476C153.49504-1.68306 156.32666-.72563 158.08344-.11374C159.84021 .49815 162.64714 1.52298 164.39995 2.16252S168.96367 3.84431 170.71646 4.49567C172.46925 5.14702 175.28017 6.21356 177.03296 6.85703C178.78575 7.50049 181.5927 8.52141 183.34947 9.1333C185.10625 9.7452 187.93787 10.70262 189.69464 11.26717C191.45142 11.83171 194.2584 12.70476 196.01115 13.2022C197.7639 13.69963 200.5745 14.43394 202.32724 14.85242C204.07999 15.27089 206.88698 15.89064 208.64375 16.21826C210.40053 16.54588 213.23215 16.9927 214.98892 17.21378C216.7457 17.43484 219.55263 17.70108 221.30544 17.81161C223.05824 17.92215 227.62195 18.01045 227.62195 18.01045' fill='none'/>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M0 4.49567C0 4.49567 4.5637 4.49567 6.3165 4.49567C8.06929 4.49567 10.87624 4.49567 12.63301 4.49567C14.38979 4.49567 17.2214 4.49567 18.97818 4.49567C20.73495 4.49567 23.54195 4.49567 25.2947 4.49567C27.04744 4.49567 29.85803 4.49567 31.61078 4.49567S36.17052 4.49567 37.92729 4.49567C39.68407 4.49567 42.51569 4.49567 44.27246 4.49567C46.02924 4.49567 48.83617 4.49567 50.58897 4.49567C52.34178 4.49567 55.1527 4.49567 56.90549 4.49567S61.4692 4.49567 63.22198 4.49567C64.97478 4.49567 67.78172 4.49567 69.5385 4.49567C71.29527 4.49567 74.12689 4.49567 75.88367 4.49567C77.64044 4.49567 80.44743 4.49567 82.20018 4.49567S86.76352 4.49567 88.51627 4.49567C90.26901 4.49567 93.076 4.49567 94.83278 4.49567C96.58955 4.49567 99.42117 4.49567 101.17795 4.49567C102.93472 4.49567 105.74165 4.49567 107.49446 4.49567S112.05818 4.49567 113.81097 4.49567C115.56377 4.49567 118.37468 4.49567 120.12747 4.49567S124.68721 4.49567 126.44398 4.49567C128.20076 4.49567 131.03238 4.49567 132.78915 4.49567C134.54593 4.49567 137.35292 4.49567 139.10567 4.49567C140.85841 4.49567 143.669 4.49567 145.42175 4.49567S149.98149 4.49567 151.73827 4.49567C153.49504 4.49567 156.32666 4.49567 158.08344 4.49567C159.84021 4.49567 162.64714 4.49567 164.39995 4.49567S168.96367 4.49567 170.71646 4.49567S175.28017 4.49567 177.03296 4.49567S181.5927 4.49567 183.34947 4.49567C185.10625 4.49567 187.93787 4.49567 189.69464 4.49567C191.45142 4.49567 194.2584 4.49567 196.01115 4.49567S200.5745 4.49567 202.32724 4.49567C204.07999 4.49567 206.88698 4.49567 208.64375 4.49567C210.40053 4.49567 213.23215 4.49567 214.98892 4.49567C216.7457 4.49567 219.55263 4.49567 221.30544 4.49567C223.05824 4.49567 227.62195 4.49567 227.62195 4.49567' fill='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(104.72415,79.11024)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.833381,80.645106)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-51.833381' y='80.645106' xlink:href='#c27-08-masna-matrika-g1-77'/>
+<use x='-42.16822' y='82.139487' xlink:href='#c27-08-masna-matrika-g3-49'/>
+<use x='-38.19698' y='82.139487' xlink:href='#c27-08-masna-matrika-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(104.72415,22.7735)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.833381,80.645106)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-51.833381' y='80.645106' xlink:href='#c27-08-masna-matrika-g1-77'/>
+<use x='-42.16822' y='82.139487' xlink:href='#c27-08-masna-matrika-g3-49'/>
+<use x='-38.19698' y='82.139487' xlink:href='#c27-08-masna-matrika-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(161.62964,11.39258)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.833381,80.645106)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.833381' y='80.645106' xlink:href='#c27-08-masna-matrika-g1-77'/>
+<use x='-42.16822' y='82.139487' xlink:href='#c27-08-masna-matrika-g3-50'/>
+<use x='-38.19698' y='82.139487' xlink:href='#c27-08-masna-matrika-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='vrednosti'>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M1.83862 121.63704C1.83862 122.65248 1.01544 123.47566 0 123.47566S-1.83862 122.65248-1.83862 121.63704S-1.01544 119.79842 0 119.79842S1.83862 120.6216 1.83862 121.63704ZM0 121.63704' stroke='none'/>
+</g>
+<g transform='translate(0.0,121.63704)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.833381,80.645106)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M39.76591 108.12181C39.76591 109.13725 38.94273 109.96043 37.92729 109.96043S36.08867 109.13725 36.08867 108.12181S36.91185 106.28319 37.92729 106.28319S39.76591 107.10637 39.76591 108.12181ZM37.92729 108.12181' stroke='none'/>
+</g>
+<g transform='translate(37.92729,108.12181)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.833381,80.645106)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M115.6496 67.57613C115.6496 68.59157 114.82642 69.41475 113.81097 69.41475C112.79553 69.41475 111.97235 68.59157 111.97235 67.57613C111.97235 66.56068 112.79553 65.7375 113.81097 65.7375C114.82642 65.7375 115.6496 66.56068 115.6496 67.57613ZM113.81097 67.57613' stroke='none'/>
+</g>
+<g transform='translate(113.81097,67.57613)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.833381,80.645106)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(3.72272,126.59132)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.833381,80.645106)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-51.833381' y='80.645106' xlink:href='#c27-08-masna-matrika-g2-49'/>
+<use x='-46.852042' y='80.645106' xlink:href='#c27-08-masna-matrika-g2-49'/>
+<use x='-41.870702' y='80.645106' xlink:href='#c27-08-masna-matrika-g1-59'/>
+<use x='-39.103294' y='80.645106' xlink:href='#c27-08-masna-matrika-g2-50'/>
+<use x='-34.121955' y='80.645106' xlink:href='#c27-08-masna-matrika-g2-53'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(42.13367,111.84323)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.833381,80.645106)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-51.833381' y='80.645106' xlink:href='#c27-08-masna-matrika-g2-49'/>
+<use x='-46.852042' y='80.645106' xlink:href='#c27-08-masna-matrika-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(92.31041,55.27422)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.833381,80.645106)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-51.833381' y='80.645106' xlink:href='#c27-08-masna-matrika-g2-54'/>
+<use x='-46.852042' y='80.645106' xlink:href='#c27-08-masna-matrika-g1-59'/>
+<use x='-44.084633' y='80.645106' xlink:href='#c27-08-masna-matrika-g2-50'/>
+<use x='-39.103294' y='80.645106' xlink:href='#c27-08-masna-matrika-g2-53'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M37.92729 0V108.1205' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 27.35</span>: Elements \(M_{11}\) (blue), \(M_{12}\) (orange) and \(M_{22}\) (<span class="ink-l">black</span><span class="ink-d">white</span>) of the mass matrix of arm A in kg m\(^2\) as functions of the angle <span class="nobr">\(q_2\).</span> The values drawn are \(11{,}25\) at <span class="nobr">\(0^\circ\),</span> \(10\) at \(60^\circ\) (dashed vertical line, the configuration of the example) and \(6{,}25\) at <span class="nobr">\(180^\circ\).</span></figcaption></figure>
+<p><a data-del="osi" class="xref kaz" href="sec-gibalne-enacbe-robota.html#fig-gib-masna-matrika" data-knowl="fig-gib-masna-matrika">The axes</a> show the angle \(q_2\) from \(0^\circ\) to \(360^\circ\) and the values of the elements, <a data-del="vrednosti" class="xref kaz" href="sec-gibalne-enacbe-robota.html#fig-gib-masna-matrika" data-knowl="fig-gib-masna-matrika">the marked values</a> are the three configurations we shall need. <a data-del="cleni" class="xref kaz" href="sec-gibalne-enacbe-robota.html#fig-gib-masna-matrika" data-knowl="fig-gib-masna-matrika">The element \(M_{22}\)</a> is constant, \(0{,}4167\) kg m<span class="nobr">\(^2\):</span> the second link turns about \(o_1\) regardless of the position of the first, and its moment of inertia about \(o_1\) is <span class="nobr">\(m_2l_{\mathrm{c}2}^2 + I_2\).</span> The element \(M_{11}\) is largest for the stretched arm, \(11{,}25\) kg m\(^2\) at <span class="nobr">\(q_2 = 0^\circ\),</span> and smallest for the folded one, \(6{,}25\) kg m\(^2\) at <span class="nobr">\(q_2 = 180^\circ\).</span> The reason is the distance of the centre of mass \(G_2\) from <span class="nobr">\(O\):</span> \(1{,}25\) m for the stretched and \(0{,}75\) m for the folded arm, the squares are \(1{,}5625\) and \(0{,}5625\) m<span class="nobr">\(^2\),</span> the difference \(1\) m<span class="nobr">\(^2\),</span> times \(m_2 = 5\) kg is \(5\) kg m<span class="nobr">\(^2\),</span> and indeed <span class="nobr">\(11{,}25 - 6{,}25 = 5\).</span> For the folded arm the second link is closer to the axis and the first link turns more easily with it. By equation <a class="xref" href="sec-gibalne-enacbe-robota.html#eq-gib-masna" data-knowl="eq-gib-masna">(27.34)</a> the element \(M_{12}\) equals <span class="nobr">\(m_2(\vek c_2 - \vek o_0)\cdot(\vek c_2 - \vek o_1) + I_2\),</span> since the columns of \(\mat A_2\) are the <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vectors</a> \(\vek z_0\times(\vek c_2 - \vek o_0)\) and <span class="nobr">\(\vek z_0\times(\vek c_2 - \vek o_1)\),</span> and the <a class="xref auto" href="sec-skalarni-produkt.html#def-skalarni-produkt" data-knowl="def-skalarni-produkt">scalar product</a> and the length are the same after a rotation by a right angle (lemma <a class="xref" href="sec-posplosene-koordinate.html#lem-izometrija" data-knowl="lem-izometrija">8.37</a>). This is the scalar product of the radii of figure <a class="xref" href="sec-gibalne-enacbe-robota.html#fig-gib-roka-tezisca" data-knowl="fig-gib-roka-tezisca">27.34</a>, and it is negative when they point in opposite directions: for the folded arm \(\vek c_2 - \vek o_0\) is \(0{,}75\) m long in the direction of the first link and \(\vek c_2 - \vek o_1\) is \(0{,}25\) m long in the opposite one, the product is \(5\cdot(-0{,}1875) + 0{,}1042 = -0{,}8333\) kg m<span class="nobr">\(^2\).</span> It is zero at <span class="nobr">\(\cos q_2 = -\tfrac13\),</span> that is at \(q_2 = 109{,}47^\circ\) and <span class="nobr">\(q_2 = 250{,}53^\circ\).</span></p>
+<p>The mass matrix is <a class="xref auto" href="sec-matrike.html#def-inverzna-matrika" data-knowl="def-inverzna-matrika">invertible</a> in every configuration, also in a singular one. At \(q_2 = 0\) we have \(\det\mat J = l_1l_2\sin q_2 = 0\) (lemma <a class="xref" href="sec-singularnosti-statika.html#lem-singularnost-2r" data-knowl="lem-singularnost-2r">27.48</a>), yet \(\det\mat M = 11{,}25\cdot 0{,}4167 - 1{,}6667^2 = 1{,}9097\) kg\(^2\) m<span class="nobr">\(^4\).</span> Singularity of the matrix \(\mat J\) and invertibility of the matrix \(\mat M\) are two different things. The first says that some velocity of the tip is impossible. The second says that by theorem <a class="xref" href="sec-gibalne-enacbe-robota.html#thm-masna-matrika-robota" data-knowl="thm-masna-matrika-robota">27.52</a> every motion of the joints is connected with a nonzero kinetic energy.</p>
+
+<h3 id="sec-gib-teza"><span class="h-num">27.8.2</span> Potential energy and gravity</h3>
+<p>The only force with a potential is the weight (idealization 4). Let \(\vek e\) be the <a class="xref auto" href="sec-vektorji.html#def-enotski-vektor" data-knowl="def-enotski-vektor">unit vector</a> in frame 0 that points upward, against the weight, and \(g = 9{,}81\) m/s\(^2\) the gravitational acceleration. For arm A frame 0 lies so that \(\vek e = \vek e_{\mathrm{y}}\) (figure <a class="xref" href="sec-gibalne-enacbe-robota.html#fig-gib-roka-tezisca" data-knowl="fig-gib-roka-tezisca">27.34</a>).</p>
+
+<div class="blk lema" id="lem-teza-robota"><div class="blk-head"><span class="blk-label">Lemma 27.54</span> <span class="blk-title">Gravity of a robot (težnost robota)</span></div><div class="blk-body"><p>Let the robot have links with masses \(m_{\mathrm{k}}\) and <a class="xref auto" href="sec-dalembert.html#def-masa-tezisce" data-knowl="def-masa-tezisce">centres of mass</a> <span class="nobr">\(\vek c_{\mathrm{k}}(\vek q)\),</span> and let only the weight act on the links. Its potential energy (definition <a class="xref" href="sec-posplosene-sile.html#def-konservativne-sile" data-knowl="def-konservativne-sile">8.53</a>) is</p>
+<div class="eq" id="eq-gib-teza-v">\[V(\vek q) = g\sum_{\mathrm{k}=1}^{n} m_{\mathrm{k}}\,\vek e\cdot\vek c_{\mathrm{k}}(\vek q) . \tag{27.36}\]</div>
+<p>The column \(\vek g(\vek q) = \partial V/\partial\vek q\) equals</p>
+<div class="eq" id="eq-gib-teza-g">\[\vek g(\vek q) = g\sum_{\mathrm{k}=1}^{n} m_{\mathrm{k}}\,\mat A_{\mathrm{k}}^\T\vek e , \tag{27.37}\]</div>
+<p>which is the same column as in equation <a class="xref" href="sec-singularnosti-statika.html#eq-sing-teza" data-knowl="eq-sing-teza">(27.30)</a>.</p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that the force of gravity has the potential <a class="xref" href="sec-gibalne-enacbe-robota.html#eq-gib-teza-v" data-knowl="eq-gib-teza-v">(27.36)</a>, and differentiate it.</p>
+<ol>
+<li>The weight acts on every part of link <span class="nobr">\(k\),</span> per unit volume with the force <span class="nobr">\(-g\rho\,\vek e\).</span> We divide the link into finitely many parts and choose a point in each. The sum of definition <a class="xref" href="sec-posplosene-sile.html#def-posplosena-sila" data-knowl="def-posplosena-sila">8.50</a> for the weights of these parts is a <a class="xref auto" href="sec-integral.html#def-darbouxove-vsote" data-knowl="def-darbouxove-vsote">Riemann sum</a>, which tends to an <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integral</a> as the division gets finer, so the generalized force of the weight of link \(k\) is <span class="nobr">\(Q_{\mathrm{k},\mathrm{s}} = -g\int\rho\,\vek e\cdot\dfrac{\partial\vek x}{\partial q_{\mathrm{s}}}\,\mathrm{d}V\).</span></li>
+<li>A point of the link is <span class="nobr">\(\vek x = \vek c_{\mathrm{k}}(\vek q) + \mat R_{\mathrm{k}}(\vek q)\,\vek r\),</span> where \(\vek r\) is the <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vector</a> from the centre of mass in the axis of the link and is constant (the link is a <a class="xref auto" href="sec-deformacija-v-tocki.html#def-togo-telo" data-knowl="def-togo-telo">rigid body</a>). Hence <span class="nobr">\(\partial\vek x/\partial q_{\mathrm{s}} = \partial\vek c_{\mathrm{k}}/\partial q_{\mathrm{s}} + (\partial\mat R_{\mathrm{k}}/\partial q_{\mathrm{s}})\,\vek r\),</span> and by linearity of the integral <span class="nobr">\(Q_{\mathrm{k},\mathrm{s}} = -g\,m_{\mathrm{k}}\,\vek e\cdot\partial\vek c_{\mathrm{k}}/\partial q_{\mathrm{s}} - g\,\vek e\cdot(\partial\mat R_{\mathrm{k}}/\partial q_{\mathrm{s}})\int\rho\,\vek r\,\mathrm{d}V\).</span> The integral \(\int\rho\,\vek r\,\mathrm{d}V\) is zero by the definition of the centre of mass (definition <a class="xref" href="sec-dalembert.html#def-masa-tezisce" data-knowl="def-masa-tezisce">8.73</a>). Since \(\vek e\) is constant, <span class="nobr">\(Q_{\mathrm{k},\mathrm{s}} = -\partial(g\,m_{\mathrm{k}}\,\vek e\cdot\vek c_{\mathrm{k}})/\partial q_{\mathrm{s}}\).</span> The sum over the links is \(-\partial V/\partial q_{\mathrm{s}}\) with \(V\) from <a class="xref" href="sec-gibalne-enacbe-robota.html#eq-gib-teza-v" data-knowl="eq-gib-teza-v">(27.36)</a>, which is therefore the potential energy of the weight by definition <a class="xref" href="sec-posplosene-sile.html#def-konservativne-sile" data-knowl="def-konservativne-sile">8.53</a>.</li>
+<li>By step 2, <span class="nobr">\(\partial V/\partial q_{\mathrm{s}} = g\sum_{\mathrm{k}} m_{\mathrm{k}}\,\vek e\cdot\partial\vek c_{\mathrm{k}}/\partial q_{\mathrm{s}}\),</span> and \(\partial\vek c_{\mathrm{k}}/\partial q_{\mathrm{s}}\) is column \(s\) of the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat A_{\mathrm{k}}\) (step 2 of the proof of theorem <a class="xref" href="sec-gibalne-enacbe-robota.html#thm-masna-matrika-robota" data-knowl="thm-masna-matrika-robota">27.52</a>). Hence \(\vek e\cdot(\mat A_{\mathrm{k}}\vek e_{\mathrm{s}}) = (\mat A_{\mathrm{k}}^\T\vek e)_{\mathrm{s}}\) and <a class="xref" href="sec-gibalne-enacbe-robota.html#eq-gib-teza-g" data-knowl="eq-gib-teza-g">(27.37)</a> follows.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> SPONG (6.54)-(6.55), (6.64) (PDF pp. 203, 205): the potential energy of the chain is the sum of the potential energies of the links, in which all the mass is in the centre of mass. The proof by steps is not from the source.</p></div></div>
+<p>For arm A, \(\vek c_1\cdot\vek e = l_{\mathrm{c}1}\sin q_1\) and <span class="nobr">\(\vek c_2\cdot\vek e = l_1\sin q_1 + l_{\mathrm{c}2}\sin(q_1 + q_2)\),</span> so</p>
+<div class="eq" id="eq-gib-teza-roka-a">\[V = (m_1l_{\mathrm{c}1} + m_2l_1)\,g\sin q_1 + m_2l_{\mathrm{c}2}\,g\sin(q_1 + q_2) , \qquad \vek g(\vek q) = \begin{pmatrix} 98{,}1\cos q_1 + 12{,}2625\cos(q_1 + q_2) \\ 12{,}2625\cos(q_1 + q_2) \end{pmatrix}\text{ N m} , \tag{27.38}\]</div>
+<p>since \((m_1l_{\mathrm{c}1} + m_2l_1)g = (5 + 5)\cdot 9{,}81 = 98{,}1\) and <span class="nobr">\(m_2l_{\mathrm{c}2}g = 5\cdot 0{,}25\cdot 9{,}81 = 12{,}2625\).</span> At <span class="nobr">\((30^\circ, 60^\circ)\),</span> \(\vek g = (84{,}957,\ 0)\) N m, the second torque is zero because the second link points vertically and its <a class="xref auto" href="sec-dalembert.html#def-masa-tezisce" data-knowl="def-masa-tezisce">centre of mass</a> \(G_2\) lies on the vertical through \(o_1\) (<a data-del="polmera" class="xref kaz" href="sec-gibalne-enacbe-robota.html#fig-gib-roka-tezisca" data-knowl="fig-gib-roka-tezisca">the radius</a> \(o_1G_2\) in figure <a class="xref" href="sec-gibalne-enacbe-robota.html#fig-gib-roka-tezisca" data-knowl="fig-gib-roka-tezisca">27.34</a>), so the <a class="xref auto" href="sec-simetrija-napetosti.html#lem-rocica" data-knowl="lem-rocica">lever arm</a> of the weight about \(o_1\) is zero. At <span class="nobr">\((0^\circ, 60^\circ)\),</span> \(\vek g = (104{,}231,\ 6{,}131)\) N m.</p>
+
+<h3 id="sec-gib-enacba"><span class="h-num">27.8.3</span> Equations of motion</h3>
+<p>Now we have \(T\) and <span class="nobr">\(V\).</span> Lagrange's equation for the \(k\)-th coordinate (theorem <a class="xref" href="sec-lagrangeeve-enacbe.html#thm-lagrange-konservativne" data-knowl="thm-lagrange-konservativne">8.90</a>) requires the time derivative of \(\partial T/\partial\dot q_{\mathrm{k}}\) and the derivative <span class="nobr">\(\partial T/\partial q_{\mathrm{k}}\).</span> For \(T = \tfrac12\dot{\vek q}^\T\mat M\dot{\vek q}\) the first gives \(\mat M\ddot{\vek q}\) and also terms with the derivative of <span class="nobr">\(\mat M\),</span> that is the derivative with respect to \(q_{\mathrm{i}}\) multiplied by the velocity <span class="nobr">\(\dot q_{\mathrm{i}}\),</span> and the second gives terms with the <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivatives</a> of \(\mat M\) with respect to <span class="nobr">\(q_{\mathrm{k}}\).</span> All these terms contain a product of two velocities. Since the product \(\dot q_{\mathrm{i}}\dot q_{\mathrm{j}}\) is symmetric in \(i\) and <span class="nobr">\(j\),</span> we can simplify the coefficient next to it by replacing it with its <a class="xref auto" href="sec-matrike.html#def-simetricna-matrika" data-knowl="def-simetricna-matrika">symmetric part</a>. We obtain numbers that we name.</p>
+
+<div class="blk definicija" id="def-christoffelovi-simboli"><div class="blk-head"><span class="blk-label">Definition 27.55</span> <span class="blk-title">Coefficients of the velocity terms (koeficienti hitrostnih členov)</span></div><div class="blk-body"><p>Let \(\mat M(\vek q) = (d_{\mathrm{kj}})\) be a <a class="xref auto" href="sec-matrike.html#def-simetricna-matrika" data-knowl="def-simetricna-matrika">symmetric matrix</a> of size \(n \times n\) with <a class="xref auto" href="sec-sprememba-polja.html#def-zvezno-odvedljivo-polje" data-knowl="def-zvezno-odvedljivo-polje">continuously differentiable</a> elements on an open set in <span class="nobr">\(\mathbb{R}^n\).</span> The coefficients of the velocity terms (Christoffel symbols of the first kind, Christoffelovi simboli) are the numbers</p>
+<div class="eq" id="eq-gib-christoffel">\[c_{\mathrm{ijk}} = \tfrac12\Big(\frac{\partial d_{\mathrm{kj}}}{\partial q_{\mathrm{i}}} + \frac{\partial d_{\mathrm{ki}}}{\partial q_{\mathrm{j}}} - \frac{\partial d_{\mathrm{ij}}}{\partial q_{\mathrm{k}}}\Big) , \qquad i, j, k = 1, \dots, n , \tag{27.39}\]</div>
+<p><a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> of <span class="nobr">\(\vek q\).</span> For a column \(\dot{\vek q}\) of \(n\) numbers, \(\mat C(\vek q, \dot{\vek q})\) is the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> of size \(n \times n\) with elements <span class="nobr">\(C_{\mathrm{kj}} = \sum_{\mathrm{i}=1}^{n} c_{\mathrm{ijk}}\,\dot q_{\mathrm{i}}\).</span></p>
+
+<p class="vir"><span class="vir-label">Source:</span> SPONG (6.63) and (6.67) (PDF p. 205), where the \(c_{\mathrm{ijk}}\) are called Christoffel symbols of the first kind, with no reason for the name.</p></div></div>
+<p>The source does not explain the name after a person, so we take it only as a label. Our name has a reason: the symbols stand next to the products of velocities in the equation of motion. From equation <a class="xref" href="sec-gibalne-enacbe-robota.html#eq-gib-christoffel" data-knowl="eq-gib-christoffel">(27.39)</a> it follows that <span class="nobr">\(c_{\mathrm{ijk}} = c_{\mathrm{jik}}\),</span> because \(d_{\mathrm{ij}} = d_{\mathrm{ji}}\) and the first two terms are exchanged under <span class="nobr">\(i \leftrightarrow j\).</span> By the definition the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat C\) depends on \(\vek q\) and is linear in <span class="nobr">\(\dot{\vek q}\).</span> Two symbols are used elsewhere in the book: \(\mat C\) is here the matrix of the velocity terms, not the damping matrix of chapter <a class="xref" href="ch-nihanje-vec-ps.html">10</a>, and \(g\) without an argument is the gravitational acceleration \(9{,}81\) m/s<span class="nobr">\(^2\),</span> while \(\vek g(\vek q)\) with an argument is the column of lemma <a class="xref" href="sec-gibalne-enacbe-robota.html#lem-teza-robota" data-knowl="lem-teza-robota">27.54</a>.</p>
+
+<div class="blk izrek" id="thm-gibalne-enacbe-robota"><div class="blk-head"><span class="blk-label">Theorem 27.56</span> <span class="blk-title">Equations of motion of a robot (gibalne enačbe robota)</span></div><div class="blk-body"><p>Let the robot be as in theorem <a class="xref" href="sec-gibalne-enacbe-robota.html#thm-masna-matrika-robota" data-knowl="thm-masna-matrika-robota">27.52</a> and lemma <a class="xref" href="sec-gibalne-enacbe-robota.html#lem-teza-robota" data-knowl="lem-teza-robota">27.54</a>, let the motors give the torques and forces \(\boldsymbol\tau\) and let a load \(\vek F\) (possibly <span class="nobr">\(\vek 0\))</span> also act on the last link. A twice <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">differentiable</a> motion \(\vek q(t)\) is a motion of the robot if and only if for every time</p>
+<div class="eq" id="eq-gib-gibalna">\[\mat M(\vek q)\,\ddot{\vek q} + \mat C(\vek q, \dot{\vek q})\,\dot{\vek q} + \vek g(\vek q) = \boldsymbol\tau + \mat J(\vek q)^\T\vek F , \tag{27.40}\]</div>
+<p>where \(\mat M\) is from theorem <a class="xref" href="sec-gibalne-enacbe-robota.html#thm-masna-matrika-robota" data-knowl="thm-masna-matrika-robota">27.52</a>, \(\mat C\) from definition <a class="xref" href="sec-gibalne-enacbe-robota.html#def-christoffelovi-simboli" data-knowl="def-christoffelovi-simboli">27.55</a> with the elements \(d_{\mathrm{kj}}\) of the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> <span class="nobr">\(\mat M\),</span> and \(\vek g\) from lemma <a class="xref" href="sec-gibalne-enacbe-robota.html#lem-teza-robota" data-knowl="lem-teza-robota">27.54</a>. The matrix \(\mat M\) is <a class="xref auto" href="sec-matrike.html#def-inverzna-matrika" data-knowl="def-inverzna-matrika">invertible</a>, so <span class="nobr">\(\ddot{\vek q} = \mat M^{-1}(\boldsymbol\tau + \mat J^\T\vek F - \mat C\dot{\vek q} - \vek g)\).</span></p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that the \(k\)-th Lagrange equation is exactly the \(k\)-th row of equation <a class="xref" href="sec-gibalne-enacbe-robota.html#eq-gib-gibalna" data-knowl="eq-gib-gibalna">(27.40)</a>. For the \(k\)-th coordinate we compute both <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivatives</a> of the energy.</p>
+<ol>
+<li>The robot satisfies the assumptions of theorem <a class="xref" href="sec-lagrangeeve-enacbe.html#thm-lagrange-konservativne" data-knowl="thm-lagrange-konservativne">8.90</a>: the <a class="xref auto" href="sec-robotske-verige.html#def-spremenljivke-zglobov" data-knowl="def-spremenljivke-zglobov">joint variables</a> are generalized <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">coordinates</a> (lemma <a class="xref" href="sec-robotske-verige.html#lem-zglobi-so-koordinate" data-knowl="lem-zglobi-so-koordinate">27.4</a>), the joints are ideal, \(T = \tfrac12\dot{\vek q}^\T\mat M\dot{\vek q}\) (theorem <a class="xref" href="sec-gibalne-enacbe-robota.html#thm-masna-matrika-robota" data-knowl="thm-masna-matrika-robota">27.52</a>) and the force of gravity has the potential \(V\) (lemma <a class="xref" href="sec-gibalne-enacbe-robota.html#lem-teza-robota" data-knowl="lem-teza-robota">27.54</a>).</li>
+<li>Motor \(i\) acts with the moment \(\tau_{\mathrm{i}}\vek z_{\mathrm{i}-1}\) on link \(i\) and with the opposite moment on link <span class="nobr">\(i - 1\).</span> The virtual rotation of link \(k\) is \(\delta\boldsymbol\varphi_{\mathrm{k}} = \mat W_{\mathrm{k}}\,\delta\vek q\) (definition <a class="xref" href="sec-posplosene-sile.html#def-posplosena-sila" data-knowl="def-posplosena-sila">8.50</a>), where column \(s\) of the matrix \(\mat W_{\mathrm{k}}\) is \(\vek z_{\mathrm{s}-1}\) for a revolute joint \(s \le k\) and \(\vek 0\) otherwise. For a revolute joint \(i\) the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> \(\mat W_{\mathrm{i}}\) and \(\mat W_{\mathrm{i}-1}\) differ only in column <span class="nobr">\(i\),</span> which is <span class="nobr">\(\vek z_{\mathrm{i}-1}\),</span> so <span class="nobr">\(\delta\boldsymbol\varphi_{\mathrm{i}} - \delta\boldsymbol\varphi_{\mathrm{i}-1} = \vek z_{\mathrm{i}-1}\delta q_{\mathrm{i}}\).</span> The work of the pair is <span class="nobr">\(\tau_{\mathrm{i}}\vek z_{\mathrm{i}-1}\cdot(\delta\boldsymbol\varphi_{\mathrm{i}} - \delta\boldsymbol\varphi_{\mathrm{i}-1}) = \tau_{\mathrm{i}}\,\delta q_{\mathrm{i}}\).</span> For a prismatic joint the forces \(\pm\tau_{\mathrm{i}}\vek z_{\mathrm{i}-1}\) act at the same point of both links, which separate by \(\vek z_{\mathrm{i}-1}\delta q_{\mathrm{i}}\) along the coordinate <span class="nobr">\(q_{\mathrm{i}}\),</span> and the work is again <span class="nobr">\(\tau_{\mathrm{i}}\,\delta q_{\mathrm{i}}\).</span> The generalized force of motor \(i\) (definition <a class="xref" href="sec-posplosene-sile.html#def-posplosena-sila" data-knowl="def-posplosena-sila">8.50</a>) is therefore <span class="nobr">\(\tau_{\mathrm{i}}\),</span> and the generalized force of the load is \((\mat J^\T\vek F)_{\mathrm{k}}\) (steps 2 to 4 of the proof of theorem <a class="xref" href="sec-singularnosti-statika.html#thm-sile-v-zglobih" data-knowl="thm-sile-v-zglobih">27.50</a>). The nonconservative generalized force is thus <span class="nobr">\(Q^{\mathrm{nc}}_{\mathrm{k}} = \tau_{\mathrm{k}} + (\mat J^\T\vek F)_{\mathrm{k}}\).</span></li>
+<li>By theorem <a class="xref" href="sec-lagrangeeve-enacbe.html#thm-lagrange-konservativne" data-knowl="thm-lagrange-konservativne">8.90</a>, and since \(V\) does not depend on <span class="nobr">\(\dot q_{\mathrm{k}}\),</span> <span class="nobr">\(\dfrac{\mathrm{d}}{\mathrm{d}t}\dfrac{\partial T}{\partial\dot q_{\mathrm{k}}} - \dfrac{\partial T}{\partial q_{\mathrm{k}}} + \dfrac{\partial V}{\partial q_{\mathrm{k}}} = \tau_{\mathrm{k}} + (\mat J^\T\vek F)_{\mathrm{k}}\).</span></li>
+<li>The derivative with respect to velocity is <span class="nobr">\(\partial T/\partial\dot q_{\mathrm{k}} = \sum_{\mathrm{j}} d_{\mathrm{kj}}\dot q_{\mathrm{j}}\),</span> since \(\mat M\) is symmetric. By the <a class="xref auto" href="sec-srednja-vrednost.html#lem-pravila-odvajanja" data-knowl="lem-pravila-odvajanja">product rule</a> and the <a class="xref auto" href="sec-zamenjava-spremenljivk.html#lem-verizno-pravilo" data-knowl="lem-verizno-pravilo">chain rule</a> (lemma <a class="xref" href="sec-implicitna-funkcija.html#lem-verizno-pravilo-n" data-knowl="lem-verizno-pravilo-n">8.29</a>) its time derivative is <span class="nobr">\(\sum_{\mathrm{j}} d_{\mathrm{kj}}\ddot q_{\mathrm{j}} + \sum_{\mathrm{i},\mathrm{j}}\dfrac{\partial d_{\mathrm{kj}}}{\partial q_{\mathrm{i}}}\dot q_{\mathrm{i}}\dot q_{\mathrm{j}}\).</span></li>
+<li>The derivative with respect to position is <span class="nobr">\(\partial T/\partial q_{\mathrm{k}} = \tfrac12\sum_{\mathrm{i},\mathrm{j}}\dfrac{\partial d_{\mathrm{ij}}}{\partial q_{\mathrm{k}}}\dot q_{\mathrm{i}}\dot q_{\mathrm{j}}\),</span> because \(\dot q_{\mathrm{i}}\) does not depend on \(q_{\mathrm{k}}\) <span class="nobr">(\(T\)</span> is a <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> of the \(2n\) variables \(\vek q\) and \(\dot{\vek q}\) as in section <a class="xref" href="sec-lagrangeeve-enacbe.html">8.9</a>, where we differentiate with respect to one and hold the others).</li>
+<li>Their difference is \(\sum_{\mathrm{j}} d_{\mathrm{kj}}\ddot q_{\mathrm{j}} + \sum_{\mathrm{i},\mathrm{j}}a_{\mathrm{ij}}\,\dot q_{\mathrm{i}}\dot q_{\mathrm{j}}\) with <span class="nobr">\(a_{\mathrm{ij}} = \dfrac{\partial d_{\mathrm{kj}}}{\partial q_{\mathrm{i}}} - \tfrac12\dfrac{\partial d_{\mathrm{ij}}}{\partial q_{\mathrm{k}}}\).</span></li>
+<li>The sum \(\sum_{\mathrm{i},\mathrm{j}}a_{\mathrm{ij}}\dot q_{\mathrm{i}}\dot q_{\mathrm{j}}\) does not change if \(a_{\mathrm{ij}}\) is replaced by <span class="nobr">\(\tfrac12(a_{\mathrm{ij}} + a_{\mathrm{ji}})\):</span> by renaming indices, <span class="nobr">\(\sum_{\mathrm{i},\mathrm{j}}a_{\mathrm{ji}}\dot q_{\mathrm{j}}\dot q_{\mathrm{i}} = \sum_{\mathrm{i},\mathrm{j}}a_{\mathrm{ij}}\dot q_{\mathrm{i}}\dot q_{\mathrm{j}}\),</span> and the sum of both is twice the wanted one. Since <span class="nobr">\(d_{\mathrm{ij}} = d_{\mathrm{ji}}\),</span> <span class="nobr">\(\tfrac12(a_{\mathrm{ij}} + a_{\mathrm{ji}}) = \tfrac12\big(\frac{\partial d_{\mathrm{kj}}}{\partial q_{\mathrm{i}}} + \frac{\partial d_{\mathrm{ki}}}{\partial q_{\mathrm{j}}} - \frac{\partial d_{\mathrm{ij}}}{\partial q_{\mathrm{k}}}\big) = c_{\mathrm{ijk}}\).</span></li>
+<li>So <span class="nobr">\(\sum_{\mathrm{i},\mathrm{j}}c_{\mathrm{ijk}}\dot q_{\mathrm{i}}\dot q_{\mathrm{j}} = \sum_{\mathrm{j}}\big(\sum_{\mathrm{i}} c_{\mathrm{ijk}}\dot q_{\mathrm{i}}\big)\dot q_{\mathrm{j}} = \sum_{\mathrm{j}} C_{\mathrm{kj}}\dot q_{\mathrm{j}}\).</span> Insert into step 3 and \(\partial V/\partial q_{\mathrm{k}} = g_{\mathrm{k}}\) (lemma <a class="xref" href="sec-gibalne-enacbe-robota.html#lem-teza-robota" data-knowl="lem-teza-robota">27.54</a>): \(\sum_{\mathrm{j}} d_{\mathrm{kj}}\ddot q_{\mathrm{j}} + \sum_{\mathrm{j}} C_{\mathrm{kj}}\dot q_{\mathrm{j}} + g_{\mathrm{k}} = \tau_{\mathrm{k}} + (\mat J^\T\vek F)_{\mathrm{k}}\) for <span class="nobr">\(k = 1, \dots, n\),</span> which is <a class="xref" href="sec-gibalne-enacbe-robota.html#eq-gib-gibalna" data-knowl="eq-gib-gibalna">(27.40)</a>.</li>
+<li>The steps are equalities, so the converse holds as well. The matrix \(\mat M\) is <a class="xref auto" href="sec-matrike.html#def-inverzna-matrika" data-knowl="def-inverzna-matrika">invertible</a>: \(\mat M\vek x = \vek 0\) implies <span class="nobr">\(\vek x^\T\mat M\vek x = 0\),</span> and by <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definiteness</a> <span class="nobr">\(\vek x = \vek 0\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> SPONG (6.56)-(6.68) (PDF pp. 203-205): the same derivation, in which equality (6.62) is left as an exercise (problem 6-7, PDF p. 204). The proof by steps 1, 2, 7 and 9 is ours.</p></div></div>
+<p>What did the theorem say? The term \(\mat M\ddot{\vek q}\) is the part of the torque that is linear in the acceleration, and \(\vek g\) says what the arm needs for holding. The remaining term \(\mat C\dot{\vek q}\) contains only velocities and arises because the mass matrix changes with the configuration: the coefficients \(c_{\mathrm{ijk}}\) are made of derivatives of <span class="nobr">\(\mat M\).</span> If \(\dot{\vek q} = \vek 0\) it vanishes, and for \(\ddot{\vek q} = \vek 0\) what remains is <span class="nobr">\(\vek g = \boldsymbol\tau + \mat J^\T\vek F\),</span> which is exactly theorem <a class="xref" href="sec-singularnosti-statika.html#thm-sile-v-zglobih" data-knowl="thm-sile-v-zglobih">27.50</a>. The terms with a squared velocity, <span class="nobr">\(\dot q_{\mathrm{i}}^2\),</span> are according to SPONG (PDF p. 205) called centrifugal, from the Latin centrum and fugere, to flee from the centre: a <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">body</a> that moves in a circle departs from the circle by inertia. The terms with a product of two different velocities are according to the same source called Coriolis. They are named after a person, the reason for the name SPONG does not give, so we call them mixed terms.</p>
+
+<h3 id="sec-gib-preizkusi"><span class="h-num">27.8.4</span> Tests and use</h3>
+<div class="blk primer" id="ex-gib-roka-a-enacbe"><div class="blk-head"><span class="blk-label">Example 27.57</span> <span class="blk-title">Equations of motion of arm A (gibalne enačbe roke A)</span></div><div class="blk-body"><p>Arm A, \(\mat M\) from equation <a class="xref" href="sec-gibalne-enacbe-robota.html#eq-gib-masna-roka-a" data-knowl="eq-gib-masna-roka-a">(27.35)</a> and \(\vek g\) from equation <a class="xref" href="sec-gibalne-enacbe-robota.html#eq-gib-teza-roka-a" data-knowl="eq-gib-teza-roka-a">(27.38)</a>.</p>
+<ol>
+<li>The <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat M\) depends only on <span class="nobr">\(q_2\),</span> so all <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivatives</a> with respect to \(q_1\) are zero. The derivatives with respect to \(q_2\) are <span class="nobr">\(\partial d_{11}/\partial q_2 = -\tfrac52\sin q_2 = 2h\),</span> \(\partial d_{12}/\partial q_2 = -\tfrac54\sin q_2 = h\) and \(\partial d_{22}/\partial q_2 = 0\) with \(h = -m_2l_1l_{\mathrm{c}2}\sin q_2 = -1{,}25\sin q_2\) kg m<span class="nobr">\(^2\).</span></li>
+<li>By equation <a class="xref" href="sec-gibalne-enacbe-robota.html#eq-gib-christoffel" data-knowl="eq-gib-christoffel">(27.39)</a> the nonzero symbols are \(c_{121} = c_{211} = c_{221} = h\) and <span class="nobr">\(c_{112} = -h\).</span> For example \(c_{112} = \tfrac12(\partial d_{21}/\partial q_1 + \partial d_{21}/\partial q_1 - \partial d_{11}/\partial q_2) = -\tfrac12\cdot 2h = -h\) and <span class="nobr">\(c_{221} = \tfrac12(\partial d_{12}/\partial q_2 + \partial d_{12}/\partial q_2 - \partial d_{22}/\partial q_1) = h\).</span></li>
+<li>The matrix \(C_{\mathrm{kj}} = \sum_{\mathrm{i}}c_{\mathrm{ijk}}\dot q_{\mathrm{i}}\) is
+<div class="eq" id="eq-gib-c-roka-a">\[\mat C(\vek q, \dot{\vek q}) = h\begin{pmatrix} \dot q_2 &amp; \dot q_1 + \dot q_2 \\ -\dot q_1 &amp; 0 \end{pmatrix} . \tag{27.41}\]</div></li>
+<li>The equations by components, with <span class="nobr">\(\vek F = \vek 0\):</span>
+<div class="eq" id="eq-gib-roka-a-enacbi">\[\begin{aligned} \tau_1 &amp;= \big(\tfrac{35}{4} + \tfrac52\cos q_2\big)\ddot q_1 + \big(\tfrac5{12} + \tfrac54\cos q_2\big)\ddot q_2 + h\,(2\dot q_1\dot q_2 + \dot q_2^2) + 98{,}1\cos q_1 + 12{,}2625\cos(q_1 + q_2) , \\ \tau_2 &amp;= \big(\tfrac5{12} + \tfrac54\cos q_2\big)\ddot q_1 + \tfrac5{12}\ddot q_2 - h\,\dot q_1^2 + 12{,}2625\cos(q_1 + q_2) . \end{aligned} \tag{27.42}\]</div></li>
+</ol>
+
+<p class="vir"><span class="vir-label">Source:</span> The computation is ours (SymPy, num-08.py). SPONG (6.90)-(6.91) (PDF p. 210) gives the same equations in its own notation.</p></div></div>
+<p>In the second equation stands <span class="nobr">\(-h\dot q_1^2 = 1{,}25\sin q_2\,\dot q_1^2\),</span> the centrifugal term: when the first link turns with <span class="nobr">\(\dot q_1\),</span> the mass of the second link moves away from \(O\) by inertia and would turn the second link about <span class="nobr">\(o_1\),</span> so the torque of the motor of the second joint must balance this moment. In the first equation are the mixed term \(2h\dot q_1\dot q_2\) and the centrifugal term <span class="nobr">\(h\dot q_2^2\).</span></p>
+<p><strong>A test with the double pendulum of chapter <a class="xref" href="ch-analiticna-dinamika.html">8</a>.</strong> The equations contain more terms than can be checked by hand, so we compare the computation with an independent computation of the same system. The geometry is the same as in figure <a class="xref" href="sec-gibalne-enacbe-robota.html#fig-gib-roka-tezisca" data-knowl="fig-gib-roka-tezisca">27.34</a>, except that frame 0 is turned and the masses are in the joint and at the tip. Take point masses on light rods with \(l_1 = 1\) m and \(l_2 = 0{,}5\) m as in example <a class="xref" href="sec-posplosene-koordinate.html#ex-pko-dvojno-nihalo" data-knowl="ex-pko-dvojno-nihalo">8.49</a>, \(m_1 = 10\) kg in the joint and \(m_2 = 5\) kg at the tip (the masses are ours, the example does not give them). Turn frame 0 so that the axis \(x_0\) points downward, and take \(q_1 = \theta_1\) and \(q_2 = \theta_2 - \theta_1\) (the relative angle, step 3 of example <a class="xref" href="sec-posplosene-koordinate.html#ex-pko-dvojno-nihalo" data-knowl="ex-pko-dvojno-nihalo">8.49</a>). At \(\theta_1 = 30^\circ\) and <span class="nobr">\(\theta_2 = 60^\circ\),</span> so <span class="nobr">\(\vek q = (30^\circ, 30^\circ)\),</span> the points are \(P_1 = (0{,}866,\ 0{,}5)\) m and \(P_2 = (1{,}116,\ 0{,}933)\) m in these axes, that is \((0{,}5000,\ -0{,}8660)\) m and \((0{,}9330,\ -1{,}1160)\) m in the axes of the example. The <a class="xref auto" href="sec-dalembert.html#def-masa-tezisce" data-knowl="def-masa-tezisce">centres of mass</a> are now in the joint and at the tip, <span class="nobr">\(\mat J_{\mathrm{G},\mathrm{k}} = \mat 0\),</span> <span class="nobr">\(\vek e = -\vek e_{\mathrm{x}_0}\).</span> Theorem <a class="xref" href="sec-gibalne-enacbe-robota.html#thm-masna-matrika-robota" data-knowl="thm-masna-matrika-robota">27.52</a> gives</p>
+<div class="eq">\[\mat M = \begin{pmatrix} 16{,}25 + 5\cos q_2 &amp; 1{,}25 + 2{,}5\cos q_2 \\ 1{,}25 + 2{,}5\cos q_2 &amp; 1{,}25 \end{pmatrix}\text{ kg m}^2 , \qquad \vek g = \begin{pmatrix} 147{,}15\sin q_1 + 24{,}525\sin(q_1 + q_2) \\ 24{,}525\sin(q_1 + q_2) \end{pmatrix}\text{ N m} .\]</div>
+<p>At <span class="nobr">\(q_2 = 30^\circ\),</span> <span class="nobr">\(\mat M = \begin{pmatrix} 20{,}580 &amp; 3{,}415 \\ 3{,}415 &amp; 1{,}25 \end{pmatrix}\),</span> \(\vek g = (94{,}814,\ 21{,}239)\) N m and with \(h = -m_2l_1l_2\sin q_2 = -1{,}25\) kg m\(^2\) equation <a class="xref" href="sec-gibalne-enacbe-robota.html#eq-gib-c-roka-a" data-knowl="eq-gib-c-roka-a">(27.41)</a> (the same form) at \(\dot{\vek q} = (1,\ 0{,}5)\) rad/s gives \(\mat C = \begin{pmatrix} -0{,}625 &amp; -1{,}875 \\ 1{,}25 &amp; 0 \end{pmatrix}\) kg m\(^2\)/s. For \(\boldsymbol\tau = \vek 0\) equation <a class="xref" href="sec-gibalne-enacbe-robota.html#eq-gib-gibalna" data-knowl="eq-gib-gibalna">(27.40)</a> gives the accelerations \(\ddot{\vek q} = (-2{,}8275,\ -10{,}2664)\) rad/s<span class="nobr">\(^2\).</span> The same system in the angles <span class="nobr">\(\theta_1\),</span> \(\theta_2\) of chapter <a class="xref" href="ch-analiticna-dinamika.html">8</a>: from \(T\) and \(V\) by theorem <a class="xref" href="sec-lagrangeeve-enacbe.html#thm-lagrange-konservativne" data-knowl="thm-lagrange-konservativne">8.90</a>, without equation <a class="xref" href="sec-gibalne-enacbe-robota.html#eq-gib-gibalna" data-knowl="eq-gib-gibalna">(27.40)</a>, the equations are (SymPy)</p>
+<div class="eq">\[\begin{aligned} 15\ddot\theta_1 + 2{,}5\cos(\theta_1 - \theta_2)\,\ddot\theta_2 + 2{,}5\sin(\theta_1 - \theta_2)\,\dot\theta_2^2 + 147{,}15\sin\theta_1 &amp;= 0 , \\ 2{,}5\cos(\theta_1 - \theta_2)\,\ddot\theta_1 + 1{,}25\,\ddot\theta_2 - 2{,}5\sin(\theta_1 - \theta_2)\,\dot\theta_1^2 + 24{,}525\sin\theta_2 &amp;= 0 . \end{aligned}\]</div>
+<p>At \(\dot\theta = (1,\ 1{,}5)\) rad/s and accelerations \(\ddot\theta_1 = \ddot q_1 = -2{,}8275\) and \(\ddot\theta_2 = \ddot q_1 + \ddot q_2 = -13{,}0940\) rad/s\(^2\) (from <span class="nobr">\(\theta_2 = q_1 + q_2\))</span> the left sides are \(0{,}0007\) and <span class="nobr">\(0{,}0001\),</span> so zero within rounding, and in SymPy to <span class="nobr">\(10^{-8}\).</span> The <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> <span class="nobr">\(\mat M\),</span> \(\mat C\) and \(\vek g\) of the theorem therefore give a motion that the independently derived equation in other <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">coordinates</a> confirms.</p>
+
+<figure class="blk slika" id="fig-gib-kartezijski"><p><span class="svgfig" role="img" aria-label="Cartesian robot with a cart on a vertical guide and a horizontal slider"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='286.50pt' height='177.41pt' viewBox='-72.000004 -72.000006 212.222944 131.414545'>
+<defs>
+<path id='c27-08-kartezijski-g0-71' d='M7.571606-6.924035C7.571606-6.953923 7.551681-7.023661 7.462017-7.023661C7.43213-7.023661 7.422167-7.013699 7.312578-6.90411L6.615193-6.136986C6.525529-6.276463 6.067248-7.023661 4.961395-7.023661C2.739726-7.023661 .498132-4.821918 .498132-2.510585C.498132-.926526 1.603985 .219178 3.217933 .219178C3.656289 .219178 4.104608 .129514 4.463263-.019925C4.961395-.219178 5.150685-.428394 5.330012-.627646C5.419676-.37858 5.678705-.009963 5.778331-.009963C5.828144-.009963 5.84807-.039851 5.84807-.049813C5.867995-.069738 5.967621-.448319 6.017435-.657534L6.206725-1.424658C6.246575-1.594022 6.296389-1.763387 6.336239-1.932752C6.445828-2.381071 6.455791-2.400996 7.023661-2.410959C7.073474-2.410959 7.183064-2.420922 7.183064-2.610212C7.183064-2.67995 7.13325-2.719801 7.053549-2.719801C6.824408-2.719801 6.236613-2.689913 6.007472-2.689913C5.69863-2.689913 4.921544-2.719801 4.612702-2.719801C4.523039-2.719801 4.403487-2.719801 4.403487-2.520548C4.403487-2.410959 4.483188-2.410959 4.702366-2.410959C4.712329-2.410959 5.001245-2.410959 5.230386-2.391034C5.489415-2.361146 5.539228-2.331258 5.539228-2.201743C5.539228-2.11208 5.429639-1.663761 5.330012-1.295143C5.051059-.199253 3.755915-.089664 3.407223-.089664C2.450809-.089664 1.404732-.657534 1.404732-2.181818C1.404732-2.49066 1.504359-4.134496 2.550436-5.429639C3.088418-6.107098 4.054795-6.714819 5.041096-6.714819C6.057285-6.714819 6.645081-5.947696 6.645081-4.79203C6.645081-4.393524 6.615193-4.383562 6.615193-4.283935S6.724782-4.184309 6.764633-4.184309C6.894147-4.184309 6.894147-4.204234 6.94396-4.383562L7.571606-6.924035Z'/>
+<path id='c27-08-kartezijski-g0-102' d='M3.656289-3.985056H4.513076C4.712329-3.985056 4.811955-3.985056 4.811955-4.184309C4.811955-4.293898 4.712329-4.293898 4.542964-4.293898H3.716065L3.92528-5.429639C3.965131-5.638854 4.104608-6.346202 4.164384-6.465753C4.254047-6.655044 4.423412-6.804483 4.632628-6.804483C4.672478-6.804483 4.931507-6.804483 5.120797-6.625156C4.682441-6.585305 4.582814-6.236613 4.582814-6.087173C4.582814-5.858032 4.762142-5.738481 4.951432-5.738481C5.210461-5.738481 5.499377-5.957659 5.499377-6.336239C5.499377-6.794521 5.041096-7.023661 4.632628-7.023661C4.293898-7.023661 3.666252-6.844334 3.367372-5.858032C3.307597-5.648817 3.277709-5.549191 3.038605-4.293898H2.351183C2.161893-4.293898 2.052304-4.293898 2.052304-4.104608C2.052304-3.985056 2.141968-3.985056 2.331258-3.985056H2.988792L2.241594-.049813C2.062267 .916563 1.892902 1.823163 1.374844 1.823163C1.334994 1.823163 1.085928 1.823163 .896638 1.643836C1.354919 1.613948 1.444583 1.255293 1.444583 1.105853C1.444583 .876712 1.265255 .757161 1.075965 .757161C.816936 .757161 .52802 .976339 .52802 1.354919C.52802 1.803238 .966376 2.042341 1.374844 2.042341C1.92279 2.042341 2.321295 1.454545 2.500623 1.075965C2.819427 .448319 3.048568-.757161 3.058531-.826899L3.656289-3.985056Z'/>
+<path id='c27-08-kartezijski-g0-103' d='M4.692403-3.755915C4.702366-3.815691 4.722291-3.865504 4.722291-3.935243C4.722291-4.104608 4.60274-4.204234 4.433375-4.204234C4.333748-4.204234 4.064757-4.134496 4.024907-3.775841C3.845579-4.144458 3.496887-4.403487 3.098381-4.403487C1.96264-4.403487 .727273-3.008717 .727273-1.574097C.727273-.587796 1.334994 0 2.052304 0C2.6401 0 3.108344-.468244 3.20797-.577833L3.217933-.56787C3.008717 .318804 2.889166 .727273 2.889166 .747198C2.849315 .836862 2.510585 1.823163 1.454545 1.823163C1.265255 1.823163 .936488 1.8132 .657534 1.723537C.956413 1.633873 1.066002 1.374844 1.066002 1.205479C1.066002 1.046077 .956413 .856787 .687422 .856787C.468244 .856787 .14944 1.036115 .14944 1.43462C.14944 1.843088 .518057 2.042341 1.474471 2.042341C2.719801 2.042341 3.437111 1.265255 3.58655 .667497L4.692403-3.755915ZM3.39726-1.275218C3.337484-1.016189 3.108344-.767123 2.889166-.577833C2.67995-.398506 2.371108-.219178 2.082192-.219178C1.58406-.219178 1.43462-.737235 1.43462-1.135741C1.43462-1.613948 1.723537-2.789539 1.992528-3.297634C2.261519-3.785803 2.689913-4.184309 3.108344-4.184309C3.765878-4.184309 3.905355-3.377335 3.905355-3.327522S3.88543-3.217933 3.875467-3.178082L3.39726-1.275218Z'/>
+<path id='c27-08-kartezijski-g0-109' d='M.876712-.587796C.846824-.438356 .787049-.209215 .787049-.159402C.787049 .019925 .926526 .109589 1.075965 .109589C1.195517 .109589 1.374844 .029888 1.444583-.169365C1.454545-.18929 1.574097-.657534 1.633873-.9066L1.853051-1.803238C1.912827-2.022416 1.972603-2.241594 2.022416-2.470735C2.062267-2.6401 2.141968-2.929016 2.15193-2.968867C2.30137-3.277709 2.82939-4.184309 3.775841-4.184309C4.224159-4.184309 4.313823-3.815691 4.313823-3.486924C4.313823-3.237858 4.244085-2.958904 4.164384-2.660025L3.88543-1.504359L3.686177-.747198C3.646326-.547945 3.556663-.209215 3.556663-.159402C3.556663 .019925 3.696139 .109589 3.845579 .109589C4.154421 .109589 4.214197-.139477 4.293898-.458281C4.433375-1.016189 4.801993-2.470735 4.891656-2.859278C4.921544-2.988792 5.449564-4.184309 6.535492-4.184309C6.963885-4.184309 7.073474-3.845579 7.073474-3.486924C7.073474-2.919054 6.655044-1.783313 6.455791-1.255293C6.366127-1.016189 6.326276-.9066 6.326276-.707347C6.326276-.239103 6.674969 .109589 7.143213 .109589C8.079701 .109589 8.448319-1.344956 8.448319-1.424658C8.448319-1.524284 8.358655-1.524284 8.328767-1.524284C8.229141-1.524284 8.229141-1.494396 8.179328-1.344956C8.029888-.816936 7.711083-.109589 7.163138-.109589C6.993773-.109589 6.924035-.209215 6.924035-.438356C6.924035-.687422 7.013699-.926526 7.103362-1.145704C7.292653-1.663761 7.711083-2.769614 7.711083-3.337484C7.711083-3.985056 7.312578-4.403487 6.56538-4.403487S5.310087-3.965131 4.941469-3.437111C4.931507-3.566625 4.901619-3.905355 4.622665-4.144458C4.373599-4.353674 4.054795-4.403487 3.805729-4.403487C2.909091-4.403487 2.420922-3.765878 2.251557-3.536737C2.201743-4.104608 1.783313-4.403487 1.334994-4.403487C.876712-4.403487 .687422-4.014944 .597758-3.835616C.418431-3.486924 .288917-2.899128 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.779577 .577833-2.998755C.747198-3.706102 .946451-4.184309 1.305106-4.184309C1.464508-4.184309 1.613948-4.104608 1.613948-3.726027C1.613948-3.516812 1.58406-3.407223 1.454545-2.889166L.876712-.587796Z'/>
+<path id='c27-08-kartezijski-g0-113' d='M4.503113-4.293898C4.503113-4.333748 4.473225-4.393524 4.403487-4.393524C4.293898-4.393524 3.895392-3.995019 3.726027-3.706102C3.506849-4.244085 3.118306-4.403487 2.799502-4.403487C1.62391-4.403487 .398506-2.929016 .398506-1.484433C.398506-.508095 .986301 .109589 1.713574 .109589C2.141968 .109589 2.530511-.129514 2.889166-.488169C2.799502-.139477 2.470735 1.205479 2.440847 1.295143C2.361146 1.574097 2.281445 1.613948 1.723537 1.62391C1.594022 1.62391 1.494396 1.62391 1.494396 1.823163C1.494396 1.833126 1.494396 1.932752 1.62391 1.932752C1.942715 1.932752 2.291407 1.902864 2.620174 1.902864C2.958904 1.902864 3.317559 1.932752 3.646326 1.932752C3.696139 1.932752 3.825654 1.932752 3.825654 1.733499C3.825654 1.62391 3.726027 1.62391 3.566625 1.62391C3.088418 1.62391 3.088418 1.554172 3.088418 1.464508C3.088418 1.39477 3.108344 1.334994 3.128269 1.24533L4.503113-4.293898ZM1.743462-.109589C1.145704-.109589 1.105853-.876712 1.105853-1.046077C1.105853-1.524284 1.39477-2.610212 1.564134-3.028643C1.872976-3.765878 2.391034-4.184309 2.799502-4.184309C3.447073-4.184309 3.58655-3.377335 3.58655-3.307597C3.58655-3.247821 3.038605-1.066002 3.008717-1.026152C2.859278-.747198 2.30137-.109589 1.743462-.109589Z'/>
+<path id='c27-08-kartezijski-g1-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='c27-08-kartezijski-g1-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+</defs>
+<g id='c27-08-kartezijski-page1'>
+<g stroke-miterlimit='10' transform='translate(11.96771,53.521189)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='tir'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='1.6'>
+<path d='M-39.83366 0V125.1919' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-56.90549 0H-22.76228' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-56.90549 0L-62.59595-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-49.79231 0L-55.48277-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-42.67912 0L-48.36958-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-35.56593 0L-41.2564-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-28.45274 0L-34.1432-5.69046' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='clen1'>
+<g stroke-width='1.2'>
+<path d='M-39.83366 45.52455V68.2864H14.22636V45.52455ZM14.22636 68.2864' fill='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M-10.96501 56.90549C-10.96501 57.92093-11.7882 58.74411-12.80363 58.74411C-13.81908 58.74411-14.64226 57.92093-14.64226 56.90549S-13.81908 55.06686-12.80363 55.06686C-11.7882 55.06686-10.96501 55.89005-10.96501 56.90549ZM-12.80363 56.90549' stroke='none'/>
+</g>
+<g transform='translate(-12.80363,56.90549)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(11.96771,53.521189)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(-9.08092,46.63425)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(11.96771,53.521189)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='11.96771' y='53.521189' xlink:href='#c27-08-kartezijski-g0-71'/>
+<use x='19.800827' y='55.01557' xlink:href='#c27-08-kartezijski-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='clen2'>
+<g stroke-width='1.2'>
+<path d='M-2.84544 68.2864V79.66776H82.51277V68.2864ZM82.51277 79.66776' fill='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M41.67229 73.9773C41.67229 74.99274 40.8491 75.81592 39.83366 75.81592S37.99504 74.99274 37.99504 73.9773C37.99504 72.96185 38.81822 72.13867 39.83366 72.13867S41.67229 72.96185 41.67229 73.9773ZM39.83366 73.9773' stroke='none'/>
+</g>
+<g transform='translate(39.83366,73.9773)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(11.96771,53.521189)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(43.55638,78.91519)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(11.96771,53.521189)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='11.96771' y='53.521189' xlink:href='#c27-08-kartezijski-g0-71'/>
+<use x='19.800827' y='55.01557' xlink:href='#c27-08-kartezijski-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='pomika'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-65.44139 .33748V56.56801' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,-65.44139,6.14052)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,-65.44139,0.22499)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,-65.44139,50.76497)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,-65.44139,56.6805)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(-80.94962,27.27219)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(11.96771,53.521189)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='11.96771' y='53.521189' xlink:href='#c27-08-kartezijski-g0-113'/>
+<use x='16.415172' y='55.01557' xlink:href='#c27-08-kartezijski-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M-65.44139 56.90549H-44.10184' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-12.46616 93.89413H39.49619' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,-6.66312,93.89413)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,-12.57864,93.89413)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(33.69315,93.89413)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(39.60867,93.89413)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(9.03989,101.39653)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(11.96771,53.521189)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='11.96771' y='53.521189' xlink:href='#c27-08-kartezijski-g0-113'/>
+<use x='16.415172' y='55.01557' xlink:href='#c27-08-kartezijski-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M-12.80363 93.89413V68.2864' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M39.83366 93.89413V79.66776' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='pogona'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M-28.45274 68.2864V95.36098' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,-28.45274,92.75595)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(-33.14374,105.16202)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(11.96771,53.521189)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='11.96771' y='53.521189' xlink:href='#c27-08-kartezijski-g0-102'/>
+<use x='16.845277' y='55.01557' xlink:href='#c27-08-kartezijski-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M82.51277 73.9773H106.7419' fill='none'/>
+<g transform='translate(104.13687,73.9773)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(116.02122,71.4773)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(11.96771,53.521189)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='11.96771' y='53.521189' xlink:href='#c27-08-kartezijski-g0-102'/>
+<use x='16.845277' y='55.01557' xlink:href='#c27-08-kartezijski-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='teza'>
+<g stroke-width='0.9'>
+<path d='M-12.80363 56.90549V26.98589' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,-12.80363,29.59091)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+<g transform='translate(-22.00099,14.82375)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(11.96771,53.521189)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='11.96771' y='53.521189' xlink:href='#c27-08-kartezijski-g0-109'/>
+<use x='20.715043' y='55.01557' xlink:href='#c27-08-kartezijski-g1-49'/>
+<use x='25.184413' y='53.521189' xlink:href='#c27-08-kartezijski-g0-103'/>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M39.83366 73.9773V44.05728' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,39.83366,46.66231)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+<g transform='translate(30.6363,31.89514)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(11.96771,53.521189)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='11.96771' y='53.521189' xlink:href='#c27-08-kartezijski-g0-109'/>
+<use x='20.715043' y='55.01557' xlink:href='#c27-08-kartezijski-g1-50'/>
+<use x='25.184413' y='53.521189' xlink:href='#c27-08-kartezijski-g0-103'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 27.36</span>: Cartesian robot with two prismatic joints: link 1 (the cart) slides on a vertical guide, link 2 on link 1 horizontally. Displacements \(q_1\) (from the ground to the centre of mass <span class="nobr">\(G_1\))</span> and \(q_2\) (horizontal distance of \(G_2\) from the vertical through <span class="nobr">\(G_1\)),</span> motor forces \(f_1\) and \(f_2\) (orange) along the joint axes and weights \(m_1g\) and \(m_2g\) at the centres of mass. Not to scale.</figcaption></figure>
+<p><strong>A case without the term <span class="nobr">\(\mat C\dot{\vek q}\).</span></strong> Arm A shows that the velocity terms exist. Does every robot have them? Look at a robot whose links only slide, each along its own line. In figure <a class="xref" href="sec-gibalne-enacbe-robota.html#fig-gib-kartezijski" data-knowl="fig-gib-kartezijski">27.36</a> <a data-del="tir" class="xref kaz" href="sec-gibalne-enacbe-robota.html#fig-gib-kartezijski" data-knowl="fig-gib-kartezijski">the guide</a> is vertical and <a data-del="clen1" class="xref kaz" href="sec-gibalne-enacbe-robota.html#fig-gib-kartezijski" data-knowl="fig-gib-kartezijski">link 1</a> of mass \(m_1 = 10\) kg is threaded on it and slides up and down. Along it slides <a data-del="clen2" class="xref kaz" href="sec-gibalne-enacbe-robota.html#fig-gib-kartezijski" data-knowl="fig-gib-kartezijski">link 2</a> of mass \(m_2 = 5\) kg horizontally. <a data-del="pomika" class="xref kaz" href="sec-gibalne-enacbe-robota.html#fig-gib-kartezijski" data-knowl="fig-gib-kartezijski">The displacements</a> \(q_1\) and \(q_2\) are the <a class="xref auto" href="sec-robotske-verige.html#def-spremenljivke-zglobov" data-knowl="def-spremenljivke-zglobov">joint variables</a>. The motors act with <a data-del="pogona" class="xref kaz" href="sec-gibalne-enacbe-robota.html#fig-gib-kartezijski" data-knowl="fig-gib-kartezijski">the forces</a> \(f_1\) and \(f_2\) along the guides, and on both centres of mass acts <a data-del="teza" class="xref kaz" href="sec-gibalne-enacbe-robota.html#fig-gib-kartezijski" data-knowl="fig-gib-kartezijski">the weight</a>. Both joints are prismatic, so \(\mat W_{\mathrm{k}} = \mat 0\) (the <a class="xref auto" href="sec-kineticna-energija.html#def-kotna-hitrost" data-knowl="def-kotna-hitrost">angular velocity</a> is zero for a prismatic joint), and the columns of the matrices \(\mat A_{\mathrm{k}}\) are the joint axes: \(\vek z_0\) vertically upward and \(\vek z_1\) horizontal. So \(\mat A_1 = (\vek z_0,\ \vek 0)\) (the first link moves only vertically) and <span class="nobr">\(\mat A_2 = (\vek z_0,\ \vek z_1)\).</span> Since \(\vek z_0\) and \(\vek z_1\) are perpendicular <a class="xref auto" href="sec-vektorji.html#def-enotski-vektor" data-knowl="def-enotski-vektor">unit vectors</a>, \(\mat A_1^\T\mat A_1 = \begin{pmatrix} 1 &amp; 0 \\ 0 &amp; 0\end{pmatrix}\) and <span class="nobr">\(\mat A_2^\T\mat A_2 = \begin{pmatrix} 1 &amp; 0 \\ 0 &amp; 1\end{pmatrix}\).</span> Theorem <a class="xref" href="sec-gibalne-enacbe-robota.html#thm-masna-matrika-robota" data-knowl="thm-masna-matrika-robota">27.52</a> gives a constant matrix</p>
+<div class="eq">\[\mat M = m_1\mat A_1^\T\mat A_1 + m_2\mat A_2^\T\mat A_2 = \begin{pmatrix} m_1 + m_2 &amp; 0 \\ 0 &amp; m_2 \end{pmatrix} = \begin{pmatrix} 15 &amp; 0 \\ 0 &amp; 5 \end{pmatrix}\text{ kg} .\]</div>
+<p>All <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivatives</a> of \(\mat M\) are zero, so by equation <a class="xref" href="sec-gibalne-enacbe-robota.html#eq-gib-christoffel" data-knowl="eq-gib-christoffel">(27.39)</a> all \(c_{\mathrm{ijk}} = 0\) and <span class="nobr">\(\mat C = \mat 0\).</span> By equation <a class="xref" href="sec-gibalne-enacbe-robota.html#eq-gib-teza-g" data-knowl="eq-gib-teza-g">(27.37)</a> with \(\vek e = \vek z_0\) the weight is \(\vek g = ((m_1 + m_2)g,\ 0) = (147{,}15,\ 0)\) N. The equations are \((m_1 + m_2)(\ddot q_1 + g) = f_1\) and <span class="nobr">\(m_2\ddot q_2 = f_2\).</span> At \(\ddot{\vek q} = (2,\ -1)\) m/s\(^2\) we get \(f_1 = 177{,}15\) N and \(f_2 = -5\) N, which is exactly Newton. For this robot a forgotten term \(\mat C\dot{\vek q}\) would go unnoticed, because there is none. The reason is written in the formula: the \(c_{\mathrm{ijk}}\) are made of derivatives of <span class="nobr">\(\mat M\).</span> Here \(\mat M\) is constant because the velocity of the centre of mass for each \(\dot q_{\mathrm{i}}\) is the same in every configuration, so the \(\mat A_{\mathrm{k}}\) are constant. For a revolute joint the direction of the velocity turns with the configuration and \(\mat A_{\mathrm{k}}\) depends on <span class="nobr">\(\vek q\):</span> for arm A the matrix \(\mat M\) is a <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> of \(q_2\) (figure <a class="xref" href="sec-gibalne-enacbe-robota.html#fig-gib-masna-matrika" data-knowl="fig-gib-masna-matrika">27.35</a>).</p>
+<p><strong>The error that a forgotten term brings.</strong> Arm A at <span class="nobr">\(\vek q = (30^\circ, 60^\circ)\),</span> \(\dot{\vek q} = (1,\ 0{,}5)\) rad/s, \(\ddot{\vek q} = (2,\ -1)\) rad/s\(^2\) (inverse dynamics, SymPy).</p>
+
+<div class="blk primer" id="ex-gib-obratna-dinamika"><div class="blk-head"><span class="blk-label">Example 27.58</span> <span class="blk-title">Inverse dynamics of arm A (obratna dinamika roke A)</span></div><div class="blk-body"><p>We look for the torques that give the stated motion, without a load.</p>
+<ol>
+<li>The mass <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> from example <a class="xref" href="sec-gibalne-enacbe-robota.html#ex-gib-masna-roka-a" data-knowl="ex-gib-masna-roka-a">27.53</a>: \(\mat M\ddot{\vek q} = \begin{pmatrix} 10 &amp; 1{,}0417 \\ 1{,}0417 &amp; 0{,}4167 \end{pmatrix}\begin{pmatrix} 2 \\ -1 \end{pmatrix} = (18{,}958,\ 1{,}667)\) N m.</li>
+<li>The velocity term: \(h = -1{,}25\sin 60^\circ = -1{,}0825\) kg m<span class="nobr">\(^2\),</span> \(\mat C = h\begin{pmatrix} 0{,}5 &amp; 1{,}5 \\ -1 &amp; 0 \end{pmatrix}\) and \(\mat C\dot{\vek q} = h\,(0{,}5 + 0{,}75,\ -1) = (-1{,}353,\ 1{,}083)\) N m.</li>
+<li>The weight from equation <a class="xref" href="sec-gibalne-enacbe-robota.html#eq-gib-teza-roka-a" data-knowl="eq-gib-teza-roka-a">(27.38)</a>: \(\vek g = (84{,}957,\ 0)\) N m.</li>
+<li>The sum: \(\boldsymbol\tau = (18{,}958 - 1{,}353 + 84{,}957,\ 1{,}667 + 1{,}083 + 0) = (102{,}562,\ 2{,}749)\) N m. If the arm rests in the same configuration, \(\boldsymbol\tau = \vek g = (84{,}957,\ 0)\) N m.</li>
+<li>The error if we leave out the term \(\mat C\dot{\vek q}\) is exactly this term, \((-1{,}353,\ 1{,}083)\) N m, on the second motor \(1{,}083\) of \(2{,}749\) N m, that is \(39\) %. The matrix \(\mat C\) is linear in the velocity, so at \(s\) times the velocities <span class="nobr">\(\mat C(\vek q, s\dot{\vek q})\,s\dot{\vek q} = s^2\,\mat C\dot{\vek q}\):</span> at twice the velocities the error is four times larger, at four times sixteen times larger: the length of the error, \(1{,}733\) N m, grows to \(1{,}733\cdot 16 = 27{,}7\) N m.</li>
+</ol>
+
+<p class="vir"><span class="vir-label">Source:</span> The computation is ours (SymPy, num-08.py).</p></div></div>
+<p>The velocity term is thus small in slow motion and grows quickly with the square of the velocity. So in fast motions we must not leave it out.</p>
+<p>Let us also test a motion along a long path (figure <a class="xref" href="sec-gibalne-enacbe-robota.html#fig-gib-navori" data-knowl="fig-gib-navori">27.37</a>). We turn the first link of arm A from \(0\) to \(90^\circ\) in one second and stop it at the start and at the end, and hold the second link at <span class="nobr">\(q_2 = 60^\circ\).</span> A <a class="xref auto" href="sec-zveznost.html#def-polinom" data-knowl="def-polinom">polynomial</a> that goes from \(0\) to \(\tfrac\pi2\) in one second with zero velocity at both ends must satisfy four conditions. A quadratic cannot, because its velocity is linear and is zero at \(t = 0\) and \(t = 1\) only if it is zero everywhere. The lowest degree is therefore three, \(q_1(t) = \tfrac\pi2\,(3t^2 - 2t^3)\) with \(t\) in seconds. Its velocity is \(\dot q_1 = 3\pi\,t(1 - t)\) and its acceleration \(\ddot q_1 = 3\pi(1 - 2t)\) rad/s<span class="nobr">\(^2\).</span> We compute the torques from equation <a class="xref" href="sec-gibalne-enacbe-robota.html#eq-gib-roka-a-enacbi" data-knowl="eq-gib-roka-a-enacbi">(27.42)</a> with \(\dot q_2 = \ddot q_2 = 0\) (SymPy, num-08.py).</p>
+
+<figure class="blk slika" id="fig-gib-navori"><p><span class="svgfig" role="img" aria-label="Motor torques for a motion of the first link of arm A and the torque without the velocity term"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='349.47pt' height='411.14pt' viewBox='-72.000004 -72.000005 258.867377 304.544528'>
+<defs>
+<path id='c27-08-navori-gibanja-g0-0' d='M6.56538-2.291407C6.734745-2.291407 6.914072-2.291407 6.914072-2.49066S6.734745-2.689913 6.56538-2.689913H1.175592C1.006227-2.689913 .826899-2.689913 .826899-2.49066S1.006227-2.291407 1.175592-2.291407H6.56538Z'/>
+<path id='c27-08-navori-gibanja-g1-48' d='M2.022416-3.291656C2.078207-3.410212 2.085181-3.466002 2.085181-3.514819C2.085181-3.731009 1.889913-3.898381 1.673724-3.898381C1.408717-3.898381 1.325031-3.682192 1.290162-3.57061L.369614-.550934C.36264-.536986 .334745-.446326 .334745-.439352C.334745-.355666 .550934-.285928 .606725-.285928C.655542-.285928 .662516-.299875 .711333-.404483L2.022416-3.291656Z'/>
+<path id='c27-08-navori-gibanja-g2-28' d='M2.929016-3.716065H4.60274C4.732254-3.716065 5.090909-3.716065 5.090909-4.054795C5.090909-4.293898 4.881694-4.293898 4.692403-4.293898H1.902864C1.703611-4.293898 1.315068-4.293898 .876712-3.825654C.547945-3.466999 .268991-2.988792 .268991-2.929016C.268991-2.919054 .268991-2.82939 .388543-2.82939C.468244-2.82939 .488169-2.86924 .547945-2.948941C1.036115-3.716065 1.603985-3.716065 1.8132-3.716065H2.6401L1.663761-.518057C1.62391-.398506 1.564134-.18929 1.564134-.14944C1.564134-.039851 1.633873 .119552 1.853051 .119552C2.181818 .119552 2.231631-.159402 2.261519-.308842L2.929016-3.716065Z'/>
+<path id='c27-08-navori-gibanja-g2-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='c27-08-navori-gibanja-g2-103' d='M4.692403-3.755915C4.702366-3.815691 4.722291-3.865504 4.722291-3.935243C4.722291-4.104608 4.60274-4.204234 4.433375-4.204234C4.333748-4.204234 4.064757-4.134496 4.024907-3.775841C3.845579-4.144458 3.496887-4.403487 3.098381-4.403487C1.96264-4.403487 .727273-3.008717 .727273-1.574097C.727273-.587796 1.334994 0 2.052304 0C2.6401 0 3.108344-.468244 3.20797-.577833L3.217933-.56787C3.008717 .318804 2.889166 .727273 2.889166 .747198C2.849315 .836862 2.510585 1.823163 1.454545 1.823163C1.265255 1.823163 .936488 1.8132 .657534 1.723537C.956413 1.633873 1.066002 1.374844 1.066002 1.205479C1.066002 1.046077 .956413 .856787 .687422 .856787C.468244 .856787 .14944 1.036115 .14944 1.43462C.14944 1.843088 .518057 2.042341 1.474471 2.042341C2.719801 2.042341 3.437111 1.265255 3.58655 .667497L4.692403-3.755915ZM3.39726-1.275218C3.337484-1.016189 3.108344-.767123 2.889166-.577833C2.67995-.398506 2.371108-.219178 2.082192-.219178C1.58406-.219178 1.43462-.737235 1.43462-1.135741C1.43462-1.613948 1.723537-2.789539 1.992528-3.297634C2.261519-3.785803 2.689913-4.184309 3.108344-4.184309C3.765878-4.184309 3.905355-3.377335 3.905355-3.327522S3.88543-3.217933 3.875467-3.178082L3.39726-1.275218Z'/>
+<path id='c27-08-navori-gibanja-g2-116' d='M2.052304-3.985056H2.988792C3.188045-3.985056 3.287671-3.985056 3.287671-4.184309C3.287671-4.293898 3.188045-4.293898 3.008717-4.293898H2.132005C2.49066-5.708593 2.540473-5.907846 2.540473-5.967621C2.540473-6.136986 2.420922-6.236613 2.251557-6.236613C2.221669-6.236613 1.942715-6.22665 1.853051-5.877958L1.464508-4.293898H.52802C.328767-4.293898 .229141-4.293898 .229141-4.104608C.229141-3.985056 .308842-3.985056 .508095-3.985056H1.384807C.667497-1.155666 .627646-.986301 .627646-.806974C.627646-.268991 1.006227 .109589 1.544209 .109589C2.560399 .109589 3.128269-1.344956 3.128269-1.424658C3.128269-1.524284 3.048568-1.524284 3.008717-1.524284C2.919054-1.524284 2.909091-1.494396 2.859278-1.384807C2.430884-.348692 1.902864-.109589 1.564134-.109589C1.354919-.109589 1.255293-.239103 1.255293-.56787C1.255293-.806974 1.275218-.876712 1.315068-1.046077L2.052304-3.985056Z'/>
+<path id='c27-08-navori-gibanja-g3-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='c27-08-navori-gibanja-g3-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c27-08-navori-gibanja-g3-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='c27-08-navori-gibanja-g3-53' d='M4.473225-2.002491C4.473225-3.188045 3.656289-4.184309 2.580324-4.184309C2.102117-4.184309 1.673724-4.024907 1.315068-3.676214V-5.618929C1.514321-5.559153 1.843088-5.489415 2.161893-5.489415C3.387298-5.489415 4.084682-6.396015 4.084682-6.525529C4.084682-6.585305 4.054795-6.635118 3.985056-6.635118C3.975093-6.635118 3.955168-6.635118 3.905355-6.60523C3.706102-6.515567 3.217933-6.316314 2.550436-6.316314C2.15193-6.316314 1.693649-6.386052 1.225405-6.595268C1.145704-6.625156 1.125778-6.625156 1.105853-6.625156C1.006227-6.625156 1.006227-6.545455 1.006227-6.386052V-3.437111C1.006227-3.257783 1.006227-3.178082 1.145704-3.178082C1.215442-3.178082 1.235367-3.20797 1.275218-3.267746C1.384807-3.427148 1.753425-3.965131 2.560399-3.965131C3.078456-3.965131 3.327522-3.506849 3.407223-3.327522C3.566625-2.958904 3.58655-2.570361 3.58655-2.072229C3.58655-1.723537 3.58655-1.125778 3.347447-.707347C3.108344-.318804 2.739726-.059776 2.281445-.059776C1.554172-.059776 .986301-.587796 .816936-1.175592C.846824-1.165629 .876712-1.155666 .986301-1.155666C1.315068-1.155666 1.484433-1.404732 1.484433-1.643836S1.315068-2.132005 .986301-2.132005C.846824-2.132005 .498132-2.062267 .498132-1.603985C.498132-.747198 1.185554 .219178 2.30137 .219178C3.457036 .219178 4.473225-.737235 4.473225-2.002491Z'/>
+<path id='c27-08-navori-gibanja-g4-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='c27-08-navori-gibanja-g4-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+</defs>
+<g id='c27-08-navori-gibanja-page1'>
+<g stroke-miterlimit='10' transform='translate(-39.103317,22.928255)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='osi1'>
+<path d='M0 0H211.88882' fill='none'/>
+<g transform='translate(209.41237,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(219.874,-3.0754)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.103317,22.928255)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.103317' y='22.928255' xlink:href='#c27-08-navori-gibanja-g2-116'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-42.67911V78.16058' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,75.68413)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-4.42883,87.64572)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.103317,22.928255)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.103317' y='22.928255' xlink:href='#c27-08-navori-gibanja-g2-28'/>
+<use x='-34.748101' y='24.422636' xlink:href='#c27-08-navori-gibanja-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-35.55724H-2.27626' fill='none'/>
+<g transform='translate(-29.68707,-38.3628)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.103317,22.928255)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.103317' y='22.928255' xlink:href='#c27-08-navori-gibanja-g0-0'/>
+<use x='-31.354569' y='22.928255' xlink:href='#c27-08-navori-gibanja-g3-49'/>
+<use x='-26.37323' y='22.928255' xlink:href='#c27-08-navori-gibanja-g3-48'/>
+<use x='-21.391891' y='22.928255' xlink:href='#c27-08-navori-gibanja-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 35.55724H-2.27626' fill='none'/>
+<g transform='translate(-21.90927,32.33502)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.103317,22.928255)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.103317' y='22.928255' xlink:href='#c27-08-navori-gibanja-g3-49'/>
+<use x='-34.121978' y='22.928255' xlink:href='#c27-08-navori-gibanja-g3-48'/>
+<use x='-29.140639' y='22.928255' xlink:href='#c27-08-navori-gibanja-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 71.11449H-2.27626' fill='none'/>
+<g transform='translate(-21.90927,67.89227)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.103317,22.928255)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.103317' y='22.928255' xlink:href='#c27-08-navori-gibanja-g3-50'/>
+<use x='-34.121978' y='22.928255' xlink:href='#c27-08-navori-gibanja-g3-48'/>
+<use x='-29.140639' y='22.928255' xlink:href='#c27-08-navori-gibanja-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 0V-2.27626' fill='none'/>
+<g transform='translate(-2.5,-13.35367)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.103317,22.928255)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.103317' y='22.928255' xlink:href='#c27-08-navori-gibanja-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M99.5846 0V-2.27626' fill='none'/>
+<g transform='translate(93.1957,-13.35368)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.103317,22.928255)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.103317' y='22.928255' xlink:href='#c27-08-navori-gibanja-g3-48'/>
+<use x='-34.121978' y='22.928255' xlink:href='#c27-08-navori-gibanja-g2-59'/>
+<use x='-31.354569' y='22.928255' xlink:href='#c27-08-navori-gibanja-g3-53'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M199.1692 0V-2.27626' fill='none'/>
+<g transform='translate(196.6692,-13.35367)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.103317,22.928255)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.103317' y='22.928255' xlink:href='#c27-08-navori-gibanja-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='tau1'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M0 70.59132C0 70.59132 3.59758 69.38225 4.97931 68.91246S8.57697 67.68303 9.95863 67.20535C11.3403 66.72768 13.55585 65.95909 14.93752 65.4696C16.31918 64.98012 18.5351 64.17479 19.91682 63.67741C21.29855 63.18004 23.51442 62.3941 24.89615 61.8848C26.27788 61.37549 28.49373 60.53564 29.87546 60.00664C31.25719 59.47763 33.47311 58.61684 34.85478 58.07205C36.23645 57.52727 38.452 56.64862 39.83366 56.08015C41.21533 55.51169 43.43124 54.56706 44.81297 53.97493S48.41057 52.43219 49.7923 51.81241S53.38988 50.15927 54.7716 49.50792C56.15334 48.85657 58.36926 47.80087 59.75093 47.1179C61.1326 46.43494 63.34814 45.30399 64.72981 44.58548S68.3274 42.69331 69.70912 41.93932C71.09085 41.18532 73.30672 39.93678 74.68845 39.15117C76.07018 38.36555 78.28603 37.09425 79.66776 36.27707C81.04948 35.45988 83.26541 34.11807 84.64708 33.26143S88.2443 30.98724 89.62596 30.10295C91.00763 29.21866 93.22354 27.79999 94.60527 26.88805C95.987 25.9761 98.20287 24.46988 99.5846 23.53029C100.96632 22.5907 103.18219 21.07141 104.56392 20.1161C105.94565 19.1608 108.16156 17.61618 109.54323 16.64503C110.9249 15.67389 113.14044 14.09969 114.52211 13.11667S118.1197 10.55092 119.50143 9.56007C120.88316 8.56923 123.09901 6.96611 124.48074 5.97527C125.86247 4.98442 128.07834 3.40561 129.46007 2.41867S133.05771-.15887 134.43938-1.13791C135.82104-2.11694 138.03659-3.67828 139.41826-4.63763S143.01585-7.11267 144.39758-8.05226S147.99516-10.48975 149.37689-11.40958C150.75862-12.3294 152.97449-13.79353 154.35622-14.6818C155.73795-15.57005 157.95386-16.95895 159.33553-17.81161C160.7172-18.66428 162.93274-20.01013 164.3144-20.82726C165.69608-21.64438 167.912-22.92717 169.29373-23.70091C170.67546-24.47466 172.89131-25.67358 174.27304-26.40396S177.87064-28.28207 179.25237-28.96504S182.85-30.69481 184.23167-31.3264C185.61334-31.958 187.82889-32.93683 189.21056-33.51715C190.59222-34.09747 192.80815-34.98396 194.18988-35.50905C195.57161-36.03413 199.1692-37.30167 199.1692-37.30167' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.7'>
+<path d='M0 37.07375C0 37.07375 3.59758 37.08163 4.97931 37.07375C6.36104 37.06586 8.57697 37.03264 9.95863 37.01686C11.3403 37.00108 13.55585 36.97968 14.93752 36.95999C16.31918 36.9403 18.5351 36.90645 19.91682 36.8749C21.29855 36.84334 23.51442 36.77989 24.89615 36.7325C26.27788 36.6851 28.49373 36.5964 29.87546 36.53322C31.25719 36.47003 33.47311 36.35597 34.85478 36.27707S38.452 36.06712 39.83366 35.96448C41.21533 35.86183 43.43124 35.66364 44.81297 35.53726C46.1947 35.41089 48.41057 35.20752 49.7923 35.05362S53.38988 34.61745 54.7716 34.42801C56.15334 34.23857 58.36926 33.90535 59.75093 33.6882S63.34814 33.11159 64.72981 32.86287S68.3274 32.18375 69.70912 31.89558C71.09085 31.60742 73.30672 31.1096 74.68845 30.78589C76.07018 30.46217 78.28603 29.91772 79.66776 29.56244C81.04948 29.20715 83.26541 28.61214 84.64708 28.22523C86.02875 27.83833 88.2443 27.19234 89.62596 26.77386C91.00763 26.3554 93.22354 25.6592 94.60527 25.20917S98.20287 24.004 99.5846 23.53029C100.96632 23.05658 103.18219 22.28447 104.56392 21.79498C105.94565 21.3055 108.16156 20.50768 109.54323 20.00235S113.14044 18.67398 114.52211 18.15286S118.1197 16.77151 119.50143 16.24649S123.09901 14.89378 124.48074 14.36876C125.86247 13.84373 128.07834 12.98749 129.46007 12.4624C130.8418 11.93732 133.05771 11.09747 134.43938 10.58424C135.82104 10.07101 138.03659 9.25687 139.41826 8.7634S143.01585 7.50136 144.39758 7.02765S147.99516 5.80316 149.37689 5.34921S152.97449 4.1783 154.35622 3.75586S157.95386 2.69139 159.33553 2.30449S162.93274 1.31859 164.3144 .96729C165.69608 .61598 167.912 .08435 169.29373-.2275C170.67546-.53934 172.89131-1.01582 174.27304-1.28032S177.87064-1.91672 179.25237-2.13387C180.6341-2.35101 182.85-2.6757 184.23167-2.84544S187.82889-3.24287 189.21056-3.35732C190.59222-3.47176 192.80815-3.61113 194.18988-3.67033C195.57161-3.72954 199.1692-3.78409 199.1692-3.78409' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(7.90071,73.14325)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.103317,22.928255)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-39.103317' y='22.928255' xlink:href='#c27-08-navori-gibanja-g2-28'/>
+<use x='-34.748101' y='24.422636' xlink:href='#c27-08-navori-gibanja-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(27.90729,21.8472)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.103317,22.928255)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.103317' y='22.928255' xlink:href='#c27-08-navori-gibanja-g2-103'/>
+<use x='-34.351449' y='24.422636' xlink:href='#c27-08-navori-gibanja-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='osi2'>
+<path d='M0-130.88278H211.88882' fill='none'/>
+<g transform='translate(209.41237,-130.88278)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(219.874,-133.95818)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.103317,22.928255)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.103317' y='22.928255' xlink:href='#c27-08-navori-gibanja-g2-116'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-196.32375V-78.32948' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,-80.80594)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-4.42883,-68.84435)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.103317,22.928255)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.103317' y='22.928255' xlink:href='#c27-08-navori-gibanja-g2-28'/>
+<use x='-34.748101' y='24.422636' xlink:href='#c27-08-navori-gibanja-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-187.79175H-2.27626' fill='none'/>
+<g transform='translate(-24.68707,-190.5973)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.103317,22.928255)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.103317' y='22.928255' xlink:href='#c27-08-navori-gibanja-g0-0'/>
+<use x='-31.354569' y='22.928255' xlink:href='#c27-08-navori-gibanja-g3-50'/>
+<use x='-26.37323' y='22.928255' xlink:href='#c27-08-navori-gibanja-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-159.33727H-2.27626' fill='none'/>
+<g transform='translate(-24.68707,-162.14282)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.103317,22.928255)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.103317' y='22.928255' xlink:href='#c27-08-navori-gibanja-g0-0'/>
+<use x='-31.354569' y='22.928255' xlink:href='#c27-08-navori-gibanja-g3-49'/>
+<use x='-26.37323' y='22.928255' xlink:href='#c27-08-navori-gibanja-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-102.4283H-2.27626' fill='none'/>
+<g transform='translate(-16.90927,-105.65051)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.103317,22.928255)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.103317' y='22.928255' xlink:href='#c27-08-navori-gibanja-g3-49'/>
+<use x='-34.121978' y='22.928255' xlink:href='#c27-08-navori-gibanja-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-130.88278V-128.60652' fill='none'/>
+<path d='M0-196.32375V-194.04749' fill='none'/>
+<g transform='translate(-2.5,-205.1249)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.103317,22.928255)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.103317' y='22.928255' xlink:href='#c27-08-navori-gibanja-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M99.5846-130.88278V-128.60652' fill='none'/>
+<path d='M99.5846-196.32375V-194.04749' fill='none'/>
+<g transform='translate(93.1957,-205.12491)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.103317,22.928255)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.103317' y='22.928255' xlink:href='#c27-08-navori-gibanja-g3-48'/>
+<use x='-34.121978' y='22.928255' xlink:href='#c27-08-navori-gibanja-g2-59'/>
+<use x='-31.354569' y='22.928255' xlink:href='#c27-08-navori-gibanja-g3-53'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M199.1692-130.88278V-128.60652' fill='none'/>
+<path d='M199.1692-196.32375V-194.04749' fill='none'/>
+<g transform='translate(196.6692,-205.1249)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.103317,22.928255)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.103317' y='22.928255' xlink:href='#c27-08-navori-gibanja-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-196.32375H211.88882' fill='none'/>
+<g transform='translate(209.41237,-196.32375)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(219.874,-199.39914)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.103317,22.928255)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.103317' y='22.928255' xlink:href='#c27-08-navori-gibanja-g2-116'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='tau2'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M0-85.50063C0-85.50063 3.59758-86.48651 4.97931-86.83781C6.36104-87.18912 8.57697-87.71288 9.95863-88.03261C11.3403-88.35234 13.55585-88.8383 14.93752-89.14232C16.31918-89.44633 18.5351-89.92375 19.91682-90.22379C21.29855-90.52382 23.51442-91.00487 24.89615-91.30484S28.49373-92.07404 29.87546-92.38588S33.47311-93.21689 34.85478-93.55246S38.452-94.43741 39.83366-94.80455C41.21533-95.17169 43.43124-95.79594 44.81297-96.19862S48.41057-97.26474 49.7923-97.70688S53.38988-98.89583 54.7716-99.38531C56.15334-99.8748 58.36926-100.69395 59.75093-101.23482C61.1326-101.77568 63.34814-102.68747 64.72981-103.28358C66.11148-103.8797 68.3274-104.88377 69.70912-105.5312C71.09085-106.17863 73.30672-107.25111 74.68845-107.94987C76.07018-108.64864 78.28603-109.81738 79.66776-110.5674C81.04948-111.31741 83.26541-112.55414 84.64708-113.35555C86.02875-114.15695 88.2443-115.49066 89.62596-116.34338C91.00763-117.1961 93.22354-118.60535 94.60527-119.50143C95.987-120.39752 98.20287-121.86227 99.5846-122.80186C100.96632-123.74146 103.18219-125.29825 104.56392-126.27338C105.94565-127.2485 108.16156-128.82724 109.54323-129.82996C110.9249-130.83267 113.14044-132.46994 114.52211-133.5003C115.90378-134.53067 118.1197-136.20612 119.50143-137.25618S123.09901-140.00264 124.48074-141.06848S128.07834-143.8643 129.46007-144.9381C130.8418-146.01189 133.05771-147.73393 134.43938-148.80772C135.82104-149.88152 138.03659-151.60745 139.41826-152.67734C140.79993-153.74722 143.01585-155.46072 144.39758-156.51874C145.77931-157.57675 147.99516-159.26457 149.37689-160.30283C150.75862-161.34108 152.97449-162.98723 154.35622-164.00182C155.73795-165.0164 157.95386-166.63234 159.33553-167.6153C160.7172-168.59825 162.93274-170.14285 164.3144-171.08635C165.69608-172.02985 167.912-173.52327 169.29373-174.41545S172.89131-176.68365 174.27304-177.51662C175.65477-178.34958 177.87064-179.6491 179.25237-180.41893C180.6341-181.18877 182.85-182.37033 184.23167-183.06511S187.82889-184.82246 189.21056-185.42647C190.59222-186.03047 192.80815-186.91702 194.18988-187.41838S199.1692-189.03995 199.1692-189.03995' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(9.32344,-75.95753)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.103317,22.928255)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-39.103317' y='22.928255' xlink:href='#c27-08-navori-gibanja-g2-28'/>
+<use x='-34.748101' y='24.422636' xlink:href='#c27-08-navori-gibanja-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='brezc'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<path d='M0-85.50063C0-85.50063 3.59758-86.54597 4.97931-86.98022S8.57697-88.14885 9.95863-88.63045C11.3403-89.11205 13.55585-89.92235 14.93752-90.4513C16.31918-90.98024 18.5351-91.87032 19.91682-92.44275C21.29855-93.01518 23.51442-93.9651 24.89615-94.57706C26.27788-95.18901 28.49373-96.20198 29.87546-96.85333S33.47311-98.58078 34.85478-99.27158C36.23645-99.96237 38.452-101.1058 39.83366-101.83221C41.21533-102.55862 43.43124-103.74509 44.81297-104.50703C46.1947-105.26898 48.41057-106.52243 49.7923-107.32384C51.17403-108.12524 53.38988-109.45007 54.7716-110.28304C56.15334-111.116 58.36926-112.47067 59.75093-113.32732C61.1326-114.18396 63.34814-115.57683 64.72981-116.45714S68.3274-118.768 69.70912-119.67206C71.09085-120.57611 73.30672-122.04913 74.68845-122.97293S78.28603-125.39464 79.66776-126.33025C81.04948-127.26585 83.26541-128.77669 84.64708-129.71622S88.2443-132.15825 89.62596-133.10175C91.00763-134.04524 93.22354-135.57281 94.60527-136.51637S98.20287-138.96281 99.5846-139.90234C100.96632-140.84187 103.18219-142.36023 104.56392-143.28789S108.16156-145.6803 109.54323-146.58832S113.14044-148.94008 114.52211-149.83232S118.1197-152.14659 119.50143-153.01901S123.09901-155.2754 124.48074-156.12018C125.86247-156.96495 128.07834-158.2944 129.46007-159.1076S133.05771-161.19962 134.43938-161.98126C135.82104-162.76291 138.03659-163.9911 139.41826-164.74118S143.01585-166.66884 144.39758-167.38736S147.99516-169.23283 149.37689-169.91978C150.75862-170.60674 152.97449-171.6871 154.35622-172.33846C155.73795-172.9898 157.95386-173.99849 159.33553-174.61429S162.93274-176.1886 164.3144-176.77681C165.69608-177.36502 167.912-178.29715 169.29373-178.8538C170.67546-179.41046 172.89131-180.26375 174.27304-180.78883C175.65477-181.31392 177.87064-182.13698 179.25237-182.63834S182.85-183.93257 184.23167-184.4023C185.61334-184.87202 187.82889-185.58173 189.21056-186.02386C190.59222-186.466 192.80815-187.17052 194.18988-187.58899S199.1692-189.03995 199.1692-189.03995' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(109.38214,-170.48633)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.103317,22.928255)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-39.103317' y='22.928255' xlink:href='#c27-08-navori-gibanja-g2-28'/>
+<use x='-33.620387' y='19.312892' xlink:href='#c27-08-navori-gibanja-g1-48'/>
+<use x='-34.748101' y='25.401084' xlink:href='#c27-08-navori-gibanja-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 27.37</span>: Motor torques of arm A for a motion of the first link from \(0\) to \(90^\circ\) in \(1\) s <span class="nobr">(\(q_2 = 60^\circ\))</span> in N m as functions of time \(t\) in seconds. Above \(\tau_1\) (blue) and the gravity torque \(g_1\) (dashed). Below \(\tau_2\) (blue) and the torque \(\tau_2'\) without the term \(\mat C\dot{\vek q}\) (orange dashed). The scale above is \(1\) cm for \(80\) N m, below \(1\) cm for \(10\) N m.</figcaption></figure>
+<p><a data-del="osi1" class="xref kaz" href="sec-gibalne-enacbe-robota.html#fig-gib-navori" data-knowl="fig-gib-navori">The upper axes</a> show time and the torque of the first motor. <a data-del="tau1" class="xref kaz" href="sec-gibalne-enacbe-robota.html#fig-gib-navori" data-knowl="fig-gib-navori">The blue curve</a> shows <span class="nobr">\(\tau_1\),</span> <a data-del="tau1" class="xref kaz" href="sec-gibalne-enacbe-robota.html#fig-gib-navori" data-knowl="fig-gib-navori">the dashed one</a> the gravity part <span class="nobr">\(g_1\).</span> At <span class="nobr">\(t = 0\),</span> \(\tau_1 = 198{,}479\) N m: the arm is still at rest, so the velocity term is zero, and this is \(10\cdot 3\pi + 104{,}231\) <span class="nobr">(\(M_{11}\ddot q_1\)</span> and <span class="nobr">\(g_1(0^\circ, 60^\circ)\)).</span> The gravity part is thus only a good half. At the end \(\tau_1 = -104{,}87\) N m: the motor brakes, \(-94{,}25\) N m for the acceleration \(-3\pi\) rad/s\(^2\) and \(-10{,}62\) N m the gravity part at <span class="nobr">\(q_1 = 90^\circ\).</span> <a data-del="osi2" class="xref kaz" href="sec-gibalne-enacbe-robota.html#fig-gib-navori" data-knowl="fig-gib-navori">The lower axes</a> show time and the torque of the second motor. The second link does not turn, yet \(\tau_2\) is not zero, because the first one turns: \(\tau_2\) contains <span class="nobr">\(M_{21}\ddot q_1\),</span> \(g_2\) and the centrifugal term <span class="nobr">\(-h\dot q_1^2\).</span> <a data-del="tau2" class="xref kaz" href="sec-gibalne-enacbe-robota.html#fig-gib-navori" data-knowl="fig-gib-navori">The full curve</a> is <span class="nobr">\(\tau_2\),</span> highest \(15{,}949\) N m at \(t = 0\) and lowest \(-20{,}437\) N m at <span class="nobr">\(t = 1\).</span> <a data-del="brezc" class="xref kaz" href="sec-gibalne-enacbe-robota.html#fig-gib-navori" data-knowl="fig-gib-navori">The dashed orange curve</a> is \(\tau_2'\) without the term <span class="nobr">\(-h\dot q_1^2\).</span> They differ most at <span class="nobr">\(t = 0{,}5\),</span> where <span class="nobr">\(\ddot q_1 = 0\),</span> \(\dot q_1 = 2{,}356\) rad/s, and \(\tau_2 = 2{,}84\) N m, \(\tau_2' = -3{,}17\) N m: the difference is \(-h\dot q_1^2 = 1{,}0825\cdot 5{,}55 = 6{,}01\) N m. So at \(t = 0{,}5\) the torques \(\tau_2\) and \(\tau_2'\) have opposite signs. A model that omitted the term would give the wrong direction.</p>
+<p>The torques obtained in this way are exactly those that the motors must give if the model holds (idealizations 1 to 4). For direct dynamics we would solve from equation <a class="xref" href="sec-gibalne-enacbe-robota.html#eq-gib-gibalna" data-knowl="eq-gib-gibalna">(27.40)</a> the linear system for \(\ddot{\vek q}\) at a given \(\boldsymbol\tau\) (theorem <a class="xref" href="sec-gibalne-enacbe-robota.html#thm-gibalne-enacbe-robota" data-knowl="thm-gibalne-enacbe-robota">27.56</a>) and integrate it step by step, which will serve us in section <a class="xref" href="sec-lastnosti-gibalnih-enacb.html">27.9</a> for checking the equations at the free fall of the arm. By theorem <a class="xref" href="sec-lagrangeeve-enacbe.html#cor-obstoj-gibanja" data-knowl="cor-obstoj-gibanja">8.94</a> of chapter <a class="xref" href="ch-analiticna-dinamika.html">8</a> the equation has for <a class="xref auto" href="sec-sprememba-polja.html#def-zvezno-odvedljivo-polje" data-knowl="def-zvezno-odvedljivo-polje">continuously differentiable</a> \(\boldsymbol\tau(t)\) a solution on some <a class="xref auto" href="sec-konvergenca-zaporedij.html#def-interval" data-knowl="def-interval">interval</a> around \(t_0\) that is unique for given \(\vek q(t_0)\) and <span class="nobr">\(\dot{\vek q}(t_0)\).</span></p>
+<p>Equation <a class="xref" href="sec-gibalne-enacbe-robota.html#eq-gib-gibalna" data-knowl="eq-gib-gibalna">(27.40)</a> is Lagrange's equation. The other way is the Newton-Euler recursion (Newton-Euler formulation): for each link separately it writes the equations of <a class="xref auto" href="sec-posplosene-koordinate.html#def-togo-gibanje" data-knowl="def-togo-gibanje">motion of a rigid body</a> (theorem <a class="xref" href="sec-dalembert.html#thm-gibalni-enacbi-togega-telesa" data-knowl="thm-gibalni-enacbi-togega-telesa">8.74</a>) and computes the forces in the joints from the tip toward the base (SPONG, section 6.6, PDF pp. 220-230). It does not use the kinetic and potential energy (SPONG, PDF p. 220). That the two methods are equivalent SPONG states without proof (PDF p. 236, reference to source [152]), so we do not prove it.</p>
+<p>Two properties of the equation we prove in section <a class="xref" href="sec-lastnosti-gibalnih-enacb.html">27.9</a>. The first is that the matrix \(\dot{\mat M} - 2\mat C\) is antisymmetric, which holds for \(\mat C\) made of the symbols \(c_{\mathrm{ijk}}\) and not for every matrix with the same column <span class="nobr">\(\mat C\dot{\vek q}\).</span> The second are the bounds of the <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">eigenvalues</a> of the matrix \(\mat M\) for a robot with revolute joints only, because of which the inertia of such an arm never becomes infinite or zero.</p>
+
+</main>
+<footer><nav class="pager"><a href="sec-singularnosti-statika.html" rel="prev">← 27.7</a><a href="index.html">Contents</a><a href="sec-lastnosti-gibalnih-enacb.html" rel="next">27.9 →</a></nav></footer>
+</body>
+</html>

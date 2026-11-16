@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-os-polje"] = {"html": "<div class=\"eq\">\\[u_{\\mathrm{r}} = \\sum_{\\mathrm{i}=1}^4 N_{\\mathrm{i}}\\,u_{\\mathrm{ri}} , \\qquad u_{\\mathrm{z}} = \\sum_{\\mathrm{i}=1}^4 N_{\\mathrm{i}}\\,u_{\\mathrm{zi}} , \\tag{15.47}\\]</div>", "href": "sec-mkk-osnosimetricni.html#eq-os-polje"};

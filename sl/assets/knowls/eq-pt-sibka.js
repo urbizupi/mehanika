@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pt-sibka"] = {"html": "<div class=\"eq\">\\[\\int_0^L\\rho c A\\,T_{\\mathrm{t}}\\,\\psi_{\\mathrm{i}}\\,\\mathrm{d}x + \\int_0^L kA\\,T_{\\mathrm{x}}\\,\\psi_{\\mathrm{i}}'\\,\\mathrm{d}x = 0 , \\tag{14.58}\\]</div>", "href": "sec-prehodni-pojav-mke.html#eq-pt-sibka"};

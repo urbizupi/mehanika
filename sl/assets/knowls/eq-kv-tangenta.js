@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kv-tangenta"] = {"html": "<div class=\"eq\">\\[f(\\vek y) \\ge f(\\vek x) + \\nabla f(\\vek x)\\cdot(\\vek y - \\vek x) . \\tag{29.14}\\]</div>", "href": "sec-konveksnost.html#eq-kv-tangenta"};

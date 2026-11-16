@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kvadratna-enakomerna"] = {"html": "<div class=\"eq\">\\[(1 + \\varepsilon)\\,\\omega^2 - 2\\varepsilon\\,\\Omega\\,\\omega - \\omega_{\\mathrm{EB}}^2 = 0 . \\tag{24.32}\\]</div>", "href": "sec-mke-rotorja.html#eq-kvadratna-enakomerna"};

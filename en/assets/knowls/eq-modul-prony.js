@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-modul-prony"] = {"html": "<div class=\"eq\">\\[E_{\\mathrm{rel}}(t) = E_\\infty + \\sum_{\\mathrm{j}=1}^{N} E_{\\mathrm{j}}\\,\\mathrm{e}^{-t/\\tau_{\\mathrm{j}}} , \\qquad E_\\infty \\ge 0 ,\\ E_{\\mathrm{j}} &gt; 0 ,\\ \\tau_{\\mathrm{j}} &gt; 0 , \\tag{20.23}\\]</div>", "href": "sec-kompleksni-modul.html#eq-modul-prony"};

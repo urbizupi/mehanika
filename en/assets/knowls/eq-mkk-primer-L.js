@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mkk-primer-L"] = {"html": "<div class=\"eq\">\\[L_1 = 1 - \\frac{x}{40} - \\frac{y}{40} , \\qquad L_2 = \\frac{x}{40} - \\frac{y}{120} , \\qquad L_3 = \\frac{y}{30} , \\tag{15.4}\\]</div>", "href": "sec-mkk-trikotnik.html#eq-mkk-primer-L"};

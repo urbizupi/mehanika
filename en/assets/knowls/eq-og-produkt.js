@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-og-produkt"] = {"html": "<div class=\"eq\">\\[\\langle \\vek z_1, \\vek z_2\\rangle = \\int_0^L \\big(p_1\\,\\bar p_2 + w_1\\,\\bar w_2\\big)\\,\\mathrm{d}x , \\tag{26.31}\\]</div>", "href": "sec-ortogonalnost-gibajoce.html#eq-og-produkt"};

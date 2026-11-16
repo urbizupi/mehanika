@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-hom-koordinate"] = {"html": "<div class=\"eq\">\\[\\tilde{\\vek p} = \\begin{pmatrix} \\vek p \\\\ 1 \\end{pmatrix} . \\tag{27.9}\\]</div>", "href": "sec-homogene-transformacije.html#eq-hom-koordinate"};

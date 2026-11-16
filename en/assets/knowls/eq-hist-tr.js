@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-hist-tr"] = {"html": "<div class=\"eq\">\\[\\mathrm{TR}_{\\mathrm{h}} = \\frac{\\sqrt{1 + \\gamma^2}}{\\sqrt{(1 - r^2)^2 + \\gamma^2}} = \\sqrt{1 + \\gamma^2}\\,D_{\\mathrm{h}}(r) , \\tag{20.14}\\]</div>", "href": "sec-histerezno-dusenje.html#eq-hist-tr"};

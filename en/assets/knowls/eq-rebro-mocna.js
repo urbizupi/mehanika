@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rebro-mocna"] = {"html": "<div class=\"eq\">\\[(kA\\,T')' - hP\\,T = -hP\\,T_\\infty - A\\,Q , \\tag{14.44}\\]</div>", "href": "sec-sibka-oblika-toplote.html#eq-rebro-mocna"};

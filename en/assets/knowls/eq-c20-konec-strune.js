@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-c20-konec-strune"] = {"html": "<div class=\"eq\">\\[T\\,w_{\\mathrm{x}}(L, t) + c_{\\mathrm{d}}\\,w_{\\mathrm{t}}(L, t) = 0 . \\tag{20.48}\\]</div>", "href": "sec-dusenje-zveznih.html#eq-c20-konec-strune"};

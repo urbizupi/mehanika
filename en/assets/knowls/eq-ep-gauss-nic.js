@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ep-gauss-nic"] = {"html": "<div class=\"eq\">\\[\\int_\\Omega \\big(v_{\\mathrm{xx}}\\,v_{\\mathrm{yy}} - v_{\\mathrm{xy}}^2\\big)\\,\\mathrm{d}A = 0 , \\tag{18.50}\\]</div>", "href": "sec-energijske-metode-plosc.html#eq-ep-gauss-nic"};

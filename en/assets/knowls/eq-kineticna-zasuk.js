@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kineticna-zasuk"] = {"html": "<div class=\"eq\">\\[T = \\int_0^L \\Big(\\tfrac12\\,\\rho A\\,w_{\\mathrm{t}}^2 + \\tfrac12\\,\\rho I\\,\\theta_{\\mathrm{t}}^2\\Big)\\,\\mathrm{d}x . \\tag{13.65}\\]</div>", "href": "sec-vztrajnost-zasuka.html#eq-kineticna-zasuk"};

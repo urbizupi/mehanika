@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ekv-kvadratno"] = {"html": "<div class=\"eq\">\\[c_{\\mathrm{eq}} = \\frac{8}{3\\pi}\\,a\\,\\Omega\\,X . \\tag{20.7}\\]</div>", "href": "sec-ekvivalentno-viskozno.html#eq-ekv-kvadratno"};

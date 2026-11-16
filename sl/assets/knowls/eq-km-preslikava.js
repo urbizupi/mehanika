@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-km-preslikava"] = {"html": "<div class=\"eq\">\\[x(\\xi) = N_1(\\xi)\\,x_1 + N_2(\\xi)\\,x_2 + N_3(\\xi)\\,x_3 = L\\Big(c + \\frac{\\xi}{2} + \\big(\\tfrac12 - c\\big)\\,\\xi^2\\Big) , \\tag{17.18}\\]</div>", "href": "sec-kakovost-mreze.html#eq-km-preslikava"};

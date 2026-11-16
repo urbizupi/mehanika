@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pt8-konstante"] = {"html": "<div class=\"eq\">\\[A_{\\mathrm{T}} = \\frac{\\Gamma\\,J(b)}{b^2 - a^2} , \\qquad B_{\\mathrm{T}} = A_{\\mathrm{T}}\\,a^2 . \\tag{14.40}\\]</div>", "href": "sec-ravninske-temperaturne.html#eq-pt8-konstante"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-tockovna-vpeta"] = {"html": "<div class=\"eq\">\\[w = \\frac{P}{16\\pi D}\\Big(a^2 - r^2 + 2r^2\\ln\\frac ra\\Big) , \\qquad w(0) = \\frac{Pa^2}{16\\pi D} , \\tag{18.46}\\]</div>", "href": "sec-krozne-plosce.html#eq-tockovna-vpeta"};

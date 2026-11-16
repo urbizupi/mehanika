@@ -1,0 +1,1824 @@
+<!doctype html>
+<html lang="sl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>29.1 Naloga optimizacije · Poglavje 29</title>
+<script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/style.css">
+<noscript><style>#loadbar { display: none; }</style></noscript>
+<script src="assets/config.js"></script>
+<script src="assets/load.js"></script>
+<script defer src="assets/interaktivno.js"></script>
+<script defer src="assets/book.js"></script>
+<script defer src="assets/predavanje.js"></script>
+<script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<div id="loadbar" aria-hidden="true"></div>
+<header class="top"><a class="home" href="index.html">Mehanika</a><nav class="pager"><a href="ch-optimizacija.html" rel="prev">← 29</a><a href="index.html">Kazalo</a><a href="sec-palicje-z-napetostmi.html" rel="next">29.2 →</a></nav>
+<span class="tools"><a class="lang" href="../en/sec-naloga-optimizacije.html" hreflang="en">English</a><button type="button" class="theme-toggle" title="Svetla ali temna tema" aria-label="Svetla ali temna tema"></button><button type="button" data-details="open">Razpri vse</button><button type="button" data-details="close">Skrij vse</button><button type="button" class="fig-side-toggle" aria-pressed="false">Slike ob strani</button></span></header>
+<main>
+<p class="updated">Posodobljeno 16. 11. 2026 ob 10.52</p>
+<p class="crumb"><a href="ch-optimizacija.html"><span class="h-num">Poglavje 29</span> Optimizacija konstrukcij</a></p>
+<h2 id="sec-naloga-optimizacije"><span class="h-num">29.1</span> Naloga optimizacije</h2>
+<p>Običajni postopek v praksi je tak: konstruktor predlaga obliko, preveri zahteve, na primer, da napetost ne preseže dovoljene, in če jih oblika ne izpolnjuje ali je pretežka, predlaga novo. Postopek se ponavlja in vodi ga predvsem izkušnja (CHK, PDF str. 12). Matematična optimizacija se loči po tem, da zahteve zapiše kot omejitve in &quot;čim boljše&quot; kot <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcijo</a>, ki vsaki zamisli dodeli število (CHK, PDF str. 12-13). Zato lahko računalnik zamisli sam primerja. Najprej si oglejmo, kaj je treba zapisati, na <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">paličju</a>, ki ga že poznamo.</p>
+
+<figure class="blk slika" id="fig-opt-naloga"><p><span class="svgfig" role="img" aria-label="Stensko paličje s prerezoma palic, silama v palicah, napetostima in pomikom vozlišča"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='237.52pt' height='211.38pt' viewBox='-72.000004 -72 175.942177 156.577883'>
+<defs>
+<path id='c29-01-naloga-g0-70' d='M6.41594-6.774595H.388543V-6.306351H1.464508V-.468244H.388543V0C.767123-.029888 1.77335-.029888 2.211706-.029888C2.699875-.029888 3.785803-.029888 4.224159 0V-.468244H2.879203V-3.158157H3.377335C4.333748-3.158157 4.423412-2.729763 4.423412-1.992528H4.891656V-4.79203H4.423412C4.423412-4.054795 4.343711-3.626401 3.377335-3.626401H2.879203V-6.306351H4.273973C5.877958-6.306351 6.107098-5.539228 6.256538-4.373599H6.724782L6.41594-6.774595Z'/>
+<path id='c29-01-naloga-g1-48' d='M2.022416-3.291656C2.078207-3.410212 2.085181-3.466002 2.085181-3.514819C2.085181-3.731009 1.889913-3.898381 1.673724-3.898381C1.408717-3.898381 1.325031-3.682192 1.290162-3.57061L.369614-.550934C.36264-.536986 .334745-.446326 .334745-.439352C.334745-.355666 .550934-.285928 .606725-.285928C.655542-.285928 .662516-.299875 .711333-.404483L2.022416-3.291656Z'/>
+<path id='c29-01-naloga-g2-27' d='M5.160648-3.716065C5.290162-3.716065 5.648817-3.716065 5.648817-4.054795C5.648817-4.293898 5.439601-4.293898 5.260274-4.293898H2.988792C1.484433-4.293898 .37858-2.650062 .37858-1.464508C.37858-.587796 .966376 .109589 1.872976 .109589C3.048568 .109589 4.373599-1.09589 4.373599-2.630137C4.373599-2.799502 4.373599-3.277709 4.064757-3.716065H5.160648ZM1.882939-.109589C1.39477-.109589 .996264-.468244 .996264-1.185554C.996264-1.484433 1.115816-2.30137 1.464508-2.889166C1.882939-3.576588 2.480697-3.716065 2.819427-3.716065C3.656289-3.716065 3.73599-3.058531 3.73599-2.749689C3.73599-2.281445 3.536737-1.464508 3.198007-.956413C2.809465-.368618 2.271482-.109589 1.882939-.109589Z'/>
+<path id='c29-01-naloga-g2-65' d='M1.783313-1.145704C1.384807-.478207 .996264-.33873 .557908-.308842C.438356-.298879 .348692-.298879 .348692-.109589C.348692-.049813 .398506 0 .478207 0C.747198 0 1.05604-.029888 1.334994-.029888C1.663761-.029888 2.012453 0 2.331258 0C2.391034 0 2.520548 0 2.520548-.18929C2.520548-.298879 2.430884-.308842 2.361146-.308842C2.132005-.328767 1.892902-.408468 1.892902-.657534C1.892902-.777086 1.952677-.886675 2.032379-1.026152L2.789539-2.30137H5.290162C5.310087-2.092154 5.449564-.737235 5.449564-.637609C5.449564-.33873 4.931507-.308842 4.732254-.308842C4.592777-.308842 4.493151-.308842 4.493151-.109589C4.493151 0 4.612702 0 4.632628 0C5.041096 0 5.469489-.029888 5.877958-.029888C6.127024-.029888 6.75467 0 7.003736 0C7.063512 0 7.183064 0 7.183064-.199253C7.183064-.308842 7.083437-.308842 6.953923-.308842C6.336239-.308842 6.336239-.37858 6.306351-.667497L5.69863-6.894147C5.678705-7.0934 5.678705-7.13325 5.50934-7.13325C5.349938-7.13325 5.310087-7.063512 5.250311-6.963885L1.783313-1.145704ZM2.978829-2.610212L4.941469-5.897883L5.260274-2.610212H2.978829Z'/>
+<path id='c29-01-naloga-g2-66' d='M1.594022-.777086C1.494396-.388543 1.474471-.308842 .687422-.308842C.518057-.308842 .418431-.308842 .418431-.109589C.418431 0 .508095 0 .687422 0H4.244085C5.818182 0 6.993773-1.175592 6.993773-2.15193C6.993773-2.86924 6.41594-3.447073 5.449564-3.556663C6.485679-3.745953 7.531756-4.483188 7.531756-5.429639C7.531756-6.166874 6.874222-6.804483 5.678705-6.804483H2.331258C2.141968-6.804483 2.042341-6.804483 2.042341-6.60523C2.042341-6.495641 2.132005-6.495641 2.321295-6.495641C2.34122-6.495641 2.530511-6.495641 2.699875-6.475716C2.879203-6.455791 2.968867-6.445828 2.968867-6.316314C2.968867-6.276463 2.958904-6.246575 2.929016-6.127024L1.594022-.777086ZM3.098381-3.646326L3.716065-6.117061C3.805729-6.465753 3.825654-6.495641 4.254047-6.495641H5.539228C6.41594-6.495641 6.625156-5.907846 6.625156-5.469489C6.625156-4.592777 5.768369-3.646326 4.552927-3.646326H3.098381ZM2.650062-.308842C2.510585-.308842 2.49066-.308842 2.430884-.318804C2.331258-.328767 2.30137-.33873 2.30137-.418431C2.30137-.448319 2.30137-.468244 2.351183-.647572L3.038605-3.427148H4.921544C5.877958-3.427148 6.067248-2.689913 6.067248-2.261519C6.067248-1.275218 5.180573-.308842 4.004981-.308842H2.650062Z'/>
+<path id='c29-01-naloga-g2-67' d='M7.571606-6.924035C7.571606-6.953923 7.551681-7.023661 7.462017-7.023661C7.43213-7.023661 7.422167-7.013699 7.312578-6.90411L6.615193-6.136986C6.525529-6.276463 6.067248-7.023661 4.961395-7.023661C2.739726-7.023661 .498132-4.821918 .498132-2.510585C.498132-.86675 1.673724 .219178 3.198007 .219178C4.064757 .219178 4.821918-.179328 5.349938-.637609C6.276463-1.454545 6.445828-2.361146 6.445828-2.391034C6.445828-2.49066 6.346202-2.49066 6.326276-2.49066C6.266501-2.49066 6.216687-2.470735 6.196762-2.391034C6.107098-2.102117 5.877958-1.39477 5.190535-.816936C4.503113-.259029 3.875467-.089664 3.35741-.089664C2.460772-.089664 1.404732-.607721 1.404732-2.161893C1.404732-2.729763 1.613948-4.343711 2.610212-5.50934C3.217933-6.216687 4.154421-6.714819 5.041096-6.714819C6.057285-6.714819 6.645081-5.947696 6.645081-4.79203C6.645081-4.393524 6.615193-4.383562 6.615193-4.283935S6.724782-4.184309 6.764633-4.184309C6.894147-4.184309 6.894147-4.204234 6.94396-4.383562L7.571606-6.924035Z'/>
+<path id='c29-01-naloga-g2-78' d='M7.531756-5.758406C7.631382-6.156912 7.81071-6.465753 8.607721-6.495641C8.657534-6.495641 8.777086-6.505604 8.777086-6.694894C8.777086-6.704857 8.777086-6.804483 8.647572-6.804483C8.318804-6.804483 7.970112-6.774595 7.641345-6.774595C7.302615-6.774595 6.953923-6.804483 6.625156-6.804483C6.56538-6.804483 6.445828-6.804483 6.445828-6.60523C6.445828-6.495641 6.545455-6.495641 6.625156-6.495641C7.193026-6.485679 7.302615-6.276463 7.302615-6.057285C7.302615-6.027397 7.28269-5.877958 7.272727-5.84807L6.156912-1.414695L3.955168-6.615193C3.875467-6.794521 3.865504-6.804483 3.636364-6.804483H2.30137C2.102117-6.804483 2.012453-6.804483 2.012453-6.60523C2.012453-6.495641 2.102117-6.495641 2.291407-6.495641C2.34122-6.495641 2.968867-6.495641 2.968867-6.405978L1.633873-1.05604C1.534247-.657534 1.364882-.33873 .557908-.308842C.498132-.308842 .388543-.298879 .388543-.109589C.388543-.039851 .438356 0 .518057 0C.836862 0 1.185554-.029888 1.514321-.029888C1.853051-.029888 2.211706 0 2.540473 0C2.590286 0 2.719801 0 2.719801-.199253C2.719801-.298879 2.630137-.308842 2.520548-.308842C1.942715-.328767 1.863014-.547945 1.863014-.747198C1.863014-.816936 1.872976-.86675 1.902864-.976339L3.217933-6.236613C3.257783-6.176837 3.257783-6.156912 3.307597-6.057285L5.788294-.18929C5.858032-.019925 5.88792 0 5.977584 0C6.087173 0 6.087173-.029888 6.136986-.209215L7.531756-5.758406Z'/>
+<path id='c29-01-naloga-g2-118' d='M4.662516-3.706102C4.662516-4.244085 4.403487-4.403487 4.224159-4.403487C3.975093-4.403487 3.73599-4.144458 3.73599-3.92528C3.73599-3.795766 3.785803-3.73599 3.895392-3.626401C4.104608-3.427148 4.234122-3.16812 4.234122-2.809465C4.234122-2.391034 3.626401-.109589 2.460772-.109589C1.952677-.109589 1.723537-.458281 1.723537-.976339C1.723537-1.534247 1.992528-2.261519 2.30137-3.088418C2.371108-3.257783 2.420922-3.39726 2.420922-3.58655C2.420922-4.034869 2.102117-4.403487 1.603985-4.403487C.667497-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.856787-3.955168 1.285181-4.184309 1.574097-4.184309C1.653798-4.184309 1.823163-4.184309 1.823163-3.865504C1.823163-3.616438 1.723537-3.347447 1.653798-3.16812C1.215442-2.012453 1.085928-1.554172 1.085928-1.125778C1.085928-.049813 1.96264 .109589 2.420922 .109589C4.094645 .109589 4.662516-3.188045 4.662516-3.706102Z'/>
+<path id='c29-01-naloga-g3-65' d='M1.436613-.836862C1.192528-.460274 .969365-.278954 .557908-.251059C.488169-.244085 .397509-.244085 .397509-.104608C.397509-.027895 .460274 0 .495143 0C.676463 0 .9066-.027895 1.094894-.027895C1.318057-.027895 1.603985 0 1.8132 0C1.84807 0 1.952677 0 1.952677-.153425C1.952677-.244085 1.862017-.251059 1.834122-.251059C1.778331-.258032 1.527273-.27198 1.527273-.460274C1.527273-.54396 1.597011-.662516 1.63188-.72528L2.189788-1.590037H4.184309L4.351681-.432379C4.323786-.36264 4.281943-.251059 3.870486-.251059C3.7868-.251059 3.689166-.251059 3.689166-.097634C3.689166-.069738 3.710087 0 3.800747 0C4.002989 0 4.498132-.027895 4.700374-.027895C4.825903-.027895 4.986301-.020922 5.111831-.020922C5.23736-.013948 5.383811 0 5.50934 0C5.6 0 5.648817-.055791 5.648817-.146451C5.648817-.251059 5.565131-.251059 5.453549-.251059C5.049066-.251059 5.035118-.306849 5.014197-.474222L4.400498-4.777086C4.379577-4.923537 4.365629-4.972354 4.233126-4.972354S4.05878-4.909589 3.996015-4.811955L1.436613-.836862ZM2.357161-1.841096L3.821669-4.121544L4.14944-1.841096H2.357161Z'/>
+<path id='c29-01-naloga-g3-66' d='M1.325031-.54396C1.262267-.306849 1.248319-.251059 .711333-.251059C.592777-.251059 .502117-.251059 .502117-.104608C.502117 0 .585803 0 .711333 0H3.410212C4.581818 0 5.481445-.801993 5.481445-1.492403C5.481445-1.987547 5.028144-2.412951 4.288917-2.489664C5.132752-2.643088 5.837111-3.173101 5.837111-3.772852C5.837111-4.302864 5.300125-4.763138 4.393524-4.763138H1.855044C1.72254-4.763138 1.63188-4.763138 1.63188-4.609714C1.63188-4.51208 1.715567-4.51208 1.855044-4.51208C1.862017-4.51208 1.994521-4.51208 2.12005-4.498132C2.266501-4.484184 2.280448-4.470237 2.280448-4.400498C2.280448-4.38655 2.280448-4.351681 2.252553-4.247073L1.325031-.54396ZM2.440847-2.57335L2.866252-4.274969C2.922042-4.491158 2.929016-4.51208 3.221918-4.51208H4.281943C4.993275-4.51208 5.153674-4.044832 5.153674-3.779826C5.153674-3.214944 4.519054-2.57335 3.584558-2.57335H2.440847ZM2.106102-.251059C1.889913-.251059 1.882939-.258032 1.882939-.320797C1.882939-.327771 1.882939-.36264 1.910834-.467248L2.39203-2.378082H3.870486C4.526027-2.378082 4.777086-1.945704 4.777086-1.54122C4.777086-.850809 4.072727-.251059 3.228892-.251059H2.106102Z'/>
+<path id='c29-01-naloga-g3-67' d='M5.878954-4.811955C5.878954-4.846824 5.858032-4.902615 5.788294-4.902615C5.739477-4.902615 5.725529-4.888667 5.662765-4.818929L5.153674-4.281943C5.090909-4.365629 4.700374-4.902615 3.84259-4.902615C2.147945-4.902615 .488169-3.403238 .488169-1.827148C.488169-.690411 1.380822 .139477 2.629141 .139477C3.005729 .139477 3.675218 .062765 4.393524-.54396C4.944458-1.011208 5.097883-1.617933 5.097883-1.673724C5.097883-1.764384 5.014197-1.764384 4.979328-1.764384C4.888667-1.764384 4.87472-1.729514 4.853798-1.652802C4.56787-.697385 3.591532-.111582 2.747696-.111582C2.008468-.111582 1.185554-.509091 1.185554-1.610959C1.185554-1.8132 1.234371-2.915068 2.036364-3.793773C2.517559-4.33076 3.249813-4.651557 3.912329-4.651557C4.721295-4.651557 5.195517-4.065753 5.195517-3.284682C5.195517-3.089415 5.174595-3.040598 5.174595-2.998755C5.174595-2.908095 5.265255-2.908095 5.300125-2.908095C5.411706-2.908095 5.411706-2.929016 5.446575-3.061519L5.878954-4.811955Z'/>
+</defs>
+<g id='c29-01-naloga-page1'>
+<g stroke-miterlimit='10' transform='translate(47.279124,30.271507)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='stena'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-113.81097-28.45274V102.43004' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-113.81097-28.45274L-119.50143-34.1432' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-113.81097-21.33957L-119.50143-27.03003' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-113.81097-14.22638L-119.50143-19.91684' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-113.81097-7.11319L-119.50143-12.80365' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-113.81097 0L-119.50143-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-113.81097 7.11317L-119.50143 1.42271' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-113.81097 14.22636L-119.50143 8.5359' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-113.81097 21.33955L-119.50143 15.6491' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-113.81097 28.45274L-119.50143 22.76228' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-113.81097 35.56592L-119.50143 29.87546' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-113.81097 42.67911L-119.50143 36.98865' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-113.81097 49.7923L-119.50143 44.10184' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-113.81097 56.90549L-119.50143 51.21503' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-113.81097 64.01866L-119.50143 58.3282' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-113.81097 71.13185L-119.50143 65.44139' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-113.81097 78.24504L-119.50143 72.55458' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-113.81097 85.35823L-119.50143 79.66777' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-113.81097 92.4714L-119.50143 86.78094' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-113.81097 99.5846L-119.50143 93.89413' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='palici'>
+<g stroke-width='2.2'>
+<path d='M-113.81097 0H0' fill='none'/>
+</g>
+<g stroke-width='2.2'>
+<path d='M-113.81097 85.35823L0 0' fill='none'/>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M-111.54803 0C-111.54803 1.2498-112.56117 2.26294-113.81097 2.26294C-115.06078 2.26294-116.07391 1.2498-116.07391 0S-115.06078-2.26294-113.81097-2.26294C-112.56117-2.26294-111.54803-1.2498-111.54803 0ZM-113.81097 0'/>
+</g>
+<g transform='translate(-113.81097,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(47.279124,30.271507)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M-111.54803 85.35823C-111.54803 86.60803-112.56117 87.62117-113.81097 87.62117C-115.06078 87.62117-116.07391 86.60803-116.07391 85.35823S-115.06078 83.09529-113.81097 83.09529C-112.56117 83.09529-111.54803 84.10843-111.54803 85.35823ZM-113.81097 85.35823'/>
+</g>
+<g transform='translate(-113.81097,85.35823)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(47.279124,30.271507)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M2.26294 0C2.26294 1.2498 1.2498 2.26294 0 2.26294S-2.26294 1.2498-2.26294 0S-1.2498-2.26294 0-2.26294S2.26294-1.2498 2.26294 0ZM0 0'/>
+</g>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(47.279124,30.271507)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(-110.178,-11.889)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(47.279124,30.271507)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='47.279124' y='30.271507' xlink:href='#c29-01-naloga-g2-65'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-108.75526,90.41393)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(47.279124,30.271507)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='47.279124' y='30.271507' xlink:href='#c29-01-naloga-g2-66'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(5.0557,6.47842)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(47.279124,30.271507)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='47.279124' y='30.271507' xlink:href='#c29-01-naloga-g2-67'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='prerezi'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.1'>
+<path d='M-56.90549-9.10507V9.10507' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(-67.02544,-20.42493)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(47.279124,30.271507)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='47.279124' y='30.271507' xlink:href='#c29-01-naloga-g2-65'/>
+<use x='54.751123' y='31.765888' xlink:href='#c29-01-naloga-g3-65'/>
+<use x='60.742585' y='31.765888' xlink:href='#c29-01-naloga-g3-67'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.1'>
+<path d='M-51.21503 50.27594L-62.59595 35.08228' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(-47.58203,55.49442)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(47.279124,30.271507)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='47.279124' y='30.271507' xlink:href='#c29-01-naloga-g2-65'/>
+<use x='54.751123' y='31.765888' xlink:href='#c29-01-naloga-g3-66'/>
+<use x='61.110285' y='31.765888' xlink:href='#c29-01-naloga-g3-67'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='napetost'>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(-94.58524,12.24612)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(47.279124,30.271507)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='47.279124' y='30.271507' xlink:href='#c29-01-naloga-g2-27'/>
+<use x='52.971916' y='31.765888' xlink:href='#c29-01-naloga-g3-65'/>
+<use x='58.963378' y='31.765888' xlink:href='#c29-01-naloga-g3-67'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(-107.8143,56.08014)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(47.279124,30.271507)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='47.279124' y='30.271507' xlink:href='#c29-01-naloga-g2-27'/>
+<use x='52.971916' y='31.765888' xlink:href='#c29-01-naloga-g3-66'/>
+<use x='59.331078' y='31.765888' xlink:href='#c29-01-naloga-g3-67'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='breme'>
+<g stroke-width='0.9'>
+<path d='M0-2.84544V-49.83641' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,0.0,-47.23138)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(3.78297,-34.44417)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(47.279124,30.271507)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='47.279124' y='30.271507' xlink:href='#c29-01-naloga-g0-70'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='sili'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M-37.8422 0H-6.49988' fill='none'/>
+<g transform='translate(-9.1049,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(-31.72685,-11.889)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(47.279124,30.271507)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='47.279124' y='30.271507' xlink:href='#c29-01-naloga-g2-78'/>
+<use x='55.283832' y='31.765888' xlink:href='#c29-01-naloga-g3-65'/>
+<use x='61.275293' y='31.765888' xlink:href='#c29-01-naloga-g3-67'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M-2.27626 1.70709L-34.46497 25.84528' fill='none'/>
+<g transform='matrix(-0.7996,0.6005,-0.6005,-0.7996,-32.38197,24.28098)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(-16.85303,17.08304)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(47.279124,30.271507)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='47.279124' y='30.271507' xlink:href='#c29-01-naloga-g2-78'/>
+<use x='55.283832' y='31.765888' xlink:href='#c29-01-naloga-g3-66'/>
+<use x='61.642994' y='31.765888' xlink:href='#c29-01-naloga-g3-67'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='pomik'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M-113.81097 0L-4.63763-18.29526' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M-113.81097 85.35823L-4.63763-18.29526' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#fff'>
+<g stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<g fill='#fff'>
+<g stroke='#f00'>
+<path d='M-2.3747-18.29526C-2.3747-17.04546-3.38783-16.03232-4.63763-16.03232C-5.88744-16.03232-6.90057-17.04546-6.90057-18.29526S-5.88744-20.5582-4.63763-20.5582C-3.38783-20.5582-2.3747-19.54506-2.3747-18.29526ZM-4.63763-18.29526'/>
+</g>
+</g>
+</g>
+<g transform='translate(-4.63763,-18.29526)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(47.279124,30.271507)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(-19.99147,-28.79135)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(47.279124,30.271507)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='47.279124' y='30.271507' xlink:href='#c29-01-naloga-g2-67'/>
+<use x='55.112238' y='26.656143' xlink:href='#c29-01-naloga-g1-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M4.26773 0H42.67911' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M1.42271-18.29526H42.67911' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M38.41138-.33748V-17.95778' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,38.41138,-6.14052)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,38.41138,-0.22499)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,38.41138,-12.15474)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,38.41138,-18.07027)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(41.96935,-10.55042)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(47.279124,30.271507)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='47.279124' y='30.271507' xlink:href='#c29-01-naloga-g2-118'/>
+<use x='52.108255' y='31.765888' xlink:href='#c29-01-naloga-g3-67'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 29.1</span>: Stensko paličje iz poglavja <a class="xref" href="ch-energijski-principi.html">4</a> kot naloga optimizacije. Mere v metrih, <span class="nobr">\(A = (-4, 0)\),</span> <span class="nobr">\(B = (-4, 3)\),</span> <span class="nobr">\(C = (0, 0)\),</span> \(F = 10\) kN. <span class="ink-l">Črno</span><span class="ink-d">Belo</span> sta palici \(AC\) in \(BC\) pred obremenitvijo. Modra preseka sta prerez palice, ki ga izbiramo, \(A_{\mathrm{AC}}\) in <span class="nobr">\(A_{\mathrm{BC}}\).</span> Modri puščici na vozlišču \(C\) sta sili palic nanj, \(N_{\mathrm{AC}}\) (palica \(AC\) vozlišče potiska, puščica se konča v <span class="nobr">\(C\))</span> in \(N_{\mathrm{BC}}\) (palica \(BC\) ga vleče proti <span class="nobr">\(B\),</span> puščica se začne v <span class="nobr">\(C\)).</span> Napetosti \(\sigma_{\mathrm{AC}}\) in \(\sigma_{\mathrm{BC}}\) so sivi oznaki ob palicah. Oranžno je paličje po obremenitvi s prerezoma \(100\) mm<span class="nobr">\(^2\),</span> vozlišče se je premaknilo v <span class="nobr">\(C'\),</span> navpični pomik \(v_{\mathrm{C}} = -10{,}714\) mm je povečan šestdesetkrat.</figcaption></figure>
+<p>Narišimo paličje iz razdelka <a class="xref" href="sec-delo-sil-na-palici.html#sec-palicje-konzola">4.1.4</a>: <a data-del="palici" class="xref kaz" href="sec-naloga-optimizacije.html#fig-opt-naloga" data-knowl="fig-opt-naloga">palica \(AC\) je vodoravna in dolga 4 m, palica \(BC\) je poševna in dolga 5 m</a>, obe sta z zatičema pritrjeni na <a data-del="stena" class="xref kaz" href="sec-naloga-optimizacije.html#fig-opt-naloga" data-knowl="fig-opt-naloga">steno</a> in v vozlišču \(C\) povezani z zatičem. Palici sta jekleni, z modulom elastičnosti \(E = 196\) GPa (definicija <a class="xref" href="sec-natezni-preizkus.html#def-modul-elasticnosti" data-knowl="def-modul-elasticnosti">3.1</a>). V vozlišču <a data-del="breme" class="xref kaz" href="sec-naloga-optimizacije.html#fig-opt-naloga" data-knowl="fig-opt-naloga">visi breme</a> \(F = 10\) kN. Prerez palice je ploščina njenega prereza, pravokotnega na os. <a data-del="prerezi" class="xref kaz" href="sec-naloga-optimizacije.html#fig-opt-naloga" data-knowl="fig-opt-naloga">Prereza obeh palic</a> zapišemo kot \(A_{\mathrm{AC}}\) in <span class="nobr">\(A_{\mathrm{BC}}\).</span> To sta števili, ki ju izbere konstruktor, in sta tisto, kar v tej nalogi spreminjamo, zato ju imenujemo projektni spremenljivki (design variables). Ime pove, da sta del zasnove (projekta): konstrukcija je z njima določena, ko je geometrija že izbrana. Črka \(A\) ima tu dva pomena. Brez indeksa je točka (zatič), z indeksom palice je ploščina prereza. Ploščina ima vedno indeks.</p>
+<p>Vsaki izbiri prerezov paličje odgovori. Vozlišče \(C\) miruje, zato je vsota sil nanj nič (drugi Newtonov zakon za <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">telo</a> <a class="xref auto" href="sec-sila-v-palici.html#def-ravnovesje" data-knowl="def-ravnovesje">v ravnovesju</a>). <a data-del="sili" class="xref kaz" href="sec-naloga-optimizacije.html#fig-opt-naloga" data-knowl="fig-opt-naloga">Sili palic na zatič</a> sta \(N_{\mathrm{AC}}\) in <span class="nobr">\(N_{\mathrm{BC}}\),</span> z <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">osno silo</a> \(N\) iz leme <a class="xref" href="sec-delo-sil-na-palici.html#lem-palica-palicja" data-knowl="lem-palica-palicja">4.5</a>. Ker palica \(AC\) vodoravno pritiska na zatič, palica \(BC\) ga vleče proti \(B\) in breme vleče navzdol, ravnovesje v smereh \(x\) in \(y\) da, kot v razdelku <a class="xref" href="sec-delo-sil-na-palici.html#sec-palicje-konzola">4.1.4</a>, \(N_{\mathrm{AC}} = -\tfrac43 F = -13{,}33\) kN in \(N_{\mathrm{BC}} = \tfrac53 F = 16{,}67\) kN. Dve enačbi ravnovesja sami določita obe sili, zato sili v palicah ne zavisita od prerezov. Prereza določata, kako se palici podaljšata, in s tem pomik vozlišča. Pomik vozlišča \(C\) je v sliki <a data-del="pomik" class="xref kaz" href="sec-naloga-optimizacije.html#fig-opt-naloga" data-knowl="fig-opt-naloga">povečan</a> in \(v_{\mathrm{C}} = -10{,}714\) mm je njegova navpična sestavina. <a class="xref auto" href="sec-napetost-v-palici.html#def-napetost-palice" data-knowl="def-napetost-palice">Napetost v palici</a> je sila na ploščino prereza, <span class="nobr"><a data-del="napetost" class="xref kaz" href="sec-naloga-optimizacije.html#fig-opt-naloga" data-knowl="fig-opt-naloga">\(\sigma_{\mathrm{AC}} = N_{\mathrm{AC}}/A_{\mathrm{AC}}\) in \(\sigma_{\mathrm{BC}} = N_{\mathrm{BC}}/A_{\mathrm{BC}}\)</a>,</span> pri prerezih po 100 mm\(^2\) torej \(-133{,}3\) MPa in \(166{,}7\) MPa.</p>
+<p>Pomik in sile palic, ki jih paličje odgovori na izbiro prerezov, imenujemo stanje. Kaj pa pomeni &quot;najboljše&quot;? Odločimo se za dvoje. Merilo je prostornina jekla <span class="nobr">\(V = L_{\mathrm{AC}}A_{\mathrm{AC}} + L_{\mathrm{BC}}A_{\mathrm{BC}}\),</span> ker sta masa in cena pri dani gostoti jekla sorazmerni s prostornino. Zahteve pa so tri: napetost v nobeni palici naj ne preseže dovoljene <span class="nobr">\(\sigma_0\),</span> pomik vozlišča navzdol naj ne preseže <span class="nobr">\(\delta\),</span> prereza pa naj bosta pozitivna.</p>
+<p>Zapišimo to splošno. Vzamemo konstrukcijo z \(n\) projektnimi spremenljivkami in stanjem, ki ga opišejo števila v stolpcu <span class="nobr">\(\vek d\).</span> Pri paličju so to pomiki vozlišč, kot v poglavju <a class="xref" href="ch-mke-palice.html">7</a>, in so sile palic iz njih izračunane.</p>
+
+<div class="blk definicija" id="def-optimizacijska-naloga"><div class="blk-head"><span class="blk-label">Definicija 29.1</span> <span class="blk-title">Naloga optimizacije konstrukcije (structural optimization problem)</span></div><div class="blk-body"><div class="hid-row"><details class="hid motivacija"><summary>Motivacija</summary><div class="hid-body"><p>Zapisati želimo, kaj pri konstrukciji spreminjamo, kaj se pri tem spremeni samo, kaj merimo in kaj mora držati.</p>
+</div></details></div>
+<p>Naloga optimizacije konstrukcije (structural optimization problem) je zapis</p>
+<div class="eq" id="eq-naloga">\[\begin{aligned} &amp;\text{minimiraj} &amp;&amp; f(\vek\alpha, \vek d) &amp;&amp; \text{po } \vek\alpha \in \mathbb R^n \text{ in } \vek d \in \mathbb R^m , \\ &amp;\text{pri pogojih} &amp;&amp; g_{\mathrm{i}}(\vek\alpha, \vek d) \le 0 , \quad i = 1, \dots, k , \\ &amp; &amp;&amp; \mat K(\vek\alpha)\,\vek d = \vek F , \end{aligned} \tag{29.1}\]</div>
+<p>v katerem je:</p>
+<ol>
+<li>\(\vek\alpha = (\alpha_1, \dots, \alpha_{\mathrm{n}})\) stolpec projektnih spremenljivk (design variables), \(n\) števil, ki jih konstruktor izbira in ki opišejo konstrukcijo: prerezi palic, debeline, <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinate</a> vozlišč ali oblika roba,</li>
+<li>\(\vek d\) stolpec spremenljivk stanja (state variables), \(m\) števil, ki opišejo odziv konstrukcije pri danem <span class="nobr">\(\vek\alpha\):</span> pomike vozlišč, iz njih sile in napetosti,</li>
+<li>\(f\) ciljna <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcija</a> (objective function), funkcija <span class="nobr">\(f \colon \mathbb R^n \times \mathbb R^m \to \mathbb R\),</span> ki vsaki zasnovi dodeli število, in manjše je boljše,</li>
+<li>\(g_1, \dots, g_{\mathrm{k}}\) funkcije iste vrste, pogoji \(g_{\mathrm{i}} \le 0\) so omejitve (constraints). Omejitev, ki zavisi od <span class="nobr">\(\vek d\),</span> je omejitev obnašanja (behavioural constraint), na primer največja napetost ali pomik. Omejitev, ki zavisi le od <span class="nobr">\(\vek\alpha\),</span> je projektna omejitev (design constraint), na primer najmanjši prerez,</li>
+<li>\(\mat K(\vek\alpha)\,\vek d = \vek F\) ravnotežni pogoj (equilibrium constraint). <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">Matrika</a> \(\mat K(\vek\alpha)\) velikosti \(m \times m\) je del matrike konstrukcije (posledica <a class="xref" href="sec-sestavljanje.html#cor-matrika-konstrukcije" data-knowl="cor-matrika-konstrukcije">7.14</a>) za proste neznanke, \(\vek F\) stolpec bremen. V poglavju <a class="xref" href="ch-mke-palice.html">7</a> smo ga imenovali <span class="nobr">\(\vek f\).</span> Tu ga pišemo z veliko črko, ker je \(f\) zdaj ciljna funkcija.</li>
+</ol>
+
+<div class="hid-row"><details class="hid razlaga" open><summary>Razlaga</summary><div class="hid-body"><p>Pogoji so le oblike <span class="nobr">\(g_{\mathrm{i}} \le 0\),</span> nestroge neenakosti. Neenakost \(g &gt; 0\) lahko zapišemo kot <span class="nobr">\(-g \le 0\),</span> enačbo \(h = 0\) kot par \(h \le 0\) in <span class="nobr">\(-h \le 0\).</span> Strogih neenakosti <span class="nobr">(\(g &lt; 0\))</span> v nalogi ni. Pozitivnost prerezov ni taka omejitev, ker je neenakost stroga. Pove, katere zasnove imajo pomen, saj je ploščina pozitivna, in jo zahtevamo posebej (korak 7 spodaj). Kaj pomeni, da je stroga, kaže zgled <a class="xref" href="sec-naloga-optimizacije.html#ex-odprta-mnozica" data-knowl="ex-odprta-mnozica">29.6</a>. Črka \(g\) ima tu pomen <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcije</a> omejitve in ne težnega pospeška. Črka \(f\) je ciljna funkcija. V poglavju ne bomo uporabili obojega naenkrat.</p>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> CHK §1.3 (PDF str. 13-14): ciljna funkcija, projektna spremenljivka, spremenljivka stanja, omejitve obnašanja in projektne omejitve, ravnotežni pogoj <span class="nobr">\(\mat K(x)u = F(x)\).</span> Zapis s stolpcema \(\vek\alpha\) in \(\vek d\) je naš.</p></div></div>
+<p>Kar zahteva definicija, zapišimo za naše paličje, korak za korakom.</p>
+<ol>
+<li>Projektni spremenljivki sta <span class="nobr">\(n = 2\):</span> <span class="nobr">\(\vek\alpha = (A_{\mathrm{AC}}, A_{\mathrm{BC}})\).</span></li>
+<li>Zatiča \(A\) in \(B\) sta pritrjena, zato ima vozlišče \(C\) dve neznanki, <span class="nobr">\(\vek d = (u_{\mathrm{C}}, v_{\mathrm{C}})\),</span> <span class="nobr">\(m = 2\).</span></li>
+<li>Ciljna funkcija je prostornina. Dolžini palic sta 4 m in \(\sqrt{4^2 + 3^2}\ \text{m} = 5\) m: <span class="nobr">\(f = 4\,A_{\mathrm{AC}} + 5\,A_{\mathrm{BC}}\).</span> Če sta prereza v mm<span class="nobr">\(^2\),</span> je prostornina v cm<span class="nobr">\(^3\),</span> ker je 1 mm\(^2 \cdot 1\) m = \(10^{-6}\) m\(^3\) = 1 cm<span class="nobr">\(^3\).</span> S prerezoma po 100 mm\(^2\) je \(f = 900\) cm<span class="nobr">\(^3\).</span></li>
+<li>Ravnotežni pogoj je po posledici <a class="xref" href="sec-sestavljanje.html#cor-matrika-konstrukcije" data-knowl="cor-matrika-konstrukcije">7.14</a> <a class="xref auto" href="sec-matrike.html#def-vsota-matrik" data-knowl="def-vsota-matrik">vsota matrik</a> palic. <a class="xref auto" href="sec-vektorji.html#def-enotski-vektor" data-knowl="def-enotski-vektor">Enotska vektorja</a> palic sta \((1, 0)\) za \(AC\) in \((0{,}8, -0{,}6)\) za <span class="nobr">\(BC\),</span> torej
+<div class="eq" id="eq-naloga-k">\[\mat K = \frac{EA_{\mathrm{AC}}}{4}\begin{bmatrix} 1 &amp; 0 \\ 0 &amp; 0 \end{bmatrix} + \frac{EA_{\mathrm{BC}}}{5}\begin{bmatrix} 0{,}64 &amp; -0{,}48 \\ -0{,}48 &amp; 0{,}36 \end{bmatrix} , \qquad \vek F = \begin{bmatrix} 0 \\ -F \end{bmatrix} . \tag{29.2}\]</div>
+Pri prerezih po 100 mm\(^2\) je \(\mat K = \begin{bmatrix} 7{,}4088 &amp; -1{,}8816 \\ -1{,}8816 &amp; 1{,}4112 \end{bmatrix}\cdot 10^6\) N/m in rešitev je \(\vek d = (-2{,}721, -10{,}714)\) mm, kot v razdelku <a class="xref" href="sec-palicje-ravnina-mke.html#sec-palicje-konzola-mke">7.5.2</a>.</li>
+<li>Omejitev obnašanja za napetost: osna sila palice je \(N_{\mathrm{e}} = \frac{EA_{\mathrm{e}}}{L_{\mathrm{e}}}\,\vek n_{\mathrm{e}}\cdot(\vek u_{\mathrm{j}} - \vek u_{\mathrm{i}})\) (razdelek <a class="xref" href="sec-palicje-ravnina-mke.html#sec-palicje-konzola-mke">7.5.2</a>), napetost je zato \(\sigma_{\mathrm{e}} = N_{\mathrm{e}}/A_{\mathrm{e}} = E\,\vek n_{\mathrm{e}}\cdot(\vek u_{\mathrm{j}} - \vek u_{\mathrm{i}})/L_{\mathrm{e}}\) in \(g_{\mathrm{e}} = |\sigma_{\mathrm{e}}| - \sigma_0 \le 0\) za <span class="nobr">\(e = AC, BC\).</span> Vzamemo \(\sigma_0 = 220\) MPa, <a class="xref auto" href="sec-napetost-v-palici.html#def-meja-tecenja" data-knowl="def-meja-tecenja">mejo tečenja</a> jekla (poglavje <a class="xref" href="ch-konstitutivne-enacbe.html">3</a>), brez varnostnega količnika. To je idealizacija: količnik, na primer 1,5, bi vse prereze povečal za ta količnik.</li>
+<li>Omejitev obnašanja za pomik: <span class="nobr">\(g_3 = -v_{\mathrm{C}} - \delta \le 0\),</span> kjer je \(\delta\) dovoljeni pomik navzdol, na primer 2 mm.</li>
+<li>Prereza morata biti pozitivna, \(A_{\mathrm{AC}} &gt; 0\) in <span class="nobr">\(A_{\mathrm{BC}} &gt; 0\),</span> ker je ploščina pozitivna. To ni omejitev <span class="nobr">\(g \le 0\),</span> ker je neenakost stroga. Ravnotežni pogoj izključi le ničlo: če je <span class="nobr">\(A_{\mathrm{AC}} = 0\),</span> ostane le palica \(BC\) in <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vektor</a> \(\vek F = (0, -F)\) ne kaže vzdolž nje, zato enačba \(\mat K\vek d = \vek F\) nima rešitve. Negativnega prereza ne izključi, saj je \(\det\mat K = 0{,}36\,\tfrac{EA_{\mathrm{AC}}}{4}\,\tfrac{EA_{\mathrm{BC}}}{5}\) različna od nič tudi pri <span class="nobr">\(A_{\mathrm{AC}} &lt; 0\).</span> Zato pozitivnost zahtevamo posebej.</li>
+</ol>
+<p>Model ima idealizacije, ki jih imenujemo, ker določajo, kje velja naloga. Pomiki so majhni, tako da ravnotežje pišemo na nepremaknjenem paličju (model iz poglavja <a class="xref" href="ch-mke-palice.html">7</a>, pomik 10,7 mm je 0,21 % dolžine palice <span class="nobr">\(BC\),</span> ki je 5 m, kar je ocena reda velikosti). Material je <a class="xref auto" href="sec-natezni-preizkus.html#def-linearno-elasticen" data-knowl="def-linearno-elasticen">linearno elastičen</a> (izrek <a class="xref" href="sec-hookov-zakon.html#thm-hookov-zakon" data-knowl="thm-hookov-zakon">3.11</a>). Teža palic je zanemarjena, kot zahteva definicija <a class="xref" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">4.4</a>: pri gostoti jekla 7,8 Mg/m\(^3\) (BOWER, tabela 3.1 v §3.2.4, PDF str. 100) imata palici s skupno prostornino 900 cm\(^3\) maso 7,02 kg in težo 68,9 N, to je 0,69 % bremena <span class="nobr">\(F\).</span> Uklona stisnjene palice \(AC\) v nalogi ne zahtevamo: v naslednjem razdelku bomo videli, da to ni vedno upravičeno.</p>
+<p>Naloga <a class="xref" href="sec-naloga-optimizacije.html#eq-naloga" data-knowl="eq-naloga">(29.1)</a> je zapisana z dvema vrstama neznank, projektnimi spremenljivkami in stanjem, ki se rešujeta hkrati. Stanje pa je pri paličju za dane prereze enolično določeno, zato ga lahko izločimo.</p>
+
+<div class="blk definicija" id="def-gnezdena-oblika"><div class="blk-head"><span class="blk-label">Definicija 29.2</span> <span class="blk-title">Gnezdena oblika naloge (nested formulation)</span></div><div class="blk-body"><div class="hid-row"><details class="hid motivacija"><summary>Motivacija</summary><div class="hid-body"><p>Pri vsaki zasnovi bi stanje najprej izračunali, nato bi ocenili njeno kakovost. To je račun v dveh plasteh, ki ga želimo zapisati.</p>
+</div></details></div>
+<p>Naj bo \(D \subseteq \mathbb R^n\) množica zasnov, ki imajo pomen (pri <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">paličju</a> pozitivni prerezi), in naj bo <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrika</a> \(\mat K(\vek\alpha)\) <a class="xref auto" href="sec-matrike.html#def-inverzna-matrika" data-knowl="def-inverzna-matrika">obrnljiva</a> za vsak <span class="nobr">\(\vek\alpha \in D\).</span> Za \(\vek\alpha \in D\) je stanje <span class="nobr">\(\vek d(\vek\alpha) = \mat K(\vek\alpha)^{-1}\vek F\).</span> Gnezdena oblika (nested formulation) naloge <a class="xref" href="sec-naloga-optimizacije.html#eq-naloga" data-knowl="eq-naloga">(29.1)</a> je</p>
+<div class="eq" id="eq-gnezdena">\[\text{minimiraj } \tilde f(\vek\alpha) = f\big(\vek\alpha, \vek d(\vek\alpha)\big) \quad \text{po } \vek\alpha \in D \quad \text{pri pogojih } \tilde g_{\mathrm{i}}(\vek\alpha) = g_{\mathrm{i}}\big(\vek\alpha, \vek d(\vek\alpha)\big) \le 0 , \quad i = 1, \dots, k . \tag{29.3}\]</div>
+<p>Naloga <a class="xref" href="sec-naloga-optimizacije.html#eq-naloga" data-knowl="eq-naloga">(29.1)</a> je istočasna oblika (simultaneous formulation).</p>
+
+<div class="hid-row"><details class="hid razlaga" open><summary>Razlaga</summary><div class="hid-body"><p>Ime gnezdena povedo plasti: stanje se računa znotraj vsakega vrednotenja ciljne <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcije</a> in omejitev, tako kot jajce leži v gnezdu. Pri <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">paličju</a> brez mehanizma je <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrika</a> \(\mat K(\vek\alpha)\) pozitivno definitna, kadar so vsi prerezi pozitivni (izrek <a class="xref" href="sec-palicje-ravnina-mke.html#thm-pozitivnost-palicja" data-knowl="thm-pozitivnost-palicja">7.33</a>), zato je pri stenskem paličju <span class="nobr">\(D = \{A_{\mathrm{AC}} &gt; 0,\ A_{\mathrm{BC}} &gt; 0\}\).</span> Za splošne konstrukcije \(\tilde f\) ni nujno preprosta funkcija.</p>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> CHK §1.3 (PDF str. 14-15): istočasna in gnezdena oblika, <span class="nobr">\(u(x) = K(x)^{-1}F(x)\).</span></p></div></div>
+<p>Za stensko paličje je nalogo v gnezdeni obliki mogoče zapisati s prerezoma. Pri tem uporabimo, da sile palic ne zavisijo od prerezov.</p>
+
+<div class="blk izpeljava" id="der-gnezdena-palicje"><div class="blk-head"><span class="blk-label">Izpeljava 29.3</span> <span class="blk-title">Pomik vozlišča kot funkcija prerezov (nodal displacement as a function of the areas)</span></div><div class="blk-body"><p>Cilj: izraziti pomik \(v_{\mathrm{C}}\) stenskega <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">paličja</a> s prerezoma \(A_{\mathrm{AC}}\) in <span class="nobr">\(A_{\mathrm{BC}}\),</span> ne da bi reševali sistem. Predpostavke so idealizacije iz tega razdelka, <span class="nobr">\(A_{\mathrm{AC}}, A_{\mathrm{BC}} &gt; 0\).</span></p>
+
+<div class="korak"><div class="korak-num" title="Korak 1">1</div><div class="korak-body"><div class="eq">\[F\,|v_{\mathrm{C}}| = 2U = \sum_{\mathrm{e}} \frac{N_{\mathrm{e}}^2\,L_{\mathrm{e}}}{E\,A_{\mathrm{e}}} .\]</div>
+
+<div class="hid-row"><details class="hid namig"><summary>Namig</summary><div class="hid-body"><p>Delo bremena \(F\) na pomiku \(v_{\mathrm{C}}\) je po Clapeyronovem izreku (izrek <a class="xref" href="sec-potencialna-energija.html#thm-clapeyron" data-knowl="thm-clapeyron">4.86</a>) dvakratnik <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">deformacijske</a> energije, ta pa je vsota \(\sum N_{\mathrm{e}}^2L_{\mathrm{e}}/(2EA_{\mathrm{e}})\) (enačba <a class="xref" href="sec-delo-sil-na-palici.html#eq-energija-palicja" data-knowl="eq-energija-palicja">(4.5)</a>). Pomik navzdol je <span class="nobr">\(|v_{\mathrm{C}}|\).</span></p>
+</div></details></div></div></div>
+<div class="korak"><div class="korak-num" title="Korak 2">2</div><div class="korak-body"><div class="eq">\[|v_{\mathrm{C}}| = \frac{F}{9E}\left( \frac{64}{A_{\mathrm{AC}}} + \frac{125}{A_{\mathrm{BC}}} \right) .\]</div>
+
+<div class="hid-row"><details class="hid namig"><summary>Namig</summary><div class="hid-body"><p>Vstavimo <span class="nobr">\(N_{\mathrm{AC}} = -\tfrac43 F\),</span> \(L_{\mathrm{AC}} = 4\) m in <span class="nobr">\(N_{\mathrm{BC}} = \tfrac53 F\),</span> \(L_{\mathrm{BC}} = 5\) m: \(\tfrac{16}{9}F^2 \cdot 4 = \tfrac{64}{9}F^2\) in <span class="nobr">\(\tfrac{25}{9}F^2 \cdot 5 = \tfrac{125}{9}F^2\).</span> Delimo z <span class="nobr">\(F\).</span></p>
+</div></details><details class="hid razlaga" open><summary>Razlaga</summary><div class="hid-body"><p>Preizkus s prerezoma po 100 mm<span class="nobr">\(^2\):</span> \(\tfrac{10^4}{9 \cdot 196\cdot 10^9}\cdot\tfrac{64 + 125}{10^{-4}}\ \text{m} = 10{,}714\) mm, kot v razdelku <a class="xref" href="sec-palicje-ravnina-mke.html#sec-palicje-konzola-mke">7.5.2</a>.</p>
+</div></details></div></div></div>
+<p><a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">Funkcija</a> \(v_{\mathrm{C}}(A_{\mathrm{AC}}, A_{\mathrm{BC}})\) torej obstaja v zaključeni obliki, kar je izjema: pri splošni konstrukciji stanje izračunamo z računalnikom pri vsaki zasnovi.</p>
+
+<p class="vir"><span class="vir-label">Vir:</span> Izpeljava ni iz vira. Clapeyronov izrek in energija palice sta iz poglavja <a class="xref" href="ch-energijski-principi.html">4</a>.</p></div></div>
+<p>Z izločenim stanjem so omejitve funkcije prerezov. Omejitev pomika zapišemo kot <span class="nobr">\(\tfrac{F}{9E}\big(\tfrac{64}{A_{\mathrm{AC}}} + \tfrac{125}{A_{\mathrm{BC}}}\big) \le \delta\),</span> torej \(\tfrac{64}{A_{\mathrm{AC}}} + \tfrac{125}{A_{\mathrm{BC}}} \le \tfrac{9E\delta}{F} = 0{,}3528\ \text{mm}^{-2}\) pri \(\delta = 2\) mm. Napetostni omejitvi sta <span class="nobr">(\(N\)</span> ne zavisi od prerezov) \(A_{\mathrm{AC}} \ge |N_{\mathrm{AC}}|/\sigma_0 = 60{,}61\) mm\(^2\) in \(A_{\mathrm{BC}} \ge N_{\mathrm{BC}}/\sigma_0 = 75{,}76\) mm<span class="nobr">\(^2\).</span></p>
+<p>Izbirati pa je mogoče tudi drugače: prerez palice je ena izbira, višina zatiča \(B\) na steni druga, odločitev, ali palica sploh je, tretja. Po tem, kaj projektne spremenljivke opisujejo, so naloge treh vrst.</p>
+
+<figure class="blk slika" id="fig-opt-tri-vrste"><p><span class="svgfig" role="img" aria-label="Tri vrste optimizacije konstrukcij na stenskem paličju"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='658.29pt' height='172.58pt' viewBox='-72.000004 -72.000009 487.624727 127.836672'>
+<defs>
+<path id='c29-01-tri-vrste-g0-70' d='M6.41594-6.774595H.388543V-6.306351H1.464508V-.468244H.388543V0C.767123-.029888 1.77335-.029888 2.211706-.029888C2.699875-.029888 3.785803-.029888 4.224159 0V-.468244H2.879203V-3.158157H3.377335C4.333748-3.158157 4.423412-2.729763 4.423412-1.992528H4.891656V-4.79203H4.423412C4.423412-4.054795 4.343711-3.626401 3.377335-3.626401H2.879203V-6.306351H4.273973C5.877958-6.306351 6.107098-5.539228 6.256538-4.373599H6.724782L6.41594-6.774595Z'/>
+<path id='c29-01-tri-vrste-g1-65' d='M1.783313-1.145704C1.384807-.478207 .996264-.33873 .557908-.308842C.438356-.298879 .348692-.298879 .348692-.109589C.348692-.049813 .398506 0 .478207 0C.747198 0 1.05604-.029888 1.334994-.029888C1.663761-.029888 2.012453 0 2.331258 0C2.391034 0 2.520548 0 2.520548-.18929C2.520548-.298879 2.430884-.308842 2.361146-.308842C2.132005-.328767 1.892902-.408468 1.892902-.657534C1.892902-.777086 1.952677-.886675 2.032379-1.026152L2.789539-2.30137H5.290162C5.310087-2.092154 5.449564-.737235 5.449564-.637609C5.449564-.33873 4.931507-.308842 4.732254-.308842C4.592777-.308842 4.493151-.308842 4.493151-.109589C4.493151 0 4.612702 0 4.632628 0C5.041096 0 5.469489-.029888 5.877958-.029888C6.127024-.029888 6.75467 0 7.003736 0C7.063512 0 7.183064 0 7.183064-.199253C7.183064-.308842 7.083437-.308842 6.953923-.308842C6.336239-.308842 6.336239-.37858 6.306351-.667497L5.69863-6.894147C5.678705-7.0934 5.678705-7.13325 5.50934-7.13325C5.349938-7.13325 5.310087-7.063512 5.250311-6.963885L1.783313-1.145704ZM2.978829-2.610212L4.941469-5.897883L5.260274-2.610212H2.978829Z'/>
+<path id='c29-01-tri-vrste-g1-104' d='M2.859278-6.804483C2.859278-6.814446 2.859278-6.914072 2.729763-6.914072C2.500623-6.914072 1.77335-6.834371 1.514321-6.814446C1.43462-6.804483 1.325031-6.794521 1.325031-6.615193C1.325031-6.495641 1.414695-6.495641 1.564134-6.495641C2.042341-6.495641 2.062267-6.425903 2.062267-6.326276L2.032379-6.127024L.587796-.388543C.547945-.249066 .547945-.229141 .547945-.169365C.547945 .059776 .747198 .109589 .836862 .109589C.996264 .109589 1.155666-.009963 1.205479-.14944L1.39477-.9066L1.613948-1.803238C1.673724-2.022416 1.733499-2.241594 1.783313-2.470735C1.803238-2.530511 1.882939-2.859278 1.892902-2.919054C1.92279-3.008717 2.231631-3.566625 2.570361-3.835616C2.789539-3.995019 3.098381-4.184309 3.526775-4.184309S4.064757-3.845579 4.064757-3.486924C4.064757-2.948941 3.686177-1.863014 3.447073-1.255293C3.367372-1.026152 3.317559-.9066 3.317559-.707347C3.317559-.239103 3.666252 .109589 4.134496 .109589C5.070984 .109589 5.439601-1.344956 5.439601-1.424658C5.439601-1.524284 5.349938-1.524284 5.32005-1.524284C5.220423-1.524284 5.220423-1.494396 5.17061-1.344956C5.021171-.816936 4.702366-.109589 4.154421-.109589C3.985056-.109589 3.915318-.209215 3.915318-.438356C3.915318-.687422 4.004981-.926526 4.094645-1.145704C4.254047-1.574097 4.702366-2.759651 4.702366-3.337484C4.702366-3.985056 4.303861-4.403487 3.556663-4.403487C2.929016-4.403487 2.450809-4.094645 2.082192-3.636364L2.859278-6.804483Z'/>
+<path id='c29-01-tri-vrste-g2-101' d='M1.562142-1.590037C1.75741-1.590037 2.308344-1.603985 2.684932-1.736488C3.200996-1.917808 3.29863-2.252553 3.29863-2.461768C3.29863-2.84533 2.915068-3.075467 2.433873-3.075467C1.597011-3.075467 .467248-2.433873 .467248-1.241345C.467248-.536986 .9066 .069738 1.72254 .069738C2.901121 .069738 3.452055-.620672 3.452055-.718306C3.452055-.760149 3.38929-.836862 3.333499-.836862C3.291656-.836862 3.277709-.822914 3.221918-.767123C2.677958-.125529 1.862017-.125529 1.736488-.125529C1.318057-.125529 1.039103-.404483 1.039103-.969365C1.039103-1.066999 1.039103-1.206476 1.12279-1.590037H1.562142ZM1.17858-1.785305C1.464508-2.796513 2.238605-2.880199 2.433873-2.880199C2.740722-2.880199 2.998755-2.726775 2.998755-2.461768C2.998755-1.785305 1.820174-1.785305 1.520299-1.785305H1.17858Z'/>
+<path id='c29-01-tri-vrste-g3-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+</defs>
+<g id='c29-01-tri-vrste-page1'>
+<g stroke-miterlimit='10' transform='translate(-18.201292,2.037951)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='dimenzije'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-47.80042-47.80042V74.0906' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-47.80042-47.80042L-53.77547-53.77547' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-47.80042-40.63028L-53.77547-46.60533' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-47.80042-33.46014L-53.77547-39.4352' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-47.80042-26.29001L-53.77547-32.26506' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-47.80042-19.11987L-53.77547-25.09492' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-47.80042-11.94974L-53.77547-17.92479' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-47.80042-4.7796L-53.77547-10.75465' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-47.80042 2.39052L-53.77547-3.58453' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-47.80042 9.56065L-53.77547 3.5856' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-47.80042 16.73079L-53.77547 10.75574' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-47.80042 23.90092L-53.77547 17.92587' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-47.80042 31.07106L-53.77547 25.09601' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-47.80042 38.2412L-53.77547 32.26614' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-47.80042 45.41133L-53.77547 39.43628' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-47.80042 52.58147L-53.77547 46.60641' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-47.80042 59.7516L-53.77547 53.77655' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-47.80042 66.92174L-53.77547 60.94669' fill='none'/>
+</g>
+</g>
+<g stroke-width='1.2'>
+<path d='M-47.80042 0H0' fill='none'/>
+</g>
+<g stroke-width='3.0'>
+<path d='M-47.80042 35.85031L0 0' fill='none'/>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M-45.53748 0C-45.53748 1.2498-46.55061 2.26294-47.80042 2.26294C-49.05022 2.26294-50.06335 1.2498-50.06335 0S-49.05022-2.26294-47.80042-2.26294C-46.55061-2.26294-45.53748-1.2498-45.53748 0ZM-47.80042 0'/>
+</g>
+<g transform='translate(-47.80042,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-18.201292,2.037951)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M-45.53748 35.85031C-45.53748 37.10011-46.55061 38.11325-47.80042 38.11325C-49.05022 38.11325-50.06335 37.10011-50.06335 35.85031S-49.05022 33.58737-47.80042 33.58737C-46.55061 33.58737-45.53748 34.60051-45.53748 35.85031ZM-47.80042 35.85031'/>
+</g>
+<g transform='translate(-47.80042,35.85031)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-18.201292,2.037951)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M2.26294 0C2.26294 1.2498 1.2498 2.26294 0 2.26294S-2.26294 1.2498-2.26294 0S-1.2498-2.26294 0-2.26294S2.26294-1.2498 2.26294 0ZM0 0'/>
+</g>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-18.201292,2.037951)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M0-2.38998V-34.01668' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,0.0,-31.41165)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(3.78297,-27.33093)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-18.201292,2.037951)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-18.201292' y='2.037951' xlink:href='#c29-01-tri-vrste-g0-70'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(-29.79727,-18.20183)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-18.201292,2.037951)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-18.201292' y='2.037951' xlink:href='#c29-01-tri-vrste-g1-65'/>
+<use x='-10.729293' y='3.532332' xlink:href='#c29-01-tri-vrste-g2-101'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='oblika'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M162.7498-47.80042V74.0906' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M162.7498-47.80042L156.77475-53.77547' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M162.7498-40.63028L156.77475-46.60533' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M162.7498-33.46014L156.77475-39.4352' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M162.7498-26.29001L156.77475-32.26506' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M162.7498-19.11987L156.77475-25.09492' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M162.7498-11.94974L156.77475-17.92479' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M162.7498-4.7796L156.77475-10.75465' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M162.7498 2.39052L156.77475-3.58453' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M162.7498 9.56065L156.77475 3.5856' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M162.7498 16.73079L156.77475 10.75574' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M162.7498 23.90092L156.77475 17.92587' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M162.7498 31.07106L156.77475 25.09601' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M162.7498 38.2412L156.77475 32.26614' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M162.7498 45.41133L156.77475 39.43628' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M162.7498 52.58147L156.77475 46.60641' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M162.7498 59.7516L156.77475 53.77655' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M162.7498 66.92174L156.77475 60.94669' fill='none'/>
+</g>
+</g>
+<g stroke-width='2.0'>
+<path d='M162.7498 0H210.55022' fill='none'/>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.9'>
+<path d='M162.7498 35.85031L210.55022 0' fill='none'/>
+</g>
+</g>
+</g>
+<g stroke-width='2.0'>
+<path d='M162.7498 67.6017L210.55022 0' fill='none'/>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M165.01274 0C165.01274 1.2498 163.9996 2.26294 162.7498 2.26294S160.48686 1.2498 160.48686 0S161.5-2.26294 162.7498-2.26294S165.01274-1.2498 165.01274 0ZM162.7498 0'/>
+</g>
+<g transform='translate(162.7498,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-18.201292,2.037951)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M165.01274 35.85031C165.01274 37.10011 163.9996 38.11325 162.7498 38.11325S160.48686 37.10011 160.48686 35.85031S161.5 33.58737 162.7498 33.58737S165.01274 34.60051 165.01274 35.85031ZM162.7498 35.85031'/>
+</g>
+<g transform='translate(162.7498,35.85031)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-18.201292,2.037951)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M165.01274 67.6017C165.01274 68.8515 163.9996 69.86464 162.7498 69.86464S160.48686 68.8515 160.48686 67.6017S161.5 65.33876 162.7498 65.33876S165.01274 66.3519 165.01274 67.6017ZM162.7498 67.6017'/>
+</g>
+<g transform='translate(162.7498,67.6017)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-18.201292,2.037951)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M212.81316 0C212.81316 1.2498 211.80002 2.26294 210.55022 2.26294S208.28728 1.2498 208.28728 0S209.30042-2.26294 210.55022-2.26294S212.81316-1.2498 212.81316 0ZM210.55022 0'/>
+</g>
+<g transform='translate(210.55022,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-18.201292,2.037951)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M148.40971 0H155.57968' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M148.40971 67.6017H155.57968' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M150.7997 .33748V67.26422' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,150.7997,6.14052)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,150.7997,0.22499)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,150.7997,61.46118)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,150.7997,67.37671)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(141.48016,30.32863)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-18.201292,2.037951)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-18.201292' y='2.037951' xlink:href='#c29-01-tri-vrste-g1-104'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M210.55022-2.38998V-34.01668' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,210.55022,-31.41165)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(214.33319,-27.33093)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-18.201292,2.037951)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-18.201292' y='2.037951' xlink:href='#c29-01-tri-vrste-g0-70'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='topologija'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M373.30045-47.80042V74.0906' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M373.30045-47.80042L367.3254-53.77547' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M373.30045-40.63028L367.3254-46.60533' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M373.30045-33.46014L367.3254-39.4352' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M373.30045-26.29001L367.3254-32.26506' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M373.30045-19.11987L367.3254-25.09492' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M373.30045-11.94974L367.3254-17.92479' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M373.30045-4.7796L367.3254-10.75465' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M373.30045 2.39052L367.3254-3.58453' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M373.30045 9.56065L367.3254 3.5856' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M373.30045 16.73079L367.3254 10.75574' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M373.30045 23.90092L367.3254 17.92587' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M373.30045 31.07106L367.3254 25.09601' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M373.30045 38.2412L367.3254 32.26614' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M373.30045 45.41133L367.3254 39.43628' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M373.30045 52.58147L367.3254 46.60641' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M373.30045 59.7516L367.3254 53.77655' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M373.30045 66.92174L367.3254 60.94669' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.9'>
+<path d='M373.30045 0H421.10086' fill='none'/>
+</g>
+</g>
+</g>
+<g stroke-width='2.0'>
+<path d='M373.30045 35.85031L421.10086 0' fill='none'/>
+</g>
+<g stroke-width='2.0'>
+<path d='M373.30045-35.85031L421.10086 0' fill='none'/>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M375.56339 0C375.56339 1.2498 374.55025 2.26294 373.30045 2.26294C372.05064 2.26294 371.0375 1.2498 371.0375 0S372.05064-2.26294 373.30045-2.26294C374.55025-2.26294 375.56339-1.2498 375.56339 0ZM373.30045 0'/>
+</g>
+<g transform='translate(373.30045,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-18.201292,2.037951)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M375.56339 35.85031C375.56339 37.10011 374.55025 38.11325 373.30045 38.11325C372.05064 38.11325 371.0375 37.10011 371.0375 35.85031S372.05064 33.58737 373.30045 33.58737C374.55025 33.58737 375.56339 34.60051 375.56339 35.85031ZM373.30045 35.85031'/>
+</g>
+<g transform='translate(373.30045,35.85031)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-18.201292,2.037951)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M375.56339-35.85031C375.56339-34.60051 374.55025-33.58737 373.30045-33.58737C372.05064-33.58737 371.0375-34.60051 371.0375-35.85031S372.05064-38.11325 373.30045-38.11325C374.55025-38.11325 375.56339-37.10011 375.56339-35.85031ZM373.30045-35.85031'/>
+</g>
+<g transform='translate(373.30045,-35.85031)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-18.201292,2.037951)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M423.3638 0C423.3638 1.2498 422.35066 2.26294 421.10086 2.26294S418.83792 1.2498 418.83792 0S419.85106-2.26294 421.10086-2.26294S423.3638-1.2498 423.3638 0ZM421.10086 0'/>
+</g>
+<g transform='translate(421.10086,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-18.201292,2.037951)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(394.70065,6.02296)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-18.201292,2.037951)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-18.201292' y='2.037951' xlink:href='#c29-01-tri-vrste-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M421.10086-2.38998V-34.01668' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,421.10086,-31.41165)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(424.88383,-27.33093)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-18.201292,2.037951)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-18.201292' y='2.037951' xlink:href='#c29-01-tri-vrste-g0-70'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 29.2</span>: Tri vrste naloge na istem stenskem paličju, vozlišče \(C\) in breme \(\vek F\) sta povsod enaka. Levo: optimizacija dimenzij, geometrija je dana, spreminjajo se ploščine prerezov (debelina črte), \(A_{\mathrm{e}}\) je ploščina prereza palice <span class="nobr">\(e\).</span> Sredina: optimizacija oblike, zatič \(B\) drsi po steni do \(B'\) pri višini \(h\) (siva črtkana je stara palica), prerezi so dani. Desno: topološka optimizacija, tri možne palice iz treh zatičev, prerez palice \(AC\) je dosegel \(0\) (siva črtkana), palica je izginila.</figcaption></figure>
+<div class="blk definicija" id="def-vrste-optimizacije"><div class="blk-head"><span class="blk-label">Definicija 29.4</span> <span class="blk-title">Vrste optimizacije konstrukcij (types of structural optimization)</span></div><div class="blk-body"><div class="hid-row"><details class="hid motivacija"><summary>Motivacija</summary><div class="hid-body"><p>Kaj v nalogi <a class="xref" href="sec-naloga-optimizacije.html#eq-naloga" data-knowl="eq-naloga">(29.1)</a> spreminjamo, določa, kakšen račun potrebujemo.</p>
+</div></details></div>
+<p>Naloga <a class="xref" href="sec-naloga-optimizacije.html#eq-naloga" data-knowl="eq-naloga">(29.1)</a> je naloga</p>
+<ol>
+<li>optimizacije dimenzij (sizing optimization), če so projektne spremenljivke debeline: ploščine prerezov palic ali <a class="xref auto" href="sec-kirchhoffova-plosca.html#def-plosca" data-knowl="def-plosca">debelina plošče</a>, geometrija ostane,</li>
+<li>optimizacije oblike (shape optimization), če so projektne spremenljivke oblika roba <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">telesa</a>, na primer višina zatiča ali krivulja, ki oklepa telo. Povezanost telesa se ne spremeni, novi robovi ne nastanejo,</li>
+<li>topološke optimizacije (topology optimization), če smemo debelino ali ploščino prereza zmanjšati na nič, in tako dele konstrukcije odstraniti. Pri <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">paličju</a> to pomeni izginule palice, pri plošči izginule dele plošče.</li>
+</ol>
+
+<div class="hid-row"><details class="hid razlaga" open><summary>Razlaga</summary><div class="hid-body"><p>Ime topologija je grškega izvora, topos pomeni kraj, in pomeni, kateri deli so med seboj povezani. Pri topološki optimizaciji se ta povezava spremeni, pri obeh drugih ne.</p>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> CHK §1.4 (PDF str. 15-17): sizing, shape and topology optimization, Figs. 1.2-1.5. Slike smo narisali sami.</p></div></div>
+<p>Slika kaže razliko. Na <a data-del="dimenzije" class="xref kaz" href="sec-naloga-optimizacije.html#fig-opt-tri-vrste" data-knowl="fig-opt-tri-vrste">levi</a> so projektne spremenljivke števila \(A_{\mathrm{e}}\) in geometrija je dana. Na <a data-del="oblika" class="xref kaz" href="sec-naloga-optimizacije.html#fig-opt-tri-vrste" data-knowl="fig-opt-tri-vrste">sredini</a> je projektna spremenljivka višina \(h\) zatiča <span class="nobr">\(B\),</span> in ker se geometrija spremeni, se spremenijo tudi sile v palicah (to izračunamo v naslednjem razdelku). Na <a data-del="topologija" class="xref kaz" href="sec-naloga-optimizacije.html#fig-opt-tri-vrste" data-knowl="fig-opt-tri-vrste">desni</a> smo dopustili, da ploščina palice \(AC\) doseže <span class="nobr">\(0\).</span> Višina \(h\) je številka, rob telesa pa je krivulja, funkcija, ki ima neskončno mnogo vrednosti. Če je projektna spremenljivka krivulja ali polje, jim pravimo sistemi z razporejenimi parametri (distributed parameter systems), pri paličju pa je projektnih spremenljivk končno mnogo, sistem je naravno diskreten (CHK §1.5, PDF str. 17). Račun je vedno z računalnikom in zato diskreten. Da rešitev diskretiziranega računa <a class="xref auto" href="sec-zaporedja.html#def-limita-zaporedja" data-knowl="def-limita-zaporedja">konvergira</a> k rešitvi pravega, je običajno težko dokazati (CHK, PDF str. 17), zato bomo zaupanje v rezultat pri teh nalogah opisali posebej.</p>
+<p>Zdaj lahko zapišemo, kaj so rešitve.</p>
+
+<div class="blk definicija" id="def-dopustna-mnozica"><div class="blk-head"><span class="blk-label">Definicija 29.5</span> <span class="blk-title">Dopustna množica in optimum (feasible set and optimum)</span></div><div class="blk-body"><div class="hid-row"><details class="hid motivacija"><summary>Motivacija</summary><div class="hid-body"><p>Vse zasnove, ki zahteve izpolnjujejo, in med njimi tisto z najmanjšo ciljno <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcijo</a>.</p>
+</div></details></div>
+<p>Naj bo naloga v gnezdeni obliki <a class="xref" href="sec-naloga-optimizacije.html#eq-gnezdena" data-knowl="eq-gnezdena">(29.3)</a>. Zasnova \(\vek\alpha \in D\) je dopustna (feasible), če je \(\tilde g_{\mathrm{i}}(\vek\alpha) \le 0\) za vse <span class="nobr">\(i\).</span> Množica vseh dopustnih zasnov, <span class="nobr">\(\mathcal F \subseteq \mathbb R^n\),</span> je dopustna množica (feasible set). Zasnova \(\vek\alpha^* \in \mathcal F\) je optimum (optimum, najboljša dopustna zasnova), če je \(\tilde f(\vek\alpha^*) \le \tilde f(\vek\alpha)\) za vsak <span class="nobr">\(\vek\alpha \in \mathcal F\).</span> Število \(\tilde f(\vek\alpha^*)\) je najmanjša vrednost.</p>
+
+<div class="hid-row"><details class="hid razlaga" open><summary>Razlaga</summary><div class="hid-body"><p>Dopustna zasnova pomeni dovoljena: izpolnjuje vse omejitve. Optimum ni nujno en sam. Če dve zasnovi dasta isto najmanjšo vrednost, sta obe optimum. Pozneje bomo ločili lokalni in globalni <a class="xref auto" href="sec-polnost.html#def-supremum" data-knowl="def-supremum">minimum</a>. Tu je optimum vedno najboljša dopustna zasnova med vsemi.</p>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> Definicija ni iz vira, CHK §1.3 (PDF str. 13-15) govori o isti nalogi z drugimi besedami.</p></div></div>
+<figure class="blk slika" id="fig-opt-dopustna"><p><span class="svgfig" role="img" aria-label="Dopustna množica v ravnini prerezov in nivojnice prostornine, brez omejitve napetosti in z njo"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='506.48pt' height='214.34pt' viewBox='-72.000004 -72.000003 375.173091 158.770849'>
+<defs>
+<path id='c29-01-dopustna-g0-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='c29-01-dopustna-g0-65' d='M1.783313-1.145704C1.384807-.478207 .996264-.33873 .557908-.308842C.438356-.298879 .348692-.298879 .348692-.109589C.348692-.049813 .398506 0 .478207 0C.747198 0 1.05604-.029888 1.334994-.029888C1.663761-.029888 2.012453 0 2.331258 0C2.391034 0 2.520548 0 2.520548-.18929C2.520548-.298879 2.430884-.308842 2.361146-.308842C2.132005-.328767 1.892902-.408468 1.892902-.657534C1.892902-.777086 1.952677-.886675 2.032379-1.026152L2.789539-2.30137H5.290162C5.310087-2.092154 5.449564-.737235 5.449564-.637609C5.449564-.33873 4.931507-.308842 4.732254-.308842C4.592777-.308842 4.493151-.308842 4.493151-.109589C4.493151 0 4.612702 0 4.632628 0C5.041096 0 5.469489-.029888 5.877958-.029888C6.127024-.029888 6.75467 0 7.003736 0C7.063512 0 7.183064 0 7.183064-.199253C7.183064-.308842 7.083437-.308842 6.953923-.308842C6.336239-.308842 6.336239-.37858 6.306351-.667497L5.69863-6.894147C5.678705-7.0934 5.678705-7.13325 5.50934-7.13325C5.349938-7.13325 5.310087-7.063512 5.250311-6.963885L1.783313-1.145704ZM2.978829-2.610212L4.941469-5.897883L5.260274-2.610212H2.978829Z'/>
+<path id='c29-01-dopustna-g0-75' d='M5.070984-4.024907C5.061021-4.054795 5.021171-4.134496 5.021171-4.164384C5.021171-4.174346 5.200498-4.313823 5.310087-4.393524L7.053549-5.738481C7.990037-6.425903 8.37858-6.465753 8.67746-6.495641C8.757161-6.505604 8.856787-6.515567 8.856787-6.694894C8.856787-6.734745 8.826899-6.804483 8.747198-6.804483C8.52802-6.804483 8.278954-6.774595 8.039851-6.774595C7.681196-6.774595 7.292653-6.804483 6.933998-6.804483C6.864259-6.804483 6.744707-6.804483 6.744707-6.60523C6.744707-6.535492 6.794521-6.505604 6.864259-6.495641C7.083437-6.475716 7.173101-6.425903 7.173101-6.286426C7.173101-6.107098 6.874222-5.877958 6.814446-5.828144L2.929016-2.839352L3.726027-6.03736C3.815691-6.396015 3.835616-6.495641 4.562889-6.495641C4.811955-6.495641 4.901619-6.495641 4.901619-6.694894C4.901619-6.784558 4.821918-6.804483 4.762142-6.804483C4.483188-6.804483 3.765878-6.774595 3.486924-6.774595C3.198007-6.774595 2.49066-6.804483 2.201743-6.804483C2.132005-6.804483 2.002491-6.804483 2.002491-6.615193C2.002491-6.495641 2.092154-6.495641 2.291407-6.495641C2.420922-6.495641 2.600249-6.485679 2.719801-6.475716C2.879203-6.455791 2.938979-6.425903 2.938979-6.316314C2.938979-6.276463 2.929016-6.246575 2.899128-6.127024L1.564134-.777086C1.464508-.388543 1.444583-.308842 .657534-.308842C.488169-.308842 .37858-.308842 .37858-.119552C.37858 0 .498132 0 .52802 0C.806974 0 1.514321-.029888 1.793275-.029888C2.002491-.029888 2.221669-.019925 2.430884-.019925C2.650062-.019925 2.86924 0 3.078456 0C3.148194 0 3.277709 0 3.277709-.199253C3.277709-.308842 3.188045-.308842 2.998755-.308842C2.630137-.308842 2.351183-.308842 2.351183-.488169C2.351183-.557908 2.410959-.777086 2.440847-.926526C2.580324-1.444583 2.709838-1.972603 2.839352-2.49066L4.323786-3.646326L5.479452-.966376C5.599004-.697385 5.599004-.67746 5.599004-.617684C5.599004-.318804 5.17061-.308842 5.080946-.308842C4.971357-.308842 4.861768-.308842 4.861768-.109589C4.861768 0 4.98132 0 5.001245 0C5.399751 0 5.818182-.029888 6.216687-.029888C6.435866-.029888 6.973848 0 7.193026 0C7.242839 0 7.372354 0 7.372354-.199253C7.372354-.308842 7.262765-.308842 7.173101-.308842C6.764633-.318804 6.635118-.408468 6.485679-.757161L5.070984-4.024907Z'/>
+<path id='c29-01-dopustna-g1-65' d='M1.436613-.836862C1.192528-.460274 .969365-.278954 .557908-.251059C.488169-.244085 .397509-.244085 .397509-.104608C.397509-.027895 .460274 0 .495143 0C.676463 0 .9066-.027895 1.094894-.027895C1.318057-.027895 1.603985 0 1.8132 0C1.84807 0 1.952677 0 1.952677-.153425C1.952677-.244085 1.862017-.251059 1.834122-.251059C1.778331-.258032 1.527273-.27198 1.527273-.460274C1.527273-.54396 1.597011-.662516 1.63188-.72528L2.189788-1.590037H4.184309L4.351681-.432379C4.323786-.36264 4.281943-.251059 3.870486-.251059C3.7868-.251059 3.689166-.251059 3.689166-.097634C3.689166-.069738 3.710087 0 3.800747 0C4.002989 0 4.498132-.027895 4.700374-.027895C4.825903-.027895 4.986301-.020922 5.111831-.020922C5.23736-.013948 5.383811 0 5.50934 0C5.6 0 5.648817-.055791 5.648817-.146451C5.648817-.251059 5.565131-.251059 5.453549-.251059C5.049066-.251059 5.035118-.306849 5.014197-.474222L4.400498-4.777086C4.379577-4.923537 4.365629-4.972354 4.233126-4.972354S4.05878-4.909589 3.996015-4.811955L1.436613-.836862ZM2.357161-1.841096L3.821669-4.121544L4.14944-1.841096H2.357161Z'/>
+<path id='c29-01-dopustna-g1-66' d='M1.325031-.54396C1.262267-.306849 1.248319-.251059 .711333-.251059C.592777-.251059 .502117-.251059 .502117-.104608C.502117 0 .585803 0 .711333 0H3.410212C4.581818 0 5.481445-.801993 5.481445-1.492403C5.481445-1.987547 5.028144-2.412951 4.288917-2.489664C5.132752-2.643088 5.837111-3.173101 5.837111-3.772852C5.837111-4.302864 5.300125-4.763138 4.393524-4.763138H1.855044C1.72254-4.763138 1.63188-4.763138 1.63188-4.609714C1.63188-4.51208 1.715567-4.51208 1.855044-4.51208C1.862017-4.51208 1.994521-4.51208 2.12005-4.498132C2.266501-4.484184 2.280448-4.470237 2.280448-4.400498C2.280448-4.38655 2.280448-4.351681 2.252553-4.247073L1.325031-.54396ZM2.440847-2.57335L2.866252-4.274969C2.922042-4.491158 2.929016-4.51208 3.221918-4.51208H4.281943C4.993275-4.51208 5.153674-4.044832 5.153674-3.779826C5.153674-3.214944 4.519054-2.57335 3.584558-2.57335H2.440847ZM2.106102-.251059C1.889913-.251059 1.882939-.258032 1.882939-.320797C1.882939-.327771 1.882939-.36264 1.910834-.467248L2.39203-2.378082H3.870486C4.526027-2.378082 4.777086-1.945704 4.777086-1.54122C4.777086-.850809 4.072727-.251059 3.228892-.251059H2.106102Z'/>
+<path id='c29-01-dopustna-g1-67' d='M5.878954-4.811955C5.878954-4.846824 5.858032-4.902615 5.788294-4.902615C5.739477-4.902615 5.725529-4.888667 5.662765-4.818929L5.153674-4.281943C5.090909-4.365629 4.700374-4.902615 3.84259-4.902615C2.147945-4.902615 .488169-3.403238 .488169-1.827148C.488169-.690411 1.380822 .139477 2.629141 .139477C3.005729 .139477 3.675218 .062765 4.393524-.54396C4.944458-1.011208 5.097883-1.617933 5.097883-1.673724C5.097883-1.764384 5.014197-1.764384 4.979328-1.764384C4.888667-1.764384 4.87472-1.729514 4.853798-1.652802C4.56787-.697385 3.591532-.111582 2.747696-.111582C2.008468-.111582 1.185554-.509091 1.185554-1.610959C1.185554-1.8132 1.234371-2.915068 2.036364-3.793773C2.517559-4.33076 3.249813-4.651557 3.912329-4.651557C4.721295-4.651557 5.195517-4.065753 5.195517-3.284682C5.195517-3.089415 5.174595-3.040598 5.174595-2.998755C5.174595-2.908095 5.265255-2.908095 5.300125-2.908095C5.411706-2.908095 5.411706-2.929016 5.446575-3.061519L5.878954-4.811955Z'/>
+<path id='c29-01-dopustna-g2-40' d='M3.297634 2.391034C3.297634 2.361146 3.297634 2.34122 3.128269 2.171856C1.882939 .916563 1.564134-.966376 1.564134-2.49066C1.564134-4.224159 1.942715-5.957659 3.16812-7.202989C3.297634-7.32254 3.297634-7.342466 3.297634-7.372354C3.297634-7.442092 3.257783-7.47198 3.198007-7.47198C3.098381-7.47198 2.201743-6.794521 1.613948-5.529265C1.105853-4.433375 .986301-3.327522 .986301-2.49066C.986301-1.713574 1.09589-.508095 1.643836 .617684C2.241594 1.843088 3.098381 2.49066 3.198007 2.49066C3.257783 2.49066 3.297634 2.460772 3.297634 2.391034Z'/>
+<path id='c29-01-dopustna-g2-41' d='M2.879203-2.49066C2.879203-3.267746 2.769614-4.473225 2.221669-5.599004C1.62391-6.824408 .767123-7.47198 .667497-7.47198C.607721-7.47198 .56787-7.43213 .56787-7.372354C.56787-7.342466 .56787-7.32254 .757161-7.143213C1.733499-6.156912 2.30137-4.572852 2.30137-2.49066C2.30137-.787049 1.932752 .966376 .697385 2.221669C.56787 2.34122 .56787 2.361146 .56787 2.391034C.56787 2.450809 .607721 2.49066 .667497 2.49066C.767123 2.49066 1.663761 1.8132 2.251557 .547945C2.759651-.547945 2.879203-1.653798 2.879203-2.49066Z'/>
+<path id='c29-01-dopustna-g2-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='c29-01-dopustna-g2-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c29-01-dopustna-g2-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='c29-01-dopustna-g2-52' d='M2.929016-1.643836V-.777086C2.929016-.418431 2.909091-.308842 2.171856-.308842H1.96264V0C2.371108-.029888 2.889166-.029888 3.307597-.029888S4.254047-.029888 4.662516 0V-.308842H4.4533C3.716065-.308842 3.696139-.418431 3.696139-.777086V-1.643836H4.692403V-1.952677H3.696139V-6.485679C3.696139-6.684932 3.696139-6.744707 3.536737-6.744707C3.447073-6.744707 3.417186-6.744707 3.337484-6.625156L.278954-1.952677V-1.643836H2.929016ZM2.988792-1.952677H.557908L2.988792-5.668742V-1.952677Z'/>
+<path id='c29-01-dopustna-g2-53' d='M4.473225-2.002491C4.473225-3.188045 3.656289-4.184309 2.580324-4.184309C2.102117-4.184309 1.673724-4.024907 1.315068-3.676214V-5.618929C1.514321-5.559153 1.843088-5.489415 2.161893-5.489415C3.387298-5.489415 4.084682-6.396015 4.084682-6.525529C4.084682-6.585305 4.054795-6.635118 3.985056-6.635118C3.975093-6.635118 3.955168-6.635118 3.905355-6.60523C3.706102-6.515567 3.217933-6.316314 2.550436-6.316314C2.15193-6.316314 1.693649-6.386052 1.225405-6.595268C1.145704-6.625156 1.125778-6.625156 1.105853-6.625156C1.006227-6.625156 1.006227-6.545455 1.006227-6.386052V-3.437111C1.006227-3.257783 1.006227-3.178082 1.145704-3.178082C1.215442-3.178082 1.235367-3.20797 1.275218-3.267746C1.384807-3.427148 1.753425-3.965131 2.560399-3.965131C3.078456-3.965131 3.327522-3.506849 3.407223-3.327522C3.566625-2.958904 3.58655-2.570361 3.58655-2.072229C3.58655-1.723537 3.58655-1.125778 3.347447-.707347C3.108344-.318804 2.739726-.059776 2.281445-.059776C1.554172-.059776 .986301-.587796 .816936-1.175592C.846824-1.165629 .876712-1.155666 .986301-1.155666C1.315068-1.155666 1.484433-1.404732 1.484433-1.643836S1.315068-2.132005 .986301-2.132005C.846824-2.132005 .498132-2.062267 .498132-1.603985C.498132-.747198 1.185554 .219178 2.30137 .219178C3.457036 .219178 4.473225-.737235 4.473225-2.002491Z'/>
+<path id='c29-01-dopustna-g2-54' d='M1.315068-3.267746V-3.506849C1.315068-6.027397 2.550436-6.386052 3.058531-6.386052C3.297634-6.386052 3.716065-6.326276 3.935243-5.987547C3.785803-5.987547 3.387298-5.987547 3.387298-5.539228C3.387298-5.230386 3.626401-5.080946 3.845579-5.080946C4.004981-5.080946 4.303861-5.17061 4.303861-5.559153C4.303861-6.156912 3.865504-6.635118 3.038605-6.635118C1.763387-6.635118 .418431-5.349938 .418431-3.148194C.418431-.488169 1.574097 .219178 2.500623 .219178C3.606476 .219178 4.552927-.71731 4.552927-2.032379C4.552927-3.297634 3.666252-4.254047 2.560399-4.254047C1.882939-4.254047 1.514321-3.745953 1.315068-3.267746ZM2.500623-.059776C1.872976-.059776 1.574097-.657534 1.514321-.806974C1.334994-1.275218 1.334994-2.072229 1.334994-2.251557C1.334994-3.028643 1.653798-4.024907 2.550436-4.024907C2.709838-4.024907 3.16812-4.024907 3.476961-3.407223C3.656289-3.038605 3.656289-2.530511 3.656289-2.042341C3.656289-1.564134 3.656289-1.066002 3.486924-.707347C3.188045-.109589 2.729763-.059776 2.500623-.059776Z'/>
+<path id='c29-01-dopustna-g2-57' d='M3.656289-3.16812V-2.849315C3.656289-.518057 2.620174-.059776 2.042341-.059776C1.872976-.059776 1.334994-.079701 1.066002-.418431C1.504359-.418431 1.58406-.707347 1.58406-.876712C1.58406-1.185554 1.344956-1.334994 1.125778-1.334994C.966376-1.334994 .667497-1.24533 .667497-.856787C.667497-.18929 1.205479 .219178 2.052304 .219178C3.337484 .219178 4.552927-1.135741 4.552927-3.277709C4.552927-5.957659 3.407223-6.635118 2.520548-6.635118C1.972603-6.635118 1.484433-6.455791 1.05604-6.007472C.647572-5.559153 .418431-5.140722 .418431-4.393524C.418431-3.148194 1.295143-2.171856 2.410959-2.171856C3.01868-2.171856 3.427148-2.590286 3.656289-3.16812ZM2.420922-2.400996C2.261519-2.400996 1.803238-2.400996 1.494396-3.028643C1.315068-3.39726 1.315068-3.895392 1.315068-4.383562C1.315068-4.921544 1.315068-5.389788 1.524284-5.758406C1.793275-6.256538 2.171856-6.386052 2.520548-6.386052C2.978829-6.386052 3.307597-6.047323 3.476961-5.599004C3.596513-5.280199 3.636364-4.652553 3.636364-4.194271C3.636364-3.367372 3.297634-2.400996 2.420922-2.400996Z'/>
+</defs>
+<g id='c29-01-dopustna-page1'>
+<g stroke-miterlimit='10' transform='translate(-58.413487,79.299246)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='odprta'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-opacity='0.12'>
+<g fill-opacity='0.12'>
+<path d='M0 0V128.03192H128.03192V0ZM128.03192 128.03192' stroke='none'/>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.7'>
+<path d='M0 128.03192V0H128.03192' fill='none'/>
+</g>
+</g>
+</g>
+<path d='M0 0H132.2152' fill='none'/>
+<g transform='translate(129.73874,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(140.20036,-2.66667)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.413487,79.299246)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-58.413487' y='79.299246' xlink:href='#c29-01-dopustna-g0-65'/>
+<use x='-50.941488' y='80.793627' xlink:href='#c29-01-dopustna-g1-65'/>
+<use x='-44.950027' y='80.793627' xlink:href='#c29-01-dopustna-g1-67'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 0V132.2152' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,129.73874)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-10.30449,141.70033)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.413487,79.299246)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-58.413487' y='79.299246' xlink:href='#c29-01-dopustna-g0-65'/>
+<use x='-50.941488' y='80.793627' xlink:href='#c29-01-dopustna-g1-66'/>
+<use x='-44.582326' y='80.793627' xlink:href='#c29-01-dopustna-g1-67'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M2.26294 0C2.26294 1.2498 1.2498 2.26294 0 2.26294S-2.26294 1.2498-2.26294 0S-1.2498-2.26294 0-2.26294S2.26294-1.2498 2.26294 0ZM0 0'/>
+</g>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.413487,79.299246)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='nivoji'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.5'>
+<path d='M32.00798 128.03192L128.03192 51.21277' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.5'>
+<path d='M0 76.81915L96.02394 0' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.5'>
+<path d='M0 15.36383L19.20479 0' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(131.6649,47.99055)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.413487,79.299246)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-58.413487' y='79.299246' xlink:href='#c29-01-dopustna-g2-57'/>
+<use x='-53.432148' y='79.299246' xlink:href='#c29-01-dopustna-g2-48'/>
+<use x='-48.450809' y='79.299246' xlink:href='#c29-01-dopustna-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(54.84575,59.96703)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.413487,79.299246)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-58.413487' y='79.299246' xlink:href='#c29-01-dopustna-g2-52'/>
+<use x='-53.432148' y='79.299246' xlink:href='#c29-01-dopustna-g2-53'/>
+<use x='-48.450809' y='79.299246' xlink:href='#c29-01-dopustna-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(22.411,8.75426)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.413487,79.299246)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-58.413487' y='79.299246' xlink:href='#c29-01-dopustna-g2-57'/>
+<use x='-53.432148' y='79.299246' xlink:href='#c29-01-dopustna-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='tocki'>
+<path d='M87.19324 85.35461C87.19324 86.37006 86.37006 87.19324 85.35461 87.19324C84.33917 87.19324 83.51599 86.37006 83.51599 85.35461C83.51599 84.33917 84.33917 83.51599 85.35461 83.51599C86.37006 83.51599 87.19324 84.33917 87.19324 85.35461ZM85.35461 85.35461' stroke='none'/>
+<g transform='translate(85.35461,85.35461)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.413487,79.299246)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M10.37408 8.53546C10.37408 9.5509 9.5509 10.37408 8.53546 10.37408S6.69684 9.5509 6.69684 8.53546S7.52002 6.69684 8.53546 6.69684S10.37408 7.52002 10.37408 8.53546ZM8.53546 8.53546' stroke='none'/>
+<g transform='translate(8.53546,8.53546)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.413487,79.299246)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(88.9876,91.4876)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.413487,79.299246)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-58.413487' y='79.299246' xlink:href='#c29-01-dopustna-g2-40'/>
+<use x='-54.539114' y='79.299246' xlink:href='#c29-01-dopustna-g2-49'/>
+<use x='-49.557774' y='79.299246' xlink:href='#c29-01-dopustna-g2-48'/>
+<use x='-44.576435' y='79.299246' xlink:href='#c29-01-dopustna-g2-48'/>
+<use x='-39.595096' y='79.299246' xlink:href='#c29-01-dopustna-g0-59'/>
+<use x='-35.167288' y='79.299246' xlink:href='#c29-01-dopustna-g2-49'/>
+<use x='-30.185949' y='79.299246' xlink:href='#c29-01-dopustna-g2-48'/>
+<use x='-25.20461' y='79.299246' xlink:href='#c29-01-dopustna-g2-48'/>
+<use x='-20.223271' y='79.299246' xlink:href='#c29-01-dopustna-g2-41'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='dopustna'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-opacity='0.12'>
+<g fill-opacity='0.12'>
+<path d='M250.90271 64.66464V128.03192H327.2012V64.66464ZM327.2012 128.03192' stroke='none'/>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M250.90271 128.03192V64.66464H327.2012' fill='none'/>
+</g>
+</g>
+<path d='M199.16928 0H331.38448' fill='none'/>
+<g transform='translate(328.90802,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(339.36964,-2.66667)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.413487,79.299246)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-58.413487' y='79.299246' xlink:href='#c29-01-dopustna-g0-65'/>
+<use x='-50.941488' y='80.793627' xlink:href='#c29-01-dopustna-g1-65'/>
+<use x='-44.950027' y='80.793627' xlink:href='#c29-01-dopustna-g1-67'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M199.16928 0V132.2152' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,199.16928,129.73874)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(188.86479,141.70033)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.413487,79.299246)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-58.413487' y='79.299246' xlink:href='#c29-01-dopustna-g0-65'/>
+<use x='-50.941488' y='80.793627' xlink:href='#c29-01-dopustna-g1-66'/>
+<use x='-44.582326' y='80.793627' xlink:href='#c29-01-dopustna-g1-67'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M250.90271 0V64.66464' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M199.16928 64.66464H250.90271' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='nivoji2'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.5'>
+<path d='M231.17726 128.03192L327.2012 51.21277' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.5'>
+<path d='M199.16928 106.01042L327.2012 3.61903' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(330.83418,47.99055)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.413487,79.299246)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-58.413487' y='79.299246' xlink:href='#c29-01-dopustna-g2-57'/>
+<use x='-53.432148' y='79.299246' xlink:href='#c29-01-dopustna-g2-48'/>
+<use x='-48.450809' y='79.299246' xlink:href='#c29-01-dopustna-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(180.53627,102.78821)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.413487,79.299246)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-58.413487' y='79.299246' xlink:href='#c29-01-dopustna-g2-54'/>
+<use x='-53.432148' y='79.299246' xlink:href='#c29-01-dopustna-g2-50'/>
+<use x='-48.450809' y='79.299246' xlink:href='#c29-01-dopustna-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='omejena'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-opacity='0.35'>
+<g fill-opacity='0.35'>
+<path d='M250.90271 64.66464V112.25838L310.38634 64.66464Z' stroke='none'/>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M250.90271 112.25838L310.38634 64.66464' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(262.84882,75.10959)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.413487,79.299246)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-58.413487' y='79.299246' xlink:href='#c29-01-dopustna-g0-75'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='najboljsa'>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M252.74133 64.66464C252.74133 65.68008 251.91815 66.50327 250.90271 66.50327S249.06409 65.68008 249.06409 64.66464S249.88727 62.82602 250.90271 62.82602S252.74133 63.6492 252.74133 64.66464ZM250.90271 64.66464' stroke='none'/>
+</g>
+<g transform='translate(250.90271,64.66464)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.413487,79.299246)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 29.3</span>: Ravnina projektnih spremenljivk \((A_{\mathrm{AC}}, A_{\mathrm{BC}})\) stenskega paličja, osi v mm<span class="nobr">\(^2\).</span> Sive črte so nivojnice prostornine \(V = 4A_{\mathrm{AC}} + 5A_{\mathrm{BC}}\) v cm<span class="nobr">\(^3\).</span> Levo: pogoj <span class="nobr">\(A_{\mathrm{e}} &gt; 0\),</span> modra množica je odprta (črtkani robovi, odprti krožec v izhodišču). Piki sta zasnovi \((100, 100)\) z \(V = 900\) in \((10, 10)\) z <span class="nobr">\(V = 90\).</span> Desno: napetostni omejitvi \(A_{\mathrm{AC}} \ge 60{,}61\) in \(A_{\mathrm{BC}} \ge 75{,}76\) omejita dopustno množico (svetlo modro, polni robovi). Temno modri trikotnik \(K\) je njen del s \(V \le 900\) cm<span class="nobr">\(^3\).</span> Oranžna pika je njegovo oglišče \((60{,}61, 75{,}76)\) z \(V = 621{,}2\) cm<span class="nobr">\(^3\).</span></figcaption></figure>
+<p>Najmanjša vrednost ne obstaja vedno. Dve naloge, na katerih to vidimo, sta primera, v katerih ena predpostavka manjka.</p>
+<p>Prva naloga je zapis, kot bi ga zapisali brez pomisleka: najmanjša prostornina jekla, ki še drži breme, brez omejitve napetosti. Prereza morata biti pozitivna, zato je <a data-del="odprta" class="xref kaz" href="sec-naloga-optimizacije.html#fig-opt-dopustna" data-knowl="fig-opt-dopustna">dopustna množica</a> kvadrant <span class="nobr">\(A_{\mathrm{AC}} &gt; 0\),</span> \(A_{\mathrm{BC}} &gt; 0\) iz leve polovice slike <a class="xref" href="sec-naloga-optimizacije.html#fig-opt-dopustna" data-knowl="fig-opt-dopustna">29.3</a>.</p>
+
+<div class="blk primer" id="ex-odprta-mnozica"><div class="blk-head"><span class="blk-label">Primer 29.6</span> <span class="blk-title">Najmanjša prostornina brez omejitve napetosti</span></div><div class="blk-body"><p>Zahtevamo le \(A_{\mathrm{AC}} &gt; 0\) in <span class="nobr">\(A_{\mathrm{BC}} &gt; 0\).</span> Ciljna <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcija</a> je <span class="nobr">\(f = 4A_{\mathrm{AC}} + 5A_{\mathrm{BC}}\).</span></p>
+<ol>
+<li><a data-del="nivoji" class="xref kaz" href="sec-naloga-optimizacije.html#fig-opt-dopustna" data-knowl="fig-opt-dopustna">Nivojnice</a> <span class="nobr">\(f = 900\),</span> <span class="nobr">\(450\),</span> \(90\) so vzporedne in se z manjšo vrednostjo bližajo <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">izhodišču</a>.</li>
+<li>Za zasnovo \((A, A)\) je \(f = 9A\) (cm<span class="nobr">\(^3\),</span> \(A\) v mm<span class="nobr">\(^2\)):</span> za <span class="nobr">\(A = 100\),</span> <span class="nobr">\(10\),</span> <span class="nobr">\(1\),</span> \(0{,}1\) je <span class="nobr">\(f = 900\),</span> <span class="nobr">\(90\),</span> <span class="nobr">\(9\),</span> <span class="nobr">\(0{,}9\).</span> Dve <a data-del="tocki" class="xref kaz" href="sec-naloga-optimizacije.html#fig-opt-dopustna" data-knowl="fig-opt-dopustna">točki</a> sta v sliki.</li>
+<li>Za vsako dopustno zasnovo \((A_{\mathrm{AC}}, A_{\mathrm{BC}})\) je zasnova \((A_{\mathrm{AC}}/2, A_{\mathrm{BC}}/2)\) dopustna, saj sta polovici pozitivni, in ima polovično vrednost <span class="nobr">\(f\).</span> Nobena zasnova zato ni najboljša, najmanjša vrednost ne obstaja. Vrednosti so vse pozitivne in se z <a class="xref auto" href="sec-zaporedja.html#def-zaporedje" data-knowl="def-zaporedje">zaporedjem</a> \((1/l, 1/l)\) poljubno približajo <span class="nobr">\(0\),</span> a nobena zasnova vrednosti \(0\) ne doseže.</li>
+<li>Pri \(A = 0{,}1\) mm\(^2\) je <a class="xref auto" href="sec-napetost-v-palici.html#def-napetost-palice" data-knowl="def-napetost-palice">napetost v palici</a> \(BC\) \(16{,}67\ \text{kN}/0{,}1\ \text{mm}^2 = 166\,667\) MPa, kar je \(758\)-krat več od <a class="xref auto" href="sec-napetost-v-palici.html#def-meja-tecenja" data-knowl="def-meja-tecenja">meje tečenja</a> jekla <span class="nobr">(\(166\,667/220 = 757{,}6\)).</span> Zasnova je torej neuporabna, in manjka ravno omejitev napetosti.</li>
+</ol>
+</div></div>
+<p>Razlog za to je, da <a class="xref auto" href="sec-zaporedja.html#def-zaporedje" data-knowl="def-zaporedje">zaporedje</a> dopustnih zasnov \((1/l, 1/l)\) konvergira k <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">izhodišču</a>, ki ni v množici: množica ni zaprta (definicija <a class="xref" href="sec-ekstremi.html#def-zaprta-omejena" data-knowl="def-zaprta-omejena">1.74</a>). Ko dodamo napetostni omejitvi, se množica v <a data-del="dopustna" class="xref kaz" href="sec-naloga-optimizacije.html#fig-opt-dopustna" data-knowl="fig-opt-dopustna">desni polovici slike</a> zapre: robovi \(A_{\mathrm{AC}} = 60{,}61\) in \(A_{\mathrm{BC}} = 75{,}76\) so v množici.</p>
+<p>Druga naloga ima zaprto množico in vseeno nima najmanjše vrednosti. Vzemimo samo palico \(AC\) s silo \(|N_{\mathrm{AC}}| = 13{,}33\) kN in vprašajmo, kako majhno skrajšanje najdemo. Skrajšanje je \(\Delta = |N_{\mathrm{AC}}|\,L_{\mathrm{AC}}/(EA_{\mathrm{AC}}) = 272{,}11\ \text{mm mm}^2/A_{\mathrm{AC}}\) (izrek <a class="xref" href="sec-hookov-zakon.html#thm-hookov-zakon" data-knowl="thm-hookov-zakon">3.11</a>, kot pri skrajšanju \(2{,}721\) mm v poglavju <a class="xref" href="ch-energijski-principi.html">4</a> pri \(100\) mm<span class="nobr">\(^2\)).</span></p>
+
+<figure class="blk slika" id="fig-opt-ni-optimuma"><p><span class="svgfig" role="img" aria-label="Skrajšanje palice v odvisnosti od ploščine prereza, brez omejitve prostornine in z njo"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='546.35pt' height='262.03pt' viewBox='-72.000004 -72.000007 404.704528 194.093898'>
+<defs>
+<path id='c29-01-ni-optimuma-g0-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='c29-01-ni-optimuma-g0-65' d='M1.783313-1.145704C1.384807-.478207 .996264-.33873 .557908-.308842C.438356-.298879 .348692-.298879 .348692-.109589C.348692-.049813 .398506 0 .478207 0C.747198 0 1.05604-.029888 1.334994-.029888C1.663761-.029888 2.012453 0 2.331258 0C2.391034 0 2.520548 0 2.520548-.18929C2.520548-.298879 2.430884-.308842 2.361146-.308842C2.132005-.328767 1.892902-.408468 1.892902-.657534C1.892902-.777086 1.952677-.886675 2.032379-1.026152L2.789539-2.30137H5.290162C5.310087-2.092154 5.449564-.737235 5.449564-.637609C5.449564-.33873 4.931507-.308842 4.732254-.308842C4.592777-.308842 4.493151-.308842 4.493151-.109589C4.493151 0 4.612702 0 4.632628 0C5.041096 0 5.469489-.029888 5.877958-.029888C6.127024-.029888 6.75467 0 7.003736 0C7.063512 0 7.183064 0 7.183064-.199253C7.183064-.308842 7.083437-.308842 6.953923-.308842C6.336239-.308842 6.336239-.37858 6.306351-.667497L5.69863-6.894147C5.678705-7.0934 5.678705-7.13325 5.50934-7.13325C5.349938-7.13325 5.310087-7.063512 5.250311-6.963885L1.783313-1.145704ZM2.978829-2.610212L4.941469-5.897883L5.260274-2.610212H2.978829Z'/>
+<path id='c29-01-ni-optimuma-g1-1' d='M4.403487-6.953923C4.333748-7.083437 4.313823-7.13325 4.144458-7.13325S3.955168-7.083437 3.88543-6.953923L.518057-.199253C.468244-.109589 .468244-.089664 .468244-.079701C.468244 0 .52802 0 .687422 0H7.601494C7.760897 0 7.820672 0 7.820672-.079701C7.820672-.089664 7.820672-.109589 7.770859-.199253L4.403487-6.953923ZM3.825654-6.136986L6.505604-.757161H1.135741L3.825654-6.136986Z'/>
+<path id='c29-01-ni-optimuma-g1-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='c29-01-ni-optimuma-g1-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c29-01-ni-optimuma-g1-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='c29-01-ni-optimuma-g1-52' d='M2.929016-1.643836V-.777086C2.929016-.418431 2.909091-.308842 2.171856-.308842H1.96264V0C2.371108-.029888 2.889166-.029888 3.307597-.029888S4.254047-.029888 4.662516 0V-.308842H4.4533C3.716065-.308842 3.696139-.418431 3.696139-.777086V-1.643836H4.692403V-1.952677H3.696139V-6.485679C3.696139-6.684932 3.696139-6.744707 3.536737-6.744707C3.447073-6.744707 3.417186-6.744707 3.337484-6.625156L.278954-1.952677V-1.643836H2.929016ZM2.988792-1.952677H.557908L2.988792-5.668742V-1.952677Z'/>
+<path id='c29-01-ni-optimuma-g1-55' d='M4.742217-6.067248C4.83188-6.1868 4.83188-6.206725 4.83188-6.41594H2.410959C1.195517-6.41594 1.175592-6.545455 1.135741-6.734745H.886675L.557908-4.682441H.806974C.836862-4.841843 .926526-5.469489 1.05604-5.589041C1.125778-5.648817 1.902864-5.648817 2.032379-5.648817H4.094645C3.985056-5.489415 3.198007-4.403487 2.978829-4.07472C2.082192-2.729763 1.753425-1.344956 1.753425-.328767C1.753425-.229141 1.753425 .219178 2.211706 .219178S2.669988-.229141 2.669988-.328767V-.836862C2.669988-1.384807 2.699875-1.932752 2.779577-2.470735C2.819427-2.699875 2.958904-3.556663 3.39726-4.174346L4.742217-6.067248Z'/>
+<path id='c29-01-ni-optimuma-g1-56' d='M1.62391-4.552927C1.165629-4.851806 1.125778-5.190535 1.125778-5.3599C1.125778-5.967621 1.77335-6.386052 2.480697-6.386052C3.20797-6.386052 3.845579-5.867995 3.845579-5.150685C3.845579-4.582814 3.457036-4.104608 2.859278-3.755915L1.62391-4.552927ZM3.078456-3.606476C3.795766-3.975093 4.283935-4.493151 4.283935-5.150685C4.283935-6.067248 3.39726-6.635118 2.49066-6.635118C1.494396-6.635118 .687422-5.897883 .687422-4.971357C.687422-4.79203 .707347-4.343711 1.125778-3.875467C1.235367-3.755915 1.603985-3.506849 1.853051-3.337484C1.275218-3.048568 .418431-2.49066 .418431-1.504359C.418431-.448319 1.43462 .219178 2.480697 .219178C3.606476 .219178 4.552927-.607721 4.552927-1.673724C4.552927-2.032379 4.443337-2.480697 4.064757-2.899128C3.875467-3.108344 3.716065-3.20797 3.078456-3.606476ZM2.082192-3.188045L3.307597-2.410959C3.58655-2.221669 4.054795-1.92279 4.054795-1.315068C4.054795-.577833 3.307597-.059776 2.49066-.059776C1.633873-.059776 .916563-.67746 .916563-1.504359C.916563-2.082192 1.235367-2.719801 2.082192-3.188045Z'/>
+</defs>
+<g id='c29-01-ni-optimuma-page1'>
+<g stroke-miterlimit='10' transform='translate(-64.528374,115.369473)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='krivulja'>
+<path d='M0 0H152.28233' fill='none'/>
+<g transform='translate(149.80588,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(160.2675,-3.41666)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.528374,115.369473)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-64.528374' y='115.369473' xlink:href='#c29-01-ni-optimuma-g0-65'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 0V169.92065' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,167.4442)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-4.16667,177.90582)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.528374,115.369473)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-64.528374' y='115.369473' xlink:href='#c29-01-ni-optimuma-g1-1'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M8.63055 159.67332C8.63055 159.67332 11.10864 124.07484 12.06041 114.26402S14.5385 94.71165 15.49026 88.96367C16.44203 83.21568 17.96835 76.62497 18.92012 72.83646C19.87189 69.04794 21.39821 64.34772 22.34998 61.65862C23.30174 58.96951 24.82806 55.46434 25.77983 53.45526S28.25793 48.7372 29.2097 47.17847S31.68779 43.46587 32.63956 42.22098C33.59132 40.97609 35.11765 39.22346 36.06941 38.20613C37.02118 37.1888 38.5475 35.73573 39.49927 34.88864C40.45103 34.04155 41.97736 32.81712 42.92912 32.10083C43.88089 31.38454 45.40721 30.33958 46.35898 29.726C47.31075 29.11241 48.83707 28.21 49.78883 27.67842C50.7406 27.14684 52.26692 26.35962 53.21869 25.89459C54.17046 25.42957 55.69678 24.73697 56.64854 24.32675C57.60031 23.91653 59.12663 23.30258 60.0784 22.938C61.03017 22.57343 62.55649 22.02522 63.50826 21.69904C64.46002 21.37285 65.98634 20.88055 66.93811 20.58705S69.41621 19.84903 70.36798 19.58362C71.31975 19.3182 72.84607 18.91537 73.79784 18.67406C74.7496 18.43274 76.27592 18.06467 77.22769 17.84428C78.17946 17.6239 79.70578 17.28754 80.65755 17.0856C81.60931 16.88367 83.13564 16.5746 84.0874 16.38878C85.03917 16.20296 86.56549 15.91776 87.51726 15.74623C88.46902 15.5747 89.99535 15.31133 90.94711 15.15253C91.89888 14.99373 93.4252 14.74911 94.37697 14.60168S96.85506 14.22719 97.80682 14.08994C98.75859 13.95268 100.28491 13.74051 101.23668 13.61237C102.18845 13.48422 103.71477 13.28615 104.66653 13.16628C105.6183 13.0464 107.14462 12.86073 108.09639 12.7484C109.04816 12.63606 110.57448 12.46213 111.52625 12.35657C112.47801 12.251 114.00435 12.08684 114.95612 11.98753C115.90788 11.88823 117.4342 11.73434 118.38597 11.64076S120.86406 11.40144 121.81583 11.31297S124.29391 11.08682 125.24568 11.0031C126.19745 10.91937 127.72377 10.78879 128.67554 10.7095C129.6273 10.63022 131.15363 10.50677 132.1054 10.43164C133.05716 10.3565 134.58348 10.23935 135.53525 10.1679C136.48701 10.09644 138.01334 9.98462 138.9651 9.91663C139.91687 9.84863 142.39496 9.67784 142.39496 9.67784' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='tocke'>
+<path d='M10.46918 159.69122C10.46918 160.70667 9.646 161.52985 8.63055 161.52985C7.61511 161.52985 6.79193 160.70667 6.79193 159.69122C6.79193 158.67578 7.61511 157.8526 8.63055 157.8526C9.646 157.8526 10.46918 158.67578 10.46918 159.69122ZM8.63055 159.69122' stroke='none'/>
+<g transform='translate(8.63055,159.69122)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.528374,115.369473)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M16.07813 96.77464C16.07813 97.79008 15.25494 98.61327 14.2395 98.61327S12.40088 97.79008 12.40088 96.77464S13.22406 94.93602 14.2395 94.93602S16.07813 95.7592 16.07813 96.77464ZM14.2395 96.77464' stroke='none'/>
+<g transform='translate(14.2395,96.77464)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.528374,115.369473)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M144.23364 9.67729C144.23364 10.69273 143.41046 11.51591 142.39502 11.51591S140.5564 10.69273 140.5564 9.67729S141.37958 7.83867 142.39502 7.83867S144.23364 8.66185 144.23364 9.67729ZM142.39502 9.67729' stroke='none'/>
+<g transform='translate(142.39502,9.67729)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.528374,115.369473)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(17.87248,102.35207)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.528374,115.369473)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-64.528374' y='115.369473' xlink:href='#c29-01-ni-optimuma-g1-50'/>
+<use x='-59.547035' y='115.369473' xlink:href='#c29-01-ni-optimuma-g0-59'/>
+<use x='-56.779626' y='115.369473' xlink:href='#c29-01-ni-optimuma-g1-55'/>
+<use x='-51.798287' y='115.369473' xlink:href='#c29-01-ni-optimuma-g1-50'/>
+<use x='-46.816948' y='115.369473' xlink:href='#c29-01-ni-optimuma-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(131.0061,15.25471)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.528374,115.369473)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-64.528374' y='115.369473' xlink:href='#c29-01-ni-optimuma-g1-48'/>
+<use x='-59.547035' y='115.369473' xlink:href='#c29-01-ni-optimuma-g0-59'/>
+<use x='-56.779626' y='115.369473' xlink:href='#c29-01-ni-optimuma-g1-50'/>
+<use x='-51.798287' y='115.369473' xlink:href='#c29-01-ni-optimuma-g1-55'/>
+<use x='-46.816948' y='115.369473' xlink:href='#c29-01-ni-optimuma-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='ni-meje'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<path d='M8.63055 0V159.69122' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='1.4'>
+<path d='M8.63055 0H142.39502' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='krivulja2'>
+<path d='M227.62204 0H379.90437' fill='none'/>
+<g transform='translate(377.42792,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(387.88954,-3.41666)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.528374,115.369473)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-64.528374' y='115.369473' xlink:href='#c29-01-ni-optimuma-g0-65'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M227.62204 0V169.92065' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,227.62204,167.4442)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(223.45537,177.90582)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.528374,115.369473)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-64.528374' y='115.369473' xlink:href='#c29-01-ni-optimuma-g1-1'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M236.2526 159.67332C236.2526 159.67332 238.73068 124.07484 239.68245 114.26402S242.16054 94.71165 243.1123 88.96367C244.06407 83.21568 245.5904 76.62497 246.54216 72.83646C247.49393 69.04794 249.02025 64.34772 249.97202 61.65862C250.92378 58.96951 252.4501 55.46434 253.40187 53.45526S255.87997 48.7372 256.83174 47.17847S259.30983 43.46587 260.2616 42.22098C261.21336 40.97609 262.73969 39.22346 263.69145 38.20613C264.64322 37.1888 266.16954 35.73573 267.1213 34.88864C268.07307 34.04155 269.5994 32.81712 270.55116 32.10083C271.50293 31.38454 273.02925 30.33958 273.98102 29.726C274.93279 29.11241 276.4591 28.21 277.41087 27.67842S279.88896 26.35962 280.84073 25.89459C281.7925 25.42957 283.31882 24.73697 284.27058 24.32675C285.22235 23.91653 286.74867 23.30258 287.70044 22.938C288.6522 22.57343 290.17853 22.02522 291.1303 21.69904C292.08206 21.37285 293.60838 20.88055 294.56015 20.58705S297.03825 19.84903 297.99002 19.58362C298.94179 19.3182 300.46811 18.91537 301.41988 18.67406C302.37164 18.43274 303.89796 18.06467 304.84973 17.84428C305.8015 17.6239 307.32782 17.28754 308.27959 17.0856C309.23135 16.88367 310.75768 16.5746 311.70944 16.38878C312.66121 16.20296 314.18753 15.91776 315.1393 15.74623C316.09106 15.5747 317.61739 15.31133 318.56915 15.15253C319.52092 14.99373 321.04724 14.74911 321.99901 14.60168S324.4771 14.22719 325.42886 14.08994C326.38063 13.95268 327.90695 13.74051 328.85872 13.61237C329.81049 13.48422 331.3368 13.28615 332.28857 13.16628C333.24034 13.0464 334.76666 12.86073 335.71843 12.7484C336.6702 12.63606 338.19652 12.46213 339.14828 12.35657C340.10005 12.251 341.62639 12.08684 342.57816 11.98753C343.52992 11.88823 345.05624 11.73434 346.00801 11.64076S348.4861 11.40144 349.43787 11.31297C350.38963 11.2245 351.91595 11.08682 352.86772 11.0031C353.81949 10.91937 355.34581 10.78879 356.29758 10.7095C357.24934 10.63022 358.77567 10.50677 359.72743 10.43164C360.6792 10.3565 362.20552 10.23935 363.15729 10.1679C364.10905 10.09644 365.63538 9.98462 366.58714 9.91663C367.53891 9.84863 370.017 9.67784 370.017 9.67784' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='omejena2'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.6'>
+<path d='M236.2526 0H248.9813' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M248.9813 0V64.51643' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M236.2526 0V159.69122' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M250.81992 64.51643C250.81992 65.53188 249.99673 66.35506 248.9813 66.35506C247.96585 66.35506 247.14267 65.53188 247.14267 64.51643C247.14267 63.50099 247.96585 62.67781 248.9813 62.67781C249.99673 62.67781 250.81992 63.50099 250.81992 64.51643ZM248.9813 64.51643' stroke='none'/>
+</g>
+<g transform='translate(248.9813,64.51643)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.528374,115.369473)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(252.61427,70.09386)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.528374,115.369473)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-64.528374' y='115.369473' xlink:href='#c29-01-ni-optimuma-g1-49'/>
+<use x='-59.547035' y='115.369473' xlink:href='#c29-01-ni-optimuma-g0-59'/>
+<use x='-56.779626' y='115.369473' xlink:href='#c29-01-ni-optimuma-g1-56'/>
+<use x='-51.798287' y='115.369473' xlink:href='#c29-01-ni-optimuma-g1-49'/>
+<use x='-46.816948' y='115.369473' xlink:href='#c29-01-ni-optimuma-g1-52'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 29.4</span>: Skrajšanje \(\Delta\) palice \(AC\) (mm) v odvisnosti od njene ploščine \(A\) (mm<span class="nobr">\(^2\)).</span> Siva črtkana črta je napetostna omejitev \(A \ge 60{,}61\) mm<span class="nobr">\(^2\).</span> Levo: dopustna množica je poltrak \([60{,}61, \infty)\) (debela siva črta na osi), skrajšanje pada proti <span class="nobr">\(0\),</span> a \(0\) ne doseže. Desno: z omejitvijo prostornine palice \(4A \le 600\) cm<span class="nobr">\(^3\),</span> to je \(A \le 150\) mm<span class="nobr">\(^2\),</span> je množica daljica \([60{,}61, 150]\) in najmanjša vrednost \(1{,}814\) mm je v desnem krajišču (oranžna pika).</figcaption></figure>
+<div class="blk primer" id="ex-neomejena-mnozica"><div class="blk-head"><span class="blk-label">Primer 29.7</span> <span class="blk-title">Najmanjše skrajšanje palice brez omejitve prostornine</span></div><div class="blk-body"><p><a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">Funkcija</a> \(\Delta(A) = 272{,}11/A\) je zvezna za <span class="nobr">\(A &gt; 0\),</span> dopustna množica \([60{,}61, \infty)\) je zaprta.</p>
+<ol>
+<li>Za <a data-del="tocke" class="xref kaz" href="sec-naloga-optimizacije.html#fig-opt-ni-optimuma" data-knowl="fig-opt-ni-optimuma">točke krivulje</a>: <span class="nobr">\(A = 60{,}61\),</span> <span class="nobr">\(100\),</span> \(1000\) mm\(^2\) dajo <span class="nobr">\(\Delta = 4{,}490\),</span> <span class="nobr">\(2{,}721\),</span> \(0{,}272\) mm, za \(A = 10^5\) mm\(^2\) je \(\Delta = 0{,}0027\) mm.</li>
+<li>Za vsak \(A\) je \(\Delta(2A) = \tfrac12\Delta(A)\) in \(2A\) je dopustna, zato nobena zasnova ni najboljša. <a class="xref auto" href="sec-polnost.html#def-supremum" data-knowl="def-supremum">Infimum</a> je <span class="nobr">\(0\),</span> <a data-del="krivulja" class="xref kaz" href="sec-naloga-optimizacije.html#fig-opt-ni-optimuma" data-knowl="fig-opt-ni-optimuma">krivulja</a> ga ne doseže.</li>
+<li>Razlog je, da množica <a data-del="ni-meje" class="xref kaz" href="sec-naloga-optimizacije.html#fig-opt-ni-optimuma" data-knowl="fig-opt-ni-optimuma">ni omejena</a>: zasnove \(A \to \infty\) so dopustne. Brez omejitve prostornine bi bila &quot;najboljša&quot; palica neskončno debela.</li>
+<li>Z omejitvijo prostornine palice na 600 cm\(^3\) je \(A \le 150\) mm<span class="nobr">\(^2\),</span> množica je <a data-del="omejena2" class="xref kaz" href="sec-naloga-optimizacije.html#fig-opt-ni-optimuma" data-knowl="fig-opt-ni-optimuma">zaprta in omejena</a>, in najmanjše skrajšanje \(\Delta(150) = 1{,}814\) mm je pri \(A = 150\) mm\(^2\) (<a data-del="krivulja2" class="xref kaz" href="sec-naloga-optimizacije.html#fig-opt-ni-optimuma" data-knowl="fig-opt-ni-optimuma">padajoča funkcija</a> doseže najmanjšo vrednost v desnem krajišču).</li>
+</ol>
+</div></div>
+<p>Primera sta pokazala, kaj se zgodi, če množica ni zaprta ali če ni omejena. Zadostna pa sta zaprtost in omejenost, kot pove naslednja lema, ki se opira na izrek o največji vrednosti iz poglavja <a class="xref" href="ch-analiticna-dinamika.html">8</a>.</p>
+
+<div class="blk lema" id="lem-obstoj-optimuma"><div class="blk-head"><span class="blk-label">Lema 29.8</span> <span class="blk-title">Obstoj optimuma (existence of an optimum)</span></div><div class="blk-body"><p>Naj bo naloga v gnezdeni obliki <a class="xref" href="sec-naloga-optimizacije.html#eq-gnezdena" data-knowl="eq-gnezdena">(29.3)</a> z dopustno množico \(\mathcal F \subseteq \mathbb R^n\) (definicija <a class="xref" href="sec-naloga-optimizacije.html#def-dopustna-mnozica" data-knowl="def-dopustna-mnozica">29.5</a>) in naj velja:</p>
+<ol>
+<li>\(\mathcal F\) je zaprta množica točk prostora \(\mathbb R^n\) (definicija <a class="xref" href="sec-ekstremi.html#def-zaprta-omejena" data-knowl="def-zaprta-omejena">1.74</a>) in neprazna,</li>
+<li>\(\tilde f\) je zvezna na <span class="nobr">\(\mathcal F\),</span></li>
+<li>za neko dopustno zasnovo \(\vek\alpha_0\) je množica \(K = \{\vek\alpha \in \mathcal F : \tilde f(\vek\alpha) \le \tilde f(\vek\alpha_0)\}\) omejena. To velja tudi, ko je omejena že sama <span class="nobr">\(\mathcal F\).</span></li>
+</ol>
+<p>Tedaj optimum \(\vek\alpha^*\) obstaja.</p>
+
+<div class="hid-row"><details class="hid zamisel"><summary>Zamisel</summary><div class="hid-body"><p>Optimum iščemo na delu množice, kjer sta zaprtost in omejenost zagotovljeni, in uporabimo izrek o najmanjši vrednosti na takih množicah. Ostali del množice ne more biti boljši po definiciji <span class="nobr">\(K\).</span></p>
+</div></details><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da je \(K\) zaprta, omejena in neprazna, in da je njen najmanjši element najmanjši na vsej <span class="nobr">\(\mathcal F\).</span></p>
+<ol>
+<li>Množica \(K\) je neprazna, ker vsebuje <span class="nobr">\(\vek\alpha_0\),</span> in omejena po točki 3.</li>
+<li>Množica \(K\) je zaprta. Naj bo \((\vek\alpha_{\mathrm{l}})\) <a class="xref auto" href="sec-zaporedja.html#def-zaporedje" data-knowl="def-zaporedje">zaporedje</a> točk iz <span class="nobr">\(K\),</span> ki <a class="xref auto" href="sec-zaporedja.html#def-limita-zaporedja" data-knowl="def-limita-zaporedja">konvergira</a> k točki <span class="nobr">\(\hat{\vek\alpha}\).</span> Ker je \(\mathcal F\) zaprta (točka 1), je \(\hat{\vek\alpha} \in \mathcal F\) po definiciji <a class="xref" href="sec-ekstremi.html#def-zaprta-omejena" data-knowl="def-zaprta-omejena">1.74</a>. Ker je \(\tilde f\) zvezna na <span class="nobr">\(\mathcal F\),</span> zaporedje \(\tilde f(\vek\alpha_{\mathrm{l}})\) konvergira k \(\tilde f(\hat{\vek\alpha})\) (lema <a class="xref" href="sec-implicitna-funkcija.html#lem-zaporedja-n" data-knowl="lem-zaporedja-n">8.24</a>, točka 2). Ker je \(\tilde f(\vek\alpha_{\mathrm{l}}) \le \tilde f(\vek\alpha_0)\) za vsak <span class="nobr">\(l\),</span> je po lemi <a class="xref" href="sec-konvergenca-zaporedij.html#lem-limita-neenakosti" data-knowl="lem-limita-neenakosti">1.48</a> tudi <span class="nobr">\(\tilde f(\hat{\vek\alpha}) \le \tilde f(\vek\alpha_0)\),</span> torej <span class="nobr">\(\hat{\vek\alpha} \in K\).</span></li>
+<li>Po izreku <a class="xref" href="sec-implicitna-funkcija.html#thm-ekstremi-n" data-knowl="thm-ekstremi-n">8.26</a>, uporabljenem na \(K\) in <span class="nobr">\(\tilde f\),</span> obstaja \(\vek\alpha^* \in K\) z \(\tilde f(\vek\alpha^*) \le \tilde f(\vek\alpha)\) za vsak <span class="nobr">\(\vek\alpha \in K\).</span></li>
+<li>Naj bo \(\vek\alpha \in \mathcal F\) zunaj <span class="nobr">\(K\).</span> Tedaj je <span class="nobr">\(\tilde f(\vek\alpha) &gt; \tilde f(\vek\alpha_0) \ge \tilde f(\vek\alpha^*)\),</span> kjer zadnja neenakost sledi iz koraka 3 z <span class="nobr">\(\vek\alpha_0 \in K\).</span> Torej je \(\vek\alpha^*\) najboljša na vsej <span class="nobr">\(\mathcal F\).</span></li>
+</ol>
+</div></details><details class="hid razlaga" open><summary>Razlaga</summary><div class="hid-body"><p>Če so vse <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcije</a> \(\tilde g_{\mathrm{i}}\) zvezne na vsem prostoru <span class="nobr">\(\mathbb R^n\),</span> je množica \(\mathcal F\) zaprta po točki 4 leme <a class="xref" href="sec-implicitna-funkcija.html#lem-zaporedja-n" data-knowl="lem-zaporedja-n">8.24</a>, saj je presek <a class="xref auto" href="sec-ekstremi.html#def-zaprta-omejena" data-knowl="def-zaprta-omejena">zaprtih množic</a> <span class="nobr">\(\{\tilde g_{\mathrm{i}} \le 0\}\).</span> Pri <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">paličju</a> so zvezne le za pozitivne prereze, zato zaprtost zagotovimo z napetostnima omejitvama.</p>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> Dokaz ni iz vira. CHK §1.3 (PDF str. 13-15) obstoj optimuma ne dokazuje.</p></div></div>
+<p>Preizkusimo lemo na zgledih. Stensko paličje z napetostnima omejitvama ima <span class="nobr">\(\mathcal F = \{A_{\mathrm{AC}} \ge 60{,}61,\ A_{\mathrm{BC}} \ge 75{,}76\}\),</span> to je <a data-del="dopustna" class="xref kaz" href="sec-naloga-optimizacije.html#fig-opt-dopustna" data-knowl="fig-opt-dopustna">zaprta množica</a>, ciljna funkcija \(4A_{\mathrm{AC}} + 5A_{\mathrm{BC}}\) je zvezna in \(\vek\alpha_0 = (100, 100)\) je dopustna (napetosti \(133{,}3\) in \(166{,}7\) MPa sta pod \(220\) MPa). Množica \(K\) je <a data-del="omejena" class="xref kaz" href="sec-naloga-optimizacije.html#fig-opt-dopustna" data-knowl="fig-opt-dopustna">trikotnik</a> z oglišči <span class="nobr">\((60{,}61, 75{,}76)\),</span> \((60{,}61, 131{,}52)\) in \((130{,}30, 75{,}76)\) mm<span class="nobr">\(^2\):</span> iz \(4A_{\mathrm{AC}} + 5A_{\mathrm{BC}} \le 900\) in \(A_{\mathrm{BC}} \ge 75{,}76\) sledi <span class="nobr">\(A_{\mathrm{AC}} \le (900 - 378{,}8)/4 = 130{,}30\),</span> podobno za <span class="nobr">\(A_{\mathrm{BC}} \le (900 - 242{,}4)/5 = 131{,}52\).</span> Je omejena, zato optimum obstaja. <a data-del="najboljsa" class="xref kaz" href="sec-naloga-optimizacije.html#fig-opt-dopustna" data-knowl="fig-opt-dopustna">Oglišče</a> \((60{,}61, 75{,}76)\) s prostornino \(621{,}2\) cm\(^3\) ima najmanjšo vrednost, kot kaže <a data-del="nivoji2" class="xref kaz" href="sec-naloga-optimizacije.html#fig-opt-dopustna" data-knowl="fig-opt-dopustna">nivojnica \(621\)</a> v desni sliki, ki ga le dotakne. Dokaz, da je optimum prav tam, sledi v naslednjem razdelku. Brez napetostnih omejitev manjka točka 1 leme (zgled <a class="xref" href="sec-naloga-optimizacije.html#ex-odprta-mnozica" data-knowl="ex-odprta-mnozica">29.6</a>), brez omejitve prostornine pri palici \(AC\) točka 3 (zgled <a class="xref" href="sec-naloga-optimizacije.html#ex-neomejena-mnozica" data-knowl="ex-neomejena-mnozica">29.7</a>).</p>
+<p>Naloga stenskega paličja torej ima optimum. Kje pa je optimum in kako ga poiščemo, ko ima konstrukcija več palic ali dodatno omejitev, kakršna je omejitev pomika? To je tema nadaljevanja poglavja. Naslednji razdelek najprej poišče optimum stenskega paličja z napetostnima omejitvama, nato pa še najboljšo višino zatiča <span class="nobr">\(B\).</span></p>
+
+</main>
+<footer><nav class="pager"><a href="ch-optimizacija.html" rel="prev">← 29</a><a href="index.html">Kazalo</a><a href="sec-palicje-z-napetostmi.html" rel="next">29.2 →</a></nav></footer>
+</body>
+</html>

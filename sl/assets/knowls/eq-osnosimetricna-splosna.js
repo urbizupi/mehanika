@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-osnosimetricna-splosna"] = {"html": "<div class=\"eq\">\\[w(r) = w_{\\mathrm{p}}(r) + c_1 + c_2 r^2 + c_3\\ln r + c_4\\,r^2\\ln r . \\tag{18.40}\\]</div>", "href": "sec-krozne-plosce.html#eq-osnosimetricna-splosna"};

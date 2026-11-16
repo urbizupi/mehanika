@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nacin-gib-realni"] = {"html": "<div class=\"eq\">\\[w_{\\mathrm{n}}(x, t) = |C|\\,\\sin\\frac{n\\pi x}{L}\\,\\cos\\big(\\omega_{\\mathrm{n}} t + k_{\\mathrm{n}} x + \\theta\\big) . \\tag{26.12}\\]</div>", "href": "sec-nacini-gibajoce-strune.html#eq-nacin-gib-realni"};

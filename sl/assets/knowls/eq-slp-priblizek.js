@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-slp-priblizek"] = {"html": "<div class=\"eq\">\\[\\tilde f^{\\,k}(\\vek A) = f(\\vek A^k) + \\sum_{\\mathrm{e}=1}^{n} \\frac{\\partial f}{\\partial A_{\\mathrm{e}}}(\\vek A^k)\\,(A_{\\mathrm{e}} - A_{\\mathrm{e}}^k) , \\tag{29.42}\\]</div>", "href": "sec-zaporedne-aproksimacije.html#eq-slp-priblizek"};

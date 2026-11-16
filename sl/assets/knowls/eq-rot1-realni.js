@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rot1-realni"] = {"html": "<div class=\"eq\">\\[m\\ddot v + k\\,v = 0 , \\qquad m\\ddot w + k\\,w = 0 , \\tag{24.1}\\]</div>", "href": "sec-jeffcottov-rotor.html#eq-rot1-realni"};

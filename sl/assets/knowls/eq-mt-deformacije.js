@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mt-deformacije"] = {"html": "<div class=\"eq\">\\[\\varepsilon_\\varphi = \\frac{N_\\varphi - \\nu N_\\theta}{Eh} = u' + \\frac{w}{R_1} , \\qquad \\varepsilon_\\theta = \\frac{N_\\theta - \\nu N_\\varphi}{Eh} = \\frac{u\\cos\\varphi + w\\sin\\varphi}{r} . \\tag{22.33}\\]</div>", "href": "sec-membranska-teorija.html#eq-mt-deformacije"};

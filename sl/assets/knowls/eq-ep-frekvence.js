@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ep-frekvence"] = {"html": "<div class=\"eq\">\\[\\omega_{\\mathrm{mn}} = \\pi^2\\Big(\\frac{m^2}{a^2} + \\frac{n^2}{b^2}\\Big)\\sqrt{\\frac{D}{\\rho h}} . \\tag{18.54}\\]</div>", "href": "sec-energijske-metode-plosc.html#eq-ep-frekvence"};

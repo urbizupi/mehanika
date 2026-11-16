@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-lu-kot"] = {"html": "<div class=\"eq\">\\[\\cos\\gamma = \\frac{\\vek u^\\T\\mat A\\,\\vek w}{\\sqrt{\\vek u^\\T\\mat A\\,\\vek u}\\,\\sqrt{\\vek w^\\T\\mat A\\,\\vek w}} . \\tag{22.6}\\]</div>", "href": "sec-srednja-ploskev.html#eq-lu-kot"};

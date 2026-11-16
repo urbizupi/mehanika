@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sila-kvadratni"] = {"html": "<div class=\"eq\">\\[N_{\\mathrm{h}} = N(0) + \\frac{q_{\\mathrm{L}}}{12\\,L}\\,h^2 , \\qquad e(h) = +\\frac{q_{\\mathrm{L}}}{12L}\\,h^2 . \\tag{17.12}\\]</div>", "href": "sec-konvergenca-mreze.html#eq-sila-kvadratni"};

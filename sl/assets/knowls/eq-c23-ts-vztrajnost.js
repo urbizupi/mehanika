@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-c23-ts-vztrajnost"] = {"html": "<div class=\"eq\">\\[\\vek F_{\\mathrm{s}} = -\\sum_{\\mathrm{i}} m_{\\mathrm{i}}\\,\\vek a_{\\mathrm{Gi}} , \\tag{23.11}\\]</div>", "href": "sec-tresilne-sile.html#eq-c23-ts-vztrajnost"};

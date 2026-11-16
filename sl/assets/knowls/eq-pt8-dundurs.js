@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pt8-dundurs"] = {"html": "<div class=\"eq\">\\[\\frac{\\partial^2 u_{\\mathrm{y}}}{\\partial x^2} = -\\hat\\alpha\\,\\frac{\\partial T}{\\partial y} = \\frac{\\hat\\alpha}{k}\\,q_{\\mathrm{y}} , \\tag{14.39}\\]</div>", "href": "sec-ravninske-temperaturne.html#eq-pt8-dundurs"};

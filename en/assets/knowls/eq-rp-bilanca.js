@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rp-bilanca"] = {"html": "<div class=\"eq\">\\[H'(t) = \\int_{\\mathrm{V}} Q\\,\\mathrm{d}V - \\int_{\\mathrm{S}} \\vek q\\cdot\\vek n\\,\\mathrm{d}A , \\qquad \\vek q = -k\\nabla T . \\tag{14.14}\\]</div>", "href": "sec-robni-pogoji-toplote.html#eq-rp-bilanca"};

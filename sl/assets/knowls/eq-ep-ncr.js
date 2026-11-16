@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ep-ncr"] = {"html": "<div class=\"eq\">\\[N_{\\mathrm{cr}} = k\\,\\frac{\\pi^2 D}{b^2} , \\qquad k = \\min_{\\mathrm{m}\\ge 1}\\Big(\\frac{m b}{a} + \\frac{a}{m b}\\Big)^2 , \\tag{18.58}\\]</div>", "href": "sec-energijske-metode-plosc.html#eq-ep-ncr"};

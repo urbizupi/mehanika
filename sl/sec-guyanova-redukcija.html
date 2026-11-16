@@ -1,0 +1,1863 @@
+<!doctype html>
+<html lang="sl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>21.4 Guyanova redukcija · Poglavje 21</title>
+<script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/style.css">
+<noscript><style>#loadbar { display: none; }</style></noscript>
+<script src="assets/config.js"></script>
+<script src="assets/load.js"></script>
+<script defer src="assets/interaktivno.js"></script>
+<script defer src="assets/book.js"></script>
+<script defer src="assets/predavanje.js"></script>
+<script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<div id="loadbar" aria-hidden="true"></div>
+<header class="top"><a class="home" href="index.html">Mehanika</a><nav class="pager"><a href="sec-dodatna-masa.html" rel="prev">← 21.3</a><a href="index.html">Kazalo</a><a href="sec-podstrukture.html" rel="next">21.5 →</a></nav>
+<span class="tools"><a class="lang" href="../en/sec-guyanova-redukcija.html" hreflang="en">English</a><button type="button" class="theme-toggle" title="Svetla ali temna tema" aria-label="Svetla ali temna tema"></button><button type="button" data-details="open">Razpri vse</button><button type="button" data-details="close">Skrij vse</button><button type="button" class="fig-side-toggle" aria-pressed="false">Slike ob strani</button></span></header>
+<main>
+<p class="updated">Posodobljeno 16. 11. 2026 ob 10.52</p>
+<p class="crumb"><a href="ch-modalna-redukcija.html"><span class="h-num">Poglavje 21</span> Modalna redukcija in reševanje lastnega problema</a></p>
+<h2 id="sec-guyanova-redukcija"><span class="h-num">21.4</span> Guyanova redukcija</h2>
+<p>Do zdaj smo v tem poglavju skrajševali odziv: obdržali smo prvih nekaj načinov in jim po potrebi dodali statični popravek (razdelek <a class="xref" href="sec-popravek-pospeskov.html">21.1</a>). Za to moramo načine poznati, torej že rešiti <a class="xref auto" href="sec-lastni-problem.html#def-lastni-par" data-knowl="def-lastni-par">lastni problem</a> cele konstrukcije, in pri velikem modelu je ravno to tisto, kar bi radi prihranili. Razdelek začne na drugem koncu. Najprej konstrukcijo skrčimo na nekaj koordinat, šele nato rešimo lastni problem, in ta je majhen. Kako izberemo, katere <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinate</a> obdržimo, in kam gredo druge? Najpreprostejši odgovor je ravnotežje: koordinate, ki jih ne obdržimo, pustimo, da se same uravnovesijo, kot da nanje ne bi delovala nobena sila. Po R. J. Guyanu, enem od dveh avtorjev, ki sta ga neodvisno objavila leta <span class="nobr">\(1965\),</span> se postopek imenuje <a class="xref auto forward" href="sec-guyanova-redukcija.html#def-guyanova-baza" data-knowl="def-guyanova-baza" title="Definirano kasneje v knjigi">Guyanova redukcija</a> (Guyan reduction), v literaturi tudi statična kondenzacija (static condensation): koordinate, ki jih izločimo, kot da bi zgostili v obdržane, in statična je zato, ker pri tem upoštevamo samo ravnotežje sil v togostni <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matriki</a>, ne vztrajnosti. Razdelek dokaže tri reči. Statična kondenzacija je za obremenitve na obdržanih koordinatah natančna (lema <a class="xref" href="sec-guyanova-redukcija.html#lem-staticna-kondenzacija" data-knowl="lem-staticna-kondenzacija">21.18</a>). Guyanov približek je Ritzov približek (definicija <a class="xref" href="sec-ritz-lastne-vrednosti.html#def-ritzov-priblizek" data-knowl="def-ritzov-priblizek">10.41</a>), zato velja <a class="xref auto" href="sec-polnost.html#def-zgornja-meja" data-knowl="def-zgornja-meja">zgornja meja</a> iz izreka <a class="xref" href="sec-ritz-lastne-vrednosti.html#thm-ritz-gornja-meja" data-knowl="thm-ritz-gornja-meja">10.42</a>, in je natančen, kadar odvisne koordinate nimajo mase (izrek <a class="xref" href="sec-guyanova-redukcija.html#thm-guyan" data-knowl="thm-guyan">21.19</a>). In natančen lastni problem, iz katerega je Guyanov le prvi približek, pove, kdaj je ta dober in kdaj ne (izrek <a class="xref" href="sec-guyanova-redukcija.html#thm-dinamicna-kondenzacija" data-knowl="thm-dinamicna-kondenzacija">21.20</a>). Preskusimo vse na dveh primerih, na <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">okvirju</a> in na konzoli, in na obeh pokažemo tudi izbiro koordinat, pri kateri redukcija odpove. <!-- nofig: signpost --></p>
+
+<h3 id="sec-guyan-okvir"><span class="h-num">21.4.1</span> Okvir z eno obdržano etažo</h3>
+<p>Začnimo na najmanjšem primeru, kjer se vidi vse. <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">Okvir</a> s tremi etažami iz razdelka <a class="xref" href="sec-ritz-lastne-vrednosti.html">10.8</a> ima pomike stropov \(q_1, q_2, q_3\) (od spodaj navzgor), vsaka etaža ima togost <span class="nobr">\(k\),</span> vsak strop maso <span class="nobr">\(\bar m\).</span> <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">Lastne vrednosti</a> merimo v enoti \(k/\bar m\) in so <span class="nobr">\(0{,}198062\),</span> \(1{,}554958\) in <span class="nobr">\(3{,}246980\).</span> <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">Matriki</a> sta</p>
+<div class="eq">\[\mat K = k\begin{pmatrix} 2 &amp; -1 &amp; 0 \\ -1 &amp; 2 &amp; -1 \\ 0 &amp; -1 &amp; 1 \end{pmatrix} , \qquad \mat M = \bar m\begin{pmatrix} 1 &amp; 0 &amp; 0 \\ 0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{pmatrix} ,\]</div>
+<p>v nadaljevanju pa vzamemo <span class="nobr">\(k = \bar m = 1\).</span> Zanima nas samo najnižja lastna vrednost, zato od treh koordinat obdržimo ena, zgornji strop <span class="nobr">\(q_3\),</span> in vprašamo, kam naj gresta stropa \(1\) in <span class="nobr">\(2\).</span></p>
+
+<figure class="blk slika" id="fig-guyan-okvir"><p><span class="svgfig" role="img" aria-label="Okvir s tremi stropi, strop 3 premaknjen za 1, stropa 1 in 2 brez sile"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='242.14pt' height='210.02pt' viewBox='-72.000004 -72 179.363776 155.573669'>
+<defs>
+<path id='c21-04-okvir-g0-61' d='M4.373599-7.0934C4.423412-7.222914 4.423412-7.262765 4.423412-7.272727C4.423412-7.382316 4.333748-7.47198 4.224159-7.47198C4.154421-7.47198 4.084682-7.442092 4.054795-7.382316L.597758 2.11208C.547945 2.241594 .547945 2.281445 .547945 2.291407C.547945 2.400996 .637609 2.49066 .747198 2.49066C.876712 2.49066 .9066 2.420922 .966376 2.251557L4.373599-7.0934Z'/>
+<path id='c21-04-okvir-g0-70' d='M3.01868-3.237858H3.985056C4.732254-3.237858 4.811955-3.078456 4.811955-2.789539C4.811955-2.719801 4.811955-2.600249 4.742217-2.30137C4.722291-2.251557 4.712329-2.211706 4.712329-2.191781C4.712329-2.11208 4.772105-2.072229 4.83188-2.072229C4.931507-2.072229 4.931507-2.102117 4.98132-2.281445L5.529265-4.443337C5.559153-4.552927 5.559153-4.572852 5.559153-4.60274C5.559153-4.622665 5.539228-4.712329 5.439601-4.712329S5.330012-4.662516 5.290162-4.503113C5.080946-3.726027 4.851806-3.5467 4.004981-3.5467H3.098381L3.73599-6.07721C3.825654-6.425903 3.835616-6.465753 4.273973-6.465753H5.589041C6.814446-6.465753 7.043587-6.136986 7.043587-5.369863C7.043587-5.140722 7.043587-5.100872 7.013699-4.83188C6.993773-4.702366 6.993773-4.682441 6.993773-4.652553C6.993773-4.60274 7.023661-4.533001 7.113325-4.533001C7.222914-4.533001 7.232877-4.592777 7.252802-4.782067L7.452055-6.505604C7.481943-6.774595 7.43213-6.774595 7.183064-6.774595H2.30137C2.102117-6.774595 2.002491-6.774595 2.002491-6.575342C2.002491-6.465753 2.092154-6.465753 2.281445-6.465753C2.650062-6.465753 2.929016-6.465753 2.929016-6.286426C2.929016-6.246575 2.929016-6.22665 2.879203-6.047323L1.564134-.777086C1.464508-.388543 1.444583-.308842 .657534-.308842C.488169-.308842 .37858-.308842 .37858-.119552C.37858 0 .498132 0 .52802 0C.816936 0 1.554172-.029888 1.843088-.029888C2.171856-.029888 2.998755 0 3.327522 0C3.417186 0 3.536737 0 3.536737-.18929C3.536737-.268991 3.476961-.288917 3.476961-.298879C3.447073-.308842 3.427148-.308842 3.198007-.308842C2.978829-.308842 2.929016-.308842 2.67995-.328767C2.391034-.358655 2.361146-.398506 2.361146-.52802C2.361146-.547945 2.361146-.607721 2.400996-.757161L3.01868-3.237858Z'/>
+<path id='c21-04-okvir-g1-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c21-04-okvir-g1-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='c21-04-okvir-g1-51' d='M2.889166-3.506849C3.706102-3.775841 4.283935-4.473225 4.283935-5.260274C4.283935-6.07721 3.407223-6.635118 2.450809-6.635118C1.444583-6.635118 .687422-6.03736 .687422-5.280199C.687422-4.951432 .9066-4.762142 1.195517-4.762142C1.504359-4.762142 1.703611-4.98132 1.703611-5.270237C1.703611-5.768369 1.235367-5.768369 1.085928-5.768369C1.39477-6.256538 2.052304-6.386052 2.410959-6.386052C2.819427-6.386052 3.367372-6.166874 3.367372-5.270237C3.367372-5.150685 3.347447-4.572852 3.088418-4.134496C2.789539-3.656289 2.450809-3.626401 2.201743-3.616438C2.122042-3.606476 1.882939-3.58655 1.8132-3.58655C1.733499-3.576588 1.663761-3.566625 1.663761-3.466999C1.663761-3.35741 1.733499-3.35741 1.902864-3.35741H2.34122C3.158157-3.35741 3.526775-2.67995 3.526775-1.703611C3.526775-.348692 2.839352-.059776 2.400996-.059776C1.972603-.059776 1.225405-.229141 .876712-.816936C1.225405-.767123 1.534247-.986301 1.534247-1.364882C1.534247-1.723537 1.265255-1.92279 .976339-1.92279C.737235-1.92279 .418431-1.783313 .418431-1.344956C.418431-.438356 1.344956 .219178 2.430884 .219178C3.646326 .219178 4.552927-.687422 4.552927-1.703611C4.552927-2.520548 3.92528-3.297634 2.889166-3.506849Z'/>
+</defs>
+<g id='c21-04-okvir-page1'>
+<g stroke-miterlimit='10' transform='translate(-66.106653,77.680317)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='tla'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 0H79.66776' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 0L-5.69046-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M7.11317 0L1.42271-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M14.22636 0L8.5359-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M21.33955 0L15.6491-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M28.45274 0L22.76228-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M35.56592 0L29.87546-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M42.67911 0L36.98865-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M49.7923 0L44.10184-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M56.90549 0L51.21503-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M64.01866 0L58.3282-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M71.13185 0L65.44139-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M78.24504 0L72.55458-5.69046' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='stebri'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M8.5359 0V136.57324' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.1'>
+<path d='M8.5359 0C8.5359 22.76227 25.60773 22.76227 25.60773 45.52455C25.60773 68.2864 42.67911 68.2864 42.67911 91.04869C42.67911 113.81097 59.75093 113.81097 59.75093 136.57324' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M71.13185 0V136.57324' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.1'>
+<path d='M71.13185 0C71.13185 22.76227 88.20367 22.76227 88.20367 45.52455C88.20367 68.2864 105.27505 68.2864 105.27505 91.04869C105.27505 113.81097 122.34688 113.81097 122.34688 136.57324' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='etaze'>
+<g stroke-width='2.4'>
+<path d='M17.07181 45.52455H96.73915' fill='none'/>
+</g>
+<g stroke-width='2.4'>
+<path d='M34.1432 91.04869H113.81097' fill='none'/>
+</g>
+<g stroke-width='2.4'>
+<path d='M51.21501 136.57324H130.88278' fill='none'/>
+</g>
+</g>
+<g class='del' data-del='zamiki'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M79.66776 45.52455V55.48276' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M96.73915 45.52455V55.48276' fill='none'/>
+</g>
+</g>
+</g>
+<path d='M80.11775 52.63774H96.28915' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,79.96776,52.63774)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.69885V-3.69885' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(89.3105,52.63774)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(96.43915,52.63774)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.69885V-3.69885' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M79.66776 91.04869V101.00732' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M113.81097 91.04869V101.00732' fill='none'/>
+</g>
+</g>
+</g>
+<path d='M80.11775 98.16187H113.36098' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,79.96776,98.16187)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.69885V-3.69885' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(106.38232,98.16187)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(113.51097,98.16187)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.69885V-3.69885' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M79.66776 136.57324V146.53145' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M130.88278 136.57324V146.53145' fill='none'/>
+</g>
+</g>
+</g>
+<path d='M80.11775 143.68643H130.43279' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,79.96776,143.68643)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.69885V-3.69885' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(123.45413,143.68643)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(130.58278,143.68643)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.69885V-3.69885' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(101.79485,50.13774)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,77.680317)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-66.106653' y='77.680317' xlink:href='#c21-04-okvir-g1-49'/>
+<use x='-61.125314' y='77.680317' xlink:href='#c21-04-okvir-g0-61'/>
+<use x='-56.143975' y='77.680317' xlink:href='#c21-04-okvir-g1-51'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(118.86667,95.66187)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,77.680317)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-66.106653' y='77.680317' xlink:href='#c21-04-okvir-g1-50'/>
+<use x='-61.125314' y='77.680317' xlink:href='#c21-04-okvir-g0-61'/>
+<use x='-56.143975' y='77.680317' xlink:href='#c21-04-okvir-g1-51'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(135.93805,140.46422)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,77.680317)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-66.106653' y='77.680317' xlink:href='#c21-04-okvir-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='sila'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M130.88278 136.57324H155.15477' fill='none'/>
+<g transform='translate(152.50688,136.57324)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.33095 0L1.67535 1.31036L2.89789 0L1.67535-1.31036Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(162.9685,133.15659)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,77.680317)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-66.106653' y='77.680317' xlink:href='#c21-04-okvir-g0-70'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='etaze'>
+<g transform='translate(5.59338,42.30234)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,77.680317)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-66.106653' y='77.680317' xlink:href='#c21-04-okvir-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(22.6652,87.82648)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,77.680317)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-66.106653' y='77.680317' xlink:href='#c21-04-okvir-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(39.73659,133.35103)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,77.680317)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-66.106653' y='77.680317' xlink:href='#c21-04-okvir-g1-51'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 21.10</span>: Okvir s tremi stropi, zgornji strop \(3\) je premaknjen za <span class="nobr">\(1\),</span> spodnja stropa \(1\) in \(2\) nimata zunanje sile. Pomiki stropov <span class="nobr">\(1/3\),</span> \(2/3\) in \(1\) so narisani v desno, \(1{,}8\) cm za enoto, nedeformirani stebri so sivi črtkani, deformirani modri. Sila \(F\) na strop \(3\) je edina zunanja sila in je <span class="nobr">\(k/3\).</span></figcaption></figure>
+<p>Sliko gradimo po delih. Najprej narišemo <a data-del="tla" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-okvir" data-knowl="fig-guyan-okvir">tla</a>, vpeto podlago. Nanje postavimo <a data-del="stebri" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-okvir" data-knowl="fig-guyan-okvir">stebra</a>, narisana črtkano v nedeformirani legi, in nad njima <a data-del="etaze" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-okvir" data-knowl="fig-guyan-okvir">tri stropa</a>, oštevilčena od spodaj. Vsak del stebra med dvema stropoma (ali med tlemi in stropom <span class="nobr">\(1\))</span> je etaža z vodoravno togostjo <span class="nobr">\(k\).</span> Zdaj strop \(3\) premaknemo za \(1\) v desno in ga tam držimo s <span class="nobr"><a data-del="sila" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-okvir" data-knowl="fig-guyan-okvir">silo \(F\)</a>,</span> ki se začne v njem in kaže v smeri premika. Na stropa \(1\) in \(2\) ne deluje nobena zunanja sila, to je zahteva, da se stropa uravnovesita sama. Kako se premakneta? Na strop \(1\) delujeta samo etaža pod njim in etaža nad njim, in ker nanj ne deluje zunanja sila, sta sili obeh etaž po zakonu o ravnovesju enaki: \(k\,q_1 = k\,(q_2 - q_1)\) po velikosti. Prav tako za strop <span class="nobr">\(2\):</span> <span class="nobr">\(k\,(q_2 - q_1) = k\,(q_3 - q_2)\).</span> <a class="xref auto" href="sec-notranje-sile-nosilca.html#def-precna-sila" data-knowl="def-precna-sila">Prečna sila</a> je torej v vseh treh etažah enaka, zato so etažni zamiki (razdelek <a class="xref" href="sec-lastni-problem.html#sec-lpn-zamiki">10.2.3</a>), to je pomiki stropa glede na strop pod njim, v vseh treh etažah enaki. Trije enaki zamiki skupaj dajo <span class="nobr">\(q_3 = 1\),</span> zato je vsak \(1/3\) in pomiki stropov so <span class="nobr">\(q_1 = \tfrac13\),</span> <span class="nobr">\(q_2 = \tfrac23\),</span> <span class="nobr">\(q_3 = 1\),</span> kot kažejo <a data-del="zamiki" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-okvir" data-knowl="fig-guyan-okvir">pomiki</a> na sliki. Stolpec \(\vek\psi = (\tfrac13,\ \tfrac23,\ 1)^\T\) je statična oblika okvirja pri enotskem pomiku zgornjega stropa.</p>
+<p><a data-del="sila" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-okvir" data-knowl="fig-guyan-okvir">Sila, ki zgornji strop drži</a>, je prečna sila v zgornji etaži, <span class="nobr">\(F = k\,(q_3 - q_2) = k/3\).</span> Hkrati je to togost <a class="xref auto" href="sec-robni-pogoji-mke.html#thm-reduciran-sistem" data-knowl="thm-reduciran-sistem">reduciranega sistema</a> z eno <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinato</a>: enotski pomik zahteva silo <span class="nobr">\(k/3\).</span> Po drugi poti, iz energije, je \(\tilde K\) dvakratna prožnostna energija pri enotskem pomiku zgornjega stropa: <span class="nobr">\(\tilde K = \vek\psi^\T\mat K\vek\psi = k\,(3 \cdot (1/3)^2) = k/3\),</span> saj vsaka od treh etaž z zamikom \(1/3\) prispeva <span class="nobr">\(k\,(1/3)^2\).</span> Masa reduciranega sistema je dvakratna <a class="xref auto" href="sec-kineticna-energija.html#def-kineticna-energija" data-knowl="def-kineticna-energija">kinetična energija</a> pri enotski hitrosti zgornjega stropa, ko se vsi stropi gibljejo po <span class="nobr">\(\vek\psi\):</span> <span class="nobr">\(\tilde M = \vek\psi^\T\mat M\vek\psi = \bar m\,(\tfrac19 + \tfrac49 + 1) = \tfrac{14}{9}\bar m\).</span> Reducirana lastna vrednost je torej</p>
+<div class="eq" id="eq-guyan-okvir-lambda">\[\tilde\lambda = \frac{\tilde K}{\tilde M} = \frac{k/3}{14\bar m/9} = \frac{3}{14}\,\frac{k}{\bar m} = 0{,}214286\,\frac{k}{\bar m} , \tag{21.30}\]</div>
+<p>pravi vrednosti \(0{,}198062\) pa je to \(8{,}19\) % višje (SymPy in NumPy), pri frekvenci \(4{,}01\) % <span class="nobr">(\(2{,}3339\)</span> Hz namesto \(2{,}2438\) Hz za \(k = 501\,760\) N/m in \(\bar m = 500\) kg). Višje je tudi po izreku <a class="xref" href="sec-ritz-lastne-vrednosti.html#thm-ritz-gornja-meja" data-knowl="thm-ritz-gornja-meja">10.42</a>: z enim stolpcem \(\vek\psi\) je \(\tilde\lambda\) <a class="xref auto" href="sec-rayleighov-kolicnik.html#def-rayleighov-kolicnik" data-knowl="def-rayleighov-kolicnik">Rayleighov količnik</a> \(R(\vek\psi)\) iz definicije <a class="xref" href="sec-ritz-lastne-vrednosti.html#def-ritzov-priblizek" data-knowl="def-ritzov-priblizek">10.41</a> in leži nad <span class="nobr">\(\lambda_1\).</span></p>
+<p>Zakaj nad in koliko? Pravi prvi način okvirja, normiran na pomik \(1\) zgornjega stropa, je \((0{,}445,\ 0{,}802,\ 1)^\T\) (NumPy), to je <a data-del="zamiki" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-okvir" data-knowl="fig-guyan-okvir">pri stropih \(1\) in \(2\)</a> več kot statična oblika <span class="nobr">\((\tfrac13,\ \tfrac23,\ 1)^\T\).</span> Pri nihanju ima vsak strop vztrajnostno silo <span class="nobr">\(-\bar m\ddot q_{\mathrm{i}} = \lambda\bar m\,q_{\mathrm{i}}\),</span> in ta je v istem smislu kot pomik, torej sta stropa \(1\) in \(2\) obremenjena dodatno in se premakneta več, kot bi se brez te sile. Statična oblika te sile pozabi. Ravno to je cena <a class="xref auto forward" href="sec-guyanova-redukcija.html#def-guyanova-baza" data-knowl="def-guyanova-baza" title="Definirano kasneje v knjigi">Guyanove redukcije</a> in izrek <a class="xref" href="sec-guyanova-redukcija.html#thm-dinamicna-kondenzacija" data-knowl="thm-dinamicna-kondenzacija">21.20</a> jo pozneje izmeri.</p>
+
+<h3 id="sec-guyan-razdelitev"><span class="h-num">21.4.2</span> Obdržane in odvisne koordinate</h3>
+<p>Isto naredimo za sistem z mnogo <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinatami</a>. Naj bosta \(\mat K\) in \(\mat M\) simetrični <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">pozitivno definitni matriki</a> reda \(n\) (izrek <a class="xref" href="sec-spektralni-izrek.html#thm-spektralni-izrek" data-knowl="thm-spektralni-izrek">10.13</a>), \(\lambda_1 \le \dots \le \lambda_{\mathrm{n}}\) njune <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">lastne vrednosti</a>. Koordinate razdelimo na dve množici. Obdržane koordinate označimo z <span class="nobr">\(\mathrm{a}\),</span> njihovo število z <span class="nobr">\(n_{\mathrm{a}}\),</span> in imenujemo aktivne (active), ker jih skrajšani model obdrži kot prave neznanke. Preostale označimo z <span class="nobr">\(\text{d}\),</span> število <span class="nobr">\(n_{\mathrm{d}} = n - n_{\mathrm{a}}\),</span> in imenujemo odvisne (dependent), ker jim bo ravnotežje določilo pomike iz pomikov aktivnih. Oznaki \(\mathrm{a}\) in \(\text{d}\) sta iz CK (razdelek 14.6, PDF str. 469), kjer se aktivnim reče tudi glavne (master) in odvisnim podrejene (slave). Koordinate preštejemo tako, da stojijo aktivne prve. Preštevilčenje je permutacija vrstic in stolpcev, ki simetrije in pozitivne definitnosti ne spremeni, ker je \(\vek x^\T\mat P^\T\mat K\mat P\,\vek x = (\mat P\vek x)^\T\mat K\,(\mat P\vek x) &gt; 0\) za <span class="nobr">\(\vek x \ne \vek 0\).</span> <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">Matriki</a> sta tedaj po blokih</p>
+<div class="eq" id="eq-guyan-razdelitev">\[\mat K = \begin{pmatrix} \mat K_{\mathrm{aa}} &amp; \mat K_{\mathrm{ad}} \\ \mat K_{\mathrm{da}} &amp; \mat K_{\mathrm{dd}} \end{pmatrix} , \qquad \mat M = \begin{pmatrix} \mat M_{\mathrm{aa}} &amp; \mat M_{\mathrm{ad}} \\ \mat M_{\mathrm{da}} &amp; \mat M_{\mathrm{dd}} \end{pmatrix} , \tag{21.31}\]</div>
+<p>z \(\mat K_{\mathrm{da}} = \mat K_{\mathrm{ad}}^\T\) in <span class="nobr">\(\mat M_{\mathrm{da}} = \mat M_{\mathrm{ad}}^\T\).</span> Pri <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">okvirju</a> je \(\mathrm{a} = \{3\}\) in <span class="nobr">\(\text{d} = \{1, 2\}\).</span> V poglavju <a class="xref" href="ch-mke-nosilci.html">12</a> smo pomike in zasuke nosilca označili s \(\mathrm{t}\) in \(\mathrm{r}\) (lema <a class="xref" href="sec-masna-matrika-nosilca.html#lem-masa-brez-vztrajnosti" data-knowl="lem-masa-brez-vztrajnosti">12.45</a>), kar je poseben primer te razdelitve: \(\mathrm{a}\) so pomiki, \(\text{d}\) zasuki. Krepka \(\vek\varphi_{\mathrm{r}}\) je v tem poglavju <a class="xref auto" href="sec-majhna-nihanja.html#def-nacin-nihanja" data-knowl="def-nacin-nihanja">način nihanja</a>, zasuk vozlišča pa pišemo z besedo.</p>
+<p>Blok \(\mat K_{\mathrm{dd}}\) je pozitivno definiten: za stolpec \(\vek y \ne \vek 0\) je \(\vek z = (\vek 0, \vek y)\) neničeln in \(\vek z^\T\mat K\vek z = \vek y^\T\mat K_{\mathrm{dd}}\vek y &gt; 0\) (kot v koraku 2 dokaza leme <a class="xref" href="sec-masna-matrika-nosilca.html#lem-masa-brez-vztrajnosti" data-knowl="lem-masa-brez-vztrajnosti">12.45</a>). Po izreku <a class="xref" href="sec-skalarni-produkt-funkcij.html#thm-sistem-pozitivno-definitna" data-knowl="thm-sistem-pozitivno-definitna">6.29</a> je zato <a class="xref auto" href="sec-matrike.html#def-inverzna-matrika" data-knowl="def-inverzna-matrika">obrnljiv</a>, in prav tako je pozitivno definiten <span class="nobr">\(\mat M_{\mathrm{dd}}\).</span> Kaj obrnljivost pove v besedah? Če so aktivne koordinate zadržane, ima konstrukcija pri vsaki obremenitvi odvisnih koordinat natanko eno ravnotežno lego.</p>
+
+<div class="zgodovina"><p class="zgodovina-label">Iz zgodovine</p><p>V letih od \(1960\) do \(1970\) je računalniška tehnika naglo rasla, a glavna ovira pri dinamiki konstrukcij je bila meja števila prostostnih stopenj, ki jih računalnik še zmore (GR, PDF str. 434). Hkrati so ugotovili, da je za natančne notranje napetosti model treba razdeliti dovolj podrobno, da pa je za porazdelitev vztrajnostnih sil veliko število prostostnih stopenj odveč (GR, PDF str. 434). Tako so prišli do zamisli o dinamični redukciji: koordinate razdelimo in porazdelitev vztrajnostnih sil statično prenesemo na manjšo množico koordinat (GR, PDF str. 434). Načelo <a class="xref auto forward" href="sec-guyanova-redukcija.html#lem-staticna-kondenzacija" data-knowl="lem-staticna-kondenzacija" title="Definirano kasneje v knjigi">statične kondenzacije</a> za dinamične probleme sta objavila Irons in Guyan, istega leta <span class="nobr">\(1965\),</span> neodvisno drug od drugega (GR, PDF str. 434), po obeh CK metodo imenuje Guyan-Ironsova redukcija, pogosto samo <a class="xref auto forward" href="sec-guyanova-redukcija.html#def-guyanova-baza" data-knowl="def-guyanova-baza" title="Definirano kasneje v knjigi">Guyanova redukcija</a>, in navaja članek R. J. Guyana »Reduction of Stiffness and Mass Matrices« iz revije AIAA Journal iz leta \(1965\) (CK, PDF str. 469 in 481). Najprej so redukcijo imeli za varčevalca prostostnih stopenj, pozneje pa se je izkazala za koristno tudi drugje, na primer pri izmenjavi velikih modelov med skupinami (GR, PDF str. 434). Anderson, Irons in Zienkiewicz so leta \(1968\) pokazali, kako izbira in število obdržanih koordinat vplivata na natančnost lastnih vrednosti in oblik pri nihanju in stabilnosti <a class="xref auto" href="sec-kirchhoffova-plosca.html#def-plosca" data-knowl="def-plosca">plošč</a> (CK, PDF str. 469 in 481). Ravno to vprašanje, katere koordinate obdržimo, bo naš preskus na konzoli.</p>
+</div>
+<p>Vrnimo se k razdelitvi <a class="xref" href="sec-guyanova-redukcija.html#eq-guyan-razdelitev" data-knowl="eq-guyan-razdelitev">(21.31)</a>: kaj naj bodo stolpci Ritzove baze, če hočemo, da aktivne koordinate ostanejo koordinate skrajšanega modela? Pri okvirju smo jih našli iz ravnotežja, zdaj isto zapišemo v blokih.</p>
+
+<div class="blk definicija" id="def-guyanova-baza"><div class="blk-head"><span class="blk-label">Definicija 21.17</span> <span class="blk-title">Guyanova baza (Guyan basis)</span></div><div class="blk-body"><p>Naj bosta <span class="nobr">\(\mat K\),</span> \(\mat M\) in razdelitev <span class="nobr">\(\mathrm{a}\),</span> \(\text{d}\) kot v enačbi <a class="xref" href="sec-guyanova-redukcija.html#eq-guyan-razdelitev" data-knowl="eq-guyan-razdelitev">(21.31)</a>. <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">Matrika</a> \(\mat\Psi_{\mathrm{d}} = -\mat K_{\mathrm{dd}}^{-1}\mat K_{\mathrm{da}}\) ima \(n_{\mathrm{d}}\) vrstic in \(n_{\mathrm{a}}\) stolpcev, njen stolpec \(s\) so pomiki odvisnih koordinat, ko je aktivna <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinata</a> \(s\) premaknjena za <span class="nobr">\(1\),</span> druge aktivne so \(0\) in na odvisnih ni zunanjih sil. Guyanova baza (Guyan basis) je matrika z \(n\) vrsticami in \(n_{\mathrm{a}}\) stolpci</p>
+<div class="eq" id="eq-guyan-baza">\[\mat\Psi_{\mathrm{G}} = \begin{pmatrix} \mat I \\ \mat\Psi_{\mathrm{d}} \end{pmatrix} = \begin{pmatrix} \mat I \\ -\mat K_{\mathrm{dd}}^{-1}\mat K_{\mathrm{da}} \end{pmatrix} . \tag{21.32}\]</div>
+<p><a class="xref auto forward" href="sec-guyanova-redukcija.html#thm-guyan" data-knowl="thm-guyan" title="Definirano kasneje v knjigi">Guyanov približek</a> (Guyan approximation) je <span class="nobr">\(\vek q \approx \mat\Psi_{\mathrm{G}}\,\vek q_{\mathrm{a}}\),</span> reducirani matriki sta \(\tilde{\mat K} = \mat\Psi_{\mathrm{G}}^\T\mat K\,\mat\Psi_{\mathrm{G}}\) in \(\tilde{\mat M} = \mat\Psi_{\mathrm{G}}^\T\mat M\,\mat\Psi_{\mathrm{G}}\) reda <span class="nobr">\(n_{\mathrm{a}}\),</span> Guyanove vrednosti \(\tilde\lambda_1 \le \dots \le \tilde\lambda_{\mathrm{n}_{\mathrm{a}}}\) pa so <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">lastne vrednosti</a> reduciranega problema <span class="nobr">\(\tilde{\mat K}\,\vek x = \tilde\lambda\,\tilde{\mat M}\,\vek x\).</span> Guyanova redukcija je Ritzov približek (definicija <a class="xref" href="sec-ritz-lastne-vrednosti.html#def-ritzov-priblizek" data-knowl="def-ritzov-priblizek">10.41</a>) z bazo <span class="nobr">\(\mat\Psi = \mat\Psi_{\mathrm{G}}\),</span> ki ima neodvisne stolpce, ker je iz \(\mat\Psi_{\mathrm{G}}\,\vek x = \vek 0\) prvi blok \(\vek x = \vek 0\) (definicija <a class="xref" href="sec-skalarni-produkt-funkcij.html#def-linearna-neodvisnost" data-knowl="def-linearna-neodvisnost">6.22</a>).</p>
+
+<p class="vir"><span class="vir-label">Vir:</span> CK razdelka 14.6.2 in 14.6.3 (PDF str. 466-467 in 469, enačbi 14.63 in 14.64): statična kondenzacija z vrstico \(\text{d}\) brez sil in Ritzova matrika »the displacement patterns associated with unit displacement of the respective a-coordinates, while the d-coordinates are released«. GR razdelek 6.9.1 (PDF str. 499-500, enačbi 6.148 in 6.151): vsak stolpec je »static deformation of the structure when the jth retained degree of freedom is set to one, the others being set to zero«. Zapis v blokih in oznake <span class="nobr">\(\mat\Psi_{\mathrm{G}}\),</span> \(\mat\Psi_{\mathrm{d}}\) so naši.</p></div></div>
+<p>Pri okvirju je <span class="nobr">\(\mat K_{\mathrm{dd}} = \begin{pmatrix} 2 &amp; -1 \\ -1 &amp; 2\end{pmatrix}\),</span> \(\mat K_{\mathrm{da}} = \begin{pmatrix} 0 \\ -1 \end{pmatrix}\) in <span class="nobr">\(\mat K_{\mathrm{dd}}^{-1} = \tfrac13\begin{pmatrix} 2 &amp; 1 \\ 1 &amp; 2\end{pmatrix}\),</span> torej \(\mat\Psi_{\mathrm{d}} = \tfrac13\begin{pmatrix} 1 \\ 2\end{pmatrix}\) in <span class="nobr">\(\mat\Psi_{\mathrm{G}} = (\tfrac13,\ \tfrac23,\ 1)^\T\),</span> kar je točno stolpec s <a data-del="zamiki" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-okvir" data-knowl="fig-guyan-okvir">slike</a>. Vrstica \(\text{d}\) produkta \(\mat K\mat\Psi_{\mathrm{G}}\) je <span class="nobr">\(\mat K_{\mathrm{da}} + \mat K_{\mathrm{dd}}\mat\Psi_{\mathrm{d}} = \mat 0\),</span> na stropih \(1\) in \(2\) torej ni sil, in vrstica \(\mathrm{a}\) je ravno <span class="nobr"><a data-del="sila" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-okvir" data-knowl="fig-guyan-okvir">sila \(F\)</a>.</span></p>
+
+<h3 id="sec-guyan-staticna"><span class="h-num">21.4.3</span> Statična kondenzacija</h3>
+<p>Kaj <a class="xref auto" href="sec-robni-pogoji-mke.html#thm-reduciran-sistem" data-knowl="thm-reduciran-sistem">reducirani sistem</a> \(\tilde{\mat K}\) pove za statiko? Če na odvisne <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinate</a> ne delujejo sile, bi moral dati vse pomike natančno, saj je Guyanova oblika tedaj res ravnotežna lega. Pokažimo to in poglejmo še, kaj se zgodi, če sila na odvisno koordinato deluje.</p>
+
+<div class="blk lema" id="lem-staticna-kondenzacija"><div class="blk-head"><span class="blk-label">Lema 21.18</span> <span class="blk-title">Statična kondenzacija (static condensation)</span></div><div class="blk-body"><p>Naj bo \(\mat K\) simetrična pozitivno definitna z razdelitvijo <a class="xref" href="sec-guyanova-redukcija.html#eq-guyan-razdelitev" data-knowl="eq-guyan-razdelitev">(21.31)</a> in \(\vek F = (\vek F_{\mathrm{a}}, \vek F_{\mathrm{d}})\) stolpec sil. Tedaj velja:</p>
+<ol>
+<li><a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">Matrika</a> \(\tilde{\mat K} = \mat\Psi_{\mathrm{G}}^\T\mat K\,\mat\Psi_{\mathrm{G}} = \mat K_{\mathrm{aa}} - \mat K_{\mathrm{ad}}\mat K_{\mathrm{dd}}^{-1}\mat K_{\mathrm{da}}\) je simetrična in pozitivno definitna.</li>
+<li>Sistem \(\mat K\vek q = \vek F\) ima natanko eno rešitev. Njene aktivne <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinate</a> rešijo <span class="nobr">\(\tilde{\mat K}\,\vek q_{\mathrm{a}} = \vek F_{\mathrm{a}} - \mat K_{\mathrm{ad}}\mat K_{\mathrm{dd}}^{-1}\vek F_{\mathrm{d}}\),</span> odvisne pa so <span class="nobr">\(\vek q_{\mathrm{d}} = \mat\Psi_{\mathrm{d}}\,\vek q_{\mathrm{a}} + \mat K_{\mathrm{dd}}^{-1}\vek F_{\mathrm{d}}\).</span></li>
+<li>Če je <span class="nobr">\(\vek F_{\mathrm{d}} = \vek 0\),</span> je \(\vek q = \mat\Psi_{\mathrm{G}}\,\vek q_{\mathrm{a}}\) in <span class="nobr">\(\tilde{\mat K}\,\vek q_{\mathrm{a}} = \vek F_{\mathrm{a}}\):</span> <a class="xref auto" href="sec-robni-pogoji-mke.html#thm-reduciran-sistem" data-knowl="thm-reduciran-sistem">reducirani sistem</a> je natančen za vse koordinate.</li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da ima reducirana <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrika</a> lastnosti prave togostne matrike, da iz <a class="xref auto" href="sec-robni-pogoji-mke.html#thm-reduciran-sistem" data-knowl="thm-reduciran-sistem">reduciranega sistema</a> dobimo vse pomike in da se pri brezsilnih odvisnih koordinatah zgodi, kar smo videli pri <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">okvirju</a>.</p>
+<ol>
+<li>Po pravilu za produkt matrik po blokih (definicija <a class="xref" href="sec-matrike.html#def-produkt-matrik" data-knowl="def-produkt-matrik">1.98</a>) je \(\mat K\mat\Psi_{\mathrm{G}} = (\mat K_{\mathrm{aa}} + \mat K_{\mathrm{ad}}\mat\Psi_{\mathrm{d}},\ \mat K_{\mathrm{da}} + \mat K_{\mathrm{dd}}\mat\Psi_{\mathrm{d}})\) po vrsticah, in drugi blok je \(\mat 0\) po definiciji <a class="xref" href="sec-guyanova-redukcija.html#def-guyanova-baza" data-knowl="def-guyanova-baza">21.17</a>, ker je <span class="nobr">\(\mat K_{\mathrm{dd}}\mat\Psi_{\mathrm{d}} = -\mat K_{\mathrm{da}}\).</span> Prvi blok je <span class="nobr">\(\mat K_{\mathrm{aa}} - \mat K_{\mathrm{ad}}\mat K_{\mathrm{dd}}^{-1}\mat K_{\mathrm{da}}\).</span> Z \(\mat\Psi_{\mathrm{G}}^\T = (\mat I,\ \mat\Psi_{\mathrm{d}}^\T)\) je zato \(\mat\Psi_{\mathrm{G}}^\T\mat K\mat\Psi_{\mathrm{G}}\) prvi blok plus <span class="nobr">\(\mat\Psi_{\mathrm{d}}^\T\cdot\mat 0\),</span> torej <span class="nobr">\(\tilde{\mat K}\).</span></li>
+<li>Simetrija: \((\mat\Psi_{\mathrm{G}}^\T\mat K\mat\Psi_{\mathrm{G}})^\T = \mat\Psi_{\mathrm{G}}^\T\mat K^\T\mat\Psi_{\mathrm{G}}\) (lema <a class="xref" href="sec-matrike.html#lem-transponiran-produkt" data-knowl="lem-transponiran-produkt">1.101</a>) in <span class="nobr">\(\mat K^\T = \mat K\).</span> Pozitivnost: za \(\vek x \ne \vek 0\) je \(\mat\Psi_{\mathrm{G}}\vek x \ne \vek 0\) (prvi blok je <span class="nobr">\(\vek x\)),</span> zato <span class="nobr">\(\vek x^\T\tilde{\mat K}\vek x = (\mat\Psi_{\mathrm{G}}\vek x)^\T\mat K\,(\mat\Psi_{\mathrm{G}}\vek x) &gt; 0\).</span> To je točka 1.</li>
+<li>Vrstice \(\text{d}\) sistema \(\mat K\vek q = \vek F\) so <span class="nobr">\(\mat K_{\mathrm{da}}\vek q_{\mathrm{a}} + \mat K_{\mathrm{dd}}\vek q_{\mathrm{d}} = \vek F_{\mathrm{d}}\).</span> Ker je \(\mat K_{\mathrm{dd}}\) <a class="xref auto" href="sec-matrike.html#def-inverzna-matrika" data-knowl="def-inverzna-matrika">obrnljiv</a>, sledi <span class="nobr">\(\vek q_{\mathrm{d}} = \mat\Psi_{\mathrm{d}}\vek q_{\mathrm{a}} + \mat K_{\mathrm{dd}}^{-1}\vek F_{\mathrm{d}}\).</span></li>
+<li>Vrstice \(\mathrm{a}\) so <span class="nobr">\(\mat K_{\mathrm{aa}}\vek q_{\mathrm{a}} + \mat K_{\mathrm{ad}}\vek q_{\mathrm{d}} = \vek F_{\mathrm{a}}\).</span> Vstavimo \(\vek q_{\mathrm{d}}\) iz koraka 3: <span class="nobr">\((\mat K_{\mathrm{aa}} + \mat K_{\mathrm{ad}}\mat\Psi_{\mathrm{d}})\,\vek q_{\mathrm{a}} = \vek F_{\mathrm{a}} - \mat K_{\mathrm{ad}}\mat K_{\mathrm{dd}}^{-1}\vek F_{\mathrm{d}}\),</span> kar je \(\tilde{\mat K}\,\vek q_{\mathrm{a}}\) na levi strani (korak 1).</li>
+<li>Enoličnost: \(\tilde{\mat K}\) je po koraku 2 pozitivno definitna, torej obrnljiva (izrek <a class="xref" href="sec-skalarni-produkt-funkcij.html#thm-sistem-pozitivno-definitna" data-knowl="thm-sistem-pozitivno-definitna">6.29</a>), in \(\vek q_{\mathrm{a}}\) je določen, nato pa še \(\vek q_{\mathrm{d}}\) po koraku 3. Obratno: pari \((\vek q_{\mathrm{a}}, \vek q_{\mathrm{d}})\) iz teh enačb izpolnjujejo obe vrstici bloka, saj sta bili izpeljani z enakovrednimi preoblikovanji. To je točka 2.</li>
+<li>Pri \(\vek F_{\mathrm{d}} = \vek 0\) je <span class="nobr">\(\vek q_{\mathrm{d}} = \mat\Psi_{\mathrm{d}}\vek q_{\mathrm{a}}\),</span> torej <span class="nobr">\(\vek q = \mat\Psi_{\mathrm{G}}\vek q_{\mathrm{a}}\),</span> in desna stran koraka 4 je <span class="nobr">\(\vek F_{\mathrm{a}}\).</span> To je točka 3. <!-- nofig: algebra --></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> CK razdelek 14.6.2 (PDF str. 466-467): enačbi 14.62 in 14.63 s spodnjim razdelkom kot statično vezno enačbo. GR razdelek 6.9.1 (PDF str. 499, enačbi 6.147 in 6.148): ločitev statičnega dela. Splošna obremenitev v točki 2 in dokaz v korakih nista iz virov.</p></div></div>
+<p>Točka 3 je natančen odgovor na vprašanje, s katerim smo začeli razdelek: za obremenitve na aktivnih koordinatah je reducirani sistem natančen, ker ravnotežje odvisne koordinate res dokončno določi. Za <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">okvir</a> to velja za silo na <a data-del="sila" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-okvir" data-knowl="fig-guyan-okvir">zgornjem stropu</a>: pri sili \(F\) je \(\tilde K\,q_3 = F\) z \(\tilde K = k/3\) in <span class="nobr">\(q_3 = 3F/k\),</span> kar je pravi pomik vrha okvirja pri tej sili.</p>
+<p>Preskusimo še primer, kjer sila ni samo na aktivnih koordinatah. Na isti okvir s <a data-del="etaze" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-okvir" data-knowl="fig-guyan-okvir">stropi</a> kot prej deluje sila \(1\) na strop <span class="nobr">\(2\),</span> strop \(3\) je še vedno aktiven. Pravi odziv (iz <span class="nobr">\(\mat K\vek q = (0, 1, 0)^\T\)):</span> enačba stropa \(3\) je <span class="nobr">\(q_3 = q_2\),</span> stropa \(1\) je <span class="nobr">\(q_2 = 2q_1\),</span> in stropa \(2\) je <span class="nobr">\(-q_1 + 2q_2 - q_3 = -q_1 + q_2 = 1\),</span> torej <span class="nobr">\(\vek q = (1,\ 2,\ 2)^\T\).</span> Če se zmotno držimo točke 3, je <span class="nobr">\(\vek F_{\mathrm{a}} = 0\),</span> in \(\tilde K\,q_3 = 0\) da <span class="nobr">\(q_3 = 0\),</span> torej pomik, ki ga ni. Točka 2 pa pravilno upošteva silo na odvisni koordinati: desna stran je <span class="nobr">\(F_{\mathrm{a}} - \mat K_{\mathrm{ad}}\mat K_{\mathrm{dd}}^{-1}\vek F_{\mathrm{d}} = 0 - (0,\ -1)\cdot\tfrac13(1,\ 2)^\T = \tfrac23\),</span> torej <span class="nobr">\(q_3 = (2/3)/(1/3) = 2\),</span> in <span class="nobr">\(\vek q_{\mathrm{d}} = \tfrac13(1,\ 2)^\T\cdot 2 + \mat K_{\mathrm{dd}}^{-1}(0,\ 1)^\T = (\tfrac23 + \tfrac13,\ \tfrac43 + \tfrac23)^\T = (1,\ 2)^\T\),</span> kar je pravi odgovor. Statična oblika \(\mat\Psi_{\mathrm{G}}\,q_3\) sama bi pri sili na odvisni koordinati dala <span class="nobr">\((\tfrac23,\ \tfrac43,\ 2)^\T\),</span> kar zgreši \(\vek q_{\mathrm{d}}\) za člen <span class="nobr">\(\mat K_{\mathrm{dd}}^{-1}\vek F_{\mathrm{d}}\).</span> V dinamiki so ravno vztrajnostne sile \(-\mat M\ddot{\vek q}\) taka obremenitev odvisnih koordinat. Desna stran točke 2 je <span class="nobr">\(\vek F_{\mathrm{a}} + \mat\Psi_{\mathrm{d}}^\T\vek F_{\mathrm{d}}\),</span> ker je <span class="nobr">\(\mat\Psi_{\mathrm{d}}^\T = -\mat K_{\mathrm{ad}}\mat K_{\mathrm{dd}}^{-1}\):</span> vztrajnostna sila odvisnih koordinat se statično prenese na aktivne z isto <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matriko</a>, kot smo jo uporabili za pomike. Ta prenos je <a class="xref auto forward" href="sec-guyanova-redukcija.html#thm-guyan" data-knowl="thm-guyan" title="Definirano kasneje v knjigi">Guyanov približek</a>: pospeške odvisnih koordinat vzame iz statične oblike, <span class="nobr">\(\ddot{\vek q}_{\mathrm{d}} \approx \mat\Psi_{\mathrm{d}}\ddot{\vek q}_{\mathrm{a}}\),</span> in rezultat je masna matrika \(\tilde{\mat M}\) spodaj. Napaka je v tem približku in ne v statiki.</p>
+
+<h3 id="sec-guyan-meja"><span class="h-num">21.4.4</span> Guyanov približek in zgornja meja</h3>
+<p>Zdaj dinamika. Izrek pove, kaj je <a class="xref auto forward" href="sec-guyanova-redukcija.html#thm-guyan" data-knowl="thm-guyan" title="Definirano kasneje v knjigi">Guyanov približek</a>, in v katerem primeru je natančen.</p>
+
+<div class="blk izrek" id="thm-guyan"><div class="blk-head"><span class="blk-label">Izrek 21.19</span> <span class="blk-title">Guyanov približek (Guyan approximation)</span></div><div class="blk-body"><p>Naj bosta \(\mat K\) in \(\mat M\) simetrični pozitivno definitni z razdelitvijo <a class="xref" href="sec-guyanova-redukcija.html#eq-guyan-razdelitev" data-knowl="eq-guyan-razdelitev">(21.31)</a> in \(\lambda_1 \le \dots \le \lambda_{\mathrm{n}}\) <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">lastne vrednosti</a> para <span class="nobr">\((\mat K, \mat M)\).</span> Tedaj velja:</p>
+<ol>
+<li>Reducirana masna <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrika</a> je <span class="nobr">\(\tilde{\mat M} = \mat M_{\mathrm{aa}} + \mat M_{\mathrm{ad}}\mat\Psi_{\mathrm{d}} + \mat\Psi_{\mathrm{d}}^\T\mat M_{\mathrm{da}} + \mat\Psi_{\mathrm{d}}^\T\mat M_{\mathrm{dd}}\mat\Psi_{\mathrm{d}}\),</span> simetrična in pozitivno definitna, in Guyanove vrednosti so <a class="xref auto" href="sec-ritz-lastne-vrednosti.html#def-ritzov-priblizek" data-knowl="def-ritzov-priblizek">Ritzove vrednosti</a>: \(\tilde\lambda_{\mathrm{r}} \ge \lambda_{\mathrm{r}}\) za <span class="nobr">\(r = 1, \dots, n_{\mathrm{a}}\).</span></li>
+<li>Naj bo \(\mat K\) kot zgoraj, \(\mat M\) pa namesto pozitivno definitne le simetrična z <span class="nobr">\(\mat M_{\mathrm{dd}} = \mat 0\),</span> \(\mat M_{\mathrm{da}} = \mat 0\) in pozitivno definitnim blokom \(\mat M_{\mathrm{aa}}\) (odvisne <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinate</a> nimajo vztrajnosti). Tedaj je \(\tilde{\mat M} = \mat M_{\mathrm{aa}}\) in \(\tilde{\mat K}\,\vek x = \lambda\,\mat M_{\mathrm{aa}}\,\vek x\) velja z \(\vek x \ne \vek 0\) natanko tedaj, ko \(\vek v = \mat\Psi_{\mathrm{G}}\,\vek x\) reši <span class="nobr">\(\mat K\,\vek v = \lambda\,\mat M\,\vek v\),</span> in vsaka rešitev \(\vek v \ne \vek 0\) te enačbe je take oblike. Guyanove vrednosti so zato natanko vse lastne vrednosti polnega problema.</li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Prvo točko dobimo z množenjem po blokih in z Ritzovim izrekom, drugo z ravnotežjem vrstic <span class="nobr">\(\text{d}\),</span> ki pri brezmasnih koordinatah ni nič drugega kot statika.</p>
+<ol>
+<li>Po pravilu za produkt matrik po blokih (definicija <a class="xref" href="sec-matrike.html#def-produkt-matrik" data-knowl="def-produkt-matrik">1.98</a>) je \(\mat M\mat\Psi_{\mathrm{G}} = (\mat M_{\mathrm{aa}} + \mat M_{\mathrm{ad}}\mat\Psi_{\mathrm{d}},\ \mat M_{\mathrm{da}} + \mat M_{\mathrm{dd}}\mat\Psi_{\mathrm{d}})\) po vrsticah, in množenje z \(\mat\Psi_{\mathrm{G}}^\T = (\mat I,\ \mat\Psi_{\mathrm{d}}^\T)\) da formulo. Simetrija in pozitivna definitnost kot v koraku 2 dokaza leme <a class="xref" href="sec-guyanova-redukcija.html#lem-staticna-kondenzacija" data-knowl="lem-staticna-kondenzacija">21.18</a>, ker je \(\mat\Psi_{\mathrm{G}}\vek x \ne \vek 0\) za <span class="nobr">\(\vek x \ne \vek 0\).</span></li>
+<li>Stolpci \(\mat\Psi_{\mathrm{G}}\) so neodvisni (definicija <a class="xref" href="sec-guyanova-redukcija.html#def-guyanova-baza" data-knowl="def-guyanova-baza">21.17</a>), zato izrek <a class="xref" href="sec-ritz-lastne-vrednosti.html#thm-ritz-gornja-meja" data-knowl="thm-ritz-gornja-meja">10.42</a>, točka 1, da <span class="nobr">\(\tilde\lambda_{\mathrm{r}} \ge \lambda_{\mathrm{r}}\).</span> To je prva točka.</li>
+<li>Pri drugi točki formula iz koraka 1 velja še naprej, ker pozitivne definitnosti \(\mat M\) ne uporablja, \(\mat K_{\mathrm{dd}}\) pa je <a class="xref auto" href="sec-matrike.html#def-inverzna-matrika" data-knowl="def-inverzna-matrika">obrnljiv</a> zaradi pozitivne definitnosti <span class="nobr">\(\mat K\).</span> Člena \(\mat M_{\mathrm{ad}}\mat\Psi_{\mathrm{d}}\) in \(\mat\Psi_{\mathrm{d}}^\T\mat M_{\mathrm{da}}\) ter \(\mat\Psi_{\mathrm{d}}^\T\mat M_{\mathrm{dd}}\mat\Psi_{\mathrm{d}}\) so ničelni <span class="nobr">(\(\mat M_{\mathrm{ad}} = \mat M_{\mathrm{da}}^\T = \mat 0\)),</span> zato <span class="nobr">\(\tilde{\mat M} = \mat M_{\mathrm{aa}}\).</span></li>
+<li>Naj bo \(\mat K\vek v = \lambda\mat M\vek v\) z <span class="nobr">\(\vek v = (\vek x, \vek y) \ne \vek 0\).</span> Ker so vrstice \(\text{d}\) masne <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrike</a> ničelne, so vrstice \(\text{d}\) enačbe <span class="nobr">\(\mat K_{\mathrm{da}}\vek x + \mat K_{\mathrm{dd}}\vek y = \vek 0\),</span> torej \(\vek y = \mat\Psi_{\mathrm{d}}\vek x\) in <span class="nobr">\(\vek v = \mat\Psi_{\mathrm{G}}\vek x\).</span> Če bi bil <span class="nobr">\(\vek x = \vek 0\),</span> bi bil tudi <span class="nobr">\(\vek y = \vek 0\),</span> torej <span class="nobr">\(\vek v = \vek 0\),</span> kar je izključeno, zato je <span class="nobr">\(\vek x \ne \vek 0\).</span> Vrstice \(\mathrm{a}\) so <span class="nobr">\(\mat K_{\mathrm{aa}}\vek x + \mat K_{\mathrm{ad}}\mat\Psi_{\mathrm{d}}\vek x = \lambda\mat M_{\mathrm{aa}}\vek x\),</span> kar je po koraku 1 dokaza leme <a class="xref" href="sec-guyanova-redukcija.html#lem-staticna-kondenzacija" data-knowl="lem-staticna-kondenzacija">21.18</a> enako <span class="nobr">\(\tilde{\mat K}\vek x = \lambda\mat M_{\mathrm{aa}}\vek x\).</span></li>
+<li>Obratno: če je \(\tilde{\mat K}\vek x = \lambda\mat M_{\mathrm{aa}}\vek x\) in <span class="nobr">\(\vek v = \mat\Psi_{\mathrm{G}}\vek x\),</span> imajo vrstice \(\text{d}\) enačbe \(\mat K\vek v = \lambda\mat M\vek v\) obe strani ničelni <span class="nobr">(\(\mat K\mat\Psi_{\mathrm{G}}\)</span> ima ničelni blok \(\text{d}\) po koraku 1 dokaza leme <a class="xref" href="sec-guyanova-redukcija.html#lem-staticna-kondenzacija" data-knowl="lem-staticna-kondenzacija">21.18</a> in \(\mat M\) ima ničelne vrstice <span class="nobr">\(\text{d}\)),</span> vrstice \(\mathrm{a}\) pa so enačba reduciranega problema. To je druga točka. <!-- nofig: algebra --></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> CK razdelek 14.8.2 (PDF str. 477-479): Guyanova redukcija po \(\mat M_{\mathrm{aa}} = \mat T^\T\mat M\mat T\) (enačbe 14.72 in 14.73) in zgornja meja po Rayleigh-Ritzu. CK razdelek 14.6.2 (PDF str. 467, enačba 14.65): pri zbranih masah je reducirana masna matrika kar <span class="nobr">\(\mat M_{\mathrm{aa}}\).</span> Točka 2 v tej obliki in dokaz v korakih nista iz virov, zgornja meja je po izreku <a class="xref" href="sec-ritz-lastne-vrednosti.html#thm-ritz-gornja-meja" data-knowl="thm-ritz-gornja-meja">10.42</a>.</p></div></div>
+<p>Druga točka vsebuje lemo <a class="xref" href="sec-masna-matrika-nosilca.html#lem-masa-brez-vztrajnosti" data-knowl="lem-masa-brez-vztrajnosti">12.45</a> poglavja <a class="xref" href="ch-mke-nosilci.html">12</a>: pri nosilcu z <a class="xref auto" href="sec-masna-matrika.html#def-zbrana-masa" data-knowl="def-zbrana-masa">zbranimi masami</a> (zasuki brez vztrajnosti) je kondenzacija zasukov natančna. Tam smo to pokazali za nosilce, tu je to poseben primer splošnega izreka. Prva točka pove, da Guyanova vrednost za nobeno zaporedno številko ni pod pravo, torej Guyan <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">lastne vrednosti</a> nikoli ne podceni, kar smo videli pri <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">okvirju</a> <span class="nobr">(\(0{,}214286 &gt; 0{,}198062\)).</span> Koliko nad, izrek ne pove, in tega ne more povedati, ker je to odvisno od izbire koordinat. To izmerimo na konzoli. <!-- nofig: algebra --></p>
+
+<h3 id="sec-konzola-pomiki-ali-zasuki"><span class="h-num">21.4.5</span> Konzola: pomiki ali zasuki</h3>
+<p>Konzolo iz poglavja <a class="xref" href="ch-mke-nosilci.html">12</a> vzamemo z dvema elementoma po \(0{,}5\) m (jeklo, prerez \(20 \times 40\) mm, \(L = 1\) m, \(\omega_0 = 57{,}883\) 1/s, frekvence merimo v enotah <span class="nobr">\(\omega_0\)).</span> Neznanke so po vozliščih pomik in zasuk, <span class="nobr">\(\vek q = (v_1,\ \varphi_1,\ v_2,\ \varphi_2)^\T\),</span> z vozliščema pri \(x = L/2\) in <span class="nobr">\(x = L\).</span> Pri \(EI = \rho A = L = 1\) je po lemi <a class="xref" href="sec-masna-matrika-nosilca.html#lem-masa-elementa-nosilca" data-knowl="lem-masa-elementa-nosilca">12.43</a> in izreku <a class="xref" href="sec-sestavljanje-nosilca.html#thm-sestavljanje-nosilca" data-knowl="thm-sestavljanje-nosilca">12.9</a> (SymPy)</p>
+<div class="eq" id="eq-guyan-konzola-matrike">\[\mat K = \begin{pmatrix} 192 &amp; 0 &amp; -96 &amp; 24 \\ 0 &amp; 16 &amp; -24 &amp; 4 \\ -96 &amp; -24 &amp; 96 &amp; -24 \\ 24 &amp; 4 &amp; -24 &amp; 8 \end{pmatrix} , \qquad \mat M = \begin{pmatrix} \tfrac{13}{35} &amp; 0 &amp; \tfrac{9}{140} &amp; -\tfrac{13}{1680} \\ 0 &amp; \tfrac{1}{420} &amp; \tfrac{13}{1680} &amp; -\tfrac{1}{1120} \\ \tfrac{9}{140} &amp; \tfrac{13}{1680} &amp; \tfrac{13}{70} &amp; -\tfrac{11}{840} \\ -\tfrac{13}{1680} &amp; -\tfrac{1}{1120} &amp; -\tfrac{11}{840} &amp; \tfrac{1}{840} \end{pmatrix} . \tag{21.33}\]</div>
+<p>Kondenziramo lahko na dva načina: obdržimo pomika \(v_1, v_2\) in kondenziramo zasuka (CK je v razdelku 14.8.2 naredil prav to), ali obdržimo zasuka in kondenziramo pomika. Slika <a class="xref" href="sec-guyanova-redukcija.html#fig-guyan-oblike" data-knowl="fig-guyan-oblike">21.11</a> kaže statične oblike obeh izbir.</p>
+
+<figure class="blk slika" id="fig-guyan-oblike"><p><span class="svgfig" role="img" aria-label="Statične oblike konzole z dvema elementoma pri obdržanih pomikih in pri obdržanih zasukih"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='441.46pt' height='199.98pt' viewBox='-72.000004 -72.000002 327.00527 148.133021'>
+<defs>
+<path id='c21-04-oblike-g0-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c21-04-oblike-g0-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+</defs>
+<g id='c21-04-oblike-page1'>
+<g stroke-miterlimit='10' transform='translate(-66.106653,49.546896)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='levo'>
+<g class='del' data-del='vpetje'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0-20.77037V121.77771' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0-20.77037L-5.69046-26.46083' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0-13.6572L-5.69046-19.34766' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0-6.544L-5.69046-12.23447' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 .56918L-5.69046-5.12128' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 7.68237L-5.69046 1.99191' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 14.79555L-5.69046 9.10509' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 21.90874L-5.69046 16.21828' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 29.02193L-5.69046 23.33147' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 36.13512L-5.69046 30.44466' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 43.24829L-5.69046 37.55783' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 50.36148L-5.69046 44.67102' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 57.47467L-5.69046 51.78421' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 64.58786L-5.69046 58.8974' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 71.70103L-5.69046 66.01057' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 78.81422L-5.69046 73.12376' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 85.92741L-5.69046 80.23695' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 93.0406L-5.69046 87.35014' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 100.15378L-5.69046 94.46332' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 107.26697L-5.69046 101.5765' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 114.38016L-5.69046 108.6897' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 121.49335L-5.69046 115.80289' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 0H122.34688' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='a1'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.0'>
+<path d='M0 0L2.56064 .62604L5.12128 2.47554L7.68236 5.37743L10.243 9.24704L12.80363 13.94199L15.36429 19.34766L17.92535 25.35158L20.48601 31.8387L23.04665 38.66708L25.60728 45.7234L28.16837 52.89346L30.729 60.06352L33.28966 67.09161L35.8503 73.86311L38.41138 80.26515L40.97202 86.15489L43.53265 91.44724L46.09329 95.99934L48.65437 99.69835L51.21501 102.43004L53.77567 104.08026L56.3363 104.70589L58.89738 104.33641L61.45802 103.02744L64.01866 100.8367L66.57932 97.82063L69.13995 94.0361L71.70103 89.54086L74.26167 84.39093L76.82231 78.64359L79.38295 72.3553L81.94403 65.55515L84.50467 58.3282L87.06532 50.70271L89.62596 42.76463L92.18704 34.54175L94.74768 26.09137L97.30832 17.49858L99.86897 8.7634L102.43004 0' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='a2'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M0 0L2.56064-.11374L5.12128-.39854L7.68236-.85355L10.243-1.39406L12.80363-2.04877L15.36429-2.75992L17.92535-3.49971L20.48601-4.21086L23.04665-4.89378L25.60728-5.49118L28.16837-5.97527L30.729-6.3165L33.28966-6.48712L35.8503-6.45891L38.41138-6.1741L40.97202-5.60536L43.53265-4.75182L46.09329-3.55658L48.65437-1.9919L51.21501 0L53.77567 2.41867L56.3363 5.23546L58.89738 8.45038L61.45802 12.06384L64.01866 15.99033L66.57932 20.28673L69.13995 24.8675L71.70103 29.73306L74.26167 34.85478L76.82231 40.23221L79.38295 45.83714L81.94403 51.61314L84.50467 57.58841L87.06532 63.70564L89.62596 69.96527L92.18704 76.33867L94.74768 82.76892L97.30832 89.28471L99.86897 95.85738L102.43004 102.43004' fill='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(48.71501,-22.04413)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,49.546896)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-66.106653' y='49.546896' xlink:href='#c21-04-oblike-g0-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(99.93004,-22.04413)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,49.546896)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-66.106653' y='49.546896' xlink:href='#c21-04-oblike-g0-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='desno'>
+<g class='del' data-del='vpetje'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M199.16928-20.77037V121.77771' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M199.16928-20.77037L193.47882-26.46083' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M199.16928-13.6572L193.47882-19.34766' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M199.16928-6.544L193.47882-12.23447' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M199.16928 .56918L193.47882-5.12128' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M199.16928 7.68237L193.47882 1.99191' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M199.16928 14.79555L193.47882 9.10509' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M199.16928 21.90874L193.47882 16.21828' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M199.16928 29.02193L193.47882 23.33147' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M199.16928 36.13512L193.47882 30.44466' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M199.16928 43.24829L193.47882 37.55783' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M199.16928 50.36148L193.47882 44.67102' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M199.16928 57.47467L193.47882 51.78421' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M199.16928 64.58786L193.47882 58.8974' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M199.16928 71.70103L193.47882 66.01057' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M199.16928 78.81422L193.47882 73.12376' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M199.16928 85.92741L193.47882 80.23695' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M199.16928 93.0406L193.47882 87.35014' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M199.16928 100.15378L193.47882 94.46332' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M199.16928 107.26697L193.47882 101.5765' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M199.16928 114.38016L193.47882 108.6897' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M199.16928 121.49335L193.47882 115.80289' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M199.16928 0H321.51616' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='r1'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.0'>
+<path d='M199.16928 0L201.72992 .05687L204.29056 .25615L206.85164 .56917L209.41228 1.02417L211.97292 1.59334L214.53357 2.30449L217.09464 3.1298L219.65529 4.0971L222.21593 5.17859L224.77657 6.40204L227.33765 7.73923L229.89828 9.21883L232.45894 10.81218L235.01958 12.54749L237.58066 14.39699L240.1413 16.38889L242.70193 18.4941L245.26257 20.74216L247.82365 23.10352L250.3843 25.60728L252.94495 28.1115L255.50558 30.47285L258.06667 32.72047L260.6273 34.82613L263.18794 36.81802L265.7486 38.66708L268.30923 40.40283L270.87032 41.99619L273.43095 43.47578L275.9916 44.81297L278.55223 46.03642L281.11331 47.1179L283.67395 48.0852L286.2346 48.9101L288.79524 49.62167L291.35632 50.19084L293.91696 50.64584L296.4776 50.95886L299.03825 51.15814L301.59932 51.21501' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='r2'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M199.16928 0H201.72992H204.29056H206.85164H209.41228H211.97292H214.53357H217.09464H219.65529H222.21593H224.77657H227.33765H229.89828H232.45894H235.01958H237.58066H240.1413H242.70193H245.26257H247.82365H250.3843L252.94495 .05687L255.50558 .25615L258.06667 .56917L260.6273 1.02417L263.18794 1.59334L265.7486 2.30449L268.30923 3.1298L270.87032 4.0971L273.43095 5.17859L275.9916 6.40204L278.55223 7.73923L281.11331 9.21883L283.67395 10.81218L286.2346 12.54749L288.79524 14.39699L291.35632 16.38889L293.91696 18.4941L296.4776 20.74216L299.03825 23.10352L301.59932 25.60728' fill='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(247.8843,-22.04413)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,49.546896)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-66.106653' y='49.546896' xlink:href='#c21-04-oblike-g0-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(299.09932,-22.04413)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,49.546896)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-66.106653' y='49.546896' xlink:href='#c21-04-oblike-g0-50'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M250.3843-9.38945V113.24179' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M301.59932-9.38945V113.24179' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='ena'>
+<g fill='#00f' stroke='#00f'>
+<path d='M51.21501 .45V101.98004' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,51.21501,0.3)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.69885V-3.69885' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,51.21501,95.00139)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,51.21501,102.13004)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.69885V-3.69885' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(39.58203,47.9928)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,49.546896)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-66.106653' y='49.546896' xlink:href='#c21-04-oblike-g0-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M102.43004 .45V101.98004' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,102.43004,0.3)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.69885V-3.69885' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,102.43004,95.00139)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,102.43004,102.13004)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.69885V-3.69885' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(109.06302,47.9928)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,49.546896)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-66.106653' y='49.546896' xlink:href='#c21-04-oblike-g0-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='nic'>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M104.69298 0C104.69298 1.2498 103.67984 2.26294 102.43004 2.26294S100.1671 1.2498 100.1671 0S101.18024-2.26294 102.43004-2.26294S104.69298-1.2498 104.69298 0ZM102.43004 0'/>
+</g>
+<g transform='translate(102.43004,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,49.546896)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M53.47795 0C53.47795 1.2498 52.46481 2.26294 51.21501 2.26294S48.95207 1.2498 48.95207 0S49.96521-2.26294 51.21501-2.26294S53.47795-1.2498 53.47795 0ZM51.21501 0'/>
+</g>
+<g transform='translate(51.21501,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,49.546896)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='nagibi'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.6'>
+<path d='M236.29982 11.52332L264.46819 39.6917' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.6'>
+<path d='M281.68198 51.21501H321.51608' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.6'>
+<path d='M230.46739 0H270.30106' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.6'>
+<path d='M287.51485 11.52332L315.68321 39.6917' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 21.11</span>: Guyanove baze konzole z dvema elementoma (vozlišči \(1\) in \(2\) pri \(x = L/2\) in <span class="nobr">\(x = L\)),</span> oblika med vozlišči je kubična Hermitova funkcija elementa. Levo: obdržana pomika <span class="nobr">\(v_1\),</span> <span class="nobr">\(v_2\),</span> zasuka prosta. Desno: obdržana zasuka, pomika prosta. Modro prvi stolpec baze, oranžno drugi. Pomiki so narisani z istim merilom kot dolžine, \(3{,}6\) cm za enoto, zato je enotski zasuk nagib <span class="nobr">\(45^\circ\).</span></figcaption></figure>
+<p>Sliko spet gradimo po delih. <a data-del="vpetje" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-oblike" data-knowl="fig-guyan-oblike">Stena</a> drži konzolo pri <span class="nobr">\(x = 0\).</span> Levi del slike (<a data-del="levo" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-oblike" data-knowl="fig-guyan-oblike">levo</a>) velja za obdržana pomika. Narišemo <a data-del="ena" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-oblike" data-knowl="fig-guyan-oblike">enotska pomika</a>: v vozlišču \(1\) ga zahtevamo za prvi stolpec baze (modro) in v vozlišču \(2\) za drugi (oranžno), ob tem pa je drugi pomik vsakič <a data-del="nic" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-oblike" data-knowl="fig-guyan-oblike">nič</a>, krožec na osi. Zasuka nista predpisana, na odvisnih koordinatah ni momentov, in <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">nosilec</a> se postavi <a class="xref auto" href="sec-sila-v-palici.html#def-ravnovesje" data-knowl="def-ravnovesje">v ravnotežje</a>. Tako dobimo <a data-del="a1" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-oblike" data-knowl="fig-guyan-oblike">modro obliko</a> z enotskim pomikom pri vozlišču \(1\) in ničlo pri <span class="nobr">\(2\),</span> in <a data-del="a2" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-oblike" data-knowl="fig-guyan-oblike">oranžno obliko</a>, ki je pri vozlišču \(2\) enotska in pri \(1\) nič, vmes pa gre pod os. Njuni zasuki so <span class="nobr">\(\mat\Psi_{\mathrm{d}}\):</span> stolpec \((\tfrac67,\ -\tfrac{24}{7})\) za modro in \((\tfrac67,\ \tfrac{18}{7})\) za oranžno (SymPy). Desno (<a data-del="desno" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-oblike" data-knowl="fig-guyan-oblike">desno</a>) obdržimo zasuka. Tam predpišemo enotski zasuk, drugi je nič, in pomika sta prosta. Zasuk vozlišča \(1\) je <a data-del="nagibi" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-oblike" data-knowl="fig-guyan-oblike">modri nagib</a> pri vozlišču \(1\) <span class="nobr">(\(45^\circ\)</span> pri tem merilu), pri vozlišču \(2\) je nagib vodoraven, oranžno obratno. Pomika sta prosta in ju določi ravnotežje: <a data-del="r1" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-oblike" data-knowl="fig-guyan-oblike">modra</a> oblika ima pomike \(v_1 = \tfrac14\) in <span class="nobr">\(v_2 = \tfrac12\),</span> <a data-del="r2" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-oblike" data-knowl="fig-guyan-oblike">oranžna</a> pa \(v_1 = 0\) in <span class="nobr">\(v_2 = \tfrac14\).</span></p>
+<p>Stolpca baze sta <a data-del="a1" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-oblike" data-knowl="fig-guyan-oblike">modra</a> in <a data-del="a2" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-oblike" data-knowl="fig-guyan-oblike">oranžna</a> oblika s slike. Reducirani <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matriki</a> sta po definiciji <a class="xref" href="sec-guyanova-redukcija.html#def-guyanova-baza" data-knowl="def-guyanova-baza">21.17</a> (SymPy) pri obdržanih pomikih</p>
+<div class="eq" id="eq-guyan-konzola-pomiki">\[\tilde{\mat K} = \begin{pmatrix} \tfrac{768}{7} &amp; -\tfrac{240}{7} \\ -\tfrac{240}{7} &amp; \tfrac{96}{7} \end{pmatrix} , \qquad \tilde{\mat M} = \begin{pmatrix} \tfrac{764}{1715} &amp; \tfrac{241}{2744} \\ \tfrac{241}{2744} &amp; \tfrac{471}{3430} \end{pmatrix} , \tag{21.34}\]</div>
+<p>njuna <a class="xref auto" href="sec-lastni-problem.html#def-lastni-par" data-knowl="def-lastni-par">lastna problema</a> dasta \(\tilde\omega = 3{,}52198\) in <span class="nobr">\(22{,}2790\ \omega_0\),</span> pri obdržanih zasukih pa \(\tilde{\mat K} = \begin{pmatrix} 4 &amp; -2 \\ -2 &amp; 2\end{pmatrix}\) in \(\tilde{\mat M} = \begin{pmatrix} \tfrac{23}{240} &amp; \tfrac{19}{960} \\ \tfrac{19}{960} &amp; \tfrac{1}{160}\end{pmatrix}\) z \(3{,}69482\) in <span class="nobr">\(37{,}6003\ \omega_0\).</span> Prave vrednosti konzole so \(3{,}51602\) in <span class="nobr">\(22{,}0345\ \omega_0\),</span> polnega modela z dvema elementoma pa \(3{,}517715\) in <span class="nobr">\(22{,}221474\ \omega_0\).</span> Vse štiri Guyanove vrednosti ležijo nad polnim modelom, kot zahteva izrek <a class="xref" href="sec-guyanova-redukcija.html#thm-guyan" data-knowl="thm-guyan">21.19</a>, točka 1. Toda glede na polni model je napaka pri pomikih \(0{,}12\) % in \(0{,}26\) %, pri zasukih \(5{,}03\) % in \(69{,}2\) %. Obe izbiri sta <a class="xref auto" href="sec-ritz-lastne-vrednosti.html#def-ritzov-priblizek" data-knowl="def-ritzov-priblizek">Ritzova približka</a>, in obe prestaneta <a class="xref auto" href="sec-polnost.html#def-zgornja-meja" data-knowl="def-zgornja-meja">zgornjo mejo</a>, a samo ena je uporabna.</p>
+<p>Preskusimo še, ali se pri večjem številu elementov \(n\) prva izbira res izboljšuje, v primerjavi z drugo. Preglednica kaže Guyanove frekvence konzole z \(n\) elementi, ob pomikih in zasukih, v enotah <span class="nobr">\(\omega_0\).</span> Stolpca pri obdržanih pomikih imata enake številke kot CK (tabela 14.2, PDF str. 479), stolpca pri obdržanih zasukih smo izračunali sami (NumPy).</p>
+<table>
+<thead>
+<tr>
+<th>\(n\)</th>
+<th><span class="nobr">\(\tilde\omega_1\),</span> pomiki</th>
+<th><span class="nobr">\(\tilde\omega_1\),</span> zasuki</th>
+<th><span class="nobr">\(\tilde\omega_2\),</span> pomiki</th>
+<th><span class="nobr">\(\tilde\omega_2\),</span> zasuki</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>\(1\)</td>
+<td>\(3{,}56753\)</td>
+<td>\(4{,}47214\)</td>
+<td>–</td>
+<td>–</td>
+</tr>
+<tr>
+<td>\(2\)</td>
+<td>\(3{,}52198\)</td>
+<td>\(3{,}69482\)</td>
+<td>\(22{,}2790\)</td>
+<td>\(37{,}6003\)</td>
+</tr>
+<tr>
+<td>\(3\)</td>
+<td>\(3{,}51699\)</td>
+<td>\(3{,}59323\)</td>
+<td>\(22{,}2362\)</td>
+<td>\(26{,}0530\)</td>
+</tr>
+<tr>
+<td>\(4\)</td>
+<td>\(3{,}51628\)</td>
+<td>\(3{,}55905\)</td>
+<td>\(22{,}0946\)</td>
+<td>\(24{,}0895\)</td>
+</tr>
+<tr>
+<td>\(5\)</td>
+<td>\(3{,}51611\)</td>
+<td>\(3{,}54345\)</td>
+<td>\(22{,}0573\)</td>
+<td>\(23{,}3003\)</td>
+</tr>
+<tr>
+<td>prav</td>
+<td>\(3{,}51602\)</td>
+<td>\(3{,}51602\)</td>
+<td>\(22{,}0345\)</td>
+<td>\(22{,}0345\)</td>
+</tr>
+</tbody>
+</table>
+<p>Napaka prve frekvence pri pomikih pade s \(1{,}47\) % <span class="nobr">(\(n = 1\))</span> na \(0{,}0027\) % <span class="nobr">(\(n = 5\)),</span> pri zasukih pa le s \(27{,}2\) % na \(0{,}78\) %, slika <a class="xref" href="sec-guyanova-redukcija.html#fig-guyan-izbira" data-knowl="fig-guyan-izbira">21.12</a>. Pri \(n = 5\) je torej izbira zasukov za faktor \(290\) slabša. Zakaj?</p>
+
+<figure class="blk slika" id="fig-guyan-izbira"><p><span class="svgfig" role="img" aria-label="Napake Guyanovih frekvenc konzole pri obdržanih pomikih in pri obdržanih zasukih"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='372.32pt' height='256.85pt' viewBox='-72.000004 -72.000004 275.794072 190.257375'>
+<defs>
+<path id='c21-04-izbira-g0-0' d='M5.188543-1.57609C5.300125-1.57609 5.467497-1.57609 5.467497-1.743462C5.467497-1.917808 5.307098-1.917808 5.188543-1.917808H1.03213C.920548-1.917808 .753176-1.917808 .753176-1.750436C.753176-1.57609 .913574-1.57609 1.03213-1.57609H5.188543Z'/>
+<path id='c21-04-izbira-g1-33' d='M6.027397-3.706102C6.027397-4.154421 5.84807-4.403487 5.628892-4.403487C5.369863-4.403487 5.100872-4.164384 5.100872-3.935243C5.100872-3.835616 5.150685-3.726027 5.250311-3.636364C5.419676-3.486924 5.599004-3.217933 5.599004-2.799502C5.599004-2.400996 5.409714-1.833126 5.100872-1.374844C4.801993-.946451 4.433375-.607721 3.965131-.607721C3.39726-.607721 3.088418-.966376 2.998755-1.504359C3.108344-1.763387 3.337484-2.400996 3.337484-2.67995C3.337484-2.799502 3.287671-2.899128 3.158157-2.899128C3.078456-2.899128 2.968867-2.879203 2.889166-2.729763C2.779577-2.530511 2.660025-1.882939 2.660025-1.524284C2.331258-1.05604 1.932752-.607721 1.305106-.607721C.647572-.607721 .438356-1.195517 .438356-1.753425C.438356-2.998755 1.454545-4.044832 1.454545-4.174346C1.454545-4.283935 1.374844-4.363636 1.265255-4.363636C1.135741-4.363636 1.066002-4.234122 1.006227-4.144458C.498132-3.407223 .119552-2.221669 .119552-1.315068C.119552-.627646 .348692 .109589 1.165629 .109589C1.872976 .109589 2.34122-.388543 2.699875-.936488C2.789539-.358655 3.178082 .109589 3.795766 .109589C4.572852 .109589 5.051059-.498132 5.409714-1.24533C5.648817-1.733499 6.027397-3.088418 6.027397-3.706102Z'/>
+<path id='c21-04-izbira-g1-110' d='M.876712-.587796C.846824-.438356 .787049-.209215 .787049-.159402C.787049 .019925 .926526 .109589 1.075965 .109589C1.195517 .109589 1.374844 .029888 1.444583-.169365C1.454545-.18929 1.574097-.657534 1.633873-.9066L1.853051-1.803238C1.912827-2.022416 1.972603-2.241594 2.022416-2.470735C2.062267-2.6401 2.141968-2.929016 2.15193-2.968867C2.30137-3.277709 2.82939-4.184309 3.775841-4.184309C4.224159-4.184309 4.313823-3.815691 4.313823-3.486924C4.313823-2.86924 3.825654-1.594022 3.666252-1.165629C3.576588-.936488 3.566625-.816936 3.566625-.707347C3.566625-.239103 3.915318 .109589 4.383562 .109589C5.32005 .109589 5.688667-1.344956 5.688667-1.424658C5.688667-1.524284 5.599004-1.524284 5.569116-1.524284C5.469489-1.524284 5.469489-1.494396 5.419676-1.344956C5.220423-.667497 4.891656-.109589 4.403487-.109589C4.234122-.109589 4.164384-.209215 4.164384-.438356C4.164384-.687422 4.254047-.926526 4.343711-1.145704C4.533001-1.673724 4.951432-2.769614 4.951432-3.337484C4.951432-4.004981 4.523039-4.403487 3.805729-4.403487C2.909091-4.403487 2.420922-3.765878 2.251557-3.536737C2.201743-4.094645 1.793275-4.403487 1.334994-4.403487S.687422-4.014944 .587796-3.835616C.428394-3.496887 .288917-2.909091 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.779577 .577833-2.998755C.747198-3.706102 .946451-4.184309 1.305106-4.184309C1.504359-4.184309 1.613948-4.054795 1.613948-3.726027C1.613948-3.516812 1.58406-3.407223 1.454545-2.889166L.876712-.587796Z'/>
+<path id='c21-04-izbira-g2-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='c21-04-izbira-g2-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c21-04-izbira-g2-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='c21-04-izbira-g2-51' d='M2.889166-3.506849C3.706102-3.775841 4.283935-4.473225 4.283935-5.260274C4.283935-6.07721 3.407223-6.635118 2.450809-6.635118C1.444583-6.635118 .687422-6.03736 .687422-5.280199C.687422-4.951432 .9066-4.762142 1.195517-4.762142C1.504359-4.762142 1.703611-4.98132 1.703611-5.270237C1.703611-5.768369 1.235367-5.768369 1.085928-5.768369C1.39477-6.256538 2.052304-6.386052 2.410959-6.386052C2.819427-6.386052 3.367372-6.166874 3.367372-5.270237C3.367372-5.150685 3.347447-4.572852 3.088418-4.134496C2.789539-3.656289 2.450809-3.626401 2.201743-3.616438C2.122042-3.606476 1.882939-3.58655 1.8132-3.58655C1.733499-3.576588 1.663761-3.566625 1.663761-3.466999C1.663761-3.35741 1.733499-3.35741 1.902864-3.35741H2.34122C3.158157-3.35741 3.526775-2.67995 3.526775-1.703611C3.526775-.348692 2.839352-.059776 2.400996-.059776C1.972603-.059776 1.225405-.229141 .876712-.816936C1.225405-.767123 1.534247-.986301 1.534247-1.364882C1.534247-1.723537 1.265255-1.92279 .976339-1.92279C.737235-1.92279 .418431-1.783313 .418431-1.344956C.418431-.438356 1.344956 .219178 2.430884 .219178C3.646326 .219178 4.552927-.687422 4.552927-1.703611C4.552927-2.520548 3.92528-3.297634 2.889166-3.506849Z'/>
+<path id='c21-04-izbira-g2-52' d='M2.929016-1.643836V-.777086C2.929016-.418431 2.909091-.308842 2.171856-.308842H1.96264V0C2.371108-.029888 2.889166-.029888 3.307597-.029888S4.254047-.029888 4.662516 0V-.308842H4.4533C3.716065-.308842 3.696139-.418431 3.696139-.777086V-1.643836H4.692403V-1.952677H3.696139V-6.485679C3.696139-6.684932 3.696139-6.744707 3.536737-6.744707C3.447073-6.744707 3.417186-6.744707 3.337484-6.625156L.278954-1.952677V-1.643836H2.929016ZM2.988792-1.952677H.557908L2.988792-5.668742V-1.952677Z'/>
+<path id='c21-04-izbira-g2-53' d='M4.473225-2.002491C4.473225-3.188045 3.656289-4.184309 2.580324-4.184309C2.102117-4.184309 1.673724-4.024907 1.315068-3.676214V-5.618929C1.514321-5.559153 1.843088-5.489415 2.161893-5.489415C3.387298-5.489415 4.084682-6.396015 4.084682-6.525529C4.084682-6.585305 4.054795-6.635118 3.985056-6.635118C3.975093-6.635118 3.955168-6.635118 3.905355-6.60523C3.706102-6.515567 3.217933-6.316314 2.550436-6.316314C2.15193-6.316314 1.693649-6.386052 1.225405-6.595268C1.145704-6.625156 1.125778-6.625156 1.105853-6.625156C1.006227-6.625156 1.006227-6.545455 1.006227-6.386052V-3.437111C1.006227-3.257783 1.006227-3.178082 1.145704-3.178082C1.215442-3.178082 1.235367-3.20797 1.275218-3.267746C1.384807-3.427148 1.753425-3.965131 2.560399-3.965131C3.078456-3.965131 3.327522-3.506849 3.407223-3.327522C3.566625-2.958904 3.58655-2.570361 3.58655-2.072229C3.58655-1.723537 3.58655-1.125778 3.347447-.707347C3.108344-.318804 2.739726-.059776 2.281445-.059776C1.554172-.059776 .986301-.587796 .816936-1.175592C.846824-1.165629 .876712-1.155666 .986301-1.155666C1.315068-1.155666 1.484433-1.404732 1.484433-1.643836S1.315068-2.132005 .986301-2.132005C.846824-2.132005 .498132-2.062267 .498132-1.603985C.498132-.747198 1.185554 .219178 2.30137 .219178C3.457036 .219178 4.473225-.737235 4.473225-2.002491Z'/>
+<path id='c21-04-izbira-g3-48' d='M3.598506-2.224658C3.598506-2.991781 3.507846-3.542715 3.187049-4.030884C2.970859-4.351681 2.538481-4.630635 1.980573-4.630635C.36264-4.630635 .36264-2.726775 .36264-2.224658S.36264 .139477 1.980573 .139477S3.598506-1.72254 3.598506-2.224658ZM1.980573-.055791C1.659776-.055791 1.234371-.244085 1.094894-.81594C.99726-1.227397 .99726-1.799253 .99726-2.315318C.99726-2.824408 .99726-3.354421 1.101868-3.737983C1.248319-4.288917 1.694645-4.435367 1.980573-4.435367C2.357161-4.435367 2.719801-4.20523 2.84533-3.800747C2.956912-3.424159 2.963885-2.922042 2.963885-2.315318C2.963885-1.799253 2.963885-1.283188 2.873225-.843836C2.733748-.209215 2.259527-.055791 1.980573-.055791Z'/>
+<path id='c21-04-izbira-g3-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='c21-04-izbira-g3-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+<path id='c21-04-izbira-g3-51' d='M1.903861-2.329265C2.447821-2.329265 2.838356-1.952677 2.838356-1.206476C2.838356-.341719 2.336239-.083686 1.931756-.083686C1.652802-.083686 1.039103-.160399 .746202-.571856C1.073973-.585803 1.150685-.81594 1.150685-.962391C1.150685-1.185554 .983313-1.345953 .767123-1.345953C.571856-1.345953 .376588-1.227397 .376588-.941469C.376588-.285928 1.101868 .139477 1.945704 .139477C2.915068 .139477 3.584558-.509091 3.584558-1.206476C3.584558-1.750436 3.138232-2.294396 2.371108-2.454795C3.103362-2.719801 3.368369-3.242839 3.368369-3.668244C3.368369-4.219178 2.733748-4.630635 1.959651-4.630635S.592777-4.254047 .592777-3.696139C.592777-3.459029 .746202-3.326526 .955417-3.326526C1.171606-3.326526 1.311083-3.486924 1.311083-3.682192C1.311083-3.884433 1.171606-4.030884 .955417-4.044832C1.199502-4.351681 1.680697-4.428394 1.93873-4.428394C2.252553-4.428394 2.691905-4.274969 2.691905-3.668244C2.691905-3.375342 2.594271-3.054545 2.412951-2.838356C2.182814-2.57335 1.987547-2.559402 1.638854-2.538481C1.464508-2.524533 1.45056-2.524533 1.415691-2.517559C1.401743-2.517559 1.345953-2.503611 1.345953-2.426899C1.345953-2.329265 1.408717-2.329265 1.527273-2.329265H1.903861Z'/>
+</defs>
+<g id='c21-04-izbira-page1'>
+<g stroke-miterlimit='10' transform='translate(-44.401366,102.629331)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='n'>
+<path d='M0 0H231.80566' fill='none'/>
+<g transform='translate(229.32921,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+</g>
+<g class='del' data-del='napaka'>
+<path d='M0 0V170.632' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,168.15555)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M0 0H230.46739' fill='none'/>
+</g>
+</g>
+<g transform='translate(-24.36916,-4.07)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-44.401366' y='102.629331' xlink:href='#c21-04-izbira-g2-49'/>
+<use x='-39.420027' y='102.629331' xlink:href='#c21-04-izbira-g2-48'/>
+<use x='-34.438688' y='99.013967' xlink:href='#c21-04-izbira-g0-0'/>
+<use x='-28.212008' y='99.013967' xlink:href='#c21-04-izbira-g3-51'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M0 32.72047H230.46739' fill='none'/>
+</g>
+</g>
+<g transform='translate(-24.36916,28.65047)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-44.401366' y='102.629331' xlink:href='#c21-04-izbira-g2-49'/>
+<use x='-39.420027' y='102.629331' xlink:href='#c21-04-izbira-g2-48'/>
+<use x='-34.438688' y='99.013967' xlink:href='#c21-04-izbira-g0-0'/>
+<use x='-28.212008' y='99.013967' xlink:href='#c21-04-izbira-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M0 65.44139H230.46739' fill='none'/>
+</g>
+</g>
+<g transform='translate(-24.36916,61.37138)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-44.401366' y='102.629331' xlink:href='#c21-04-izbira-g2-49'/>
+<use x='-39.420027' y='102.629331' xlink:href='#c21-04-izbira-g2-48'/>
+<use x='-34.438688' y='99.013967' xlink:href='#c21-04-izbira-g0-0'/>
+<use x='-28.212008' y='99.013967' xlink:href='#c21-04-izbira-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M0 98.16187H230.46739' fill='none'/>
+</g>
+</g>
+<g transform='translate(-18.11913,94.09186)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-44.401366' y='102.629331' xlink:href='#c21-04-izbira-g2-49'/>
+<use x='-39.420027' y='102.629331' xlink:href='#c21-04-izbira-g2-48'/>
+<use x='-34.438688' y='99.013967' xlink:href='#c21-04-izbira-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M0 130.88278H230.46739' fill='none'/>
+</g>
+</g>
+<g transform='translate(-18.11913,126.81277)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-44.401366' y='102.629331' xlink:href='#c21-04-izbira-g2-49'/>
+<use x='-39.420027' y='102.629331' xlink:href='#c21-04-izbira-g2-48'/>
+<use x='-34.438688' y='99.013967' xlink:href='#c21-04-izbira-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M0 163.60327H230.46739' fill='none'/>
+</g>
+</g>
+<g transform='translate(-18.11913,159.53326)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-44.401366' y='102.629331' xlink:href='#c21-04-izbira-g2-49'/>
+<use x='-39.420027' y='102.629331' xlink:href='#c21-04-izbira-g2-48'/>
+<use x='-34.438688' y='99.013967' xlink:href='#c21-04-izbira-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='n'>
+<path d='M0-2.27626V2.27628' fill='none'/>
+<g transform='translate(-2.5,-12.35367)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-44.401366' y='102.629331' xlink:href='#c21-04-izbira-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M54.06003-2.27626V2.27628' fill='none'/>
+<g transform='translate(51.56003,-12.35367)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-44.401366' y='102.629331' xlink:href='#c21-04-izbira-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M108.1205-2.27626V2.27628' fill='none'/>
+<g transform='translate(105.6205,-12.35367)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-44.401366' y='102.629331' xlink:href='#c21-04-izbira-g2-51'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M162.18054-2.27626V2.27628' fill='none'/>
+<g transform='translate(159.68054,-12.35367)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-44.401366' y='102.629331' xlink:href='#c21-04-izbira-g2-52'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M216.24101-2.27626V2.27628' fill='none'/>
+<g transform='translate(213.74101,-12.35367)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-44.401366' y='102.629331' xlink:href='#c21-04-izbira-g2-53'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(239.79083,-2.15277)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-44.401366' y='102.629331' xlink:href='#c21-04-izbira-g1-110'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='defl'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.0'>
+<path d='M0 103.59662L54.06003 72.92447L108.1205 47.08925L162.18054 28.59514L216.24101 13.97021' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<path d='M54.06003 99.64146L108.1205 96.9102L162.18054 79.69598L216.24101 65.95326' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M1.83862 103.59662C1.83862 104.61206 1.01544 105.43524 0 105.43524S-1.83862 104.61206-1.83862 103.59662S-1.01544 101.758 0 101.758S1.83862 102.58118 1.83862 103.59662ZM0 103.59662' stroke='none'/>
+</g>
+<g transform='translate(0.0,103.59662)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M55.89865 72.92447C55.89865 73.93991 55.07547 74.76309 54.06003 74.76309S52.2214 73.93991 52.2214 72.92447S53.04459 71.08585 54.06003 71.08585S55.89865 71.90903 55.89865 72.92447ZM54.06003 72.92447' stroke='none'/>
+</g>
+<g transform='translate(54.06003,72.92447)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M109.95912 47.08925C109.95912 48.10469 109.13594 48.92787 108.1205 48.92787S106.28188 48.10469 106.28188 47.08925C106.28188 46.0738 107.10506 45.25063 108.1205 45.25063S109.95912 46.0738 109.95912 47.08925ZM108.1205 47.08925' stroke='none'/>
+</g>
+<g transform='translate(108.1205,47.08925)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M164.01917 28.59514C164.01917 29.61058 163.19598 30.43376 162.18054 30.43376S160.34192 29.61058 160.34192 28.59514S161.1651 26.75652 162.18054 26.75652S164.01917 27.5797 164.01917 28.59514ZM162.18054 28.59514' stroke='none'/>
+</g>
+<g transform='translate(162.18054,28.59514)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M218.07964 13.97021C218.07964 14.98566 217.25645 15.80884 216.24101 15.80884S214.40239 14.98566 214.40239 13.97021C214.40239 12.95477 215.22557 12.13159 216.24101 12.13159S218.07964 12.95477 218.07964 13.97021ZM216.24101 13.97021' stroke='none'/>
+</g>
+<g transform='translate(216.24101,13.97021)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M55.89865 99.64146C55.89865 100.6569 55.07547 101.48009 54.06003 101.48009S52.2214 100.6569 52.2214 99.64146S53.04459 97.80284 54.06003 97.80284S55.89865 98.62602 55.89865 99.64146ZM54.06003 99.64146' stroke='none'/>
+</g>
+<g transform='translate(54.06003,99.64146)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M109.95912 96.9102C109.95912 97.92564 109.13594 98.74883 108.1205 98.74883S106.28188 97.92564 106.28188 96.9102S107.10506 95.07158 108.1205 95.07158S109.95912 95.89476 109.95912 96.9102ZM108.1205 96.9102' stroke='none'/>
+</g>
+<g transform='translate(108.1205,96.9102)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M164.01917 79.69598C164.01917 80.71143 163.19598 81.5346 162.18054 81.5346S160.34192 80.71143 160.34192 79.69598C160.34192 78.68054 161.1651 77.85736 162.18054 77.85736S164.01917 78.68054 164.01917 79.69598ZM162.18054 79.69598' stroke='none'/>
+</g>
+<g transform='translate(162.18054,79.69598)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M218.07964 65.95326C218.07964 66.9687 217.25645 67.79189 216.24101 67.79189S214.40239 66.9687 214.40239 65.95326S215.22557 64.11464 216.24101 64.11464S218.07964 64.93782 218.07964 65.95326ZM216.24101 65.95326' stroke='none'/>
+</g>
+<g transform='translate(216.24101,65.95326)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(222.71901,12.56743)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-44.401366' y='102.629331' xlink:href='#c21-04-izbira-g1-33'/>
+<use x='-38.200074' y='104.123711' xlink:href='#c21-04-izbira-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(222.71901,64.55048)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-44.401366' y='102.629331' xlink:href='#c21-04-izbira-g1-33'/>
+<use x='-38.200074' y='104.123711' xlink:href='#c21-04-izbira-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='rot'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M0 145.10916L54.06003 121.2654L108.1205 109.34395L162.18054 101.03554L216.24101 94.63393' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<path d='M54.06003 158.6526L108.1205 139.41826L162.18054 129.88684L216.24101 123.00114' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M1.83862 145.10916C1.83862 146.1246 1.01544 146.94778 0 146.94778S-1.83862 146.1246-1.83862 145.10916S-1.01544 143.27054 0 143.27054S1.83862 144.09372 1.83862 145.10916ZM0 145.10916' stroke='none'/>
+</g>
+<g transform='translate(0.0,145.10916)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M55.89865 121.2654C55.89865 122.28084 55.07547 123.10402 54.06003 123.10402S52.2214 122.28084 52.2214 121.2654C52.2214 120.24995 53.04459 119.42677 54.06003 119.42677S55.89865 120.24995 55.89865 121.2654ZM54.06003 121.2654' stroke='none'/>
+</g>
+<g transform='translate(54.06003,121.2654)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M109.95912 109.34395C109.95912 110.35939 109.13594 111.18257 108.1205 111.18257S106.28188 110.35939 106.28188 109.34395C106.28188 108.3285 107.10506 107.50533 108.1205 107.50533S109.95912 108.3285 109.95912 109.34395ZM108.1205 109.34395' stroke='none'/>
+</g>
+<g transform='translate(108.1205,109.34395)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M164.01917 101.03554C164.01917 102.05098 163.19598 102.87416 162.18054 102.87416S160.34192 102.05098 160.34192 101.03554S161.1651 99.19691 162.18054 99.19691S164.01917 100.0201 164.01917 101.03554ZM162.18054 101.03554' stroke='none'/>
+</g>
+<g transform='translate(162.18054,101.03554)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M218.07964 94.63393C218.07964 95.64937 217.25645 96.47255 216.24101 96.47255S214.40239 95.64937 214.40239 94.63393C214.40239 93.61848 215.22557 92.7953 216.24101 92.7953S218.07964 93.61848 218.07964 94.63393ZM216.24101 94.63393' stroke='none'/>
+</g>
+<g transform='translate(216.24101,94.63393)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M55.89865 158.6526C55.89865 159.66805 55.07547 160.49123 54.06003 160.49123S52.2214 159.66805 52.2214 158.6526C52.2214 157.63716 53.04459 156.81398 54.06003 156.81398S55.89865 157.63716 55.89865 158.6526ZM54.06003 158.6526' stroke='none'/>
+</g>
+<g transform='translate(54.06003,158.6526)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M109.95912 139.41826C109.95912 140.4337 109.13594 141.25688 108.1205 141.25688S106.28188 140.4337 106.28188 139.41826S107.10506 137.57964 108.1205 137.57964S109.95912 138.40282 109.95912 139.41826ZM108.1205 139.41826' stroke='none'/>
+</g>
+<g transform='translate(108.1205,139.41826)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M164.01917 129.88684C164.01917 130.90228 163.19598 131.72546 162.18054 131.72546S160.34192 130.90228 160.34192 129.88684S161.1651 128.04822 162.18054 128.04822S164.01917 128.8714 164.01917 129.88684ZM162.18054 129.88684' stroke='none'/>
+</g>
+<g transform='translate(162.18054,129.88684)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M218.07964 123.00114C218.07964 124.01659 217.25645 124.83977 216.24101 124.83977S214.40239 124.01659 214.40239 123.00114C214.40239 121.9857 215.22557 121.16252 216.24101 121.16252S218.07964 121.9857 218.07964 123.00114ZM216.24101 123.00114' stroke='none'/>
+</g>
+<g transform='translate(216.24101,123.00114)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(222.71901,93.23114)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-44.401366' y='102.629331' xlink:href='#c21-04-izbira-g1-33'/>
+<use x='-38.200074' y='104.123711' xlink:href='#c21-04-izbira-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(222.71901,121.59836)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.401366,102.629331)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-44.401366' y='102.629331' xlink:href='#c21-04-izbira-g1-33'/>
+<use x='-38.200074' y='104.123711' xlink:href='#c21-04-izbira-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 21.12</span>: Napake prvih dveh Guyanovih frekvenc konzole z \(n\) elementi glede na pravi vrednosti \(3{,}51602\) in <span class="nobr">\(22{,}0345\ \omega_0\),</span> v odstotkih, logaritemska os od \(10^{-3}\) do \(10^2\) %. Modro pomiki obdržani, oranžno zasuki obdržani. Polna črta <span class="nobr">\(\tilde\omega_1\),</span> črtkana <span class="nobr">\(\tilde\omega_2\).</span> Pri \(n = 1\) je samo ena frekvenca.</figcaption></figure>
+<p>Na <a data-del="n" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-izbira" data-knowl="fig-guyan-izbira">vodoravni osi</a> je število elementov \(n\) od \(1\) do <span class="nobr">\(5\),</span> na <a data-del="napaka" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-izbira" data-knowl="fig-guyan-izbira">navpični osi</a> napaka v odstotkih v logaritemskem merilu: vsaka <a data-del="napaka" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-izbira" data-knowl="fig-guyan-izbira">siva črta</a> pomeni desetkrat večjo napako kot črta pod njo. Preberemo sliko: <a data-del="defl" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-izbira" data-knowl="fig-guyan-izbira">modre točke</a> pri pomikih so po vrsti na vsakem koraku \(n\) nižje, <a data-del="rot" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-izbira" data-knowl="fig-guyan-izbira">oranžne točke</a> pri zasukih ostanejo daleč zgoraj, in \(\tilde\omega_2\) je pri zasukih vedno nad \(5{,}7\) %. Izrek <a class="xref" href="sec-guyanova-redukcija.html#thm-guyan" data-knowl="thm-guyan">21.19</a> tega ne pojasni, ker velja za obe. Pojasni ga izrek <a class="xref" href="sec-guyanova-redukcija.html#thm-dinamicna-kondenzacija" data-knowl="thm-dinamicna-kondenzacija">21.20</a> v naslednjem razdelku: pomembno je, kako nizko leži najnižja frekvenca odvisnih koordinat, ko aktivne držimo pri miru. Pogledamo številke pri <span class="nobr">\(n = 2\).</span> Za vsako izbiro damo najnižjo frekvenco \(\omega_{\mathrm{d}1}\) odvisnih koordinat, ko so aktivne zadržane (<a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">lastna vrednost</a> para <span class="nobr">\((\mat K_{\mathrm{dd}}, \mat M_{\mathrm{dd}})\)),</span> in razmerje lastnih vrednosti polnega modela z njo:</p>
+<table>
+<thead>
+<tr>
+<th>\(n = 2\)</th>
+<th>\(\omega_{\mathrm{d}1}\) <span class="nobr">(\(\mathrm{a}\)</span> pri miru)</th>
+<th>\(\lambda_1/\lambda_{\mathrm{d}1}\)</th>
+<th>\(\lambda_2/\lambda_{\mathrm{d}1}\)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>pomiki obdržani, \(\text{d}\) so zasuki</td>
+<td>\(53{,}279\ \omega_0\)</td>
+<td>\(0{,}0044\)</td>
+<td>\(0{,}174\)</td>
+</tr>
+<tr>
+<td>zasuki obdržani, \(\text{d}\) so pomiki</td>
+<td>\(11{,}029\ \omega_0\)</td>
+<td>\(0{,}102\)</td>
+<td>\(4{,}06\)</td>
+</tr>
+</tbody>
+</table>
+<p>Pri obdržanih zasukih (<a data-del="desno" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-oblike" data-knowl="fig-guyan-oblike">desna polovica slike</a>) leži najnižja frekvenca odvisnih pomikov pri <span class="nobr">\(11{,}03\ \omega_0\),</span> torej pod drugo lastno frekvenco \(22{,}2\ \omega_0\) celotne konzole, in razmerje \(\lambda_2/\lambda_{\mathrm{d}1}\) je <span class="nobr">\(4{,}06\):</span> odvisni pomiki ne sledijo statično, ker bi sami nihali z nižjo frekvenco kot gibanje, ki ga želimo opisati. Pri obdržanih pomikih (<a data-del="levo" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-oblike" data-knowl="fig-guyan-oblike">leva polovica</a>) so odvisni zasuki trdi (frekvenca <span class="nobr">\(53{,}3\ \omega_0\),</span> kar je \(2{,}4\)-krat višje od <span class="nobr">\(\omega_2\))</span> in njihova vztrajnost je majhna, zato sledijo statično. Tu se vidi CK-jevo opozorilo (1) (razdelek 14.8.2, PDF str. 479): natančnost je odvisna od tega, katere <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinate</a> obdržimo in katere izločimo. Aktivne naj bodo tiste, ki nosijo vztrajnost, odvisne pa tiste, ki so trde in lahke.</p>
+<p>Izrek <a class="xref" href="sec-guyanova-redukcija.html#thm-guyan" data-knowl="thm-guyan">21.19</a>, točka 2, ima svoj preskus v konzoli z <a class="xref auto" href="sec-masna-matrika.html#def-zbrana-masa" data-knowl="def-zbrana-masa">zbranimi masami</a>. Na isti konzoli (<a data-del="levo" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-oblike" data-knowl="fig-guyan-oblike">levo</a>, pomika obdržana) razdelimo maso vsakega elementa dolžine \(h = 0{,}5\) m na polovico po vozliščih (CK, razdelek 14.2): vozlišče \(1\) ima <span class="nobr">\(\rho A\,h\),</span> konec <span class="nobr">\(\rho A\,h/2\),</span> zasuka sta brez mase. Tedaj je <span class="nobr">\(\mat M_{\mathrm{dd}} = \mat 0\),</span> in Guyanovi vrednosti pri obdržanih pomikih sta \(3{,}15623\) in <span class="nobr">\(16{,}2580\ \omega_0\),</span> prav kot v tabeli 14.3 pri CK (PDF str. 480) in kot jih po lemi <a class="xref" href="sec-masna-matrika-nosilca.html#lem-masa-brez-vztrajnosti" data-knowl="lem-masa-brez-vztrajnosti">12.45</a> da natančna kondenzacija zasukov. To so natančno lastne vrednosti modela z zbranimi masami, in ležijo pod pravimi vrednostmi konzole <span class="nobr">(\(3{,}15623 &lt; 3{,}51602\),</span> CK ugotavlja, da se zbrane mase približujejo od spodaj, PDF str. 479). Zgornja meja iz izreka <a class="xref" href="sec-ritz-lastne-vrednosti.html#thm-ritz-gornja-meja" data-knowl="thm-ritz-gornja-meja">10.42</a> tu ne velja, ker je \(\mat M\) zaradi brezmasnih zasukov singularna. Kaj, če imajo zasuki majhno vztrajnost <span class="nobr">\(\varepsilon\,\rho A\,h\)?</span> Pravi (polni) lastni vrednosti modela z <span class="nobr">\(\varepsilon = 10^{-6}\),</span> \(10^{-4}\) in \(10^{-2}\) se od Guyanovih <span class="nobr">(\(\varepsilon = 0\))</span> razlikujeta za <span class="nobr">\(1{,}1 \cdot 10^{-5}\),</span> \(1{,}1 \cdot 10^{-3}\) in \(0{,}105\) (največja relativna razlika obeh frekvenc, NumPy). Napaka je sorazmerna z \(\varepsilon\) (faktor \(100\) pri faktorju <span class="nobr">\(100\)),</span> zato je pogoj \(\mat M_{\mathrm{dd}} = \mat 0\) res pogoj: kdor zasukom pripiše maso, naj uporabi \(\tilde{\mat M}\) iz točke 1, sicer je izguba natančnosti sorazmerna z maso, ki jo zanemari.</p>
+<p>Guyanova redukcija ima še eno ceno, ki je ne vidimo na sliki. Matriki \(\mat K\) in \(\mat M\) sta pasovni, \(\tilde{\mat K}\) in \(\tilde{\mat M}\) pa polni (CK, razdelek 14.8.2, opozorilo (2), PDF str. 479). Pri konzoli s \(16\) elementi ima \(\mat K\) reda \(32\) le \(154\) neničelnih elementov, reducirana matrika reda \(16\) pa vseh <span class="nobr">\(256\).</span> Pri \(50\) elementih je to \(494\) proti \(1688\) od \(2500\) (NumPy, prag \(10^{-12}\) največjega elementa). Cena ene eliminacije po lemi <a class="xref" href="sec-redke-matrike.html#lem-cena-eliminacije" data-knowl="lem-cena-eliminacije">7.44</a>: \(\mat K\) reda \(100\) s <a class="xref auto" href="sec-redke-matrike.html#def-pasovna-matrika" data-knowl="def-pasovna-matrika">polovično širino pasu</a> \(3\) (vsak element zajame štiri zaporedne koordinate) ima po enačbi <a class="xref" href="sec-redke-matrike.html#eq-mrm-cena-pasovna" data-knowl="eq-mrm-cena-pasovna">(7.44)</a> največ \(3 \cdot 4 \cdot (300 - 7)/6 = 586\) množenj, reducirani polni sistem reda \(50\) pa po enačbi <a class="xref" href="sec-redke-matrike.html#eq-mrm-cena-polna" data-knowl="eq-mrm-cena-polna">(7.43)</a> <span class="nobr">\(49 \cdot 50 \cdot 51/6 = 20\,825\),</span> to je približno \(36\)-krat več, četudi je red polovico manjši. To ne pomeni, da je Guyanova redukcija slaba, ampak da se izplača, kadar je red skrajšanega modela res majhen, in ne kadar jo uporabimo za prepolovitev. <!-- nofig: algebra --></p>
+
+<h3 id="sec-guyan-dinamicna"><span class="h-num">21.4.6</span> Natančna kondenzacija in kje je Guyan dober</h3>
+<p>Zakaj je <a class="xref auto" href="sec-guyanova-redukcija.html#thm-guyan" data-knowl="thm-guyan">Guyanov približek</a> odvisen od razmerja <span class="nobr">\(\lambda/\lambda_{\mathrm{d}1}\)?</span> Odgovor da natančen <a class="xref auto" href="sec-lastni-problem.html#def-lastni-par" data-knowl="def-lastni-par">lastni problem</a>. Odvisne <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinate</a> smo pri Guyanu izločili z ravnotežjem brez vztrajnosti. Če jih izločimo z vztrajnostjo, pri izbrani <span class="nobr">\(\lambda\),</span> dobimo natančno enačbo samo za aktivne koordinate. Poglejmo to najprej na <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">okvirju</a> (slika <a class="xref" href="sec-guyanova-redukcija.html#fig-guyan-okvir" data-knowl="fig-guyan-okvir">21.10</a>, <a data-del="etaze" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-okvir" data-knowl="fig-guyan-okvir">stropi</a>) z zgornjim stropom kot aktivnim in <span class="nobr">\(k = \bar m = 1\).</span> Lastna enačba \((\mat K - \lambda\mat M)\vek v = \vek 0\) ima v vrsticah \(\text{d}\) (stropa \(1\) in <span class="nobr">\(2\))</span> <span class="nobr">\(\vek 0 = (\mat K_{\mathrm{da}} - \lambda\mat M_{\mathrm{da}})q_3 + (\mat K_{\mathrm{dd}} - \lambda\mat M_{\mathrm{dd}})\vek q_{\mathrm{d}}\),</span> kjer je <span class="nobr">\(\mat K_{\mathrm{da}} = (0,\ -1)^\T\),</span> \(\mat M_{\mathrm{da}} = \vek 0\) in \(\mat K_{\mathrm{dd}} - \lambda\mat M_{\mathrm{dd}} = \begin{pmatrix} 2 - \lambda &amp; -1 \\ -1 &amp; 2 - \lambda \end{pmatrix}\) z <a class="xref auto" href="sec-determinanta.html#def-determinanta" data-knowl="def-determinanta">determinanto</a> <span class="nobr">\((2 - \lambda)^2 - 1 = (1 - \lambda)(3 - \lambda)\).</span> Reševanje za \(\vek q_{\mathrm{d}}\) in vstavitev v vrstico <span class="nobr">\(\mathrm{a}\),</span> <span class="nobr">\((1 - \lambda)q_3 + (0,\ -1)\vek q_{\mathrm{d}} = 0\),</span> da enačbo z eno neznanko:</p>
+<div class="eq" id="eq-guyan-okvir-d">\[D(\lambda)\,q_3 = 0 , \qquad D(\lambda) = 1 - \lambda - \frac{2 - \lambda}{(1 - \lambda)(3 - \lambda)} . \tag{21.35}\]</div>
+<p>To je ena skalarna enačba, ki zahteva <span class="nobr">\(D(\lambda) = 0\).</span> Števec \((1 - \lambda)^2(3 - \lambda) - (2 - \lambda) = -\lambda^3 + 5\lambda^2 - 6\lambda + 1\) je prav determinanta \(\det(\mat K - \lambda\mat M)\) celotnega okvirja, njene ničle pa so <span class="nobr">\(0{,}198062\),</span> \(1{,}554958\) in <span class="nobr">\(3{,}246980\),</span> vse tri prave <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">lastne vrednosti</a>, čeprav smo obdržali eno samo koordinato. Narišimo \(D\) (slika <a class="xref" href="sec-guyanova-redukcija.html#fig-guyan-kondenzacija" data-knowl="fig-guyan-kondenzacija">21.13</a>).</p>
+
+<figure class="blk slika" id="fig-guyan-kondenzacija"><p><span class="svgfig" role="img" aria-label="Natančna enačba okvirja za zgornji strop in njen Guyanov približek"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='443.80pt' height='390.31pt' viewBox='-72.000004 -72.000005 328.74394 289.121544'>
+<defs>
+<path id='c21-04-kondenzacija-g0-21' d='M3.556663-2.909091C3.965131-1.863014 4.443337-.33873 4.60274-.109589C4.762142 .109589 4.861768 .109589 5.13076 .109589H5.349938C5.449564 .099626 5.459527 .039851 5.459527 .009963S5.439601-.039851 5.409714-.079701C5.310087-.18929 5.250311-.33873 5.180573-.537983L3.148194-6.206725C2.938979-6.784558 2.400996-6.914072 1.932752-6.914072C1.882939-6.914072 1.753425-6.914072 1.753425-6.804483C1.753425-6.724782 1.833126-6.704857 1.843088-6.704857C2.171856-6.645081 2.241594-6.585305 2.49066-5.907846L3.457036-3.198007L.707347-.468244C.587796-.348692 .52802-.288917 .52802-.159402C.52802 .009963 .667497 .129514 .826899 .129514S1.075965 .019925 1.155666-.079701L3.556663-2.909091Z'/>
+<path id='c21-04-kondenzacija-g0-68' d='M1.58406-.777086C1.484433-.388543 1.464508-.308842 .67746-.308842C.508095-.308842 .398506-.308842 .398506-.119552C.398506 0 .488169 0 .67746 0H3.975093C6.047323 0 8.009963-2.102117 8.009963-4.283935C8.009963-5.688667 7.163138-6.804483 5.668742-6.804483H2.321295C2.132005-6.804483 2.022416-6.804483 2.022416-6.615193C2.022416-6.495641 2.11208-6.495641 2.311333-6.495641C2.440847-6.495641 2.620174-6.485679 2.739726-6.475716C2.899128-6.455791 2.958904-6.425903 2.958904-6.316314C2.958904-6.276463 2.948941-6.246575 2.919054-6.127024L1.58406-.777086ZM3.73599-6.117061C3.825654-6.465753 3.845579-6.495641 4.273973-6.495641H5.339975C6.316314-6.495641 7.143213-5.967621 7.143213-4.652553C7.143213-4.164384 6.94396-2.530511 6.097136-1.43462C5.808219-1.066002 5.021171-.308842 3.795766-.308842H2.669988C2.530511-.308842 2.510585-.308842 2.450809-.318804C2.351183-.328767 2.321295-.33873 2.321295-.418431C2.321295-.448319 2.321295-.468244 2.371108-.647572L3.73599-6.117061Z'/>
+<path id='c21-04-kondenzacija-g1-126' d='M4.144458-6.505604L3.985056-6.655044C3.985056-6.645081 3.606476-6.176837 3.16812-6.176837C2.938979-6.176837 2.689913-6.326276 2.520548-6.425903C2.251557-6.585305 2.072229-6.655044 1.902864-6.655044C1.524284-6.655044 1.334994-6.435866 .826899-5.877958L.986301-5.728518C.986301-5.738481 1.364882-6.206725 1.803238-6.206725C2.032379-6.206725 2.281445-6.057285 2.450809-5.957659C2.719801-5.798257 2.899128-5.728518 3.068493-5.728518C3.447073-5.728518 3.636364-5.947696 4.144458-6.505604Z'/>
+<path id='c21-04-kondenzacija-g2-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='c21-04-kondenzacija-g2-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+<path id='c21-04-kondenzacija-g2-51' d='M1.903861-2.329265C2.447821-2.329265 2.838356-1.952677 2.838356-1.206476C2.838356-.341719 2.336239-.083686 1.931756-.083686C1.652802-.083686 1.039103-.160399 .746202-.571856C1.073973-.585803 1.150685-.81594 1.150685-.962391C1.150685-1.185554 .983313-1.345953 .767123-1.345953C.571856-1.345953 .376588-1.227397 .376588-.941469C.376588-.285928 1.101868 .139477 1.945704 .139477C2.915068 .139477 3.584558-.509091 3.584558-1.206476C3.584558-1.750436 3.138232-2.294396 2.371108-2.454795C3.103362-2.719801 3.368369-3.242839 3.368369-3.668244C3.368369-4.219178 2.733748-4.630635 1.959651-4.630635S.592777-4.254047 .592777-3.696139C.592777-3.459029 .746202-3.326526 .955417-3.326526C1.171606-3.326526 1.311083-3.486924 1.311083-3.682192C1.311083-3.884433 1.171606-4.030884 .955417-4.044832C1.199502-4.351681 1.680697-4.428394 1.93873-4.428394C2.252553-4.428394 2.691905-4.274969 2.691905-3.668244C2.691905-3.375342 2.594271-3.054545 2.412951-2.838356C2.182814-2.57335 1.987547-2.559402 1.638854-2.538481C1.464508-2.524533 1.45056-2.524533 1.415691-2.517559C1.401743-2.517559 1.345953-2.503611 1.345953-2.426899C1.345953-2.329265 1.408717-2.329265 1.527273-2.329265H1.903861Z'/>
+<path id='c21-04-kondenzacija-g2-100' d='M2.48269-4.763138V-4.51208C2.949938-4.51208 3.005729-4.463263 3.005729-4.121544V-2.677958C2.747696-2.929016 2.412951-3.075467 2.02939-3.075467C1.101868-3.075467 .320797-2.378082 .320797-1.499377C.320797-.627646 1.060025 .069738 1.945704 .069738C2.517559 .069738 2.859278-.237111 2.977833-.36264V.069738L4.051806 0V-.251059C3.584558-.251059 3.528767-.299875 3.528767-.641594V-4.839851L2.48269-4.763138ZM2.977833-.732254C2.796513-.404483 2.440847-.125529 1.987547-.125529C1.597011-.125529 1.318057-.355666 1.17858-.557908C1.039103-.767123 .955417-1.046077 .955417-1.492403C.955417-1.652802 .955417-2.175841 1.241345-2.503611C1.520299-2.817435 1.862017-2.880199 2.064259-2.880199C2.399004-2.880199 2.698879-2.726775 2.894147-2.475716C2.977833-2.364134 2.977833-2.357161 2.977833-2.224658V-.732254Z'/>
+</defs>
+<g id='c21-04-kondenzacija-page1'>
+<g stroke-miterlimit='10' transform='translate(-64.41699,5.527201)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='osi'>
+<path d='M0 0H305.21379' fill='none'/>
+<g transform='translate(302.73734,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(313.19896,-3.47221)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.41699,5.527201)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-64.41699' y='5.527201' xlink:href='#c21-04-kondenzacija-g0-21'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-51.21501V59.66647' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,57.19002)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-4.27847,67.65164)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.41699,5.527201)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-64.41699' y='5.527201' xlink:href='#c21-04-kondenzacija-g0-68'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='polovi'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M82.51277-51.21501V55.48276' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M247.53877-51.21501V55.48276' fill='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(75.14468,-61.79243)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.41699,5.527201)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-64.41699' y='5.527201' xlink:href='#c21-04-kondenzacija-g0-21'/>
+<use x='-58.605425' y='7.021582' xlink:href='#c21-04-kondenzacija-g2-100'/>
+<use x='-54.205236' y='7.021582' xlink:href='#c21-04-kondenzacija-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(240.17068,-61.79243)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.41699,5.527201)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-64.41699' y='5.527201' xlink:href='#c21-04-kondenzacija-g0-21'/>
+<use x='-58.605425' y='7.021582' xlink:href='#c21-04-kondenzacija-g2-100'/>
+<use x='-54.205236' y='7.021582' xlink:href='#c21-04-kondenzacija-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='krivulja'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.0'>
+<path d='M0 14.22636L.39854 13.88512L.82532 13.5721L1.22343 13.23041L1.6502 12.88918L2.04877 12.54749L2.47554 12.20624L2.90231 11.865L3.30043 11.52332L3.7272 11.18207L4.12576 10.8404L4.55254 10.49915L4.95065 10.15747L5.37743 9.81622L5.77599 9.47455L6.1741 9.10507L6.60088 8.7634L6.99944 8.42215L7.42621 8.05226L7.82433 7.71057L8.2511 7.34067L8.64966 6.97078L9.07643 6.62953L9.5032 6.25963L9.90175 5.88972L10.29987 5.51984L10.72664 5.17859L11.15341 4.80869L11.55197 4.43878L11.95009 4.0689L12.37686 3.67033L12.80363 3.30043L13.2022 2.93054L13.60031 2.56064L14.02708 2.16252L14.45386 1.79262L14.85242 1.39406L15.25053 1.02417L15.6773 .62604L16.10408 .2275L16.50264-.1424L16.92941-.54051L17.32753-.93907L17.72609-1.33719L18.15286-1.73575L18.55098-2.16252L18.97818-2.56064L19.3763-2.95918L19.80307-3.38596L20.22986-3.78409L20.6284-4.21086L21.02652-4.6094L21.4533-5.03618L21.85185-5.46295L22.27863-5.88972L22.67674-6.3165L23.10352-6.74329L23.53029-7.1987L23.92885-7.62547L24.32697-8.08047L24.75374-8.50725L25.1523-8.96268L25.57907-9.41766L25.97719-9.8731L26.40396-10.32852L26.83073-10.78352L27.2293-11.23895L27.65607-11.7226L28.05418-12.1776L28.45274-12.66167L28.87952-13.14532L29.27806-13.62897L29.70483-14.11261L30.10295-14.59627L30.52972-15.10857L30.92828-15.59221L31.35506-16.10408L31.78183-16.61638L32.17995-17.1287L32.5785-17.64055L33.00528-18.15286L33.43205-18.69337L33.83017-19.2339L34.25694-19.77486L34.6555-20.31538L35.05362-20.8559L35.4804-21.42508L35.90717-21.9656L36.30573-22.53477L36.70384-23.10352L37.13062-23.70091L37.52917-24.2701L37.95595-24.8675L38.38272-25.46532L38.78127-26.09137L39.17938-26.68877L39.60616-27.31482L40.00471-27.94043L40.43149-28.56648L40.8296-29.22075L41.25638-29.87546L41.65494-30.52972L42.08171-31.21266L42.50848-31.89558L42.9066-32.5785L43.30516-33.26143L43.73193-33.97258L44.1587-34.71237L44.55682-35.42352L44.9836-36.16331L45.38216-36.93178L45.80893-37.69978L46.20705-38.46825L46.63425-39.26492L47.03238-40.06158L47.45915-40.85826L47.8577-41.7118L48.25581-42.53671L48.6826-43.39026L49.08115-44.27246L49.50792-45.15466L49.90604-46.06508L50.33281-47.00372L50.73137-47.9428L51.15814-48.9101L51.55626-49.87782L51.98303-50.87334' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.0'>
+<path d='M104.90515 54.7716L105.44568 52.55222L105.98663 50.41835L106.52716 48.36957L107.09633 46.40633L107.63686 44.49995L108.17738 42.67911L108.74655 40.88649L109.28708 39.17938L109.8276 37.52917L110.39677 35.93582L110.9373 34.3707L111.47781 32.86287L112.01834 31.38329L112.58752 29.96056L113.12804 28.56648L113.66856 27.2293L114.23775 25.92032L114.77826 24.61177L115.31879 23.35966L115.88795 22.13623L116.42848 20.941L116.96901 19.77486L117.50996 18.6365L118.0787 17.52681L118.61966 16.41711L119.16019 15.36429L119.72893 14.31189L120.26988 13.25906L120.81041 12.26312L121.37958 11.26717L121.9201 10.29987L122.46063 9.33258L123.00114 8.3935L123.57033 7.45442L124.11084 6.544L124.65137 5.63358L125.22055 4.75182L125.76106 3.89783L126.30159 3.01607L126.87076 2.19073L127.41129 1.33719L127.95181 .5123L128.49277-.28436L129.06151-1.1097L129.60204-1.90636L130.14299-2.67438L130.71173-3.47105L131.25269-4.21086L131.79321-4.97931L132.36195-5.74733L132.90291-6.48712L133.44344-7.1987L133.98395-7.9385L134.55313-8.64966L135.09364-9.3608L135.63417-10.07237L136.20335-10.78352L136.74387-11.46645L137.2844-12.14937L137.85358-12.83229L138.39409-13.51521L138.93462-14.19771L139.50378-14.85242L140.04431-15.53534L140.58484-16.1896L141.1258-16.84389L141.69453-17.49858L142.23506-18.1242L142.77602-18.7789L143.34476-19.40495L143.88571-20.03058L144.42624-20.65663L144.99498-21.28267L145.53593-21.90872L146.07645-22.53477L146.61697-23.1604L147.18616-23.75822L147.72667-24.38383L148.2672-24.98167L148.83638-25.57907L149.37689-26.17647L149.91742-26.77386L150.48659-27.37169L151.02711-27.96909L151.56764-28.56648L152.10815-29.16388L152.67734-29.76172L153.21786-30.33046L153.75882-30.92828L154.32756-31.49702L154.86809-32.09486L155.40904-32.6636L155.97778-33.26143L156.51874-33.83017L157.05927-34.39935L157.59978-34.96852L158.16896-35.56592L158.70947-36.1351L159.25-36.70384L159.81918-37.27301L160.3597-37.8422L160.90022-38.41138L161.4694-38.98012L162.00992-39.54929L162.55045-40.11847L163.09097-40.68721L163.66014-41.25638L164.20067-41.82556L164.74118-42.39473L165.31036-42.96349L165.85089-43.53265L166.39185-44.10184L166.96059-44.671L167.5011-45.23975L168.04207-45.80893L168.58258-46.3781L169.15176-46.94684L169.69228-47.51602L170.2328-48.0852L170.80199-48.65437L171.3425-49.22311L171.88303-49.7923L172.45221-50.3897L172.99272-50.95886' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.0'>
+<path d='M260.65544 52.01169L261.02534 47.97145L261.4239 44.13005L261.7938 40.48836L262.19193 37.01686L262.59047 33.74507L262.96037 30.58661L263.35849 27.59918L263.7284 24.72552L264.12695 21.9656L264.49684 19.34766L264.89496 16.81566L265.26486 14.39699L265.66342 12.06384L266.03333 9.84444L266.43144 7.68236L266.80133 5.60536L267.19989 3.58524L267.5698 1.6502L267.96791-.2275L268.33781-2.04877L268.73636-3.78409L269.10583-5.49118L269.50438-7.14183L269.9025-8.73518L270.2724-10.29987L270.67096-11.8077L271.04085-13.25906L271.43898-14.6818L271.80887-16.07587L272.20743-17.41306L272.57733-18.75026L272.97545-20.03058L273.34535-21.28267L273.7439-22.50612L274.1138-23.6727L274.51192-24.83926L274.88182-25.97719L275.28038-27.08688L275.65027-28.16837L276.04839-29.2494L276.41829-30.27357L276.81685-31.29819L277.21497-32.2937L277.58487-33.26143L277.98341-34.22873L278.35332-35.16737L278.75143-36.10645L279.12134-36.98865L279.5199-37.89906L279.88979-38.75261L280.2879-39.60616L280.6578-40.45972L281.05637-41.28503L281.42627-42.08171L281.82439-42.9066L282.19427-43.67506L282.59283-44.44307L282.96274-45.21153L283.36086-45.95132L283.73076-46.69113L284.12888-47.43092L284.52744-48.14207L284.89732-48.85321L285.29544-49.53615L285.66534-50.24773L286.0639-50.902' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='guyan'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M0 14.22636L81.3462-51.21501' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='korenii'>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M18.17064 0C18.17064 1.01544 17.34746 1.83862 16.33202 1.83862C15.31657 1.83862 14.4934 1.01544 14.4934 0S15.31657-1.83862 16.33202-1.83862C17.34746-1.83862 18.17064-1.01544 18.17064 0ZM16.33202 0' stroke='none'/>
+</g>
+<g transform='translate(16.33202,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.41699,5.527201)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M130.13211 0C130.13211 1.01544 129.30893 1.83862 128.29349 1.83862S126.45486 1.01544 126.45486 0S127.27805-1.83862 128.29349-1.83862S130.13211-1.01544 130.13211 0ZM128.29349 0' stroke='none'/>
+</g>
+<g transform='translate(128.29349,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.41699,5.527201)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M269.74966 0C269.74966 1.01544 268.92648 1.83862 267.91104 1.83862S266.07242 1.01544 266.07242 0S266.8956-1.83862 267.91104-1.83862S269.74966-1.01544 269.74966 0ZM267.91104 0' stroke='none'/>
+</g>
+<g transform='translate(267.91104,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.41699,5.527201)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#f00' stroke='#f00'>
+<g fill='#fff'>
+<g fill='#f00' stroke='#f00'>
+<path d='M19.93214 0C19.93214 1.2498 18.919 2.26294 17.6692 2.26294S15.40627 1.2498 15.40627 0S16.4194-2.26294 17.6692-2.26294S19.93214-1.2498 19.93214 0ZM17.6692 0'/>
+</g>
+</g>
+<g transform='translate(17.6692,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.41699,5.527201)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(131.92647,-10.57742)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.41699,5.527201)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-64.41699' y='5.527201' xlink:href='#c21-04-kondenzacija-g0-21'/>
+<use x='-58.605425' y='7.021582' xlink:href='#c21-04-kondenzacija-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(271.54402,5.13297)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.41699,5.527201)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-64.41699' y='5.527201' xlink:href='#c21-04-kondenzacija-g0-21'/>
+<use x='-58.605425' y='7.021582' xlink:href='#c21-04-kondenzacija-g2-51'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='povecava'>
+<path d='M0-159.3356H185.14317' fill='none'/>
+<g transform='translate(182.66672,-159.3356)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(193.12834,-162.80782)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.41699,5.527201)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-64.41699' y='5.527201' xlink:href='#c21-04-kondenzacija-g0-21'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-179.82161V-102.22977' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,-104.70622)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-4.27847,-94.2446)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.41699,5.527201)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-64.41699' y='5.527201' xlink:href='#c21-04-kondenzacija-g0-68'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.0'>
+<path d='M0-102.43011L2.27626-103.5967L4.52388-104.79149L6.80016-105.98671L9.07643-107.15329L11.35269-108.34808L13.60031-109.5433L15.87659-110.76675L18.15286-111.96198L20.42912-113.15677L22.67674-114.38022L24.95302-115.60367L27.2293-116.79889L29.50555-118.02234L31.75317-119.27402L34.02945-120.49745L36.30573-121.7209L38.58199-122.973L40.8296-124.22511L43.10588-125.47678L45.38216-126.72888L47.65843-127.98055L49.90604-129.23265L52.18231-130.51297L54.45859-131.79329L56.73486-133.07361L58.98247-134.35393L61.25874-135.63469L63.53502-136.91501L65.8113-138.22354L68.0589-139.53253L70.33517-140.8415L72.61145-142.15004L74.88773-143.45901L77.13535-144.79622L79.4116-146.1052L81.68788-147.44238L83.96416-148.80823L86.21178-150.14543L88.48804-151.48262L90.76431-152.84848L93.04059-154.21432L95.28821-155.57974L97.56447-156.97424L99.84074-158.36832L102.11702-159.73415L104.36464-161.15643L106.6409-162.55095L108.91718-163.97324L111.19345-165.36774L113.44107-166.79002L115.71733-168.24141L117.9936-169.66412L120.26988-171.11507L122.5175-172.59467L124.79378-174.04561L127.07004-175.5252L129.34631-177.0048L131.59393-178.4844L133.87021-179.964L136.14647-181.47183L138.42274-183.0083L140.67036-184.51611L142.94664-186.05258L145.2229-187.58907L147.49918-189.12553L149.7468-190.69066L152.02307-192.25536L154.29933-193.8487L156.5756-195.44205L158.82323-197.03539L161.0995-198.62874L163.37578-200.25075L165.65204-201.87231L167.89966-203.52252L170.17593-205.17274L172.45221-206.85162L174.72847-208.50185L176.97609-210.20894L179.25237-211.88782' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M0-102.43011L179.25237-195.38518' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M103.27272-159.3356C103.27272-158.32016 102.44954-157.49698 101.4341-157.49698S99.59547-158.32016 99.59547-159.3356S100.41866-161.17422 101.4341-161.17422S103.27272-160.35104 103.27272-159.3356ZM101.4341-159.3356' stroke='none'/>
+</g>
+<g transform='translate(101.4341,-159.3356)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.41699,5.527201)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#f00' stroke='#f00'>
+<g fill='#fff'>
+<g fill='#f00' stroke='#f00'>
+<path d='M112.005-159.3356C112.005-158.0858 110.99187-157.07266 109.74207-157.07266C108.49226-157.07266 107.47913-158.0858 107.47913-159.3356S108.49226-161.59854 109.74207-161.59854C110.99187-161.59854 112.005-160.5854 112.005-159.3356ZM109.74207-159.3356'/>
+</g>
+</g>
+<g transform='translate(109.74207,-159.3356)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.41699,5.527201)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(85.48163,-171.91302)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.41699,5.527201)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-64.41699' y='5.527201' xlink:href='#c21-04-kondenzacija-g0-21'/>
+<use x='-58.605425' y='7.021582' xlink:href='#c21-04-kondenzacija-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(115.37505,-152.20264)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-64.41699,5.527201)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-64.001875' y='2.898159' xlink:href='#c21-04-kondenzacija-g1-126'/>
+<use x='-64.41699' y='5.527201' xlink:href='#c21-04-kondenzacija-g0-21'/>
+<use x='-58.605425' y='7.021582' xlink:href='#c21-04-kondenzacija-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 21.13</span>: Natančna enačba okvirja za zgornji strop, \(D(\lambda) = 1 - \lambda - (2 - \lambda)/((1 - \lambda)(3 - \lambda))\) <span class="nobr">(\(k = \bar m = 1\)).</span> Zgoraj: modra krivulja \(D\) s poloma pri \(\lambda_{\mathrm{d}1} = 1\) in <span class="nobr">\(\lambda_{\mathrm{d}2} = 3\),</span> in njene ničle <span class="nobr">\(0{,}198062\),</span> <span class="nobr">\(1{,}554958\),</span> <span class="nobr">\(3{,}246980\).</span> Oranžna premica je Guyanov približek <span class="nobr">\(1/3 - (14/9)\lambda\),</span> ničla <span class="nobr">\(3/14 = 0{,}214286\).</span> Spodaj povečava \(0 \le \lambda \le 0{,}35\) (merila: zgoraj \(2{,}9\) cm za enoto \(\lambda\) in \(1{,}5\) cm za enoto <span class="nobr">\(D\),</span> spodaj \(18\) cm in \(6\) cm).</figcaption></figure>
+<p>Sliko gradimo po delih. Najprej narišemo <span class="nobr"><a data-del="osi" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-kondenzacija" data-knowl="fig-guyan-kondenzacija">os \(\lambda\) in os \(D\)</a>.</span> Ob njima postavimo <a data-del="polovi" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-kondenzacija" data-knowl="fig-guyan-kondenzacija">pola</a> pri \(\lambda_{\mathrm{d}1} = 1\) in <span class="nobr">\(\lambda_{\mathrm{d}2} = 3\),</span> to sta lastni vrednosti stropov \(1\) in <span class="nobr">\(2\),</span> ko strop \(3\) miruje (determinanta \((1 - \lambda)(3 - \lambda)\) je ničelna): pri njiju \(D\) ni določena, ob njiju pa \(|D|\) raste čez vse meje. Razcep na parcialne ulomke (SymPy) je</p>
+<div class="eq">\[D(\lambda) = 1 - \lambda - \frac{1/2}{1 - \lambda} - \frac{1/2}{3 - \lambda} , \qquad D'(\lambda) = -1 - \frac{1/2}{(1 - \lambda)^2} - \frac{1/2}{(3 - \lambda)^2} &lt; 0 .\]</div>
+<p><a data-del="krivulja" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-kondenzacija" data-knowl="fig-guyan-kondenzacija">Krivulja</a> \(D\) je zato na vsakem od treh odsekov (pred prvim polom, med poloma in za drugim) zvezna in pada, prvi odsek se začne pri \(\lambda = 0\) z vrednostjo <span class="nobr">\(1 - \tfrac12 - \tfrac16 = \tfrac13\).</span> Njene <a data-del="korenii" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-kondenzacija" data-knowl="fig-guyan-kondenzacija">ničle</a> so natančno lastne vrednosti okvirja: \(\lambda_1\) pred prvim polom (njena oznaka je na spodnji povečavi), \(\lambda_2\) med poloma in \(\lambda_3\) za drugim. <a data-del="guyan" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-kondenzacija" data-knowl="fig-guyan-kondenzacija">Guyanova premica</a> je tangenta krivulje pri <span class="nobr">\(\lambda = 0\),</span> <span class="nobr">\(\tilde K - \lambda\tilde M = \tfrac13 - \tfrac{14}{9}\lambda\),</span> in njena ničla je Guyanov približek <span class="nobr">\(\tilde\lambda_1 = 3/14\),</span> <a data-del="povecava" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-kondenzacija" data-knowl="fig-guyan-kondenzacija">spodnja povečava</a> kaže, da leži desno od prave ničle <span class="nobr">\(\lambda_1\).</span> Krivulja \(D\) leži pod tangento, zato ima nižjo ničlo. Za \(0 \le \lambda &lt; 1\) razvijemo oba ulomka v geometrijski vrsti s pozitivnimi členi, \(\tfrac{1}{1 - \lambda} = 1 + \lambda + \lambda^2 + \dots\) in <span class="nobr">\(\tfrac{1}{3 - \lambda} = \tfrac13 + \tfrac{\lambda}{9} + \tfrac{\lambda^2}{27} + \dots\),</span> in dobimo <span class="nobr">\(D(\lambda) = \tfrac13 - \tfrac{14}{9}\lambda - \tfrac{14}{27}\lambda^2 - \tfrac{41}{81}\lambda^3 - \dots\).</span> Člen z \(\lambda^k\) za \(k \ge 2\) je <span class="nobr">\(-\tfrac12(1 + 3^{-k-1})\lambda^k\),</span> torej so vsi členi nad linearnim negativni, in razlika \(D - (\tilde K - \lambda\tilde M)\) je pri \(\lambda = 0{,}05\) enaka <span class="nobr">\(-0{,}0014\),</span> pri \(0{,}1\) je \(-0{,}0057\) in pri pravi \(\lambda_1 = 0{,}198\) <span class="nobr">(\(\lambda_1/\lambda_{\mathrm{d}1} = 0{,}198\))</span> je <span class="nobr">\(-0{,}0252\),</span> kar da premik ničle za <span class="nobr">\(0{,}0252/(14/9) = 0{,}0162\),</span> in to je razlika <span class="nobr">\(0{,}2143 - 0{,}1981\).</span></p>
+<p>Isto velja za poljuben sistem. Natančno enačbo napišemo po blokih in vidimo, da je Guyan njena tangenta v ničli.</p>
+
+<div class="blk izrek" id="thm-dinamicna-kondenzacija"><div class="blk-head"><span class="blk-label">Izrek 21.20</span> <span class="blk-title">Natančna kondenzacija (exact dynamic condensation)</span></div><div class="blk-body"><p>Naj bosta \(\mat K\) in \(\mat M\) simetrični pozitivno definitni z razdelitvijo <a class="xref" href="sec-guyanova-redukcija.html#eq-guyan-razdelitev" data-knowl="eq-guyan-razdelitev">(21.31)</a> in naj \(\lambda\) ne bo <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">lastna vrednost</a> para <span class="nobr">\((\mat K_{\mathrm{dd}}, \mat M_{\mathrm{dd}})\).</span> Označimo</p>
+<div class="eq" id="eq-guyan-d">\[\mat D(\lambda) = \mat K_{\mathrm{aa}} - \lambda\mat M_{\mathrm{aa}} - (\mat K_{\mathrm{ad}} - \lambda\mat M_{\mathrm{ad}})\,(\mat K_{\mathrm{dd}} - \lambda\mat M_{\mathrm{dd}})^{-1}\,(\mat K_{\mathrm{da}} - \lambda\mat M_{\mathrm{da}}) . \tag{21.36}\]</div>
+<p>Tedaj velja:</p>
+<ol>
+<li>Število \(\lambda\) je lastna vrednost para \((\mat K, \mat M)\) natanko tedaj, ko ima \(\mat D(\lambda)\,\vek x = \vek 0\) rešitev <span class="nobr">\(\vek x \ne \vek 0\),</span> in lastni stolpec je <span class="nobr">\(\vek v = (\vek x,\ -(\mat K_{\mathrm{dd}} - \lambda\mat M_{\mathrm{dd}})^{-1}(\mat K_{\mathrm{da}} - \lambda\mat M_{\mathrm{da}})\,\vek x)\).</span></li>
+<li>\(\mat D(0) = \tilde{\mat K}\) in <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">odvod</a> po \(\lambda\) je <span class="nobr">\(\mat D'(0) = -\tilde{\mat M}\),</span> torej <span class="nobr">\(\mat D(\lambda) = \tilde{\mat K} - \lambda\tilde{\mat M} + (\text{členi reda } \lambda^2)\):</span> Guyanov reducirani problem je tangenta natančne enačbe v <span class="nobr">\(\lambda = 0\).</span></li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Prvo točko dobimo z izločanjem odvisnih koordinat iz vrstic \(\text{d}\) pri fiksni <span class="nobr">\(\lambda\),</span> drugo z odvajanjem \(\mat D\) v <span class="nobr">\(\lambda = 0\).</span></p>
+<ol>
+<li>Naj bo <span class="nobr">\(\mat N(\lambda) = \mat K_{\mathrm{dd}} - \lambda\mat M_{\mathrm{dd}}\),</span> <a class="xref auto" href="sec-matrike.html#def-inverzna-matrika" data-knowl="def-inverzna-matrika">obrnljiva</a> po predpostavki. Vrstici bloka \((\mat K - \lambda\mat M)\vek v = \vek 0\) sta: vrstice <span class="nobr">\(\mathrm{a}\),</span> <span class="nobr">\((\mat K_{\mathrm{aa}} - \lambda\mat M_{\mathrm{aa}})\vek x + (\mat K_{\mathrm{ad}} - \lambda\mat M_{\mathrm{ad}})\vek y = \vek 0\),</span> in vrstice <span class="nobr">\(\text{d}\),</span> <span class="nobr">\((\mat K_{\mathrm{da}} - \lambda\mat M_{\mathrm{da}})\vek x + \mat N\vek y = \vek 0\),</span> za <span class="nobr">\(\vek v = (\vek x, \vek y)\).</span></li>
+<li>Iz vrstic \(\text{d}\) je <span class="nobr">\(\vek y = -\mat N^{-1}(\mat K_{\mathrm{da}} - \lambda\mat M_{\mathrm{da}})\vek x\).</span> Vstavljeno v vrstice \(\mathrm{a}\) je <span class="nobr">\(\mat D(\lambda)\,\vek x = \vek 0\).</span> Če je <span class="nobr">\(\vek x = \vek 0\),</span> je po tej enačbi za \(\vek y\) tudi \(\vek y = \vek 0\) in <span class="nobr">\(\vek v = \vek 0\),</span> torej je lastni stolpec \(\vek v \ne \vek 0\) možen samo z <span class="nobr">\(\vek x \ne \vek 0\).</span></li>
+<li>Obratno: če je \(\vek x \ne \vek 0\) in <span class="nobr">\(\mat D(\lambda)\vek x = \vek 0\),</span> definiramo \(\vek y\) po koraku 2. Tedaj vrstice \(\text{d}\) veljajo po konstrukciji in vrstice \(\mathrm{a}\) po koraku 2, zato \((\mat K - \lambda\mat M)\vek v = \vek 0\) z <span class="nobr">\(\vek v \ne \vek 0\).</span> To je prva točka.</li>
+<li>Pri \(\lambda = 0\) je <span class="nobr">\(\mat N(0) = \mat K_{\mathrm{dd}}\),</span> torej \(\mat D(0) = \mat K_{\mathrm{aa}} - \mat K_{\mathrm{ad}}\mat K_{\mathrm{dd}}^{-1}\mat K_{\mathrm{da}} = \tilde{\mat K}\) po lemi <a class="xref" href="sec-guyanova-redukcija.html#lem-staticna-kondenzacija" data-knowl="lem-staticna-kondenzacija">21.18</a>, točka 1.</li>
+<li><a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">Odvod</a> inverza: iz \(\mat N\,\mat N^{-1} = \mat I\) je <span class="nobr">\(\mat N'\mat N^{-1} + \mat N(\mat N^{-1})' = \mat 0\),</span> in ker je <span class="nobr">\(\mat N' = -\mat M_{\mathrm{dd}}\),</span> je <span class="nobr">\((\mat N^{-1})' = \mat N^{-1}\mat M_{\mathrm{dd}}\mat N^{-1}\).</span> Odvod produkta trojice \(\mat A\,\mat N^{-1}\mat B\) z <span class="nobr">\(\mat A = \mat K_{\mathrm{ad}} - \lambda\mat M_{\mathrm{ad}}\),</span> \(\mat B = \mat K_{\mathrm{da}} - \lambda\mat M_{\mathrm{da}}\) je pri \(\lambda = 0\) vsota <span class="nobr">\(-\mat M_{\mathrm{ad}}\mat K_{\mathrm{dd}}^{-1}\mat K_{\mathrm{da}} + \mat K_{\mathrm{ad}}\mat K_{\mathrm{dd}}^{-1}\mat M_{\mathrm{dd}}\mat K_{\mathrm{dd}}^{-1}\mat K_{\mathrm{da}} - \mat K_{\mathrm{ad}}\mat K_{\mathrm{dd}}^{-1}\mat M_{\mathrm{da}}\).</span> Zato je <span class="nobr">\(\mat D'(0) = -\mat M_{\mathrm{aa}} + \mat M_{\mathrm{ad}}\mat K_{\mathrm{dd}}^{-1}\mat K_{\mathrm{da}} - \mat K_{\mathrm{ad}}\mat K_{\mathrm{dd}}^{-1}\mat M_{\mathrm{dd}}\mat K_{\mathrm{dd}}^{-1}\mat K_{\mathrm{da}} + \mat K_{\mathrm{ad}}\mat K_{\mathrm{dd}}^{-1}\mat M_{\mathrm{da}}\).</span></li>
+<li>Po izreku <a class="xref" href="sec-guyanova-redukcija.html#thm-guyan" data-knowl="thm-guyan">21.19</a>, točka 1, z \(\mat\Psi_{\mathrm{d}} = -\mat K_{\mathrm{dd}}^{-1}\mat K_{\mathrm{da}}\) in \(\mat\Psi_{\mathrm{d}}^\T = -\mat K_{\mathrm{ad}}\mat K_{\mathrm{dd}}^{-1}\) (simetrija <span class="nobr">\(\mat K_{\mathrm{dd}}\))</span> je <span class="nobr">\(\tilde{\mat M} = \mat M_{\mathrm{aa}} - \mat M_{\mathrm{ad}}\mat K_{\mathrm{dd}}^{-1}\mat K_{\mathrm{da}} - \mat K_{\mathrm{ad}}\mat K_{\mathrm{dd}}^{-1}\mat M_{\mathrm{da}} + \mat K_{\mathrm{ad}}\mat K_{\mathrm{dd}}^{-1}\mat M_{\mathrm{dd}}\mat K_{\mathrm{dd}}^{-1}\mat K_{\mathrm{da}}\),</span> in primerjava s korakom 5 da <span class="nobr">\(\mat D'(0) = -\tilde{\mat M}\).</span> <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">Funkcija</a> \(\mat D\) je gladka pri \(\lambda = 0\) (je racionalna in \(\mat N(0)\) je obrnljiva), zato je razlika \(\mat D(\lambda) - \tilde{\mat K} + \lambda\tilde{\mat M}\) reda <span class="nobr">\(\lambda^2\).</span> To je druga točka. <!-- nofig: algebra --></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> GR razdelek 6.9.1 (PDF str. 499, opomba 10): izločanje odvisnih koordinat iz (6.146b) vodi do »an intricate eigenvalue problem nonlinear in \(\omega^2\)«. Izrek in dokaz v korakih sta naša, vezana na Guyanov približek po GR in CK.</p></div></div>
+<p>Kaj izrek pove v besedah? Natančen lastni problem ima samo \(n_{\mathrm{a}}\) neznank, vendar je nelinearen v \(\lambda\) in ima <a data-del="polovi" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-kondenzacija" data-knowl="fig-guyan-kondenzacija">pole</a> pri lastnih vrednostih odvisnih koordinat s fiksiranimi aktivnimi. Guyan ga nadomesti z <a data-del="guyan" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-kondenzacija" data-knowl="fig-guyan-kondenzacija">njegovo tangento</a>, ki je linearna in ima znano obliko <span class="nobr">\(\tilde{\mat K} - \lambda\tilde{\mat M}\).</span> Tangenta ne ve nič o polih, zato je dobra, dokler je \(\lambda\) daleč pod najbližjim polom <span class="nobr">\(\lambda_{\mathrm{d}1}\),</span> in nima smisla za \(\lambda\) za njim. Številke to potrjujejo. Pri okvirju je \(\lambda_1/\lambda_{\mathrm{d}1} = 0{,}198\) in napaka \(8{,}19\) % v lastni vrednosti. Pri konzoli z \(n = 5\) in obdržanimi pomiki so razmerja \(\lambda_{\mathrm{r}}/\lambda_{\mathrm{d}1}\) za prve štiri lastne vrednosti <span class="nobr">\(0{,}00015\),</span> <span class="nobr">\(0{,}0060\),</span> \(0{,}048\) in <span class="nobr">\(0{,}19\),</span> napake frekvenc glede na polni model z \(n = 5\) pa \(0{,}0015\) %, \(0{,}054\) %, \(0{,}48\) % in \(1{,}97\) % (NumPy). Pri obdržanih zasukih so razmerja <span class="nobr">\(0{,}017\),</span> <span class="nobr">\(0{,}65\),</span> \(5{,}2\) in <span class="nobr">\(20\),</span> napake pa \(0{,}78\) %, \(5{,}7\) %, \(14{,}5\) % in \(29{,}4\) %. Napaka torej z razmerjem raste: pri razmerju pod \(0{,}01\) je pod \(0{,}06\) %, pri razmerju okoli \(0{,}2\) je nekaj odstotkov, pri razmerju nad \(1\) pa je Guyanova vrednost neuporabna. Razmerje \(\lambda_{\mathrm{r}}/\lambda_{\mathrm{d}1}\) je zato merilo za zaupanje v Guyanovo vrednost, in tega izrek <a class="xref" href="sec-guyanova-redukcija.html#thm-guyan" data-knowl="thm-guyan">21.19</a> sam ne pove, saj zagotavlja le <a class="xref auto" href="sec-polnost.html#def-zgornja-meja" data-knowl="def-zgornja-meja">zgornjo mejo</a>.</p>
+<p>Izrek ima tudi mejo: za \(\lambda = \lambda_{\mathrm{d}}\) <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrika</a> \(\mat N\) ni <a class="xref auto" href="sec-matrike.html#def-inverzna-matrika" data-knowl="def-inverzna-matrika">obrnljiva</a> in <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcija</a> \(\mat D\) ni definirana. Pri okvirju sta to \(\lambda = 1\) in <span class="nobr">\(\lambda = 3\),</span> ki nista lastni vrednosti okvirja (te so <span class="nobr">\(0{,}198\),</span> \(1{,}555\) in <span class="nobr">\(3{,}247\)),</span> ampak pola, na <a data-del="polovi" class="xref kaz" href="sec-guyanova-redukcija.html#fig-guyan-kondenzacija" data-knowl="fig-guyan-kondenzacija">sliki</a> navpični črtkani črti. V splošnem pa je pol lahko tudi lastna vrednost celotne konstrukcije. Če ima lastni stolpec \(\vek v = (\vek 0, \vek y)\) vse aktivne koordinate enake nič, dajo vrstice \(\text{d}\) enačbo \(\mat N(\lambda)\,\vek y = \vek 0\) z <span class="nobr">\(\vek y \ne \vek 0\),</span> torej je \(\lambda\) pol. Take lastne vrednosti izrek ne zajame, ker o \(\lambda\) v polu ne pove ničesar, in enačba <a class="xref" href="sec-guyanova-redukcija.html#eq-guyan-d" data-knowl="eq-guyan-d">(21.36)</a> velja samo izven polov.</p>
+<p>Razdelek je pokazal <a class="xref auto" href="sec-guyanova-redukcija.html#def-guyanova-baza" data-knowl="def-guyanova-baza">Guyanovo redukcijo</a> z več strani. Statična kondenzacija je natančna za obremenitve na obdržanih koordinatah (lema <a class="xref" href="sec-guyanova-redukcija.html#lem-staticna-kondenzacija" data-knowl="lem-staticna-kondenzacija">21.18</a>) in Guyanov približek za dinamiko je Ritzov z zgornjo mejo, natančen pri odvisnih koordinatah brez mase (izrek <a class="xref" href="sec-guyanova-redukcija.html#thm-guyan" data-knowl="thm-guyan">21.19</a>). Natančen lastni problem (izrek <a class="xref" href="sec-guyanova-redukcija.html#thm-dinamicna-kondenzacija" data-knowl="thm-dinamicna-kondenzacija">21.20</a>) kaže, da je Guyan njegova tangenta v nič, dobra za \(\lambda\) daleč pod najnižjo lastno vrednostjo odvisnih koordinat, in konzola je pokazala, da izbira koordinat odloča: aktivne naj bodo tiste z vztrajnostjo, odvisne trde in lahke. Kaj pa, če odvisne koordinate nikakor ne smejo biti statične, ker je nekaj nihanja v notranjosti dela konstrukcije? Tedaj Guyanovi bazi dodamo še lastna nihanja notranjosti, kar naredi razdelek <a class="xref" href="sec-podstrukture.html">21.5</a>. Kako rešimo lastni problem reda <span class="nobr">\(n_{\mathrm{a}}\),</span> če je še vedno prevelik, pokažejo razdelki za njim, začenši z najpreprostejšim postopkom, ki najde eno lastno vrednost, v razdelku <a class="xref" href="sec-inverzna-iteracija.html">21.6</a>. <!-- nofig: signpost --></p>
+
+<div class="opomba"><p>Ne obravnavamo kvadratnega popravka Guyanove redukcije (CK, PDF str. 469, vir [14.8]), drugih metod za modele za preizkus s prirejenimi koordinatami (test-analysis models, CK, PDF str. 479, poglavje <a class="xref" href="ch-modeliranje.html">17</a>) in redukcije za premikajoče se prožne člene (poglavje <a class="xref" href="ch-podajni-cleni.html">28</a>). Niso dokazani v tej knjigi.</p>
+</div>
+</main>
+<footer><nav class="pager"><a href="sec-dodatna-masa.html" rel="prev">← 21.3</a><a href="index.html">Kazalo</a><a href="sec-podstrukture.html" rel="next">21.5 →</a></nav></footer>
+</body>
+</html>

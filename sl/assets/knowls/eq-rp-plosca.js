@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rp-plosca"] = {"html": "<div class=\"eq\">\\[a = -\\frac{h\\,(T_0 - T_\\infty)}{k + h L} , \\qquad T(L) = T_0 - (T_0 - T_\\infty)\\,\\frac{\\mathrm{Bi}}{1 + \\mathrm{Bi}} , \\qquad \\mathrm{Bi} = \\frac{h L}{k} . \\tag{14.13}\\]</div>", "href": "sec-robni-pogoji-toplote.html#eq-rp-plosca"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-cst-b"] = {"html": "<div class=\"eq\">\\[\\mat B = \\frac{1}{2A}\\begin{bmatrix} b_1 &amp; 0 &amp; b_2 &amp; 0 &amp; b_3 &amp; 0 \\\\ 0 &amp; c_1 &amp; 0 &amp; c_2 &amp; 0 &amp; c_3 \\\\ c_1 &amp; b_1 &amp; c_2 &amp; b_2 &amp; c_3 &amp; b_3 \\end{bmatrix} . \\tag{15.19}\\]</div>", "href": "sec-mkk-ravninski-trikotnik.html#eq-cst-b"};

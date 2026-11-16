@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-prandtlova-funkcija"] = {"html": "<div class=\"eq\">\\[\\sigma_{\\mathrm{xy}} = \\frac{\\partial\\Phi}{\\partial z} , \\qquad \\sigma_{\\mathrm{xz}} = -\\frac{\\partial\\Phi}{\\partial y} . \\tag{16.19}\\]</div>", "href": "sec-prandtlova-funkcija.html#eq-prandtlova-funkcija"};

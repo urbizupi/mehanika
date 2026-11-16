@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-c29-prostornina-visina"] = {"html": "<div class=\"eq\">\\[V(h) = \\frac{F\\,(2a^2 + h^2)}{h\\,\\sigma_0} = \\frac{F}{\\sigma_0}\\Big(h + \\frac{2a^2}{h}\\Big) , \\tag{29.8}\\]</div>", "href": "sec-palicje-z-napetostmi.html#eq-c29-prostornina-visina"};

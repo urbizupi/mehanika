@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mkk-gauss-pesena-ura"] = {"html": "<div class=\"eq\">\\[u_{\\mathrm{x}} = \\tfrac{a}{4}\\big[(1-\\xi)(1-\\eta) - (1+\\xi)(1-\\eta) + (1+\\xi)(1+\\eta) - (1-\\xi)(1+\\eta)\\big] = a\\,\\xi\\eta , \\qquad u_{\\mathrm{y}} = 0 . \\tag{15.34}\\]</div>", "href": "sec-mkk-gauss.html#eq-mkk-gauss-pesena-ura"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-up-rezervoar"] = {"html": "<div class=\"eq\">\\[N_\\theta(x) = \\gamma\\,(H - x)\\,R , \\qquad N_{\\mathrm{x}}(x) = 0 . \\tag{22.37}\\]</div>", "href": "sec-uporabe-membranske.html#eq-up-rezervoar"};

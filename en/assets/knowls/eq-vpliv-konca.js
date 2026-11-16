@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vpliv-konca"] = {"html": "<div class=\"eq\">\\[|M_{\\mathrm{j}}| = \\frac{q_0 l^2}{12}\\,\\big(1 - (-\\rho)^j\\big) . \\tag{19.15}\\]</div>", "href": "sec-periodicnost.html#eq-vpliv-konca"};

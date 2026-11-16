@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vzt-srednja"] = {"html": "<div class=\"eq\">\\[\\Omega_{\\mathrm{m}} = \\tfrac12\\,(\\Omega_{\\max} + \\Omega_{\\min}) , \\tag{23.25}\\]</div>", "href": "sec-vztrajnik.html#eq-vzt-srednja"};

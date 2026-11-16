@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vpeta-momenti"] = {"html": "<div class=\"eq\">\\[M_{\\mathrm{r}} = \\frac{q}{16}\\,\\big((3+\\nu)\\,r^2 - (1+\\nu)\\,a^2\\big) , \\qquad M_\\theta = \\frac{q}{16}\\,\\big((1+3\\nu)\\,r^2 - (1+\\nu)\\,a^2\\big) , \\qquad Q_{\\mathrm{r}} = -\\frac{qr}{2} . \\tag{18.42}\\]</div>", "href": "sec-krozne-plosce.html#eq-vpeta-momenti"};

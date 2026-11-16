@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vm-ti-koef"] = {"html": "<div class=\"eq\">\\[T_{\\mathrm{i}} \\approx -7{,}05\\sin\\theta + 57{,}46\\sin 2\\theta + 21{,}32\\sin 3\\theta + 1{,}73\\sin 4\\theta\\ \\ \\text{N m} \\tag{23.21}\\]</div>", "href": "sec-vrtilni-moment.html#eq-vm-ti-koef"};

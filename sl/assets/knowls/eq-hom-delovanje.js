@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-hom-delovanje"] = {"html": "<div class=\"eq\">\\[\\mat T^i_{\\mathrm{j}}\\,\\tilde{\\vek p}^j = \\tilde{\\vek p}^i . \\tag{27.10}\\]</div>", "href": "sec-homogene-transformacije.html#eq-hom-delovanje"};

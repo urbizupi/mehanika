@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pl-matrika-pogojev"] = {"html": "<div class=\"eq\">\\[\\mat C = \\begin{bmatrix} \\ell_1(1) &amp; \\ell_1(x) \\\\ \\ell_2(1) &amp; \\ell_2(x) \\end{bmatrix} \\tag{28.11}\\]</div>", "href": "sec-plavajoci-sistem.html#eq-pl-matrika-pogojev"};

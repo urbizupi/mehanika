@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nlst-energija"] = {"html": "<div class=\"eq\">\\[V(\\theta) = \\tfrac12\\,k L^2\\,(\\sin\\theta - s_0)^2 + P L\\cos\\theta . \\tag{17.26}\\]</div>", "href": "sec-nelinearna-statika.html#eq-nlst-energija"};

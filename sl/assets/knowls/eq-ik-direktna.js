@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ik-direktna"] = {"html": "<div class=\"eq\">\\[\\Phi(q_1, q_2) = \\big(l_1\\cos q_1 + l_2\\cos(q_1 + q_2),\\ \\ l_1\\sin q_1 + l_2\\sin(q_1 + q_2)\\big) . \\tag{27.17}\\]</div>", "href": "sec-inverzna-kinematika.html#eq-ik-direktna"};

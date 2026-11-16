@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-struna-zacetni"] = {"html": "<div class=\"eq\">\\[w(x, 0) = w_0(x) , \\qquad w_{\\mathrm{t}}(x, 0) = v_0(x) \\quad (0 \\le x \\le L) . \\tag{13.5}\\]</div>", "href": "sec-nacini-strune.html#eq-struna-zacetni"};

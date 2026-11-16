@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vzt-delta"] = {"html": "<div class=\"eq\">\\[\\delta_{\\mathrm{s}} = \\frac{\\Omega_{\\max} - \\Omega_{\\min}}{\\Omega_{\\mathrm{m}}} . \\tag{23.26}\\]</div>", "href": "sec-vztrajnik.html#eq-vzt-delta"};

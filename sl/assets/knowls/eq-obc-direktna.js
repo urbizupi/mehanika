@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-obc-direktna"] = {"html": "<div class=\"eq\">\\[\\mat K\\,\\vek w_{\\mathrm{e}} = \\vek p_{\\mathrm{e}} , \\qquad \\vek p_{\\mathrm{e}} = \\frac{\\partial\\vek f}{\\partial A_{\\mathrm{e}}} - \\mat K_{\\mathrm{e}}\\,\\vek u . \\tag{29.37}\\]</div>", "href": "sec-obcutljivost.html#eq-obc-direktna"};

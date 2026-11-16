@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-spoj-membranski-pomiki"] = {"html": "<div class=\"eq\">\\[w_\\mathrm{c} = \\frac{pR^2}{Eh}\\Big(1 - \\frac{\\nu}{2}\\Big) = 16{,}263\\ \\mu\\text{m} , \\qquad w_\\mathrm{s} = \\frac{pR^2}{2Eh}(1 - \\nu) = 6{,}696\\ \\mu\\text{m} , \\tag{22.48}\\]</div>", "href": "sec-spoji-lupin.html#eq-spoj-membranski-pomiki"};

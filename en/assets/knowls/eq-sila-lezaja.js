@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sila-lezaja"] = {"html": "<div class=\"eq\">\\[\\vek F_{\\mathrm{b}}(\\vek u) = \\sum_{\\mathrm{j}=1}^{Z} K_{\\mathrm{n}}\\,\\max\\big(\\delta_{\\mathrm{j}}(\\vek u), 0\\big)^n\\,\\vek e_{\\mathrm{j}} , \\tag{25.39}\\]</div>", "href": "sec-togost-lezaja.html#eq-sila-lezaja"};

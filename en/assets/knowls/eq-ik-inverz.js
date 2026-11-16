@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ik-inverz"] = {"html": "<div class=\"eq\">\\[\\mat F_\\Psi(\\Phi(\\vek q)) = \\mat F_\\Phi(\\vek q)^{-1} \\quad\\text{for every } \\vek q \\text{ in } B . \\tag{27.20}\\]</div>", "href": "sec-inverzna-kinematika.html#eq-ik-inverz"};

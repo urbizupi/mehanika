@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-em-vsota"] = {"html": "<div class=\"eq\">\\[\\sum_{\\mathrm{r}=1}^{n_1} m_{\\mathrm{r}}^{\\mathrm{ef}} = \\vek h^\\T\\mat M_{11}^{-1}\\vek h = m_\\Sigma - m_{\\mathrm{S}} . \\tag{21.16}\\]</div>", "href": "sec-efektivna-masa.html#eq-em-vsota"};

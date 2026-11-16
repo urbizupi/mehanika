@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-c20-zeta-nacina"] = {"html": "<div class=\"eq\">\\[\\zeta_{\\mathrm{n}} = \\frac{\\tau_\\varepsilon\\,\\omega_{\\mathrm{n}}}{2} + \\frac{c_{\\mathrm{z}}}{2\\,\\rho A\\,\\omega_{\\mathrm{n}}} \\tag{20.45}\\]</div>", "href": "sec-dusenje-zveznih.html#eq-c20-zeta-nacina"};

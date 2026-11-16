@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rm-harmoniki-lege"] = {"html": "<div class=\"eq\">\\[x_{\\mathrm{B}}(t) = \\frac{a_0}{2} + a\\cos\\Omega t + \\sum_{\\mathrm{k}=1}^{\\infty}a_{2\\mathrm{k}}\\cos 2k\\Omega t . \\tag{23.6}\\]</div>", "href": "sec-rocicni-mehanizem.html#eq-rm-harmoniki-lege"};

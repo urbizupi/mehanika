@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nd-ef"] = {"html": "<div class=\"eq\">\\[\\mat K_{\\mathrm{ef}}^{(i)}\\,\\Delta\\vek q = -\\vek G\\big(\\vek q^{(i)}\\big) , \\qquad \\mat K_{\\mathrm{ef}}^{(i)} = \\mat K_{\\mathrm{t}}\\big(\\vek q^{(i)}\\big) + \\frac{\\mat M}{\\beta\\,\\Delta t^2} , \\tag{17.42}\\]</div>", "href": "sec-nelinearna-dinamika.html#eq-nd-ef"};

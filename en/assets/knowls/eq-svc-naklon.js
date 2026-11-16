@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-svc-naklon"] = {"html": "<div class=\"eq\">\\[\\delta^2\\Pi(0, \\eta) = EI\\int_0^L w'^2\\,\\mathrm{d}x - P\\int_0^L w^2\\,\\mathrm{d}x . \\tag{13.75}\\]</div>", "href": "sec-steber-vpet-clenkast.html#eq-svc-naklon"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-klin"] = {"html": "<div class=\"eq\">\\[C(A_0) = 1{,}7007\\ \\text{J} , \\qquad C(A^*) = \\frac{S^2}{EV} = \\frac{5000^2}{196 \\cdot 10^9 \\cdot 10^{-4}} = 1{,}2755\\ \\text{J} . \\tag{29.51}\\]</div>", "href": "sec-najtogja-palica.html#eq-klin"};

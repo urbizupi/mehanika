@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pl-elasticno"] = {"html": "<div class=\"eq\">\\[\\bar{\\vek u}(x, t) = \\mat\\Psi(x)\\,\\vek q_{\\mathrm{d}}(t) , \\qquad v(x, t) = \\sum_{\\mathrm{k} = 1}^{n} \\psi_{\\mathrm{k}}(x)\\,q_{\\mathrm{k}}(t) , \\tag{28.9}\\]</div>", "href": "sec-plavajoci-sistem.html#eq-pl-elasticno"};

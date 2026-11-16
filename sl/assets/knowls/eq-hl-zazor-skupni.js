@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-hl-zazor-skupni"] = {"html": "<div class=\"eq\">\\[g(x) = \\frac{x^2}{2R} + w(x) - \\delta , \\tag{25.19}\\]</div>", "href": "sec-hertz-linijski.html#eq-hl-zazor-skupni"};

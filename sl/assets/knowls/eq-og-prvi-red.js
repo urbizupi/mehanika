@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-og-prvi-red"] = {"html": "<div class=\"eq\">\\[\\mathcal A\\,\\vek z_{\\mathrm{t}} + \\mathcal B\\,\\vek z = \\vek 0 . \\tag{26.33}\\]</div>", "href": "sec-ortogonalnost-gibajoce.html#eq-og-prvi-red"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ve-prvi-red"] = {"html": "<div class=\"eq\">\\[p_0\\,\\sigma + p_1\\,\\dot\\sigma = q_0\\,\\varepsilon + q_1\\,\\dot\\varepsilon \\tag{20.15}\\]</div>", "href": "sec-viskoelasticni-modeli.html#eq-ve-prvi-red"};

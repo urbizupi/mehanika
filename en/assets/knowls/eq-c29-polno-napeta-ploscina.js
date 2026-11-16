@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-c29-polno-napeta-ploscina"] = {"html": "<div class=\"eq\">\\[A_{\\mathrm{e}}^{*} = \\frac{|N_{\\mathrm{e}}|}{\\sigma_0} , \\quad e = 1, \\dots, n , \\tag{29.7}\\]</div>", "href": "sec-palicje-z-napetostmi.html#eq-c29-polno-napeta-ploscina"};

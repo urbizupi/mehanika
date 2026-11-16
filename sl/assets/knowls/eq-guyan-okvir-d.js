@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-guyan-okvir-d"] = {"html": "<div class=\"eq\">\\[D(\\lambda)\\,q_3 = 0 , \\qquad D(\\lambda) = 1 - \\lambda - \\frac{2 - \\lambda}{(1 - \\lambda)(3 - \\lambda)} . \\tag{21.35}\\]</div>", "href": "sec-guyanova-redukcija.html#eq-guyan-okvir-d"};

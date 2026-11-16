@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dmke-zunanji"] = {"html": "<div class=\"eq\">\\[\\mat c_{\\mathrm{e}} = c_{\\mathrm{z}}\\int_{\\mathrm{x}_\\mathrm{a}}^{x_{\\mathrm{b}}}\\mat\\psi_{\\mathrm{e}}^\\T\\mat\\psi_{\\mathrm{e}}\\,\\mathrm{d}x = \\frac{c_{\\mathrm{z}}}{\\rho A}\\,\\mat m_{\\mathrm{e}} . \\tag{20.33}\\]</div>", "href": "sec-dusenje-mke.html#eq-dmke-zunanji"};

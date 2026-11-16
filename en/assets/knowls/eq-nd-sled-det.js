@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nd-sled-det"] = {"html": "<div class=\"eq\">\\[\\operatorname{tr}\\mat A = 2 - \\frac{(\\gamma + \\frac12)\\,\\Omega^2}{D} , \\qquad \\det\\mat A = 1 - \\frac{(\\gamma - \\frac12)\\,\\Omega^2}{D} . \\tag{17.36}\\]</div>", "href": "sec-nelinearna-dinamika.html#eq-nd-sled-det"};

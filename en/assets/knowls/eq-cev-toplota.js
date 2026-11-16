@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-cev-toplota"] = {"html": "<div class=\"eq\">\\[\\Phi' = \\frac{2\\pi k\\,(T_{\\mathrm{a}} - T_{\\mathrm{b}})}{\\ln(b/a)} . \\tag{14.23}\\]</div>", "href": "sec-stacionarno-1d.html#eq-cev-toplota"};

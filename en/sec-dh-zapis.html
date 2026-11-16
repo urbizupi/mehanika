@@ -1,0 +1,2162 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>27.4 The Denavit-Hartenberg notation · Chapter 27</title>
+<script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/style.css">
+<noscript><style>#loadbar { display: none; }</style></noscript>
+<script src="assets/config.js"></script>
+<script src="assets/load.js"></script>
+<script defer src="assets/interaktivno.js"></script>
+<script defer src="assets/book.js"></script>
+<script defer src="assets/predavanje.js"></script>
+<script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<div id="loadbar" aria-hidden="true"></div>
+<header class="top"><a class="home" href="index.html">Mechanics</a><nav class="pager"><a href="sec-homogene-transformacije.html" rel="prev">← 27.3</a><a href="index.html">Contents</a><a href="sec-inverzna-kinematika.html" rel="next">27.5 →</a></nav>
+<span class="tools"><a class="lang" href="../sl/sec-dh-zapis.html" hreflang="sl">Slovenščina</a><button type="button" class="theme-toggle" title="Light or dark theme" aria-label="Light or dark theme"></button><button type="button" data-details="open">Expand all</button><button type="button" data-details="close">Collapse all</button><button type="button" class="fig-side-toggle" aria-pressed="false">Figures alongside</button></span></header>
+<main>
+<p class="updated">Last updated 16 November 2026, 10:52</p>
+<p class="crumb"><a href="ch-roboti.html"><span class="h-num">Chapter 27</span> Robot kinematics and dynamics</a></p>
+<h2 id="sec-dh-zapis"><span class="h-num">27.4</span> The Denavit-Hartenberg notation</h2>
+<p>In section <a class="xref" href="sec-homogene-transformacije.html">27.3</a> we wrote the pose of a <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">frame</a> relative to another frame as a \(4 \times 4\) <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> <span class="nobr">\(\mat T\),</span> that is with six numbers: three for the <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">origin</a> and three for the turn. A robot with joints \(1, \dots, n\) has a different frame for every joint, so for each of them we would have to measure six numbers, of which only one changes when the joint moves. Five numbers are constant and depend on how we place the frame. Can we place it so that fewer remain, and how do we describe such a placement so that everybody reads it in the same way? In this section we learn how, and we use the resulting notation to compute the position of the tip of the arm, the point \(E\) of the end effector (section <a class="xref" href="sec-robotske-verige.html">27.1</a>), from the joint angles.</p>
+<p>The model is an open chain of <a class="xref auto" href="sec-toge-povezave.html#def-toga-povezava" data-knowl="def-toga-povezava">rigid links</a> with ideal joints of one degree of freedom (section <a class="xref" href="sec-robotske-verige.html">27.1</a>). We need no masses and no forces yet, only the geometry. We have two arms. Arm \(A\) is a planar arm with two revolute joints and links of lengths \(l_1 = 1\) m and \(l_2 = 0{,}5\) m, as for the double pendulum in example <a class="xref" href="sec-posplosene-koordinate.html#ex-pko-dvojno-nihalo" data-knowl="ex-pko-dvojno-nihalo">8.49</a>. Arm \(B\) is a spatial arm with three revolute joints, a base, a first link \(0{,}4\) m high, and two long links \(a_2 = 0{,}5\) m and \(a_3 = 0{,}4\) m. The dimensions of arm \(B\) are ours, SPONG has a similar one, the so-called elbow manipulator (komolčna roka), in example 4.9 (figure 4.5, PDF p. 148).</p>
+
+<h3 id="sec-okvir-na-vsakem-clenu"><span class="h-num">27.4.1</span> A frame on every link</h3>
+<p>Let us begin with arm \(A\) (figure <a class="xref" href="sec-dh-zapis.html#fig-dh-roka-a" data-knowl="fig-dh-roka-a">27.17</a>, left). The arm stands on a base, which is link \(0\) and does not move. The first link is joined to it by joint <span class="nobr">\(1\),</span> the second link to the first by joint <span class="nobr">\(2\).</span> Every link is rigid, so we can attach to it a <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">coordinate system</a> that moves with it, and we call it a <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">frame</a> (okvir). The frame of link \(i\) has origin \(o_{\mathrm{i}}\) and <a class="xref auto" href="sec-vektorji.html#def-enotski-vektorji-osi" data-knowl="def-enotski-vektorji-osi">unit vectors of the axes</a> <span class="nobr">\(x_{\mathrm{i}}\),</span> <span class="nobr">\(y_{\mathrm{i}}\),</span> <span class="nobr">\(z_{\mathrm{i}}\),</span> right-handed (definition <a class="xref" href="sec-simetrija-napetosti.html#def-desnosucni-sistem" data-knowl="def-desnosucni-sistem">2.29</a>), and it is rigidly attached to link <span class="nobr">\(i\).</span> Where on the link we place it is our choice: the origin need not be at the end of the link, and the frame may even lie outside the link if it moves with it (SPONG, PDF p. 101).</p>
+
+<figure class="blk slika" id="fig-dh-roka-a"><p><span class="svgfig" role="img" aria-label="Arm A with frames 0, 1 and 2 in two layouts"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='501.08pt' height='352.56pt' viewBox='-72.000004 -72.000005 371.173091 261.15478'>
+<defs>
+<path id='c27-04-roka-a-g0-113' d='M4.503113-4.293898C4.503113-4.333748 4.473225-4.393524 4.403487-4.393524C4.293898-4.393524 3.895392-3.995019 3.726027-3.706102C3.506849-4.244085 3.118306-4.403487 2.799502-4.403487C1.62391-4.403487 .398506-2.929016 .398506-1.484433C.398506-.508095 .986301 .109589 1.713574 .109589C2.141968 .109589 2.530511-.129514 2.889166-.488169C2.799502-.139477 2.470735 1.205479 2.440847 1.295143C2.361146 1.574097 2.281445 1.613948 1.723537 1.62391C1.594022 1.62391 1.494396 1.62391 1.494396 1.823163C1.494396 1.833126 1.494396 1.932752 1.62391 1.932752C1.942715 1.932752 2.291407 1.902864 2.620174 1.902864C2.958904 1.902864 3.317559 1.932752 3.646326 1.932752C3.696139 1.932752 3.825654 1.932752 3.825654 1.733499C3.825654 1.62391 3.726027 1.62391 3.566625 1.62391C3.088418 1.62391 3.088418 1.554172 3.088418 1.464508C3.088418 1.39477 3.108344 1.334994 3.128269 1.24533L4.503113-4.293898ZM1.743462-.109589C1.145704-.109589 1.105853-.876712 1.105853-1.046077C1.105853-1.524284 1.39477-2.610212 1.564134-3.028643C1.872976-3.765878 2.391034-4.184309 2.799502-4.184309C3.447073-4.184309 3.58655-3.377335 3.58655-3.307597C3.58655-3.247821 3.038605-1.066002 3.008717-1.026152C2.859278-.747198 2.30137-.109589 1.743462-.109589Z'/>
+<path id='c27-04-roka-a-g0-120' d='M3.327522-3.008717C3.387298-3.267746 3.616438-4.184309 4.313823-4.184309C4.363636-4.184309 4.60274-4.184309 4.811955-4.054795C4.533001-4.004981 4.333748-3.755915 4.333748-3.516812C4.333748-3.35741 4.443337-3.16812 4.712329-3.16812C4.931507-3.16812 5.250311-3.347447 5.250311-3.745953C5.250311-4.26401 4.662516-4.403487 4.323786-4.403487C3.745953-4.403487 3.39726-3.875467 3.277709-3.646326C3.028643-4.303861 2.49066-4.403487 2.201743-4.403487C1.165629-4.403487 .597758-3.118306 .597758-2.86924C.597758-2.769614 .697385-2.769614 .71731-2.769614C.797011-2.769614 .826899-2.789539 .846824-2.879203C1.185554-3.935243 1.843088-4.184309 2.181818-4.184309C2.371108-4.184309 2.719801-4.094645 2.719801-3.516812C2.719801-3.20797 2.550436-2.540473 2.181818-1.145704C2.022416-.52802 1.673724-.109589 1.235367-.109589C1.175592-.109589 .946451-.109589 .737235-.239103C.986301-.288917 1.205479-.498132 1.205479-.777086C1.205479-1.046077 .986301-1.125778 .836862-1.125778C.537983-1.125778 .288917-.86675 .288917-.547945C.288917-.089664 .787049 .109589 1.225405 .109589C1.882939 .109589 2.241594-.587796 2.271482-.647572C2.391034-.278954 2.749689 .109589 3.347447 .109589C4.373599 .109589 4.941469-1.175592 4.941469-1.424658C4.941469-1.524284 4.851806-1.524284 4.821918-1.524284C4.732254-1.524284 4.712329-1.484433 4.692403-1.414695C4.363636-.348692 3.686177-.109589 3.367372-.109589C2.978829-.109589 2.819427-.428394 2.819427-.767123C2.819427-.986301 2.879203-1.205479 2.988792-1.643836L3.327522-3.008717Z'/>
+<path id='c27-04-roka-a-g0-121' d='M4.841843-3.795766C4.881694-3.935243 4.881694-3.955168 4.881694-4.024907C4.881694-4.204234 4.742217-4.293898 4.592777-4.293898C4.493151-4.293898 4.333748-4.234122 4.244085-4.084682C4.224159-4.034869 4.144458-3.726027 4.104608-3.5467C4.034869-3.287671 3.965131-3.01868 3.905355-2.749689L3.457036-.956413C3.417186-.806974 2.988792-.109589 2.331258-.109589C1.823163-.109589 1.713574-.547945 1.713574-.916563C1.713574-1.374844 1.882939-1.992528 2.221669-2.86924C2.381071-3.277709 2.420922-3.387298 2.420922-3.58655C2.420922-4.034869 2.102117-4.403487 1.603985-4.403487C.657534-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.836862-3.88543 1.235367-4.184309 1.574097-4.184309C1.653798-4.184309 1.823163-4.184309 1.823163-3.865504C1.823163-3.616438 1.723537-3.35741 1.653798-3.16812C1.255293-2.11208 1.075965-1.544209 1.075965-1.075965C1.075965-.18929 1.703611 .109589 2.291407 .109589C2.67995 .109589 3.01868-.059776 3.297634-.33873C3.16812 .179328 3.048568 .667497 2.650062 1.195517C2.391034 1.534247 2.012453 1.823163 1.554172 1.823163C1.414695 1.823163 .966376 1.793275 .797011 1.404732C.956413 1.404732 1.085928 1.404732 1.225405 1.285181C1.325031 1.195517 1.424658 1.066002 1.424658 .876712C1.424658 .56787 1.155666 .52802 1.05604 .52802C.826899 .52802 .498132 .687422 .498132 1.175592C.498132 1.673724 .936488 2.042341 1.554172 2.042341C2.580324 2.042341 3.606476 1.135741 3.88543 .009963L4.841843-3.795766Z'/>
+<path id='c27-04-roka-a-g1-48' d='M3.598506-2.224658C3.598506-2.991781 3.507846-3.542715 3.187049-4.030884C2.970859-4.351681 2.538481-4.630635 1.980573-4.630635C.36264-4.630635 .36264-2.726775 .36264-2.224658S.36264 .139477 1.980573 .139477S3.598506-1.72254 3.598506-2.224658ZM1.980573-.055791C1.659776-.055791 1.234371-.244085 1.094894-.81594C.99726-1.227397 .99726-1.799253 .99726-2.315318C.99726-2.824408 .99726-3.354421 1.101868-3.737983C1.248319-4.288917 1.694645-4.435367 1.980573-4.435367C2.357161-4.435367 2.719801-4.20523 2.84533-3.800747C2.956912-3.424159 2.963885-2.922042 2.963885-2.315318C2.963885-1.799253 2.963885-1.283188 2.873225-.843836C2.733748-.209215 2.259527-.055791 1.980573-.055791Z'/>
+<path id='c27-04-roka-a-g1-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='c27-04-roka-a-g1-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+</defs>
+<g id='c27-04-roka-a-page1'>
+<g stroke-miterlimit='10' transform='translate(-55.556768,51.755517)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='clena'>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M2.84544 0C2.84544 1.5715 1.5715 2.84544 0 2.84544S-2.84544 1.5715-2.84544 0S-1.5715-2.84544 0-2.84544S2.84544-1.5715 2.84544 0ZM0 0' stroke='none'/>
+</g>
+<g stroke-width='1.6'>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M0 0L88.71555 51.21501' fill='none'/>
+</g>
+</g>
+<g stroke-width='1.6'>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M88.71555 51.21501V102.43004' fill='none'/>
+</g>
+</g>
+<g fill='#fff'>
+<path d='M2.84544 0C2.84544 1.5715 1.5715 2.84544 0 2.84544S-2.84544 1.5715-2.84544 0S-1.5715-2.84544 0-2.84544S2.84544-1.5715 2.84544 0ZM0 0'/>
+</g>
+<g fill='#fff'>
+<path d='M91.56099 51.21501C91.56099 52.78651 90.28705 54.06046 88.71555 54.06046C87.14404 54.06046 85.8701 52.78651 85.8701 51.21501S87.14404 48.36957 88.71555 48.36957C90.28705 48.36957 91.56099 49.64351 91.56099 51.21501ZM88.71555 51.21501'/>
+</g>
+<path d='M90.55417 102.43004C90.55417 103.44548 89.73099 104.26866 88.71555 104.26866C87.7001 104.26866 86.87692 103.44548 86.87692 102.43004S87.7001 100.59142 88.71555 100.59142C89.73099 100.59142 90.55417 101.4146 90.55417 102.43004ZM88.71555 102.43004' stroke='none'/>
+<g transform='translate(88.71555,102.43004)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.556768,51.755517)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='okvirji'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M0 0H17.11594' fill='none'/>
+<g transform='translate(14.51091,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(25.12253,-8.08852)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.556768,51.755517)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-55.556768' y='51.755517' xlink:href='#c27-04-roka-a-g0-120'/>
+<use x='-49.862836' y='53.249898' xlink:href='#c27-04-roka-a-g1-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M0 0V17.11594' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,14.51091)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-13.17192,27.06696)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.556768,51.755517)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-55.556768' y='51.755517' xlink:href='#c27-04-roka-a-g0-121'/>
+<use x='-50.672265' y='53.249898' xlink:href='#c27-04-roka-a-g1-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M88.71555 51.21501L103.52444 59.77184' fill='none'/>
+<g transform='matrix(0.86584,0.50027,-0.50027,0.86584,101.26889,58.46861)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(110.9644,53.79628)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.556768,51.755517)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-55.556768' y='51.755517' xlink:href='#c27-04-roka-a-g0-120'/>
+<use x='-49.862836' y='53.249898' xlink:href='#c27-04-roka-a-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M88.71555 51.21501L80.15634 66.05078' fill='none'/>
+<g transform='matrix(-0.49971,0.86617,-0.86617,-0.49971,81.4581,63.7944)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(64.87384,75.43652)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.556768,51.755517)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-55.556768' y='51.755517' xlink:href='#c27-04-roka-a-g0-121'/>
+<use x='-50.672265' y='53.249898' xlink:href='#c27-04-roka-a-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M88.71555 102.43004V119.54599' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,88.71555,116.94096)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(92.49852,115.68109)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.556768,51.755517)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-55.556768' y='51.755517' xlink:href='#c27-04-roka-a-g0-120'/>
+<use x='-49.862836' y='53.249898' xlink:href='#c27-04-roka-a-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M88.71555 102.43004H71.5996' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,74.20462,102.43004)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(54.20406,108.15744)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.556768,51.755517)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-55.556768' y='51.755517' xlink:href='#c27-04-roka-a-g0-121'/>
+<use x='-50.672265' y='53.249898' xlink:href='#c27-04-roka-a-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='koti'>
+<g fill='#f00' stroke='#f00'>
+<path d='M35.56592 0L35.53726 1.42271L35.45218 2.87366L35.30977 4.29639L35.11049 5.7191L34.85478 7.11317L34.54175 8.50725L34.17184 9.90175L33.74507 11.26717L33.26143 12.60437L32.72047 13.94199L32.12308 15.25053L31.49702 16.53085L30.8141 17.78296' fill='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(39.4843,10.5989)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.556768,51.755517)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-55.556768' y='51.755517' xlink:href='#c27-04-roka-a-g0-113'/>
+<use x='-51.109306' y='53.249898' xlink:href='#c27-04-roka-a-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M112.10387 64.72981L110.96552 66.57932L109.65698 68.31506L108.2056 69.93663L106.6409 71.44487L104.9338 72.81073L103.14119 74.0624L101.26347 75.14388L99.30022 76.08252L97.2801 76.85097L95.17445 77.44836L93.04059 77.9038L90.87807 78.15952L88.71555 78.24504' fill='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(102.73495,82.07202)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.556768,51.755517)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-55.556768' y='51.755517' xlink:href='#c27-04-roka-a-g0-113'/>
+<use x='-51.109306' y='53.249898' xlink:href='#c27-04-roka-a-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M88.71555 51.21501L115.80287 66.86412' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='clena2'>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M236.15785 0C236.15785 1.5715 234.88391 2.84544 233.31241 2.84544C231.7409 2.84544 230.46696 1.5715 230.46696 0S231.7409-2.84544 233.31241-2.84544C234.88391-2.84544 236.15785-1.5715 236.15785 0ZM233.31241 0' stroke='none'/>
+</g>
+<g stroke-width='1.6'>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M233.31241 0L284.52744-88.71555' fill='none'/>
+</g>
+</g>
+<g stroke-width='1.6'>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M284.52744-88.71555L328.88542-114.32327' fill='none'/>
+</g>
+</g>
+<g fill='#fff'>
+<path d='M236.15785 0C236.15785 1.5715 234.88391 2.84544 233.31241 2.84544C231.7409 2.84544 230.46696 1.5715 230.46696 0S231.7409-2.84544 233.31241-2.84544C234.88391-2.84544 236.15785-1.5715 236.15785 0ZM233.31241 0'/>
+</g>
+<g fill='#fff'>
+<path d='M287.37288-88.71555C287.37288-87.14404 286.09894-85.8701 284.52744-85.8701C282.95593-85.8701 281.68199-87.14404 281.68199-88.71555C281.68199-90.28705 282.95593-91.56099 284.52744-91.56099C286.09894-91.56099 287.37288-90.28705 287.37288-88.71555ZM284.52744-88.71555'/>
+</g>
+<path d='M330.72404-114.32327C330.72404-113.30783 329.90086-112.48465 328.88542-112.48465S327.0468-113.30783 327.0468-114.32327S327.86998-116.1619 328.88542-116.1619S330.72404-115.33871 330.72404-114.32327ZM328.88542-114.32327' stroke='none'/>
+<g transform='translate(328.88542,-114.32327)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.556768,51.755517)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='okvirji2'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M233.31241 0V-17.11594' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,233.31241,-14.51091)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(228.21172,-29.42807)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.556768,51.755517)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-55.556768' y='51.755517' xlink:href='#c27-04-roka-a-g0-120'/>
+<use x='-49.862836' y='53.249898' xlink:href='#c27-04-roka-a-g1-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M233.31241 0H250.42834' fill='none'/>
+<g transform='translate(247.82332,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(258.43494,-1.18056)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.556768,51.755517)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-55.556768' y='51.755517' xlink:href='#c27-04-roka-a-g0-121'/>
+<use x='-50.672265' y='53.249898' xlink:href='#c27-04-roka-a-g1-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M284.52744-88.71555L293.08424-103.52444' fill='none'/>
+<g transform='matrix(0.50027,-0.86584,0.86584,0.50027,291.78102,-101.26889)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(290.09651,-115.26994)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.556768,51.755517)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-55.556768' y='51.755517' xlink:href='#c27-04-roka-a-g0-120'/>
+<use x='-49.862836' y='53.249898' xlink:href='#c27-04-roka-a-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M284.52744-88.71555L299.36319-80.15634' fill='none'/>
+<g transform='matrix(0.86617,0.49971,-0.49971,0.86617,297.10681,-81.4581)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(306.8045,-79.22632)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.556768,51.755517)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-55.556768' y='51.755517' xlink:href='#c27-04-roka-a-g0-121'/>
+<use x='-50.672265' y='53.249898' xlink:href='#c27-04-roka-a-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M328.88542-114.32327L343.6939-122.88002' fill='none'/>
+<g transform='matrix(0.86584,-0.50029,0.50029,0.86584,341.43834,-121.57675)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(342.25018,-133.08156)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.556768,51.755517)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-55.556768' y='51.755517' xlink:href='#c27-04-roka-a-g0-120'/>
+<use x='-49.862836' y='53.249898' xlink:href='#c27-04-roka-a-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M328.88542-114.32327L337.44467-99.48712' fill='none'/>
+<g transform='matrix(0.4997,0.86618,-0.86618,0.4997,336.14296,-101.74355)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(343.33817,-97.00928)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.556768,51.755517)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-55.556768' y='51.755517' xlink:href='#c27-04-roka-a-g0-121'/>
+<use x='-50.672265' y='53.249898' xlink:href='#c27-04-roka-a-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='koti2'>
+<g fill='#f00' stroke='#f00'>
+<path d='M233.31241-35.56592L234.73512-35.53726L236.18607-35.45218L237.6088-35.30977L239.03152-35.11049L240.42558-34.85478L241.81966-34.54175L243.21416-34.17184L244.57957-33.74507L245.9172-33.26143L247.25441-32.72047L248.56294-32.12308L249.8437-31.49702L251.09537-30.8141' fill='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(240.61674,-45.13998)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.556768,51.755517)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-55.556768' y='51.755517' xlink:href='#c27-04-roka-a-g0-113'/>
+<use x='-51.109306' y='53.249898' xlink:href='#c27-04-roka-a-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M298.04265-112.10387L298.9813-111.56335L299.89172-110.96552L300.77393-110.31125L301.62747-109.65698L302.45279-108.9454L303.24947-108.2056L304.01749-107.43758L304.7573-106.6409L305.46843-105.81558L306.12314-104.9338L306.7774-104.0516L307.3748-103.14119L307.94398-102.23076' fill='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(306.20055,-116.04434)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.556768,51.755517)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-55.556768' y='51.755517' xlink:href='#c27-04-roka-a-g0-113'/>
+<use x='-51.109306' y='53.249898' xlink:href='#c27-04-roka-a-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M284.52744-88.71555L300.17653-115.80287' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 27.17</span>: Arm \(A\) at <span class="nobr">\(q_1 = 30^\circ\),</span> \(q_2 = 60^\circ\) with frames <span class="nobr">\(0\),</span> \(1\) and \(2\) (scale \(3{,}6\) cm per metre). Left: axis \(x_0\) horizontal, the angle \(q_1\) is the angle from axis \(x_0\) to axis <span class="nobr">\(x_1\),</span> the angle \(q_2\) from axis \(x_1\) to axis <span class="nobr">\(x_2\).</span> Right: the same arm in the layout of example <a class="xref" href="sec-posplosene-koordinate.html#ex-pko-dvojno-nihalo" data-knowl="ex-pko-dvojno-nihalo">8.49</a>, with axis \(x_0\) pointing down and axis \(y_0\) to the right, at \(q_1 = 30^\circ\) and <span class="nobr">\(q_2 = 30^\circ\).</span> The \(z\) axes point out of the page. Blue: frame axes, orange: joint angles, grey: links.</figcaption></figure>
+<p>Let us draw the arm as we see it at the blackboard. The <a data-del="clena" class="xref kaz" href="sec-dh-zapis.html#fig-dh-roka-a" data-knowl="fig-dh-roka-a">links and joints</a> are the base at the point <span class="nobr">\(o_0\),</span> the first link of length \(l_1\) up to joint <span class="nobr">\(2\),</span> and the second link of length \(l_2\) up to the tip. We place frame \(0\) on the base, this is the <span class="nobr"><a data-del="okvirji" class="xref kaz" href="sec-dh-zapis.html#fig-dh-roka-a" data-knowl="fig-dh-roka-a">frame at \(o_0\)</a>,</span> with axis \(x_0\) horizontal, axis \(y_0\) up and axis \(z_0\) out of the page, which is the axis of the first joint. Frame \(1\) is attached to the first link and placed in joint <span class="nobr">\(2\):</span> the origin \(o_1\) is at the end of the first link, axis \(x_1\) points along the link, axis \(z_1\) is again perpendicular to the page and is the axis of joint <span class="nobr">\(2\).</span> Frame \(2\) has its origin at the tip <span class="nobr">\(o_2\),</span> axis \(x_2\) along the second link. The <a data-del="koti" class="xref kaz" href="sec-dh-zapis.html#fig-dh-roka-a" data-knowl="fig-dh-roka-a">joint angles</a> are the angle \(q_1\) from axis \(x_0\) to axis \(x_1\) and the angle \(q_2\) from axis \(x_1\) to axis <span class="nobr">\(x_2\).</span> These are the <a class="xref auto" href="sec-robotske-verige.html#def-spremenljivke-zglobov" data-knowl="def-spremenljivke-zglobov">joint variables</a> (section <a class="xref" href="sec-robotske-verige.html">27.1</a>): for a revolute joint the variable is an angle, for a prismatic joint a displacement.</p>
+<p>How is frame \(1\) related to frame <span class="nobr">\(0\)?</span> We turn frame \(0\) about the axis \(z_0\) by the angle \(q_1\) to get the direction of axis <span class="nobr">\(x_1\),</span> then we shift it by \(l_1\) along the new axis <span class="nobr">\(x_1\).</span> Both motions are the basic <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> of sections <a class="xref" href="sec-orientacija-clenov.html">27.2</a> and <a class="xref" href="sec-homogene-transformacije.html">27.3</a>. A turn about the axis \(z\) by the angle \(\theta\) has by definition <a class="xref" href="sec-orientacija-clenov.html#def-osnovni-zasuki" data-knowl="def-osnovni-zasuki">27.10</a> the matrix \(\mat R_{\mathrm{z},\theta}\) whose columns are the axes of the turned frame, written in the old frame (definition <a class="xref" href="sec-orientacija-clenov.html#def-matrika-orientacije" data-knowl="def-matrika-orientacije">27.8</a>). If we write \(c_1 = \cos q_1\) and <span class="nobr">\(s_1 = \sin q_1\),</span> then <span class="nobr">\(\mat R_{\mathrm{z},\mathrm{q}_1} = \left[\begin{smallmatrix} c_1 &amp; -s_1 &amp; 0 \\ s_1 &amp; c_1 &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{smallmatrix}\right]\).</span> A shift by \(l_1\) along the axis \(x\) is the matrix with \(\mat R = \mat I\) and origin <span class="nobr">\((l_1, 0, 0)\).</span> By lemma <a class="xref" href="sec-homogene-transformacije.html#lem-homogena-sestavljanje" data-knowl="lem-homogena-sestavljanje">27.22</a> the matrices multiply. The turn is on the left in the product, because the shift is described in the already turned axes (lemma <a class="xref" href="sec-orientacija-clenov.html#lem-sestavljanje-orientacij" data-knowl="lem-sestavljanje-orientacij">27.12</a>):</p>
+<div class="eq" id="eq-dh-t01-roka-a">\[\mat T^{\ix{0}}_{\ix{1}} = \begin{bmatrix} c_1 &amp; -s_1 &amp; 0 &amp; 0 \\ s_1 &amp; c_1 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 1 \end{bmatrix} \begin{bmatrix} 1 &amp; 0 &amp; 0 &amp; l_1 \\ 0 &amp; 1 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 1 \end{bmatrix} = \begin{bmatrix} c_1 &amp; -s_1 &amp; 0 &amp; l_1 c_1 \\ s_1 &amp; c_1 &amp; 0 &amp; l_1 s_1 \\ 0 &amp; 0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 1 \end{bmatrix} . \tag{27.13}\]</div>
+<p>At \(q_1 = 30^\circ\) we have <span class="nobr">\(c_1 = 0{,}8660\),</span> \(s_1 = 0{,}5000\) and the origin \(o_1 = (0{,}8660,\ 0{,}5000,\ 0)\) m, which is the <a data-del="clena" class="xref kaz" href="sec-dh-zapis.html#fig-dh-roka-a" data-knowl="fig-dh-roka-a">end of the first link</a> in the figure. Frame \(2\) relative to frame \(1\) has the same form with \(q_2\) and \(l_2\) (this is the <span class="nobr"><a data-del="okvirji" class="xref kaz" href="sec-dh-zapis.html#fig-dh-roka-a" data-knowl="fig-dh-roka-a">frame at \(o_2\)</a>).</span></p>
+<p>Notation. The pose matrix of frame \(j\) relative to frame \(i\) is written <span class="nobr">\(\mat T^{\ix{i}}_{\ix{j}}\),</span> its rotation part \(\mat R^{\ix{i}}_{\ix{j}}\) and the origin \(\vek o^{\ix{i}}_{\ix{j}}\) (sections <a class="xref" href="sec-orientacija-clenov.html">27.2</a> and <a class="xref" href="sec-homogene-transformacije.html">27.3</a>). SPONG writes the same matrix that joins neighbouring frames as <span class="nobr">\(A_{\mathrm{i}}\).</span> We write <span class="nobr">\(\mat T^{\ix{i-1}}_{\ix{i}}\),</span> because \(\mat A_{\mathrm{k}}\) in chapter <a class="xref" href="ch-analiticna-dinamika.html">8</a> is the velocity matrix of the <a class="xref auto" href="sec-dalembert.html#def-masa-tezisce" data-knowl="def-masa-tezisce">centre of mass</a>, and the letter \(T\) also means kinetic energy. The matrix \(\mat T^{\ix{i-1}}_{\ix{i}}\) is a <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> of one variable \(q_{\mathrm{i}}\) only. Links \(i-1\) and \(i\) are rigid, so the pose of frame \(i\) relative to frame \(i-1\) changes only if the pose of link \(i\) relative to link \(i-1\) changes. Only joint \(i\) allows this, which is the only joint between them, and it has one degree of freedom.</p>
+
+<h3 id="sec-sest-stevil-ali-stiri"><span class="h-num">27.4.2</span> Six numbers or four</h3>
+<p>For arm \(A\) everything in \(\mat T^{\ix{0}}_{\ix{1}}\) except \(q_1\) and \(l_1\) is constant and simple. For a general pose of <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">frame</a> \(i\) relative to frame \(i-1\) there are six numbers: three for the <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">origin</a> and three for the turn, since by the example in section <a class="xref" href="sec-posplosene-koordinate.html#sec-lega-in-vezi">8.4.2</a> a free <a class="xref auto" href="sec-deformacija-v-tocki.html#def-togo-telo" data-knowl="def-togo-telo">rigid body</a> in space has six independent numbers. One of the six is the <a class="xref auto" href="sec-robotske-verige.html#def-spremenljivke-zglobov" data-knowl="def-spremenljivke-zglobov">joint variable</a>, five are constant. Because we place the frame on the link ourselves, we can use this choice. We want frames with two conditions that reduce the number of constant numbers by two, so that three remain.</p>
+<p>The conditions are geometric and we state them with lines. The axis \(z_{\mathrm{i}-1}\) is the line through \(o_{\mathrm{i}-1}\) in the direction <span class="nobr">\(z_{\mathrm{i}-1}\).</span></p>
+<ol>
+<li>(DH1) The axis \(x_{\mathrm{i}}\) is perpendicular to the axis <span class="nobr">\(z_{\mathrm{i}-1}\).</span></li>
+<li>(DH2) The line through \(o_{\mathrm{i}}\) in the direction \(x_{\mathrm{i}}\) meets the axis <span class="nobr">\(z_{\mathrm{i}-1}\).</span></li>
+</ol>
+<p>What they mean we see if we build frame \(i\) from frame \(i-1\) again by motions, as for arm <span class="nobr">\(A\),</span> except that now there are four (figure <a class="xref" href="sec-dh-zapis.html#fig-dh-parametri" data-knowl="fig-dh-parametri">27.18</a>). We begin with <a data-del="okvir" class="xref kaz" href="sec-dh-zapis.html#fig-dh-parametri" data-knowl="fig-dh-parametri">frame \(i-1\)</a> with axes <span class="nobr">\(x_{\mathrm{i}-1}\),</span> \(y_{\mathrm{i}-1}\) and <span class="nobr">\(z_{\mathrm{i}-1}\).</span> The first motion is a turn about the axis \(z_{\mathrm{i}-1}\) by the angle <span class="nobr">\(\theta_{\mathrm{i}}\),</span> which turns \(x_{\mathrm{i}-1}\) into the direction of axis <span class="nobr">\(x_{\mathrm{i}}\).</span> The turn does not move the axis <span class="nobr">\(z_{\mathrm{i}-1}\),</span> so we <a data-del="theta" class="xref kaz" href="sec-dh-zapis.html#fig-dh-parametri" data-knowl="fig-dh-parametri">draw the angle at the height \(d_{\mathrm{i}}\)</a>, where we will need it: a dashed copy of the axis \(x_{\mathrm{i}-1}\) and an arc to the direction <span class="nobr">\(x_{\mathrm{i}}\).</span> The second motion is a shift along the axis \(z_{\mathrm{i}-1}\) by the <span class="nobr"><a data-del="d" class="xref kaz" href="sec-dh-zapis.html#fig-dh-parametri" data-knowl="fig-dh-parametri">distance \(d_{\mathrm{i}}\)</a>,</span> after which we are at a point \(P\) on the axis. The direction of the axis \(x_{\mathrm{i}}\) is now perpendicular to the axis <span class="nobr">\(z_{\mathrm{i}-1}\),</span> because we turned about it. The <a data-del="normala" class="xref kaz" href="sec-dh-zapis.html#fig-dh-parametri" data-knowl="fig-dh-parametri">line through \(P\) in the direction \(x_{\mathrm{i}}\)</a> therefore meets the axis \(z_{\mathrm{i}-1}\) and is perpendicular to it: these are DH2 and DH1. The third motion is a shift along this line by the <span class="nobr"><a data-del="a" class="xref kaz" href="sec-dh-zapis.html#fig-dh-parametri" data-knowl="fig-dh-parametri">distance \(a_{\mathrm{i}}\)</a>,</span> after which we are at the origin <span class="nobr">\(o_{\mathrm{i}}\).</span> The fourth is a turn about the axis \(x_{\mathrm{i}}\) by the angle <span class="nobr">\(\alpha_{\mathrm{i}}\),</span> which turns the <a data-del="alpha" class="xref kaz" href="sec-dh-zapis.html#fig-dh-parametri" data-knowl="fig-dh-parametri">vertical copy of the axis \(z_{\mathrm{i}-1}\)</a> into the <span class="nobr"><a data-del="zi" class="xref kaz" href="sec-dh-zapis.html#fig-dh-parametri" data-knowl="fig-dh-parametri">axis \(z_{\mathrm{i}}\)</a>.</span> The axis \(y_{\mathrm{i}}\) is determined by <a class="xref auto" href="sec-simetrija-napetosti.html#def-desnosucni-sistem" data-knowl="def-desnosucni-sistem">right-handedness</a> and so we do not draw it.</p>
+
+<figure class="blk slika" id="fig-dh-parametri"><p><span class="svgfig" role="img" aria-label="Denavit-Hartenberg parameters between frames i-1 and i"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='206.75pt' height='269.84pt' viewBox='-72.000004 -72.000006 153.147925 199.879193'>
+<defs>
+<path id='c27-04-dh-parametri-g0-0' d='M5.188543-1.57609C5.300125-1.57609 5.467497-1.57609 5.467497-1.743462C5.467497-1.917808 5.307098-1.917808 5.188543-1.917808H1.03213C.920548-1.917808 .753176-1.917808 .753176-1.750436C.753176-1.57609 .913574-1.57609 1.03213-1.57609H5.188543Z'/>
+<path id='c27-04-dh-parametri-g1-11' d='M4.752179-2.351183C4.752179-3.915318 3.825654-4.403487 3.088418-4.403487C1.723537-4.403487 .408468-2.978829 .408468-1.574097C.408468-.647572 1.006227 .109589 2.022416 .109589C2.650062 .109589 3.367372-.119552 4.124533-.727273C4.254047-.199253 4.582814 .109589 5.031133 .109589C5.559153 .109589 5.867995-.438356 5.867995-.597758C5.867995-.667497 5.808219-.697385 5.748443-.697385C5.678705-.697385 5.648817-.667497 5.618929-.597758C5.439601-.109589 5.080946-.109589 5.061021-.109589C4.752179-.109589 4.752179-.886675 4.752179-1.125778C4.752179-1.334994 4.752179-1.354919 4.851806-1.474471C5.788294-2.650062 5.997509-3.805729 5.997509-3.815691C5.997509-3.835616 5.987547-3.915318 5.877958-3.915318C5.778331-3.915318 5.778331-3.88543 5.728518-3.706102C5.549191-3.078456 5.220423-2.321295 4.752179-1.733499V-2.351183ZM4.084682-.986301C3.20797-.219178 2.440847-.109589 2.042341-.109589C1.444583-.109589 1.145704-.557908 1.145704-1.195517C1.145704-1.683686 1.404732-2.759651 1.723537-3.267746C2.191781-3.995019 2.729763-4.184309 3.078456-4.184309C4.064757-4.184309 4.064757-2.879203 4.064757-2.102117C4.064757-1.733499 4.064757-1.155666 4.084682-.986301Z'/>
+<path id='c27-04-dh-parametri-g1-18' d='M4.533001-4.98132C4.533001-5.638854 4.353674-7.023661 3.337484-7.023661C1.952677-7.023661 .418431-4.214197 .418431-1.932752C.418431-.996264 .707347 .109589 1.613948 .109589C3.01868 .109589 4.533001-2.749689 4.533001-4.98132ZM1.474471-3.616438C1.643836-4.254047 1.843088-5.051059 2.241594-5.758406C2.510585-6.246575 2.879203-6.804483 3.327522-6.804483C3.815691-6.804483 3.875467-6.166874 3.875467-5.599004C3.875467-5.110834 3.795766-4.60274 3.556663-3.616438H1.474471ZM3.466999-3.297634C3.35741-2.839352 3.148194-1.992528 2.769614-1.275218C2.420922-.597758 2.042341-.109589 1.613948-.109589C1.285181-.109589 1.075965-.398506 1.075965-1.325031C1.075965-1.743462 1.135741-2.321295 1.39477-3.297634H3.466999Z'/>
+<path id='c27-04-dh-parametri-g1-97' d='M3.716065-3.765878C3.536737-4.134496 3.247821-4.403487 2.799502-4.403487C1.633873-4.403487 .398506-2.938979 .398506-1.484433C.398506-.547945 .946451 .109589 1.723537 .109589C1.92279 .109589 2.420922 .069738 3.01868-.637609C3.098381-.219178 3.447073 .109589 3.92528 .109589C4.273973 .109589 4.503113-.119552 4.662516-.438356C4.83188-.797011 4.961395-1.404732 4.961395-1.424658C4.961395-1.524284 4.871731-1.524284 4.841843-1.524284C4.742217-1.524284 4.732254-1.484433 4.702366-1.344956C4.533001-.697385 4.353674-.109589 3.945205-.109589C3.676214-.109589 3.646326-.368618 3.646326-.56787C3.646326-.787049 3.666252-.86675 3.775841-1.305106C3.88543-1.723537 3.905355-1.823163 3.995019-2.201743L4.353674-3.596513C4.423412-3.875467 4.423412-3.895392 4.423412-3.935243C4.423412-4.104608 4.303861-4.204234 4.134496-4.204234C3.895392-4.204234 3.745953-3.985056 3.716065-3.765878ZM3.068493-1.185554C3.01868-1.006227 3.01868-.986301 2.86924-.816936C2.430884-.268991 2.022416-.109589 1.743462-.109589C1.24533-.109589 1.105853-.657534 1.105853-1.046077C1.105853-1.544209 1.424658-2.769614 1.653798-3.227895C1.96264-3.815691 2.410959-4.184309 2.809465-4.184309C3.457036-4.184309 3.596513-3.367372 3.596513-3.307597S3.576588-3.188045 3.566625-3.138232L3.068493-1.185554Z'/>
+<path id='c27-04-dh-parametri-g1-100' d='M5.140722-6.804483C5.140722-6.814446 5.140722-6.914072 5.011208-6.914072C4.861768-6.914072 3.915318-6.824408 3.745953-6.804483C3.666252-6.794521 3.606476-6.744707 3.606476-6.615193C3.606476-6.495641 3.696139-6.495641 3.845579-6.495641C4.323786-6.495641 4.343711-6.425903 4.343711-6.326276L4.313823-6.127024L3.716065-3.765878C3.536737-4.134496 3.247821-4.403487 2.799502-4.403487C1.633873-4.403487 .398506-2.938979 .398506-1.484433C.398506-.547945 .946451 .109589 1.723537 .109589C1.92279 .109589 2.420922 .069738 3.01868-.637609C3.098381-.219178 3.447073 .109589 3.92528 .109589C4.273973 .109589 4.503113-.119552 4.662516-.438356C4.83188-.797011 4.961395-1.404732 4.961395-1.424658C4.961395-1.524284 4.871731-1.524284 4.841843-1.524284C4.742217-1.524284 4.732254-1.484433 4.702366-1.344956C4.533001-.697385 4.353674-.109589 3.945205-.109589C3.676214-.109589 3.646326-.368618 3.646326-.56787C3.646326-.806974 3.666252-.876712 3.706102-1.046077L5.140722-6.804483ZM3.068493-1.185554C3.01868-1.006227 3.01868-.986301 2.86924-.816936C2.430884-.268991 2.022416-.109589 1.743462-.109589C1.24533-.109589 1.105853-.657534 1.105853-1.046077C1.105853-1.544209 1.424658-2.769614 1.653798-3.227895C1.96264-3.815691 2.410959-4.184309 2.809465-4.184309C3.457036-4.184309 3.596513-3.367372 3.596513-3.307597S3.576588-3.188045 3.566625-3.138232L3.068493-1.185554Z'/>
+<path id='c27-04-dh-parametri-g1-111' d='M4.672478-2.719801C4.672478-3.755915 3.975093-4.403487 3.078456-4.403487C1.743462-4.403487 .408468-2.988792 .408468-1.574097C.408468-.587796 1.075965 .109589 2.002491 .109589C3.327522 .109589 4.672478-1.265255 4.672478-2.719801ZM2.012453-.109589C1.58406-.109589 1.145704-.418431 1.145704-1.195517C1.145704-1.683686 1.404732-2.759651 1.723537-3.267746C2.221669-4.034869 2.789539-4.184309 3.068493-4.184309C3.646326-4.184309 3.945205-3.706102 3.945205-3.108344C3.945205-2.719801 3.745953-1.673724 3.367372-1.026152C3.01868-.448319 2.470735-.109589 2.012453-.109589Z'/>
+<path id='c27-04-dh-parametri-g1-120' d='M3.327522-3.008717C3.387298-3.267746 3.616438-4.184309 4.313823-4.184309C4.363636-4.184309 4.60274-4.184309 4.811955-4.054795C4.533001-4.004981 4.333748-3.755915 4.333748-3.516812C4.333748-3.35741 4.443337-3.16812 4.712329-3.16812C4.931507-3.16812 5.250311-3.347447 5.250311-3.745953C5.250311-4.26401 4.662516-4.403487 4.323786-4.403487C3.745953-4.403487 3.39726-3.875467 3.277709-3.646326C3.028643-4.303861 2.49066-4.403487 2.201743-4.403487C1.165629-4.403487 .597758-3.118306 .597758-2.86924C.597758-2.769614 .697385-2.769614 .71731-2.769614C.797011-2.769614 .826899-2.789539 .846824-2.879203C1.185554-3.935243 1.843088-4.184309 2.181818-4.184309C2.371108-4.184309 2.719801-4.094645 2.719801-3.516812C2.719801-3.20797 2.550436-2.540473 2.181818-1.145704C2.022416-.52802 1.673724-.109589 1.235367-.109589C1.175592-.109589 .946451-.109589 .737235-.239103C.986301-.288917 1.205479-.498132 1.205479-.777086C1.205479-1.046077 .986301-1.125778 .836862-1.125778C.537983-1.125778 .288917-.86675 .288917-.547945C.288917-.089664 .787049 .109589 1.225405 .109589C1.882939 .109589 2.241594-.587796 2.271482-.647572C2.391034-.278954 2.749689 .109589 3.347447 .109589C4.373599 .109589 4.941469-1.175592 4.941469-1.424658C4.941469-1.524284 4.851806-1.524284 4.821918-1.524284C4.732254-1.524284 4.712329-1.484433 4.692403-1.414695C4.363636-.348692 3.686177-.109589 3.367372-.109589C2.978829-.109589 2.819427-.428394 2.819427-.767123C2.819427-.986301 2.879203-1.205479 2.988792-1.643836L3.327522-3.008717Z'/>
+<path id='c27-04-dh-parametri-g1-121' d='M4.841843-3.795766C4.881694-3.935243 4.881694-3.955168 4.881694-4.024907C4.881694-4.204234 4.742217-4.293898 4.592777-4.293898C4.493151-4.293898 4.333748-4.234122 4.244085-4.084682C4.224159-4.034869 4.144458-3.726027 4.104608-3.5467C4.034869-3.287671 3.965131-3.01868 3.905355-2.749689L3.457036-.956413C3.417186-.806974 2.988792-.109589 2.331258-.109589C1.823163-.109589 1.713574-.547945 1.713574-.916563C1.713574-1.374844 1.882939-1.992528 2.221669-2.86924C2.381071-3.277709 2.420922-3.387298 2.420922-3.58655C2.420922-4.034869 2.102117-4.403487 1.603985-4.403487C.657534-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.836862-3.88543 1.235367-4.184309 1.574097-4.184309C1.653798-4.184309 1.823163-4.184309 1.823163-3.865504C1.823163-3.616438 1.723537-3.35741 1.653798-3.16812C1.255293-2.11208 1.075965-1.544209 1.075965-1.075965C1.075965-.18929 1.703611 .109589 2.291407 .109589C2.67995 .109589 3.01868-.059776 3.297634-.33873C3.16812 .179328 3.048568 .667497 2.650062 1.195517C2.391034 1.534247 2.012453 1.823163 1.554172 1.823163C1.414695 1.823163 .966376 1.793275 .797011 1.404732C.956413 1.404732 1.085928 1.404732 1.225405 1.285181C1.325031 1.195517 1.424658 1.066002 1.424658 .876712C1.424658 .56787 1.155666 .52802 1.05604 .52802C.826899 .52802 .498132 .687422 .498132 1.175592C.498132 1.673724 .936488 2.042341 1.554172 2.042341C2.580324 2.042341 3.606476 1.135741 3.88543 .009963L4.841843-3.795766Z'/>
+<path id='c27-04-dh-parametri-g1-122' d='M1.325031-.826899C1.863014-1.404732 2.15193-1.653798 2.510585-1.96264C2.510585-1.972603 3.128269-2.500623 3.486924-2.859278C4.433375-3.785803 4.652553-4.26401 4.652553-4.303861C4.652553-4.403487 4.562889-4.403487 4.542964-4.403487C4.473225-4.403487 4.443337-4.383562 4.393524-4.293898C4.094645-3.815691 3.88543-3.656289 3.646326-3.656289S3.287671-3.805729 3.138232-3.975093C2.948941-4.204234 2.779577-4.403487 2.450809-4.403487C1.703611-4.403487 1.24533-3.476961 1.24533-3.267746C1.24533-3.217933 1.275218-3.158157 1.364882-3.158157S1.474471-3.20797 1.494396-3.267746C1.683686-3.726027 2.261519-3.73599 2.34122-3.73599C2.550436-3.73599 2.739726-3.666252 2.968867-3.58655C3.367372-3.437111 3.476961-3.437111 3.73599-3.437111C3.377335-3.008717 2.540473-2.291407 2.351183-2.132005L1.454545-1.295143C.777086-.627646 .428394-.059776 .428394 .009963C.428394 .109589 .52802 .109589 .547945 .109589C.627646 .109589 .647572 .089664 .707347-.019925C.936488-.368618 1.235367-.637609 1.554172-.637609C1.783313-.637609 1.882939-.547945 2.132005-.259029C2.30137-.049813 2.480697 .109589 2.769614 .109589C3.755915 .109589 4.333748-1.155666 4.333748-1.424658C4.333748-1.474471 4.293898-1.524284 4.214197-1.524284C4.124533-1.524284 4.104608-1.464508 4.07472-1.39477C3.845579-.747198 3.20797-.557908 2.879203-.557908C2.67995-.557908 2.500623-.617684 2.291407-.687422C1.952677-.816936 1.803238-.856787 1.594022-.856787C1.574097-.856787 1.414695-.856787 1.325031-.826899Z'/>
+<path id='c27-04-dh-parametri-g2-105' d='M2.259527-4.358655C2.259527-4.470237 2.175841-4.623661 1.980573-4.623661C1.792279-4.623661 1.590037-4.442341 1.590037-4.2401C1.590037-4.121544 1.680697-3.975093 1.868991-3.975093C2.071233-3.975093 2.259527-4.170361 2.259527-4.358655ZM.836862-.81594C.808966-.72528 .774097-.641594 .774097-.523039C.774097-.195268 1.053051 .069738 1.436613 .069738C2.133998 .069738 2.440847-.892653 2.440847-.99726C2.440847-1.08792 2.350187-1.08792 2.329265-1.08792C2.231631-1.08792 2.224658-1.046077 2.196762-.969365C2.036364-.411457 1.729514-.125529 1.457534-.125529C1.318057-.125529 1.283188-.216189 1.283188-.369614C1.283188-.530012 1.332005-.662516 1.39477-.81594C1.464508-1.004234 1.54122-1.192528 1.617933-1.373848C1.680697-1.54122 1.931756-2.175841 1.959651-2.259527C1.980573-2.329265 2.001494-2.412951 2.001494-2.48269C2.001494-2.810461 1.72254-3.075467 1.338979-3.075467C.648568-3.075467 .327771-2.127024 .327771-2.008468C.327771-1.917808 .425405-1.917808 .446326-1.917808C.54396-1.917808 .550934-1.952677 .571856-2.02939C.753176-2.629141 1.060025-2.880199 1.318057-2.880199C1.429639-2.880199 1.492403-2.824408 1.492403-2.636115C1.492403-2.475716 1.45056-2.371108 1.276214-1.93873L.836862-.81594Z'/>
+<path id='c27-04-dh-parametri-g3-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+</defs>
+<g id='c27-04-dh-parametri-page1'>
+<g stroke-miterlimit='10' transform='translate(-13.253188,91.50605)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='okvir'>
+<path d='M0 0L-29.15509-20.40895' fill='none'/>
+<g transform='matrix(-0.81921,-0.57346,0.57346,-0.81921,-27.12634,-18.9888)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-55.63414,-30.84325)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-13.253188,91.50605)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-13.253188' y='91.50605' xlink:href='#c27-04-dh-parametri-g1-120'/>
+<use x='-7.559255' y='93.000431' xlink:href='#c27-04-dh-parametri-g2-105'/>
+<use x='-4.740529' y='93.000431' xlink:href='#c27-04-dh-parametri-g0-0'/>
+<use x='1.486151' y='93.000431' xlink:href='#c27-04-dh-parametri-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 0H61.08876' fill='none'/>
+<g transform='translate(58.6123,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(69.07393,-0.98611)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-13.253188,91.50605)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-13.253188' y='91.50605' xlink:href='#c27-04-dh-parametri-g1-121'/>
+<use x='-8.368684' y='93.000431' xlink:href='#c27-04-dh-parametri-g2-105'/>
+<use x='-5.549957' y='93.000431' xlink:href='#c27-04-dh-parametri-g0-0'/>
+<use x='.676723' y='93.000431' xlink:href='#c27-04-dh-parametri-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 0V146.1622' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,143.68575)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-9.10796,156.48068)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-13.253188,91.50605)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-13.253188' y='91.50605' xlink:href='#c27-04-dh-parametri-g1-122'/>
+<use x='-8.620064' y='93.000431' xlink:href='#c27-04-dh-parametri-g2-105'/>
+<use x='-5.801337' y='93.000431' xlink:href='#c27-04-dh-parametri-g0-0'/>
+<use x='.425342' y='93.000431' xlink:href='#c27-04-dh-parametri-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M1.83862 0C1.83862 1.01544 1.01544 1.83862 0 1.83862S-1.83862 1.01544-1.83862 0S-1.01544-1.83862 0-1.83862S1.83862-1.01544 1.83862 0ZM0 0' stroke='none'/>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-13.253188,91.50605)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+<g transform='translate(-22.04564,-7.93852)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-13.253188,91.50605)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-13.253188' y='91.50605' xlink:href='#c27-04-dh-parametri-g1-111'/>
+<use x='-8.424066' y='93.000431' xlink:href='#c27-04-dh-parametri-g2-105'/>
+<use x='-5.605339' y='93.000431' xlink:href='#c27-04-dh-parametri-g0-0'/>
+<use x='.621341' y='93.000431' xlink:href='#c27-04-dh-parametri-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='theta'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 71.98495L-32.72046 49.08022' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M-16.36023 60.53258L-13.69336 60.56702L-10.91214 60.68147L-8.06552 60.86479L-5.1535 61.1166L-2.22502 61.4488L.73618 61.84969L3.64821 62.3077L6.59317 62.83456L9.43979 63.40721L12.25371 64.04854L15.01843 64.74702L17.63638 65.48009L20.15573 66.25877' fill='none'/>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(-0.8377,54.8786)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-13.253188,91.50605)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-13.253188' y='91.50605' xlink:href='#c27-04-dh-parametri-g1-18'/>
+<use x='-8.576283' y='93.000431' xlink:href='#c27-04-dh-parametri-g2-105'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='normala'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M-10.07787 74.84804L60.4677 54.80641' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M60.4677 54.80641L74.53218 50.80777' fill='none'/>
+<g transform='matrix(0.96184,-0.27344,0.27344,0.96184,72.02657,51.52008)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(82.37758,41.56436)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-13.253188,91.50605)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-13.253188' y='91.50605' xlink:href='#c27-04-dh-parametri-g1-120'/>
+<use x='-7.559255' y='93.000431' xlink:href='#c27-04-dh-parametri-g2-105'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M1.83862 71.98495C1.83862 73.0004 1.01544 73.82358 0 73.82358S-1.83862 73.0004-1.83862 71.98495C-1.83862 70.96951-1.01544 70.14633 0 70.14633S1.83862 70.96951 1.83862 71.98495ZM0 71.98495' stroke='none'/>
+</g>
+<g transform='translate(0.0,71.98495)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-13.253188,91.50605)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='d'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-29.44821 .33748V71.64748' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,-29.44821,6.14052)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,-29.44821,0.22499)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,-29.44821,65.84444)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,-29.44821,71.75996)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g transform='translate(-41.61534,33.2705)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-13.253188,91.50605)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-13.253188' y='91.50605' xlink:href='#c27-04-dh-parametri-g1-100'/>
+<use x='-8.067755' y='93.000431' xlink:href='#c27-04-dh-parametri-g2-105'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 0H-29.44821' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 71.98495H-29.44821' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='a'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M17.10997 77.34404L76.92844 60.34993' fill='none'/>
+<g transform='matrix(-0.9619,0.27325,-0.27325,-0.9619,22.69191,75.75833)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-0.9619,0.27325,-0.27325,-0.9619,17.00179,77.37477)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.9619,-0.27325,0.27325,0.9619,71.3465,61.93564)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.9619,-0.27325,0.27325,0.9619,77.03662,60.3192)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 71.98495L16.78535 77.43625' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M60.4677 54.80641L77.25305 60.25772' fill='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(35.44766,76.04144)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-13.253188,91.50605)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-13.253188' y='91.50605' xlink:href='#c27-04-dh-parametri-g1-97'/>
+<use x='-7.987034' y='93.000431' xlink:href='#c27-04-dh-parametri-g2-105'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='zi'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M73.4084 36.8252L27.33412 100.86752' fill='none'/>
+<g transform='matrix(-0.58397,0.81172,-0.81172,-0.58397,28.85538,98.75296)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(20.87778,109.57886)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-13.253188,91.50605)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-13.253188' y='91.50605' xlink:href='#c27-04-dh-parametri-g1-122'/>
+<use x='-8.620064' y='93.000431' xlink:href='#c27-04-dh-parametri-g2-105'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M62.30632 54.80641C62.30632 55.82185 61.48314 56.64503 60.4677 56.64503S58.62907 55.82185 58.62907 54.80641S59.45226 52.96779 60.4677 52.96779S62.30632 53.79097 62.30632 54.80641ZM60.4677 54.80641' stroke='none'/>
+</g>
+<g transform='translate(60.4677,54.80641)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-13.253188,91.50605)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(48.6582,46.86789)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-13.253188,91.50605)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-13.253188' y='91.50605' xlink:href='#c27-04-dh-parametri-g1-111'/>
+<use x='-8.424066' y='93.000431' xlink:href='#c27-04-dh-parametri-g2-105'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='alpha'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M60.4677 44.99016V133.33585' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M60.4677 103.88712L58.50404 103.21335L56.55737 102.41978L54.59396 101.58206L52.64731 100.62474L50.70064 99.60251L48.80264 98.46033L46.90515 97.2857L45.02338 95.99162L43.19104 94.64366L41.40762 93.24136L39.64093 91.75252L37.89023 90.17737L36.22165 88.54768' fill='none'/>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(38.76976,110.8624)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-13.253188,91.50605)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-13.253188' y='91.50605' xlink:href='#c27-04-dh-parametri-g1-11'/>
+<use x='-6.880068' y='93.000431' xlink:href='#c27-04-dh-parametri-g2-105'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 27.18</span>: The four motions that turn frame \(i-1\) into frame <span class="nobr">\(i\),</span> at <span class="nobr">\(\theta_{\mathrm{i}} = 60^\circ\),</span> <span class="nobr">\(\alpha_{\mathrm{i}} = 32^\circ\),</span> \(d_{\mathrm{i}} = 2{,}2\) and \(a_{\mathrm{i}} = 3{,}0\) (arbitrary units, oblique view, axis \(x_{\mathrm{i}-1}\) points towards the reader). <span class="ink-l">Black</span><span class="ink-d">White</span>: frame <span class="nobr">\(i-1\),</span> blue: the line of axis \(x_{\mathrm{i}}\) and the axis <span class="nobr">\(z_{\mathrm{i}}\),</span> grey: auxiliary dashed copies of axes and angles, the distances \(d_{\mathrm{i}}\) and \(a_{\mathrm{i}}\) are measured between the plane and the lines. The axis \(y_{\mathrm{i}}\) is not drawn.</figcaption></figure>
+<div class="zgodovina"><p class="zgodovina-label">From history</p><p>How should every engineer describe the same arm of a robot with the same numbers? Since the frame of a link is a free choice, everybody would choose a different one and the numbers could not be compared. SPONG (PDF p. 101) says that a convention for choosing frames gives a &quot;universal language&quot; in which engineers communicate. Such a convention was described by J. Denavit and R. S. Hartenberg in the paper &quot;A kinematic notation for lower pair mechanisms&quot; in the journal Applied Mechanics 22, pages 215 to 221, in 1955 (SPONG, PDF p. 121 and 585). The four numbers of this section are their notation, and the chapter stands on it, which is why we name them.</p>
+</div>
+<p>For the four motions that we have just drawn we now have a name and a <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a>.</p>
+
+<div class="blk definicija" id="def-dh-parametri"><div class="blk-head"><span class="blk-label">Definition 27.27</span> <span class="blk-title">Denavit-Hartenberg parameters (parametri Denavita in Hartenberga)</span></div><div class="blk-body"><p>Let <span class="nobr">\(\theta\),</span> <span class="nobr">\(d\),</span> <span class="nobr">\(a\),</span> \(\alpha\) be real numbers, the angles in radians. The Denavit-Hartenberg matrix (matrika Denavita in Hartenberga) is the \(4 \times 4\) matrix</p>
+<div class="eq" id="eq-dh-produkt">\[\mat T_{\mathrm{DH}}(\theta, d, a, \alpha) = \mat R_{\mathrm{z},\theta}\ \mat P_{\mathrm{z},\mathrm{d}}\ \mat P_{\mathrm{x},\mathrm{a}}\ \mat R_{\mathrm{x},\alpha} , \tag{27.14}\]</div>
+<p>where \(\mat R_{\mathrm{z},\theta}\) is a turn about the axis \(z\) and \(\mat R_{\mathrm{x},\alpha}\) a turn about the axis <span class="nobr">\(x\),</span> both by definition <a class="xref" href="sec-orientacija-clenov.html#def-osnovni-zasuki" data-knowl="def-osnovni-zasuki">27.10</a> and written as homogeneous <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> with zero <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">origin</a>, and \(\mat P_{\mathrm{z},\mathrm{d}}\) is a shift along the axis <span class="nobr">\(z\),</span></p>
+<div class="eq">\[\mat P_{\mathrm{z},\mathrm{d}} = \begin{bmatrix} \mat I &amp; d\,\vek e_{\mathrm{z}} \\ \vek 0^\T &amp; 1 \end{bmatrix} , \qquad \mat P_{\mathrm{x},\mathrm{a}} = \begin{bmatrix} \mat I &amp; a\,\vek e_{\mathrm{x}} \\ \vek 0^\T &amp; 1 \end{bmatrix} ,\]</div>
+<p>and \(\mat P_{\mathrm{x},\mathrm{a}}\) a shift along the axis <span class="nobr">\(x\).</span> If <span class="nobr">\(\mat T^{\ix{i-1}}_{\ix{i}} = \mat T_{\mathrm{DH}}(\theta_{\mathrm{i}}, d_{\mathrm{i}}, a_{\mathrm{i}}, \alpha_{\mathrm{i}})\),</span> then <span class="nobr">\(a_{\mathrm{i}}\),</span> <span class="nobr">\(\alpha_{\mathrm{i}}\),</span> <span class="nobr">\(d_{\mathrm{i}}\),</span> \(\theta_{\mathrm{i}}\) are the DH parameters (parametri Denavita in Hartenberga) of link <span class="nobr">\(i\).</span> We call them the link length \(a_{\mathrm{i}}\) (dolžina člena), the link twist \(\alpha_{\mathrm{i}}\) (zasuk člena), the link offset \(d_{\mathrm{i}}\) (odmik člena) and the joint angle \(\theta_{\mathrm{i}}\) (kot sklepa). For a revolute joint \(i\) the <a class="xref auto" href="sec-robotske-verige.html#def-spremenljivke-zglobov" data-knowl="def-spremenljivke-zglobov">joint variable</a> is <span class="nobr">\(q_{\mathrm{i}} = \theta_{\mathrm{i}}\),</span> for a prismatic one <span class="nobr">\(q_{\mathrm{i}} = d_{\mathrm{i}}\),</span> and the other three parameters are constant. We put the zero of the variable where the corresponding parameter is zero, otherwise we add a constant number to the parameter.</p>
+
+<p class="vir"><span class="vir-label">Source:</span> SPONG (3.10) (PDF p. 101), the names of the parameters there and in SHABANA §2.9 (PDF p. 89-90). The meaning of the names is ours (see the text).</p></div></div>
+<p>Why these names? The link length \(a_{\mathrm{i}}\) is the distance between the axes \(z_{\mathrm{i}-1}\) and \(z_{\mathrm{i}}\) (this is proved by point 3 of theorem <a class="xref" href="sec-dh-zapis.html#thm-dh-obstoj" data-knowl="thm-dh-obstoj">27.30</a>), for arm \(A\) therefore exactly the length of the link, \(a_1 = l_1\) and <span class="nobr">\(a_2 = l_2\).</span> The link twist \(\alpha_{\mathrm{i}}\) is the angle between them: for \(\alpha_{\mathrm{i}} \neq 0\) the link is &quot;twisted&quot;, the axis of the next joint is not parallel to the previous one. The link offset \(d_{\mathrm{i}}\) is the offset along the axis of the previous joint, and the joint angle \(\theta_{\mathrm{i}}\) is the angle of rotation in the joint. The other three are constant, because \(a_{\mathrm{i}}\) and \(\alpha_{\mathrm{i}}\) describe two lines that are both attached to link <span class="nobr">\(i\):</span> the axis \(z_{\mathrm{i}}\) is the axis of joint <span class="nobr">\(i+1\),</span> which is in link <span class="nobr">\(i\),</span> and the axis \(z_{\mathrm{i}-1}\) is the axis of joint <span class="nobr">\(i\),</span> and its points are at rest at the joint relative to both links. For a revolute joint the point \(P\) on the axis is at rest for the same reason, so \(d_{\mathrm{i}}\) is also constant. For a prismatic joint the link \(i\) moves along the axis, and the point \(P\) with it, and \(d_{\mathrm{i}}\) changes, while \(\theta_{\mathrm{i}}\) stays constant, because the link does not turn. That is why we chose \(z_{\mathrm{i}-1}\) for the axis of joint <span class="nobr">\(i\):</span> the only two motions that the joint allows are a turn about \(z_{\mathrm{i}-1}\) and a shift along <span class="nobr">\(z_{\mathrm{i}-1}\),</span> that is the motions \(\theta_{\mathrm{i}}\) and <span class="nobr">\(d_{\mathrm{i}}\).</span></p>
+<p>The first thing we need is the closed form of the matrix.</p>
+
+<div class="blk lema" id="lem-dh-matrika"><div class="blk-head"><span class="blk-label">Lemma 27.28</span> <span class="blk-title">The Denavit-Hartenberg matrix in closed form (matrika Denavita in Hartenberga)</span></div><div class="blk-body"><p>With the notation <span class="nobr">\(c_\theta = \cos\theta\),</span> <span class="nobr">\(s_\theta = \sin\theta\),</span> <span class="nobr">\(c_\alpha = \cos\alpha\),</span> \(s_\alpha = \sin\alpha\) we have</p>
+<div class="eq" id="eq-dh-matrika">\[\mat T_{\mathrm{DH}}(\theta, d, a, \alpha) = \begin{bmatrix} c_\theta &amp; -s_\theta c_\alpha &amp; s_\theta s_\alpha &amp; a\,c_\theta \\ s_\theta &amp; c_\theta c_\alpha &amp; -c_\theta s_\alpha &amp; a\,s_\theta \\ 0 &amp; s_\alpha &amp; c_\alpha &amp; d \\ 0 &amp; 0 &amp; 0 &amp; 1 \end{bmatrix} . \tag{27.15}\]</div>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that the product <a class="xref" href="sec-dh-zapis.html#eq-dh-produkt" data-knowl="eq-dh-produkt">(27.14)</a> indeed gives this matrix. First we multiply two neighbouring factors, then both products.</p>
+<ol>
+<li>By step 1 of the proof of lemma <a class="xref" href="sec-homogene-transformacije.html#lem-homogena-sestavljanje" data-knowl="lem-homogena-sestavljanje">27.22</a> the product of the homogeneous <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> \((\mat R_1, \vek o_1)\) and \((\mat R_2, \vek o_2)\) is the matrix with rotation \(\mat R_1\mat R_2\) and <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">origin</a> <span class="nobr">\(\vek o_1 + \mat R_1\vek o_2\).</span></li>
+<li>For \(\mat R_{\mathrm{z},\theta}\mat P_{\mathrm{z},\mathrm{d}}\) we have <span class="nobr">\(\mat R_1 = \mat R_{\mathrm{z},\theta}\),</span> <span class="nobr">\(\vek o_1 = \vek 0\),</span> <span class="nobr">\(\mat R_2 = \mat I\),</span> <span class="nobr">\(\vek o_2 = d\,\vek e_{\mathrm{z}}\).</span> The origin is <span class="nobr">\(\mat R_{\mathrm{z},\theta}\,d\,\vek e_{\mathrm{z}} = d\,\vek e_{\mathrm{z}}\),</span> because \(\mat R_{\mathrm{z},\theta}\vek e_{\mathrm{z}} = \vek e_{\mathrm{z}}\) (the third column of the matrix \(\mat R_{\mathrm{z},\theta}\) by definition <a class="xref" href="sec-orientacija-clenov.html#def-osnovni-zasuki" data-knowl="def-osnovni-zasuki">27.10</a>). The product is therefore the turn \(\mat R_{\mathrm{z},\theta}\) with origin <span class="nobr">\(d\,\vek e_{\mathrm{z}}\).</span></li>
+<li>For \(\mat P_{\mathrm{x},\mathrm{a}}\mat R_{\mathrm{x},\alpha}\) we have <span class="nobr">\(\mat R_1 = \mat I\),</span> <span class="nobr">\(\vek o_1 = a\,\vek e_{\mathrm{x}}\),</span> <span class="nobr">\(\mat R_2 = \mat R_{\mathrm{x},\alpha}\),</span> <span class="nobr">\(\vek o_2 = \vek 0\).</span> The product is the turn \(\mat R_{\mathrm{x},\alpha}\) with origin <span class="nobr">\(a\,\vek e_{\mathrm{x}}\).</span></li>
+<li>The product of these two by step 1 has rotation \(\mat R_{\mathrm{z},\theta}\mat R_{\mathrm{x},\alpha}\) and origin <span class="nobr">\(d\,\vek e_{\mathrm{z}} + \mat R_{\mathrm{z},\theta}\,a\,\vek e_{\mathrm{x}}\).</span> The first column of the matrix \(\mat R_{\mathrm{z},\theta}\) is <span class="nobr">\((c_\theta, s_\theta, 0)\),</span> so the origin is <span class="nobr">\((a\,c_\theta,\ a\,s_\theta,\ d)\).</span></li>
+<li>We compute the rotation by the definition of the matrix product (definition <a class="xref" href="sec-matrike.html#def-produkt-matrik" data-knowl="def-produkt-matrik">1.98</a>), with the matrices
+<div class="eq">\[\mat R_{\mathrm{z},\theta} = \begin{bmatrix} c_\theta &amp; -s_\theta &amp; 0 \\ s_\theta &amp; c_\theta &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{bmatrix} , \qquad \mat R_{\mathrm{x},\alpha} = \begin{bmatrix} 1 &amp; 0 &amp; 0 \\ 0 &amp; c_\alpha &amp; -s_\alpha \\ 0 &amp; s_\alpha &amp; c_\alpha \end{bmatrix} .\]</div>
+The first column of the product is <span class="nobr">\(\mat R_{\mathrm{z},\theta}(1, 0, 0) = (c_\theta, s_\theta, 0)\).</span> The second is <span class="nobr">\(\mat R_{\mathrm{z},\theta}(0, c_\alpha, s_\alpha) = (-s_\theta c_\alpha,\ c_\theta c_\alpha,\ s_\alpha)\).</span> The third is <span class="nobr">\(\mat R_{\mathrm{z},\theta}(0, -s_\alpha, c_\alpha) = (s_\theta s_\alpha,\ -c_\theta s_\alpha,\ c_\alpha)\).</span> Together with step 4 this is <a class="xref" href="sec-dh-zapis.html#eq-dh-matrika" data-knowl="eq-dh-matrika">(27.15)</a>.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> SPONG (3.10) (PDF p. 101), the equation with the same result. The proof by steps is not from the source.</p></div></div>
+<p>Point 3 of the theorem that follows speaks of the distance of two axes in space, and to place the frames we will need a perpendicular that is unique. So first the lemma on the <a class="xref auto forward" href="sec-dh-zapis.html#lem-skupna-normala" data-knowl="lem-skupna-normala" title="Defined later in the book">common perpendicular of two lines</a>.</p>
+
+<div class="blk lema" id="lem-skupna-normala"><div class="blk-head"><span class="blk-label">Lemma 27.29</span> <span class="blk-title">Common perpendicular of two lines (skupna pravokotnica dveh premic)</span></div><div class="blk-body"><p>Let \(L = \{\vek p + t\,\vek u\}\) and \(L' = \{\vek p' + s\,\vek u'\}\) be lines with unit direction <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vectors</a> \(\vek u\) and <span class="nobr">\(\vek u'\),</span> and <span class="nobr">\(c = \vek u \cdot \vek u'\).</span></p>
+<ol>
+<li>If the lines are not parallel <span class="nobr">(\(|c| &lt; 1\)),</span> there is exactly one point \(P \in L\) and exactly one point \(P' \in L'\) such that the vector \(P' - P\) is perpendicular to \(\vek u\) and to <span class="nobr">\(\vek u'\).</span> If the lines meet, \(P = P'\) is the intersection, otherwise <span class="nobr">\(P' \neq P\).</span></li>
+<li>If they are parallel <span class="nobr">(\(\vek u' = \pm\vek u\))</span> and different, for every point \(P \in L\) there is exactly one point \(P' \in L'\) with <span class="nobr">\(P' - P \perp \vek u\),</span> and all such vectors \(P' - P\) have the same length.</li>
+<li>If \(P \in L\) and \(P' \in L'\) are points with the vector \(P' - P\) perpendicular to \(\vek u\) and to <span class="nobr">\(\vek u'\),</span> then \(|X' - X| \ge |P' - P|\) for every point \(X \in L\) and <span class="nobr">\(X' \in L'\).</span> The length \(|P' - P|\) is thus the smallest distance between a point of one line and a point of the other, that is the distance of the lines.</li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that the corresponding condition determines the unknowns. We write the condition as two equations and solve with the <a class="xref auto" href="sec-determinanta.html#def-determinanta" data-knowl="def-determinanta">determinant</a>. At the end we show that the length found is the smallest.</p>
+<ol>
+<li>Let \(\vek w = \vek p' - \vek p\) and we look for <span class="nobr">\(t\),</span> \(s\) with \((\vek w + s\,\vek u' - t\,\vek u) \cdot \vek u = 0\) and <span class="nobr">\((\vek w + s\,\vek u' - t\,\vek u) \cdot \vek u' = 0\).</span> Since <span class="nobr">\(\vek u \cdot \vek u = \vek u' \cdot \vek u' = 1\),</span> this is the system \(-t + c\,s = -\vek w \cdot \vek u\) and <span class="nobr">\(-c\,t + s = -\vek w \cdot \vek u'\).</span></li>
+<li>The determinant of the system is <span class="nobr">\((-1)\cdot 1 - c\cdot(-c) = -(1 - c^2)\),</span> which is different from zero when <span class="nobr">\(|c| &lt; 1\).</span> The cosine of the angle between non-<a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">zero vectors</a> is by definition <a class="xref" href="sec-skalarni-produkt.html#def-skalarni-produkt" data-knowl="def-skalarni-produkt">2.8</a> the number <span class="nobr">\(c\),</span> and \(|c| = 1\) only at the angle \(0\) or <span class="nobr">\(\pi\),</span> that is for parallel vectors. By lemma <a class="xref" href="sec-zamenjava-spremenljivk.html#lem-inverzna-2x2" data-knowl="lem-inverzna-2x2">4.49</a> the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> of the system has an inverse, so the system has exactly one solution <span class="nobr">\((t, s)\),</span> so exactly one \(P\) and <span class="nobr">\(P'\).</span></li>
+<li>The vector \(P' - P\) is perpendicular to \(\vek u\) and \(\vek u'\) by construction. If <span class="nobr">\(P' - P = \vek 0\),</span> then \(P = P'\) is a point of both lines, hence the intersection. If the lines meet at a point <span class="nobr">\(Q\),</span> the pair \(P = P' = Q\) satisfies both conditions, because \(\vek 0\) is <a class="xref auto" href="sec-skalarni-produkt.html#def-pravokotna-vektorja" data-knowl="def-pravokotna-vektorja">perpendicular to every vector</a>, and by step 2 it is the only one. Lines that do not meet therefore have <span class="nobr">\(P' \neq P\).</span></li>
+<li>For parallel lines \(\vek u' = \pm\vek u\) and the condition \((\vek w + s\,\vek u' - t\,\vek u) \cdot \vek u = 0\) gives <span class="nobr">\(\vek w \cdot \vek u \pm s - t = 0\).</span> For a given \(t\) (the point <span class="nobr">\(P\))</span> this is exactly one \(s = \pm(t - \vek w \cdot \vek u)\) (the point <span class="nobr">\(P'\)).</span></li>
+<li>The vector \(P' - P = \vek w + s\,\vek u' - t\,\vek u\) is the perpendicular component of the vector \(\vek w\) to <span class="nobr">\(\vek u\),</span> because we subtract the longitudinal part. It does not depend on <span class="nobr">\(t\),</span> so they all have the same length.</li>
+<li>Point 3. For the points \(X = P + t\,\vek u\) on \(L\) and \(X' = P' + s\,\vek u'\) on \(L'\) we have \(X' - X = (P' - P) + \vek v\) with <span class="nobr">\(\vek v = s\,\vek u' - t\,\vek u\).</span> Since \(P' - P\) is perpendicular to \(\vek u\) and <span class="nobr">\(\vek u'\),</span> <span class="nobr">\((P' - P)\cdot\vek v = 0\),</span> and by the rules of the scalar product (definition <a class="xref" href="sec-skalarni-produkt.html#def-skalarni-produkt" data-knowl="def-skalarni-produkt">2.8</a>) <span class="nobr">\(|X' - X|^2 = |P' - P|^2 + 2\,(P' - P)\cdot\vek v + |\vek v|^2 = |P' - P|^2 + |\vek v|^2 \ge |P' - P|^2\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> SPONG section 3.2.2 (PDF p. 106-107) states the existence and uniqueness of the common perpendicular without proof. The proof is not from the source.</p></div></div>
+<p>The matrix \(\mat T^{\ix{i-1}}_{\ix{i}}\) now has a form determined by four numbers. But can every pose of frame \(i\) relative to \(i-1\) be written so? No, because with DH1 and DH2 we required something. In the matrix <a class="xref" href="sec-dh-zapis.html#eq-dh-matrika" data-knowl="eq-dh-matrika">(27.15)</a> the entry in the third row of the first column is <span class="nobr">\(0\),</span> which means <span class="nobr">\(x_{\mathrm{i}} \cdot z_{\mathrm{i}-1} = 0\),</span> and the origin is <span class="nobr">\(d\,\vek e_{\mathrm{z}} + a\,x_{\mathrm{i}}\).</span> The theorem says that this is all, and that the numbers are unique.</p>
+
+<div class="blk izrek" id="thm-dh-obstoj"><div class="blk-head"><span class="blk-label">Theorem 27.30</span> <span class="blk-title">Existence and uniqueness of the DH parameters (obstoj in enoličnost parametrov Denavita in Hartenberga)</span></div><div class="blk-body"><p>Let \(\mat T^{\ix{i-1}}_{\ix{i}} = \left[\begin{smallmatrix} \mat R &amp; \vek o \\ \vek 0^\T &amp; 1 \end{smallmatrix}\right]\) be the pose of <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">frame</a> \(i\) relative to frame <span class="nobr">\(i-1\),</span> with <a class="xref auto" href="sec-simetrija-napetosti.html#def-desnosucni-sistem" data-knowl="def-desnosucni-sistem">right-handed</a> frames (the columns of \(\mat R\) are <span class="nobr">\(x_{\mathrm{i}}\),</span> <span class="nobr">\(y_{\mathrm{i}}\),</span> \(z_{\mathrm{i}}\) in the <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">coordinates</a> of frame <span class="nobr">\(i-1\),</span> definition <a class="xref" href="sec-orientacija-clenov.html#def-matrika-orientacije" data-knowl="def-matrika-orientacije">27.8</a>). We write <span class="nobr">\(\mat R = (r_{\mathrm{jk}})\).</span></p>
+<ol>
+<li>If the frames satisfy DH1 and DH2, there exist numbers <span class="nobr">\(\theta\),</span> <span class="nobr">\(d\),</span> <span class="nobr">\(a\),</span> \(\alpha\) with <span class="nobr">\(\mat T^{\ix{i-1}}_{\ix{i}} = \mat T_{\mathrm{DH}}(\theta, d, a, \alpha)\).</span> The angles are unique up to multiples of <span class="nobr">\(2\pi\),</span> the numbers \(d\) and \(a\) are unique.</li>
+<li>Conversely, for all numbers <span class="nobr">\(\theta\),</span> <span class="nobr">\(d\),</span> <span class="nobr">\(a\),</span> \(\alpha\) the frames with the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat T_{\mathrm{DH}}(\theta, d, a, \alpha)\) satisfy DH1 and DH2.</li>
+<li>Meaning of the numbers: <span class="nobr">\(x_{\mathrm{i}} = \cos\theta\,x_{\mathrm{i}-1} + \sin\theta\,y_{\mathrm{i}-1}\),</span> so \(\theta\) is the angle from \(x_{\mathrm{i}-1}\) to \(x_{\mathrm{i}}\) about <span class="nobr">\(z_{\mathrm{i}-1}\).</span> We have <span class="nobr">\(z_{\mathrm{i}} = \cos\alpha\,z_{\mathrm{i}-1} + \sin\alpha\,(x_{\mathrm{i}} \times z_{\mathrm{i}-1})\),</span> so \(\alpha\) is the angle from \(z_{\mathrm{i}-1}\) to \(z_{\mathrm{i}}\) about <span class="nobr">\(x_{\mathrm{i}}\).</span> The line \(x_{\mathrm{i}}\) meets the axis \(z_{\mathrm{i}-1}\) at the point <span class="nobr">\(o_{\mathrm{i}-1} + d\,z_{\mathrm{i}-1}\),</span> and \(|a|\) is the distance between the axes \(z_{\mathrm{i}-1}\) and <span class="nobr">\(z_{\mathrm{i}}\).</span></li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show three points. For the first, DH1 gives a zero in the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> <span class="nobr">\(\mat R\),</span> from the unit length and perpendicularity of columns and rows only \(\theta\) and \(\alpha\) remain, and DH2 gives the origin.</p>
+<ol>
+<li>In the <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">coordinates</a> of <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">frame</a> \(i-1\) we have \(z_{\mathrm{i}-1} = \vek e_{\mathrm{z}} = (0, 0, 1)\) and <span class="nobr">\(x_{\mathrm{i}} = (r_{11}, r_{21}, r_{31})\).</span> DH1 says \(0 = x_{\mathrm{i}} \cdot z_{\mathrm{i}-1} = r_{31}\) (definition <a class="xref" href="sec-skalarni-produkt.html#def-skalarni-produkt" data-knowl="def-skalarni-produkt">2.8</a>).</li>
+<li>The matrix \(\mat R\) is orthogonal (lemma <a class="xref" href="sec-orientacija-clenov.html#lem-orientacija-in-zasuk" data-knowl="lem-orientacija-in-zasuk">27.9</a>), so the columns and rows have length \(1\) (definition <a class="xref" href="sec-vrtenje-osi.html#def-ortogonalna-matrika" data-knowl="def-ortogonalna-matrika">2.39</a> and lemma <a class="xref" href="sec-vrtenje-osi.html#lem-zasuk-ortogonalen" data-knowl="lem-zasuk-ortogonalen">2.40</a>). The first column gives <span class="nobr">\(r_{11}^2 + r_{21}^2 = 1 - r_{31}^2 = 1\).</span> The third row gives <span class="nobr">\(r_{32}^2 + r_{33}^2 = 1 - r_{31}^2 = 1\).</span> By the construction of the angle in step 2 of the proof of lemma <a class="xref" href="sec-posplosene-koordinate.html#lem-ravninska-lega" data-knowl="lem-ravninska-lega">8.40</a> there exist angles \(\theta\) and \(\alpha\) with \((r_{11}, r_{21}) = (c_\theta, s_\theta)\) and <span class="nobr">\((r_{33}, r_{32}) = (c_\alpha, s_\alpha)\).</span> They are determined up to multiples of <span class="nobr">\(2\pi\),</span> because the pair \((\cos, \sin)\) is by definition <a class="xref" href="sec-sinus-kosinus.html#def-sinus-kosinus" data-knowl="def-sinus-kosinus">8.9</a> and lemma <a class="xref" href="sec-sinus-kosinus.html#lem-lastnosti-sinusa" data-knowl="lem-lastnosti-sinusa">8.10</a> uniquely determined by the angle up to the period and conversely.</li>
+<li>Let <span class="nobr">\(\mat B = \mat R_{\mathrm{z},\theta}^\T\mat R\).</span> The matrix \(\mat B\) is orthogonal, because it is a product of orthogonal matrices (lemma <a class="xref" href="sec-matrike.html#lem-transponiran-produkt" data-knowl="lem-transponiran-produkt">1.101</a>), and \(\det\mat B = \det\mat R_{\mathrm{z},\theta}^\T \cdot \det\mat R = 1 \cdot 1\) (theorem <a class="xref" href="sec-determinanta.html#thm-determinanta-produkta" data-knowl="thm-determinanta-produkta">2.52</a>, <span class="nobr">\(\det\mat R_{\mathrm{z},\theta} = c_\theta^2 + s_\theta^2 = 1\),</span> \(\det\mat R = 1\) by lemma <a class="xref" href="sec-orientacija-clenov.html#lem-orientacija-in-zasuk" data-knowl="lem-orientacija-in-zasuk">27.9</a>).</li>
+<li>The first column of the matrix \(\mat B\) is <span class="nobr">\(\mat R_{\mathrm{z},\theta}^\T(c_\theta, s_\theta, 0) = (c_\theta^2 + s_\theta^2,\ -s_\theta c_\theta + c_\theta s_\theta,\ 0) = (1, 0, 0)\).</span> The third row of the matrix \(\mat B\) is the third row of the matrix <span class="nobr">\(\mat R\),</span> because the third row of the matrix \(\mat R_{\mathrm{z},\theta}^\T\) is <span class="nobr">\((0, 0, 1)\),</span> so it is <span class="nobr">\((0, s_\alpha, c_\alpha)\).</span></li>
+<li>The first row of the matrix \(\mat B\) has length \(1\) and first element \(1\) by step 4, so the other two elements are zero. Thus \(\mat B = \left[\begin{smallmatrix} 1 &amp; 0 &amp; 0 \\ 0 &amp; b_{22} &amp; b_{23} \\ 0 &amp; s_\alpha &amp; c_\alpha \end{smallmatrix}\right]\) and by expansion along the first row <span class="nobr">\(\det\mat B = b_{22}c_\alpha - b_{23}s_\alpha = 1\).</span></li>
+<li>The rows \((b_{22}, b_{23})\) and \((s_\alpha, c_\alpha)\) are perpendicular: <span class="nobr">\(b_{22}s_\alpha + b_{23}c_\alpha = 0\).</span> Let <span class="nobr">\(\lambda = b_{22}c_\alpha - b_{23}s_\alpha\),</span> which by step 5 equals <span class="nobr">\(1\).</span> With \(c_\alpha^2 + s_\alpha^2 = 1\) (lemma <a class="xref" href="sec-sinus-kosinus.html#lem-lastnosti-sinusa" data-knowl="lem-lastnosti-sinusa">8.10</a>, point 1) we have \(\lambda c_\alpha = b_{22}c_\alpha^2 - b_{23}s_\alpha c_\alpha = b_{22}c_\alpha^2 + b_{22}s_\alpha^2 = b_{22}\) and likewise <span class="nobr">\(-\lambda s_\alpha = b_{23}\).</span> So <span class="nobr">\(b_{22} = c_\alpha\),</span> \(b_{23} = -s_\alpha\) and <span class="nobr">\(\mat B = \mat R_{\mathrm{x},\alpha}\).</span></li>
+<li>Hence <span class="nobr">\(\mat R = \mat R_{\mathrm{z},\theta}\mat B = \mat R_{\mathrm{z},\theta}\mat R_{\mathrm{x},\alpha}\),</span> which is the rotation part of the matrix <a class="xref" href="sec-dh-zapis.html#eq-dh-matrika" data-knowl="eq-dh-matrika">(27.15)</a>.</li>
+<li>DH2 says that the line through \(o_{\mathrm{i}}\) in the direction \(x_{\mathrm{i}}\) meets the axis <span class="nobr">\(z_{\mathrm{i}-1}\).</span> The intersection is the point \(o_{\mathrm{i}-1} + d\,z_{\mathrm{i}-1}\) for some number \(d\) and the point \(o_{\mathrm{i}} + s\,x_{\mathrm{i}}\) for some number <span class="nobr">\(s\),</span> so \(\vek o = d\,\vek e_{\mathrm{z}} + a\,x_{\mathrm{i}}\) with \(a = -s\) (the origin \(o_{\mathrm{i}-1}\) is zero in the coordinates of frame <span class="nobr">\(i-1\)).</span> By step 7 we have <span class="nobr">\(x_{\mathrm{i}} = (c_\theta, s_\theta, 0)\),</span> so <span class="nobr">\(\vek o = (a\,c_\theta,\ a\,s_\theta,\ d)\),</span> which is the last column of the matrix <a class="xref" href="sec-dh-zapis.html#eq-dh-matrika" data-knowl="eq-dh-matrika">(27.15)</a>. Together with step 7 this is point 1.</li>
+<li>Uniqueness: \(\theta\) and \(\alpha\) are unique up to \(2\pi\) by step 2, \(d\) is the third component of the <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vector</a> <span class="nobr">\(\vek o\),</span> and <span class="nobr">\(a = o_1 c_\theta + o_2 s_\theta\),</span> because \(\vek o = d\,\vek e_{\mathrm{z}} + a\,x_{\mathrm{i}}\) and \(x_{\mathrm{i}}\) is a <a class="xref auto" href="sec-vektorji.html#def-enotski-vektor" data-knowl="def-enotski-vektor">unit vector</a>.</li>
+<li>Point 2: the matrix <a class="xref" href="sec-dh-zapis.html#eq-dh-matrika" data-knowl="eq-dh-matrika">(27.15)</a> has first column <span class="nobr">\((c_\theta, s_\theta, 0)\),</span> so <span class="nobr">\(x_{\mathrm{i}} \cdot z_{\mathrm{i}-1} = 0\),</span> which is DH1. The origin is <span class="nobr">\(d\,\vek e_{\mathrm{z}} + a\,x_{\mathrm{i}}\),</span> so the line \(\vek o + s\,x_{\mathrm{i}}\) at \(s = -a\) passes through the point \(d\,\vek e_{\mathrm{z}}\) of the axis <span class="nobr">\(z_{\mathrm{i}-1}\),</span> which is DH2.</li>
+<li>Point 3: the first column is <span class="nobr">\(x_{\mathrm{i}} = (c_\theta, s_\theta, 0) = c_\theta\,x_{\mathrm{i}-1} + s_\theta\,y_{\mathrm{i}-1}\).</span> The third column is \(z_{\mathrm{i}} = (s_\theta s_\alpha, -c_\theta s_\alpha, c_\alpha)\) and \(x_{\mathrm{i}} \times z_{\mathrm{i}-1} = (c_\theta, s_\theta, 0) \times (0, 0, 1) = (s_\theta, -c_\theta, 0)\) (definition <a class="xref" href="sec-simetrija-napetosti.html#def-vektorski-produkt" data-knowl="def-vektorski-produkt">2.30</a>), so <span class="nobr">\(z_{\mathrm{i}} = c_\alpha z_{\mathrm{i}-1} + s_\alpha\,(x_{\mathrm{i}} \times z_{\mathrm{i}-1})\).</span> The intersection is already in step 8.</li>
+<li>Distance of the axes. On the axis \(z_{\mathrm{i}-1}\) we take the point <span class="nobr">\(P = d\,\vek e_{\mathrm{z}}\),</span> on the axis \(z_{\mathrm{i}}\) its origin <span class="nobr">\(P' = \vek o\).</span> The vector \(P' - P = a\,x_{\mathrm{i}}\) is perpendicular to \(z_{\mathrm{i}-1}\) by step 10 (DH1). It is also perpendicular to <span class="nobr">\(z_{\mathrm{i}}\),</span> because by step 11 \(x_{\mathrm{i}} \cdot z_{\mathrm{i}} = c_\alpha\,x_{\mathrm{i}} \cdot z_{\mathrm{i}-1} + s_\alpha\,x_{\mathrm{i}} \cdot (x_{\mathrm{i}} \times z_{\mathrm{i}-1}) = 0\) (point 4 of lemma <a class="xref" href="sec-simetrija-napetosti.html#lem-lastnosti-vektorskega-produkta" data-knowl="lem-lastnosti-vektorskega-produkta">2.31</a>). By point 3 of lemma <a class="xref" href="sec-dh-zapis.html#lem-skupna-normala" data-knowl="lem-skupna-normala">27.29</a> the distance of the axes is <span class="nobr">\(|P' - P| = |a|\),</span> since \(x_{\mathrm{i}}\) is a unit vector, for parallel and for non-parallel axes alike.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> SPONG section 3.2.1 (PDF p. 102-104), equations (3.11) to (3.13) and the computation of the origin. SPONG derives the form of the columns with the value <span class="nobr">\(\theta = 0, \pi\),</span> here steps 3 to 6 are ours. Points 2 and 3 and step 12 are not from the source.</p></div></div>
+<p>The proof showed that DH1 and DH2 with two equations <span class="nobr">(\(r_{31} = 0\)</span> and the origin in the plane of the axes \(z_{\mathrm{i}-1}\) and <span class="nobr">\(x_{\mathrm{i}}\))</span> leave four of the six numbers. We check with an example with concrete numbers. Take <span class="nobr">\(\theta = 0{,}7\),</span> \(d = 0{,}3\) m, \(a = 0{,}5\) m, \(\alpha = 1{,}1\) rad. The matrix <a class="xref" href="sec-dh-zapis.html#eq-dh-matrika" data-knowl="eq-dh-matrika">(27.15)</a> gives \(\mat R = \mat R_{\mathrm{z},\theta}\mat R_{\mathrm{x},\alpha}\) and <span class="nobr">\(\vek o = d\,\vek e_{\mathrm{z}} + a\,x_{\mathrm{i}}\),</span> and then from the computed elements we read off <span class="nobr">\(\theta = \operatorname{atan2}(r_{21}, r_{11}) = 0{,}7\),</span> <span class="nobr">\(\alpha = \operatorname{atan2}(r_{32}, r_{33}) = 1{,}1\),</span> \(d = o_3 = 0{,}3\) and \(a = o_1 c_\theta + o_2 s_\theta = 0{,}5\) (NumPy, num-04.py). The distance of the axes \(z_{\mathrm{i}-1}\) and \(z_{\mathrm{i}}\) is \(0{,}5\) m, equal to <span class="nobr">\(|a|\).</span></p>
+<p>The theorem has two hypotheses, DH1 and DH2, and a claim of uniqueness. For each of the three we look at what happens without it. The first is DH1. A frame turned about the axis \(y\) by \(30^\circ\) has first column <span class="nobr">\((0{,}8660,\ 0,\ -0{,}5)\),</span> so <span class="nobr">\(r_{31} = -0{,}5 \neq 0\),</span> and such a frame cannot have any matrix <a class="xref" href="sec-dh-zapis.html#eq-dh-matrika" data-knowl="eq-dh-matrika">(27.15)</a>, because this one has zero in the third row of the first column, however we shift the origin. The second is DH2, and this one is more treacherous, because the direction of the axis cannot be seen here.</p>
+
+<figure class="blk slika" id="fig-dh-ni-mogoce"><p><span class="svgfig" role="img" aria-label="A frame that satisfies DH1 and not DH2, and the correction of the origin"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='267.56pt' height='142.23pt' viewBox='-72.000004 -71.999998 198.19202 105.353225'>
+<defs>
+<path id='c27-04-dh-ni-mogoce-g0-48' d='M2.022416-3.291656C2.078207-3.410212 2.085181-3.466002 2.085181-3.514819C2.085181-3.731009 1.889913-3.898381 1.673724-3.898381C1.408717-3.898381 1.325031-3.682192 1.290162-3.57061L.369614-.550934C.36264-.536986 .334745-.446326 .334745-.439352C.334745-.355666 .550934-.285928 .606725-.285928C.655542-.285928 .662516-.299875 .711333-.404483L2.022416-3.291656Z'/>
+<path id='c27-04-dh-ni-mogoce-g1-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='c27-04-dh-ni-mogoce-g1-97' d='M3.716065-3.765878C3.536737-4.134496 3.247821-4.403487 2.799502-4.403487C1.633873-4.403487 .398506-2.938979 .398506-1.484433C.398506-.547945 .946451 .109589 1.723537 .109589C1.92279 .109589 2.420922 .069738 3.01868-.637609C3.098381-.219178 3.447073 .109589 3.92528 .109589C4.273973 .109589 4.503113-.119552 4.662516-.438356C4.83188-.797011 4.961395-1.404732 4.961395-1.424658C4.961395-1.524284 4.871731-1.524284 4.841843-1.524284C4.742217-1.524284 4.732254-1.484433 4.702366-1.344956C4.533001-.697385 4.353674-.109589 3.945205-.109589C3.676214-.109589 3.646326-.368618 3.646326-.56787C3.646326-.787049 3.666252-.86675 3.775841-1.305106C3.88543-1.723537 3.905355-1.823163 3.995019-2.201743L4.353674-3.596513C4.423412-3.875467 4.423412-3.895392 4.423412-3.935243C4.423412-4.104608 4.303861-4.204234 4.134496-4.204234C3.895392-4.204234 3.745953-3.985056 3.716065-3.765878ZM3.068493-1.185554C3.01868-1.006227 3.01868-.986301 2.86924-.816936C2.430884-.268991 2.022416-.109589 1.743462-.109589C1.24533-.109589 1.105853-.657534 1.105853-1.046077C1.105853-1.544209 1.424658-2.769614 1.653798-3.227895C1.96264-3.815691 2.410959-4.184309 2.809465-4.184309C3.457036-4.184309 3.596513-3.367372 3.596513-3.307597S3.576588-3.188045 3.566625-3.138232L3.068493-1.185554Z'/>
+<path id='c27-04-dh-ni-mogoce-g1-111' d='M4.672478-2.719801C4.672478-3.755915 3.975093-4.403487 3.078456-4.403487C1.743462-4.403487 .408468-2.988792 .408468-1.574097C.408468-.587796 1.075965 .109589 2.002491 .109589C3.327522 .109589 4.672478-1.265255 4.672478-2.719801ZM2.012453-.109589C1.58406-.109589 1.145704-.418431 1.145704-1.195517C1.145704-1.683686 1.404732-2.759651 1.723537-3.267746C2.221669-4.034869 2.789539-4.184309 3.068493-4.184309C3.646326-4.184309 3.945205-3.706102 3.945205-3.108344C3.945205-2.719801 3.745953-1.673724 3.367372-1.026152C3.01868-.448319 2.470735-.109589 2.012453-.109589Z'/>
+<path id='c27-04-dh-ni-mogoce-g1-120' d='M3.327522-3.008717C3.387298-3.267746 3.616438-4.184309 4.313823-4.184309C4.363636-4.184309 4.60274-4.184309 4.811955-4.054795C4.533001-4.004981 4.333748-3.755915 4.333748-3.516812C4.333748-3.35741 4.443337-3.16812 4.712329-3.16812C4.931507-3.16812 5.250311-3.347447 5.250311-3.745953C5.250311-4.26401 4.662516-4.403487 4.323786-4.403487C3.745953-4.403487 3.39726-3.875467 3.277709-3.646326C3.028643-4.303861 2.49066-4.403487 2.201743-4.403487C1.165629-4.403487 .597758-3.118306 .597758-2.86924C.597758-2.769614 .697385-2.769614 .71731-2.769614C.797011-2.769614 .826899-2.789539 .846824-2.879203C1.185554-3.935243 1.843088-4.184309 2.181818-4.184309C2.371108-4.184309 2.719801-4.094645 2.719801-3.516812C2.719801-3.20797 2.550436-2.540473 2.181818-1.145704C2.022416-.52802 1.673724-.109589 1.235367-.109589C1.175592-.109589 .946451-.109589 .737235-.239103C.986301-.288917 1.205479-.498132 1.205479-.777086C1.205479-1.046077 .986301-1.125778 .836862-1.125778C.537983-1.125778 .288917-.86675 .288917-.547945C.288917-.089664 .787049 .109589 1.225405 .109589C1.882939 .109589 2.241594-.587796 2.271482-.647572C2.391034-.278954 2.749689 .109589 3.347447 .109589C4.373599 .109589 4.941469-1.175592 4.941469-1.424658C4.941469-1.524284 4.851806-1.524284 4.821918-1.524284C4.732254-1.524284 4.712329-1.484433 4.692403-1.414695C4.363636-.348692 3.686177-.109589 3.367372-.109589C2.978829-.109589 2.819427-.428394 2.819427-.767123C2.819427-.986301 2.879203-1.205479 2.988792-1.643836L3.327522-3.008717Z'/>
+<path id='c27-04-dh-ni-mogoce-g1-121' d='M4.841843-3.795766C4.881694-3.935243 4.881694-3.955168 4.881694-4.024907C4.881694-4.204234 4.742217-4.293898 4.592777-4.293898C4.493151-4.293898 4.333748-4.234122 4.244085-4.084682C4.224159-4.034869 4.144458-3.726027 4.104608-3.5467C4.034869-3.287671 3.965131-3.01868 3.905355-2.749689L3.457036-.956413C3.417186-.806974 2.988792-.109589 2.331258-.109589C1.823163-.109589 1.713574-.547945 1.713574-.916563C1.713574-1.374844 1.882939-1.992528 2.221669-2.86924C2.381071-3.277709 2.420922-3.387298 2.420922-3.58655C2.420922-4.034869 2.102117-4.403487 1.603985-4.403487C.657534-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.836862-3.88543 1.235367-4.184309 1.574097-4.184309C1.653798-4.184309 1.823163-4.184309 1.823163-3.865504C1.823163-3.616438 1.723537-3.35741 1.653798-3.16812C1.255293-2.11208 1.075965-1.544209 1.075965-1.075965C1.075965-.18929 1.703611 .109589 2.291407 .109589C2.67995 .109589 3.01868-.059776 3.297634-.33873C3.16812 .179328 3.048568 .667497 2.650062 1.195517C2.391034 1.534247 2.012453 1.823163 1.554172 1.823163C1.414695 1.823163 .966376 1.793275 .797011 1.404732C.956413 1.404732 1.085928 1.404732 1.225405 1.285181C1.325031 1.195517 1.424658 1.066002 1.424658 .876712C1.424658 .56787 1.155666 .52802 1.05604 .52802C.826899 .52802 .498132 .687422 .498132 1.175592C.498132 1.673724 .936488 2.042341 1.554172 2.042341C2.580324 2.042341 3.606476 1.135741 3.88543 .009963L4.841843-3.795766Z'/>
+<path id='c27-04-dh-ni-mogoce-g1-122' d='M1.325031-.826899C1.863014-1.404732 2.15193-1.653798 2.510585-1.96264C2.510585-1.972603 3.128269-2.500623 3.486924-2.859278C4.433375-3.785803 4.652553-4.26401 4.652553-4.303861C4.652553-4.403487 4.562889-4.403487 4.542964-4.403487C4.473225-4.403487 4.443337-4.383562 4.393524-4.293898C4.094645-3.815691 3.88543-3.656289 3.646326-3.656289S3.287671-3.805729 3.138232-3.975093C2.948941-4.204234 2.779577-4.403487 2.450809-4.403487C1.703611-4.403487 1.24533-3.476961 1.24533-3.267746C1.24533-3.217933 1.275218-3.158157 1.364882-3.158157S1.474471-3.20797 1.494396-3.267746C1.683686-3.726027 2.261519-3.73599 2.34122-3.73599C2.550436-3.73599 2.739726-3.666252 2.968867-3.58655C3.367372-3.437111 3.476961-3.437111 3.73599-3.437111C3.377335-3.008717 2.540473-2.291407 2.351183-2.132005L1.454545-1.295143C.777086-.627646 .428394-.059776 .428394 .009963C.428394 .109589 .52802 .109589 .547945 .109589C.627646 .109589 .647572 .089664 .707347-.019925C.936488-.368618 1.235367-.637609 1.554172-.637609C1.783313-.637609 1.882939-.547945 2.132005-.259029C2.30137-.049813 2.480697 .109589 2.769614 .109589C3.755915 .109589 4.333748-1.155666 4.333748-1.424658C4.333748-1.474471 4.293898-1.524284 4.214197-1.524284C4.124533-1.524284 4.104608-1.464508 4.07472-1.39477C3.845579-.747198 3.20797-.557908 2.879203-.557908C2.67995-.557908 2.500623-.617684 2.291407-.687422C1.952677-.816936 1.803238-.856787 1.594022-.856787C1.574097-.856787 1.414695-.856787 1.325031-.826899Z'/>
+<path id='c27-04-dh-ni-mogoce-g2-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='c27-04-dh-ni-mogoce-g2-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c27-04-dh-ni-mogoce-g2-51' d='M2.889166-3.506849C3.706102-3.775841 4.283935-4.473225 4.283935-5.260274C4.283935-6.07721 3.407223-6.635118 2.450809-6.635118C1.444583-6.635118 .687422-6.03736 .687422-5.280199C.687422-4.951432 .9066-4.762142 1.195517-4.762142C1.504359-4.762142 1.703611-4.98132 1.703611-5.270237C1.703611-5.768369 1.235367-5.768369 1.085928-5.768369C1.39477-6.256538 2.052304-6.386052 2.410959-6.386052C2.819427-6.386052 3.367372-6.166874 3.367372-5.270237C3.367372-5.150685 3.347447-4.572852 3.088418-4.134496C2.789539-3.656289 2.450809-3.626401 2.201743-3.616438C2.122042-3.606476 1.882939-3.58655 1.8132-3.58655C1.733499-3.576588 1.663761-3.566625 1.663761-3.466999C1.663761-3.35741 1.733499-3.35741 1.902864-3.35741H2.34122C3.158157-3.35741 3.526775-2.67995 3.526775-1.703611C3.526775-.348692 2.839352-.059776 2.400996-.059776C1.972603-.059776 1.225405-.229141 .876712-.816936C1.225405-.767123 1.534247-.986301 1.534247-1.364882C1.534247-1.723537 1.265255-1.92279 .976339-1.92279C.737235-1.92279 .418431-1.783313 .418431-1.344956C.418431-.438356 1.344956 .219178 2.430884 .219178C3.646326 .219178 4.552927-.687422 4.552927-1.703611C4.552927-2.520548 3.92528-3.297634 2.889166-3.506849Z'/>
+<path id='c27-04-dh-ni-mogoce-g2-61' d='M6.844334-3.257783C6.993773-3.257783 7.183064-3.257783 7.183064-3.457036S6.993773-3.656289 6.854296-3.656289H.886675C.747198-3.656289 .557908-3.656289 .557908-3.457036S.747198-3.257783 .896638-3.257783H6.844334ZM6.854296-1.325031C6.993773-1.325031 7.183064-1.325031 7.183064-1.524284S6.993773-1.723537 6.844334-1.723537H.896638C.747198-1.723537 .557908-1.723537 .557908-1.524284S.747198-1.325031 .886675-1.325031H6.854296Z'/>
+<path id='c27-04-dh-ni-mogoce-g2-109' d='M1.09589-3.427148V-.757161C1.09589-.308842 .986301-.308842 .318804-.308842V0C.667497-.009963 1.175592-.029888 1.444583-.029888C1.703611-.029888 2.221669-.009963 2.560399 0V-.308842C1.892902-.308842 1.783313-.308842 1.783313-.757161V-2.590286C1.783313-3.626401 2.49066-4.184309 3.128269-4.184309C3.755915-4.184309 3.865504-3.646326 3.865504-3.078456V-.757161C3.865504-.308842 3.755915-.308842 3.088418-.308842V0C3.437111-.009963 3.945205-.029888 4.214197-.029888C4.473225-.029888 4.991283-.009963 5.330012 0V-.308842C4.662516-.308842 4.552927-.308842 4.552927-.757161V-2.590286C4.552927-3.626401 5.260274-4.184309 5.897883-4.184309C6.525529-4.184309 6.635118-3.646326 6.635118-3.078456V-.757161C6.635118-.308842 6.525529-.308842 5.858032-.308842V0C6.206725-.009963 6.714819-.029888 6.983811-.029888C7.242839-.029888 7.760897-.009963 8.099626 0V-.308842C7.581569-.308842 7.332503-.308842 7.32254-.607721V-2.510585C7.32254-3.367372 7.32254-3.676214 7.013699-4.034869C6.874222-4.204234 6.545455-4.403487 5.967621-4.403487C5.13076-4.403487 4.692403-3.805729 4.523039-3.427148C4.383562-4.293898 3.646326-4.403487 3.198007-4.403487C2.470735-4.403487 2.002491-3.975093 1.723537-3.35741V-4.403487L.318804-4.293898V-3.985056C1.016189-3.985056 1.09589-3.915318 1.09589-3.427148Z'/>
+<path id='c27-04-dh-ni-mogoce-g3-48' d='M3.598506-2.224658C3.598506-2.991781 3.507846-3.542715 3.187049-4.030884C2.970859-4.351681 2.538481-4.630635 1.980573-4.630635C.36264-4.630635 .36264-2.726775 .36264-2.224658S.36264 .139477 1.980573 .139477S3.598506-1.72254 3.598506-2.224658ZM1.980573-.055791C1.659776-.055791 1.234371-.244085 1.094894-.81594C.99726-1.227397 .99726-1.799253 .99726-2.315318C.99726-2.824408 .99726-3.354421 1.101868-3.737983C1.248319-4.288917 1.694645-4.435367 1.980573-4.435367C2.357161-4.435367 2.719801-4.20523 2.84533-3.800747C2.956912-3.424159 2.963885-2.922042 2.963885-2.315318C2.963885-1.799253 2.963885-1.283188 2.873225-.843836C2.733748-.209215 2.259527-.055791 1.980573-.055791Z'/>
+<path id='c27-04-dh-ni-mogoce-g3-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+</defs>
+<g id='c27-04-dh-ni-mogoce-page1'>
+<g stroke-miterlimit='10' transform='translate(-29.611567,2.465121)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='okvir0'>
+<path d='M-17.07181 0H143.60199' fill='none'/>
+<g transform='translate(141.12553,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(142.85349,-7.93852)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-29.611567,2.465121)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-29.611567' y='2.465121' xlink:href='#c27-04-dh-ni-mogoce-g1-120'/>
+<use x='-23.917635' y='3.959502' xlink:href='#c27-04-dh-ni-mogoce-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-25.60728V63.93422' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,61.45776)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(3.63298,67.10585)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-29.611567,2.465121)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-29.611567' y='2.465121' xlink:href='#c27-04-dh-ni-mogoce-g1-121'/>
+<use x='-24.727063' y='3.959502' xlink:href='#c27-04-dh-ni-mogoce-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M3.98335 0C3.98335 2.19997 2.19997 3.98335 0 3.98335S-3.98335 2.19997-3.98335 0S-2.19997-3.98335 0-3.98335S3.98335-2.19997 3.98335 0ZM0 0' fill='none'/>
+<path d='M1.83862 0C1.83862 1.01544 1.01544 1.83862 0 1.83862S-1.83862 1.01544-1.83862 0S-1.01544-1.83862 0-1.83862S1.83862-1.01544 1.83862 0ZM0 0' stroke='none'/>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-29.611567,2.465121)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+<g transform='translate(-12.7696,-7.93852)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-29.611567,2.465121)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-29.611567' y='2.465121' xlink:href='#c27-04-dh-ni-mogoce-g1-122'/>
+<use x='-24.978444' y='3.959502' xlink:href='#c27-04-dh-ni-mogoce-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='okvir1'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M-17.07181 28.45274H119.50143' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M85.35823 28.45274H120.96828' fill='none'/>
+<g transform='translate(118.36325,28.45274)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(120.0912,33.73569)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-29.611567,2.465121)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-29.611567' y='2.465121' xlink:href='#c27-04-dh-ni-mogoce-g1-120'/>
+<use x='-23.917635' y='3.959502' xlink:href='#c27-04-dh-ni-mogoce-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M85.35823 28.45274V58.37233' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,85.35823,55.7673)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(89.1412,61.41539)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-29.611567,2.465121)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-29.611567' y='2.465121' xlink:href='#c27-04-dh-ni-mogoce-g1-121'/>
+<use x='-24.727063' y='3.959502' xlink:href='#c27-04-dh-ni-mogoce-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M87.19685 28.45274C87.19685 29.46819 86.37367 30.29137 85.35823 30.29137S83.5196 29.46819 83.5196 28.45274C83.5196 27.4373 84.34279 26.61412 85.35823 26.61412S87.19685 27.4373 87.19685 28.45274ZM85.35823 28.45274' stroke='none'/>
+</g>
+<g transform='translate(85.35823,28.45274)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-29.611567,2.465121)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(72.3919,33.5857)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-29.611567,2.465121)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-29.611567' y='2.465121' xlink:href='#c27-04-dh-ni-mogoce-g1-111'/>
+<use x='-24.782445' y='3.959502' xlink:href='#c27-04-dh-ni-mogoce-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='razdalja'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-12.80363 .33748V28.11526' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,-12.80363,6.14052)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,-12.80363,0.22499)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,-12.80363,22.31223)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,-12.80363,28.22775)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g transform='translate(-39.21442,11.97636)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-29.611567,2.465121)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-29.611567' y='2.465121' xlink:href='#c27-04-dh-ni-mogoce-g2-48'/>
+<use x='-24.630228' y='2.465121' xlink:href='#c27-04-dh-ni-mogoce-g1-59'/>
+<use x='-21.86282' y='2.465121' xlink:href='#c27-04-dh-ni-mogoce-g2-49'/>
+<use x='-15.221081' y='2.465121' xlink:href='#c27-04-dh-ni-mogoce-g2-109'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='popravek'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<path d='M85.35823 28.45274V0' fill='none'/>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M87.62117 0C87.62117 1.2498 86.60803 2.26294 85.35823 2.26294S83.09529 1.2498 83.09529 0S84.10843-2.26294 85.35823-2.26294S87.62117-1.2498 87.62117 0ZM85.35823 0'/>
+</g>
+<g transform='translate(85.35823,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-29.611567,2.465121)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(80.69156,-13.99625)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-29.611567,2.465121)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-29.611567' y='2.465121' xlink:href='#c27-04-dh-ni-mogoce-g1-111'/>
+<use x='-24.782445' y='-1.150243' xlink:href='#c27-04-dh-ni-mogoce-g0-48'/>
+<use x='-24.782445' y='4.937949' xlink:href='#c27-04-dh-ni-mogoce-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M4.32083-15.6491H85.02075' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,10.12387,-15.6491)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,4.20834,-15.6491)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(79.21771,-15.6491)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(85.13324,-15.6491)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g transform='translate(24.8261,-25.72652)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-29.611567,2.465121)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-29.611567' y='2.465121' xlink:href='#c27-04-dh-ni-mogoce-g1-97'/>
+<use x='-21.578081' y='2.465121' xlink:href='#c27-04-dh-ni-mogoce-g2-61'/>
+<use x='-11.062001' y='2.465121' xlink:href='#c27-04-dh-ni-mogoce-g2-48'/>
+<use x='-6.080662' y='2.465121' xlink:href='#c27-04-dh-ni-mogoce-g1-59'/>
+<use x='-3.313253' y='2.465121' xlink:href='#c27-04-dh-ni-mogoce-g2-51'/>
+<use x='3.328485' y='2.465121' xlink:href='#c27-04-dh-ni-mogoce-g2-109'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 27.19</span>: View along the axis \(z_0\) (circle with a dot, the axis points towards the reader, scale \(1\) cm is \(0{,}1\) m). Frame \(1\) with <span class="nobr">\(\theta = 0\),</span> \(\alpha = 0\) has axis \(x_1\) perpendicular to \(z_0\) (DH1), but the line \(x_1\) passes \(0{,}1\) m beside the axis \(z_0\) (DH2 does not hold). Blue: frame \(1\) with origin \(o_1 = (0{,}3,\ 0{,}1,\ 0{,}2)\) m. Hollow circle: the origin \(o_1'\) after the correction, at \((0{,}3,\ 0,\ 0{,}2)\) m. The height \(0{,}2\) m is not visible in the view.</figcaption></figure>
+<p>We place frame \(1\) with axes parallel to the axes of frame <span class="nobr">\(0\),</span> so <span class="nobr">\(\mat R = \mat I\),</span> and with origin \(\vek o_1 = (0{,}3,\ 0{,}1,\ 0{,}2)\) m (figure <a class="xref" href="sec-dh-zapis.html#fig-dh-ni-mogoce" data-knowl="fig-dh-ni-mogoce">27.19</a>). The first column \(x_1 = (1, 0, 0)\) is perpendicular to the <span class="nobr"><a data-del="okvir0" class="xref kaz" href="sec-dh-zapis.html#fig-dh-ni-mogoce" data-knowl="fig-dh-ni-mogoce">axis \(z_0\)</a>,</span> DH1 holds. The line through \(o_1\) in the direction \(x_1\) is the <a data-del="okvir1" class="xref kaz" href="sec-dh-zapis.html#fig-dh-ni-mogoce" data-knowl="fig-dh-ni-mogoce">blue line</a> at \(y = 0{,}1\) m, and the axis \(z_0\) passes through the origin: the distance between them is \(|\vek o_1 \cdot (x_1 \times z_0)| = |(0{,}3, 0{,}1, 0{,}2)\cdot(0, -1, 0)| = 0{,}1\) m, so the axes do not meet and <a data-del="razdalja" class="xref kaz" href="sec-dh-zapis.html#fig-dh-ni-mogoce" data-knowl="fig-dh-ni-mogoce">DH2 does not hold</a>. The theorem indeed finds no numbers: \(\mat R = \mat I\) gives by step 2 of the proof \(\theta = \alpha = 0\) (up to <span class="nobr">\(2\pi\)),</span> and the last column of the matrix <a class="xref" href="sec-dh-zapis.html#eq-dh-matrika" data-knowl="eq-dh-matrika">(27.15)</a> at \(\theta = 0\) is <span class="nobr">\((a, 0, d)\),</span> which has no second component <span class="nobr">\(0{,}1\).</span> No quadruple \((\theta, d, a, \alpha)\) gives this matrix. We must <a data-del="popravek" class="xref kaz" href="sec-dh-zapis.html#fig-dh-ni-mogoce" data-knowl="fig-dh-ni-mogoce">move frame \(1\) to the common perpendicular</a>, to \(o_1' = (0{,}3,\ 0,\ 0{,}2)\) m, where \(a = 0{,}3\) m and \(d = 0{,}2\) m, and then DH1 and DH2 hold (NumPy, num-04.py).</p>
+<p>The third case is uniqueness. The theorem speaks of a given pose of two frames: if they are given, the numbers are unique. In the choice of a frame there is no uniqueness. For arm \(A\) the axes \(z_0\) and \(z_1\) are parallel and there are <a data-del="vzporedni" class="xref kaz" href="sec-dh-zapis.html#fig-dh-tri-primeri" data-knowl="fig-dh-tri-primeri">infinitely many common perpendiculars</a>: every line that goes perpendicularly from one to the other is a common perpendicular (figure <a class="xref" href="sec-dh-zapis.html#fig-dh-tri-primeri" data-knowl="fig-dh-tri-primeri">27.20</a>, middle). We can place the origin \(o_1\) at any height \(h\) along <span class="nobr">\(z_1\).</span> We place it at \(h = 0{,}3\) m, so \(d_1 = 0{,}3\) m. Then frame <span class="nobr">\(2\),</span> which we want at the tip, must have \(d_2 = -0{,}3\) m, so that the tip does not move: \(\mat T_{\mathrm{DH}}(q_1, 0{,}3, l_1, 0)\,\mat T_{\mathrm{DH}}(q_2, -0{,}3, l_2, 0)\) at \(q = (30^\circ, 60^\circ)\) equals the product with \(d_1 = d_2 = 0\) (NumPy, num-04.py), but if we left <span class="nobr">\(d_2 = 0\),</span> the tip would be at the height \(0{,}3\) m. The final matrix \(\mat T^{\ix{0}}_{\ix{n}}\) therefore does not depend on the choice of the intermediate frames, if frames \(0\) and \(n\) do not change. What is the reason? The matrix \(\mat T^{\ix{0}}_{\ix{n}}\) is the pose of frame \(n\) relative to frame <span class="nobr">\(0\),</span> and the product \(\mat T^{\ix{0}}_{\ix{1}} \cdots \mat T^{\ix{n-1}}_{\ix{n}}\) by lemma <a class="xref" href="sec-homogene-transformacije.html#lem-homogena-sestavljanje" data-knowl="lem-homogena-sestavljanje">27.22</a> only composes the poses of neighbouring frames, and the intermediate frames cancel. The convention for the choice of frames therefore determines only the numbers in the table, not the result. SPONG for parallel axes chooses the perpendicular through <span class="nobr">\(o_{\mathrm{i}-1}\),</span> so \(d_{\mathrm{i}} = 0\) (PDF p. 107).</p>
+
+<h3 id="sec-postavitev-okvirjev-na-robotu"><span class="h-num">27.4.3</span> Placing the frames on a robot</h3>
+<p>The theorem showed what the <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">frames</a> should be like. How do we place them on a given arm? The direction of the axis \(z_{\mathrm{i}}\) is free: by point 3 of theorem <a class="xref" href="sec-dh-zapis.html#thm-dh-obstoj" data-knowl="thm-dh-obstoj">27.30</a> we have \(z_{\mathrm{i}} = (s_\theta s_\alpha, -c_\theta s_\alpha, c_\alpha)\) in frame <span class="nobr">\(i-1\),</span> and by the choice of \(\theta\) and \(\alpha\) we get every unit direction. So for \(z_{\mathrm{i}}\) we take the axis of joint <span class="nobr">\(i+1\),</span> as we did for arm <span class="nobr">\(A\):</span> \(z_{\mathrm{i}-1}\) is the axis of joint \(i\) and the position of the axis \(x_{\mathrm{i}}\) is perpendicular to it by DH1. For the axes \(x_{\mathrm{i}}\) we choose by the given \(z_{\mathrm{i}-1}\) and \(z_{\mathrm{i}}\) and distinguish three cases (figure <a class="xref" href="sec-dh-zapis.html#fig-dh-tri-primeri" data-knowl="fig-dh-tri-primeri">27.20</a>).</p>
+
+<figure class="blk slika" id="fig-dh-tri-primeri"><p><span class="svgfig" role="img" aria-label="Skew, parallel and intersecting joint axes and the axis x_i"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='534.29pt' height='195.63pt' viewBox='-72.000004 -72.000011 395.769873 144.909888'>
+<defs>
+<path id='c27-04-tri-primeri-g0-0' d='M5.188543-1.57609C5.300125-1.57609 5.467497-1.57609 5.467497-1.743462C5.467497-1.917808 5.307098-1.917808 5.188543-1.917808H1.03213C.920548-1.917808 .753176-1.917808 .753176-1.750436C.753176-1.57609 .913574-1.57609 1.03213-1.57609H5.188543Z'/>
+<path id='c27-04-tri-primeri-g1-111' d='M4.672478-2.719801C4.672478-3.755915 3.975093-4.403487 3.078456-4.403487C1.743462-4.403487 .408468-2.988792 .408468-1.574097C.408468-.587796 1.075965 .109589 2.002491 .109589C3.327522 .109589 4.672478-1.265255 4.672478-2.719801ZM2.012453-.109589C1.58406-.109589 1.145704-.418431 1.145704-1.195517C1.145704-1.683686 1.404732-2.759651 1.723537-3.267746C2.221669-4.034869 2.789539-4.184309 3.068493-4.184309C3.646326-4.184309 3.945205-3.706102 3.945205-3.108344C3.945205-2.719801 3.745953-1.673724 3.367372-1.026152C3.01868-.448319 2.470735-.109589 2.012453-.109589Z'/>
+<path id='c27-04-tri-primeri-g1-120' d='M3.327522-3.008717C3.387298-3.267746 3.616438-4.184309 4.313823-4.184309C4.363636-4.184309 4.60274-4.184309 4.811955-4.054795C4.533001-4.004981 4.333748-3.755915 4.333748-3.516812C4.333748-3.35741 4.443337-3.16812 4.712329-3.16812C4.931507-3.16812 5.250311-3.347447 5.250311-3.745953C5.250311-4.26401 4.662516-4.403487 4.323786-4.403487C3.745953-4.403487 3.39726-3.875467 3.277709-3.646326C3.028643-4.303861 2.49066-4.403487 2.201743-4.403487C1.165629-4.403487 .597758-3.118306 .597758-2.86924C.597758-2.769614 .697385-2.769614 .71731-2.769614C.797011-2.769614 .826899-2.789539 .846824-2.879203C1.185554-3.935243 1.843088-4.184309 2.181818-4.184309C2.371108-4.184309 2.719801-4.094645 2.719801-3.516812C2.719801-3.20797 2.550436-2.540473 2.181818-1.145704C2.022416-.52802 1.673724-.109589 1.235367-.109589C1.175592-.109589 .946451-.109589 .737235-.239103C.986301-.288917 1.205479-.498132 1.205479-.777086C1.205479-1.046077 .986301-1.125778 .836862-1.125778C.537983-1.125778 .288917-.86675 .288917-.547945C.288917-.089664 .787049 .109589 1.225405 .109589C1.882939 .109589 2.241594-.587796 2.271482-.647572C2.391034-.278954 2.749689 .109589 3.347447 .109589C4.373599 .109589 4.941469-1.175592 4.941469-1.424658C4.941469-1.524284 4.851806-1.524284 4.821918-1.524284C4.732254-1.524284 4.712329-1.484433 4.692403-1.414695C4.363636-.348692 3.686177-.109589 3.367372-.109589C2.978829-.109589 2.819427-.428394 2.819427-.767123C2.819427-.986301 2.879203-1.205479 2.988792-1.643836L3.327522-3.008717Z'/>
+<path id='c27-04-tri-primeri-g1-122' d='M1.325031-.826899C1.863014-1.404732 2.15193-1.653798 2.510585-1.96264C2.510585-1.972603 3.128269-2.500623 3.486924-2.859278C4.433375-3.785803 4.652553-4.26401 4.652553-4.303861C4.652553-4.403487 4.562889-4.403487 4.542964-4.403487C4.473225-4.403487 4.443337-4.383562 4.393524-4.293898C4.094645-3.815691 3.88543-3.656289 3.646326-3.656289S3.287671-3.805729 3.138232-3.975093C2.948941-4.204234 2.779577-4.403487 2.450809-4.403487C1.703611-4.403487 1.24533-3.476961 1.24533-3.267746C1.24533-3.217933 1.275218-3.158157 1.364882-3.158157S1.474471-3.20797 1.494396-3.267746C1.683686-3.726027 2.261519-3.73599 2.34122-3.73599C2.550436-3.73599 2.739726-3.666252 2.968867-3.58655C3.367372-3.437111 3.476961-3.437111 3.73599-3.437111C3.377335-3.008717 2.540473-2.291407 2.351183-2.132005L1.454545-1.295143C.777086-.627646 .428394-.059776 .428394 .009963C.428394 .109589 .52802 .109589 .547945 .109589C.627646 .109589 .647572 .089664 .707347-.019925C.936488-.368618 1.235367-.637609 1.554172-.637609C1.783313-.637609 1.882939-.547945 2.132005-.259029C2.30137-.049813 2.480697 .109589 2.769614 .109589C3.755915 .109589 4.333748-1.155666 4.333748-1.424658C4.333748-1.474471 4.293898-1.524284 4.214197-1.524284C4.124533-1.524284 4.104608-1.464508 4.07472-1.39477C3.845579-.747198 3.20797-.557908 2.879203-.557908C2.67995-.557908 2.500623-.617684 2.291407-.687422C1.952677-.816936 1.803238-.856787 1.594022-.856787C1.574097-.856787 1.414695-.856787 1.325031-.826899Z'/>
+<path id='c27-04-tri-primeri-g2-105' d='M2.259527-4.358655C2.259527-4.470237 2.175841-4.623661 1.980573-4.623661C1.792279-4.623661 1.590037-4.442341 1.590037-4.2401C1.590037-4.121544 1.680697-3.975093 1.868991-3.975093C2.071233-3.975093 2.259527-4.170361 2.259527-4.358655ZM.836862-.81594C.808966-.72528 .774097-.641594 .774097-.523039C.774097-.195268 1.053051 .069738 1.436613 .069738C2.133998 .069738 2.440847-.892653 2.440847-.99726C2.440847-1.08792 2.350187-1.08792 2.329265-1.08792C2.231631-1.08792 2.224658-1.046077 2.196762-.969365C2.036364-.411457 1.729514-.125529 1.457534-.125529C1.318057-.125529 1.283188-.216189 1.283188-.369614C1.283188-.530012 1.332005-.662516 1.39477-.81594C1.464508-1.004234 1.54122-1.192528 1.617933-1.373848C1.680697-1.54122 1.931756-2.175841 1.959651-2.259527C1.980573-2.329265 2.001494-2.412951 2.001494-2.48269C2.001494-2.810461 1.72254-3.075467 1.338979-3.075467C.648568-3.075467 .327771-2.127024 .327771-2.008468C.327771-1.917808 .425405-1.917808 .446326-1.917808C.54396-1.917808 .550934-1.952677 .571856-2.02939C.753176-2.629141 1.060025-2.880199 1.318057-2.880199C1.429639-2.880199 1.492403-2.824408 1.492403-2.636115C1.492403-2.475716 1.45056-2.371108 1.276214-1.93873L.836862-.81594Z'/>
+<path id='c27-04-tri-primeri-g3-40' d='M3.297634 2.391034C3.297634 2.361146 3.297634 2.34122 3.128269 2.171856C1.882939 .916563 1.564134-.966376 1.564134-2.49066C1.564134-4.224159 1.942715-5.957659 3.16812-7.202989C3.297634-7.32254 3.297634-7.342466 3.297634-7.372354C3.297634-7.442092 3.257783-7.47198 3.198007-7.47198C3.098381-7.47198 2.201743-6.794521 1.613948-5.529265C1.105853-4.433375 .986301-3.327522 .986301-2.49066C.986301-1.713574 1.09589-.508095 1.643836 .617684C2.241594 1.843088 3.098381 2.49066 3.198007 2.49066C3.257783 2.49066 3.297634 2.460772 3.297634 2.391034Z'/>
+<path id='c27-04-tri-primeri-g3-41' d='M2.879203-2.49066C2.879203-3.267746 2.769614-4.473225 2.221669-5.599004C1.62391-6.824408 .767123-7.47198 .667497-7.47198C.607721-7.47198 .56787-7.43213 .56787-7.372354C.56787-7.342466 .56787-7.32254 .757161-7.143213C1.733499-6.156912 2.30137-4.572852 2.30137-2.49066C2.30137-.787049 1.932752 .966376 .697385 2.221669C.56787 2.34122 .56787 2.361146 .56787 2.391034C.56787 2.450809 .607721 2.49066 .667497 2.49066C.767123 2.49066 1.663761 1.8132 2.251557 .547945C2.759651-.547945 2.879203-1.653798 2.879203-2.49066Z'/>
+<path id='c27-04-tri-primeri-g3-97' d='M3.317559-.757161C3.35741-.358655 3.626401 .059776 4.094645 .059776C4.303861 .059776 4.911582-.079701 4.911582-.886675V-1.444583H4.662516V-.886675C4.662516-.308842 4.41345-.249066 4.303861-.249066C3.975093-.249066 3.935243-.697385 3.935243-.747198V-2.739726C3.935243-3.158157 3.935243-3.5467 3.576588-3.915318C3.188045-4.303861 2.689913-4.463263 2.211706-4.463263C1.39477-4.463263 .707347-3.995019 .707347-3.337484C.707347-3.038605 .9066-2.86924 1.165629-2.86924C1.444583-2.86924 1.62391-3.068493 1.62391-3.327522C1.62391-3.447073 1.574097-3.775841 1.115816-3.785803C1.384807-4.134496 1.872976-4.244085 2.191781-4.244085C2.67995-4.244085 3.247821-3.855542 3.247821-2.968867V-2.600249C2.739726-2.570361 2.042341-2.540473 1.414695-2.241594C.667497-1.902864 .418431-1.384807 .418431-.946451C.418431-.139477 1.384807 .109589 2.012453 .109589C2.669988 .109589 3.128269-.288917 3.317559-.757161ZM3.247821-2.391034V-1.39477C3.247821-.448319 2.530511-.109589 2.082192-.109589C1.594022-.109589 1.185554-.458281 1.185554-.956413C1.185554-1.504359 1.603985-2.331258 3.247821-2.391034Z'/>
+<path id='c27-04-tri-primeri-g3-98' d='M1.713574-3.755915V-6.914072L.278954-6.804483V-6.495641C.976339-6.495641 1.05604-6.425903 1.05604-5.937733V0H1.305106C1.315068-.009963 1.39477-.14944 1.663761-.617684C1.8132-.388543 2.231631 .109589 2.968867 .109589C4.154421 .109589 5.190535-.86675 5.190535-2.15193C5.190535-3.417186 4.214197-4.403487 3.078456-4.403487C2.30137-4.403487 1.872976-3.935243 1.713574-3.755915ZM1.743462-1.135741V-3.188045C1.743462-3.377335 1.743462-3.387298 1.853051-3.5467C2.241594-4.104608 2.789539-4.184309 3.028643-4.184309C3.476961-4.184309 3.835616-3.92528 4.07472-3.5467C4.333748-3.138232 4.363636-2.570361 4.363636-2.161893C4.363636-1.793275 4.343711-1.195517 4.054795-.747198C3.845579-.438356 3.466999-.109589 2.929016-.109589C2.480697-.109589 2.122042-.348692 1.882939-.71731C1.743462-.926526 1.743462-.956413 1.743462-1.135741Z'/>
+<path id='c27-04-tri-primeri-g3-99' d='M1.165629-2.171856C1.165629-3.795766 1.982565-4.214197 2.510585-4.214197C2.600249-4.214197 3.227895-4.204234 3.576588-3.845579C3.16812-3.815691 3.108344-3.516812 3.108344-3.387298C3.108344-3.128269 3.287671-2.929016 3.566625-2.929016C3.825654-2.929016 4.024907-3.098381 4.024907-3.39726C4.024907-4.07472 3.267746-4.463263 2.500623-4.463263C1.255293-4.463263 .33873-3.387298 .33873-2.15193C.33873-.876712 1.325031 .109589 2.480697 .109589C3.815691 .109589 4.134496-1.085928 4.134496-1.185554S4.034869-1.285181 4.004981-1.285181C3.915318-1.285181 3.895392-1.24533 3.875467-1.185554C3.58655-.259029 2.938979-.139477 2.570361-.139477C2.042341-.139477 1.165629-.56787 1.165629-2.171856Z'/>
+<path id='c27-04-tri-primeri-g4-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+</defs>
+<g id='c27-04-tri-primeri-page1'>
+<g stroke-miterlimit='10' transform='translate(-52.330008,61.123159)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='mimobezni'>
+<path d='M0-11.38092V98.07785' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,95.6014)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-9.10796,108.39633)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.330008,61.123159)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-52.330008' y='61.123159' xlink:href='#c27-04-tri-primeri-g1-122'/>
+<use x='-47.696884' y='62.61754' xlink:href='#c27-04-tri-primeri-g2-105'/>
+<use x='-44.878158' y='62.61754' xlink:href='#c27-04-tri-primeri-g0-0'/>
+<use x='-38.651478' y='62.61754' xlink:href='#c27-04-tri-primeri-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M79.71008 20.8859L53.74554 76.87607' fill='none'/>
+<g transform='matrix(-0.42068,0.90717,-0.90717,-0.42068,54.84143,74.51288)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(47.97885,85.99052)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.330008,61.123159)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-52.330008' y='61.123159' xlink:href='#c27-04-tri-primeri-g1-122'/>
+<use x='-47.696884' y='62.61754' xlink:href='#c27-04-tri-primeri-g2-105'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M0 45.52455H86.82507' fill='none'/>
+<g transform='translate(84.22005,45.52455)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(94.83167,50.8075)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.330008,61.123159)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-52.330008' y='61.123159' xlink:href='#c27-04-tri-primeri-g1-120'/>
+<use x='-46.636075' y='62.61754' xlink:href='#c27-04-tri-primeri-g2-105'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M1.83862 45.52455C1.83862 46.54 1.01544 47.36317 0 47.36317S-1.83862 46.54-1.83862 45.52455C-1.83862 44.50911-1.01544 43.68593 0 43.68593S1.83862 44.50911 1.83862 45.52455ZM0 45.52455' stroke='none'/>
+</g>
+<g transform='translate(0.0,45.52455)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.330008,61.123159)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M70.12503 45.52455C70.12503 46.54 69.30185 47.36317 68.2864 47.36317C67.27097 47.36317 66.44778 46.54 66.44778 45.52455C66.44778 44.50911 67.27097 43.68593 68.2864 43.68593C69.30185 43.68593 70.12503 44.50911 70.12503 45.52455ZM68.2864 45.52455' stroke='none'/>
+</g>
+<g transform='translate(68.2864,45.52455)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.330008,61.123159)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(71.91939,37.58603)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.330008,61.123159)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-52.330008' y='61.123159' xlink:href='#c27-04-tri-primeri-g1-111'/>
+<use x='-47.500886' y='62.61754' xlink:href='#c27-04-tri-primeri-g2-105'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-16.41078,122.7894)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.330008,61.123159)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-52.330008' y='61.123159' xlink:href='#c27-04-tri-primeri-g3-40'/>
+<use x='-48.455634' y='61.123159' xlink:href='#c27-04-tri-primeri-g3-97'/>
+<use x='-43.474295' y='61.123159' xlink:href='#c27-04-tri-primeri-g3-41'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='vzporedni'>
+<path d='M159.33553-11.38092V98.07785' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,159.33553,95.6014)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(150.22757,108.39633)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.330008,61.123159)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-52.330008' y='61.123159' xlink:href='#c27-04-tri-primeri-g1-122'/>
+<use x='-47.696884' y='62.61754' xlink:href='#c27-04-tri-primeri-g2-105'/>
+<use x='-44.878158' y='62.61754' xlink:href='#c27-04-tri-primeri-g0-0'/>
+<use x='-38.651478' y='62.61754' xlink:href='#c27-04-tri-primeri-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M227.62193-11.38092V98.20642' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,227.62193,95.6014)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(223.63205,107.71298)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.330008,61.123159)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-52.330008' y='61.123159' xlink:href='#c27-04-tri-primeri-g1-122'/>
+<use x='-47.696884' y='62.61754' xlink:href='#c27-04-tri-primeri-g2-105'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M159.33553 11.38092H227.62193' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M159.33553 56.90549H227.62193' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M159.33553 79.66776H227.62193' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M159.33553 34.1432H249.00604' fill='none'/>
+<g transform='translate(246.40102,34.1432)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(257.01263,39.42615)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.330008,61.123159)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-52.330008' y='61.123159' xlink:href='#c27-04-tri-primeri-g1-120'/>
+<use x='-46.636075' y='62.61754' xlink:href='#c27-04-tri-primeri-g2-105'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<path d='M161.17415 34.1432C161.17415 35.15865 160.35097 35.98183 159.33553 35.98183C158.32008 35.98183 157.4969 35.15865 157.4969 34.1432C157.4969 33.12776 158.32008 32.30458 159.33553 32.30458C160.35097 32.30458 161.17415 33.12776 161.17415 34.1432ZM159.33553 34.1432' stroke='none'/>
+<g transform='translate(159.33553,34.1432)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.330008,61.123159)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M229.46056 34.1432C229.46056 35.15865 228.63737 35.98183 227.62193 35.98183S225.78331 35.15865 225.78331 34.1432C225.78331 33.12776 226.60649 32.30458 227.62193 32.30458S229.46056 33.12776 229.46056 34.1432ZM227.62193 34.1432' stroke='none'/>
+</g>
+<g transform='translate(227.62193,34.1432)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.330008,61.123159)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(137.28989,26.20468)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.330008,61.123159)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-52.330008' y='61.123159' xlink:href='#c27-04-tri-primeri-g1-111'/>
+<use x='-47.500886' y='62.61754' xlink:href='#c27-04-tri-primeri-g2-105'/>
+<use x='-44.682159' y='62.61754' xlink:href='#c27-04-tri-primeri-g0-0'/>
+<use x='-38.45548' y='62.61754' xlink:href='#c27-04-tri-primeri-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(231.25491,26.20468)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.330008,61.123159)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-52.330008' y='61.123159' xlink:href='#c27-04-tri-primeri-g1-111'/>
+<use x='-47.500886' y='62.61754' xlink:href='#c27-04-tri-primeri-g2-105'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(142.36917,122.7894)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.330008,61.123159)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-52.330008' y='61.123159' xlink:href='#c27-04-tri-primeri-g3-40'/>
+<use x='-48.455634' y='61.123159' xlink:href='#c27-04-tri-primeri-g3-98'/>
+<use x='-42.920817' y='61.123159' xlink:href='#c27-04-tri-primeri-g3-41'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='sekajoci'>
+<path d='M318.67064-11.38092V98.07785' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,318.67064,95.6014)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(309.56268,108.39633)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.330008,61.123159)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-52.330008' y='61.123159' xlink:href='#c27-04-tri-primeri-g1-122'/>
+<use x='-47.696884' y='62.61754' xlink:href='#c27-04-tri-primeri-g2-105'/>
+<use x='-44.878158' y='62.61754' xlink:href='#c27-04-tri-primeri-g0-0'/>
+<use x='-38.651478' y='62.61754' xlink:href='#c27-04-tri-primeri-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M326.83664 27.93805L304.13048 76.87633' fill='none'/>
+<g transform='matrix(-0.42085,0.9071,-0.9071,-0.42085,305.2268,74.51329)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(298.36308,85.99052)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.330008,61.123159)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-52.330008' y='61.123159' xlink:href='#c27-04-tri-primeri-g1-122'/>
+<use x='-47.696884' y='62.61754' xlink:href='#c27-04-tri-primeri-g2-105'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M293.06335 45.52455H357.12613' fill='none'/>
+<g transform='translate(354.5211,45.52455)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(365.13272,50.8075)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.330008,61.123159)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-52.330008' y='61.123159' xlink:href='#c27-04-tri-primeri-g1-120'/>
+<use x='-46.636075' y='62.61754' xlink:href='#c27-04-tri-primeri-g2-105'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M320.50926 45.52455C320.50926 46.54 319.68608 47.36317 318.67064 47.36317S316.83202 46.54 316.83202 45.52455C316.83202 44.50911 317.6552 43.68593 318.67064 43.68593S320.50926 44.50911 320.50926 45.52455ZM318.67064 45.52455' stroke='none'/>
+</g>
+<g transform='translate(318.67064,45.52455)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.330008,61.123159)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(306.86115,37.58603)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.330008,61.123159)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-52.330008' y='61.123159' xlink:href='#c27-04-tri-primeri-g1-111'/>
+<use x='-47.500886' y='62.61754' xlink:href='#c27-04-tri-primeri-g2-105'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(302.81543,122.7894)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.330008,61.123159)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-52.330008' y='61.123159' xlink:href='#c27-04-tri-primeri-g3-40'/>
+<use x='-48.455634' y='61.123159' xlink:href='#c27-04-tri-primeri-g3-99'/>
+<use x='-44.027782' y='61.123159' xlink:href='#c27-04-tri-primeri-g3-41'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 27.20</span>: Three cases of the axes \(z_{\mathrm{i}-1}\) and \(z_{\mathrm{i}}\) and the axis \(x_{\mathrm{i}}\) (blue) determined by them, oblique view, <span class="nobr">\(\alpha = 35^\circ\).</span> (a) Skew axes: the common perpendicular is unique, with the origin \(o_{\mathrm{i}}\) on the axis <span class="nobr">\(z_{\mathrm{i}}\).</span> (b) Parallel axes: there are infinitely many common perpendiculars (dashed), we choose the one through <span class="nobr">\(o_{\mathrm{i}-1}\).</span> (c) The axes meet: the axis \(x_{\mathrm{i}}\) is perpendicular to the plane of both, the origin is at the intersection.</figcaption></figure>
+<p>Lemma <a class="xref" href="sec-dh-zapis.html#lem-skupna-normala" data-knowl="lem-skupna-normala">27.29</a> gives the first three steps of the placement. Let \(z_{\mathrm{i}-1}\) be already placed and \(z_{\mathrm{i}}\) chosen.</p>
+<ol>
+<li>(i) If the <a data-del="mimobezni" class="xref kaz" href="sec-dh-zapis.html#fig-dh-tri-primeri" data-knowl="fig-dh-tri-primeri">axes \(z_{\mathrm{i}-1}\) and \(z_{\mathrm{i}}\) are skew</a>, by point 1 of lemma <a class="xref" href="sec-dh-zapis.html#lem-skupna-normala" data-knowl="lem-skupna-normala">27.29</a> the common perpendicular is unique and the axis \(x_{\mathrm{i}}\) is its line, directed from \(z_{\mathrm{i}-1}\) towards <span class="nobr">\(z_{\mathrm{i}}\).</span> The <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">origin</a> \(o_{\mathrm{i}}\) is the point where this line meets <span class="nobr">\(z_{\mathrm{i}}\).</span> So DH1 (perpendicular) and DH2 (the line meets <span class="nobr">\(z_{\mathrm{i}-1}\))</span> hold by construction.</li>
+<li>(ii) If the <a data-del="vzporedni" class="xref kaz" href="sec-dh-zapis.html#fig-dh-tri-primeri" data-knowl="fig-dh-tri-primeri">axes are parallel</a>, by point 2 of the lemma there are infinitely many common perpendiculars and DH1 does not determine the axis \(x_{\mathrm{i}}\) completely. We choose the origin \(o_{\mathrm{i}}\) on the axis \(z_{\mathrm{i}}\) by our own choice, usually so that the perpendicular passes through <span class="nobr">\(o_{\mathrm{i}-1}\),</span> then <span class="nobr">\(d_{\mathrm{i}} = 0\).</span> The twist is \(\alpha_{\mathrm{i}} = 0\) or <span class="nobr">\(\pi\).</span></li>
+<li>(iii) If the <a data-del="sekajoci" class="xref kaz" href="sec-dh-zapis.html#fig-dh-tri-primeri" data-knowl="fig-dh-tri-primeri">axes meet</a>, \(o_{\mathrm{i}}\) is at the intersection and the axis \(x_{\mathrm{i}}\) is perpendicular to the plane of both axes (we take the direction arbitrarily), so <span class="nobr">\(a_{\mathrm{i}} = 0\).</span></li>
+</ol>
+<p>In all cases the axis \(y_{\mathrm{i}}\) completes the frame to a <a class="xref auto" href="sec-simetrija-napetosti.html#def-desnosucni-sistem" data-knowl="def-desnosucni-sistem">right-handed</a> one, <span class="nobr">\(y_{\mathrm{i}} = z_{\mathrm{i}} \times x_{\mathrm{i}}\).</span></p>
+<p>The procedure for the whole arm is as follows. There are \(n\) moving links (links \(1\) to <span class="nobr">\(n\))</span> and \(n\) joints, and \(n + 1\) frames, because the base, link <span class="nobr">\(0\),</span> also has a frame.</p>
+<ol>
+<li>For every joint \(i\) we take its axis as the axis <span class="nobr">\(z_{\mathrm{i}-1}\):</span> for a revolute joint the axis of rotation, for a prismatic joint the direction of the shift.</li>
+<li>We place frame \(0\) on the base. The origin \(o_0\) is an arbitrary point on <span class="nobr">\(z_0\),</span> and the axes \(x_0\) and \(y_0\) are arbitrary ones that make a right-handed frame.</li>
+<li>For \(i = 1, \dots, n-1\) we place frame \(i\) by cases (i) to (iii).</li>
+<li>Frame \(n\) is the tool frame (okvir orodja). For a revolute last joint we take \(z_{\mathrm{n}}\) parallel to <span class="nobr">\(z_{\mathrm{n}-1}\),</span> the origin \(o_{\mathrm{n}}\) at the tip of the tool or in the middle of the gripper, and \(x_{\mathrm{n}}\) so that the frame is right-handed and DH1 and DH2 hold.</li>
+<li>From the frames we read off the table <span class="nobr">\(a_{\mathrm{i}}\),</span> <span class="nobr">\(\alpha_{\mathrm{i}}\),</span> <span class="nobr">\(d_{\mathrm{i}}\),</span> \(\theta_{\mathrm{i}}\) and in each row we compute \(\mat T^{\ix{i-1}}_{\ix{i}}\) by equation <a class="xref" href="sec-dh-zapis.html#eq-dh-matrika" data-knowl="eq-dh-matrika">(27.15)</a>.</li>
+</ol>
+<p>This is SPONG section 3.2.2 (PDF p. 105-109). It is known as an algorithm with nine steps. Our description is shorter, because we proved the existence and uniqueness of the numbers in theorem <a class="xref" href="sec-dh-zapis.html#thm-dh-obstoj" data-knowl="thm-dh-obstoj">27.30</a>, and SPONG puts steps 8 and 9 into a table, which is summarized by definition <a class="xref" href="sec-dh-zapis.html#def-direktna-kinematika" data-knowl="def-direktna-kinematika">27.31</a>.</p>
+
+<h3 id="sec-direktna-kinematika"><span class="h-num">27.4.4</span> Forward kinematics</h3>
+<p>The aim: to compute the pose of the tool from the angles and displacements of the joints. With a DH table this means multiplying \(n\) <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a>.</p>
+
+<div class="blk definicija" id="def-direktna-kinematika"><div class="blk-head"><span class="blk-label">Definition 27.31</span> <span class="blk-title">Forward kinematics (direktna kinematika)</span></div><div class="blk-body"><p>Let an open chain have \(n\) joints, <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">frames</a> placed by the procedure above, and DH <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> \(\mat T^{\ix{i-1}}_{\ix{i}}(q_{\mathrm{i}})\) by definition <a class="xref" href="sec-dh-zapis.html#def-dh-parametri" data-knowl="def-dh-parametri">27.27</a>. Forward kinematics (direktna kinematika) is the map \(\vek q = (q_1, \dots, q_{\mathrm{n}}) \mapsto \mat T^{\ix{0}}_{\ix{n}}(\vek q)\) with the rule</p>
+<div class="eq" id="eq-dh-direktna">\[\mat T^{\ix{0}}_{\ix{n}}(\vek q) = \mat T^{\ix{0}}_{\ix{1}}(q_1)\,\mat T^{\ix{1}}_{\ix{2}}(q_2)\cdots\mat T^{\ix{n-1}}_{\ix{n}}(q_{\mathrm{n}}) = \begin{bmatrix} \mat R^{\ix{0}}_{\ix{n}}(\vek q) &amp; \vek o^{\ix{0}}_{\ix{n}}(\vek q) \\ \vek 0^\T &amp; 1 \end{bmatrix} , \tag{27.16}\]</div>
+<p>where \(\vek o^{\ix{0}}_{\ix{n}}\) is the position of the tip and \(\mat R^{\ix{0}}_{\ix{n}}\) the <a class="xref auto" href="sec-determinanta.html#def-orientacija" data-knowl="def-orientacija">orientation</a> of the tool in the frame of the base. By lemma <a class="xref" href="sec-homogene-transformacije.html#lem-homogena-sestavljanje" data-knowl="lem-homogena-sestavljanje">27.22</a> this is indeed the pose of frame \(n\) relative to frame <span class="nobr">\(0\).</span></p>
+
+<p class="vir"><span class="vir-label">Source:</span> SPONG (3.4) to (3.9) and step 9 (PDF p. 100 and 109). The name &quot;forward&quot; is in contrast to the inverse problem of the section on inverse kinematics: here the angles are given and we look for the pose, there the other way round.</p></div></div>
+<p>Kinematics is the word for the description of motion without forces (Greek kinema, motion), and &quot;forward&quot; means that we go in the direction that we get simply by multiplying.</p>
+
+<div class="blk primer" id="ex-dh-roka-a"><div class="blk-head"><span class="blk-label">Example 27.32</span> <span class="blk-title">Arm A: table and tip position (roka A)</span></div><div class="blk-body"><p>Arm \(A\) of figure <a class="xref" href="sec-dh-zapis.html#fig-dh-roka-a" data-knowl="fig-dh-roka-a">27.17</a> has \(z_0\) and \(z_1\) parallel (revolute joints, axes out of the page), so case (ii), and <span class="nobr">\(\alpha_1 = \alpha_2 = 0\).</span> The origin \(o_1\) is at the end of the first link, <span class="nobr">\(a_1 = l_1\),</span> \(d_1 = 0\) (the perpendicular passes through <span class="nobr">\(o_0\)),</span> similarly <span class="nobr">\(a_2 = l_2\),</span> <span class="nobr">\(d_2 = 0\).</span> The table:</p>
+<table>
+<thead>
+<tr>
+<th>link \(i\)</th>
+<th>\(a_{\mathrm{i}}\)</th>
+<th>\(\alpha_{\mathrm{i}}\)</th>
+<th>\(d_{\mathrm{i}}\)</th>
+<th>\(\theta_{\mathrm{i}}\)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>\(l_1\)</td>
+<td>\(0\)</td>
+<td>\(0\)</td>
+<td>\(q_1\)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>\(l_2\)</td>
+<td>\(0\)</td>
+<td>\(0\)</td>
+<td>\(q_2\)</td>
+</tr>
+</tbody>
+</table>
+<p>The <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat T^{\ix{0}}_{\ix{1}}\) equals <a class="xref" href="sec-dh-zapis.html#eq-dh-t01-roka-a" data-knowl="eq-dh-t01-roka-a">(27.13)</a>, which by lemma <a class="xref" href="sec-dh-zapis.html#lem-dh-matrika" data-knowl="lem-dh-matrika">27.28</a> is indeed <span class="nobr">\(\mat T_{\mathrm{DH}}(q_1, 0, l_1, 0)\).</span> The product is by equation <a class="xref" href="sec-dh-zapis.html#eq-dh-direktna" data-knowl="eq-dh-direktna">(27.16)</a></p>
+<ol>
+<li><span class="nobr">\(\mat T^{\ix{0}}_{\ix{2}} = \mat T^{\ix{0}}_{\ix{1}}\mat T^{\ix{1}}_{\ix{2}}\),</span> with \(c_{12} = \cos(q_1 + q_2)\) and <span class="nobr">\(s_{12} = \sin(q_1 + q_2)\).</span></li>
+<li>The rotation: the columns are \((c_1, s_1, 0)\) and \((-s_1, c_1, 0)\) times the columns of the matrix <span class="nobr">\(\mat R_{\mathrm{z},\mathrm{q}_2}\),</span> so the first column is <span class="nobr">\((c_1c_2 - s_1s_2,\ s_1c_2 + c_1s_2,\ 0)\),</span> which by the addition theorem (corollary <a class="xref" href="sec-sinus-kosinus.html#cor-adicijska-izreka" data-knowl="cor-adicijska-izreka">8.15</a>) is <span class="nobr">\((c_{12}, s_{12}, 0)\).</span> The arm is planar, so <span class="nobr">\(\mat R^{\ix{0}}_{\ix{2}} = \mat R_{\mathrm{z},\mathrm{q}_1+\mathrm{q}_2}\):</span> <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">frame</a> \(2\) is frame \(0\) turned by <span class="nobr">\(q_1 + q_2\).</span></li>
+<li>The origin: <span class="nobr">\(\vek o^{\ix{0}}_{\ix{2}} = \vek o^{\ix{0}}_{\ix{1}} + \mat R^{\ix{0}}_{\ix{1}}\vek o^{\ix{1}}_{\ix{2}} = (l_1c_1 + l_2c_{12},\ l_1s_1 + l_2s_{12},\ 0)\),</span> again by the addition theorem.</li>
+</ol>
+<p>At \(q = (30^\circ, 60^\circ)\) we have \(\vek o_1 = (0{,}8660,\ 0{,}5000,\ 0)\) m, the tip \(\vek o_2 = (0{,}8660,\ 1{,}0000,\ 0)\) m, and \(\mat R^{\ix{0}}_{\ix{2}}\) is a turn by <span class="nobr">\(90^\circ\),</span> first column <span class="nobr">\((0, 1, 0)\):</span> the second link points vertically up (NumPy, num-04.py), which the <a data-del="clena" class="xref kaz" href="sec-dh-zapis.html#fig-dh-roka-a" data-knowl="fig-dh-roka-a">figure (left)</a> also shows.</p>
+<p>A check with example <a class="xref" href="sec-posplosene-koordinate.html#ex-pko-dvojno-nihalo" data-knowl="ex-pko-dvojno-nihalo">8.49</a>. There the <a data-del="okvirji2" class="xref kaz" href="sec-dh-zapis.html#fig-dh-roka-a" data-knowl="fig-dh-roka-a">axis \(x_0\) is down, the axis \(y_0\) to the right</a>, the angle \(\theta_1 = 30^\circ\) from the axis \(x_0\) to the first bar and \(\theta_2 = 60^\circ\) to the second, measured from the vertical down, so from the axis <span class="nobr">\(x_0\).</span> The <a data-del="koti2" class="xref kaz" href="sec-dh-zapis.html#fig-dh-roka-a" data-knowl="fig-dh-roka-a">relative angle</a> is <span class="nobr">\(q_2 = \theta_2 - \theta_1 = 30^\circ\),</span> which in the table is \(\theta_2\) (figure <a class="xref" href="sec-dh-zapis.html#fig-dh-roka-a" data-knowl="fig-dh-roka-a">27.17</a>, right). The computation gives in the axes <span class="nobr">\(x_0\),</span> \(y_0\) the <a data-del="clena2" class="xref kaz" href="sec-dh-zapis.html#fig-dh-roka-a" data-knowl="fig-dh-roka-a">position of joint \(2\) and of the tip</a>, \(\vek o_1 = (0{,}8660,\ 0{,}5000)\) m and \(\vek o_2 = (1{,}1160,\ 0{,}9330)\) m. For a reader who looks vertically up and to the right this is \((0{,}5000,\ -0{,}8660)\) m and \((0{,}9330,\ -1{,}1160)\) m, exactly the numbers of example <a class="xref" href="sec-posplosene-koordinate.html#ex-pko-dvojno-nihalo" data-knowl="ex-pko-dvojno-nihalo">8.49</a>. So the DH table gives the same position as the <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">coordinates</a> of chapter <a class="xref" href="ch-analiticna-dinamika.html">8</a>.</p>
+</div></div>
+<p>How is it for a spatial arm, where the axes are turned? Arm \(B\) has three revolute joints. Joint \(1\) turns about a vertical axis, joints \(2\) and \(3\) about horizontal axes, parallel to each other and perpendicular to the plane of the arm (figure <a class="xref" href="sec-dh-zapis.html#fig-dh-roka-b" data-knowl="fig-dh-roka-b">27.21</a>).</p>
+
+<figure class="blk slika" id="fig-dh-roka-b"><p><span class="svgfig" role="img" aria-label="Arm B with three revolute joints and frames 0 to 3"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='332.49pt' height='272.67pt' viewBox='-72.000004 -72.000006 246.289913 201.979806'>
+<defs>
+<path id='c27-04-roka-b-g0-100' d='M5.140722-6.804483C5.140722-6.814446 5.140722-6.914072 5.011208-6.914072C4.861768-6.914072 3.915318-6.824408 3.745953-6.804483C3.666252-6.794521 3.606476-6.744707 3.606476-6.615193C3.606476-6.495641 3.696139-6.495641 3.845579-6.495641C4.323786-6.495641 4.343711-6.425903 4.343711-6.326276L4.313823-6.127024L3.716065-3.765878C3.536737-4.134496 3.247821-4.403487 2.799502-4.403487C1.633873-4.403487 .398506-2.938979 .398506-1.484433C.398506-.547945 .946451 .109589 1.723537 .109589C1.92279 .109589 2.420922 .069738 3.01868-.637609C3.098381-.219178 3.447073 .109589 3.92528 .109589C4.273973 .109589 4.503113-.119552 4.662516-.438356C4.83188-.797011 4.961395-1.404732 4.961395-1.424658C4.961395-1.524284 4.871731-1.524284 4.841843-1.524284C4.742217-1.524284 4.732254-1.484433 4.702366-1.344956C4.533001-.697385 4.353674-.109589 3.945205-.109589C3.676214-.109589 3.646326-.368618 3.646326-.56787C3.646326-.806974 3.666252-.876712 3.706102-1.046077L5.140722-6.804483ZM3.068493-1.185554C3.01868-1.006227 3.01868-.986301 2.86924-.816936C2.430884-.268991 2.022416-.109589 1.743462-.109589C1.24533-.109589 1.105853-.657534 1.105853-1.046077C1.105853-1.544209 1.424658-2.769614 1.653798-3.227895C1.96264-3.815691 2.410959-4.184309 2.809465-4.184309C3.457036-4.184309 3.596513-3.367372 3.596513-3.307597S3.576588-3.188045 3.566625-3.138232L3.068493-1.185554Z'/>
+<path id='c27-04-roka-b-g0-113' d='M4.503113-4.293898C4.503113-4.333748 4.473225-4.393524 4.403487-4.393524C4.293898-4.393524 3.895392-3.995019 3.726027-3.706102C3.506849-4.244085 3.118306-4.403487 2.799502-4.403487C1.62391-4.403487 .398506-2.929016 .398506-1.484433C.398506-.508095 .986301 .109589 1.713574 .109589C2.141968 .109589 2.530511-.129514 2.889166-.488169C2.799502-.139477 2.470735 1.205479 2.440847 1.295143C2.361146 1.574097 2.281445 1.613948 1.723537 1.62391C1.594022 1.62391 1.494396 1.62391 1.494396 1.823163C1.494396 1.833126 1.494396 1.932752 1.62391 1.932752C1.942715 1.932752 2.291407 1.902864 2.620174 1.902864C2.958904 1.902864 3.317559 1.932752 3.646326 1.932752C3.696139 1.932752 3.825654 1.932752 3.825654 1.733499C3.825654 1.62391 3.726027 1.62391 3.566625 1.62391C3.088418 1.62391 3.088418 1.554172 3.088418 1.464508C3.088418 1.39477 3.108344 1.334994 3.128269 1.24533L4.503113-4.293898ZM1.743462-.109589C1.145704-.109589 1.105853-.876712 1.105853-1.046077C1.105853-1.524284 1.39477-2.610212 1.564134-3.028643C1.872976-3.765878 2.391034-4.184309 2.799502-4.184309C3.447073-4.184309 3.58655-3.377335 3.58655-3.307597C3.58655-3.247821 3.038605-1.066002 3.008717-1.026152C2.859278-.747198 2.30137-.109589 1.743462-.109589Z'/>
+<path id='c27-04-roka-b-g0-120' d='M3.327522-3.008717C3.387298-3.267746 3.616438-4.184309 4.313823-4.184309C4.363636-4.184309 4.60274-4.184309 4.811955-4.054795C4.533001-4.004981 4.333748-3.755915 4.333748-3.516812C4.333748-3.35741 4.443337-3.16812 4.712329-3.16812C4.931507-3.16812 5.250311-3.347447 5.250311-3.745953C5.250311-4.26401 4.662516-4.403487 4.323786-4.403487C3.745953-4.403487 3.39726-3.875467 3.277709-3.646326C3.028643-4.303861 2.49066-4.403487 2.201743-4.403487C1.165629-4.403487 .597758-3.118306 .597758-2.86924C.597758-2.769614 .697385-2.769614 .71731-2.769614C.797011-2.769614 .826899-2.789539 .846824-2.879203C1.185554-3.935243 1.843088-4.184309 2.181818-4.184309C2.371108-4.184309 2.719801-4.094645 2.719801-3.516812C2.719801-3.20797 2.550436-2.540473 2.181818-1.145704C2.022416-.52802 1.673724-.109589 1.235367-.109589C1.175592-.109589 .946451-.109589 .737235-.239103C.986301-.288917 1.205479-.498132 1.205479-.777086C1.205479-1.046077 .986301-1.125778 .836862-1.125778C.537983-1.125778 .288917-.86675 .288917-.547945C.288917-.089664 .787049 .109589 1.225405 .109589C1.882939 .109589 2.241594-.587796 2.271482-.647572C2.391034-.278954 2.749689 .109589 3.347447 .109589C4.373599 .109589 4.941469-1.175592 4.941469-1.424658C4.941469-1.524284 4.851806-1.524284 4.821918-1.524284C4.732254-1.524284 4.712329-1.484433 4.692403-1.414695C4.363636-.348692 3.686177-.109589 3.367372-.109589C2.978829-.109589 2.819427-.428394 2.819427-.767123C2.819427-.986301 2.879203-1.205479 2.988792-1.643836L3.327522-3.008717Z'/>
+<path id='c27-04-roka-b-g0-122' d='M1.325031-.826899C1.863014-1.404732 2.15193-1.653798 2.510585-1.96264C2.510585-1.972603 3.128269-2.500623 3.486924-2.859278C4.433375-3.785803 4.652553-4.26401 4.652553-4.303861C4.652553-4.403487 4.562889-4.403487 4.542964-4.403487C4.473225-4.403487 4.443337-4.383562 4.393524-4.293898C4.094645-3.815691 3.88543-3.656289 3.646326-3.656289S3.287671-3.805729 3.138232-3.975093C2.948941-4.204234 2.779577-4.403487 2.450809-4.403487C1.703611-4.403487 1.24533-3.476961 1.24533-3.267746C1.24533-3.217933 1.275218-3.158157 1.364882-3.158157S1.474471-3.20797 1.494396-3.267746C1.683686-3.726027 2.261519-3.73599 2.34122-3.73599C2.550436-3.73599 2.739726-3.666252 2.968867-3.58655C3.367372-3.437111 3.476961-3.437111 3.73599-3.437111C3.377335-3.008717 2.540473-2.291407 2.351183-2.132005L1.454545-1.295143C.777086-.627646 .428394-.059776 .428394 .009963C.428394 .109589 .52802 .109589 .547945 .109589C.627646 .109589 .647572 .089664 .707347-.019925C.936488-.368618 1.235367-.637609 1.554172-.637609C1.783313-.637609 1.882939-.547945 2.132005-.259029C2.30137-.049813 2.480697 .109589 2.769614 .109589C3.755915 .109589 4.333748-1.155666 4.333748-1.424658C4.333748-1.474471 4.293898-1.524284 4.214197-1.524284C4.124533-1.524284 4.104608-1.464508 4.07472-1.39477C3.845579-.747198 3.20797-.557908 2.879203-.557908C2.67995-.557908 2.500623-.617684 2.291407-.687422C1.952677-.816936 1.803238-.856787 1.594022-.856787C1.574097-.856787 1.414695-.856787 1.325031-.826899Z'/>
+<path id='c27-04-roka-b-g1-48' d='M3.598506-2.224658C3.598506-2.991781 3.507846-3.542715 3.187049-4.030884C2.970859-4.351681 2.538481-4.630635 1.980573-4.630635C.36264-4.630635 .36264-2.726775 .36264-2.224658S.36264 .139477 1.980573 .139477S3.598506-1.72254 3.598506-2.224658ZM1.980573-.055791C1.659776-.055791 1.234371-.244085 1.094894-.81594C.99726-1.227397 .99726-1.799253 .99726-2.315318C.99726-2.824408 .99726-3.354421 1.101868-3.737983C1.248319-4.288917 1.694645-4.435367 1.980573-4.435367C2.357161-4.435367 2.719801-4.20523 2.84533-3.800747C2.956912-3.424159 2.963885-2.922042 2.963885-2.315318C2.963885-1.799253 2.963885-1.283188 2.873225-.843836C2.733748-.209215 2.259527-.055791 1.980573-.055791Z'/>
+<path id='c27-04-roka-b-g1-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='c27-04-roka-b-g1-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+<path id='c27-04-roka-b-g1-51' d='M1.903861-2.329265C2.447821-2.329265 2.838356-1.952677 2.838356-1.206476C2.838356-.341719 2.336239-.083686 1.931756-.083686C1.652802-.083686 1.039103-.160399 .746202-.571856C1.073973-.585803 1.150685-.81594 1.150685-.962391C1.150685-1.185554 .983313-1.345953 .767123-1.345953C.571856-1.345953 .376588-1.227397 .376588-.941469C.376588-.285928 1.101868 .139477 1.945704 .139477C2.915068 .139477 3.584558-.509091 3.584558-1.206476C3.584558-1.750436 3.138232-2.294396 2.371108-2.454795C3.103362-2.719801 3.368369-3.242839 3.368369-3.668244C3.368369-4.219178 2.733748-4.630635 1.959651-4.630635S.592777-4.254047 .592777-3.696139C.592777-3.459029 .746202-3.326526 .955417-3.326526C1.171606-3.326526 1.311083-3.486924 1.311083-3.682192C1.311083-3.884433 1.171606-4.030884 .955417-4.044832C1.199502-4.351681 1.680697-4.428394 1.93873-4.428394C2.252553-4.428394 2.691905-4.274969 2.691905-3.668244C2.691905-3.375342 2.594271-3.054545 2.412951-2.838356C2.182814-2.57335 1.987547-2.559402 1.638854-2.538481C1.464508-2.524533 1.45056-2.524533 1.415691-2.517559C1.401743-2.517559 1.345953-2.503611 1.345953-2.426899C1.345953-2.329265 1.408717-2.329265 1.527273-2.329265H1.903861Z'/>
+</defs>
+<g id='c27-04-roka-b-page1'>
+<g stroke-miterlimit='10' transform='translate(-38.397498,109.453396)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='clena'>
+<g stroke-width='1.8'>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M0 0V68.2864L67.36208 131.36104L140.98337 116.66426' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='okvir0'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M0 0V46.9914' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,44.38637)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-12.9196,49.81223)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-38.397498,109.453396)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-38.397498' y='109.453396' xlink:href='#c27-04-roka-b-g0-122'/>
+<use x='-33.764375' y='110.947776' xlink:href='#c27-04-roka-b-g1-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M0 0L47.03839-7.0555' fill='none'/>
+<g transform='matrix(0.98888,-0.14832,0.14832,0.98888,44.46234,-6.66913)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(37.23065,-15.77043)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-38.397498,109.453396)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-38.397498' y='109.453396' xlink:href='#c27-04-roka-b-g0-120'/>
+<use x='-32.703566' y='110.947776' xlink:href='#c27-04-roka-b-g1-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<path d='M1.83862 0C1.83862 1.01544 1.01544 1.83862 0 1.83862S-1.83862 1.01544-1.83862 0S-1.01544-1.83862 0-1.83862S1.83862-1.01544 1.83862 0ZM0 0' stroke='none'/>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-38.397498,109.453396)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='okvir1'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M0 68.2864L2.69214 53.07883' fill='none'/>
+<g transform='matrix(0.1743,-0.98468,0.98468,0.1743,2.23808,55.64395)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-1.14,40.8314)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-38.397498,109.453396)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-38.397498' y='109.453396' xlink:href='#c27-04-roka-b-g0-122'/>
+<use x='-33.764375' y='110.947776' xlink:href='#c27-04-roka-b-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M0 68.2864L52.94168 70.42525' fill='none'/>
+<g transform='matrix(0.99913,0.04036,-0.04036,0.99913,50.33893,70.32011)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(43.17726,75.87865)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-38.397498,109.453396)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-38.397498' y='109.453396' xlink:href='#c27-04-roka-b-g0-120'/>
+<use x='-32.703566' y='110.947776' xlink:href='#c27-04-roka-b-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<path d='M1.83862 68.2864C1.83862 69.30185 1.01544 70.12503 0 70.12503S-1.83862 69.30185-1.83862 68.2864C-1.83862 67.27097-1.01544 66.44778 0 66.44778S1.83862 67.27097 1.83862 68.2864ZM0 68.2864' stroke='none'/>
+<g transform='translate(0.0,68.2864)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-38.397498,109.453396)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='okvir2'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M67.36208 131.36104L70.05423 116.15347' fill='none'/>
+<g transform='matrix(0.1743,-0.98468,0.98468,0.1743,69.60017,118.7186)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(66.22209,103.90605)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-38.397498,109.453396)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-38.397498' y='109.453396' xlink:href='#c27-04-roka-b-g0-122'/>
+<use x='-33.764375' y='110.947776' xlink:href='#c27-04-roka-b-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M67.36208 131.36104L104.68251 166.32483' fill='none'/>
+<g transform='matrix(0.72975,0.68367,-0.68367,0.72975,102.7815,164.54385)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(93.78033,174.49533)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-38.397498,109.453396)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-38.397498' y='109.453396' xlink:href='#c27-04-roka-b-g0-120'/>
+<use x='-32.703566' y='110.947776' xlink:href='#c27-04-roka-b-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<path d='M69.2007 131.36104C69.2007 132.37648 68.37752 133.19966 67.36208 133.19966C66.34663 133.19966 65.52345 132.37648 65.52345 131.36104S66.34663 129.52242 67.36208 129.52242C68.37752 129.52242 69.2007 130.3456 69.2007 131.36104ZM67.36208 131.36104' stroke='none'/>
+<g transform='translate(67.36208,131.36104)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-38.397498,109.453396)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='okvir3'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M140.98337 116.66426L143.67549 101.45668' fill='none'/>
+<g transform='matrix(0.1743,-0.98468,0.98468,0.1743,143.22144,104.0218)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(139.84335,89.20926)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-38.397498,109.453396)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-38.397498' y='109.453396' xlink:href='#c27-04-roka-b-g0-122'/>
+<use x='-33.764375' y='110.947776' xlink:href='#c27-04-roka-b-g1-51'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M140.98337 116.66426L192.02614 106.46431' fill='none'/>
+<g transform='matrix(0.98056,-0.19594,0.19594,0.98056,189.47176,106.97473)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(199.95062,97.54823)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-38.397498,109.453396)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-38.397498' y='109.453396' xlink:href='#c27-04-roka-b-g0-120'/>
+<use x='-32.703566' y='110.947776' xlink:href='#c27-04-roka-b-g1-51'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<path d='M142.82199 116.66426C142.82199 117.6797 141.99881 118.50288 140.98337 118.50288S139.14474 117.6797 139.14474 116.66426S139.96793 114.82564 140.98337 114.82564S142.82199 115.64882 142.82199 116.66426ZM140.98337 116.66426' stroke='none'/>
+<g transform='translate(140.98337,116.66426)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-38.397498,109.453396)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='koti'>
+<g fill='#f00' stroke='#f00'>
+<path d='M29.02191-4.35309L29.57654-3.9405L30.10295-3.52367L30.57248-3.0983L30.98514-2.66438L31.32619-2.23193L31.63963-1.79514L31.9238-1.35414L32.13739-.91455L32.29369-.46637L32.37921-.01976L32.4502 .41705L32.43608 .86661L32.379 1.31046' fill='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(42.27286,-3.50056)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-38.397498,109.453396)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-38.397498' y='109.453396' xlink:href='#c27-04-roka-b-g0-113'/>
+<use x='-33.950036' y='110.947776' xlink:href='#c27-04-roka-b-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M38.09834 69.82747L38.02713 71.87474L37.84196 73.94316L37.47227 75.94621L37.00275 77.95207L36.3769 79.91699L35.63712 81.84618L34.75491 83.68683L33.73074 85.52478L32.59282 87.27036L31.35483 88.96208L29.98898 90.55109L28.52393 92.08612L26.94469 93.52838' fill='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(44.80484,87.39322)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-38.397498,109.453396)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-38.397498' y='109.453396' xlink:href='#c27-04-roka-b-g0-113'/>
+<use x='-33.950036' y='110.947776' xlink:href='#c27-04-roka-b-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M94.30676 156.60304L96.39787 154.66837L98.26128 152.57736L99.95448 150.34506L101.44818 147.98085L102.70007 145.53078L103.72424 142.98166L104.53523 140.37105L105.09009 137.69366L105.3888 134.97766L105.4602 132.21904L105.27525 129.47935L104.83394 126.72916L104.16556 124.02196' fill='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(118.09923,145.6663)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-38.397498,109.453396)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-38.397498' y='109.453396' xlink:href='#c27-04-roka-b-g0-113'/>
+<use x='-33.950036' y='110.947776' xlink:href='#c27-04-roka-b-g1-51'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 68.2864L66.69325 70.98' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M67.36208 131.36104L114.50798 175.5143' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='razdalje'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-17.07158-11.61284V55.99861' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,-17.07158,-5.8098)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,-17.07158,-11.72533)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,-17.07158,50.19557)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,-17.07158,56.1111)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g transform='translate(-30.39554,19.47066)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-38.397498,109.453396)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-38.397498' y='109.453396' xlink:href='#c27-04-roka-b-g0-100'/>
+<use x='-33.212066' y='110.947776' xlink:href='#c27-04-roka-b-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 27.21</span>: Arm \(B\) at \(q = (30^\circ, 45^\circ, -60^\circ)\) with frames \(0\) to \(3\) (scale \(6\) cm per metre, oblique view, axis \(y\) into the page). Blue: axes \(z_{\mathrm{i}}\) (axes of joints <span class="nobr">\(1\),</span> <span class="nobr">\(2\),</span> \(3\) and the axis of the tool), <span class="ink-l">black</span><span class="ink-d">white</span>: axes <span class="nobr">\(x_{\mathrm{i}}\),</span> orange: joint angles, grey: links. The axis \(z_0\) is vertical and lies on the first link. The distance \(d_1 = 0{,}4\) m is measured up to joint <span class="nobr">\(2\).</span></figcaption></figure>
+<div class="blk primer" id="ex-dh-roka-b"><div class="blk-head"><span class="blk-label">Example 27.33</span> <span class="blk-title">Arm B: table and tip position (roka B)</span></div><div class="blk-body"><p>We draw the <a data-del="clena" class="xref kaz" href="sec-dh-zapis.html#fig-dh-roka-b" data-knowl="fig-dh-roka-b">links</a>: a vertical first link of <a data-del="razdalje" class="xref kaz" href="sec-dh-zapis.html#fig-dh-roka-b" data-knowl="fig-dh-roka-b">height \(d_1\)</a> from \(o_0\) to <span class="nobr">\(o_1\),</span> then links \(a_2\) and <span class="nobr">\(a_3\).</span> At every joint we place a <a data-del="okvir0,okvir1,okvir2,okvir3" class="xref kaz" href="sec-dh-zapis.html#fig-dh-roka-b" data-knowl="fig-dh-roka-b">frame</a> by the procedure. The <a data-del="okvir0" class="xref kaz" href="sec-dh-zapis.html#fig-dh-roka-b" data-knowl="fig-dh-roka-b">axis \(z_0\)</a> is the axis of joint <span class="nobr">\(1\),</span> vertical. The <a data-del="okvir1" class="xref kaz" href="sec-dh-zapis.html#fig-dh-roka-b" data-knowl="fig-dh-roka-b">axis \(z_1\)</a> is the axis of joint <span class="nobr">\(2\):</span> it meets the axis \(z_0\) (case (iii)), so \(o_1\) is the intersection at the height <span class="nobr">\(d_1\),</span> <span class="nobr">\(a_1 = 0\),</span> the axis \(x_1\) is perpendicular to the plane of the axes \(z_0\) and <span class="nobr">\(z_1\),</span> and <span class="nobr">\(\alpha_1 = 90^\circ\),</span> because \(z_1\) is horizontal. The axes \(z_1\) and \(z_2\) are parallel (case (ii)): <a data-del="okvir2" class="xref kaz" href="sec-dh-zapis.html#fig-dh-roka-b" data-knowl="fig-dh-roka-b">\(o_2\) is at the end of the second link</a>, \(a_2 = 0{,}5\) m, <span class="nobr">\(d_2 = 0\),</span> <span class="nobr">\(\alpha_2 = 0\).</span> Similarly for the <a data-del="okvir3" class="xref kaz" href="sec-dh-zapis.html#fig-dh-roka-b" data-knowl="fig-dh-roka-b">tool</a>: <span class="nobr">\(z_3 \parallel z_2\),</span> \(a_3 = 0{,}4\) m, <span class="nobr">\(d_3 = 0\),</span> <span class="nobr">\(\alpha_3 = 0\).</span> The table:</p>
+<table>
+<thead>
+<tr>
+<th>link \(i\)</th>
+<th>\(a_{\mathrm{i}}\)</th>
+<th>\(\alpha_{\mathrm{i}}\)</th>
+<th>\(d_{\mathrm{i}}\)</th>
+<th>\(\theta_{\mathrm{i}}\)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>\(0\)</td>
+<td>\(90^\circ\)</td>
+<td>\(0{,}4\) m</td>
+<td>\(q_1\)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>\(0{,}5\) m</td>
+<td>\(0\)</td>
+<td>\(0\)</td>
+<td>\(q_2\)</td>
+</tr>
+<tr>
+<td>3</td>
+<td>\(0{,}4\) m</td>
+<td>\(0\)</td>
+<td>\(0\)</td>
+<td>\(q_3\)</td>
+</tr>
+</tbody>
+</table>
+<p>At the <a data-del="koti" class="xref kaz" href="sec-dh-zapis.html#fig-dh-roka-b" data-knowl="fig-dh-roka-b">joint angles</a> \(q = (30^\circ, 45^\circ, -60^\circ)\) by equation <a class="xref" href="sec-dh-zapis.html#eq-dh-matrika" data-knowl="eq-dh-matrika">(27.15)</a> we get</p>
+<ol>
+<li>\(\mat T^{\ix{0}}_{\ix{1}} = \mat T_{\mathrm{DH}}(q_1, 0{,}4, 0, 90^\circ)\) has <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">origin</a> \((0, 0, 0{,}4)\) m, \(x_1 = (0{,}8660,\ 0{,}5000,\ 0)\) and \(z_1 = (0{,}5000,\ -0{,}8660,\ 0)\) (point 3 of theorem <a class="xref" href="sec-dh-zapis.html#thm-dh-obstoj" data-knowl="thm-dh-obstoj">27.30</a>: \(z_1 = (s_\theta s_\alpha, -c_\theta s_\alpha, c_\alpha)\) at <span class="nobr">\(\alpha = 90^\circ\)).</span></li>
+<li>The origin \(o_2 = (0{,}3062,\ 0{,}1768,\ 0{,}7536)\) m, and \(o_3 = (0{,}6408,\ 0{,}3700,\ 0{,}6500)\) m (NumPy, num-04.py).</li>
+<li>A check with geometry: the reach in the horizontal plane is \(a_2\cos q_2 + a_3\cos(q_2 + q_3) = 0{,}5\cdot 0{,}7071 + 0{,}4\cdot 0{,}9659 = 0{,}7399\) m, the height \(d_1 + a_2\sin q_2 + a_3\sin(q_2 + q_3) = 0{,}4 + 0{,}3536 - 0{,}1035 = 0{,}6500\) m, and the plane of the arm is turned by <span class="nobr">\(q_1\):</span> \(x = 0{,}7399\cos 30^\circ = 0{,}6408\) m, \(y = 0{,}7399\sin 30^\circ = 0{,}3700\) m. We get the same from the <a class="xref auto" href="sec-matrike.html#def-produkt-matrik" data-knowl="def-produkt-matrik">product of matrices</a>.</li>
+<li>The rotation of the tool \(\mat R^{\ix{0}}_{\ix{3}}\) has first column <span class="nobr">\((0{,}8365,\ 0{,}4830,\ -0{,}2588)\),</span> third column <span class="nobr">\((0{,}5000,\ -0{,}8660,\ 0)\):</span> the direction of the axis \(z_3\) equals that of the axis <span class="nobr">\(z_1\),</span> since the axes <span class="nobr">\(z_1\),</span> \(z_2\) and \(z_3\) are parallel <span class="nobr">(\(\alpha_2 = \alpha_3 = 0\)).</span></li>
+</ol>
+</div></div>
+<p>Arm \(B\) at \(q_1 = 30^\circ\) is in a plane that is turned about the vertical by this angle, and in the computation of the geometry we do see this. Without the DH table we would compute the origins with three special geometric considerations, with it we only multiply matrices.</p>
+<p>What remains is the announced path. The notation of this section also has other meanings in the book. \(\mat T^{\ix{i-1}}_{\ix{i}}\) is a \(4 \times 4\) matrix, while the letter \(T\) also denotes the kinetic energy and, in chapter <a class="xref" href="ch-mke-palice.html">7</a>, the transformation matrix \(\mat T_{\mathrm{e}}\) of an element. The angle \(\alpha_{\mathrm{i}}\) of this section must not be confused with \(\alpha\) in thermal expansion in chapter <a class="xref" href="ch-konstitutivne-enacbe.html">3</a> and in damping in chapter <a class="xref" href="ch-nihanje-vec-ps.html">10</a>. The letter \(d_{\mathrm{i}}\) is only an offset and has nothing to do with a differential, \(a_{\mathrm{i}}\) and \(d_{\mathrm{i}}\) are neither <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vectors</a> nor <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivatives</a>. We use the parameters further: the position of the tip from equation <a class="xref" href="sec-dh-zapis.html#eq-dh-direktna" data-knowl="eq-dh-direktna">(27.16)</a> we will invert in the following sections (inverse kinematics) and differentiate with respect to time (velocities and the <a class="xref auto" href="sec-zamenjava-spremenljivk.html#def-preslikava" data-knowl="def-preslikava">Jacobian matrix</a>).</p>
+
+</main>
+<footer><nav class="pager"><a href="sec-homogene-transformacije.html" rel="prev">← 27.3</a><a href="index.html">Contents</a><a href="sec-inverzna-kinematika.html" rel="next">27.5 →</a></nav></footer>
+</body>
+</html>

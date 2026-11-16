@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-giro-energija"] = {"html": "<div class=\"eq\">\\[E = \\tfrac12\\,\\dot{\\vek q}^\\T\\mat M\\,\\dot{\\vek q} + \\tfrac12\\,\\vek q^\\T\\mat K\\,\\vek q \\tag{26.28}\\]</div>", "href": "sec-giroskopski-sistemi.html#eq-giro-energija"};

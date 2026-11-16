@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-cd-kvartika"] = {"html": "<div class=\"eq\">\\[f(\\omega, \\Omega) = (k_{\\mathrm{T}} - m\\omega^2)(k_{\\mathrm{R}} - J_{\\mathrm{t}}\\omega^2 + J_{\\mathrm{p}}\\Omega\\omega) - k_{\\mathrm{C}}^2 = 0 . \\tag{24.26}\\]</div>", "href": "sec-campbellov-diagram.html#eq-cd-kvartika"};

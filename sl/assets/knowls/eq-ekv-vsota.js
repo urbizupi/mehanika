@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ekv-vsota"] = {"html": "<div class=\"eq\">\\[W_{\\mathrm{izg}} = \\sum_{\\mathrm{j}=1}^N W_{\\mathrm{j}} , \\qquad c_{\\mathrm{eq}} = \\sum_{\\mathrm{j}=1}^N c_{\\mathrm{j}} , \\qquad \\zeta_{\\mathrm{eq}} = \\sum_{\\mathrm{j}=1}^N \\zeta_{\\mathrm{j}} . \\tag{20.8}\\]</div>", "href": "sec-ekvivalentno-viskozno.html#eq-ekv-vsota"};

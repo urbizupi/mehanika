@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-zvitje-moment"] = {"html": "<div class=\"eq\">\\[M_{\\mathrm{x}} = G\\,J\\,\\alpha , \\qquad J = \\int_{\\mathrm{S}} \\big( y^2 + z^2 + y\\,\\psi_{\\mathrm{z}} - z\\,\\psi_{\\mathrm{y}} \\big)\\,\\mathrm{d}A . \\tag{16.15}\\]</div>", "href": "sec-funkcija-zvitja.html#eq-zvitje-moment"};

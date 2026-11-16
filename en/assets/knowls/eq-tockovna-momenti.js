@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-tockovna-momenti"] = {"html": "<div class=\"eq\">\\[M_{\\mathrm{r}} = \\frac P{4\\pi}\\Big(1 - (1+\\nu)\\ln\\frac ar\\Big) , \\qquad M_\\theta = \\frac P{4\\pi}\\Big(\\nu - (1+\\nu)\\ln\\frac ar\\Big) , \\qquad 2\\pi r\\,Q_{\\mathrm{r}} = -P . \\tag{18.47}\\]</div>", "href": "sec-krozne-plosce.html#eq-tockovna-momenti"};

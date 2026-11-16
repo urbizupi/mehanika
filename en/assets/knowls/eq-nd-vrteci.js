@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nd-vrteci"] = {"html": "<div class=\"eq\">\\[m\\ddot q + 2\\mathrm{i}\\,m\\Omega\\,\\dot q + (k - m\\Omega^2)\\,q = 0 . \\tag{24.40}\\]</div>", "href": "sec-notranje-dusenje.html#eq-nd-vrteci"};

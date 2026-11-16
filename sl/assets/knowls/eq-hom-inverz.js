@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-hom-inverz"] = {"html": "<div class=\"eq\">\\[\\mat M = \\begin{pmatrix} \\mat R^\\T &amp; -\\mat R^\\T\\vek o \\\\ \\vek 0^\\T &amp; 1 \\end{pmatrix} \\tag{27.12}\\]</div>", "href": "sec-homogene-transformacije.html#eq-hom-inverz"};

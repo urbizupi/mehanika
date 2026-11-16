@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-linearni-del-temperature"] = {"html": "<div class=\"eq\">\\[\\theta_{\\mathrm{m}} = \\frac{1}{A}\\int_{\\mathrm{A}} \\Delta T\\,\\mathrm{d}A , \\qquad g = \\frac{1}{I}\\int_{\\mathrm{A}} y\\,\\Delta T\\,\\mathrm{d}A \\tag{14.36}\\]</div>", "href": "sec-temperaturne-napetosti.html#eq-linearni-del-temperature"};

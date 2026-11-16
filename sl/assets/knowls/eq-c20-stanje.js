@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-c20-stanje"] = {"html": "<div class=\"eq\">\\[\\vek z(t) = \\begin{pmatrix} \\vek q(t) \\\\ \\dot{\\vek q}(t) \\end{pmatrix} \\tag{20.37}\\]</div>", "href": "sec-zapis-prvega-reda.html#eq-c20-stanje"};

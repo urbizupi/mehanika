@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-obc-ke"] = {"html": "<div class=\"eq\">\\[\\mat K_{\\mathrm{e}} = \\frac{E}{L_{\\mathrm{e}}}\\,\\vek b_{\\mathrm{e}}\\,\\vek b_{\\mathrm{e}}^\\T , \\tag{29.32}\\]</div>", "href": "sec-obcutljivost.html#eq-obc-ke"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dirichlet-pravokotnik"] = {"html": "<div class=\"eq\">\\[\\nabla^2 T = 0 \\ \\text{in } R , \\qquad T(0, y) = T(a, y) = T(x, 0) = 0 , \\qquad T(x, b) = f(x) . \\tag{14.31}\\]</div>", "href": "sec-stacionarno-ravnina.html#eq-dirichlet-pravokotnik"};

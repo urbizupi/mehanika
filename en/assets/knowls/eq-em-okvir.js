@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-em-okvir"] = {"html": "<div class=\"eq\">\\[\\mat K_{11} = k\\begin{pmatrix} 2 &amp; -1 &amp; 0 \\\\ -1 &amp; 2 &amp; -1 \\\\ 0 &amp; -1 &amp; 1 \\end{pmatrix} . \\tag{21.8}\\]</div>", "href": "sec-efektivna-masa.html#eq-em-okvir"};

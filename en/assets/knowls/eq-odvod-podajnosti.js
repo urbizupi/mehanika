@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-odvod-podajnosti"] = {"html": "<div class=\"eq\">\\[\\frac{\\partial C}{\\partial A_{\\mathrm{e}}} = -\\,\\vek u^\\T\\mat K_{\\mathrm{e}}\\,\\vek u = -\\,E\\,L_{\\mathrm{e}}\\,\\varepsilon_{\\mathrm{e}}^2 \\le 0 \\qquad (e = 1, \\dots, n) . \\tag{29.30}\\]</div>", "href": "sec-najmanjsa-podajnost.html#eq-odvod-podajnosti"};

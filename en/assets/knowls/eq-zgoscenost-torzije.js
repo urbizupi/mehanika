@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-zgoscenost-torzije"] = {"html": "<div class=\"eq\">\\[\\frac{\\partial\\sigma_{\\mathrm{xz}}}{\\partial y} - \\frac{\\partial\\sigma_{\\mathrm{xy}}}{\\partial z} = G\\alpha\\,(\\psi_{\\mathrm{zy}} + 1 - \\psi_{\\mathrm{yz}} + 1) = 2G\\alpha , \\tag{16.20}\\]</div>", "href": "sec-prandtlova-funkcija.html#eq-zgoscenost-torzije"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-tvm-podpora"] = {"html": "<div class=\"eq\">\\[M_{\\mathrm{e}} = \\frac{q_0 L^2}{12}\\,\\frac{s}{1 + s} , \\qquad M\\!\\left(\\tfrac L2\\right) = \\frac{q_0 L^2}{8} - M_{\\mathrm{e}} . \\tag{17.4}\\]</div>", "href": "sec-telo-v-model.html#eq-tvm-podpora"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-navier-koef"] = {"html": "<div class=\"eq\">\\[q_{\\mathrm{mn}} = \\frac{4}{ab}\\int_0^a\\!\\!\\int_0^b q(x, y)\\,s_{\\mathrm{mn}}(x, y)\\,\\mathrm{d}y\\,\\mathrm{d}x \\tag{18.34}\\]</div>", "href": "sec-navierova-resitev.html#eq-navier-koef"};

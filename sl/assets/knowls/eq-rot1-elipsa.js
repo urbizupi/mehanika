@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rot1-elipsa"] = {"html": "<div class=\"eq\">\\[p(t) = \\mathrm{e}^{\\mathrm{i}\\gamma}\\Big[(|A| + |B|)\\cos\\varphi + \\mathrm{i}\\,(|A| - |B|)\\sin\\varphi\\Big] , \\tag{24.4}\\]</div>", "href": "sec-jeffcottov-rotor.html#eq-rot1-elipsa"};

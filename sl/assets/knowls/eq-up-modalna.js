@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-up-modalna"] = {"html": "<div class=\"eq\">\\[U(\\varphi) = \\int_0^L \\rho A\\,a(x)\\,\\varphi(x)\\,\\mathrm{d}x + \\sum_{\\mathrm{j}=1}^{K}b_{\\mathrm{j}}\\,\\varphi(x_{\\mathrm{j}}) . \\tag{24.48}\\]</div>", "href": "sec-uravnotezenje-podajnih.html#eq-up-modalna"};

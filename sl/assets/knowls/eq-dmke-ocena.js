@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dmke-ocena"] = {"html": "<div class=\"eq\">\\[\\gamma_{\\mathrm{r}} \\approx \\frac{\\boldsymbol\\varphi_{\\mathrm{r}}^\\T\\mat K''\\,\\boldsymbol\\varphi_{\\mathrm{r}}}{\\lambda_{\\mathrm{r}}} , \\qquad \\zeta_{\\mathrm{r}} \\approx \\frac{\\gamma_{\\mathrm{r}}}{2} . \\tag{20.36}\\]</div>", "href": "sec-dusenje-mke.html#eq-dmke-ocena"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rp-sila"] = {"html": "<div class=\"eq\">\\[\\int_{\\partial \\mathrm{R}} Q_{\\mathrm{n}}\\,\\mathrm{d}s + \\int_{\\mathrm{R}} q\\,\\mathrm{d}A = 0 , \\tag{18.12}\\]</div>", "href": "sec-ravnotezje-plosce.html#eq-rp-sila"};

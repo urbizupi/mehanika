@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-npal-nazaj"] = {"html": "<div class=\"eq\">\\[|h_{\\mathrm{n}}| \\le 2M'\\,\\mathrm{e}^{-\\kappa n^2\\pi^2\\tau/L^2} \\qquad \\text{za vsak } n \\ge 1 . \\tag{14.29}\\]</div>", "href": "sec-nestacionarno-palica.html#eq-npal-nazaj"};

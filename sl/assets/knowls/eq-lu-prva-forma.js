@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-lu-prva-forma"] = {"html": "<div class=\"eq\">\\[\\mat A = \\begin{pmatrix} a_{11} &amp; a_{12} \\\\ a_{12} &amp; a_{22} \\end{pmatrix} , \\qquad a_{\\mathrm{ij}} = \\vek a_{\\mathrm{i}} \\cdot \\vek a_{\\mathrm{j}} . \\tag{22.3}\\]</div>", "href": "sec-srednja-ploskev.html#eq-lu-prva-forma"};

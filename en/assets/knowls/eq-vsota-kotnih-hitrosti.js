@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vsota-kotnih-hitrosti"] = {"html": "<div class=\"eq\">\\[\\vek\\omega_2 = \\vek\\omega_1 + \\mat R_1\\,\\vek\\omega^1{}_{1,2} . \\tag{27.23}\\]</div>", "href": "sec-jacobijeva-matrika-robota.html#eq-vsota-kotnih-hitrosti"};

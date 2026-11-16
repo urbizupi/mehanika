@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-zvitje-napetosti"] = {"html": "<div class=\"eq\">\\[\\sigma_{\\mathrm{xy}} = G\\alpha\\,(\\psi_{\\mathrm{y}} - z) , \\qquad \\sigma_{\\mathrm{xz}} = G\\alpha\\,(\\psi_{\\mathrm{z}} + y) . \\tag{16.12}\\]</div>", "href": "sec-funkcija-zvitja.html#eq-zvitje-napetosti"};

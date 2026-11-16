@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vm-gibalna"] = {"html": "<div class=\"eq\">\\[J(\\theta)\\,\\ddot\\theta + \\tfrac12 J'(\\theta)\\,\\dot\\theta^2 = Q_{\\mathrm{g}} - M_{\\mathrm{b}} , \\qquad Q_{\\mathrm{g}} = -F_{\\mathrm{g}}\\,x_{\\mathrm{B}}' . \\tag{23.17}\\]</div>", "href": "sec-vrtilni-moment.html#eq-vm-gibalna"};

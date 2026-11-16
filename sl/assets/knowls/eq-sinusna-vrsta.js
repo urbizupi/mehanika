@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sinusna-vrsta"] = {"html": "<div class=\"eq\">\\[\\sum_{\\mathrm{n}=1}^{\\infty}|h_{\\mathrm{n}}| &lt; \\infty , \\qquad \\sum_{\\mathrm{n}=1}^{N}h_{\\mathrm{n}}\\sin\\frac{n\\pi x}{L} \\to h^*(x) \\quad (N \\to \\infty) \\tag{13.9}\\]</div>", "href": "sec-nacini-strune.html#eq-sinusna-vrsta"};

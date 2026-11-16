@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mkk-k-trikotnika"] = {"html": "<div class=\"eq\">\\[\\mat k_{\\mathrm{e}} = \\begin{pmatrix} 0{,}75 &amp; -0{,}25 &amp; -0{,}5 \\\\ -0{,}25 &amp; 0{,}41667 &amp; -0{,}16667 \\\\ -0{,}5 &amp; -0{,}16667 &amp; 0{,}66667 \\end{pmatrix}\\ \\text{W/K} , \\tag{15.15}\\]</div>", "href": "sec-mkk-toplota-ravnina.html#eq-mkk-k-trikotnika"};

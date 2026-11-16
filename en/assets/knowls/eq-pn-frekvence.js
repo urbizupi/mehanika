@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pn-frekvence"] = {"html": "<div class=\"eq\">\\[\\omega_{\\mathrm{j}}^2 = \\omega_{\\mathrm{j}0}^2 + \\frac{k}{\\rho A} , \\qquad \\omega_{\\mathrm{j}0} = \\frac{(j\\pi)^2}{L^2}\\sqrt{\\frac{EI}{\\rho A}} . \\tag{25.7}\\]</div>", "href": "sec-podlaga-nihanje-mke.html#eq-pn-frekvence"};

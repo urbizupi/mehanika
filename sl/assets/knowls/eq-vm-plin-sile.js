@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vm-plin-sile"] = {"html": "<div class=\"eq\">\\[Q_{\\mathrm{g}} = P\\,h = \\frac{F_{\\mathrm{g}}\\,a\\sin(\\theta + \\beta)}{\\cos\\beta} . \\tag{23.15}\\]</div>", "href": "sec-vrtilni-moment.html#eq-vm-plin-sile"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kkt-naloga"] = {"html": "<div class=\"eq\">\\[\\text{minimize } f(\\vek x) \\quad \\text{subject to} \\quad g_{\\mathrm{i}}(\\vek x) \\le 0 , \\quad i = 1, \\dots, m , \\quad \\vek x \\in D , \\tag{29.17}\\]</div>", "href": "sec-kkt.html#eq-kkt-naloga"};

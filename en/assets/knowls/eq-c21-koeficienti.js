@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-c21-koeficienti"] = {"html": "<div class=\"eq\">\\[c_{\\mathrm{sr}} = \\vek v_{\\mathrm{s}}^\\T\\mat M\\,\\vek\\varphi_{\\mathrm{r}} . \\tag{21.51}\\]</div>", "href": "sec-dusenje-skrajsanih.html#eq-c21-koeficienti"};

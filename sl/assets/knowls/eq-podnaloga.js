@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-podnaloga"] = {"html": "<div class=\"eq\">\\[\\min\\ \\tilde f^{\\,k}(\\vek A) \\quad \\text{pri} \\quad \\tilde g_{\\mathrm{i}}^{\\,k}(\\vek A) \\le 0 , \\quad i = 1, \\dots, l , \\tag{29.41}\\]</div>", "href": "sec-zaporedne-aproksimacije.html#eq-podnaloga"};

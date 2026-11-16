@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ukrivljenosti-plosce"] = {"html": "<div class=\"eq\">\\[\\kappa_{\\mathrm{x}} = w_{\\mathrm{xx}} , \\qquad \\kappa_{\\mathrm{y}} = w_{\\mathrm{yy}} , \\qquad \\kappa_{\\mathrm{xy}} = w_{\\mathrm{xy}} , \\tag{18.4}\\]</div>", "href": "sec-kirchhoffova-plosca.html#eq-ukrivljenosti-plosce"};

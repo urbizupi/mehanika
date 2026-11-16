@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-zir-kompleksne"] = {"html": "<div class=\"eq\">\\[m\\,\\ddot p = F_{\\mathrm{v}} + \\mathrm{i}\\,F_{\\mathrm{w}} , \\qquad J_{\\mathrm{t}}\\,\\ddot\\vartheta - \\mathrm{i}\\,\\Omega J_{\\mathrm{p}}\\,\\dot\\vartheta = M_\\alpha + \\mathrm{i}\\,M_\\beta . \\tag{24.19}\\]</div>", "href": "sec-ziroskopski-moment.html#eq-zir-kompleksne"};

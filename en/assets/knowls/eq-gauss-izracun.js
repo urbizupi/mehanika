@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-gauss-izracun"] = {"html": "<div class=\"eq\">\\[K = \\frac{b_{11}b_{22} - b_{12}^2}{a_{11}a_{22} - a_{12}^2} = \\frac{\\det\\mat B}{\\det\\mat G} , \\tag{22.16}\\]</div>", "href": "sec-ukrivljenost-ploskve.html#eq-gauss-izracun"};

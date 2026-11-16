@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dalembert"] = {"html": "<div class=\"eq\">\\[w(x, t) = \\frac12\\big(w_0^*(x - ct) + w_0^*(x + ct)\\big) + \\frac{1}{2c}\\int_{\\mathrm{x}-\\mathrm{ct}}^{x+ct}v_0^*(s)\\,\\mathrm{d}s , \\tag{13.11}\\]</div>", "href": "sec-nacini-strune.html#eq-dalembert"};

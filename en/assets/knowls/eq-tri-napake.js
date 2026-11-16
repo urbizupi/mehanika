@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-tri-napake"] = {"html": "<div class=\"eq\">\\[e_{\\mathrm{mod}} = Q_{\\mathrm{m}} - Q_{\\mathrm{f}} , \\qquad e_{\\mathrm{dis}} = Q_{\\mathrm{r}} - Q_{\\mathrm{m}} , \\qquad e_{\\mathrm{num}} = Q_{\\mathrm{p}} - Q_{\\mathrm{r}} . \\tag{17.1}\\]</div>", "href": "sec-hierarhija-modelov.html#eq-tri-napake"};

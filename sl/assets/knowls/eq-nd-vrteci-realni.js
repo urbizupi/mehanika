@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nd-vrteci-realni"] = {"html": "<div class=\"eq\">\\[\\begin{aligned} m\\ddot\\xi - 2m\\Omega\\,\\dot\\eta + (k - m\\Omega^2)\\,\\xi &amp;= 0 , \\\\ m\\ddot\\eta + 2m\\Omega\\,\\dot\\xi + (k - m\\Omega^2)\\,\\eta &amp;= 0 . \\end{aligned} \\tag{24.39}\\]</div>", "href": "sec-notranje-dusenje.html#eq-nd-vrteci-realni"};

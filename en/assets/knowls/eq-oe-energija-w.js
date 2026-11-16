@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-oe-energija-w"] = {"html": "<div class=\"eq\">\\[\\tilde\\Pi[w] = \\int_0^L \\Big[ \\tfrac12 D\\,w''^2 + \\tfrac12 k\\,w^2 - q\\,w \\Big]\\,\\mathrm{d}x , \\qquad q = p - \\frac{\\nu N_0}{R} . \\tag{22.53}\\]</div>", "href": "sec-osnosimetricni-element.html#eq-oe-energija-w"};

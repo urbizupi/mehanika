@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-zasukan-steber-pomik"] = {"html": "<div class=\"eq\">\\[u = -\\frac{h}{2}\\,\\frac{EI_{\\mathrm{L}}\\,\\varphi_{\\mathrm{B}} + EI_{\\mathrm{R}}\\,\\varphi_{\\mathrm{C}}}{EI_{\\mathrm{L}} + EI_{\\mathrm{R}}} . \\tag{19.3}\\]</div>", "href": "sec-zrcalna-simetrija.html#eq-zasukan-steber-pomik"};

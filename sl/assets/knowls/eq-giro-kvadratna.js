@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-giro-kvadratna"] = {"html": "<div class=\"eq\">\\[\\det\\begin{pmatrix}\\lambda^2 - 1 &amp; g\\lambda\\\\ -g\\lambda &amp; \\lambda^2 - 1\\end{pmatrix} = (\\lambda^2 - 1)^2 + g^2\\lambda^2 = \\lambda^4 + (g^2 - 2)\\,\\lambda^2 + 1 = 0 . \\tag{26.29}\\]</div>", "href": "sec-giroskopski-sistemi.html#eq-giro-kvadratna"};

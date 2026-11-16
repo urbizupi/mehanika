@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-tanki-parabola"] = {"html": "<div class=\"eq\">\\[\\Phi(y) = G\\alpha\\,(a^2 - y^2) . \\tag{16.34}\\]</div>", "href": "sec-tanki-odprti-prerezi.html#eq-tanki-parabola"};

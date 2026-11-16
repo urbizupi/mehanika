@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dedni-integral"] = {"html": "<div class=\"eq\">\\[\\sigma(t) = E_{\\mathrm{rel}}(t)\\,\\varepsilon(0) + \\int_0^t E_{\\mathrm{rel}}(t - s)\\,\\dot\\varepsilon(s)\\,\\mathrm{d}s . \\tag{20.21}\\]</div>", "href": "sec-dedni-integral.html#eq-dedni-integral"};

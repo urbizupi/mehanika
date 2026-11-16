@@ -19,15 +19,15 @@
 <header class="top"><a class="home" href="index.html">Mechanics</a><nav class="pager"><a href="sec-masna-matrika-nosilca.html" rel="prev">← 12.9</a><a href="index.html">Contents</a><a href="sec-mke-nosilci-povezave.html" rel="next">12.11 →</a></nav>
 <span class="tools"><a class="lang" href="../sl/sec-geometrijska-togost.html" hreflang="sl">Slovenščina</a><button type="button" class="theme-toggle" title="Light or dark theme" aria-label="Light or dark theme"></button><button type="button" data-details="open">Expand all</button><button type="button" data-details="close">Collapse all</button><button type="button" class="fig-side-toggle" aria-pressed="false">Figures alongside</button></span></header>
 <main>
-<p class="updated">Last updated 5 November 2026, 9:28</p>
+<p class="updated">Last updated 16 November 2026, 10:52</p>
 <p class="crumb"><a href="ch-mke-nosilci.html"><span class="h-num">Chapter 12</span> Beam and frame finite elements</a></p>
 <h2 id="sec-geometrijska-togost"><span class="h-num">12.10</span> Geometric stiffness and buckling</h2>
-<p>Chapter <a class="xref" href="ch-nihanje-vec-ps.html">10</a> found for bracket B (section <a class="xref" href="sec-enacbe-vec-ps.html#sec-evp-primera">10.1.4</a>) that a bar with <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> \(N\) resists a transverse displacement like a taut string with stiffness <span class="nobr">\(N/L\),</span> and promised that chapter <a class="xref" href="ch-mke-nosilci.html">12</a> would treat this term. Chapter <a class="xref" href="ch-analiticna-dinamika.html">8</a> computed the critical loads of columns in section <a class="xref" href="sec-uklon.html">8.14</a>. For pinned ends, for clamped ends and for the cantilever it did so with the sine, which it knew in advance, for the clamp-and-pin column only by computing a <a class="xref auto" href="sec-determinanta.html#def-determinanta" data-knowl="def-determinanta">determinant</a>. How do the elements we know take in the axial force, and what does the same matrix give for the critical load of a column?</p>
+<p>Chapter <a class="xref" href="ch-nihanje-vec-ps.html">10</a> found for bracket B (section <a class="xref" href="sec-enacbe-vec-ps.html#sec-evp-primera">10.1.4</a>) that a bar with <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> \(N\) resists a transverse displacement like a taut <a class="xref auto forward" href="sec-valovna-enacba.html#def-struna" data-knowl="def-struna" title="Defined later in the book">string</a> with stiffness <span class="nobr">\(N/L\),</span> and promised that chapter <a class="xref" href="ch-mke-nosilci.html">12</a> would treat this term. Chapter <a class="xref" href="ch-analiticna-dinamika.html">8</a> computed the critical loads of columns in section <a class="xref" href="sec-uklon.html">8.14</a>. For pinned ends, for clamped ends and for the cantilever it did so with the sine, which it knew in advance, for the clamp-and-pin column only by computing a <a class="xref auto" href="sec-determinanta.html#def-determinanta" data-knowl="def-determinanta">determinant</a>. How do the elements we know take in the axial force, and what does the same matrix give for the critical load of a column?</p>
 <p>We look for the answer along this path. First we look at the bar, which as a string is the simplest case, and compute the matrix that the axial force adds to the bar. We do the same computation for the <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beam</a> element with <a class="xref auto" href="sec-element-nosilca.html#def-hermitove-funkcije" data-knowl="def-hermitove-funkcije">Hermite functions</a>. We test both <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> on bracket B of chapter <a class="xref" href="ch-nihanje-vec-ps.html">10</a>, where the answer is known. Then we pose the buckling question as an eigenproblem, and since we want to know how close the finite element computation comes to the critical load of chapter <a class="xref" href="ch-analiticna-dinamika.html">8</a> and on which side, we prove estimates for the <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivatives</a> of fields that have kinks. At the end we compare numbers.</p>
 <p>The model is the same as in section <a class="xref" href="sec-uklon.html">8.14</a>. The column is the steel flat bar \(20 \times 40\) mm of chapter <a class="xref" href="ch-nosilci.html">5</a>, perfectly straight, loaded by a force that acts exactly along the axis, and the displacements are small. Bending is about the weak axis, so \(EI = E I_{\mathrm{y}} = 5226{,}67\) N m². The supports are those of definition <a class="xref" href="sec-model-nosilca.html#def-podpore" data-knowl="def-podpore">5.5</a>. The two idealizations, a perfectly straight column and a perfectly axial force, are ours as in chapter <a class="xref" href="ch-analiticna-dinamika.html">8</a>. A real column does not satisfy them, which section <a class="xref" href="sec-uklon.html#sec-osna-sila-upogib">8.14.4</a> treats with another model.</p>
 
 <h3 id="sec-gtu-struna"><span class="h-num">12.10.1</span> The bar as a string</h3>
-<p>Take a bar of length \(L\) between the pins \(\mathrm{A}\) and \(\mathrm{C}\) with axial force <span class="nobr">\(N\),</span> tension positive (definition <a class="xref" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">2.5</a>), and move the node \(\mathrm{C}\) across the bar by \(\Delta\) (figure <a class="xref" href="sec-geometrijska-togost.html#fig-gtu-struna" data-knowl="fig-gtu-struna">12.31</a>). The bar stays straight and tilts by an angle with slope <span class="nobr">\(\Delta/L\).</span> The axial force acts along the tilted bar, so it has a transverse component <span class="nobr">\(N\,\Delta/L\).</span> In tension this component pulls the node back towards the original axis, in compression it pushes the node further. The bar therefore resists a transverse displacement with stiffness \(N/L\) like a taut string, and in compression this stiffness is negative.</p>
+<p>Take a <a data-del="prej" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-struna" data-knowl="fig-gtu-struna">bar</a> of length <a data-del="L" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-struna" data-knowl="fig-gtu-struna">\(L\)</a> between the pins <a data-del="A" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-struna" data-knowl="fig-gtu-struna">\(\mathrm{A}\)</a> and <a data-del="C" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-struna" data-knowl="fig-gtu-struna">\(\mathrm{C}\)</a> with axial force <span class="nobr">\(N\),</span> tension positive (definition <a class="xref" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">2.5</a>), and move the node \(\mathrm{C}\) across the bar <a data-del="pomik" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-struna" data-knowl="fig-gtu-struna">by \(\Delta\)</a> (figure <a class="xref" href="sec-geometrijska-togost.html#fig-gtu-struna" data-knowl="fig-gtu-struna">12.31</a>). <a data-del="palica" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-struna" data-knowl="fig-gtu-struna">The bar stays straight</a> and tilts by an angle with slope <span class="nobr">\(\Delta/L\).</span> The axial force acts along the tilted bar, so besides <a data-del="N" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-struna" data-knowl="fig-gtu-struna">a component along the original axis</a> it has <span class="nobr"><a data-del="vlece,potiska" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-struna" data-knowl="fig-gtu-struna">a transverse component \(N\,\Delta/L\)</a>.</span> <a data-del="nateg" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-struna" data-knowl="fig-gtu-struna">In tension</a> this component <a data-del="vlece" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-struna" data-knowl="fig-gtu-struna">pulls the node back</a> towards the original axis, <a data-del="tlak" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-struna" data-knowl="fig-gtu-struna">in compression</a> it <a data-del="potiska" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-struna" data-knowl="fig-gtu-struna">pushes the node further</a>. The bar therefore resists a transverse displacement with stiffness \(N/L\) like a taut <a class="xref auto forward" href="sec-valovna-enacba.html#def-struna" data-knowl="def-struna" title="Defined later in the book">string</a>, and in compression this stiffness is negative.</p>
 
 <figure class="blk slika" id="fig-gtu-struna"><p><span class="svgfig" role="img" aria-label="Bar with a tensile and a compressive axial force, node C moved across the bar"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='738.63pt' height='115.55pt' viewBox='-72.000004 -72.000006 547.134874 85.591372'>
 <defs>
@@ -46,6 +46,8 @@
 <g stroke-width='0.6'>
 <g stroke-linecap='round'>
 <g stroke-linejoin='round'>
+<g class='del' data-del='nateg'>
+<g class='del' data-del='prej'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.45'>
@@ -53,21 +55,17 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='palica'>
 <g stroke-width='1.6'>
 <path d='M0 0L170.71646 34.1432' fill='none'/>
 </g>
+</g>
+<g class='del' data-del='A'>
 <g fill='#fff'>
 <g fill='#fff'>
 <path d='M2.26294 0C2.26294 1.2498 1.2498 2.26294 0 2.26294S-2.26294 1.2498-2.26294 0S-1.2498-2.26294 0-2.26294S2.26294-1.2498 2.26294 0ZM0 0'/>
 </g>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.149949,-20.660651)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'/>
-</g>
-</g>
-</g>
-<path d='M172.55508 34.1432C172.55508 35.15865 171.7319 35.98183 170.71646 35.98183S168.87784 35.15865 168.87784 34.1432C168.87784 33.12776 169.70102 32.30458 170.71646 32.30458S172.55508 33.12776 172.55508 34.1432ZM170.71646 34.1432' stroke='none'/>
-<g transform='translate(170.71646,34.1432)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.149949,-20.660651)scale(-1,-1)'>
 <g fill='#000'>
 <g stroke='none'/>
@@ -83,6 +81,16 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='C'>
+<path d='M172.55508 34.1432C172.55508 35.15865 171.7319 35.98183 170.71646 35.98183S168.87784 35.15865 168.87784 34.1432C168.87784 33.12776 169.70102 32.30458 170.71646 32.30458S172.55508 33.12776 172.55508 34.1432ZM170.71646 34.1432' stroke='none'/>
+<g transform='translate(170.71646,34.1432)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.149949,-20.660651)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
 <g transform='translate(174.34944,37.77618)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.149949,-20.660651)scale(-1,-1)'>
 <g fill='#000'>
@@ -92,6 +100,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='pomik'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.45'>
@@ -154,6 +164,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='L'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-width='0.45'>
 <path d='M.33748-21.33955H170.37898' fill='none'/>
@@ -202,6 +214,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='N'>
 <g fill='#f00' stroke='#f00'>
 <g stroke-width='1.1'>
 <path d='M170.71646 34.1432H89.49612' fill='none'/>
@@ -229,6 +243,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='vlece'>
 <g fill='#f00' stroke='#f00'>
 <g stroke-width='1.1'>
 <path d='M170.71646 34.1432V21.20927' fill='none'/>
@@ -259,6 +275,10 @@
 </g>
 </g>
 </g>
+</g>
+</g>
+<g class='del' data-del='tlak'>
+<g class='del' data-del='prej'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.45'>
@@ -266,9 +286,13 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='palica'>
 <g stroke-width='1.6'>
 <path d='M284.52756 0L455.24402 34.1432' fill='none'/>
 </g>
+</g>
+<g class='del' data-del='A'>
 <g fill='#fff'>
 <g fill='#fff'>
 <path d='M286.7905 0C286.7905 1.2498 285.77736 2.26294 284.52756 2.26294S282.26462 1.2498 282.26462 0S283.27776-2.26294 284.52756-2.26294S286.7905-1.2498 286.7905 0ZM284.52756 0'/>
@@ -281,20 +305,22 @@
 </g>
 </g>
 </g>
-<path d='M457.08264 34.1432C457.08264 35.15865 456.25946 35.98183 455.24402 35.98183S453.4054 35.15865 453.4054 34.1432C453.4054 33.12776 454.22858 32.30458 455.24402 32.30458S457.08264 33.12776 457.08264 34.1432ZM455.24402 34.1432' stroke='none'/>
-<g transform='translate(455.24402,34.1432)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.149949,-20.660651)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'/>
-</g>
-</g>
-</g>
 <g transform='translate(273.95854,-9.78294)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.149949,-20.660651)scale(-1,-1)'>
 <g fill='#000'>
 <g stroke='none'>
 <use x='-58.149949' y='-20.660651' xlink:href='#gtu-struna-g2-65'/>
 </g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='C'>
+<path d='M457.08264 34.1432C457.08264 35.15865 456.25946 35.98183 455.24402 35.98183S453.4054 35.15865 453.4054 34.1432C453.4054 33.12776 454.22858 32.30458 455.24402 32.30458S457.08264 33.12776 457.08264 34.1432ZM455.24402 34.1432' stroke='none'/>
+<g transform='translate(455.24402,34.1432)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.149949,-20.660651)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
 </g>
 </g>
 </g>
@@ -307,6 +333,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='pomik'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.45'>
@@ -369,6 +397,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='L'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-width='0.45'>
 <path d='M284.86504-21.33955H454.90654' fill='none'/>
@@ -417,6 +447,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='N'>
 <g fill='#f00' stroke='#f00'>
 <g stroke-width='1.1'>
 <path d='M369.88579 34.1432H451.10612' fill='none'/>
@@ -446,6 +478,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='potiska'>
 <g fill='#f00' stroke='#f00'>
 <g stroke-width='1.1'>
 <path d='M455.24402 17.07138V30.00531' fill='none'/>
@@ -485,6 +519,8 @@
 </g>
 </g>
 </g>
+</g>
+</g>
 </svg></span></p>
 <figcaption><span class="blk-label">Figure 12.31</span>: Bar between the fixed pin support \(\mathrm{A}\) and the node <span class="nobr">\(\mathrm{C}\),</span> the node \(\mathrm{C}\) moved across the bar by <span class="nobr">\(\Delta\).</span> The displacement is strongly exaggerated: in the figure <span class="nobr">\(\Delta/L = 0{,}2\),</span> in the example in the text \(0{,}8\) mm over \(5\) m, that is <span class="nobr">\(1{,}6\cdot10^{-4}\).</span> Grey dashed is the bar before the displacement. Orange are the components of the force of the bar on the node <span class="nobr">\(\mathrm{C}\):</span> along the original axis <span class="nobr">(\(N\))</span> and across it <span class="nobr">(\(N\Delta/L\),</span> in the figure <span class="nobr">\(0{,}2\,N\)).</span> The bar acts along itself, so the resultant would lie on the bar and is not drawn. Left: tension <span class="nobr">(\(N &gt; 0\)),</span> the bar pulls \(\mathrm{C}\) back, both forces start at <span class="nobr">\(\mathrm{C}\).</span> Right: compression <span class="nobr">(\(N &lt; 0\)),</span> the bar pushes \(\mathrm{C}\) further, both forces end at <span class="nobr">\(\mathrm{C}\).</span> The displacement \(\Delta\) and the length \(L\) are distances and have end bars.</figcaption></figure>
 <p>For the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> we need the energy, because the matrix, as for every element, is the matrix of a quadratic form in the displacements. Chapter <a class="xref" href="ch-analiticna-dinamika.html">8</a> computed the energy of the axial force for the column: a constant axial force \(N\) adds the term \(\tfrac N2\int v'^2\,\mathrm{d}x\) to the energy (lemma <a class="xref" href="sec-uklon.html#lem-delo-osne-sile" data-knowl="lem-delo-osne-sile">8.133</a>). That lemma, however, assumes that the deflection of the axis is zero at both ends, since it describes a column between supports. The ends of an element also move across the axis, so we first state the result without conditions at the ends. We describe the axis by the displacements of its points: the point with coordinate \(x\) along the original axis moves by \(u(x)\) along the axis and by \(v(x)\) across it. As in section <a class="xref" href="sec-uklon.html">8.14</a> we take the axis as neither lengthening nor shortening. A transverse displacement therefore pulls the ends towards each other, and the axial forces do work on this approach.</p>
@@ -507,9 +543,9 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 <li>The force \(N\vek n\) acts at the end <span class="nobr">\(x = h\),</span> which moves by \(u(h)\) in the direction <span class="nobr">\(\vek n\),</span> while the transverse part of its displacement \(v(h)\,\vek m\) is perpendicular to the force. A force that keeps its direction has potential energy equal to minus the dot product of the force and the displacement of its point of application, as the compressive force in lemma <a class="xref" href="sec-uklon.html#lem-delo-osne-sile" data-knowl="lem-delo-osne-sile">8.133</a>, that is <span class="nobr">\(-N\,u(h)\).</span> The force \(-N\vek n\) at the end \(x = 0\) has energy <span class="nobr">\(N\,u(0)\).</span> The sum is <span class="nobr">\(N\,\big(u(0) - u(h)\big) = N\,\Delta\),</span> and by point 1 this is \(\tfrac N2\int_0^h v'^2\,\mathrm{d}x\) with a relative error of at most \(0{,}26\) %.</li>
 </ol>
 </div></details></div>
-<p class="vir"><span class="vir-label">Source:</span> The proof is not from a source. Lemma <a class="xref" href="sec-uklon.html#lem-delo-osne-sile" data-knowl="lem-delo-osne-sile">8.133</a> is a similar statement for a column with zero deflection at both ends, described by a graph over the straight line between the supports. COOK §18.1 (PDF p. 654) obtains the same term from the work of the axial force on the lengthening \(\tfrac12 v'^2\,\mathrm{d}x\) of the element <span class="nobr">\(\mathrm{d}x\).</span></p></div></div>
+<p class="vir"><span class="vir-label">Source:</span> The proof is not from a source. Lemma <a class="xref" href="sec-uklon.html#lem-delo-osne-sile" data-knowl="lem-delo-osne-sile">8.133</a> is a similar statement for a column with zero deflection at both ends, described by a graph over the straight line between the supports. COOK §18.1 (PDF p. 654) obtains the same term from the work the axial force does when a short piece of the axis with slope \(v'\) lengthens by about \(\tfrac12 v'^2\) of its length.</p></div></div>
 <p>The lemma showed that the shortening of an element, and with it the energy of the axial forces, does not depend on the transverse displacements of the ends themselves but only on the slope \(v'\) along the element. A common transverse translation of the element therefore gives nothing, a tilt does.</p>
-<p>In a bar between two pins without <a class="xref auto" href="sec-model-nosilca.html#def-porazdeljena-precna-obtezba" data-knowl="def-porazdeljena-precna-obtezba">transverse load</a> the axis stays straight, just as a string between two points is straight. The transverse displacement is therefore linear and the slope \(v'\) constant.</p>
+<p>In a bar between two pins without <a class="xref auto" href="sec-model-nosilca.html#def-porazdeljena-precna-obtezba" data-knowl="def-porazdeljena-precna-obtezba">transverse load</a> <a data-del="palica" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-struna" data-knowl="fig-gtu-struna">the axis stays straight</a>, just as a string between two points is straight. The transverse displacement is therefore linear and the slope \(v'\) constant.</p>
 
 <div class="blk lema" id="lem-geometrijska-togost-palice"><div class="blk-head"><span class="blk-label">Lemma 12.49</span> <span class="blk-title">Geometric stiffness matrix of a bar (geometrijska togostna matrika palice)</span></div><div class="blk-body"><p>Let a straight bar with ends \(i\) and \(j\) have length \(L &gt; 0\) and let \(\vek n\) be the <a class="xref auto" href="sec-vektorji.html#def-enotski-vektor" data-knowl="def-enotski-vektor">unit vector</a> from \(i\) towards \(j\) in global axes (with two components in the plane, with three in space). Let the <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> \(N\) be constant along the bar (tension positive) and known from a computation that ignores geometric stiffness. Let the displacements of the ends \(\vek u_{\mathrm{i}}\) and \(\vek u_{\mathrm{j}}\) be small, their column <span class="nobr">\(\vek d_{\mathrm{e}} = (\vek u_{\mathrm{i}}, \vek u_{\mathrm{j}})\),</span> and let the bar stay straight between the pins and free of <a class="xref auto" href="sec-model-nosilca.html#def-porazdeljena-precna-obtezba" data-knowl="def-porazdeljena-precna-obtezba">transverse load</a>. Let \(\mat P = \mat I - \vek n\,\vek n^\T\) and <span class="nobr">\(|\mat P\,(\vek u_{\mathrm{j}} - \vek u_{\mathrm{i}})| \le 0{,}1\,L\).</span> For this term the axis is inextensible as in lemma <a class="xref" href="sec-geometrijska-togost.html#lem-skrcek-elementa" data-knowl="lem-skrcek-elementa">12.48</a>, while the elongation of the bar \(\vek n\cdot(\vek u_{\mathrm{j}} - \vek u_{\mathrm{i}})\) is carried by the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> of lemma <a class="xref" href="sec-palicje-ravnina-mke.html#lem-togost-palice-globalno" data-knowl="lem-togost-palice-globalno">7.28</a>. Then \(\mat P\) is symmetric, \(\vek n^\T\mat P = \vek 0\) and <span class="nobr">\(\mat P^2 = \mat P\),</span> the <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vector</a> \(\mat P\,\vek u\) is the part of the displacement \(\vek u\) across the bar, and the potential energy of the axial forces of the surroundings at the ends (lemma <a class="xref" href="sec-geometrijska-togost.html#lem-skrcek-elementa" data-knowl="lem-skrcek-elementa">12.48</a>, point 2) is \(\tfrac12\,\vek d_{\mathrm{e}}^\T\mat k_{\mathrm{e}}^g\,\vek d_{\mathrm{e}}\) with a relative error of at most \(0{,}26\) %, with the matrix</p>
 <div class="eq" id="eq-geometrijska-togost-palice">\[\mat k_{\mathrm{e}}^g = \frac{N}{L}\begin{pmatrix} \mat P &amp; -\mat P \\ -\mat P &amp; \mat P \end{pmatrix} , \qquad \tfrac12\,\vek d_{\mathrm{e}}^\T\mat k_{\mathrm{e}}^g\,\vek d_{\mathrm{e}} = \frac{N}{2L}\,\big|\mat P\,(\vek u_{\mathrm{j}} - \vek u_{\mathrm{i}})\big|^2 . \tag{12.54}\]</div>
@@ -526,7 +562,7 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 </div></details></div>
 <p class="vir"><span class="vir-label">Source:</span> COOK (18.2-4) (PDF p. 657): a matrix with entries \(\pm P/L\) for the transverse displacements, there with axial force <span class="nobr">\(P\),</span> tension positive, in the plane. The proof is not from a source.</p></div></div>
 <p>The lemma showed that the <a class="xref auto" href="sec-geometrijska-togost.html#lem-geometrijska-togost-palice" data-knowl="lem-geometrijska-togost-palice">geometric stiffness matrix of a bar</a> is the stiffness \(N/L\) times the matrix <span class="nobr">\(\mat P\),</span> which keeps only the transverse part of the displacement. The matrix has the same form with the same signs as the bar matrix of lemma <a class="xref" href="sec-palicje-ravnina-mke.html#lem-togost-palice-globalno" data-knowl="lem-togost-palice-globalno">7.28</a>, \(\tfrac{EA}{L}\,\vek n\,\vek n^\T\) in the same four places. There the matrix \(\vek n\,\vek n^\T\) kept only the part of the displacement along the bar, here \(\mat P\) keeps only the part across it.</p>
-<p>Let us try it on bracket B (chapter <a class="xref" href="ch-nihanje-vec-ps.html">10</a>, section <a class="xref" href="sec-enacbe-vec-ps.html#sec-evp-primera">10.1.4</a>) under the weight of the mass \(1000\) kg at the node <span class="nobr">\(\mathrm{C}\).</span> By chapter <a class="xref" href="ch-nihanje-vec-ps.html">10</a> the bar \(BC\) <span class="nobr">(\(L = 5\)</span> m, <span class="nobr">\(\vek n = (0{,}8;\ -0{,}6)\))</span> has the axial force \(N = 16\,350\) N, tension, so the string stiffness is \(N/L = 3270\) N/m. Let \(\mathrm{C}\) move down by \(1\) mm, \(\vek u = (0;\ -1)\) mm. The part of the displacement along the bar is \(\vek n\cdot\vek u = 0{,}6\) mm, the transverse part \(\mat P\,\vek u = \vek u - 0{,}6\,\vek n = (-0{,}48;\ -0{,}64)\) mm, of length \(0{,}8\) mm, since <span class="nobr">\(\sqrt{1 - 0{,}6^2} = 0{,}8\).</span> The force of the surroundings on the end \(\mathrm{C}\) of the bar that holds the bar in this state is \(3270\cdot(-0{,}48;\ -0{,}64)\cdot10^{-3} = (-1{,}570;\ -2{,}093)\) N. Its length is \(2{,}616\) N and it is perpendicular to the bar <span class="nobr">(\(0{,}8\cdot(-1{,}570) - 0{,}6\cdot(-2{,}093) = 0\)),</span> in the direction of the transverse displacement. The bar itself acts on the node with the opposite force, which pulls \(\mathrm{C}\) back, as in tension (figure <a class="xref" href="sec-geometrijska-togost.html#fig-gtu-struna" data-knowl="fig-gtu-struna">12.31</a>, left). By lemma <a class="xref" href="sec-palicje-ravnina-mke.html#lem-togost-palice-globalno" data-knowl="lem-togost-palice-globalno">7.28</a> the elongation \(0{,}6\) mm gives the force \(3{,}92\cdot10^6\ \text{N/m}\cdot 0{,}6\cdot10^{-3}\ \text{m} = 2352\) N along the bar, so the string force is \(0{,}11\) % of this force. The ratio is \(N/EA = 16\,350/(19{,}6\cdot10^6) = 8{,}3\cdot10^{-4}\) (the axial <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">strain</a> of the bar), because the stiffnesses \(N/L\) and \(EA/L\) differ only in \(N\) and <span class="nobr">\(EA\).</span> That is why the computation of chapter <a class="xref" href="ch-nihanje-vec-ps.html">10</a> without this term is so good.</p>
+<p>Let us try it on bracket B (chapter <a class="xref" href="ch-nihanje-vec-ps.html">10</a>, section <a class="xref" href="sec-enacbe-vec-ps.html#sec-evp-primera">10.1.4</a>) under the weight of the mass \(1000\) kg at the node <span class="nobr">\(\mathrm{C}\).</span> By chapter <a class="xref" href="ch-nihanje-vec-ps.html">10</a> the bar \(BC\) <span class="nobr">(\(L = 5\)</span> m, <span class="nobr">\(\vek n = (0{,}8;\ -0{,}6)\))</span> has the axial force \(N = 16\,350\) N, tension, so the string stiffness is \(N/L = 3270\) N/m. Let \(\mathrm{C}\) move down by \(1\) mm, \(\vek u = (0;\ -1)\) mm. The part of the displacement along the bar is \(\vek n\cdot\vek u = 0{,}6\) mm, the transverse part \(\mat P\,\vek u = \vek u - 0{,}6\,\vek n = (-0{,}48;\ -0{,}64)\) mm, of length \(0{,}8\) mm, since <span class="nobr">\(\sqrt{1 - 0{,}6^2} = 0{,}8\).</span> The force of the surroundings on the end \(\mathrm{C}\) of the bar that holds the bar in this state is \(3270\cdot(-0{,}48;\ -0{,}64)\cdot10^{-3} = (-1{,}570;\ -2{,}093)\) N. Its length is \(2{,}616\) N and it is perpendicular to the bar <span class="nobr">(\(0{,}8\cdot(-1{,}570) - 0{,}6\cdot(-2{,}093) = 0\)),</span> in the direction of the transverse displacement. The bar itself acts on the node with the opposite force, which <a data-del="vlece" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-struna" data-knowl="fig-gtu-struna">pulls \(\mathrm{C}\) back</a>, as <a data-del="nateg" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-struna" data-knowl="fig-gtu-struna">in tension</a> (figure <a class="xref" href="sec-geometrijska-togost.html#fig-gtu-struna" data-knowl="fig-gtu-struna">12.31</a>, left). By lemma <a class="xref" href="sec-palicje-ravnina-mke.html#lem-togost-palice-globalno" data-knowl="lem-togost-palice-globalno">7.28</a> the elongation \(0{,}6\) mm gives the force \(3{,}92\cdot10^6\ \text{N/m}\cdot 0{,}6\cdot10^{-3}\ \text{m} = 2352\) N along the bar, so the string force is \(0{,}11\) % of this force. The ratio is \(N/EA = 16\,350/(19{,}6\cdot10^6) = 8{,}3\cdot10^{-4}\) (the axial <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">strain</a> of the bar), because the stiffnesses \(N/L\) and \(EA/L\) differ only in \(N\) and <span class="nobr">\(EA\).</span> That is why the computation of chapter <a class="xref" href="ch-nihanje-vec-ps.html">10</a> without this term is so good.</p>
 <p>Let us also check whether the matrices give the change of frequencies that chapter <a class="xref" href="ch-nihanje-vec-ps.html">10</a> estimated. By the same chapter the bar \(AC\) <span class="nobr">(\(L = 4\)</span> m, <span class="nobr">\(\vek n = (1;\ 0)\))</span> has the axial force \(N = -13\,080\) N, compression, and <span class="nobr">\(\mat P = \mathrm{diag}(0,\ 1)\),</span> so its block at the node \(\mathrm{C}\) is \(\tfrac{N}{L}\mat P = \mathrm{diag}(0,\ -3270)\) N/m. The bar \(BC\) has <span class="nobr">\(\vek n\,\vek n^\T = \begin{pmatrix} 0{,}64 &amp; -0{,}48 \\ -0{,}48 &amp; 0{,}36 \end{pmatrix}\),</span> hence \(\mat P = \begin{pmatrix} 0{,}36 &amp; 0{,}48 \\ 0{,}48 &amp; 0{,}64 \end{pmatrix}\) and the block <span class="nobr">\(3270\,\mat P\).</span> The pins \(\mathrm{A}\) and \(\mathrm{B}\) are at rest, so the geometric matrix of the structure in the <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">coordinates</a> \((u, v)\) of the node \(\mathrm{C}\) is the sum of both blocks</p>
 <div class="eq">\[\mat G = \begin{pmatrix} 1177{,}2 &amp; 1569{,}6 \\ 1569{,}6 &amp; -1177{,}2 \end{pmatrix}\ \text{N/m} .\]</div>
 <p>With the mass \(m = 1000\) kg and the matrix \(\mat K\) of chapter <a class="xref" href="ch-nihanje-vec-ps.html">10</a> the natural frequencies of the pair \((\mat K + \mat G,\ m\,\mat I)\) (theorem <a class="xref" href="sec-spektralni-izrek.html#thm-spektralni-izrek" data-knowl="thm-spektralni-izrek">10.13</a>) change from \(29{,}4919\) and \(89{,}1641\) 1/s to \(29{,}4891\) and \(89{,}1650\) 1/s, that is by \(-0{,}0094\) % and \(+0{,}00103\) % (NumPy), as chapter <a class="xref" href="ch-nihanje-vec-ps.html">10</a> estimated. We can estimate the size of the change. The Rayleigh quotient (definition <a class="xref" href="sec-rayleighov-kolicnik.html#def-rayleighov-kolicnik" data-knowl="def-rayleighov-kolicnik">10.25</a>) of the pair \((\mat K + \mat G,\ m\,\mat I)\) for the column \(\vek v\) of the first mode (of unit length) is \(\lambda_1\,(1 + \vek v^\T\mat G\,\vek v/\vek v^\T\mat K\,\vek v)\) with <span class="nobr">\(\vek v^\T\mat G\,\vek v/\vek v^\T\mat K\,\vek v = -162{,}9/869\,771 = -1{,}87\cdot10^{-4}\).</span> By theorem <a class="xref" href="sec-rayleighov-kolicnik.html#thm-rayleigh-meje" data-knowl="thm-rayleigh-meje">10.26</a> the first <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">eigenvalue</a> is at most this much, so the frequency drops by at least half of this, \(0{,}0094\) %, and the computation gives \(-0{,}0094\) %. The change is this small because the largest entry of the matrix <span class="nobr">\(\mat G\),</span> \(1569{,}6\) N/m, is \(899\) times smaller than the smallest entry of the matrix <span class="nobr">\(\mat K\),</span> \(1{,}4112\cdot10^6\) N/m.</p>
@@ -552,7 +588,7 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 </ol>
 </div></details></div>
 <p class="vir"><span class="vir-label">Source:</span> COOK (18.2-6) (PDF p. 657, there axial force <span class="nobr">\(P\),</span> tension positive), GR (5.141) and (5.142) (PDF p. 402, there <span class="nobr">\(N_0\)).</span> The sign and points 3 and 4 are derived here.</p></div></div>
-<p>Point 3 is the same statement as for strings. An element with tension <span class="nobr">\(N\),</span> rigidly rotated by <span class="nobr">\(b\),</span> is <a class="xref auto" href="sec-sila-v-palici.html#def-ravnovesje" data-knowl="def-ravnovesje">in equilibrium</a> only if a pair of transverse forces \(N b\) acts at its ends, and the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat s_{\mathrm{e}}\) contains it. The bar matrix of lemma <a class="xref" href="sec-geometrijska-togost.html#lem-geometrijska-togost-palice" data-knowl="lem-geometrijska-togost-palice">12.49</a> gives the same forces for the same transverse difference of displacements <span class="nobr">\(b\,h\),</span> <span class="nobr">\((N/L)\cdot b\,h = N b\).</span> By point 2, \(\mat s_{\mathrm{e}}\) is, like \(\mat k_{\mathrm{e}}\) (lemma <a class="xref" href="sec-element-nosilca.html#lem-lastnosti-togosti-nosilca" data-knowl="lem-lastnosti-togosti-nosilca">12.5</a>), semidefinite and has the translation in its kernel. The difference is the rigid rotation: for \(\mat k_{\mathrm{e}}\) it has zero energy, for \(\mat s_{\mathrm{e}}\) the energy \(\tfrac12 N b^2 h\) by point 3, so the rigid rotation of an element with <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> is not free of energy.</p>
+<p>Point 3 is the same statement as for <a class="xref auto forward" href="sec-valovna-enacba.html#def-struna" data-knowl="def-struna" title="Defined later in the book">strings</a>. An element with tension <span class="nobr">\(N\),</span> rigidly rotated by <span class="nobr">\(b\),</span> is <a class="xref auto" href="sec-sila-v-palici.html#def-ravnovesje" data-knowl="def-ravnovesje">in equilibrium</a> only if a pair of transverse forces \(N b\) acts at its ends, and the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat s_{\mathrm{e}}\) contains it. The bar matrix of lemma <a class="xref" href="sec-geometrijska-togost.html#lem-geometrijska-togost-palice" data-knowl="lem-geometrijska-togost-palice">12.49</a> gives the same forces for the same transverse difference of displacements <span class="nobr">\(b\,h\),</span> <span class="nobr">\((N/L)\cdot b\,h = N b\).</span> By point 2, \(\mat s_{\mathrm{e}}\) is, like \(\mat k_{\mathrm{e}}\) (lemma <a class="xref" href="sec-element-nosilca.html#lem-lastnosti-togosti-nosilca" data-knowl="lem-lastnosti-togosti-nosilca">12.5</a>), semidefinite and has the translation in its kernel. The difference is the rigid rotation: for \(\mat k_{\mathrm{e}}\) it has zero energy, for \(\mat s_{\mathrm{e}}\) the energy \(\tfrac12 N b^2 h\) by point 3, so the rigid rotation of an element with <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> is not free of energy.</p>
 
 <h3 id="sec-gtu-analiza"><span class="h-num">12.10.3</span> Buckling as an eigenproblem</h3>
 <p>Chapter <a class="xref" href="ch-analiticna-dinamika.html">8</a> found the critical load of a column as the <a class="xref auto" href="sec-limita-odvod.html#def-limita" data-knowl="def-limita">limit</a> at which the <a class="xref auto" href="sec-variacijski-racun.html#def-druga-variacija" data-knowl="def-druga-variacija">second variation</a> of the energy stops being positive. For finite elements the second variation is a quadratic form in the unknowns. For a column with <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> \(N = -P\) (compression, <span class="nobr">\(P &gt; 0\))</span> the energy at a small displacement is, by lemma <a class="xref" href="sec-geometrijska-togost.html#lem-geometrijska-togost-nosilca" data-knowl="lem-geometrijska-togost-nosilca">12.50</a>, <span class="nobr">\(\tfrac12\,\vek d^\T\mat K\,\vek d - \tfrac P2\,\vek d^\T\mat S\,\vek d\),</span> where \(\mat K\) and \(\mat S\) are assembled from \(\mat k_{\mathrm{e}}\) and \(\mat s_{\mathrm{e}}\) as in theorem <a class="xref" href="sec-sestavljanje-nosilca.html#thm-sestavljanje-nosilca" data-knowl="thm-sestavljanje-nosilca">12.9</a>. This form is positive for every \(\vek d \ne \vek 0\) exactly when the quotient \(\vek d^\T\mat K\vek d/\vek d^\T\mat S\vek d\) is larger than \(P\) for every <span class="nobr">\(\vek d\).</span> The smallest value of such a quotient is described by theorem <a class="xref" href="sec-rayleighov-kolicnik.html#thm-rayleigh-meje" data-knowl="thm-rayleigh-meje">10.26</a>. The same computation holds for any structure, once the forces in the elements are known.</p>
@@ -564,11 +600,11 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 <p class="vir"><span class="vir-label">Source:</span> COOK (18.5-1)-(18.5-4) (PDF p. 662), which calls the matrix \(\mat G_{\mathrm{ref}}\) the &quot;stress stiffness matrix&quot; <span class="nobr">\([K_\sigma]_{\mathrm{ref}}\),</span> and COOK §18.5 (PDF pp. 662-663) for a column with a compressive force. The notation is ours.</p></div></div>
 <p>Let us try it on the pinned column of length \(L = 2\) m (flat bar, weak axis, \(EI = 5226{,}67\) N m², critical load from chapter <a class="xref" href="ch-analiticna-dinamika.html">8</a> \(12\,896\) N) with a single element, <span class="nobr">\(h = L\).</span> The supports prescribe only <span class="nobr">\(v_1 = v_2 = 0\),</span> the rotations \(\varphi_1\) and \(\varphi_2\) are free. From equations <a class="xref" href="sec-element-nosilca.html#eq-togost-elementa-nosilca" data-knowl="eq-togost-elementa-nosilca">(12.3)</a> and <a class="xref" href="sec-geometrijska-togost.html#eq-geometrijska-togost-nosilca" data-knowl="eq-geometrijska-togost-nosilca">(12.55)</a></p>
 <div class="eq">\[\mat K_{\mathrm{ff}} = \frac{EI}{h}\begin{pmatrix} 4 &amp; 2 \\ 2 &amp; 4 \end{pmatrix} , \qquad \mat S_{\mathrm{ff}} = \frac{h}{30}\begin{pmatrix} 4 &amp; -1 \\ -1 &amp; 4 \end{pmatrix} .\]</div>
-<p>The equation \(\mat K_{\mathrm{ff}}\,\vek d = P\,\mat S_{\mathrm{ff}}\,\vek d\) has the <a class="xref auto" href="sec-determinanta.html#def-determinanta" data-knowl="def-determinanta">determinant</a> \(\big(4 - \tfrac{4p}{30}\big)^2 - \big(2 + \tfrac{p}{30}\big)^2\) with <span class="nobr">\(p = P h^2/EI\),</span> that is \(\tfrac{p^2}{60} - \tfrac{6p}{5} + 12\) with the zeros \(p = 12\) and <span class="nobr">\(p = 60\).</span> The smallest is \(P_{\mathrm{h}} = 12\,EI/h^2 = 15\,680\) N, the buckling mode <span class="nobr">\(\varphi_2 = -\varphi_1\),</span> the field <span class="nobr">\(v_{\mathrm{h}} = \varphi_1\,h\,(\xi - \xi^2)\),</span> a parabola (by lemma <a class="xref" href="sec-element-nosilca.html#lem-hermitove-funkcije" data-knowl="lem-hermitove-funkcije">12.2</a>). This is the same parabola that in section <a class="xref" href="sec-uklon.html#sec-uklon-podpore">8.14.3</a> gave the <a class="xref auto" href="sec-rayleighov-kolicnik.html#def-rayleighov-kolicnik" data-knowl="def-rayleighov-kolicnik">Rayleigh quotient</a> <span class="nobr">\(12/L^2\),</span> \(21{,}6\) % above <span class="nobr">\(\pi^2/L^2\).</span> Here <span class="nobr">\(P_{\mathrm{h}}/P_{\mathrm{cr}} = 12/\pi^2 = 1{,}2159\),</span> and that the element cannot give less we prove below. The second zero <span class="nobr">\(p = 60\),</span> \(78\,400\) N, has the mode \(\varphi_2 = \varphi_1\) and is \(1{,}52\) times the second critical load \(4\pi^2 EI/L^2 = 51\,585\) N.</p>
+<p>The equation \(\mat K_{\mathrm{ff}}\,\vek d = P\,\mat S_{\mathrm{ff}}\,\vek d\) has the <a class="xref auto" href="sec-determinanta.html#def-determinanta" data-knowl="def-determinanta">determinant</a> \(\big(4 - \tfrac{4p}{30}\big)^2 - \big(2 + \tfrac{p}{30}\big)^2\) with <span class="nobr">\(p = P h^2/EI\),</span> that is \(\tfrac{p^2}{60} - \tfrac{6p}{5} + 12\) with the zeros \(p = 12\) and <span class="nobr">\(p = 60\).</span> The smallest is \(P_{\mathrm{h}} = 12\,EI/h^2 = 15\,680\) N, the buckling mode <span class="nobr">\(\varphi_2 = -\varphi_1\),</span> the field <span class="nobr">\(v_{\mathrm{h}} = \varphi_1\,h\,(\xi - \xi^2)\),</span> <a data-del="n1" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-oblike" data-knowl="fig-gtu-oblike">a parabola</a> (by lemma <a class="xref" href="sec-element-nosilca.html#lem-hermitove-funkcije" data-knowl="lem-hermitove-funkcije">12.2</a>). This is the same parabola that in section <a class="xref" href="sec-uklon.html#sec-uklon-podpore">8.14.3</a> gave the <a class="xref auto" href="sec-rayleighov-kolicnik.html#def-rayleighov-kolicnik" data-knowl="def-rayleighov-kolicnik">Rayleigh quotient</a> <span class="nobr">\(12/L^2\),</span> \(21{,}6\) % above <span class="nobr">\(\pi^2/L^2\).</span> Here <span class="nobr">\(P_{\mathrm{h}}/P_{\mathrm{cr}} = 12/\pi^2 = 1{,}2159\),</span> and that the element cannot give less we prove below. The second zero <span class="nobr">\(p = 60\),</span> \(78\,400\) N, has the mode \(\varphi_2 = \varphi_1\) and is \(1{,}52\) times the second critical load \(4\pi^2 EI/L^2 = 51\,585\) N.</p>
 <p>A number near the smallest <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">eigenvalue</a> is not yet a <a class="xref auto" href="sec-geometrijska-togost.html#def-linearna-analiza-uklona" data-knowl="def-linearna-analiza-uklona">buckling factor</a>. For a compressive force \(P\) we have <span class="nobr">\(\mat K_{\mathrm{ff}} + \mu\,\mat G_{\mathrm{ff}} = \mat K_{\mathrm{ff}} - P\,\mat S_{\mathrm{ff}}\),</span> and \(P\) is not a buckling factor if the equation <a class="xref" href="sec-geometrijska-togost.html#eq-uklon-lastni-problem" data-knowl="eq-uklon-lastni-problem">(12.56)</a> has only the solution <span class="nobr">\(\vek d = \vek 0\),</span> that is if the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> is <a class="xref auto" href="sec-matrike.html#def-inverzna-matrika" data-knowl="def-inverzna-matrika">invertible</a>. Take \(P = 0{,}9\,P_{\mathrm{h}} = 14\,112\) N, so <span class="nobr">\(p = 10{,}8\).</span> The determinant from the computation above is then <span class="nobr">\(p^2/60 - 6p/5 + 12 = 0{,}984 \ne 0\),</span> the matrix is invertible, and since the diagonal entry \(4 - 4p/30 = 2{,}56\) and the determinant are positive, it is even <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite</a>. At \(P = 0{,}9\,P_{\mathrm{h}}\) no shape is a solution and there is no buckling at this force, although \(P\) is only \(10\) % below <span class="nobr">\(P_{\mathrm{h}}\).</span> \(P\) differs from \(P_{\mathrm{h}}\) in one thing: the determinant is not zero. At \(p = 12\) it is zero, but at <span class="nobr">\(p = 36\),</span> between the zeros \(12\) and <span class="nobr">\(60\),</span> it is <span class="nobr">\(-9{,}6\),</span> the matrix is invertible but not positive definite, and \(p = 36\) is not a buckling factor either. A factor is only a zero of the determinant.</p>
 
 <h3 id="sec-gtu-wirtinger"><span class="h-num">12.10.4</span> Inequalities between integrals of derivatives of functions with kinks</h3>
-<p>The smallest quotient \(P_{\mathrm{h}} = \min\vek d^\T\mat K\vek d/\vek d^\T\mat S\vek d\) is the smallest value of the Rayleigh quotient (definition <a class="xref" href="sec-rayleighov-kolicnik.html#def-rayleighov-kolicnik" data-knowl="def-rayleighov-kolicnik">10.25</a>), which for the field \(v_{\mathrm{h}}\) equals <span class="nobr">\(EI\int v_{\mathrm{h}}''^2/\int v_{\mathrm{h}}'^2\).</span> For similar quotients chapter <a class="xref" href="ch-analiticna-dinamika.html">8</a> proved <a class="xref auto" href="sec-polnost.html#def-zgornja-meja" data-knowl="def-zgornja-meja">lower bounds</a> with the inequalities of section <a class="xref" href="sec-uklon.html#sec-wirtinger">8.14.1</a>, but for <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> with a continuous <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivative</a> or a continuous second derivative. The field \(v_{\mathrm{h}}\) is <a class="xref auto" href="sec-sprememba-polja.html#def-zvezno-odvedljivo-polje" data-knowl="def-zvezno-odvedljivo-polje">continuously differentiable</a>, but its second derivative jumps at the nodes. For example the function \(H_1^\varphi\) of the middle node of a <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beam</a> with two elements (figure <a class="xref" href="sec-sestavljanje-nosilca.html#fig-snv-funkcije-vozlisca" data-knowl="fig-snv-funkcije-vozlisca">12.5</a>) has the second derivative \(4\) 1/m from the left and \(-4\) 1/m from the right. We therefore need the inequalities for fields with kinks of the second kind (lemma <a class="xref" href="sec-sestavljanje-nosilca.html#lem-nosilec-pregibi" data-knowl="lem-nosilec-pregibi">12.10</a>): \(\eta\) and \(\eta'\) continuous, \(\eta'\) piecewise continuously differentiable (definition <a class="xref" href="sec-funkcije-s-pregibi.html#def-odsekoma-zvezno-odvedljiva" data-knowl="def-odsekoma-zvezno-odvedljiva">6.11</a>), so \(\eta''\) is <a class="xref auto" href="sec-funkcije-s-pregibi.html#def-odsekoma-zvezna" data-knowl="def-odsekoma-zvezna">piecewise continuous</a>. We repeat the proofs of chapter <a class="xref" href="ch-analiticna-dinamika.html">8</a> for such functions, except that every computation with a derivative is done on a piece.</p>
+<p>The smallest quotient \(P_{\mathrm{h}} = \min\vek d^\T\mat K\vek d/\vek d^\T\mat S\vek d\) is the smallest value of the Rayleigh quotient (definition <a class="xref" href="sec-rayleighov-kolicnik.html#def-rayleighov-kolicnik" data-knowl="def-rayleighov-kolicnik">10.25</a>), which for the field \(v_{\mathrm{h}}\) equals <span class="nobr">\(EI\int v_{\mathrm{h}}''^2/\int v_{\mathrm{h}}'^2\).</span> For similar quotients chapter <a class="xref" href="ch-analiticna-dinamika.html">8</a> proved <a class="xref auto" href="sec-polnost.html#def-zgornja-meja" data-knowl="def-zgornja-meja">lower bounds</a> with the inequalities of section <a class="xref" href="sec-uklon.html#sec-wirtinger">8.14.1</a>, but for <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> with a continuous <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivative</a> or a continuous second derivative. The field \(v_{\mathrm{h}}\) is <a class="xref auto" href="sec-sprememba-polja.html#def-zvezno-odvedljivo-polje" data-knowl="def-zvezno-odvedljivo-polje">continuously differentiable</a>, but its second derivative jumps at the nodes. For example the function \(H_1^\varphi\) of the middle node of a <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beam</a> with two elements (figure <a class="xref" href="sec-sestavljanje-nosilca.html#fig-snv-funkcije-vozlisca" data-knowl="fig-snv-funkcije-vozlisca">12.5</a>) has, with \(h = 1\) m, the second derivative \(4/h = 4\) 1/m from the left and \(-4/h = -4\) 1/m from the right. We therefore need the inequalities for fields with kinks of the second kind (lemma <a class="xref" href="sec-sestavljanje-nosilca.html#lem-nosilec-pregibi" data-knowl="lem-nosilec-pregibi">12.10</a>): \(\eta\) and \(\eta'\) continuous, \(\eta'\) piecewise continuously differentiable (definition <a class="xref" href="sec-funkcije-s-pregibi.html#def-odsekoma-zvezno-odvedljiva" data-knowl="def-odsekoma-zvezno-odvedljiva">6.11</a>), so \(\eta''\) is <a class="xref auto" href="sec-funkcije-s-pregibi.html#def-odsekoma-zvezna" data-knowl="def-odsekoma-zvezna">piecewise continuous</a>. We repeat the proofs of chapter <a class="xref" href="ch-analiticna-dinamika.html">8</a> for such functions, except that every computation with a derivative is done on a piece.</p>
 
 <div class="blk lema" id="lem-wirtinger-pregibi"><div class="blk-head"><span class="blk-label">Lemma 12.52</span> <span class="blk-title">Inequalities between integrals of derivatives of functions with kinks (neenakosti za integrale odvodov funkcij s pregibi)</span></div><div class="blk-body"><p>All <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integrals</a> are integrals of <a class="xref auto" href="sec-funkcije-s-pregibi.html#def-odsekoma-zvezna" data-knowl="def-odsekoma-zvezna">piecewise continuous functions</a> (definition <a class="xref" href="sec-funkcije-s-pregibi.html#def-integral-odsekoma-zvezne" data-knowl="def-integral-odsekoma-zvezne">6.9</a>).</p>
 <ol>
@@ -691,8 +727,8 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 </tbody>
 </table>
 <p>Every value lies above the computed critical load and every row decreases with <span class="nobr">\(n\),</span> as points 2 and 3 of theorem <a class="xref" href="sec-geometrijska-togost.html#thm-uklon-zgornja-meja" data-knowl="thm-uklon-zgornja-meja">12.53</a> predict (the meshes with <span class="nobr">\(n = 1\),</span> <span class="nobr">\(2\),</span> <span class="nobr">\(4\),</span> \(8\) arise by halving). For the clamp-and-pin column the decrease is point 3 of the theorem, while that the values lie above \(26{,}383\) kN is only an observation, because this bound is not proved. For clamped ends all four unknowns are prescribed with one element, so there are no free unknowns. Meshes that do not arise by division need not decrease, also for clamped ends: \(P_{\mathrm{h}}\) for \(n = 2, 3, 4\) is <span class="nobr">\(52{,}267\),</span> \(52{,}715\) and \(51{,}973\) kN. The mesh with three elements is not a division of the mesh with two, so point 3 says nothing about them, while the mesh with four is a division of the mesh with two and lies lower.</p>
-<p>The ratio for the pinned column for \(n = 1, 2, 4, 8, 16\) is <span class="nobr">\(1{,}2159\),</span> <span class="nobr">\(1{,}00752\),</span> <span class="nobr">\(1{,}000512\),</span> \(1{,}0000328\) and <span class="nobr">\(1{,}0000021\).</span> The excesses over \(1\) are <span class="nobr">\(0{,}21585\),</span> <span class="nobr">\(7{,}522\cdot10^{-3}\),</span> <span class="nobr">\(5{,}121\cdot10^{-4}\),</span> \(3{,}277\cdot10^{-5}\) and <span class="nobr">\(2{,}060\cdot10^{-6}\),</span> each <span class="nobr">\(28{,}7\),</span> <span class="nobr">\(14{,}7\),</span> \(15{,}6\) and \(15{,}9\) times smaller than the previous one. At every halving of the element the excess therefore drops about \(16 = 2^4\) times. We do not prove the \(h^4\) law, the numbers show it. The reason we expect is this: the error of the field moment on an element is of order \(h^2\) (corollary <a class="xref" href="sec-tocnost-vozlisc.html#cor-napaka-v-elementu" data-knowl="cor-napaka-v-elementu">12.16</a>, for a uniform load, halving reduces it \(4\) times), and the error of a Ritz <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">eigenvalue</a> should be proportional to the square of the error of the field in the <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-energijska-norma" data-knowl="def-energijska-norma">energy norm</a>, which contains the moment. The error of the eigenvalue would then be of order <span class="nobr">\(h^4\).</span> We have not proved this relation with the square in the book, so the \(h^4\) law remains an observation.</p>
-<p>Figure <a class="xref" href="sec-geometrijska-togost.html#fig-gtu-steber" data-knowl="fig-gtu-steber">12.32</a> shows the excess against the number of elements per effective length \(L_{\mathrm{e}}\) (chapter <a class="xref" href="ch-analiticna-dinamika.html">8</a>, figure <a class="xref" href="sec-uklon.html#fig-ukl-podpore" data-knowl="fig-ukl-podpore">8.44</a>), that is against \(n\,L_{\mathrm{e}}/L\) with <span class="nobr">\(L_{\mathrm{e}} = L\),</span> <span class="nobr">\(L/2\),</span> \(2L\) and \(0{,}699\,L\) for the pinned, clamped, cantilever and clamp-and-pin columns. The points of the pinned, clamped (from \(n\,L_{\mathrm{e}}/L = 2\) on) and cantilever columns lie on one curve, the points of the clamp-and-pin column slightly below it.</p>
+<p>The ratio for the pinned column for \(n = 1, 2, 4, 8, 16\) is <span class="nobr">\(1{,}2159\),</span> <span class="nobr">\(1{,}00752\),</span> <span class="nobr">\(1{,}000512\),</span> \(1{,}0000328\) and <span class="nobr">\(1{,}0000021\).</span> The excesses over \(1\) are <span class="nobr">\(0{,}21585\),</span> <span class="nobr">\(7{,}522\cdot10^{-3}\),</span> <span class="nobr">\(5{,}121\cdot10^{-4}\),</span> \(3{,}277\cdot10^{-5}\) and <span class="nobr">\(2{,}060\cdot10^{-6}\),</span> each <span class="nobr">\(28{,}7\),</span> <span class="nobr">\(14{,}7\),</span> \(15{,}6\) and \(15{,}9\) times smaller than the previous one. At every halving of the element <a data-del="clenka,naklon" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-steber" data-knowl="fig-gtu-steber">the excess therefore drops about \(16 = 2^4\) times</a>. We do not prove the \(h^4\) law, the numbers show it. The reason we expect is this: the error of the field moment on an element is of order \(h^2\) (corollary <a class="xref" href="sec-tocnost-vozlisc.html#cor-napaka-v-elementu" data-knowl="cor-napaka-v-elementu">12.16</a>, for a uniform load, halving reduces it \(4\) times), and the error of a Ritz <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">eigenvalue</a> should be proportional to the square of the error of the field in the <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-energijska-norma" data-knowl="def-energijska-norma">energy norm</a>, which contains the moment. The error of the eigenvalue would then be of order <span class="nobr">\(h^4\).</span> We have not proved this relation with the square in the book, so the \(h^4\) law remains an observation.</p>
+<p>Figure <a class="xref" href="sec-geometrijska-togost.html#fig-gtu-steber" data-knowl="fig-gtu-steber">12.32</a> shows <a data-del="navpicna" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-steber" data-knowl="fig-gtu-steber">the excess</a> against <a data-del="vodoravna" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-steber" data-knowl="fig-gtu-steber">the number of elements per effective length</a> \(L_{\mathrm{e}}\) (chapter <a class="xref" href="ch-analiticna-dinamika.html">8</a>, figure <a class="xref" href="sec-uklon.html#fig-ukl-podpore" data-knowl="fig-ukl-podpore">8.44</a>), that is against \(n\,L_{\mathrm{e}}/L\) with <span class="nobr">\(L_{\mathrm{e}} = L\),</span> <span class="nobr">\(L/2\),</span> \(2L\) and \(0{,}699\,L\) for the <a data-del="clenka" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-steber" data-knowl="fig-gtu-steber">pinned</a>, <a data-del="vpetji" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-steber" data-knowl="fig-gtu-steber">clamped</a>, <a data-del="konzola" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-steber" data-knowl="fig-gtu-steber">cantilever</a> and <a data-del="vpetjeclenek" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-steber" data-knowl="fig-gtu-steber">clamp-and-pin</a> columns. The points of the <a data-del="clenka" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-steber" data-knowl="fig-gtu-steber">pinned</a>, <a data-del="vpetji" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-steber" data-knowl="fig-gtu-steber">clamped</a> (from \(n\,L_{\mathrm{e}}/L = 2\) on) and <a data-del="konzola" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-steber" data-knowl="fig-gtu-steber">cantilever</a> columns lie on one curve, <a data-del="vpetjeclenek" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-steber" data-knowl="fig-gtu-steber">the points of the clamp-and-pin column</a> below it, by \(40\) % for \(n = 2\) and by \(2\) % or less from \(n = 3\) on (NumPy). From \(n\,L_{\mathrm{e}}/L = 2\) on the curve is nearly parallel to <span class="nobr"><a data-del="naklon" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-steber" data-knowl="fig-gtu-steber">a line of slope \(-4\)</a>,</span> because the excess drops about \(16\) times at every halving of the element.</p>
 
 <figure class="blk slika" id="fig-gtu-steber"><p><span class="svgfig" role="img" aria-label="Excess of the critical load of the model over the critical load against the number of elements per effective length, four ways of support"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='373.61pt' height='269.31pt' viewBox='-72.000004 -72.000002 276.74656 199.491148'>
 <defs>
@@ -733,6 +769,7 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 <g stroke-width='0.6'>
 <g stroke-linecap='round'>
 <g stroke-linejoin='round'>
+<g class='del' data-del='vodoravna'>
 <path d='M0 0H206.19794' fill='none'/>
 <g transform='translate(203.72148,0.0)'>
 <g stroke-dasharray='none' stroke-dashoffset='0.0'>
@@ -750,30 +787,6 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 <use x='-27.996439' y='113.640787' xlink:href='#gtu-steber-g3-101'/>
 <use x='-23.718368' y='112.146407' xlink:href='#gtu-steber-g2-61'/>
 <use x='-18.737029' y='112.146407' xlink:href='#gtu-steber-g2-76'/>
-</g>
-</g>
-</g>
-</g>
-<path d='M0 0V163.51881' fill='none'/>
-<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,161.04236)'>
-<g stroke-dasharray='none' stroke-dashoffset='0.0'>
- <g stroke-linejoin='miter'>
- <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
- </g>
- </g>
-</g>
-<g transform='translate(-23.71239,174.00398)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-42.41691,112.146407)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='-42.41691' y='112.146407' xlink:href='#gtu-steber-g2-80'/>
-<use x='-36.02076' y='113.640787' xlink:href='#gtu-steber-g3-104'/>
-<use x='-30.858372' y='112.146407' xlink:href='#gtu-steber-g2-61'/>
-<use x='-25.877033' y='112.146407' xlink:href='#gtu-steber-g2-80'/>
-<use x='-19.480883' y='113.640787' xlink:href='#gtu-steber-g5-99'/>
-<use x='-15.938591' y='113.640787' xlink:href='#gtu-steber-g5-114'/>
-<use x='-10.113256' y='112.146407' xlink:href='#gtu-steber-g0-0'/>
-<use x='-.150642' y='112.146407' xlink:href='#gtu-steber-g4-49'/>
 </g>
 </g>
 </g>
@@ -836,6 +849,32 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 <g stroke='none'>
 <use x='-42.41691' y='112.146407' xlink:href='#gtu-steber-g4-51'/>
 <use x='-37.435571' y='112.146407' xlink:href='#gtu-steber-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='navpicna'>
+<path d='M0 0V163.51881' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,161.04236)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-23.71239,174.00398)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-42.41691,112.146407)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-42.41691' y='112.146407' xlink:href='#gtu-steber-g2-80'/>
+<use x='-36.02076' y='113.640787' xlink:href='#gtu-steber-g3-104'/>
+<use x='-30.858372' y='112.146407' xlink:href='#gtu-steber-g2-61'/>
+<use x='-25.877033' y='112.146407' xlink:href='#gtu-steber-g2-80'/>
+<use x='-19.480883' y='113.640787' xlink:href='#gtu-steber-g5-99'/>
+<use x='-15.938591' y='113.640787' xlink:href='#gtu-steber-g5-114'/>
+<use x='-10.113256' y='112.146407' xlink:href='#gtu-steber-g0-0'/>
+<use x='-.150642' y='112.146407' xlink:href='#gtu-steber-g4-49'/>
 </g>
 </g>
 </g>
@@ -941,6 +980,8 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='naklon'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.45'>
@@ -948,6 +989,8 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='clenka'>
 <path d='M2.26294 144.17007C2.26294 145.41988 1.2498 146.43301 0 146.43301S-2.26294 145.41988-2.26294 144.17007C-2.26294 142.92027-1.2498 141.90714 0 141.90714S2.26294 142.92027 2.26294 144.17007ZM0 144.17007' stroke='none'/>
 <g transform='translate(0.0,144.17007)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-42.41691,112.146407)scale(-1,-1)'>
@@ -1028,6 +1071,8 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='vpetji'>
 <path d='M-2.56064 114.01024L2.56064 119.13153M-2.56064 119.13153L2.56064 114.01024' fill='none'/>
 <path d='M37.27301 108.43353L42.39473 113.55481M37.27301 113.55481L42.39473 108.43353' fill='none'/>
 <path d='M60.57582 93.01193L65.69754 98.13365M60.57582 98.13365L65.69754 93.01193' fill='none'/>
@@ -1038,6 +1083,8 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 <path d='M156.77446 27.34303L161.89618 32.46475M156.77446 32.46475L161.89618 27.34303' fill='none'/>
 <path d='M180.07726 11.32404L185.19897 16.44576M180.07726 16.44576L185.19897 11.32404' fill='none'/>
 <path d='M196.60855-.05687L201.72984 5.0644M196.60855 5.0644L201.72984-.05687' fill='none'/>
+</g>
+<g class='del' data-del='konzola'>
 <path d='M37.55782 108.7179V113.27045H42.10992V108.7179ZM42.10992 113.27045' fill='none'/>
 <path d='M77.3915 82.17152V86.72408H81.94403V82.17152ZM81.94403 86.72408' fill='none'/>
 <path d='M100.69429 66.29494V70.84747H105.24684V66.29494ZM105.24684 70.84747' fill='none'/>
@@ -1046,6 +1093,8 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 <path d='M157.05927 27.62741V32.17995H161.61137V27.62741ZM161.61137 32.17995' fill='none'/>
 <path d='M180.36206 11.60884V16.16095H184.91417V11.60884ZM184.91417 16.16095' fill='none'/>
 <path d='M196.89293 .2275V4.78003H201.44547V.2275ZM201.44547 4.78003' fill='none'/>
+</g>
+<g class='del' data-del='vpetjeclenek'>
 <g fill='#fff'>
 <g fill='#fff'>
 <path d='M22.37413 123.1149C22.37413 124.83339 20.98105 126.22647 19.26256 126.22647S16.15099 124.83339 16.15099 123.1149S17.54407 120.00333 19.26256 120.00333S22.37413 121.39641 22.37413 123.1149ZM19.26256 123.1149'/>
@@ -1154,6 +1203,8 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='clenka'>
 <path d='M133.14572 153.64464C133.14572 154.89444 132.13258 155.90758 130.88278 155.90758S128.61984 154.89444 128.61984 153.64464S129.63298 151.3817 130.88278 151.3817S133.14572 152.39484 133.14572 153.64464ZM130.88278 153.64464' stroke='none'/>
 <g transform='translate(130.88278,153.64464)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-42.41691,112.146407)scale(-1,-1)'>
@@ -1177,6 +1228,8 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='vpetji'>
 <path d='M128.32172 135.43489L133.44344 140.55661M128.32172 140.55661L133.44344 135.43489' fill='none'/>
 <g transform='translate(141.62895,135.17596)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-42.41691,112.146407)scale(-1,-1)'>
@@ -1194,6 +1247,8 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='konzola'>
 <path d='M128.60652 120.0706V124.62315H133.15863V120.0706ZM133.15863 124.62315' fill='none'/>
 <g transform='translate(141.62895,119.52687)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-42.41691,112.146407)scale(-1,-1)'>
@@ -1211,6 +1266,8 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='vpetjeclenek'>
 <g fill='#fff'>
 <g fill='#fff'>
 <path d='M133.99435 106.69778C133.99435 108.41628 132.60127 109.80936 130.88278 109.80936S127.77121 108.41628 127.77121 106.69778C127.77121 104.9793 129.16429 103.58621 130.88278 103.58621S133.99435 104.9793 133.99435 106.69778ZM130.88278 106.69778'/>
@@ -1248,10 +1305,11 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 </g>
 </g>
 </g>
+</g>
 </svg></span></p>
 <figcaption><span class="blk-label">Figure 12.32</span>: Excess \(P_{\mathrm{h}}/P_{\mathrm{cr}} - 1\) of the critical load of the finite element model over the critical load of chapter <a class="xref" href="ch-analiticna-dinamika.html">8</a> against the number of elements per effective length, <span class="nobr">\(n\,L_{\mathrm{e}}/L\),</span> both axes logarithmic, for the weak axis of the flat bar \(20 \times 40\) mm. Dot: pinned, \(L = 2\) m. Cross: clamped, \(L = 2\) m. Square: cantilever, \(L = 1\) m. Open circle: clamp-and-pin, \(L = 2\) m, where the bound is not proved. The points of the pinned, clamped (from \(n\,L_{\mathrm{e}}/L = 2\) on) and cantilever columns are on one curve, so they overlap. Grey dashed is the line with slope <span class="nobr">\(-4\):</span> the excess drops \(16\) times at every halving of the element. Values below \(10^{-7}\) are within rounding error and are not drawn. The clamp-and-pin point for \(n = 1\) <span class="nobr">(\(n\,L_{\mathrm{e}}/L = 0{,}699\))</span> lies left of the drawn range.</figcaption></figure>
-<p>For the cantilever the agreement with the pinned column follows from the mirroring of chapter <a class="xref" href="ch-analiticna-dinamika.html">8</a>. Let a column of length \(2L\) with \(2n\) elements be pinned at both ends, and let \(v\) be a field of its family that is even about the middle, <span class="nobr">\(v(2L - x) = v(x)\).</span> Then <span class="nobr">\(v'(L) = 0\).</span> With \(w(s) = v(L) - v(L + s)\) for \(0 \le s \le L\) we have \(w(0) = w'(0) = 0\) and <span class="nobr">\(w(L) = v(L)\),</span> because <span class="nobr">\(v(2L) = 0\).</span> The field \(w\) is a field of the cantilever of length \(L\) with \(n\) elements, and conversely every such field gives an even field of the column. By evenness \(\int_0^{2L} v''^2 = 2\int_0^L w''^2\) and \(\int_0^{2L} v'^2 = 2\int_0^L w'^2\) <span class="nobr">(\(w' = -v'(L + s)\),</span> <span class="nobr">\(w'' = -v''(L + s)\)),</span> so the <a class="xref auto" href="sec-rayleighov-kolicnik.html#def-rayleighov-kolicnik" data-knowl="def-rayleighov-kolicnik">Rayleigh quotients</a> of both fields are equal. Hence \(P_{\mathrm{h}}\) of the cantilever with \(n\) elements is at least \(P_{\mathrm{h}}\) of the column with \(2n\) elements, which has odd fields besides the even ones. The numbers <span class="nobr">(\(12{,}9933\),</span> <span class="nobr">\(12{,}9029\),</span> \(12{,}8967\) kN in both cases) show that they are equal, so the first mode is an even field. This is observed, not proved. The agreement of the clamped column with this curve is not explained here: for <span class="nobr">\(n = 4\),</span> \(P_{\mathrm{h}} = 51{,}973\) kN is exactly \(4\cdot 12{,}9933\) kN.</p>
-<p>Figure <a class="xref" href="sec-geometrijska-togost.html#fig-gtu-oblike" data-knowl="fig-gtu-oblike">12.33</a> shows the first buckling mode of the pinned column for <span class="nobr">\(n = 1, 2, 4\).</span> For \(n = 1\) it is the parabola of the computation above, which deviates from the sine by at most \(5{,}6\) % of the largest value, for \(n = 2\) by \(1{,}1\) % and for \(n = 4\) by \(0{,}091\) % (NumPy).</p>
+<p>For the cantilever the agreement with the pinned column follows from the mirroring of chapter <a class="xref" href="ch-analiticna-dinamika.html">8</a>. Let a column of length \(2L\) with \(2n\) elements be pinned at both ends, and let \(v\) be a field of its family that is even about the middle, <span class="nobr">\(v(2L - x) = v(x)\).</span> Then <span class="nobr">\(v'(L) = 0\).</span> With \(w(s) = v(L) - v(L + s)\) for \(0 \le s \le L\) we have \(w(0) = w'(0) = 0\) and <span class="nobr">\(w(L) = v(L)\),</span> because <span class="nobr">\(v(2L) = 0\).</span> The field \(w\) is a field of the cantilever of length \(L\) with \(n\) elements, and conversely every such field gives an even field of the column. By evenness \(\int_0^{2L} v''^2 = 2\int_0^L w''^2\) and \(\int_0^{2L} v'^2 = 2\int_0^L w'^2\) <span class="nobr">(\(w' = -v'(L + s)\),</span> <span class="nobr">\(w'' = -v''(L + s)\)),</span> so the <a class="xref auto" href="sec-rayleighov-kolicnik.html#def-rayleighov-kolicnik" data-knowl="def-rayleighov-kolicnik">Rayleigh quotients</a> of both fields are equal. Hence \(P_{\mathrm{h}}\) of the cantilever with \(n\) elements is at least \(P_{\mathrm{h}}\) of the column with \(2n\) elements, which has odd fields besides the even ones. The numbers <span class="nobr">(\(12{,}9933\),</span> <span class="nobr">\(12{,}9029\),</span> \(12{,}8967\) kN in both cases) show that <a data-del="clenka,konzola" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-steber" data-knowl="fig-gtu-steber">they are equal</a>, so the first mode is an even field. This is observed, not proved. The agreement of the <a data-del="vpetji" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-steber" data-knowl="fig-gtu-steber">clamped column</a> with this curve is not explained here: for <span class="nobr">\(n = 4\),</span> \(P_{\mathrm{h}} = 51{,}973\) kN is exactly \(4\cdot 12{,}9933\) kN.</p>
+<p>Figure <a class="xref" href="sec-geometrijska-togost.html#fig-gtu-oblike" data-knowl="fig-gtu-oblike">12.33</a> shows the first buckling mode of the <a data-del="podpore" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-oblike" data-knowl="fig-gtu-oblike">pinned</a> column for <span class="nobr">\(n = 1, 2, 4\),</span> as the deflection from <a data-del="os" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-oblike" data-knowl="fig-gtu-oblike">the straight axis of the column</a>. <a data-del="n1" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-oblike" data-knowl="fig-gtu-oblike">For \(n = 1\)</a> it is the parabola of the computation above, which deviates from <a data-del="sinus" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-oblike" data-knowl="fig-gtu-oblike">the sine</a> by at most \(5{,}6\) % of the largest value, <a data-del="n2" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-oblike" data-knowl="fig-gtu-oblike">for \(n = 2\)</a> by \(1{,}1\) % and <a data-del="n4" class="xref kaz" href="sec-geometrijska-togost.html#fig-gtu-oblike" data-knowl="fig-gtu-oblike">for \(n = 4\)</a> by \(0{,}091\) % (NumPy).</p>
 
 <figure class="blk slika" id="fig-gtu-oblike"><p><span class="svgfig" role="img" aria-label="First buckling mode of the pinned column with one, two and four elements and the sine"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='387.13pt' height='248.77pt' viewBox='-72.000004 -72 286.763955 184.273843'>
 <defs>
@@ -1278,6 +1336,7 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 <g stroke-width='0.6'>
 <g stroke-linecap='round'>
 <g stroke-linejoin='round'>
+<g class='del' data-del='os'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.45'>
@@ -1285,6 +1344,8 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='sinus'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.45'>
@@ -1292,6 +1353,8 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='n1'>
 <g stroke-width='1.1'>
 <path d='M0 0C0 0 3.65187 4.16927 4.95065 5.77599C6.24944 7.3827 8.20802 9.97348 9.3608 11.5802C10.51357 13.18692 12.25635 15.74947 13.25906 17.35619C14.26178 18.9629 15.73108 21.55368 16.58772 23.1604C17.44437 24.76712 18.72256 27.33357 19.43318 28.93639C20.1438 30.5392 21.1449 33.10565 21.70944 34.71237C22.27399 36.31909 23.0836 38.90987 23.50208 40.51659C23.92055 42.1233 24.4571 44.68585 24.72552 46.29257S25.31433 50.49007 25.43666 52.09679C25.55899 53.7035 25.63095 56.26996 25.60728 57.87277C25.58362 59.47559 25.43578 62.04205 25.26604 63.64877C25.0963 65.2555 24.70357 67.84625 24.38383 69.45297C24.0641 71.0597 23.42737 73.62616 22.96155 75.22897C22.49573 76.83179 21.63847 79.39824 21.02652 81.00496S19.31287 85.20245 18.55098 86.80917C17.7891 88.4159 16.4433 90.97844 15.53534 92.58516S13.061 96.78265 12.00697 98.38937C10.95294 99.9961 9.13863 102.56255 7.9385 104.16536C6.73839 105.76817 4.45876 108.60304 3.35732 109.94135C2.25587 111.27965 0 113.81097 0 113.81097' fill='none'/>
 </g>
@@ -1309,6 +1372,8 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='podpore'>
 <path d='M0 0L-7.11317-11.38092H7.11317Z' fill='none'/>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-width='0.45'>
@@ -1380,6 +1445,8 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 <path d='M-18.4941 122.34688L-24.18456 116.65642' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='n1'>
 <g transform='translate(-12.16779,-35.94269)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-33.155847,54.365724)scale(-1,-1)'>
 <g fill='#000'>
@@ -1412,6 +1479,8 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='os'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.45'>
@@ -1419,6 +1488,8 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='sinus'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.45'>
@@ -1426,6 +1497,8 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='n2'>
 <g stroke-width='1.1'>
 <path d='M102.43004 0C102.43004 0 103.8728 2.05591 104.42151 2.84544C104.97021 3.63498 105.83997 4.90092 106.38475 5.69046S107.8151 7.74637 108.348 8.5359C108.88092 9.32544 109.70859 10.59138 110.22572 11.38092C110.74286 12.17046 111.56989 13.43677 112.07521 14.22636C112.58054 15.01596 113.38226 16.28227 113.86784 17.07181C114.35342 17.86134 115.10912 19.12729 115.57494 19.91682C116.04076 20.70636 116.77904 21.97273 117.22516 22.76227C117.67128 23.5518 118.37181 24.81775 118.79028 25.60728C119.20876 26.39682 119.8504 27.66315 120.24123 28.45274C120.63205 29.24234 121.23993 30.50865 121.60707 31.29819C121.97421 32.08772 122.55188 33.35367 122.8874 34.1432C123.22293 34.93274 123.72925 36.19911 124.02531 36.98865C124.32138 37.77818 124.75677 39.04413 125.02127 39.83366C125.28577 40.6232 125.70273 41.88951 125.93169 42.67911C126.16064 43.4687 126.48988 44.73502 126.6715 45.52455C126.8531 46.31409 127.10248 47.58003 127.24066 48.36957C127.37885 49.1591 127.56877 50.42548 127.66743 51.21501C127.7661 52.00455 127.9005 53.2705 127.95181 54.06003C128.00313 54.84956 128.03734 56.108 128.03734 56.90549C128.03734 57.70297 128.00313 59.0064 127.95181 59.8078C127.9005 60.6092 127.77008 61.88013 127.66743 62.68147C127.56479 63.48282 127.35808 64.77805 127.212 65.58336C127.06593 66.38867 126.80405 67.68428 126.61461 68.48569S126.07947 70.55794 125.84659 71.35934C125.61371 72.16075 125.20856 73.4563 124.93617 74.26167C124.66379 75.06705 124.19127 76.35867 123.88335 77.16399C123.57542 77.9693 123.06026 79.26454 122.71678 80.06589C122.3733 80.86723 121.78284 82.13814 121.4078 82.93954C121.03278 83.74095 120.41641 85.0365 120.01373 85.84187C119.61105 86.64725 118.93973 87.94278 118.50548 88.74419S117.34183 90.81645 116.88391 91.61786C116.426 92.41927 115.68271 93.71487 115.20503 94.52019C114.72736 95.3255 113.93845 96.62073 113.44107 97.42207C112.9437 98.22342 112.13736 99.49434 111.62022 100.29575C111.10309 101.09715 110.24683 102.39268 109.71385 103.19806C109.18088 104.00343 108.32361 105.29507 107.77882 106.10039C107.23404 106.9057 106.34003 108.20087 105.78735 109.00227C105.23468 109.80368 104.26128 111.20918 103.79546 111.87637S102.43004 113.81097 102.43004 113.81097' fill='none'/>
 </g>
@@ -1453,6 +1526,8 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='podpore'>
 <path d='M102.43004 0L95.31686-11.38092H109.54323Z' fill='none'/>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-width='0.45'>
@@ -1524,6 +1599,8 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 <path d='M83.9355 122.34688L78.24504 116.65642' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='n2'>
 <g transform='translate(90.26225,-35.94269)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-33.155847,54.365724)scale(-1,-1)'>
 <g fill='#000'>
@@ -1557,6 +1634,8 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='os'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.45'>
@@ -1564,6 +1643,8 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='sinus'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.45'>
@@ -1571,6 +1652,8 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='n4'>
 <g stroke-width='1.1'>
 <path d='M204.85966 0C204.85966 0 205.57533 1.02792 205.8556 1.42271C206.13588 1.8175 206.59949 2.45071 206.87978 2.84544C207.16006 3.24017 207.59937 3.873 207.87573 4.26773C208.1521 4.66246 208.59929 5.29567 208.87167 5.69046C209.14406 6.08525 209.56659 6.71838 209.83897 7.11317C210.11136 7.50797 210.56255 8.14111 210.83493 8.5359C211.10732 8.9307 211.5338 9.5639 211.80222 9.95863C212.07063 10.35336 212.50502 10.98619 212.76952 11.38092C213.03401 11.77565 213.448 12.40884 213.70859 12.80363C213.96918 13.19843 214.39107 13.83157 214.64767 14.22636C214.90428 14.62115 215.30547 15.2543 215.55809 15.6491C215.81071 16.04388 216.2198 16.67708 216.46852 17.07181S217.10597 18.09937 217.35071 18.4941C217.59544 18.88882 217.99171 19.52203 218.23248 19.91682S218.85309 20.94476 219.08603 21.33955S219.68633 22.36748 219.91136 22.76227C220.1364 23.15706 220.49095 23.79027 220.70804 24.185S221.26286 25.21255 221.47604 25.60728S222.03923 26.63522 222.2445 27.03001C222.44978 27.4248 222.75832 28.05795 222.95564 28.45274C223.15297 28.84753 223.4773 29.48067 223.6668 29.87546S224.1399 30.90346 224.3215 31.29819C224.50311 31.69292 224.80211 32.32574 224.97577 32.72047S225.41132 33.74841 225.57317 34.1432C225.73502 34.538 225.98839 35.17113 226.14235 35.56592S226.53679 36.59386 226.68286 36.98865S227.0609 38.01665 227.19516 38.41138C227.32942 38.8061 227.52428 39.43893 227.65059 39.83366C227.7769 40.2284 227.98717 40.86159 228.10559 41.25638S228.39752 42.28432 228.50414 42.67911C228.61075 43.0739 228.77936 43.70705 228.87404 44.10184S229.09984 45.12982 229.18663 45.52455S229.4207 46.55211 229.49966 46.94684C229.57863 47.34157 229.69263 47.97478 229.75581 48.36957C229.819 48.76436 229.89981 49.3975 229.9551 49.7923C230.01038 50.18709 230.10703 50.82022 230.15436 51.21501S230.26477 52.24301 230.29633 52.63774C230.32788 53.03247 230.36212 53.6653 230.38187 54.06003C230.40161 54.45476 230.42688 55.08797 230.43874 55.48276C230.45059 55.87755 230.46739 56.5107 230.46739 56.90549S230.45059 57.93341 230.43874 58.3282C230.42688 58.72299 230.40161 59.3562 230.38187 59.75093C230.36212 60.14566 230.32788 60.77849 230.29633 61.17322C230.26477 61.56795 230.20169 62.20116 230.15436 62.59595S230.01038 63.62387 229.9551 64.01866C229.89981 64.41345 229.819 65.0466 229.75581 65.44139C229.69263 65.83618 229.57863 66.46939 229.49966 66.86412C229.4207 67.25885 229.27342 67.89168 229.18663 68.2864C229.09984 68.68114 228.96872 69.31433 228.87404 69.70912S228.61075 70.73706 228.50414 71.13185C228.39752 71.52664 228.22401 72.15979 228.10559 72.55458S227.7769 73.58257 227.65059 73.9773C227.52428 74.37202 227.32942 75.00485 227.19516 75.39958S226.82893 76.42752 226.68286 76.82231S226.29631 77.85025 226.14235 78.24504S225.73502 79.27296 225.57317 79.66776C225.41132 80.06255 225.14943 80.69576 224.97577 81.09048C224.80211 81.48521 224.50311 82.11804 224.3215 82.51277C224.1399 82.9075 223.8563 83.54071 223.6668 83.9355S223.15695 84.95952 222.95564 85.35823S222.42113 86.4065 222.21585 86.80917C222.01057 87.21185 221.68922 87.85786 221.47604 88.26054S220.90436 89.31277 220.67938 89.71149C220.4544 90.1102 220.08736 90.7355 219.85448 91.13422C219.6216 91.53293 219.23778 92.18254 219.00093 92.58516S218.38821 93.63342 218.14738 94.0361C217.90656 94.43878 217.5139 95.0848 217.26518 95.48747C217.01646 95.89015 216.60739 96.53581 216.35477 96.93843C216.10214 97.34105 215.70094 97.99066 215.44434 98.38937C215.18773 98.78809 214.76976 99.41331 214.50526 99.81209C214.24077 100.21086 213.80644 100.8608 213.53796 101.26347C213.26949 101.66615 212.83871 102.3118 212.57024 102.71442C212.30176 103.11703 211.87534 103.76268 211.60295 104.16536C211.33057 104.56804 210.8833 105.21405 210.607 105.61673C210.33069 106.01941 209.89177 106.66505 209.61148 107.06767S208.86716 108.11992 208.58687 108.51863S207.87163 109.54263 207.59135 109.94135C207.31108 110.34006 206.85101 110.98961 206.56676 111.39229C206.2825 111.79497 205.77943 112.50809 205.54259 112.84367C205.30574 113.17926 204.85966 113.81097 204.85966 113.81097' fill='none'/>
 </g>
@@ -1614,6 +1697,8 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='podpore'>
 <path d='M204.85966 0L197.74648-11.38092H211.97284Z' fill='none'/>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-width='0.45'>
@@ -1685,6 +1770,8 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 <path d='M186.36555 122.34688L180.6751 116.65642' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='n4'>
 <g transform='translate(192.69188,-35.94269)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-33.155847,54.365724)scale(-1,-1)'>
 <g fill='#000'>
@@ -1715,6 +1802,7 @@ The factor on the right is at most <span class="nobr">\(1{,}0026\),</span> so th
 <use x='32.910118' y='54.365724' xlink:href='#gtu-oblike-g2-53'/>
 <use x='37.891457' y='54.365724' xlink:href='#gtu-oblike-g2-49'/>
 <use x='42.872796' y='54.365724' xlink:href='#gtu-oblike-g2-50'/>
+</g>
 </g>
 </g>
 </g>

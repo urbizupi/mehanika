@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kc-J"] = {"html": "<div class=\"eq\">\\[\\mat J = \\begin{bmatrix} 0 &amp; -1 \\\\ 1 &amp; 0 \\end{bmatrix} , \\qquad \\mat J\\,\\vek y = \\vek e_{\\mathrm{z}} \\times \\vek y \\ \\text{ for every vector } \\vek y \\text{ in the plane,} \\tag{28.13}\\]</div>", "href": "sec-kinematika-clena.html#eq-kc-J"};

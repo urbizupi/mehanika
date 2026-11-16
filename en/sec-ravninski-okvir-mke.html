@@ -19,7 +19,7 @@
 <header class="top"><a class="home" href="index.html">Mechanics</a><nav class="pager"><a href="sec-tocnost-vozlisc.html" rel="prev">← 12.3</a><a href="index.html">Contents</a><a href="sec-prostorski-okvir-mke.html" rel="next">12.5 →</a></nav>
 <span class="tools"><a class="lang" href="../sl/sec-ravninski-okvir-mke.html" hreflang="sl">Slovenščina</a><button type="button" class="theme-toggle" title="Light or dark theme" aria-label="Light or dark theme"></button><button type="button" data-details="open">Expand all</button><button type="button" data-details="close">Collapse all</button><button type="button" class="fig-side-toggle" aria-pressed="false">Figures alongside</button></span></header>
 <main>
-<p class="updated">Last updated 5 November 2026, 9:28</p>
+<p class="updated">Last updated 16 November 2026, 10:52</p>
 <p class="crumb"><a href="ch-mke-nosilci.html"><span class="h-num">Chapter 12</span> Beam and frame finite elements</a></p>
 <h2 id="sec-ravninski-okvir-mke"><span class="h-num">12.4</span> The plane frame (ravninski okvir)</h2>
 <p>In chapter <a class="xref" href="ch-nosilci.html">5</a> we computed plane frames three times and each time differently. We computed the L-frame with unit loads (section <a class="xref" href="sec-okvirji.html#sec-pomiki-okvirja">5.14.2</a>), the <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">truss</a> with welded joints with three unknowns at the joint <span class="nobr">\(C\),</span> whose <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> we assembled by hand (section <a class="xref" href="sec-okvirji.html#sec-zvarjeno-palicje">5.14.3</a>), and the statically indeterminate frame with Castigliano's theorem, where we had to choose an unknown reaction (section <a class="xref" href="sec-okvirji.html#sec-nedolocen-okvir">5.14.4</a>). At the end of the section on the welded truss we called the procedure that assembles the matrix for any number of elements and nodes the finite element method and promised it for these chapters. Does one single procedure solve all three frames, and with that every plane frame?</p>
@@ -27,7 +27,7 @@
 <p>The model is the model of chapter <a class="xref" href="ch-nosilci.html">5</a>. The frame lies in the plane \(xy\) together with the loads (definition <a class="xref" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">5.90</a>), its elements are straight beams by the Euler-Bernoulli theory (definition <a class="xref" href="sec-kinematika-nosilca.html#def-eb-nosilec" data-knowl="def-eb-nosilec">5.14</a>) with the axis through the <a class="xref auto" href="sec-geometrija-prereza.html#def-tezisce" data-knowl="def-tezisce">centroids</a> of the sections, a <a class="xref auto" href="sec-natezni-preizkus.html#def-linearno-elasticen" data-knowl="def-linearno-elasticen">linearly elastic material</a> and constant \(EA\) and \(EI\) on each element, the joints are rigid, and displacements and rotations are small. The joint has no size, the weld has no compliance and shear deformation is neglected. For our elements, 1 m long and 40 mm high, the <a class="xref auto" href="sec-posevni-prerez.html#def-normalna-strizna-napetost" data-knowl="def-normalna-strizna-napetost">shear part</a> of the displacement by section <a class="xref" href="sec-timosenkov-nosilec.html">5.13</a> is 0,125 % of the bending part. With a real weld the joint would be slightly compliant, and for thick and short elements shear deformation would count (section <a class="xref" href="sec-timosenkov-element.html">12.7</a>). The data are the data of chapter <a class="xref" href="ch-nosilci.html">5</a>: steel with \(E = 196\) GPa, a strip \(20 \times 40\) mm on its edge with \(EA = 1{,}568 \cdot 10^8\) N and \(EI = 20\,906{,}7\) N m\(^2\) (the L-frame and the statically indeterminate frame) and bars \(10 \times 10\) mm with \(EA = 1{,}96 \cdot 10^7\) N and \(EI = 163{,}3\) N m\(^2\) (the welded truss).</p>
 
 <h3 id="sec-element-okvirja-osi"><span class="h-num">12.4.1</span> Frame element (element okvirja)</h3>
-<p>How is an element that lies obliquely built from a bar and a <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beam</a>? Let us first look at the element itself. In section <a class="xref" href="sec-element-nosilca.html">12.1</a> the beam element has two unknowns at each node, the transverse displacement and the rotation, and in chapter <a class="xref" href="ch-mke-palice.html">7</a> the bar element has one, the axial displacement. The frame element has three at each node. The local axes are, as in the section on the rotation of the bar element (figure <a class="xref" href="sec-palicje-ravnina-mke.html#fig-pra-osi" data-knowl="fig-pra-osi">7.16</a>), the axis \(\bar x\) along the element from node 1 towards node 2 and the axis <span class="nobr">\(\bar y\),</span> which is the axis \(\bar x\) turned by a right angle counterclockwise (definition <a class="xref" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">5.90</a>, where we called the coordinate along the element <span class="nobr">\(s\)).</span> If the nodes are at the points \((x_1, y_1)\) and \((x_2, y_2)\) and \(h\) is the length of the element, the <a class="xref auto" href="sec-vektorji.html#def-enotski-vektorji-osi" data-knowl="def-enotski-vektorji-osi">unit vector of the axis</a> \(\bar x\) is \((c, s) = \big(\tfrac{x_2 - x_1}{h}, \tfrac{y_2 - y_1}{h}\big)\) with <span class="nobr">\(c = \cos\alpha\),</span> \(s = \sin\alpha\) for the angle \(\alpha\) between the axis \(x\) and the element, and the unit vector of the axis \(\bar y\) is <span class="nobr">\((-s, c)\).</span> The rows of the rotation matrix (definition <a class="xref" href="sec-vrtenje-osi.html#def-matrika-zasuka" data-knowl="def-matrika-zasuka">2.37</a>, plane part) are exactly these two <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vectors</a>,</p>
+<p>How is an element that lies obliquely built from a bar and a <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beam</a>? Let us first look at the element itself. In section <a class="xref" href="sec-element-nosilca.html">12.1</a> the beam element has two unknowns at each node, the transverse displacement and the rotation, and in chapter <a class="xref" href="ch-mke-palice.html">7</a> the bar element has one, the axial displacement. The frame element has three at each node. The local axes are, as in the section on the rotation of the bar element (figure <a class="xref" href="sec-palicje-ravnina-mke.html#fig-pra-osi" data-knowl="fig-pra-osi">7.16</a>), <a data-del="xbar" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-element" data-knowl="fig-rok-element">the axis \(\bar x\)</a> along the element from <a data-del="n1" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-element" data-knowl="fig-rok-element">node 1</a> towards <a data-del="n2" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-element" data-knowl="fig-rok-element">node 2</a> and <span class="nobr"><a data-del="ybar" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-element" data-knowl="fig-rok-element">the axis \(\bar y\)</a>,</span> which is the axis \(\bar x\) turned by a right angle counterclockwise (definition <a class="xref" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">5.90</a>, where we called the coordinate along the element <span class="nobr">\(s\)).</span> If the nodes are at the points \((x_1, y_1)\) and \((x_2, y_2)\) and \(h\) is the length of the element, the <a class="xref auto" href="sec-vektorji.html#def-enotski-vektorji-osi" data-knowl="def-enotski-vektorji-osi">unit vector of the axis</a> \(\bar x\) is \((c, s) = \big(\tfrac{x_2 - x_1}{h}, \tfrac{y_2 - y_1}{h}\big)\) with <span class="nobr">\(c = \cos\alpha\),</span> \(s = \sin\alpha\) for <a data-del="alfa" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-element" data-knowl="fig-rok-element">the angle \(\alpha\)</a> between the axis \(x\) and the element, and the unit vector of the axis \(\bar y\) is <span class="nobr">\((-s, c)\).</span> The rows of the rotation matrix (definition <a class="xref" href="sec-vrtenje-osi.html#def-matrika-zasuka" data-knowl="def-matrika-zasuka">2.37</a>, plane part) are exactly these two <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vectors</a>,</p>
 <div class="eq" id="eq-matrika-q-okvir">\[\mat Q = \begin{bmatrix} c &amp; s \\ -s &amp; c \end{bmatrix} , \tag{12.11}\]</div>
 <p>as in lemma <a class="xref" href="sec-palicje-ravnina-mke.html#lem-polni-zasuk-elementa" data-knowl="lem-polni-zasuk-elementa">7.29</a>. Figure <a class="xref" href="sec-ravninski-okvir-mke.html#fig-rok-element" data-knowl="fig-rok-element">12.11</a> shows the element and its six unknowns in both systems.</p>
 
@@ -53,21 +53,16 @@
 <g stroke-width='0.6'>
 <g stroke-linecap='round'>
 <g stroke-linejoin='round'>
+<g class='del' data-del='element'>
 <g stroke-width='1.8'>
 <path d='M0 0L155.7581 82.81712' fill='none'/>
 </g>
+</g>
+<g class='del' data-del='n1'>
 <path d='M1.83862 0C1.83862 1.01544 1.01544 1.83862 0 1.83862S-1.83862 1.01544-1.83862 0S-1.01544-1.83862 0-1.83862S1.83862-1.01544 1.83862 0ZM0 0' stroke='none'/>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-33.422335,50.957195)scale(-1,-1)'>
 <g fill='#000'>
 <g stroke='none'/>
-</g>
-</g>
-<path d='M157.59673 82.81712C157.59673 83.83257 156.77354 84.65575 155.7581 84.65575S153.91948 83.83257 153.91948 82.81712C153.91948 81.80168 154.74266 80.9785 155.7581 80.9785S157.59673 81.80168 157.59673 82.81712ZM155.7581 82.81712' stroke='none'/>
-<g transform='translate(155.7581,82.81712)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-33.422335,50.957195)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'/>
-</g>
 </g>
 </g>
 <g transform='translate(-8.63298,-10.07741)'>
@@ -76,6 +71,16 @@
 <g stroke='none'>
 <use x='-33.422335' y='50.957195' xlink:href='#rok-element-g2-49'/>
 </g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='n2'>
+<path d='M157.59673 82.81712C157.59673 83.83257 156.77354 84.65575 155.7581 84.65575S153.91948 83.83257 153.91948 82.81712C153.91948 81.80168 154.74266 80.9785 155.7581 80.9785S157.59673 81.80168 157.59673 82.81712ZM155.7581 82.81712' stroke='none'/>
+<g transform='translate(155.7581,82.81712)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-33.422335,50.957195)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
 </g>
 </g>
 </g>
@@ -88,6 +93,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='alfa'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.45'>
@@ -105,6 +112,9 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='lokalni'>
+<g class='del' data-del='xbar'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='0.9'>
 <path d='M5.69046 65.44139L57.23036 92.84535' fill='none'/>
@@ -129,6 +139,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='ybar'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='0.9'>
 <path d='M5.69046 65.44139L-9.69171 94.37134' fill='none'/>
@@ -153,6 +165,9 @@
 </g>
 </g>
 </g>
+</g>
+</g>
+<g class='del' data-del='globalni'>
 <path d='M142.26372-45.52455H172.05473' fill='none'/>
 <g transform='translate(169.57828,-45.52455)'>
 <g stroke-dasharray='none' stroke-dashoffset='0.0'>
@@ -187,6 +202,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='fi1'>
 <g stroke-width='0.9'>
 <path d='M-21.33955 4.26773C-23.38605-7.33884-15.63606-18.40685-4.0295-20.45334C2.18161-21.54837 8.56142-19.83856 10.15746-18.49942' fill='none'/>
 <g transform='matrix(0.76604,0.64276,-0.64276,0.76604,8.16191,-20.17383)'>
@@ -207,6 +224,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='fi2'>
 <g stroke-width='0.9'>
 <path d='M177.09766 89.9303C173.06686 101.00513 160.82109 106.71513 149.74626 102.68434C143.81973 100.52715 139.14941 95.85683 138.4368 93.89908' fill='none'/>
 <g transform='matrix(-0.34203,-0.93967,0.93967,-0.34203,139.32779,96.34694)'>
@@ -227,6 +246,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='n1'>
 <path d='M263.60388 54.06006C263.60388 55.0755 262.7807 55.89868 261.76526 55.89868S259.92664 55.0755 259.92664 54.06006S260.74982 52.22144 261.76526 52.22144S263.60388 53.04462 263.60388 54.06006ZM261.76526 54.06006' stroke='none'/>
 <g transform='translate(261.76526,54.06006)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-33.422335,50.957195)scale(-1,-1)'>
@@ -244,6 +265,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='n1p'>
 <g fill='#fff'>
 <g fill='#fff'>
 <path d='M337.31696 25.33336C337.31696 26.58316 336.30382 27.5963 335.05402 27.5963C333.80421 27.5963 332.79108 26.58316 332.79108 25.33336S333.80421 23.07042 335.05402 23.07042C336.30382 23.07042 337.31696 24.08356 337.31696 25.33336ZM335.05402 25.33336'/>
@@ -266,6 +289,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='u1'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.45'>
@@ -329,6 +354,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='v1'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.45'>
@@ -392,6 +419,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='ub1'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.45'>
@@ -462,6 +491,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='vb1'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.45'>
@@ -539,8 +570,10 @@
 </g>
 </g>
 </g>
+</g>
 </svg></span></p>
 <figcaption><span class="blk-label">Figure 12.11</span>: A frame element between nodes 1 and 2 that lies at the angle \(\alpha\) to the axis <span class="nobr">\(x\).</span> Left: the global axes <span class="nobr">\(x\),</span> \(y\) (<span class="ink-l">black</span><span class="ink-d">white</span>), the local axes <span class="nobr">\(\bar x\),</span> \(\bar y\) (blue) and the rotations <span class="nobr">\(\varphi_1\),</span> \(\varphi_2\) of the nodes counterclockwise (arcs with an arrow), which are the same number in both systems. Right: the displacement of node 1 to the point \(1'\) (open circle), greatly magnified, with numbers chosen freely. The grey measures with bars at their ends show the global components <span class="nobr">\(u_1\),</span> \(v_1\) of this displacement, the blue measures show its local components <span class="nobr">\(\bar u_1\),</span> <span class="nobr">\(\bar v_1\).</span></figcaption></figure>
+<p>On the left the <a data-del="element" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-element" data-knowl="fig-rok-element">element</a> is a thick line between the nodes, the <a data-del="globalni" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-element" data-knowl="fig-rok-element">global axes <span class="nobr">\(x\),</span> \(y\)</a> are <span class="ink-l">black</span><span class="ink-d">white</span> and the <a data-del="lokalni" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-element" data-knowl="fig-rok-element">local axes <span class="nobr">\(\bar x\),</span> \(\bar y\)</a> blue. The arcs with an arrow are the <a data-del="fi1" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-element" data-knowl="fig-rok-element">rotation \(\varphi_1\)</a> of node 1 and the <a data-del="fi2" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-element" data-knowl="fig-rok-element">rotation \(\varphi_2\)</a> of node 2, both counterclockwise. A rotation is the same number in both systems, which step 4 of the proof of lemma <a class="xref" href="sec-ravninski-okvir-mke.html#lem-togost-elementa-okvirja" data-knowl="lem-togost-elementa-okvirja">12.18</a> shows. On the right <a data-del="n1" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-element" data-knowl="fig-rok-element">node 1</a> moves to the <span class="nobr"><a data-del="n1p" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-element" data-knowl="fig-rok-element">point \(1'\)</a>.</span> This one displacement has two pairs of components: <a data-del="u1" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-element" data-knowl="fig-rok-element">\(u_1\)</a> and <a data-del="v1" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-element" data-knowl="fig-rok-element">\(v_1\)</a> along the global axes and <a data-del="ub1" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-element" data-knowl="fig-rok-element">\(\bar u_1\)</a> and <a data-del="vb1" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-element" data-knowl="fig-rok-element">\(\bar v_1\)</a> along the local axes. The six unknowns of the element are therefore <span class="nobr">\(u_1\),</span> <span class="nobr">\(v_1\),</span> <span class="nobr">\(\varphi_1\),</span> <span class="nobr">\(u_2\),</span> <span class="nobr">\(v_2\),</span> \(\varphi_2\) in global axes and <span class="nobr">\(\bar u_1\),</span> <span class="nobr">\(\bar v_1\),</span> <span class="nobr">\(\varphi_1\),</span> <span class="nobr">\(\bar u_2\),</span> <span class="nobr">\(\bar v_2\),</span> \(\varphi_2\) in local axes.</p>
 <p>We build the <a class="xref auto" href="sec-pomik-v-prostoru.html#def-polje-pomikov" data-knowl="def-polje-pomikov">displacement field</a> of the element from the fields of the two elements that we already have. The axis of the element passes through the <a class="xref auto" href="sec-geometrija-prereza.html#def-tezisce" data-knowl="def-tezisce">centroids</a> of the sections, so by lemma <a class="xref" href="sec-napetosti-pri-upogibu.html#lem-locitev-osne-upogibne" data-knowl="lem-locitev-osne-upogibne">5.33</a> \(S = 0\) and the <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> \(N = EA\,\bar u'\) and the <a class="xref auto" href="sec-notranje-sile-nosilca.html#def-upogibni-moment" data-knowl="def-upogibni-moment">bending moment</a> \(M = EI\,\bar v''\) are independent, where \(\bar u\) and \(\bar v\) are the axial and transverse displacement of the axis in the local axes. The axial displacement can therefore be interpolated separately from the transverse one.</p>
 
 <div class="blk definicija" id="def-element-okvirja"><div class="blk-head"><span class="blk-label">Definition 12.17</span> <span class="blk-title">Frame element (element okvirja)</span></div><div class="blk-body"><p>Let there be a plane frame (definition <a class="xref" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">5.90</a>) and let there be a straight element with nodes 1 and 2, length <span class="nobr">\(h\),</span> constant \(EA\) and \(EI\) and the axis through the <a class="xref auto" href="sec-geometrija-prereza.html#def-tezisce" data-knowl="def-tezisce">centroids</a> of the sections. Let \(\bar x \in [0, h]\) be the distance from node 1 along the element, \(\bar u(\bar x)\) the axial and \(\bar v(\bar x)\) the transverse displacement of the axis in the local axes <span class="nobr">\(\bar x\),</span> <span class="nobr">\(\bar y\),</span> and \(\varphi = \bar v'\) the rotation of the section counterclockwise. The frame element (element okvirja) is this element together with a column of six real numbers, the local displacements of the nodes,</p>
@@ -622,7 +655,7 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 <li>Let \(\vek d\) be a column with zero prescribed unknowns and <span class="nobr">\(\vek d^\T\mat K\,\vek d = 0\).</span> By point 2 of theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a> <span class="nobr">\(\sum_{\mathrm{e}}\vek d_{\mathrm{e}}^\T\mat k_{\mathrm{e}}\,\vek d_{\mathrm{e}} = 0\),</span> each term is \(2U_{\mathrm{e}} \ge 0\) (lemma <a class="xref" href="sec-ravninski-okvir-mke.html#lem-togost-elementa-okvirja" data-knowl="lem-togost-elementa-okvirja">12.18</a>, point 2, with \(\mat k_{\mathrm{e}}\) symmetric, so the hypothesis of corollary <a class="xref" href="sec-sestavljanje.html#cor-matrika-konstrukcije" data-knowl="cor-matrika-konstrukcije">7.14</a> holds for <span class="nobr">\(\mat K\)),</span> so \(U_{\mathrm{e}} = 0\) for every element. The energy is the sum <span class="nobr">\(\tfrac12\int(EA\,\bar u_{\mathrm{h}}'^2 + EI\,\bar v_{\mathrm{h}}''^2)\),</span> so \(\bar u_{\mathrm{h}}\) is constant and \(\bar v_{\mathrm{h}}\) linear, as in steps 6 and 7 of lemma <a class="xref" href="sec-ravninski-okvir-mke.html#lem-enolicnost-okvirja" data-knowl="lem-enolicnost-okvirja">12.19</a>, the elements move rigidly, the frame as a whole rigidly, and by assumption <span class="nobr">\(\vek d = \vek 0\).</span> By theorem <a class="xref" href="sec-robni-pogoji-mke.html#thm-reduciran-sistem" data-knowl="thm-reduciran-sistem">7.18</a> the matrix \(\mat K_{\mathrm{ff}}\) is positive definite and the system has exactly one solution.</li>
 <li>Let \(\vek d\) be this solution and \(\bar{\vek d}_{\mathrm{e}} = \mat R\,\vek d_{\mathrm{e}}\) the local displacements of each element. For each element let us define the fields \(\bar u = \bar u_{\mathrm{h}} + \bar u_0\) and <span class="nobr">\(\bar v = \bar v_{\mathrm{h}} + \bar v_0\),</span> where <span class="nobr">\(\bar u_{\mathrm{h}}\),</span> \(\bar v_{\mathrm{h}}\) are the finite element fields from <span class="nobr">\(\bar{\vek d}_{\mathrm{e}}\),</span> \(\bar u_0\) is the solution of the equation \(EA\,\bar u_0'' = -\bar q_{\mathrm{x}}\) and \(\bar v_0\) the solution of the equation <span class="nobr">\(EI\,\bar v_0'''' = \bar q\),</span> both with the value zero at both ends of the element, \(\bar v_0\) also with zero slope at both ends. Such <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> exist and are unique: the second or fourth <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivative</a> is known, by theorem <a class="xref" href="sec-navadne-diferencialne-enacbe.html#thm-znani-n-ti-odvod" data-knowl="thm-znani-n-ti-odvod">5.45</a> the solution is determined up to a <a class="xref auto" href="sec-zveznost.html#def-polinom" data-knowl="def-polinom">polynomial</a> of degree at most 1 or 3, and the conditions determine the polynomial exactly (a line through two points, a cubic polynomial by lemma <a class="xref" href="sec-element-nosilca.html#lem-hermitove-funkcije" data-knowl="lem-hermitove-funkcije">12.2</a>). Without a load <span class="nobr">\(\bar u_0 = 0\),</span> <span class="nobr">\(\bar v_0 = 0\).</span></li>
 <li>The fields <span class="nobr">\(\bar u\),</span> \(\bar v\) satisfy condition 1 of the solution of the frame: \(\bar u_{\mathrm{h}}'' = 0\) and \(\bar v_{\mathrm{h}}'''' = 0\) (a linear and a cubic function), so \(N' = EA\,\bar u'' = EA\,\bar u_0'' = -\bar q_{\mathrm{x}}\) and <span class="nobr">\(V' = -M'' = -EI\,\bar v'''' = -EI\,\bar v_0'''' = -\bar q\).</span></li>
-<li>Condition 2: \(\bar u_0\) and \(\bar v_0\) are zero at both ends of the element with zero slope, so \(\bar u\) and \(\bar v\) have at the ends the same values and slope as \(\bar u_{\mathrm{h}}\) and <span class="nobr">\(\bar v_{\mathrm{h}}\),</span> that is the displacements and rotations of the nodes of the solution <span class="nobr">\(\vek d\).</span> These are equal for elements in the same node. Supports: the forbidden components are zero in <span class="nobr">\(\vek d\).</span></li>
+<li>Condition 2: \(\bar u_0\) and \(\bar v_0\) are zero at both ends of the element, \(\bar v_0\) also with zero slope, so \(\bar u\) and \(\bar v\) have at the ends the same values as \(\bar u_{\mathrm{h}}\) and <span class="nobr">\(\bar v_{\mathrm{h}}\),</span> and \(\bar v\) also the same slope as <span class="nobr">\(\bar v_{\mathrm{h}}\),</span> that is the displacements and rotations of the nodes of the solution <span class="nobr">\(\vek d\).</span> These are equal for elements in the same node. Supports: the forbidden components are zero in <span class="nobr">\(\vek d\).</span></li>
 <li>The forces of the surroundings on the nodes of the element for the fields <span class="nobr">\(\bar u\),</span> \(\bar v\) are the sum of the forces of the fields <span class="nobr">\(\bar u_{\mathrm{h}}\),</span> \(\bar v_{\mathrm{h}}\) and the forces of the fields <span class="nobr">\(\bar u_0\),</span> <span class="nobr">\(\bar v_0\).</span> The first are by lemma <a class="xref" href="sec-ravninski-okvir-mke.html#lem-togost-elementa-okvirja" data-knowl="lem-togost-elementa-okvirja">12.18</a> (point 1) equal to <span class="nobr">\(\bar{\mat k}_{\mathrm{e}}\,\bar{\vek d}_{\mathrm{e}}\),</span> because \(\bar u_{\mathrm{h}}\) and \(\bar v_{\mathrm{h}}\) are fields of an element without a load. The second are <span class="nobr">\(-\bar{\vek f}_{\mathrm{e}}\).</span> For the axial part this follows from lemma <a class="xref" href="sec-element-palice.html#lem-enacba-elementa" data-knowl="lem-enacba-elementa">7.9</a> applied to \(\bar u_0\) with zero node displacements <span class="nobr">(\(\mat k_{\mathrm{e}}\cdot\vek 0 = \vek f_{\mathrm{e}} + \vek F_{\mathrm{e}}\)).</span> For the bending part \(\int_0^h EI\,\bar v_0''\,H_{\mathrm{i}}''\,\mathrm{d}\bar x = 0\) holds for each <a class="xref auto" href="sec-element-nosilca.html#def-hermitove-funkcije" data-knowl="def-hermitove-funkcije">Hermite function</a> <span class="nobr">\(H_{\mathrm{i}}\):</span> after <a class="xref auto" href="sec-integral.html#cor-per-partes" data-knowl="cor-per-partes">integration by parts</a> a boundary term with \(\bar v_0'\) remains, which is zero at the ends, and the <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integral</a> <span class="nobr">\(-EI\,H_{\mathrm{i}}'''\int_0^h \bar v_0'\,\mathrm{d}\bar x = -EI\,H_{\mathrm{i}}'''\,\big(\bar v_0(h) - \bar v_0(0)\big) = 0\),</span> since \(H_{\mathrm{i}}'''\) is constant. Therefore by theorem <a class="xref" href="sec-virtualno-delo-nosilca.html#thm-virtualni-pomiki-nosilca" data-knowl="thm-virtualni-pomiki-nosilca">5.62</a> with the <a class="xref auto" href="sec-virtualni-pomiki-palice.html#def-virtualni-pomik" data-knowl="def-virtualni-pomik">virtual displacement</a> \(H_{\mathrm{i}}\) the work of the forces of the surroundings at the ends is \(-\int_0^h \bar q\,H_{\mathrm{i}}\,\mathrm{d}\bar x = -(\bar f_{\mathrm{e}})_{\mathrm{i}}\) (corollary <a class="xref" href="sec-tocnost-vozlisc.html#cor-koncne-sile-tocne" data-knowl="cor-koncne-sile-tocne">12.15</a>, point 3). The sum is <span class="nobr">\(\bar{\mat k}_{\mathrm{e}}\,\bar{\vek d}_{\mathrm{e}} - \bar{\vek f}_{\mathrm{e}}\),</span> and by lemma <a class="xref" href="sec-ravninski-okvir-mke.html#lem-togost-elementa-okvirja" data-knowl="lem-togost-elementa-okvirja">12.18</a> (points 2 and 3) this is in global components <span class="nobr">\(\mat k_{\mathrm{e}}\,\vek d_{\mathrm{e}} - \vek f_{\mathrm{e}} = \vek F_{\mathrm{e}}\).</span></li>
 <li>By point 1 and step 6 \(\sum_{\mathrm{e} \ni \mathrm{J}}\vek F_{\mathrm{e}} = \vek F_{\mathrm{J}}\) holds in the nodes, so condition 3 of the solution of the frame. By steps 4 to 6 \((\bar u, \bar v)\) is therefore a solution of the frame. By lemma <a class="xref" href="sec-ravninski-okvir-mke.html#lem-enolicnost-okvirja" data-knowl="lem-enolicnost-okvirja">12.19</a> it is unique, so this is the solution of the frame, its node displacements and rotations are \(\vek d\) and the forces at the ends of the elements are <span class="nobr">\(\vek F_{\mathrm{e}}\).</span> Without a load \(\bar u_0 = 0\) and <span class="nobr">\(\bar v_0 = 0\),</span> so the solution is the finite element field.</li>
 </ol>
@@ -632,16 +665,16 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 <p>We treat supports as for the bar, with the division of the unknowns into free and prescribed (theorem <a class="xref" href="sec-robni-pogoji-mke.html#thm-reduciran-sistem" data-knowl="thm-reduciran-sistem">7.18</a>). The reaction in a prescribed unknown is the value \((\mat K\,\vek d - \vek f)_{\mathrm{I}}\) in the row of this unknown (section <a class="xref" href="sec-robni-pogoji-mke.html#sec-reakcije">7.3.4</a>), that is the sum of the forces of the surroundings \(\vek F_{\mathrm{e}}\) on the elements in the node in this direction, which the support must provide. A hinge (členek) between two elements is modelled so that each element has its own rotation unknown in the node, and the displacements are common: the connectivity table (definition <a class="xref" href="sec-sestavljanje.html#def-tabela-povezav" data-knowl="def-tabela-povezav">7.10</a>) has two numbers for the rotation in the node. The row of each of these two unknowns is by point 1 of theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a> the moment of one element and demands that the moment of this element in the hinge is zero, as figure <a class="xref" href="sec-okvirji.html#fig-nok-vozlisce" data-knowl="fig-nok-vozlisce">5.78</a> shows. Theorem <a class="xref" href="sec-ravninski-okvir-mke.html#thm-okvir-mke" data-knowl="thm-okvir-mke">12.20</a> is proved for rigid joints, so we do not prove <a class="xref auto" href="sec-betti-maxwell.html#lem-enolicnost-resitve" data-knowl="lem-enolicnost-resitve">uniqueness of the solution</a> with a hinge, but we check it with statics in the example at the end of the section.</p>
 <p>The rotations of the nodes as unknowns have their history, which Timoshenko tells and which begins with reinforced concrete.</p>
 
-<div class="zgodovina"><p class="zgodovina-label">From history</p><p>The theory of structures was developed in the nineteenth century principally for <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">trusses</a>, since for trusses satisfactory solutions were obtained by assuming that the joints are hinged and that all bars are loaded only axially (TIMO, PDF p. 361). With the introduction of reinforced concrete into structural engineering, various frame structures spread. These are usually highly statically indeterminate and their elements work mostly in bending, so the previously developed methods soon proved unsuitable and new ones were introduced, based on deformations (TIMO, PDF p. 361). Timoshenko points out that already in the computation of secondary stresses it is useful to take the rotations of rigid joints as unknowns (TIMO, PDF p. 361). The systematic use of rotations in the analysis of frames, however, was introduced by Axel Bendixen, who developed the slope-deflection method (metoda zasukov), and his book was published in Berlin in 1914 (TIMO, PDF p. 361, note 1). His equation writes the moment at the end \(m\) of the element \(mn\) as twice the stiffness factor \(k = EI/l\) multiplied by the sum of twice the rotation of the end \(m\) and the rotation of the end <span class="nobr">\(n\),</span> plus the fixed-end moment. This is the moment that would act on the end \(m\) if both ends were fixed and only transverse forces acted on the element. Rotations and moments are positive clockwise in this equation (TIMO, PDF p. 361). He uses the equation for frames in which the displacements of the joints can be neglected, and treats more general cases in his paper (TIMO, PDF p. 361, note 2). If at the joint <span class="nobr">\(a\),</span> where four elements meet, we took the moments at the ends of the elements as unknowns, we would have to derive and solve seven equations, and with the rotation \(\theta_{\mathrm{a}}\) of the joint as the unknown the computation reduces to one equation, which we obtain by setting the sum of the four moments at the ends of the elements in the joint equal to zero (TIMO, PDF p. 362). With several joints one such equation is written for each, the number of equations equals the number of unknown rotations, and when the rotations are computed, all the moments at the ends are known from the equation for the moment (TIMO, PDF p. 362). The next step of simplification was made by K. A. Čališev, who used successive approximations and so solved in each step one equation with one unknown (TIMO, PDF p. 362). He first assumed that all joints are fixed and do not rotate under load, calculated the fixed-end moments for all loaded elements and summed them by joints. This sum with a negative sign is the unbalanced moment of the joint (TIMO, PDF p. 362). Then he unlocked one joint at a time, leaving the others fixed, and for the unlocked joint computed the first approximation of the rotation with an equation similar to Bendixen's (TIMO, PDF pp. 362-363). He recommended beginning at the joint with the largest unbalanced moment (TIMO, PDF p. 362, note 2). The same aim can also be reached by distributing the unbalanced moments directly while unlocking one joint at a time and holding the others fixed. This procedure of successive approximations was proposed by Hardy Cross and found wide use in America (TIMO, PDF p. 363, note).</p>
+<div class="zgodovina"><p class="zgodovina-label">From history</p><p>The theory of structures was developed in the nineteenth century principally for <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">trusses</a>, since for trusses satisfactory solutions were obtained by assuming that the joints are hinged and that all bars are loaded only axially (TIMO, PDF p. 361). With the introduction of reinforced concrete into structural engineering, various frame structures spread. These are usually highly statically indeterminate and their elements work mostly in bending, so the previously developed methods soon proved unsuitable and new ones were introduced, based on deformations (TIMO, PDF p. 361). Timoshenko points out that already in the computation of secondary stresses it is useful to take the rotations of rigid joints as unknowns (TIMO, PDF p. 361). The systematic use of rotations in the analysis of frames, however, was introduced by Axel Bendixen, who developed the slope-deflection method (metoda zasukov), and his book was published in Berlin in 1914 (TIMO, PDF p. 361, note 1). His equation writes the moment at the end \(m\) of the element \(mn\) as twice the stiffness factor \(k = EI/l\) multiplied by the sum of twice the rotation of the end \(m\) and the rotation of the end <span class="nobr">\(n\),</span> plus the fixed-end moment. This is the moment that would act on the end \(m\) if both ends were fixed and only transverse forces acted on the element. Rotations and moments are positive clockwise in this equation (TIMO, PDF p. 361). He uses the equation for frames in which the displacements of the joints can be neglected, and treats more general cases in his paper (TIMO, PDF p. 361, note 2). If at the joint <span class="nobr">\(a\),</span> where four elements meet, we took the moments at the ends of the elements as unknowns, we would have to derive and solve seven equations, and with the rotation \(\theta_{\mathrm{a}}\) of the joint as the unknown the computation reduces to one equation, which we obtain by setting the sum of the four moments at the ends of the elements in the joint equal to zero (TIMO, PDF p. 362). With several joints one such equation is written for each, the number of equations equals the number of unknown rotations, and when the rotations are computed, all the moments at the ends are known from the equation for the moment (TIMO, PDF p. 362). The next step of simplification was made by K. A. Čališev, who used successive approximations and so solved in each step one equation with one unknown (TIMO, PDF p. 362). He first assumed that all joints are fixed and do not rotate under load, calculated the fixed-end moments for all loaded elements and summed them by joints. This sum with a negative sign is the <a class="xref auto forward" href="sec-uravnotezenje-rotorja.html#def-neuravnotezenost" data-knowl="def-neuravnotezenost" title="Defined later in the book">unbalanced</a> moment of the joint (TIMO, PDF p. 362). Then he unlocked one joint at a time, leaving the others fixed, and for the unlocked joint computed the first approximation of the rotation with an equation similar to Bendixen's (TIMO, PDF pp. 362-363). He recommended beginning at the joint with the largest unbalanced moment (TIMO, PDF p. 362, note 2). The same aim can also be reached by distributing the unbalanced moments directly while unlocking one joint at a time and holding the others fixed. This procedure of successive approximations was proposed by Hardy Cross and found wide use in America (TIMO, PDF p. 363, note).</p>
 </div>
 <p>We were looking at how frames with several rigid joints were computed with the rotations of the joints as unknowns. Our row of the system for the rotation of a joint is exactly Bendixen's joint equation: the sum of the moments at the ends of the elements in the joint equals the external moment (point 1 of theorem <a class="xref" href="sec-ravninski-okvir-mke.html#thm-okvir-mke" data-knowl="thm-okvir-mke">12.20</a>). The moment that the surroundings exert on end 1 of the element when \(\bar v_1 = \bar v_2\) is the third row of the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> <a class="xref" href="sec-ravninski-okvir-mke.html#eq-togost-okvir-lokalna" data-knowl="eq-togost-okvir-lokalna">(12.12)</a>, \(\tfrac{4EI}{h}\,\varphi_1 + \tfrac{2EI}{h}\,\varphi_2 = 2k\,(2\varphi_1 + \varphi_2)\) with <span class="nobr">\(k = EI/h\).</span> We wrote the equation with rotations counterclockwise, and when the direction is reversed the signs of rotations and moments are reversed and the form of the equation does not change. The stiffness factors of the classical method are therefore the entries \(4EI/h\) and \(2EI/h\) of the element matrix. The fixed-end moment is for us the moment that the surroundings exert on an element fixed at both ends, that is \(-\bar f_3\) at \(\bar{\vek d}_{\mathrm{e}} = \vek 0\) (corollary <a class="xref" href="sec-tocnost-vozlisc.html#cor-koncne-sile-tocne" data-knowl="cor-koncne-sile-tocne">12.15</a>, point 3).</p>
 
 <h3 id="sec-okvir-l-mke"><span class="h-num">12.4.3</span> L-frame (okvir L)</h3>
-<p>We divide the L-<a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">frame</a> of section <a class="xref" href="sec-okvirji.html#sec-pomiki-okvirja">5.14.2</a> (figure <a class="xref" href="sec-okvirji.html#fig-nok-l-okvir" data-knowl="fig-nok-l-okvir">5.79</a>) into two elements, the column \(AB\) and the crossbeam <span class="nobr">\(BC\),</span> each with \(h = 1\) m. We number the nodes <span class="nobr">\(A = 1\),</span> <span class="nobr">\(B = 2\),</span> \(C = 3\) and each has three unknowns, nine in all: <span class="nobr">\(\vek d = (u_{\mathrm{A}}, v_{\mathrm{A}}, \varphi_{\mathrm{A}}, u_{\mathrm{B}}, v_{\mathrm{B}}, \varphi_{\mathrm{B}}, u_{\mathrm{C}}, v_{\mathrm{C}}, \varphi_{\mathrm{C}})\).</span> The column has the nodes \((A, B)\) and the angle \(\alpha = \pi/2\) (a right angle), so <span class="nobr">\(c = 0\),</span> <span class="nobr">\(s = 1\),</span> <span class="nobr">\(\mat Q = \begin{bmatrix} 0 &amp; 1 \\ -1 &amp; 0 \end{bmatrix}\):</span> the local axial displacement \(\bar u\) is the global <span class="nobr">\(v\),</span> the local transverse \(\bar v\) is \(-u\) (the local axis \(\bar y\) points to the left, as in chapter <a class="xref" href="ch-nosilci.html">5</a>). The crossbeam has the nodes <span class="nobr">\((B, C)\),</span> the angle \(\alpha = 0\) and <span class="nobr">\(\mat Q = \mat I\).</span> The connectivity table (definition <a class="xref" href="sec-sestavljanje.html#def-tabela-povezav" data-knowl="def-tabela-povezav">7.10</a>) has the rows \((1, 2, 3, 4, 5, 6)\) and <span class="nobr">\((4, 5, 6, 7, 8, 9)\).</span> At \(A\) there is a clamp (definition <a class="xref" href="sec-model-nosilca.html#def-podpore" data-knowl="def-podpore">5.5</a>), so the unknowns 1 to 3 are prescribed and equal to zero, at \(C\) acts the force \(F = 500\) N downward, \(f_8 = -500\) N, and there are no other loads. There are six free unknowns. We assemble the matrix \(\mat K_{\mathrm{ff}}\) by theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a> from the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> \(\mat k_{\mathrm{e}} = \mat R^\T\bar{\mat k}_{\mathrm{e}}\mat R\) from lemma <a class="xref" href="sec-ravninski-okvir-mke.html#lem-togost-elementa-okvirja" data-knowl="lem-togost-elementa-okvirja">12.18</a> with the values that we computed above. For the unknowns \((u_{\mathrm{B}}, v_{\mathrm{B}}, \varphi_{\mathrm{B}}, u_{\mathrm{C}}, v_{\mathrm{C}}, \varphi_{\mathrm{C}})\) we get (units \(10^5\) for N/m, N and N m)</p>
+<p>We divide the L-<a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">frame</a> of section <a class="xref" href="sec-okvirji.html#sec-pomiki-okvirja">5.14.2</a> (figure <a class="xref" href="sec-okvirji.html#fig-nok-l-okvir" data-knowl="fig-nok-l-okvir">5.79</a>) into two elements, <a data-del="steber" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-l-okvir" data-knowl="fig-rok-l-okvir">the column \(AB\)</a> and <span class="nobr"><a data-del="precka" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-l-okvir" data-knowl="fig-rok-l-okvir">the crossbeam \(BC\)</a>,</span> each with \(h = 1\) m. We number the nodes <span class="nobr"><a data-del="n1" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-l-okvir" data-knowl="fig-rok-l-okvir">\(A = 1\)</a>,</span> <span class="nobr"><a data-del="n2" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-l-okvir" data-knowl="fig-rok-l-okvir">\(B = 2\)</a>,</span> <a data-del="n3" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-l-okvir" data-knowl="fig-rok-l-okvir">\(C = 3\)</a> and each has three unknowns, nine in all: <span class="nobr">\(\vek d = (u_{\mathrm{A}}, v_{\mathrm{A}}, \varphi_{\mathrm{A}}, u_{\mathrm{B}}, v_{\mathrm{B}}, \varphi_{\mathrm{B}}, u_{\mathrm{C}}, v_{\mathrm{C}}, \varphi_{\mathrm{C}})\).</span> The column has the nodes \((A, B)\) and the angle \(\alpha = \pi/2\) (a right angle), so <span class="nobr">\(c = 0\),</span> <span class="nobr">\(s = 1\),</span> <span class="nobr">\(\mat Q = \begin{bmatrix} 0 &amp; 1 \\ -1 &amp; 0 \end{bmatrix}\):</span> the local axial displacement \(\bar u\) is the global <span class="nobr">\(v\),</span> the local transverse \(\bar v\) is \(-u\) (the local axis \(\bar y\) points to the left, as in chapter <a class="xref" href="ch-nosilci.html">5</a>). The crossbeam has the nodes <span class="nobr">\((B, C)\),</span> the angle \(\alpha = 0\) and <span class="nobr">\(\mat Q = \mat I\).</span> The connectivity table (definition <a class="xref" href="sec-sestavljanje.html#def-tabela-povezav" data-knowl="def-tabela-povezav">7.10</a>) has the rows \((1, 2, 3, 4, 5, 6)\) and <span class="nobr">\((4, 5, 6, 7, 8, 9)\).</span> At \(A\) there is a <a data-del="vpetje" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-l-okvir" data-knowl="fig-rok-l-okvir">clamp</a> (definition <a class="xref" href="sec-model-nosilca.html#def-podpore" data-knowl="def-podpore">5.5</a>), so the unknowns 1 to 3 are prescribed and equal to zero, at \(C\) acts the force \(F = 500\) N downward, \(f_8 = -500\) N, and there are no other loads. There are six free unknowns. We assemble the matrix \(\mat K_{\mathrm{ff}}\) by theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a> from the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> \(\mat k_{\mathrm{e}} = \mat R^\T\bar{\mat k}_{\mathrm{e}}\mat R\) from lemma <a class="xref" href="sec-ravninski-okvir-mke.html#lem-togost-elementa-okvirja" data-knowl="lem-togost-elementa-okvirja">12.18</a> with the values that we computed above. For the unknowns \((u_{\mathrm{B}}, v_{\mathrm{B}}, \varphi_{\mathrm{B}}, u_{\mathrm{C}}, v_{\mathrm{C}}, \varphi_{\mathrm{C}})\) we get (units \(10^5\) for N/m, N and N m)</p>
 <div class="eq">\[\mat K_{\mathrm{ff}} = 10^5 \begin{bmatrix} 1570{,}51 &amp; 0 &amp; 1{,}2544 &amp; -1568 &amp; 0 &amp; 0 \\ 0 &amp; 1570{,}51 &amp; 1{,}2544 &amp; 0 &amp; -2{,}5088 &amp; 1{,}2544 \\ 1{,}2544 &amp; 1{,}2544 &amp; 1{,}67253 &amp; 0 &amp; -1{,}2544 &amp; 0{,}418133 \\ -1568 &amp; 0 &amp; 0 &amp; 1568 &amp; 0 &amp; 0 \\ 0 &amp; -2{,}5088 &amp; -1{,}2544 &amp; 0 &amp; 2{,}5088 &amp; -1{,}2544 \\ 0 &amp; 1{,}2544 &amp; 0{,}418133 &amp; 0 &amp; -1{,}2544 &amp; 0{,}836267 \end{bmatrix} .\]</div>
 <p>The entry \((1, 1)\) is the sum of the axial stiffness of the crossbeam, \(1568\cdot 10^5\) N/m, and the transverse stiffness of the column, \(2{,}5088\cdot 10^5\) N/m, because the horizontal displacement of the node \(B\) appears as transverse for the column and as axial for the crossbeam. The entry \((2, 2)\) is the same sum with the roles exchanged. The entry \((3, 3)\) is the sum of the stiffnesses \(4EI/h = 0{,}836267\cdot 10^5\) N m of both elements, because the rotation of the node \(B\) bends both. The solution of the system \(\mat K_{\mathrm{ff}}\,\vek d_{\mathrm{f}} = (0, 0, 0, 0, -500, 0)^\T\) N is (NumPy)</p>
 <div class="eq">\[\begin{aligned} u_{\mathrm{B}} = u_{\mathrm{C}} &amp;= 11{,}9579\ \text{mm} , &amp; v_{\mathrm{B}} &amp;= -0{,}00319\ \text{mm} , &amp; v_{\mathrm{C}} &amp;= -31{,}8909\ \text{mm} , \\ \varphi_{\mathrm{B}} &amp;= -0{,}023916 , &amp; \varphi_{\mathrm{C}} &amp;= -0{,}035874 . \end{aligned}\]</div>
-<p>From chapter <a class="xref" href="ch-nosilci.html">5</a> we know \(u_{\mathrm{C}} = 11{,}96\) mm, \(v_{\mathrm{C}} = -31{,}89\) mm and <span class="nobr">\(\varphi_{\mathrm{B}} = -0{,}02392\).</span> The displacement \(v_{\mathrm{C}}\) with the axial term by equation <a class="xref" href="sec-okvirji.html#eq-pomik-v-okvir" data-knowl="eq-pomik-v-okvir">(5.83)</a> is \(-(7{,}9719 + 23{,}9158 + 0{,}0032)\ \text{mm} = -31{,}8909\) mm and the system gives exactly this. The displacement \(v_{\mathrm{B}} = -0{,}00319\) mm is the axial shortening of the column, \(F a/EA = 0{,}0032\) mm. The deformed shape, assembled from the fields of both elements, is shown in figure <a class="xref" href="sec-ravninski-okvir-mke.html#fig-rok-l-okvir" data-knowl="fig-rok-l-okvir">12.12</a>. The solution is the same up to rounding, because the load is only in a node and so by theorem <a class="xref" href="sec-ravninski-okvir-mke.html#thm-okvir-mke" data-knowl="thm-okvir-mke">12.20</a> the finite element field is exactly the solution of the frame.</p>
+<p>From chapter <a class="xref" href="ch-nosilci.html">5</a> we know \(u_{\mathrm{C}} = 11{,}96\) mm, \(v_{\mathrm{C}} = -31{,}89\) mm and <span class="nobr">\(\varphi_{\mathrm{B}} = -0{,}02392\).</span> <a data-del="v3" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-l-okvir" data-knowl="fig-rok-l-okvir">The displacement \(v_{\mathrm{C}}\)</a> with the axial term by equation <a class="xref" href="sec-okvirji.html#eq-pomik-v-okvir" data-knowl="eq-pomik-v-okvir">(5.83)</a> is \(-(7{,}9719 + 23{,}9158 + 0{,}0032)\ \text{mm} = -31{,}8909\) mm and the system gives exactly this. The displacement \(v_{\mathrm{B}} = -0{,}00319\) mm is the axial shortening of the column, \(F a/EA = 0{,}0032\) mm. <a data-del="steber,precka" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-l-okvir" data-knowl="fig-rok-l-okvir">The deformed shape</a>, assembled from the fields of both elements, is shown in figure <a class="xref" href="sec-ravninski-okvir-mke.html#fig-rok-l-okvir" data-knowl="fig-rok-l-okvir">12.12</a>. The solution is the same up to rounding, because the load is only in a node and so by theorem <a class="xref" href="sec-ravninski-okvir-mke.html#thm-okvir-mke" data-knowl="thm-okvir-mke">12.20</a> the finite element field is exactly the solution of the frame.</p>
 <p>The forces at the ends of the elements we obtain from <span class="nobr">\(\bar{\vek F}_{\mathrm{e}} = \bar{\mat k}_{\mathrm{e}}\,\bar{\vek d}_{\mathrm{e}}\),</span> where <span class="nobr">\(\bar{\vek d}_{\mathrm{e}} = \mat R\,\vek d_{\mathrm{e}}\).</span> For the column \(\bar{\vek d}_{\mathrm{e}} = (0,\ 0,\ 0,\ -0{,}00319\ \text{mm},\ -11{,}9579\ \text{mm},\ -0{,}023916)\) (the local transverse displacement is <span class="nobr">\(\bar v_2 = -u_{\mathrm{B}}\)),</span> for the crossbeam <span class="nobr">\((11{,}9579\ \text{mm},\ -0{,}00319\ \text{mm},\ -0{,}023916,\ 11{,}9579\ \text{mm},\ -31{,}8909\ \text{mm},\ -0{,}035874)\).</span> With the element matrix we get</p>
 <div class="eq">\[\bar{\vek F}_{\mathrm{AB}} = (500,\ 0,\ 500,\ -500,\ 0,\ -500)^\T , \qquad \bar{\vek F}_{\mathrm{BC}} = (0,\ 500,\ 500,\ 0,\ -500,\ 0)^\T\]</div>
 <p>in N and N m. By lemma <a class="xref" href="sec-ravninski-okvir-mke.html#lem-togost-elementa-okvirja" data-knowl="lem-togost-elementa-okvirja">12.18</a> this is \((-N, -V, -M)\) at \(\bar x = 0\) and \((N, V, M)\) at <span class="nobr">\(\bar x = h\).</span> For the column we therefore have \(N = -500\) N, \(V = 0\) and \(M = -500\) N m at both ends, for the crossbeam \(V = -500\) N and \(M = -500\) N m at \(B\) and \(0\) at <span class="nobr">\(C\).</span> These are the values from section <a class="xref" href="sec-okvirji.html#sec-pomiki-okvirja">5.14.2</a>: the <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> of the column is <span class="nobr">\(-F\),</span> the moment of the column is \(-F b\) and the moment of the crossbeam is <span class="nobr">\(-F\,(b - s)\).</span> Let us also check the equilibrium of the node \(B\) by lemma <a class="xref" href="sec-okvirji.html#lem-vozlisce-okvira" data-knowl="lem-vozlisce-okvira">5.91</a> and point 1 of theorem <a class="xref" href="sec-ravninski-okvir-mke.html#thm-okvir-mke" data-knowl="thm-okvir-mke">12.20</a>. The force of the surroundings on the column at \(B\) is in local components <span class="nobr">\((-500, 0)\),</span> in global components \(\mat Q^\T(-500, 0)^\T = (0, -500)\) N, the force of the surroundings on the crossbeam at \(B\) is \((0, 500)\) N, the sum is zero, and the moments \(-500\) and \(+500\) N m give zero. The reaction at \(A\) is the force of the surroundings on the column at node 1, globally \(\mat Q^\T(500, 0)^\T = (0, 500)\) N and the moment \(+500\) N m, which is the equilibrium of the whole frame <span class="nobr">(\(F\,b = 500\)</span> N m about \(A\) counterclockwise).</p>
@@ -665,6 +698,7 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 <g stroke-width='0.6'>
 <g stroke-linecap='round'>
 <g stroke-linejoin='round'>
+<g class='del' data-del='vpetje'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-width='0.45'>
 <path d='M-25.60728 0H25.60773' fill='none'/>
@@ -710,69 +744,16 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 <path d='M24.18501 0L18.49455-5.69046' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='prvotna'>
 <g fill='#0f0' stroke='#0f0'>
 <path d='M0 0V85.35823H85.35823' fill='none'/>
 </g>
+</g>
+<g class='del' data-del='steber'>
 <g stroke-width='1.6'>
 <g fill='#f00' stroke='#f00'>
 <path d='M0 0C0 0 .05846 6.16724 .11374 8.5359C.16902 10.90457 .28801 14.70319 .39854 17.07181C.50908 19.44043 .74068 23.23866 .91042 25.60728C1.08015 27.9759 1.39304 31.77452 1.622 34.1432C1.85095 36.51189 2.27644 40.31044 2.56064 42.67911C2.84483 45.04778 3.33084 48.84633 3.67033 51.21501C4.00983 53.5837 4.60881 57.38231 5.00752 59.75093S6.09 65.91779 6.544 68.2864C6.99802 70.65503 7.77051 74.45363 8.27975 76.82231C8.789 79.191 10.21434 85.35823 10.21434 85.35823' fill='none'/>
-</g>
-</g>
-<g stroke-width='1.6'>
-<g fill='#f00' stroke='#f00'>
-<path d='M10.21434 85.35823C10.21434 85.35823 16.38158 83.84413 18.75026 83.22435S24.9175 81.5584 27.28616 80.8912C29.65483 80.22401 33.45338 79.12628 35.82207 78.41566C38.19075 77.70505 41.98936 76.51956 44.35799 75.76949C46.72661 75.01941 50.52484 73.78723 52.89346 73.00957C55.26208 72.2319 59.0607 70.9659 61.42937 70.16455C63.79803 69.3632 67.59659 68.05516 69.96527 67.23401S76.1325 65.0831 78.50119 64.24615C80.86987 63.40921 84.66847 62.05063 87.0371 61.20187C89.40572 60.35312 95.57257 58.12892 95.57257 58.12892' fill='none'/>
-</g>
-</g>
-<path d='M12.05296 85.35823C12.05296 86.37367 11.22978 87.19685 10.21434 87.19685S8.37572 86.37367 8.37572 85.35823S9.1989 83.5196 10.21434 83.5196S12.05296 84.34279 12.05296 85.35823ZM10.21434 85.35823' stroke='none'/>
-<g transform='translate(10.21434,85.35823)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.595037,43.846623)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'/>
-</g>
-</g>
-</g>
-<path d='M16.29555 83.87595L17.77783 89.95715L11.69662 91.43944' fill='none'/>
-<path d='M1.83862 0C1.83862 1.01544 1.01544 1.83862 0 1.83862S-1.83862 1.01544-1.83862 0S-1.01544-1.83862 0-1.83862S1.83862-1.01544 1.83862 0ZM0 0' stroke='none'/>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.595037,43.846623)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'/>
-</g>
-</g>
-<path d='M97.4112 58.12892C97.4112 59.14436 96.58801 59.96754 95.57257 59.96754S93.73395 59.14436 93.73395 58.12892S94.55713 56.2903 95.57257 56.2903S97.4112 57.11348 97.4112 58.12892ZM95.57257 58.12892' stroke='none'/>
-<g transform='translate(95.57257,58.12892)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.595037,43.846623)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'/>
-</g>
-</g>
-</g>
-<g transform='translate(6.47842,5.31369)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.595037,43.846623)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='-40.595037' y='43.846623' xlink:href='#rok-l-okvir-g2-49'/>
-</g>
-</g>
-</g>
-</g>
-<g transform='translate(-5.7481,87.28978)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.595037,43.846623)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='-40.595037' y='43.846623' xlink:href='#rok-l-okvir-g2-50'/>
-<use x='-35.613698' y='40.231259' xlink:href='#rok-l-okvir-g0-48'/>
-</g>
-</g>
-</g>
-</g>
-<g transform='translate(99.20555,46.97812)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.595037,43.846623)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='-40.595037' y='43.846623' xlink:href='#rok-l-okvir-g2-51'/>
-<use x='-35.613698' y='40.231259' xlink:href='#rok-l-okvir-g0-48'/>
-</g>
-</g>
 </g>
 </g>
 <g transform='translate(-19.25623,25.95274)'>
@@ -786,6 +767,13 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='precka'>
+<g stroke-width='1.6'>
+<g fill='#f00' stroke='#f00'>
+<path d='M10.21434 85.35823C10.21434 85.35823 16.38158 83.84413 18.75026 83.22435S24.9175 81.5584 27.28616 80.8912C29.65483 80.22401 33.45338 79.12628 35.82207 78.41566C38.19075 77.70505 41.98936 76.51956 44.35799 75.76949C46.72661 75.01941 50.52484 73.78723 52.89346 73.00957C55.26208 72.2319 59.0607 70.9659 61.42937 70.16455C63.79803 69.3632 67.59659 68.05516 69.96527 67.23401S76.1325 65.0831 78.50119 64.24615C80.86987 63.40921 84.66847 62.05063 87.0371 61.20187C89.40572 60.35312 95.57257 58.12892 95.57257 58.12892' fill='none'/>
+</g>
+</g>
 <g transform='translate(39.13565,101.44984)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.595037,43.846623)scale(-1,-1)'>
 <g fill='#000'>
@@ -797,6 +785,68 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='n2'>
+<path d='M12.05296 85.35823C12.05296 86.37367 11.22978 87.19685 10.21434 87.19685S8.37572 86.37367 8.37572 85.35823S9.1989 83.5196 10.21434 83.5196S12.05296 84.34279 12.05296 85.35823ZM10.21434 85.35823' stroke='none'/>
+<g transform='translate(10.21434,85.35823)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.595037,43.846623)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(-5.7481,87.28978)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.595037,43.846623)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-40.595037' y='43.846623' xlink:href='#rok-l-okvir-g2-50'/>
+<use x='-35.613698' y='40.231259' xlink:href='#rok-l-okvir-g0-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='kot'>
+<path d='M16.29555 83.87595L17.77783 89.95715L11.69662 91.43944' fill='none'/>
+</g>
+<g class='del' data-del='n1'>
+<path d='M1.83862 0C1.83862 1.01544 1.01544 1.83862 0 1.83862S-1.83862 1.01544-1.83862 0S-1.01544-1.83862 0-1.83862S1.83862-1.01544 1.83862 0ZM0 0' stroke='none'/>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.595037,43.846623)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+<g transform='translate(6.47842,5.31369)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.595037,43.846623)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-40.595037' y='43.846623' xlink:href='#rok-l-okvir-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='n3'>
+<path d='M97.4112 58.12892C97.4112 59.14436 96.58801 59.96754 95.57257 59.96754S93.73395 59.14436 93.73395 58.12892S94.55713 56.2903 95.57257 56.2903S97.4112 57.11348 97.4112 58.12892ZM95.57257 58.12892' stroke='none'/>
+<g transform='translate(95.57257,58.12892)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.595037,43.846623)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(99.20555,46.97812)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.595037,43.846623)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-40.595037' y='43.846623' xlink:href='#rok-l-okvir-g2-51'/>
+<use x='-35.613698' y='40.231259' xlink:href='#rok-l-okvir-g0-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='u3'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.45'>
@@ -860,6 +910,8 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='v3'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.45'>
@@ -930,15 +982,18 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 </g>
 </g>
 </g>
+</g>
 </svg></span></p>
-<figcaption><span class="blk-label">Figure 12.12</span>: The L-frame of section <a class="xref" href="sec-okvirji.html#sec-pomiki-okvirja">5.14.2</a> computed with two elements. The deformed shape (thick orange, displacements magnified 10 times) is assembled from the Hermite fields of both elements, computed from the nodal values of the system, the original shape is grey. The end \(C\) (node 3) drops by \(v_3 = 31{,}89\) mm and moves by \(u_3 = 11{,}96\) mm to the right, the node \(B\) (node 2) rotates by \(\varphi_{\mathrm{B}} = -0{,}023916\) clockwise. The small square at \(B\) shows that the angle between the elements remains a right angle.</figcaption></figure>
+<figcaption><span class="blk-label">Figure 12.12</span>: The L-frame of section <a class="xref" href="sec-okvirji.html#sec-pomiki-okvirja">5.14.2</a> computed with two elements. The deformed shape (thick orange, displacements magnified 10 times) is assembled from the Hermite fields of both elements, computed from the nodal values of the system, the original shape is grey. The end \(C\) (node 3) drops by \(31{,}89\) mm <span class="nobr">(\(v_3 = -31{,}89\)</span> mm) and moves by \(u_3 = 11{,}96\) mm to the right, the node \(B\) (node 2) rotates by \(\varphi_{\mathrm{B}} = -0{,}023916\) clockwise. The small square at \(B\) shows that the angle between the elements remains a right angle.</figcaption></figure>
+<p>The <a data-del="prvotna" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-l-okvir" data-knowl="fig-rok-l-okvir">grey line</a> is the frame before loading, <a data-del="vpetje" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-l-okvir" data-knowl="fig-rok-l-okvir">clamped</a> at node 1. The <a data-del="steber" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-l-okvir" data-knowl="fig-rok-l-okvir">orange column (1)</a> and the <a data-del="precka" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-l-okvir" data-knowl="fig-rok-l-okvir">orange crossbeam (2)</a> are the fields of the elements, computed from the nodal values of the system and turned into global axes. <a data-del="n1" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-l-okvir" data-knowl="fig-rok-l-okvir">Node 1</a> stays in place, node 2 moves to the <a data-del="n2" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-l-okvir" data-knowl="fig-rok-l-okvir">point \(2'\)</a> and node 3 to the <span class="nobr"><a data-del="n3" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-l-okvir" data-knowl="fig-rok-l-okvir">point \(3'\)</a>.</span> The measures show the <a data-del="u3" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-l-okvir" data-knowl="fig-rok-l-okvir">displacement \(u_3\)</a> of the end to the right and <span class="nobr"><a data-del="v3" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-l-okvir" data-knowl="fig-rok-l-okvir">its drop \(v_3\)</a>.</span> The <a data-del="kot" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-l-okvir" data-knowl="fig-rok-l-okvir">small square at \(2'\)</a> turns together with the ends of both elements, because the elements in a rigid joint have the same rotation, so the angle between them remains a right angle.</p>
+
 <h3 id="sec-zvarjeno-mke"><span class="h-num">12.4.4</span> Truss with welded joints (paličje z zvarjenimi vozlišči)</h3>
-<p>The <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">truss</a> of section <a class="xref" href="sec-okvirji.html#sec-zvarjeno-palicje">5.14.3</a> has the bars \(AC\) <span class="nobr">(\(4\)</span> m) and \(BC\) <span class="nobr">(\(5\)</span> m), <span class="nobr">\(A = (-4, 0)\),</span> <span class="nobr">\(B = (-4, 3)\),</span> <span class="nobr">\(C = (0, 0)\),</span> clamped at \(A\) and \(B\) and rigidly welded at <span class="nobr">\(C\),</span> with a load of \(10\) kN downward at <span class="nobr">\(C\).</span> The nodes are <span class="nobr">\(A = 1\),</span> <span class="nobr">\(B = 2\),</span> <span class="nobr">\(C = 3\),</span> there are nine unknowns, only the unknowns of the node \(C\) are free and the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat K_{\mathrm{ff}}\) is the \(3 \times 3\) block of the node <span class="nobr">\(C\).</span> The bar \(AC\) has \(C\) as node 2, angle <span class="nobr">\(0\),</span> so <span class="nobr">\(c = 1\),</span> <span class="nobr">\(s = 0\).</span> The bar \(BC\) has the <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vector</a> \((4, -3)\) m, so \(h = 5\) m, <span class="nobr">\(c = 0{,}8\),</span> <span class="nobr">\(s = -0{,}6\),</span> and also has \(C\) as node 2. Both elements therefore contribute the block \(\mat k_{22}\) from equation <a class="xref" href="sec-ravninski-okvir-mke.html#eq-blok-vozlisca-2" data-knowl="eq-blok-vozlisca-2">(12.14)</a> and the matrix \(\mat K_{\mathrm{ff}}\) is their sum (theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a>, point 1, the rows of the node \(C\) have only these two elements). Figure <a class="xref" href="sec-ravninski-okvir-mke.html#fig-rok-zvarjeno" data-knowl="fig-rok-zvarjeno">12.13</a> shows where the blocks of both elements go.</p>
+<p>The <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">truss</a> of section <a class="xref" href="sec-okvirji.html#sec-zvarjeno-palicje">5.14.3</a> has the bars <a data-del="AC" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-zvarjeno" data-knowl="fig-rok-zvarjeno">\(AC\)</a> <span class="nobr">(\(4\)</span> m) and <a data-del="BC" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-zvarjeno" data-knowl="fig-rok-zvarjeno">\(BC\)</a> <span class="nobr">(\(5\)</span> m), <span class="nobr">\(A = (-4, 0)\),</span> <span class="nobr">\(B = (-4, 3)\),</span> <span class="nobr">\(C = (0, 0)\),</span> <a data-del="vpetje" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-zvarjeno" data-knowl="fig-rok-zvarjeno">clamped</a> at \(A\) and \(B\) and rigidly welded at <span class="nobr">\(C\),</span> with a <a data-del="F" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-zvarjeno" data-knowl="fig-rok-zvarjeno">load of \(10\) kN</a> downward at <span class="nobr">\(C\).</span> The nodes are <span class="nobr"><a data-del="A" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-zvarjeno" data-knowl="fig-rok-zvarjeno">\(A = 1\)</a>,</span> <span class="nobr"><a data-del="B" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-zvarjeno" data-knowl="fig-rok-zvarjeno">\(B = 2\)</a>,</span> <span class="nobr"><a data-del="C" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-zvarjeno" data-knowl="fig-rok-zvarjeno">\(C = 3\)</a>,</span> there are nine unknowns, only the unknowns of the node \(C\) are free and the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat K_{\mathrm{ff}}\) is the <span class="nobr"><a data-del="CC" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-zvarjeno" data-knowl="fig-rok-zvarjeno">\(3 \times 3\) block of the node \(C\)</a>.</span> The bar \(AC\) has \(C\) as node 2, angle <span class="nobr">\(0\),</span> so <span class="nobr">\(c = 1\),</span> <span class="nobr">\(s = 0\).</span> The bar \(BC\) has the <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vector</a> \((4, -3)\) m, so \(h = 5\) m, <span class="nobr">\(c = 0{,}8\),</span> <span class="nobr">\(s = -0{,}6\),</span> and also has \(C\) as node 2. Both elements therefore contribute the block \(\mat k_{22}\) from equation <a class="xref" href="sec-ravninski-okvir-mke.html#eq-blok-vozlisca-2" data-knowl="eq-blok-vozlisca-2">(12.14)</a> and the matrix \(\mat K_{\mathrm{ff}}\) is their sum (theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a>, point 1, the rows of the node \(C\) have only these two elements). Figure <a class="xref" href="sec-ravninski-okvir-mke.html#fig-rok-zvarjeno" data-knowl="fig-rok-zvarjeno">12.13</a> shows where the blocks of both elements go.</p>
 <p>The bar \(AC\) has \(EA/h = 4{,}9\cdot 10^6\) N/m, \(12EI/h^3 = 30{,}625\) N/m, \(6EI/h^2 = 61{,}25\) N and \(4EI/h = 163{,}33\) N m. With <span class="nobr">\(c = 1\),</span> \(s = 0\) by equation <a class="xref" href="sec-ravninski-okvir-mke.html#eq-blok-vozlisca-2" data-knowl="eq-blok-vozlisca-2">(12.14)</a></p>
 <div class="eq">\[\mat k_{22}^{AC} = \begin{bmatrix} 4{,}9\cdot 10^6 &amp; 0 &amp; 0 \\ 0 &amp; 30{,}625 &amp; -61{,}25 \\ 0 &amp; -61{,}25 &amp; 163{,}33 \end{bmatrix} .\]</div>
 <p>The bar \(BC\) has \(EA/h = 3{,}92\cdot 10^6\) N/m, \(12EI/h^3 = 15{,}68\) N/m, \(6EI/h^2 = 39{,}2\) N and \(4EI/h = 130{,}67\) N m. With <span class="nobr">\(c = 0{,}8\),</span> \(s = -0{,}6\) the first entry is \(c^2\,EA/h + s^2\,12EI/h^3 = 0{,}64\cdot 3{,}92\cdot 10^6 + 0{,}36\cdot 15{,}68 = 2{,}5088\cdot 10^6\) N/m, the second \(c\,s\,(EA/h - 12EI/h^3) = -0{,}48\cdot(3{,}92\cdot 10^6 - 15{,}68) = -1{,}8816\cdot 10^6\) N/m, the third (row <span class="nobr">\(v\),</span> column <span class="nobr">\(v\))</span> \(0{,}36\cdot 3{,}92\cdot 10^6 + 0{,}64\cdot 15{,}68 = 1{,}41121\cdot 10^6\) N/m, and the entries with the rotation \(6EI/h^2\,s = -23{,}52\) N and \(-6EI/h^2\,c = -31{,}36\) N. So</p>
 <div class="eq">\[\mat k_{22}^{BC} = \begin{bmatrix} 2{,}5088\cdot 10^6 &amp; -1{,}8816\cdot 10^6 &amp; -23{,}52 \\ -1{,}8816\cdot 10^6 &amp; 1{,}41121\cdot 10^6 &amp; -31{,}36 \\ -23{,}52 &amp; -31{,}36 &amp; 130{,}67 \end{bmatrix} .\]</div>
-<p>The sum \(\mat K_{\mathrm{ff}} = \mat k_{22}^{AC} + \mat k_{22}^{BC}\) is</p>
+<p><a data-del="CC,povecava" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-zvarjeno" data-knowl="fig-rok-zvarjeno">The sum</a> \(\mat K_{\mathrm{ff}} = \mat k_{22}^{AC} + \mat k_{22}^{BC}\) is</p>
 <div class="eq">\[\mat K_{\mathrm{ff}} = \begin{bmatrix} 7{,}4088\cdot 10^6 &amp; -1{,}8816\cdot 10^6 &amp; -23{,}52 \\ -1{,}8816\cdot 10^6 &amp; 1{,}41124\cdot 10^6 &amp; -92{,}61 \\ -23{,}52 &amp; -92{,}61 &amp; 294{,}0 \end{bmatrix} ,\]</div>
 <p>which is up to rounding the matrix <a class="xref" href="sec-okvirji.html#eq-togost-zvarjeno" data-knowl="eq-togost-zvarjeno">(5.86)</a> of chapter <a class="xref" href="ch-nosilci.html">5</a> <span class="nobr">(\(7{,}409\cdot 10^6\),</span> <span class="nobr">\(-1{,}882\cdot 10^6\),</span> <span class="nobr">\(1{,}411\cdot 10^6\),</span> <span class="nobr">\(-23{,}52\),</span> <span class="nobr">\(-92{,}61\),</span> <span class="nobr">\(294{,}0\)).</span> The entry \((2, 3)\) is \(-61{,}25 - 31{,}36 = -92{,}61\) and the entry \((3, 3)\) is <span class="nobr">\(163{,}33 + 130{,}67 = 294{,}0\).</span> Chapter <a class="xref" href="ch-nosilci.html">5</a> assembled the matrix by hand from lemma <a class="xref" href="sec-okvirji.html#lem-konec-vpetega-nosilca" data-knowl="lem-konec-vpetega-nosilca">5.93</a>, that is from the inverted <a class="xref auto" href="sec-betti-maxwell.html#def-podajnostna-matrika" data-knowl="def-podajnostna-matrika">flexibility matrix</a> of a cantilever. Now we know why the result is the same: the inverted matrix of the cantilever is the lower right block of the <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beam</a> element matrix (lemma <a class="xref" href="sec-element-nosilca.html#lem-togost-elementa-nosilca" data-knowl="lem-togost-elementa-nosilca">12.4</a>, point 3), in the matrix <a class="xref" href="sec-ravninski-okvir-mke.html#eq-togost-okvir-lokalna" data-knowl="eq-togost-okvir-lokalna">(12.12)</a> the block of node 2, which the rotation with \(\mat R_2\) converts into global axes, and the sum over the elements is the equilibrium of the joint from lemma <a class="xref" href="sec-okvirji.html#lem-vozlisce-okvira" data-knowl="lem-vozlisce-okvira">5.91</a>.</p>
 
@@ -979,6 +1034,7 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 <g stroke-width='0.6'>
 <g stroke-linecap='round'>
 <g stroke-linejoin='round'>
+<g class='del' data-del='vpetje'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-width='0.45'>
 <path d='M-91.04912-15.93352V84.22037' fill='none'/>
@@ -1074,12 +1130,40 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 <path d='M-91.04912 80.80617L-95.6015 76.25377' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='AC'>
 <g stroke-width='1.6'>
 <path d='M-91.04912 0H0' fill='none'/>
 </g>
+<g transform='translate(-51.91345,-13.40933)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(23.468481,12.129867)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='23.468481' y='12.129867' xlink:href='#rok-zvarjeno-g4-40'/>
+<use x='27.342855' y='12.129867' xlink:href='#rok-zvarjeno-g4-49'/>
+<use x='32.324194' y='12.129867' xlink:href='#rok-zvarjeno-g4-41'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='BC'>
 <g stroke-width='1.6'>
 <path d='M-91.04912 68.28683L0 0' fill='none'/>
 </g>
+<g transform='translate(-44.16794,38.00003)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(23.468481,12.129867)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='23.468481' y='12.129867' xlink:href='#rok-zvarjeno-g4-40'/>
+<use x='27.342855' y='12.129867' xlink:href='#rok-zvarjeno-g4-50'/>
+<use x='32.324194' y='12.129867' xlink:href='#rok-zvarjeno-g4-41'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='A'>
 <g fill='#fff'>
 <g fill='#fff'>
 <path d='M-88.78618 0C-88.78618 1.2498-89.79932 2.26294-91.04912 2.26294S-93.31206 1.2498-93.31206 0S-92.29892-2.26294-91.04912-2.26294S-88.78618-1.2498-88.78618 0ZM-91.04912 0'/>
@@ -1092,6 +1176,17 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 </g>
 </g>
 </g>
+<g transform='translate(-85.13976,4.77115)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(23.468481,12.129867)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='23.468481' y='12.129867' xlink:href='#rok-zvarjeno-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='B'>
 <g fill='#fff'>
 <g fill='#fff'>
 <path d='M-88.78618 68.28683C-88.78618 69.53664-89.79932 70.54977-91.04912 70.54977S-93.31206 69.53664-93.31206 68.28683C-93.31206 67.03703-92.29892 66.0239-91.04912 66.0239S-88.78618 67.03703-88.78618 68.28683ZM-91.04912 68.28683'/>
@@ -1100,25 +1195,6 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(23.468481,12.129867)scale(-1,-1)'>
 <g fill='#000'>
 <g stroke='none'/>
-</g>
-</g>
-</g>
-</g>
-<g fill='#fff'>
-<g fill='#fff'>
-<path d='M2.26294 0C2.26294 1.2498 1.2498 2.26294 0 2.26294S-2.26294 1.2498-2.26294 0S-1.2498-2.26294 0-2.26294S2.26294-1.2498 2.26294 0ZM0 0'/>
-</g>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(23.468481,12.129867)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'/>
-</g>
-</g>
-</g>
-<g transform='translate(-85.13976,4.77115)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(23.468481,12.129867)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='23.468481' y='12.129867' xlink:href='#rok-zvarjeno-g4-49'/>
 </g>
 </g>
 </g>
@@ -1132,6 +1208,18 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='C'>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M2.26294 0C2.26294 1.2498 1.2498 2.26294 0 2.26294S-2.26294 1.2498-2.26294 0S-1.2498-2.26294 0-2.26294S2.26294-1.2498 2.26294 0ZM0 0'/>
+</g>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(23.468481,12.129867)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
 <g transform='translate(5.90933,4.77115)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(23.468481,12.129867)scale(-1,-1)'>
 <g fill='#000'>
@@ -1141,28 +1229,8 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 </g>
 </g>
 </g>
-<g transform='translate(-51.91345,-13.40933)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(23.468481,12.129867)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='23.468481' y='12.129867' xlink:href='#rok-zvarjeno-g4-40'/>
-<use x='27.342855' y='12.129867' xlink:href='#rok-zvarjeno-g4-49'/>
-<use x='32.324194' y='12.129867' xlink:href='#rok-zvarjeno-g4-41'/>
 </g>
-</g>
-</g>
-</g>
-<g transform='translate(-44.16794,38.00003)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(23.468481,12.129867)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='23.468481' y='12.129867' xlink:href='#rok-zvarjeno-g4-40'/>
-<use x='27.342855' y='12.129867' xlink:href='#rok-zvarjeno-g4-50'/>
-<use x='32.324194' y='12.129867' xlink:href='#rok-zvarjeno-g4-41'/>
-</g>
-</g>
-</g>
-</g>
+<g class='del' data-del='F'>
 <g stroke-width='0.9'>
 <path d='M0-2.73135V-27.64343' fill='none'/>
 <g transform='matrix(0.0,-1.0,1.0,0.0,0.0,-25.0384)'>
@@ -1182,6 +1250,8 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='blokiAC'>
 <g fill='#d9d9ff' stroke='#d9d9ff'>
 <path d='M102.43008 54.06006V19.9173H145.10919V54.06006ZM145.10919 19.9173' stroke='none'/>
 </g>
@@ -1191,6 +1261,8 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 <g fill='#d9d9ff' stroke='#d9d9ff'>
 <path d='M102.43008-14.22548V-48.36824H145.10919V-14.22548ZM145.10919-48.36824' stroke='none'/>
 </g>
+</g>
+<g class='del' data-del='blokiBC'>
 <g fill='#ffd9d9' stroke='#ffd9d9'>
 <path d='M145.10919 19.9173V-14.22548H187.78831V19.9173ZM187.78831-14.22548' stroke='none'/>
 </g>
@@ -1200,9 +1272,13 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 <g fill='#ffd9d9' stroke='#ffd9d9'>
 <path d='M145.10919-14.22548V-48.36824H187.78831V-14.22548ZM187.78831-48.36824' stroke='none'/>
 </g>
+</g>
+<g class='del' data-del='CC'>
 <g fill='#b3ffb3' stroke='#b3ffb3'>
 <path d='M187.78831-14.22548V-48.36824H230.46742V-14.22548ZM230.46742-48.36824' stroke='none'/>
 </g>
+</g>
+<g class='del' data-del='mreza'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.45'>
@@ -1367,9 +1443,13 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 <g stroke-width='0.6'>
 <path d='M102.43008-48.36824H230.46742' fill='none'/>
 </g>
+</g>
+<g class='del' data-del='CC'>
 <g stroke-width='1.4'>
 <path d='M187.78831-14.22548V-48.36824H230.46742V-14.22548ZM230.46742-48.36824' fill='none'/>
 </g>
+</g>
+<g class='del' data-del='A'>
 <g transform='translate(120.01964,59.11575)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(23.468481,12.129867)scale(-1,-1)'>
 <g fill='#000'>
@@ -1388,6 +1468,8 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='B'>
 <g transform='translate(162.40535,59.11575)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(23.468481,12.129867)scale(-1,-1)'>
 <g fill='#000'>
@@ -1406,6 +1488,8 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='C'>
 <g transform='translate(205.19662,59.11575)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(23.468481,12.129867)scale(-1,-1)'>
 <g fill='#000'>
@@ -1424,6 +1508,8 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='predpisane'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-width='2.0'>
 <path d='M85.35828 52.63734V-12.80275' fill='none'/>
@@ -1434,6 +1520,8 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 <path d='M103.8528 72.55415H186.36559' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='povecava'>
 <g fill='#b3ffb3' stroke='#b3ffb3'>
 <path d='M256.0748 39.83368V-24.18498H456.66716V39.83368ZM456.66716-24.18498' stroke='none'/>
 </g>
@@ -1639,6 +1727,7 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 </g>
 </g>
 </g>
+<g class='del' data-del='neznanke'>
 <g transform='translate(284.23273,45.89493)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(23.468481,12.129867)scale(-1,-1)'>
 <g fill='#000'>
@@ -1699,6 +1788,7 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 </g>
 </g>
 </g>
+</g>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.45'>
@@ -1720,14 +1810,16 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 </g>
 </g>
 </g>
+</g>
 </svg></span></p>
 <figcaption><span class="blk-label">Figure 12.13</span>: Assembling the matrix of the truss with welded joints of section <a class="xref" href="sec-okvirji.html#sec-zvarjeno-palicje">5.14.3</a>. Left: the nodes <span class="nobr">\(1 = A\),</span> <span class="nobr">\(2 = B\),</span> \(3 = C\) and the elements (1) \(AC\) and (2) <span class="nobr">\(BC\).</span> Right: the structure matrix \(9 \times 9\) with \(3 \times 3\) blocks by the nodes <span class="nobr">\(A\),</span> <span class="nobr">\(B\),</span> <span class="nobr">\(C\).</span> The blue blocks are the contribution of the element <span class="nobr">\(AC\),</span> the orange ones of the element <span class="nobr">\(BC\),</span> the grey block \(CC\) is contributed by both (the sum). The grey lines at the edge mark the rows and columns of the nodes \(A\) and <span class="nobr">\(B\),</span> which are prescribed (clamp) and which we strike out. What remains is the block \(CC\) (the frame), the matrix <a class="xref" href="sec-okvirji.html#eq-togost-zvarjeno" data-knowl="eq-togost-zvarjeno">(5.86)</a>, shown enlarged on the right with entries in N/m, N and N m.</figcaption></figure>
+<p>In the middle of the figure is the <a data-del="mreza" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-zvarjeno" data-knowl="fig-rok-zvarjeno">structure matrix</a> <span class="nobr">\(9 \times 9\),</span> divided into \(3 \times 3\) blocks, one band of rows and columns for each node, <span class="nobr"><a data-del="A" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-zvarjeno" data-knowl="fig-rok-zvarjeno">\(A\)</a>,</span> <a data-del="B" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-zvarjeno" data-knowl="fig-rok-zvarjeno">\(B\)</a> and <span class="nobr"><a data-del="C" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-zvarjeno" data-knowl="fig-rok-zvarjeno">\(C\)</a>.</span> The element \(AC\) joins the nodes \(A\) and <span class="nobr">\(C\),</span> so it contributes to the <a data-del="blokiAC" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-zvarjeno" data-knowl="fig-rok-zvarjeno">blue blocks</a> <span class="nobr">\(AA\),</span> <span class="nobr">\(AC\),</span> \(CA\) and to the block <span class="nobr">\(CC\).</span> The element \(BC\) contributes to the <a data-del="blokiBC" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-zvarjeno" data-knowl="fig-rok-zvarjeno">orange blocks</a> <span class="nobr">\(BB\),</span> <span class="nobr">\(BC\),</span> \(CB\) and also to the block <span class="nobr">\(CC\).</span> In the <a data-del="CC" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-zvarjeno" data-knowl="fig-rok-zvarjeno">grey block \(CC\)</a> the contributions of both elements add up. The <a data-del="predpisane" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-zvarjeno" data-knowl="fig-rok-zvarjeno">grey lines at the edge</a> mark the rows and columns of the clamped nodes \(A\) and <span class="nobr">\(B\),</span> which we strike out. What remains is the block <span class="nobr">\(CC\),</span> <a data-del="povecava" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-zvarjeno" data-knowl="fig-rok-zvarjeno">enlarged on the right</a>, with the unknowns <a data-del="neznanke" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-zvarjeno" data-knowl="fig-rok-zvarjeno"><span class="nobr">\(u_{\mathrm{C}}\),</span> <span class="nobr">\(v_{\mathrm{C}}\),</span> \(\varphi_{\mathrm{C}}\)</a> at its edge.</p>
 <p>The solution of the system \(\mat K_{\mathrm{ff}}\,\vek d_{\mathrm{f}} = (0, -10\,000, 0)^\T\) (NumPy) is \(u_{\mathrm{C}} = -2{,}7211\) mm, \(v_{\mathrm{C}} = -10{,}7142\) mm, <span class="nobr">\(\varphi_{\mathrm{C}} = -3{,}5926\cdot 10^{-3}\),</span> which agrees with chapter <a class="xref" href="ch-nosilci.html">5</a> <span class="nobr">(\(-2{,}721\)</span> mm, \(-10{,}714\) mm, <span class="nobr">\(-3{,}593\cdot 10^{-3}\)).</span> The forces at the ends of the elements \(\bar{\vek F}_{\mathrm{e}} = \bar{\mat k}_{\mathrm{e}}\,\bar{\vek d}_{\mathrm{e}}\) give the <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial forces</a> \(N_{\mathrm{AC}} = -13\,333{,}2\) N and \(N_{\mathrm{BC}} = 16\,666{,}5\) N and the moments \(M = -0{,}3628\) N m at \(A\) and \(0{,}0694\) N m at \(C\) on the bar <span class="nobr">\(AC\),</span> and \(-0{,}1653\) N m at \(B\) and \(-0{,}0694\) N m at \(C\) on the bar <span class="nobr">\(BC\).</span> The moments in the node \(C\) have the sum zero, as lemma <a class="xref" href="sec-okvirji.html#lem-vozlisce-okvira" data-knowl="lem-vozlisce-okvira">5.91</a> demands, because there is no external moment at <span class="nobr">\(C\).</span> These are the values of chapter <a class="xref" href="ch-nosilci.html">5</a> <span class="nobr">(\(-13{,}333\)</span> and \(16{,}666\) kN, <span class="nobr">\(-0{,}363\),</span> <span class="nobr">\(0{,}069\),</span> \(-0{,}165\) and \(-0{,}069\) N m). The promise at the end of the section on the welded truss is fulfilled: the general method that assembles the matrix for any number of elements and nodes as <a class="xref" href="sec-okvirji.html#eq-togost-zvarjeno" data-knowl="eq-togost-zvarjeno">(5.86)</a> is now determined in theorem <a class="xref" href="sec-ravninski-okvir-mke.html#thm-okvir-mke" data-knowl="thm-okvir-mke">12.20</a>.</p>
 
 <h3 id="sec-nedolocen-mke"><span class="h-num">12.4.5</span> Statically indeterminate frame (statično nedoločen okvir)</h3>
-<p>Chapter <a class="xref" href="ch-nosilci.html">5</a> solved the statically indeterminate <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">frame</a> by choosing the unknown reaction \(R\) at <span class="nobr">\(C\),</span> writing the <a class="xref auto" href="sec-virtualne-sile.html#def-komplementarna-energija" data-knowl="def-komplementarna-energija">complementary energy</a> and demanding \(\partial U^*/\partial R = 0\) (section <a class="xref" href="sec-okvirji.html#sec-nedolocen-okvir">5.14.4</a>). In the finite element method we choose nothing: the unknowns are always the displacements and rotations of the nodes, and a support only prescribes one of them. We divide the same frame, with a load \(F = 500\) N in the middle of the crossbeam and a roller support at \(C\) (definition <a class="xref" href="sec-model-nosilca.html#def-podpore" data-knowl="def-podpore">5.5</a>), into three elements: the column \(AB\) and two halves of the crossbeam, \(BD\) and \(DC\) with \(h = 0{,}5\) m, so that the force acts at the node \(D\) and we do not need consistent forces. The nodes <span class="nobr">\(A\),</span> <span class="nobr">\(B\),</span> <span class="nobr">\(D\),</span> \(C\) have 12 unknowns together. Four are prescribed: the clamp at \(A\) gives \(u_{\mathrm{A}} = v_{\mathrm{A}} = \varphi_{\mathrm{A}} = 0\) and the support at \(C\) gives <span class="nobr">\(v_{\mathrm{C}} = 0\).</span> The vertical displacement is an unknown of the node <span class="nobr">\(C\),</span> so the support only prescribes the unknown, without any other consideration. There are eight free ones, the right side has the only nonzero entry \(f_{\mathrm{v}_\mathrm{D}} = -500\) N.</p>
-<p>The reaction \(R\) is by section <a class="xref" href="sec-robni-pogoji-mke.html#sec-reakcije">7.3.4</a> the value \((\mat K\,\vek d - \vek f)\) in the row of the prescribed unknown <span class="nobr">\(v_{\mathrm{C}}\).</span> The solution (NumPy) gives \(R = 226{,}590\) N upward. Chapter <a class="xref" href="ch-nosilci.html">5</a> with the model without axial extension obtained \(R = F\,\dfrac{5b + 24a}{16\,(b + 3a)} = 226{,}5625\) N and with the axial term \(226{,}59\) N. If in the same computation we increase \(EA\) a million times, we get \(226{,}5625\) N, so the model without axial extension exactly, and \(226{,}590\) N with the true <span class="nobr">\(EA\).</span> The difference is \(0{,}012\) %. The other quantities are \(u_{\mathrm{C}} = 0{,}5599\) mm (chapter <a class="xref" href="ch-nosilci.html">5</a> \(0{,}561\) mm without the axial term), the vertical force in the clamp \(273{,}41\) N, the reaction moment in the clamp \(23{,}410\) N m counterclockwise, so the internal moment of the column is \(-23{,}410\) N m (chapter <a class="xref" href="ch-nosilci.html">5</a> \(-23{,}44\) N m), and the moment under the load \(113{,}295\) N m. The nodes <span class="nobr">\(B\),</span> \(D\) and \(C\) have the same horizontal displacement \(0{,}5599\) mm, because there is no <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> in the crossbeam (there is no horizontal force in the column).</p>
-<p>Figure <a class="xref" href="sec-ravninski-okvir-mke.html#fig-rok-nedolocen" data-knowl="fig-rok-nedolocen">12.14</a> shows the mesh and the moment that we get from the forces at the ends of the elements. These are in N and N m <span class="nobr">\(\bar{\vek F}_{\mathrm{AB}} = (273{,}41,\ 0,\ 23{,}410,\ -273{,}41,\ 0,\ -23{,}410)\),</span> \(\bar{\vek F}_{\mathrm{BD}} = (0,\ 273{,}41,\ 23{,}410,\ 0,\ -273{,}41,\ 113{,}295)\) and <span class="nobr">\(\bar{\vek F}_{\mathrm{DC}} = (0,\ -226{,}59,\ -113{,}295,\ 0,\ 226{,}59,\ 0)\).</span> By lemma <a class="xref" href="sec-ravninski-okvir-mke.html#lem-togost-elementa-okvirja" data-knowl="lem-togost-elementa-okvirja">12.18</a> we therefore have in the column \(N = -273{,}41\) N (compression, as \(R - F\) in chapter <a class="xref" href="ch-nosilci.html">5</a>), \(V = 0\) and \(M = -23{,}410\) N m. In the left half of the crossbeam \(V = -273{,}41\) N and the moment grows from \(-23{,}410\) N m at \(B\) to \(113{,}295\) N m under the load, because <span class="nobr">\(M' = -V\).</span> In the right half \(V = +226{,}59\) N and the moment falls to \(0\) at <span class="nobr">\(C\).</span> The jump of the transverse force under the load is \(226{,}59 - (-273{,}41) = 500\) N, as lemma <a class="xref" href="sec-notranje-sile-nosilca.html#lem-skok-precne-sile" data-knowl="lem-skok-precne-sile">5.12</a> demands for a force \(500\) N downward.</p>
+<p>Chapter <a class="xref" href="ch-nosilci.html">5</a> solved the statically indeterminate <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">frame</a> by choosing the unknown reaction \(R\) at <span class="nobr">\(C\),</span> writing the <a class="xref auto" href="sec-virtualne-sile.html#def-komplementarna-energija" data-knowl="def-komplementarna-energija">complementary energy</a> and demanding \(\partial U^*/\partial R = 0\) (section <a class="xref" href="sec-okvirji.html#sec-nedolocen-okvir">5.14.4</a>). In the finite element method we choose nothing: the unknowns are always the displacements and rotations of the nodes, and a support only prescribes one of them. We divide the same frame, with a <a data-del="F" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-nedolocen" data-knowl="fig-rok-nedolocen">load \(F = 500\) N</a> in the middle of the crossbeam and a <a data-del="podpora" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-nedolocen" data-knowl="fig-rok-nedolocen">roller support</a> at \(C\) (definition <a class="xref" href="sec-model-nosilca.html#def-podpore" data-knowl="def-podpore">5.5</a>), into three elements: <a data-del="e1" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-nedolocen" data-knowl="fig-rok-nedolocen">the column \(AB\)</a> and two halves of the crossbeam, <a data-del="e2" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-nedolocen" data-knowl="fig-rok-nedolocen">\(BD\)</a> and <a data-del="e3" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-nedolocen" data-knowl="fig-rok-nedolocen">\(DC\)</a> with \(h = 0{,}5\) m, so that the force acts at the node \(D\) and we do not need consistent forces. The nodes <span class="nobr"><a data-del="A" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-nedolocen" data-knowl="fig-rok-nedolocen">\(A\)</a>,</span> <span class="nobr"><a data-del="B" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-nedolocen" data-knowl="fig-rok-nedolocen">\(B\)</a>,</span> <span class="nobr"><a data-del="D" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-nedolocen" data-knowl="fig-rok-nedolocen">\(D\)</a>,</span> <a data-del="C" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-nedolocen" data-knowl="fig-rok-nedolocen">\(C\)</a> have 12 unknowns together. Four are prescribed: the <a data-del="vpetje" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-nedolocen" data-knowl="fig-rok-nedolocen">clamp</a> at \(A\) gives \(u_{\mathrm{A}} = v_{\mathrm{A}} = \varphi_{\mathrm{A}} = 0\) and the support at \(C\) gives <span class="nobr">\(v_{\mathrm{C}} = 0\).</span> The vertical displacement is an unknown of the node <span class="nobr">\(C\),</span> so the support only prescribes the unknown, without any other consideration. There are eight free ones, the right side has the only nonzero entry \(f_{\mathrm{v}_\mathrm{D}} = -500\) N.</p>
+<p>The reaction \(R\) is by section <a class="xref" href="sec-robni-pogoji-mke.html#sec-reakcije">7.3.4</a> the value \((\mat K\,\vek d - \vek f)\) in the row of the prescribed unknown <span class="nobr">\(v_{\mathrm{C}}\).</span> The solution (NumPy) gives <a data-del="R" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-nedolocen" data-knowl="fig-rok-nedolocen">\(R = 226{,}590\) N</a> upward. Chapter <a class="xref" href="ch-nosilci.html">5</a> with the model without axial extension obtained \(R = F\,\dfrac{5b + 24a}{16\,(b + 3a)} = 226{,}5625\) N and with the axial term \(226{,}59\) N. If in the same computation we increase \(EA\) a million times, we get \(226{,}5625\) N, so the model without axial extension exactly, and \(226{,}590\) N with the true <span class="nobr">\(EA\).</span> The difference is \(0{,}012\) %. The other quantities are \(u_{\mathrm{C}} = 0{,}5599\) mm (chapter <a class="xref" href="ch-nosilci.html">5</a> \(0{,}561\) mm without the axial term), <a data-del="NA" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-nedolocen" data-knowl="fig-rok-nedolocen">the vertical force in the clamp \(273{,}41\) N</a>, <a data-del="MA" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-nedolocen" data-knowl="fig-rok-nedolocen">the reaction moment in the clamp</a> \(23{,}410\) N m counterclockwise, so <a data-del="Msteber" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-nedolocen" data-knowl="fig-rok-nedolocen">the internal moment of the column</a> is \(-23{,}410\) N m (chapter <a class="xref" href="ch-nosilci.html">5</a> \(-23{,}44\) N m), and <a data-del="MD" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-nedolocen" data-knowl="fig-rok-nedolocen">the moment under the load</a> \(113{,}295\) N m. The nodes <span class="nobr">\(B\),</span> \(D\) and \(C\) have the same horizontal displacement \(0{,}5599\) mm, because there is no <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> in the crossbeam (there is no horizontal force in the column).</p>
+<p>Figure <a class="xref" href="sec-ravninski-okvir-mke.html#fig-rok-nedolocen" data-knowl="fig-rok-nedolocen">12.14</a> shows <a data-del="okvir" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-nedolocen" data-knowl="fig-rok-nedolocen">the mesh</a> and <a data-del="Msteber,Mprecka" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-nedolocen" data-knowl="fig-rok-nedolocen">the moment</a> that we get from the forces at the ends of the elements. These are in N and N m <span class="nobr">\(\bar{\vek F}_{\mathrm{AB}} = (273{,}41,\ 0,\ 23{,}410,\ -273{,}41,\ 0,\ -23{,}410)\),</span> \(\bar{\vek F}_{\mathrm{BD}} = (0,\ 273{,}41,\ 23{,}410,\ 0,\ -273{,}41,\ 113{,}295)\) and <span class="nobr">\(\bar{\vek F}_{\mathrm{DC}} = (0,\ -226{,}59,\ -113{,}295,\ 0,\ 226{,}59,\ 0)\).</span> By lemma <a class="xref" href="sec-ravninski-okvir-mke.html#lem-togost-elementa-okvirja" data-knowl="lem-togost-elementa-okvirja">12.18</a> we therefore have in the column \(N = -273{,}41\) N (compression, as \(R - F\) in chapter <a class="xref" href="ch-nosilci.html">5</a>), \(V = 0\) and <a data-del="Msteber" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-nedolocen" data-knowl="fig-rok-nedolocen">\(M = -23{,}410\) N m</a>. In the left half of the crossbeam \(V = -273{,}41\) N and the moment grows from <a data-del="MB" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-nedolocen" data-knowl="fig-rok-nedolocen">\(-23{,}410\) N m at \(B\)</a> to <a data-del="MD" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-nedolocen" data-knowl="fig-rok-nedolocen">\(113{,}295\) N m under the load</a>, because <span class="nobr">\(M' = -V\).</span> In the right half \(V = +226{,}59\) N and <span class="nobr"><a data-del="Mprecka" class="xref kaz" href="sec-ravninski-okvir-mke.html#fig-rok-nedolocen" data-knowl="fig-rok-nedolocen">the moment falls to \(0\) at \(C\)</a>.</span> The jump of the transverse force under the load is \(226{,}59 - (-273{,}41) = 500\) N, as lemma <a class="xref" href="sec-notranje-sile-nosilca.html#lem-skok-precne-sile" data-knowl="lem-skok-precne-sile">5.12</a> demands for a force \(500\) N downward.</p>
 
 <figure class="blk slika" id="fig-rok-nedolocen"><p><span class="svgfig" role="img" aria-label="The statically indeterminate frame in three elements and the moment diagram from the forces at the ends of the elements"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='435.20pt' height='191.55pt' viewBox='-72.000004 -72.000005 322.370441 141.887372'>
 <defs>
@@ -1757,6 +1849,7 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 <g stroke-width='0.6'>
 <g stroke-linecap='round'>
 <g stroke-linejoin='round'>
+<g class='del' data-del='vpetje'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-width='0.45'>
 <path d='M-25.60728 0H8.53592' fill='none'/>
@@ -1787,37 +1880,17 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 <path d='M2.84546 0L-2.845-5.69046' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='okvir'>
 <g stroke-width='1.6'>
 <path d='M0 0V85.35823H85.35823' fill='none'/>
 </g>
+</g>
+<g class='del' data-del='A'>
 <path d='M1.83862 0C1.83862 1.01544 1.01544 1.83862 0 1.83862S-1.83862 1.01544-1.83862 0S-1.01544-1.83862 0-1.83862S1.83862-1.01544 1.83862 0ZM0 0' stroke='none'/>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.595037,41.092607)scale(-1,-1)'>
 <g fill='#000'>
 <g stroke='none'/>
-</g>
-</g>
-<path d='M1.83862 85.35823C1.83862 86.37367 1.01544 87.19685 0 87.19685S-1.83862 86.37367-1.83862 85.35823S-1.01544 83.5196 0 83.5196S1.83862 84.34279 1.83862 85.35823ZM0 85.35823' stroke='none'/>
-<g transform='translate(0.0,85.35823)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.595037,41.092607)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'/>
-</g>
-</g>
-</g>
-<path d='M44.51773 85.35823C44.51773 86.37367 43.69455 87.19685 42.67911 87.19685S40.84048 86.37367 40.84048 85.35823S41.66367 83.5196 42.67911 83.5196S44.51773 84.34279 44.51773 85.35823ZM42.67911 85.35823' stroke='none'/>
-<g transform='translate(42.67911,85.35823)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.595037,41.092607)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'/>
-</g>
-</g>
-</g>
-<path d='M87.19685 85.35823C87.19685 86.37367 86.37367 87.19685 85.35823 87.19685S83.5196 86.37367 83.5196 85.35823S84.34279 83.5196 85.35823 83.5196S87.19685 84.34279 87.19685 85.35823ZM85.35823 85.35823' stroke='none'/>
-<g transform='translate(85.35823,85.35823)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.595037,41.092607)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'/>
-</g>
 </g>
 </g>
 <g transform='translate(5.0557,-9.04358)'>
@@ -1826,6 +1899,16 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 <g stroke='none'>
 <use x='-40.595037' y='41.092607' xlink:href='#rok-nedolocen-g1-65'/>
 </g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='B'>
+<path d='M1.83862 85.35823C1.83862 86.37367 1.01544 87.19685 0 87.19685S-1.83862 86.37367-1.83862 85.35823S-1.01544 83.5196 0 83.5196S1.83862 84.34279 1.83862 85.35823ZM0 85.35823' stroke='none'/>
+<g transform='translate(0.0,85.35823)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.595037,41.092607)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
 </g>
 </g>
 </g>
@@ -1838,12 +1921,32 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='D'>
+<path d='M44.51773 85.35823C44.51773 86.37367 43.69455 87.19685 42.67911 87.19685S40.84048 86.37367 40.84048 85.35823S41.66367 83.5196 42.67911 83.5196S44.51773 84.34279 44.51773 85.35823ZM42.67911 85.35823' stroke='none'/>
+<g transform='translate(42.67911,85.35823)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.595037,41.092607)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
 <g transform='translate(46.31209,90.41393)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.595037,41.092607)scale(-1,-1)'>
 <g fill='#000'>
 <g stroke='none'>
 <use x='-40.595037' y='41.092607' xlink:href='#rok-nedolocen-g1-68'/>
 </g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='C'>
+<path d='M87.19685 85.35823C87.19685 86.37367 86.37367 87.19685 85.35823 87.19685S83.5196 86.37367 83.5196 85.35823S84.34279 83.5196 85.35823 83.5196S87.19685 84.34279 87.19685 85.35823ZM85.35823 85.35823' stroke='none'/>
+<g transform='translate(85.35823,85.35823)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.595037,41.092607)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
 </g>
 </g>
 </g>
@@ -1856,6 +1959,8 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='e1'>
 <g transform='translate(5.0557,40.17911)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.595037,41.092607)scale(-1,-1)'>
 <g fill='#000'>
@@ -1867,6 +1972,8 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='e2'>
 <g transform='translate(14.95065,77.26483)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.595037,41.092607)scale(-1,-1)'>
 <g fill='#000'>
@@ -1878,6 +1985,8 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='e3'>
 <g transform='translate(57.62976,77.26483)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.595037,41.092607)scale(-1,-1)'>
 <g fill='#000'>
@@ -1889,6 +1998,8 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='F'>
 <g stroke-width='0.9'>
 <path d='M42.67911 82.51277V55.43863' fill='none'/>
 <g transform='matrix(0.0,-1.0,1.0,0.0,42.67911,58.04366)'>
@@ -1908,9 +2019,13 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='podpora'>
 <g fill='#fff'>
 <path d='M91.04869 79.66776C91.04869 82.81055 88.50102 85.35822 85.35823 85.35822S79.66777 82.81055 79.66777 79.66776C79.66777 76.52496 82.21544 73.9773 85.35823 73.9773S91.04869 76.52496 91.04869 79.66776ZM85.35823 79.66776'/>
 </g>
+</g>
+<g class='del' data-del='R'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='0.9'>
 <path d='M85.35823 51.21501V69.18451' fill='none'/>
@@ -1934,6 +2049,8 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='NA'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='0.9'>
 <path d='M0-28.45274V-4.79279' fill='none'/>
@@ -1961,6 +2078,8 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='MA'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='0.9'>
 <path d='M21.70944 4.95065C27.61592 2.80093 34.1469 5.84622 36.29662 11.7527C38.44633 17.65918 35.40105 24.19016 29.49457 26.33987C26.98068 27.25488 24.22333 27.25488 25.67836 27.7842' fill='none'/>
@@ -1989,6 +2108,8 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='Msteber'>
 <g fill='#d9d9ff' stroke='#d9d9ff'>
 <path d='M204.85974 0V85.35823H191.5438V0ZM191.5438 85.35823' stroke='none'/>
 </g>
@@ -1997,6 +2118,8 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 <path d='M191.5438 0V85.35823' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='Mprecka'>
 <g fill='#d9d9ff' stroke='#d9d9ff'>
 <path d='M204.85974 85.35823V98.67418L212.1722 85.35823Z' stroke='none'/>
 </g>
@@ -2008,9 +2131,13 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 <path d='M204.85974 98.67418L247.53885 20.88412L290.21797 85.35823' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='okvir'>
 <g stroke-width='1.6'>
 <path d='M204.85974 0V85.35823H290.21797' fill='none'/>
 </g>
+</g>
+<g class='del' data-del='A'>
 <path d='M206.69836 0C206.69836 1.01544 205.87518 1.83862 204.85974 1.83862S203.02112 1.01544 203.02112 0S203.8443-1.83862 204.85974-1.83862S206.69836-1.01544 206.69836 0ZM204.85974 0' stroke='none'/>
 <g transform='translate(204.85974,0.0)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.595037,41.092607)scale(-1,-1)'>
@@ -2019,6 +2146,8 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='B'>
 <path d='M206.69836 85.35823C206.69836 86.37367 205.87518 87.19685 204.85974 87.19685S203.02112 86.37367 203.02112 85.35823S203.8443 83.5196 204.85974 83.5196S206.69836 84.34279 206.69836 85.35823ZM204.85974 85.35823' stroke='none'/>
 <g transform='translate(204.85974,85.35823)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.595037,41.092607)scale(-1,-1)'>
@@ -2027,6 +2156,8 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='D'>
 <path d='M249.37747 85.35823C249.37747 86.37367 248.55429 87.19685 247.53885 87.19685C246.5234 87.19685 245.70023 86.37367 245.70023 85.35823S246.5234 83.5196 247.53885 83.5196C248.55429 83.5196 249.37747 84.34279 249.37747 85.35823ZM247.53885 85.35823' stroke='none'/>
 <g transform='translate(247.53885,85.35823)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.595037,41.092607)scale(-1,-1)'>
@@ -2035,6 +2166,8 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='C'>
 <path d='M292.0566 85.35823C292.0566 86.37367 291.23341 87.19685 290.21797 87.19685S288.37935 86.37367 288.37935 85.35823S289.20253 83.5196 290.21797 83.5196S292.0566 84.34279 292.0566 85.35823ZM290.21797 85.35823' stroke='none'/>
 <g transform='translate(290.21797,85.35823)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.595037,41.092607)scale(-1,-1)'>
@@ -2043,6 +2176,8 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='Msteber'>
 <g fill='#00f' stroke='#00f'>
 <g fill='#00f' stroke='#00f'>
 </g>
@@ -2063,6 +2198,9 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='Mprecka'>
+<g class='del' data-del='MB'>
 <g fill='#00f' stroke='#00f'>
 <g fill='#00f' stroke='#00f'>
 </g>
@@ -2083,6 +2221,8 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='MD'>
 <g fill='#00f' stroke='#00f'>
 <g fill='#00f' stroke='#00f'>
 </g>
@@ -2097,6 +2237,8 @@ where \(\vek F_{\mathrm{J}}\) is the given load of the node \(J\) (without react
 <use x='-25.65102' y='41.092607' xlink:href='#rok-nedolocen-g1-59'/>
 <use x='-22.883612' y='41.092607' xlink:href='#rok-nedolocen-g3-51'/>
 <use x='-17.902273' y='41.092607' xlink:href='#rok-nedolocen-g3-48'/>
+</g>
+</g>
 </g>
 </g>
 </g>

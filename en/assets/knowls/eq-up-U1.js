@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-up-U1"] = {"html": "<div class=\"eq\">\\[U_1 = \\rho A\\,a_0\\,L\\,\\Big(\\frac{2}{\\pi} - \\sin\\frac{\\pi}{10}\\Big) , \\tag{24.53}\\]</div>", "href": "sec-uravnotezenje-podajnih.html#eq-up-U1"};

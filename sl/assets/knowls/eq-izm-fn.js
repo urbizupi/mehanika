@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-izm-fn"] = {"html": "<div class=\"eq\">\\[F(t) = m_{\\mathrm{B}} a\\Omega^2\\sum_{\\mathrm{n} \\ge 1} A_{\\mathrm{n}}\\cos n\\Omega t , \\qquad A_1 = 1,\\ A_2 = 0{,}254025,\\ A_3 = 0,\\ A_4 = -0{,}004098,\\ A_6 = 0{,}000074 . \\tag{23.42}\\]</div>", "href": "sec-izolacija-motorja.html#eq-izm-fn"};

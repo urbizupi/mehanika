@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-navier-lambda"] = {"html": "<div class=\"eq\">\\[\\lambda_{\\mathrm{mn}} = \\pi^2\\Big(\\frac{m^2}{a^2} + \\frac{n^2}{b^2}\\Big) , \\qquad W_{\\mathrm{mn}} = \\frac{q_{\\mathrm{mn}}}{D\\,\\lambda_{\\mathrm{mn}}^2} . \\tag{18.33}\\]</div>", "href": "sec-navierova-resitev.html#eq-navier-lambda"};

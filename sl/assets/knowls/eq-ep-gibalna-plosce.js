@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ep-gibalna-plosce"] = {"html": "<div class=\"eq\">\\[\\rho h\\,w_{\\mathrm{tt}} + D\\,\\nabla^4 w = q \\quad \\text{na } \\Omega\\times(t_1, t_2) , \\tag{18.52}\\]</div>", "href": "sec-energijske-metode-plosc.html#eq-ep-gibalna-plosce"};

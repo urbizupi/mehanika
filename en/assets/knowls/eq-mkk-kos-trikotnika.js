@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mkk-kos-trikotnika"] = {"html": "<div class=\"eq\">\\[\\vek x(s, t) = \\vek p_1 + \\frac{s(3 - t)}{6}\\,(\\vek p_2 - \\vek p_1) + \\frac{t(3 - s)}{6}\\,(\\vek p_3 - \\vek p_1) . \\tag{15.8}\\]</div>", "href": "sec-mkk-telo-iz-elementov.html#eq-mkk-kos-trikotnika"};

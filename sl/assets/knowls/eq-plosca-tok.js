@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-plosca-tok"] = {"html": "<div class=\"eq\">\\[\\dot Q = k\\,A\\,\\frac{T_1 - T_2}{\\ell} , \\qquad k = \\frac{\\dot Q\\,\\ell}{A\\,(T_1 - T_2)} . \\tag{14.1}\\]</div>", "href": "sec-fourierjev-zakon.html#eq-plosca-tok"};

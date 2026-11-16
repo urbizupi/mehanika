@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-zp-poves-sila"] = {"html": "<div class=\"eq\">\\[|v(L)| = \\frac{10\\ \\text{N} \\cdot (1\\ \\text{m})^3}{3 \\cdot 141{,}12\\ \\text{N m}^2} = 23{,}62\\ \\text{mm} . \\tag{28.1}\\]</div>", "href": "sec-zakaj-podajni.html#eq-zp-poves-sila"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-gibajoci-nosilec-urejena"] = {"html": "<div class=\"eq\">\\[\\mu\\,\\big(w_{\\mathrm{tt}} + 2v\\,w_{\\mathrm{xt}}\\big) + \\big(\\mu v^2 - T\\big)\\,w_{\\mathrm{xx}} + EI\\,w_{\\mathrm{xxxx}} = 0 . \\tag{26.46}\\]</div>", "href": "sec-gibajoci-nosilec.html#eq-gibajoci-nosilec-urejena"};

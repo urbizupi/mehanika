@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-frekvence-razpona"] = {"html": "<div class=\"eq\">\\[\\omega_{\\mathrm{j},\\mathrm{n}} = \\frac{n\\pi c_{\\mathrm{j}}}{L_{\\mathrm{j}}}\\left(1 - \\frac{v^2}{c_{\\mathrm{j}}^2}\\right) , \\qquad n = 1, 2, \\dots , \\tag{26.56}\\]</div>", "href": "sec-jermenski-pogon.html#eq-frekvence-razpona"};

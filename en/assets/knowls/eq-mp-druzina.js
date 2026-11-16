@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mp-druzina"] = {"html": "<div class=\"eq\">\\[w = w_{\\mathrm{K}} + \\frac{M_{\\mathrm{K}}}{S} + c , \\qquad \\theta_{\\mathrm{x}} = \\partial_{\\mathrm{x}} w_{\\mathrm{K}} , \\qquad \\theta_{\\mathrm{y}} = \\partial_{\\mathrm{y}} w_{\\mathrm{K}} \\tag{18.68}\\]</div>", "href": "sec-mindlinove-plosce.html#eq-mp-druzina"};

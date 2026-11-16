@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-serija-K"] = {"html": "<div class=\"eq\">\\[K_{\\mathrm{n}} = \\Big( K_{\\mathrm{i}}^{-2/3} + K_{\\mathrm{o}}^{-2/3} \\Big)^{-3/2} . \\tag{25.29}\\]</div>", "href": "sec-obremenitev-lezaja.html#eq-serija-K"};

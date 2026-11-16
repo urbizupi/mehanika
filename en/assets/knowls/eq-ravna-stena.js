@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ravna-stena"] = {"html": "<div class=\"eq\">\\[T(x) = T_0 + (T_{\\mathrm{L}} - T_0)\\,\\frac{x}{L} , \\qquad q = \\frac{k\\,(T_0 - T_{\\mathrm{L}})}{L} , \\tag{14.17}\\]</div>", "href": "sec-stacionarno-1d.html#eq-ravna-stena"};

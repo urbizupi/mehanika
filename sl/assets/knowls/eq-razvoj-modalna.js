@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-razvoj-modalna"] = {"html": "<div class=\"eq\">\\[\\rho A\\,\\big(\\omega_{\\mathrm{n}}^2 - \\Omega^2\\big)\\,C_{\\mathrm{n}} = Q_{\\mathrm{n}} . \\tag{13.53}\\]</div>", "href": "sec-razvoj-po-nacinih.html#eq-razvoj-modalna"};

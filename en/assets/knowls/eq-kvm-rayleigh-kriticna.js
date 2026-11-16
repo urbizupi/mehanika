@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kvm-rayleigh-kriticna"] = {"html": "<div class=\"eq\">\\[\\Omega_1^2 = \\min\\left\\{\\frac{\\vek x^\\T\\mat K\\vek x}{\\vek x^\\T\\mat D\\vek x} : \\vek x^\\T\\mat D\\vek x &gt; 0\\right\\} . \\tag{24.36}\\]</div>", "href": "sec-kriticne-vec-mas.html#eq-kvm-rayleigh-kriticna"};

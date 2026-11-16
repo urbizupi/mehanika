@@ -1,0 +1,1114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>29.6 Sensitivity (občutljivost): how a function responds to an area · Chapter 29</title>
+<script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/style.css">
+<noscript><style>#loadbar { display: none; }</style></noscript>
+<script src="assets/config.js"></script>
+<script src="assets/load.js"></script>
+<script defer src="assets/interaktivno.js"></script>
+<script defer src="assets/book.js"></script>
+<script defer src="assets/predavanje.js"></script>
+<script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<div id="loadbar" aria-hidden="true"></div>
+<header class="top"><a class="home" href="index.html">Mechanics</a><nav class="pager"><a href="sec-najmanjsa-podajnost.html" rel="prev">← 29.5</a><a href="index.html">Contents</a><a href="sec-zaporedne-aproksimacije.html" rel="next">29.7 →</a></nav>
+<span class="tools"><a class="lang" href="../sl/sec-obcutljivost.html" hreflang="sl">Slovenščina</a><button type="button" class="theme-toggle" title="Light or dark theme" aria-label="Light or dark theme"></button><button type="button" data-details="open">Expand all</button><button type="button" data-details="close">Collapse all</button><button type="button" class="fig-side-toggle" aria-pressed="false">Figures alongside</button></span></header>
+<main>
+<p class="updated">Last updated 16 November 2026, 10:52</p>
+<p class="crumb"><a href="ch-optimizacija.html"><span class="h-num">Chapter 29</span> Structural optimization</a></p>
+<h2 id="sec-obcutljivost"><span class="h-num">29.6</span> Sensitivity (občutljivost): how a function responds to an area</h2>
+<p>In section <a class="xref" href="sec-najmanjsa-podajnost.html">29.5</a> we obtained the optimal areas from one condition that held for all bars at once. For conditions that such a condition does not cover, for example a <a class="xref auto" href="sec-limita-odvod.html#def-limita" data-knowl="def-limita">limit</a> on the deflection, we cannot guess the areas. The procedure of the next section corrects the areas step by step: at the current design it computes how the objective and each constraint change if the area of one bar is increased a little, and chooses new areas on that basis. So it needs, for the objective and for each constraint, the derivative with respect to each design variable. In this section we first show that these <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivatives</a> exist, then compute them in three ways and compare how much computation each needs and when it fails.</p>
+<p>The model is the wall <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">truss</a> of the chapters on energy principles and on the finite element method for bars (figure <a class="xref" href="sec-obcutljivost.html#fig-obcutljivost-obtezbi" data-knowl="fig-obcutljivost-obtezbi">29.21</a>, left). Bars \(AC\) and \(BC\) are fixed to the wall at points \(A\) and \(B\) and meet in the joint <span class="nobr"><a data-del="realna" class="xref kaz" href="sec-obcutljivost.html#fig-obcutljivost-obtezbi" data-knowl="fig-obcutljivost-obtezbi">\(C\)</a>,</span> on which the load \(F = 10\) kN acts downward. Bar \(AC\) is horizontal and \(4\) m long, bar \(BC\) is oblique and \(5\) m long. The design variables are the cross-section areas \(A_{\mathrm{AC}}\) and <span class="nobr">\(A_{\mathrm{BC}}\),</span> collected in the column \(\vek A = (A_1, A_2)\) with \(A_1 = A_{\mathrm{AC}}\) and <span class="nobr">\(A_2 = A_{\mathrm{BC}}\).</span> The design at which we compute is the design of section <a class="xref" href="sec-palicje-ravnina-mke.html#sec-palicje-konzola-mke">7.5.2</a>, \(A_1 = A_2 = 100\) mm², steel with \(E = 196\) GPa. The assumptions are the same as there: small displacements, <a class="xref auto" href="sec-natezni-preizkus.html#def-linearno-elasticen" data-knowl="def-linearno-elasticen">linearly elastic material</a>, the load \(F\) does not depend on the areas. The last assumption is an idealization: we neglect the self-weight of the bars. At \(100\) mm², a total bar length of \(9\) m and a steel density of \(7800\) kg/m³ the mass of both bars is \(7{,}02\) kg and their weight \(68{,}9\) N, which is \(0{,}69\,\%\) of the force <span class="nobr">\(F\).</span> If we included it, the right-hand side of the equilibrium equation would depend on the areas. The letter \(C\) has two meanings here: the joint \(C\) and the compliance \(C(\vek A)\) of definition <a class="xref" href="sec-najmanjsa-podajnost.html#def-podajnost" data-knowl="def-podajnost">29.32</a>, which we always write with its argument (in chapter <a class="xref" href="ch-nihanje-vec-ps.html">10</a>, \(\mat C\) is the damping <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a>).</p>
+
+<figure class="blk slika" id="fig-obcutljivost-obtezbi"><p><span class="svgfig" role="img" aria-label="Real and adjoint load of the truss"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='388.75pt' height='143.07pt' viewBox='-72.000004 -72.000002 287.963806 105.97594'>
+<defs>
+<path id='c29-06-nasprotna-obtezba-g0-0' d='M6.56538-2.291407C6.734745-2.291407 6.914072-2.291407 6.914072-2.49066S6.734745-2.689913 6.56538-2.689913H1.175592C1.006227-2.689913 .826899-2.689913 .826899-2.49066S1.006227-2.291407 1.175592-2.291407H6.56538Z'/>
+<path id='c29-06-nasprotna-obtezba-g1-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='c29-06-nasprotna-obtezba-g1-61' d='M4.373599-7.0934C4.423412-7.222914 4.423412-7.262765 4.423412-7.272727C4.423412-7.382316 4.333748-7.47198 4.224159-7.47198C4.154421-7.47198 4.084682-7.442092 4.054795-7.382316L.597758 2.11208C.547945 2.241594 .547945 2.281445 .547945 2.291407C.547945 2.400996 .637609 2.49066 .747198 2.49066C.876712 2.49066 .9066 2.420922 .966376 2.251557L4.373599-7.0934Z'/>
+<path id='c29-06-nasprotna-obtezba-g1-65' d='M1.783313-1.145704C1.384807-.478207 .996264-.33873 .557908-.308842C.438356-.298879 .348692-.298879 .348692-.109589C.348692-.049813 .398506 0 .478207 0C.747198 0 1.05604-.029888 1.334994-.029888C1.663761-.029888 2.012453 0 2.331258 0C2.391034 0 2.520548 0 2.520548-.18929C2.520548-.298879 2.430884-.308842 2.361146-.308842C2.132005-.328767 1.892902-.408468 1.892902-.657534C1.892902-.777086 1.952677-.886675 2.032379-1.026152L2.789539-2.30137H5.290162C5.310087-2.092154 5.449564-.737235 5.449564-.637609C5.449564-.33873 4.931507-.308842 4.732254-.308842C4.592777-.308842 4.493151-.308842 4.493151-.109589C4.493151 0 4.612702 0 4.632628 0C5.041096 0 5.469489-.029888 5.877958-.029888C6.127024-.029888 6.75467 0 7.003736 0C7.063512 0 7.183064 0 7.183064-.199253C7.183064-.308842 7.083437-.308842 6.953923-.308842C6.336239-.308842 6.336239-.37858 6.306351-.667497L5.69863-6.894147C5.678705-7.0934 5.678705-7.13325 5.50934-7.13325C5.349938-7.13325 5.310087-7.063512 5.250311-6.963885L1.783313-1.145704ZM2.978829-2.610212L4.941469-5.897883L5.260274-2.610212H2.978829Z'/>
+<path id='c29-06-nasprotna-obtezba-g1-66' d='M1.594022-.777086C1.494396-.388543 1.474471-.308842 .687422-.308842C.518057-.308842 .418431-.308842 .418431-.109589C.418431 0 .508095 0 .687422 0H4.244085C5.818182 0 6.993773-1.175592 6.993773-2.15193C6.993773-2.86924 6.41594-3.447073 5.449564-3.556663C6.485679-3.745953 7.531756-4.483188 7.531756-5.429639C7.531756-6.166874 6.874222-6.804483 5.678705-6.804483H2.331258C2.141968-6.804483 2.042341-6.804483 2.042341-6.60523C2.042341-6.495641 2.132005-6.495641 2.321295-6.495641C2.34122-6.495641 2.530511-6.495641 2.699875-6.475716C2.879203-6.455791 2.968867-6.445828 2.968867-6.316314C2.968867-6.276463 2.958904-6.246575 2.929016-6.127024L1.594022-.777086ZM3.098381-3.646326L3.716065-6.117061C3.805729-6.465753 3.825654-6.495641 4.254047-6.495641H5.539228C6.41594-6.495641 6.625156-5.907846 6.625156-5.469489C6.625156-4.592777 5.768369-3.646326 4.552927-3.646326H3.098381ZM2.650062-.308842C2.510585-.308842 2.49066-.308842 2.430884-.318804C2.331258-.328767 2.30137-.33873 2.30137-.418431C2.30137-.448319 2.30137-.468244 2.351183-.647572L3.038605-3.427148H4.921544C5.877958-3.427148 6.067248-2.689913 6.067248-2.261519C6.067248-1.275218 5.180573-.308842 4.004981-.308842H2.650062Z'/>
+<path id='c29-06-nasprotna-obtezba-g1-67' d='M7.571606-6.924035C7.571606-6.953923 7.551681-7.023661 7.462017-7.023661C7.43213-7.023661 7.422167-7.013699 7.312578-6.90411L6.615193-6.136986C6.525529-6.276463 6.067248-7.023661 4.961395-7.023661C2.739726-7.023661 .498132-4.821918 .498132-2.510585C.498132-.86675 1.673724 .219178 3.198007 .219178C4.064757 .219178 4.821918-.179328 5.349938-.637609C6.276463-1.454545 6.445828-2.361146 6.445828-2.391034C6.445828-2.49066 6.346202-2.49066 6.326276-2.49066C6.266501-2.49066 6.216687-2.470735 6.196762-2.391034C6.107098-2.102117 5.877958-1.39477 5.190535-.816936C4.503113-.259029 3.875467-.089664 3.35741-.089664C2.460772-.089664 1.404732-.607721 1.404732-2.161893C1.404732-2.729763 1.613948-4.343711 2.610212-5.50934C3.217933-6.216687 4.154421-6.714819 5.041096-6.714819C6.057285-6.714819 6.645081-5.947696 6.645081-4.79203C6.645081-4.393524 6.615193-4.383562 6.615193-4.283935S6.724782-4.184309 6.764633-4.184309C6.894147-4.184309 6.894147-4.204234 6.94396-4.383562L7.571606-6.924035Z'/>
+<path id='c29-06-nasprotna-obtezba-g1-70' d='M3.01868-3.237858H3.985056C4.732254-3.237858 4.811955-3.078456 4.811955-2.789539C4.811955-2.719801 4.811955-2.600249 4.742217-2.30137C4.722291-2.251557 4.712329-2.211706 4.712329-2.191781C4.712329-2.11208 4.772105-2.072229 4.83188-2.072229C4.931507-2.072229 4.931507-2.102117 4.98132-2.281445L5.529265-4.443337C5.559153-4.552927 5.559153-4.572852 5.559153-4.60274C5.559153-4.622665 5.539228-4.712329 5.439601-4.712329S5.330012-4.662516 5.290162-4.503113C5.080946-3.726027 4.851806-3.5467 4.004981-3.5467H3.098381L3.73599-6.07721C3.825654-6.425903 3.835616-6.465753 4.273973-6.465753H5.589041C6.814446-6.465753 7.043587-6.136986 7.043587-5.369863C7.043587-5.140722 7.043587-5.100872 7.013699-4.83188C6.993773-4.702366 6.993773-4.682441 6.993773-4.652553C6.993773-4.60274 7.023661-4.533001 7.113325-4.533001C7.222914-4.533001 7.232877-4.592777 7.252802-4.782067L7.452055-6.505604C7.481943-6.774595 7.43213-6.774595 7.183064-6.774595H2.30137C2.102117-6.774595 2.002491-6.774595 2.002491-6.575342C2.002491-6.465753 2.092154-6.465753 2.281445-6.465753C2.650062-6.465753 2.929016-6.465753 2.929016-6.286426C2.929016-6.246575 2.929016-6.22665 2.879203-6.047323L1.564134-.777086C1.464508-.388543 1.444583-.308842 .657534-.308842C.488169-.308842 .37858-.308842 .37858-.119552C.37858 0 .498132 0 .52802 0C.816936 0 1.554172-.029888 1.843088-.029888C2.171856-.029888 2.998755 0 3.327522 0C3.417186 0 3.536737 0 3.536737-.18929C3.536737-.268991 3.476961-.288917 3.476961-.298879C3.447073-.308842 3.427148-.308842 3.198007-.308842C2.978829-.308842 2.929016-.308842 2.67995-.328767C2.391034-.358655 2.361146-.398506 2.361146-.52802C2.361146-.547945 2.361146-.607721 2.400996-.757161L3.01868-3.237858Z'/>
+<path id='c29-06-nasprotna-obtezba-g1-78' d='M7.531756-5.758406C7.631382-6.156912 7.81071-6.465753 8.607721-6.495641C8.657534-6.495641 8.777086-6.505604 8.777086-6.694894C8.777086-6.704857 8.777086-6.804483 8.647572-6.804483C8.318804-6.804483 7.970112-6.774595 7.641345-6.774595C7.302615-6.774595 6.953923-6.804483 6.625156-6.804483C6.56538-6.804483 6.445828-6.804483 6.445828-6.60523C6.445828-6.495641 6.545455-6.495641 6.625156-6.495641C7.193026-6.485679 7.302615-6.276463 7.302615-6.057285C7.302615-6.027397 7.28269-5.877958 7.272727-5.84807L6.156912-1.414695L3.955168-6.615193C3.875467-6.794521 3.865504-6.804483 3.636364-6.804483H2.30137C2.102117-6.804483 2.012453-6.804483 2.012453-6.60523C2.012453-6.495641 2.102117-6.495641 2.291407-6.495641C2.34122-6.495641 2.968867-6.495641 2.968867-6.405978L1.633873-1.05604C1.534247-.657534 1.364882-.33873 .557908-.308842C.498132-.308842 .388543-.298879 .388543-.109589C.388543-.039851 .438356 0 .518057 0C.836862 0 1.185554-.029888 1.514321-.029888C1.853051-.029888 2.211706 0 2.540473 0C2.590286 0 2.719801 0 2.719801-.199253C2.719801-.298879 2.630137-.308842 2.520548-.308842C1.942715-.328767 1.863014-.547945 1.863014-.747198C1.863014-.816936 1.872976-.86675 1.902864-.976339L3.217933-6.236613C3.257783-6.176837 3.257783-6.156912 3.307597-6.057285L5.788294-.18929C5.858032-.019925 5.88792 0 5.977584 0C6.087173 0 6.087173-.029888 6.136986-.209215L7.531756-5.758406Z'/>
+<path id='c29-06-nasprotna-obtezba-g2-65' d='M1.436613-.836862C1.192528-.460274 .969365-.278954 .557908-.251059C.488169-.244085 .397509-.244085 .397509-.104608C.397509-.027895 .460274 0 .495143 0C.676463 0 .9066-.027895 1.094894-.027895C1.318057-.027895 1.603985 0 1.8132 0C1.84807 0 1.952677 0 1.952677-.153425C1.952677-.244085 1.862017-.251059 1.834122-.251059C1.778331-.258032 1.527273-.27198 1.527273-.460274C1.527273-.54396 1.597011-.662516 1.63188-.72528L2.189788-1.590037H4.184309L4.351681-.432379C4.323786-.36264 4.281943-.251059 3.870486-.251059C3.7868-.251059 3.689166-.251059 3.689166-.097634C3.689166-.069738 3.710087 0 3.800747 0C4.002989 0 4.498132-.027895 4.700374-.027895C4.825903-.027895 4.986301-.020922 5.111831-.020922C5.23736-.013948 5.383811 0 5.50934 0C5.6 0 5.648817-.055791 5.648817-.146451C5.648817-.251059 5.565131-.251059 5.453549-.251059C5.049066-.251059 5.035118-.306849 5.014197-.474222L4.400498-4.777086C4.379577-4.923537 4.365629-4.972354 4.233126-4.972354S4.05878-4.909589 3.996015-4.811955L1.436613-.836862ZM2.357161-1.841096L3.821669-4.121544L4.14944-1.841096H2.357161Z'/>
+<path id='c29-06-nasprotna-obtezba-g2-66' d='M1.325031-.54396C1.262267-.306849 1.248319-.251059 .711333-.251059C.592777-.251059 .502117-.251059 .502117-.104608C.502117 0 .585803 0 .711333 0H3.410212C4.581818 0 5.481445-.801993 5.481445-1.492403C5.481445-1.987547 5.028144-2.412951 4.288917-2.489664C5.132752-2.643088 5.837111-3.173101 5.837111-3.772852C5.837111-4.302864 5.300125-4.763138 4.393524-4.763138H1.855044C1.72254-4.763138 1.63188-4.763138 1.63188-4.609714C1.63188-4.51208 1.715567-4.51208 1.855044-4.51208C1.862017-4.51208 1.994521-4.51208 2.12005-4.498132C2.266501-4.484184 2.280448-4.470237 2.280448-4.400498C2.280448-4.38655 2.280448-4.351681 2.252553-4.247073L1.325031-.54396ZM2.440847-2.57335L2.866252-4.274969C2.922042-4.491158 2.929016-4.51208 3.221918-4.51208H4.281943C4.993275-4.51208 5.153674-4.044832 5.153674-3.779826C5.153674-3.214944 4.519054-2.57335 3.584558-2.57335H2.440847ZM2.106102-.251059C1.889913-.251059 1.882939-.258032 1.882939-.320797C1.882939-.327771 1.882939-.36264 1.910834-.467248L2.39203-2.378082H3.870486C4.526027-2.378082 4.777086-1.945704 4.777086-1.54122C4.777086-.850809 4.072727-.251059 3.228892-.251059H2.106102Z'/>
+<path id='c29-06-nasprotna-obtezba-g2-67' d='M5.878954-4.811955C5.878954-4.846824 5.858032-4.902615 5.788294-4.902615C5.739477-4.902615 5.725529-4.888667 5.662765-4.818929L5.153674-4.281943C5.090909-4.365629 4.700374-4.902615 3.84259-4.902615C2.147945-4.902615 .488169-3.403238 .488169-1.827148C.488169-.690411 1.380822 .139477 2.629141 .139477C3.005729 .139477 3.675218 .062765 4.393524-.54396C4.944458-1.011208 5.097883-1.617933 5.097883-1.673724C5.097883-1.764384 5.014197-1.764384 4.979328-1.764384C4.888667-1.764384 4.87472-1.729514 4.853798-1.652802C4.56787-.697385 3.591532-.111582 2.747696-.111582C2.008468-.111582 1.185554-.509091 1.185554-1.610959C1.185554-1.8132 1.234371-2.915068 2.036364-3.793773C2.517559-4.33076 3.249813-4.651557 3.912329-4.651557C4.721295-4.651557 5.195517-4.065753 5.195517-3.284682C5.195517-3.089415 5.174595-3.040598 5.174595-2.998755C5.174595-2.908095 5.265255-2.908095 5.300125-2.908095C5.411706-2.908095 5.411706-2.929016 5.446575-3.061519L5.878954-4.811955Z'/>
+<path id='c29-06-nasprotna-obtezba-g3-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c29-06-nasprotna-obtezba-g3-51' d='M2.889166-3.506849C3.706102-3.775841 4.283935-4.473225 4.283935-5.260274C4.283935-6.07721 3.407223-6.635118 2.450809-6.635118C1.444583-6.635118 .687422-6.03736 .687422-5.280199C.687422-4.951432 .9066-4.762142 1.195517-4.762142C1.504359-4.762142 1.703611-4.98132 1.703611-5.270237C1.703611-5.768369 1.235367-5.768369 1.085928-5.768369C1.39477-6.256538 2.052304-6.386052 2.410959-6.386052C2.819427-6.386052 3.367372-6.166874 3.367372-5.270237C3.367372-5.150685 3.347447-4.572852 3.088418-4.134496C2.789539-3.656289 2.450809-3.626401 2.201743-3.616438C2.122042-3.606476 1.882939-3.58655 1.8132-3.58655C1.733499-3.576588 1.663761-3.566625 1.663761-3.466999C1.663761-3.35741 1.733499-3.35741 1.902864-3.35741H2.34122C3.158157-3.35741 3.526775-2.67995 3.526775-1.703611C3.526775-.348692 2.839352-.059776 2.400996-.059776C1.972603-.059776 1.225405-.229141 .876712-.816936C1.225405-.767123 1.534247-.986301 1.534247-1.364882C1.534247-1.723537 1.265255-1.92279 .976339-1.92279C.737235-1.92279 .418431-1.783313 .418431-1.344956C.418431-.438356 1.344956 .219178 2.430884 .219178C3.646326 .219178 4.552927-.687422 4.552927-1.703611C4.552927-2.520548 3.92528-3.297634 2.889166-3.506849Z'/>
+<path id='c29-06-nasprotna-obtezba-g3-52' d='M2.929016-1.643836V-.777086C2.929016-.418431 2.909091-.308842 2.171856-.308842H1.96264V0C2.371108-.029888 2.889166-.029888 3.307597-.029888S4.254047-.029888 4.662516 0V-.308842H4.4533C3.716065-.308842 3.696139-.418431 3.696139-.777086V-1.643836H4.692403V-1.952677H3.696139V-6.485679C3.696139-6.684932 3.696139-6.744707 3.536737-6.744707C3.447073-6.744707 3.417186-6.744707 3.337484-6.625156L.278954-1.952677V-1.643836H2.929016ZM2.988792-1.952677H.557908L2.988792-5.668742V-1.952677Z'/>
+<path id='c29-06-nasprotna-obtezba-g3-53' d='M4.473225-2.002491C4.473225-3.188045 3.656289-4.184309 2.580324-4.184309C2.102117-4.184309 1.673724-4.024907 1.315068-3.676214V-5.618929C1.514321-5.559153 1.843088-5.489415 2.161893-5.489415C3.387298-5.489415 4.084682-6.396015 4.084682-6.525529C4.084682-6.585305 4.054795-6.635118 3.985056-6.635118C3.975093-6.635118 3.955168-6.635118 3.905355-6.60523C3.706102-6.515567 3.217933-6.316314 2.550436-6.316314C2.15193-6.316314 1.693649-6.386052 1.225405-6.595268C1.145704-6.625156 1.125778-6.625156 1.105853-6.625156C1.006227-6.625156 1.006227-6.545455 1.006227-6.386052V-3.437111C1.006227-3.257783 1.006227-3.178082 1.145704-3.178082C1.215442-3.178082 1.235367-3.20797 1.275218-3.267746C1.384807-3.427148 1.753425-3.965131 2.560399-3.965131C3.078456-3.965131 3.327522-3.506849 3.407223-3.327522C3.566625-2.958904 3.58655-2.570361 3.58655-2.072229C3.58655-1.723537 3.58655-1.125778 3.347447-.707347C3.108344-.318804 2.739726-.059776 2.281445-.059776C1.554172-.059776 .986301-.587796 .816936-1.175592C.846824-1.165629 .876712-1.155666 .986301-1.155666C1.315068-1.155666 1.484433-1.404732 1.484433-1.643836S1.315068-2.132005 .986301-2.132005C.846824-2.132005 .498132-2.062267 .498132-1.603985C.498132-.747198 1.185554 .219178 2.30137 .219178C3.457036 .219178 4.473225-.737235 4.473225-2.002491Z'/>
+<path id='c29-06-nasprotna-obtezba-g3-54' d='M1.315068-3.267746V-3.506849C1.315068-6.027397 2.550436-6.386052 3.058531-6.386052C3.297634-6.386052 3.716065-6.326276 3.935243-5.987547C3.785803-5.987547 3.387298-5.987547 3.387298-5.539228C3.387298-5.230386 3.626401-5.080946 3.845579-5.080946C4.004981-5.080946 4.303861-5.17061 4.303861-5.559153C4.303861-6.156912 3.865504-6.635118 3.038605-6.635118C1.763387-6.635118 .418431-5.349938 .418431-3.148194C.418431-.488169 1.574097 .219178 2.500623 .219178C3.606476 .219178 4.552927-.71731 4.552927-2.032379C4.552927-3.297634 3.666252-4.254047 2.560399-4.254047C1.882939-4.254047 1.514321-3.745953 1.315068-3.267746ZM2.500623-.059776C1.872976-.059776 1.574097-.657534 1.514321-.806974C1.334994-1.275218 1.334994-2.072229 1.334994-2.251557C1.334994-3.028643 1.653798-4.024907 2.550436-4.024907C2.709838-4.024907 3.16812-4.024907 3.476961-3.407223C3.656289-3.038605 3.656289-2.530511 3.656289-2.042341C3.656289-1.564134 3.656289-1.066002 3.486924-.707347C3.188045-.109589 2.729763-.059776 2.500623-.059776Z'/>
+<path id='c29-06-nasprotna-obtezba-g3-55' d='M4.742217-6.067248C4.83188-6.1868 4.83188-6.206725 4.83188-6.41594H2.410959C1.195517-6.41594 1.175592-6.545455 1.135741-6.734745H.886675L.557908-4.682441H.806974C.836862-4.841843 .926526-5.469489 1.05604-5.589041C1.125778-5.648817 1.902864-5.648817 2.032379-5.648817H4.094645C3.985056-5.489415 3.198007-4.403487 2.978829-4.07472C2.082192-2.729763 1.753425-1.344956 1.753425-.328767C1.753425-.229141 1.753425 .219178 2.211706 .219178S2.669988-.229141 2.669988-.328767V-.836862C2.669988-1.384807 2.699875-1.932752 2.779577-2.470735C2.819427-2.699875 2.958904-3.556663 3.39726-4.174346L4.742217-6.067248Z'/>
+<path id='c29-06-nasprotna-obtezba-g3-61' d='M6.844334-3.257783C6.993773-3.257783 7.183064-3.257783 7.183064-3.457036S6.993773-3.656289 6.854296-3.656289H.886675C.747198-3.656289 .557908-3.656289 .557908-3.457036S.747198-3.257783 .896638-3.257783H6.844334ZM6.854296-1.325031C6.993773-1.325031 7.183064-1.325031 7.183064-1.524284S6.993773-1.723537 6.844334-1.723537H.896638C.747198-1.723537 .557908-1.723537 .557908-1.524284S.747198-1.325031 .886675-1.325031H6.854296Z'/>
+<path id='c29-06-nasprotna-obtezba-g3-94' d='M2.49066-6.914072L1.155666-5.559153L1.334994-5.379826L2.49066-6.396015L3.636364-5.379826L3.815691-5.559153L2.49066-6.914072Z'/>
+</defs>
+<g id='c29-06-nasprotna-obtezba-page1'>
+<g stroke-miterlimit='10' transform='translate(4.818631,-11.480401)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='realna'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-62.59637-15.6491V56.33682' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-62.59637-15.6491L-65.72614-18.77885' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-62.59637-11.73683L-65.72614-14.8666' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-62.59637-7.82455L-65.72614-10.95432' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-62.59637-3.91228L-65.72614-7.04204' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-62.59637 0L-65.72614-3.12976' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-62.59637 3.91226L-65.72614 .7825' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-62.59637 7.82454L-65.72614 4.69478' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-62.59637 11.73682L-65.72614 8.60706' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-62.59637 15.6491L-65.72614 12.51933' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-62.59637 19.56136L-65.72614 16.4316' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-62.59637 23.47363L-65.72614 20.34387' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-62.59637 27.38591L-65.72614 24.25615' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-62.59637 31.29819L-65.72614 28.16843' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-62.59637 35.21045L-65.72614 32.08069' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-62.59637 39.12273L-65.72614 35.99297' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-62.59637 43.035L-65.72614 39.90524' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-62.59637 46.94728L-65.72614 43.81752' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-62.59637 50.85954L-65.72614 47.72978' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-62.59637 54.77182L-65.72614 51.64206' fill='none'/>
+</g>
+</g>
+<g stroke-width='2.2'>
+<path d='M-62.59637 0H0' fill='none'/>
+</g>
+<g stroke-width='2.2'>
+<path d='M-62.59637 46.94728L0 0' fill='none'/>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M-60.33344 0C-60.33344 1.2498-61.34657 2.26294-62.59637 2.26294C-63.84618 2.26294-64.85931 1.2498-64.85931 0S-63.84618-2.26294-62.59637-2.26294C-61.34657-2.26294-60.33344-1.2498-60.33344 0ZM-62.59637 0'/>
+</g>
+<g transform='translate(-62.59637,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(4.818631,-11.480401)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M-60.33344 46.94728C-60.33344 48.19708-61.34657 49.21022-62.59637 49.21022C-63.84618 49.21022-64.85931 48.19708-64.85931 46.94728S-63.84618 44.68434-62.59637 44.68434C-61.34657 44.68434-60.33344 45.69748-60.33344 46.94728ZM-62.59637 46.94728'/>
+</g>
+<g transform='translate(-62.59637,46.94728)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(4.818631,-11.480401)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M2.26294 0C2.26294 1.2498 1.2498 2.26294 0 2.26294S-2.26294 1.2498-2.26294 0S-1.2498-2.26294 0-2.26294S2.26294-1.2498 2.26294 0ZM0 0'/>
+</g>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(4.818631,-11.480401)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(-58.9634,-10.4663)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(4.818631,-11.480401)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='4.818631' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g1-65'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-58.9634,50.58026)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(4.818631,-11.480401)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='4.818631' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g1-66'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(3.63298,3.63298)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(4.818631,-11.480401)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='4.818631' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g1-67'/>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<g fill='#00f' stroke='#00f'>
+<path d='M0 0V-33.3341' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,0.0,-30.72908)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(3.78297,-40.97438)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(4.818631,-11.480401)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='4.818631' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g1-70'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='sile'>
+<g transform='translate(-73.77373,-29.04785)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(4.818631,-11.480401)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='4.818631' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g1-78'/>
+<use x='12.823338' y='-9.98602' xlink:href='#c29-06-nasprotna-obtezba-g2-65'/>
+<use x='18.814799' y='-9.98602' xlink:href='#c29-06-nasprotna-obtezba-g2-67'/>
+<use x='28.282973' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g3-61'/>
+<use x='38.799053' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g0-0'/>
+<use x='46.547801' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g3-49'/>
+<use x='51.52914' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g3-51'/>
+<use x='56.510479' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g1-59'/>
+<use x='59.277887' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g3-51'/>
+<use x='64.259226' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g3-51'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-22.97043,27.28873)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(4.818631,-11.480401)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='4.818631' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g1-78'/>
+<use x='12.823338' y='-9.98602' xlink:href='#c29-06-nasprotna-obtezba-g2-66'/>
+<use x='19.1825' y='-9.98602' xlink:href='#c29-06-nasprotna-obtezba-g2-67'/>
+<use x='28.650674' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g3-61'/>
+<use x='39.166754' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g3-49'/>
+<use x='44.148093' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g3-54'/>
+<use x='49.129432' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g1-59'/>
+<use x='51.89684' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g3-54'/>
+<use x='56.878179' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g3-55'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='enotska'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M119.50108-15.6491V56.33682' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M119.50108-15.6491L116.37132-18.77885' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M119.50108-11.73683L116.37132-14.8666' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M119.50108-7.82455L116.37132-10.95432' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M119.50108-3.91228L116.37132-7.04204' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M119.50108 0L116.37132-3.12976' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M119.50108 3.91226L116.37132 .7825' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M119.50108 7.82454L116.37132 4.69478' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M119.50108 11.73682L116.37132 8.60706' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M119.50108 15.6491L116.37132 12.51933' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M119.50108 19.56136L116.37132 16.4316' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M119.50108 23.47363L116.37132 20.34387' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M119.50108 27.38591L116.37132 24.25615' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M119.50108 31.29819L116.37132 28.16843' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M119.50108 35.21045L116.37132 32.08069' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M119.50108 39.12273L116.37132 35.99297' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M119.50108 43.035L116.37132 39.90524' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M119.50108 46.94728L116.37132 43.81752' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M119.50108 50.85954L116.37132 47.72978' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M119.50108 54.77182L116.37132 51.64206' fill='none'/>
+</g>
+</g>
+<g stroke-width='2.2'>
+<path d='M119.50108 0H182.09746' fill='none'/>
+</g>
+<g stroke-width='2.2'>
+<path d='M119.50108 46.94728L182.09746 0' fill='none'/>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M121.76402 0C121.76402 1.2498 120.75089 2.26294 119.50108 2.26294C118.25128 2.26294 117.23814 1.2498 117.23814 0S118.25128-2.26294 119.50108-2.26294C120.75089-2.26294 121.76402-1.2498 121.76402 0ZM119.50108 0'/>
+</g>
+<g transform='translate(119.50108,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(4.818631,-11.480401)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M121.76402 46.94728C121.76402 48.19708 120.75089 49.21022 119.50108 49.21022C118.25128 49.21022 117.23814 48.19708 117.23814 46.94728S118.25128 44.68434 119.50108 44.68434C120.75089 44.68434 121.76402 45.69748 121.76402 46.94728ZM119.50108 46.94728'/>
+</g>
+<g transform='translate(119.50108,46.94728)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(4.818631,-11.480401)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M184.3604 0C184.3604 1.2498 183.34726 2.26294 182.09746 2.26294S179.83452 1.2498 179.83452 0S180.84766-2.26294 182.09746-2.26294S184.3604-1.2498 184.3604 0ZM182.09746 0'/>
+</g>
+<g transform='translate(182.09746,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(4.818631,-11.480401)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(123.13406,-10.4663)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(4.818631,-11.480401)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='4.818631' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g1-65'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(123.13406,50.58026)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(4.818631,-11.480401)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='4.818631' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g1-66'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(185.73044,3.63298)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(4.818631,-11.480401)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='4.818631' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g1-67'/>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<g fill='#f00' stroke='#f00'>
+<path d='M182.09746 0V-33.3341' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,182.09746,-30.72908)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(185.88043,-42.29382)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(4.818631,-11.480401)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='7.053338' y='-13.998729' xlink:href='#c29-06-nasprotna-obtezba-g3-94'/>
+<use x='4.818631' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g1-70'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='enotske-sile'>
+<g transform='translate(116.10153,-30.08951)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(4.818631,-11.480401)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='7.703655' y='-13.998729' xlink:href='#c29-06-nasprotna-obtezba-g3-94'/>
+<use x='4.818631' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g1-78'/>
+<use x='12.823338' y='-9.98602' xlink:href='#c29-06-nasprotna-obtezba-g2-65'/>
+<use x='18.814799' y='-9.98602' xlink:href='#c29-06-nasprotna-obtezba-g2-67'/>
+<use x='28.282962' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g3-61'/>
+<use x='38.799042' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g0-0'/>
+<use x='46.547789' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g3-52'/>
+<use x='51.529128' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g1-61'/>
+<use x='56.510467' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g3-51'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(159.12703,26.24707)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(4.818631,-11.480401)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='7.703655' y='-13.998729' xlink:href='#c29-06-nasprotna-obtezba-g3-94'/>
+<use x='4.818631' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g1-78'/>
+<use x='12.823338' y='-9.98602' xlink:href='#c29-06-nasprotna-obtezba-g2-66'/>
+<use x='19.1825' y='-9.98602' xlink:href='#c29-06-nasprotna-obtezba-g2-67'/>
+<use x='28.650662' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g3-61'/>
+<use x='39.166742' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g3-53'/>
+<use x='44.148081' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g1-61'/>
+<use x='49.129421' y='-11.480401' xlink:href='#c29-06-nasprotna-obtezba-g3-51'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 29.21</span>: Two load cases of the wall truss. Left: the real load \(F = 10\) kN downward at the joint \(C\) and the axial forces \(N_{\mathrm{AC}} = -13{,}33\) kN (compression), \(N_{\mathrm{BC}} = 16{,}67\) kN (tension). Right: the adjoint load, a unit force \(1\) N downward at the same joint, and the axial forces <span class="nobr">\(\hat N_{\mathrm{AC}} = -4/3\),</span> \(\hat N_{\mathrm{BC}} = 5/3\) per newton. The wall is hatched, the pins are open circles, the forces are arrows on their own lines.</figcaption></figure>
+<p>We draw the figure along with the text. Bar \(AC\) is horizontal, bar \(BC\) runs obliquely to the joint <span class="nobr">\(C\),</span> where the <a data-del="realna" class="xref kaz" href="sec-obcutljivost.html#fig-obcutljivost-obtezbi" data-knowl="fig-obcutljivost-obtezbi">load \(F\)</a> pulls downward. Under the load bar \(AC\) is <a data-del="sile" class="xref kaz" href="sec-obcutljivost.html#fig-obcutljivost-obtezbi" data-knowl="fig-obcutljivost-obtezbi">compressed</a>, \(N_{\mathrm{AC}} = -13{,}33\) kN, and bar \(BC\) is stretched, \(N_{\mathrm{BC}} = 16{,}67\) kN. The right half is the same truss with a different load, which we need in the section on the <a class="xref auto forward" href="sec-obcutljivost.html#thm-adjungirana-metoda" data-knowl="thm-adjungirana-metoda" title="Defined later in the book">adjoint method</a>: a <a data-del="enotska" class="xref kaz" href="sec-obcutljivost.html#fig-obcutljivost-obtezbi" data-knowl="fig-obcutljivost-obtezbi">unit force</a> \(1\) N downward at the joint \(C\) and the <a data-del="enotske-sile" class="xref kaz" href="sec-obcutljivost.html#fig-obcutljivost-obtezbi" data-knowl="fig-obcutljivost-obtezbi">forces in the bars</a> under it.</p>
+<p>The <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> that interests us is the deflection of the joint \(C\) downward, <span class="nobr">\(g = -v_{\mathrm{C}}\),</span> where \(v_{\mathrm{C}}\) is the vertical displacement. At our design it is, by section <a class="xref" href="sec-palicje-ravnina-mke.html#sec-palicje-konzola-mke">7.5.2</a>, \(g = 10{,}714\) mm. The limit on this deflection will be the constraint of our problem in the next section.</p>
+<p>The displacements of the free unknowns, the horizontal and vertical displacement \(\vek u = (u_{\mathrm{C}}, v_{\mathrm{C}})\) of the joint <span class="nobr">\(C\),</span> are determined by the equilibrium equation of theorem <a class="xref" href="sec-robni-pogoji-mke.html#thm-reduciran-sistem" data-knowl="thm-reduciran-sistem">7.18</a>, in which the <a class="xref auto" href="sec-sestavljanje.html#cor-matrika-konstrukcije" data-knowl="cor-matrika-konstrukcije">structure matrix</a> (theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a>) depends on the areas. By lemma <a class="xref" href="sec-palicje-ravnina-mke.html#lem-togost-palice-globalno" data-knowl="lem-togost-palice-globalno">7.28</a>, written for the free unknowns, bar \(e\) contributes the matrix \(A_{\mathrm{e}}\,\mat K_{\mathrm{e}}\) with</p>
+<div class="eq" id="eq-obc-ke">\[\mat K_{\mathrm{e}} = \frac{E}{L_{\mathrm{e}}}\,\vek b_{\mathrm{e}}\,\vek b_{\mathrm{e}}^\T , \tag{29.32}\]</div>
+<p>where \(\vek b_{\mathrm{e}}\) is the column for which the elongation of the bar is \(\Delta L_{\mathrm{e}} = \vek b_{\mathrm{e}}^\T\vek u\) (for our bar, fixed to the wall with one end, \(\vek b_{\mathrm{e}} = \vek n_{\mathrm{e}}\) at the joint <span class="nobr">\(C\),</span> with the <a class="xref auto" href="sec-vektorji.html#def-enotski-vektor" data-knowl="def-enotski-vektor">unit vector</a> \(\vek n_{\mathrm{e}}\) of the bar, directed from the wall towards <span class="nobr">\(C\)).</span> The matrix \(\mat K_{\mathrm{e}}\) does not depend on the areas, so</p>
+<div class="eq" id="eq-obc-ravnovesje">\[\mat K(\vek A)\,\vek u = \vek f , \qquad \mat K(\vek A) = A_1\,\mat K_1 + A_2\,\mat K_2 . \tag{29.33}\]</div>
+<p>Hence <span class="nobr">\(\partial\mat K/\partial A_{\mathrm{e}} = \mat K_{\mathrm{e}}\).</span> In the nested form of the problem (definition <a class="xref" href="sec-naloga-optimizacije.html#def-gnezdena-oblika" data-knowl="def-gnezdena-oblika">29.2</a>) \(\vek u\) is a function of the areas, so every function \(g(\vek A, \vek u)\) of displacements and areas is also a function of the areas alone, <span class="nobr">\(\hat g(\vek A) = g(\vek A, \vek u(\vek A))\).</span></p>
+
+<div class="blk definicija" id="def-obcutljivost"><div class="blk-head"><span class="blk-label">Definition 29.40</span> <span class="blk-title">Sensitivity (občutljivost)</span></div><div class="blk-body"><p>Let \(\vek A = (A_1, \dots, A_{\mathrm{n}})\) be the column of design variables (definition <a class="xref" href="sec-naloga-optimizacije.html#def-optimizacijska-naloga" data-knowl="def-optimizacijska-naloga">29.1</a>), \(\vek u(\vek A)\) the solution of equation <a class="xref" href="sec-obcutljivost.html#eq-obc-ravnovesje" data-knowl="eq-obc-ravnovesje">(29.33)</a> at \(\vek A\) and \(g(\vek A, \vek u)\) a <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> whose input is \(n\) areas and \(m\) displacements and whose output is a number, <a class="xref auto" href="sec-sprememba-polja.html#def-zvezno-odvedljivo-polje" data-knowl="def-zvezno-odvedljivo-polje">continuously differentiable</a> in all inputs. The sensitivity (občutljivost) of the function \(\hat g(\vek A) = g(\vek A, \vek u(\vek A))\) to the design variable \(A_{\mathrm{e}}\) at the design \(\vek A\) is the <a class="xref auto" href="sec-parcialni-odvodi.html#def-parcialni-odvod" data-knowl="def-parcialni-odvod">partial derivative</a></p>
+<div class="eq" id="eq-obc-definicija">\[\frac{\partial\hat g}{\partial A_{\mathrm{e}}}(\vek A) = \lim_{\mathrm{h}\to 0}\frac{\hat g(\vek A + h\,\vek e_{\mathrm{e}}) - \hat g(\vek A)}{h} , \tag{29.34}\]</div>
+<p>where \(\vek e_{\mathrm{e}}\) is the column with a one at place \(e\) and zeros elsewhere, provided that the <a class="xref auto" href="sec-limita-odvod.html#def-limita" data-knowl="def-limita">limit</a> exists. It is a number with the unit of the function \(g\) per m². The sensitivities to all variables form the column <span class="nobr">\(\nabla\hat g = (\partial\hat g/\partial A_1, \dots, \partial\hat g/\partial A_{\mathrm{n}})\).</span></p>
+
+<p class="vir"><span class="vir-label">Source:</span> CHK section 6 (PDF p. 103): calls the derivatives of the objective and constraint functions with respect to the design variables &quot;sensitivities&quot; and the procedure &quot;sensitivity analysis&quot;. The notation \(\hat g\) and \(\mat K_{\mathrm{e}}\) is ours.</p></div></div>
+<p>The word says how sensitive the function is to a change of the variable: a large derivative means that a small change of the area changes the function strongly. The word must not be confused with the condition number \(\kappa(\mat K)\) of definition <a class="xref" href="sec-skalarni-produkt-funkcij.html#def-stevilo-obcutljivosti" data-knowl="def-stevilo-obcutljivosti">6.31</a>. That is a property of a matrix and tells how errors of the right-hand side are amplified when the system is solved. The <a class="xref auto" href="sec-obcutljivost.html#def-obcutljivost" data-knowl="def-obcutljivost">sensitivity</a> of this definition is the derivative of a function with respect to an area. The words that follow them tell them apart: &quot;condition number of a matrix&quot;, &quot;sensitivity of a function to an area&quot;.</p>
+
+<h3 id="sec-obc-razlike"><span class="h-num">29.6.1</span> Finite differences</h3>
+<p>The simplest way is to really change the design and see what happens. We increase the area \(A_{\mathrm{e}}\) by a small number <span class="nobr">\(h &gt; 0\),</span> solve equation <a class="xref" href="sec-obcutljivost.html#eq-obc-ravnovesje" data-knowl="eq-obc-ravnovesje">(29.33)</a> again, compute \(\hat g\) and divide the difference by <span class="nobr">\(h\).</span> This is the forward difference quotient (količnik naprej)</p>
+<div class="eq" id="eq-obc-razlika">\[D_{\mathrm{h}} = \frac{\hat g(\vek A + h\,\vek e_{\mathrm{e}}) - \hat g(\vek A)}{h} . \tag{29.35}\]</div>
+<p>By definition <a class="xref" href="sec-obcutljivost.html#def-obcutljivost" data-knowl="def-obcutljivost">29.40</a> it approximates the sensitivity for small <span class="nobr">\(h\).</span> How small is told by the next lemma, and we compare its estimate with a computation on our <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">truss</a> in figure <a class="xref" href="sec-obcutljivost.html#fig-obcutljivost-koraki" data-knowl="fig-obcutljivost-koraki">29.22</a>.</p>
+
+<div class="blk lema" id="lem-diferencni-kvocient"><div class="blk-head"><span class="blk-label">Lemma 29.41</span> <span class="blk-title">Error of the forward difference quotient (napaka količnika naprej)</span></div><div class="blk-body"><p>Let \(\varphi(t) = \hat g(\vek A + t\,\vek e_{\mathrm{e}})\) for \(t \in [0, h]\) be a <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> with continuous <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivative</a> \(\varphi'\) on \([0, h]\) and with a derivative \(\varphi''\) on <span class="nobr">\((0, h)\),</span> and let \(|\varphi''| \le M\) on <span class="nobr">\((0, h)\).</span> Let each of the computed values \(\varphi(0)\) and \(\varphi(h)\) be wrong by at most \(\delta &gt; 0\) (the round-off error in solving equation <a class="xref" href="sec-obcutljivost.html#eq-obc-ravnovesje" data-knowl="eq-obc-ravnovesje">(29.33)</a>) and <span class="nobr">\(M &gt; 0\).</span> Then for the quotient \(\tilde D_{\mathrm{h}}\) of the two computed values, with the subtraction and the division by \(h\) taken as exact,</p>
+<div class="eq" id="eq-obc-ocena">\[\big|\tilde D_{\mathrm{h}} - \varphi'(0)\big| \le \tfrac12\,M\,h + \frac{2\,\delta}{h} . \tag{29.36}\]</div>
+<p>For \(h &gt; 0\) the right-hand side is smallest at \(h_* = 2\sqrt{\delta/M}\) and there it equals <span class="nobr">\(2\sqrt{\delta\,M}\).</span></p>
+
+<div class="hid-row"><details class="hid zamisel"><summary>Idea</summary><div class="hid-body"><p>The error has two sources. The difference \(\varphi(h) - \varphi(0)\) replaces the <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivative</a> by a secant, which is the truncation error, growing with \(h\) (by theorem <a class="xref" href="sec-stabilnost-ravnovesja.html#thm-taylor" data-knowl="thm-taylor">8.60</a>). But the computed values are inexact, and their difference is divided by <span class="nobr">\(h\),</span> so the round-off error grows as \(h\) falls.</p>
+</div></details><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show estimate <a class="xref" href="sec-obcutljivost.html#eq-obc-ocena" data-knowl="eq-obc-ocena">(29.36)</a> and its <a class="xref auto" href="sec-polnost.html#def-supremum" data-knowl="def-supremum">minimum</a>.</p>
+<ol>
+<li>By theorem <a class="xref" href="sec-stabilnost-ravnovesja.html#thm-taylor" data-knowl="thm-taylor">8.60</a> for <span class="nobr">\(f = \varphi\),</span> <span class="nobr">\(x_0 = 0\),</span> \(x = h\) there is a point \(c \in (0, h)\) with <span class="nobr">\(\varphi(h) = \varphi(0) + \varphi'(0)\,h + \tfrac12\varphi''(c)\,h^2\).</span> Divide by <span class="nobr">\(h\):</span> the exact quotient \(D_{\mathrm{h}} = \big(\varphi(h) - \varphi(0)\big)/h\) satisfies <span class="nobr">\(D_{\mathrm{h}} - \varphi'(0) = \tfrac12\varphi''(c)\,h\),</span> in absolute value at most <span class="nobr">\(\tfrac12 M h\).</span></li>
+<li>The computed values differ from the exact ones by at most \(\delta\) each, so the computed difference differs from the exact one by at most \(2\delta\) and the quotient by at most <span class="nobr">\(2\delta/h\),</span> that is <span class="nobr">\(|\tilde D_{\mathrm{h}} - D_{\mathrm{h}}| \le 2\delta/h\).</span></li>
+<li>The triangle inequality for \(\tilde D_{\mathrm{h}} - \varphi'(0) = (\tilde D_{\mathrm{h}} - D_{\mathrm{h}}) + (D_{\mathrm{h}} - \varphi'(0))\) gives <a class="xref" href="sec-obcutljivost.html#eq-obc-ocena" data-knowl="eq-obc-ocena">(29.36)</a>.</li>
+<li>The right-hand side \(r(h) = \tfrac12 M h + 2\delta/h\) has <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivative</a> <span class="nobr">\(r'(h) = \tfrac12 M - 2\delta/h^2\),</span> which is zero at <span class="nobr">\(h_*^2 = 4\delta/M\),</span> that is <span class="nobr">\(h_* = 2\sqrt{\delta/M}\).</span> The second derivative \(r''(h) = 4\delta/h^3\) is positive, so this is the minimum, <span class="nobr">\(r(h_*) = \sqrt{\delta M} + \sqrt{\delta M} = 2\sqrt{\delta M}\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> CHK section 6.1 (PDF pp. 103-104): the truncation error \(O(h)\) and the error from the cancellation of numbers, which for small \(h\) grows &quot;dramatically&quot;, equation (6.1). The estimate <a class="xref" href="sec-obcutljivost.html#eq-obc-ocena" data-knowl="eq-obc-ocena">(29.36)</a> with the sum of both and \(h_*\) is not from the source.</p></div></div>
+<p>We test the lemma on the truss. The area of bar \(AC\) is the only variable, the rest stays at \(100\) mm². The truss is statically determinate, so the <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial forces</a> \(N_{\mathrm{e}}\) are fixed by equilibrium, and by theorem <a class="xref" href="sec-virtualne-sile.html#thm-enotska-sila" data-knowl="thm-enotska-sila">4.95</a> the deflection is \(\varphi(t) = c_1/(A_1 + t) + c_2/A_2\) with <span class="nobr">\(c_{\mathrm{e}} = \hat N_{\mathrm{e}} N_{\mathrm{e}} L_{\mathrm{e}}/E\),</span> where \(\hat N_{\mathrm{AC}} = -4/3\) and \(\hat N_{\mathrm{BC}} = 5/3\) are the forces under a unit force downward at the joint \(C\) (section <a class="xref" href="sec-delo-sil-na-palici.html#sec-palicje-konzola">4.1.4</a>). So \(c_1 = (4/3)(13\,333)(4)/(196 \cdot 10^9) = 3{,}628 \cdot 10^{-7}\) m³ and \(c_2 = 7{,}086 \cdot 10^{-7}\) m³. Hence \(\varphi'(0) = -c_1/A_1^2 = -36{,}281\) m/m² and <span class="nobr">\(\varphi''(t) = 2c_1/(A_1 + t)^3\),</span> which falls with <span class="nobr">\(t\),</span> so \(M = \varphi''(0) = 7{,}256 \cdot 10^{5}\) m⁻³. We take the round-off error \(\delta = 1{,}11 \cdot 10^{-16}\,\varphi(0) = 1{,}19 \cdot 10^{-18}\) m. This is a choice that the computation confirms: at all eight steps we tried, the measured error is below the estimate. We measure the step relatively, <span class="nobr">\(s = h/A_1\),</span> and the error relatively, <span class="nobr">\(r = |\tilde D_{\mathrm{h}} - \varphi'(0)|/|\varphi'(0)|\).</span> The truncation term is then <span class="nobr">\(\tfrac12 M h/|\varphi'(0)| = s\),</span> and the round-off term is \(k/s\) with <span class="nobr">\(k = 2\delta/(A_1|\varphi'(0)|) = 6{,}56 \cdot 10^{-16}\).</span></p>
+<table>
+<thead>
+<tr>
+<th>\(s\)</th>
+<th>measured \(r\)</th>
+<th>estimate \(s + k/s\)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>\(10^{-1}\)</td>
+<td>\(9{,}1 \cdot 10^{-2}\)</td>
+<td>\(1{,}0 \cdot 10^{-1}\)</td>
+</tr>
+<tr>
+<td>\(10^{-4}\)</td>
+<td>\(1{,}0 \cdot 10^{-4}\)</td>
+<td>\(1{,}0 \cdot 10^{-4}\)</td>
+</tr>
+<tr>
+<td>\(10^{-8}\)</td>
+<td>\(8{,}6 \cdot 10^{-9}\)</td>
+<td>\(7{,}6 \cdot 10^{-8}\)</td>
+</tr>
+<tr>
+<td>\(10^{-10}\)</td>
+<td>\(1{,}2 \cdot 10^{-6}\)</td>
+<td>\(6{,}6 \cdot 10^{-6}\)</td>
+</tr>
+<tr>
+<td>\(10^{-12}\)</td>
+<td>\(2{,}5 \cdot 10^{-4}\)</td>
+<td>\(6{,}6 \cdot 10^{-4}\)</td>
+</tr>
+<tr>
+<td>\(10^{-14}\)</td>
+<td>\(4{,}1 \cdot 10^{-3}\)</td>
+<td>\(6{,}6 \cdot 10^{-2}\)</td>
+</tr>
+</tbody>
+</table>
+<p>Figure <a class="xref" href="sec-obcutljivost.html#fig-obcutljivost-koraki" data-knowl="fig-obcutljivost-koraki">29.22</a> draws all eight steps. On the <a data-del="osi" class="xref kaz" href="sec-obcutljivost.html#fig-obcutljivost-koraki" data-knowl="fig-obcutljivost-koraki">horizontal axis is the step <span class="nobr">\(s\),</span> on the vertical one the error \(r\)</a>, both on a logarithmic scale: equal distances on an axis mean equal factors. On such a scale the <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> \(r = s\) and \(r = k/s\) are straight lines. At large steps the measured error agrees with the <a data-del="skrajsanje" class="xref kaz" href="sec-obcutljivost.html#fig-obcutljivost-koraki" data-knowl="fig-obcutljivost-koraki">truncation term</a>, which is <span class="nobr">\(r = s\).</span> At small steps the <a data-del="zaokrozitev" class="xref kaz" href="sec-obcutljivost.html#fig-obcutljivost-koraki" data-knowl="fig-obcutljivost-koraki">round-off term</a> takes over, <span class="nobr">\(r = k/s\),</span> which grows as the step falls. The <a data-del="meja" class="xref kaz" href="sec-obcutljivost.html#fig-obcutljivost-koraki" data-knowl="fig-obcutljivost-koraki">estimate</a> is their sum, and the <a data-del="meritve" class="xref kaz" href="sec-obcutljivost.html#fig-obcutljivost-koraki" data-knowl="fig-obcutljivost-koraki">measured points</a> lie below it. The smallest estimate is at the <a data-del="najboljsi" class="xref kaz" href="sec-obcutljivost.html#fig-obcutljivost-koraki" data-knowl="fig-obcutljivost-koraki">step</a> <span class="nobr">\(s_* = \sqrt{k} = 2{,}6 \cdot 10^{-8}\),</span> that is \(h_* = 2{,}56 \cdot 10^{-12}\) m², and the estimate is there <span class="nobr">\(2\sqrt{k} = 5{,}1 \cdot 10^{-8}\).</span> At this step the estimate guarantees about seven correct digits of the sensitivity. The measured error at <span class="nobr">\(s = 10^{-8}\),</span> <span class="nobr">\(8{,}6 \cdot 10^{-9}\),</span> is somewhat smaller still, because the estimate is only an <a class="xref auto" href="sec-polnost.html#def-zgornja-meja" data-knowl="def-zgornja-meja">upper bound</a>.</p>
+
+<figure class="blk slika" id="fig-obcutljivost-koraki"><p><span class="svgfig" role="img" aria-label="Error of the forward quotient against the step"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='324.63pt' height='244.04pt' viewBox='-72.000004 -72.000008 240.468483 180.767392'>
+<defs>
+<path id='c29-06-koraki-odvoda-g0-0' d='M5.188543-1.57609C5.300125-1.57609 5.467497-1.57609 5.467497-1.743462C5.467497-1.917808 5.307098-1.917808 5.188543-1.917808H1.03213C.920548-1.917808 .753176-1.917808 .753176-1.750436C.753176-1.57609 .913574-1.57609 1.03213-1.57609H5.188543Z'/>
+<path id='c29-06-koraki-odvoda-g1-61' d='M4.373599-7.0934C4.423412-7.222914 4.423412-7.262765 4.423412-7.272727C4.423412-7.382316 4.333748-7.47198 4.224159-7.47198C4.154421-7.47198 4.084682-7.442092 4.054795-7.382316L.597758 2.11208C.547945 2.241594 .547945 2.281445 .547945 2.291407C.547945 2.400996 .637609 2.49066 .747198 2.49066C.876712 2.49066 .9066 2.420922 .966376 2.251557L4.373599-7.0934Z'/>
+<path id='c29-06-koraki-odvoda-g1-107' d='M2.859278-6.804483C2.859278-6.814446 2.859278-6.914072 2.729763-6.914072C2.500623-6.914072 1.77335-6.834371 1.514321-6.814446C1.43462-6.804483 1.325031-6.794521 1.325031-6.615193C1.325031-6.495641 1.414695-6.495641 1.564134-6.495641C2.042341-6.495641 2.062267-6.425903 2.062267-6.326276L2.032379-6.127024L.587796-.388543C.547945-.249066 .547945-.229141 .547945-.169365C.547945 .059776 .747198 .109589 .836862 .109589C.966376 .109589 1.115816 .019925 1.175592-.099626C1.225405-.18929 1.673724-2.032379 1.733499-2.281445C2.072229-2.251557 2.889166-2.092154 2.889166-1.43462C2.889166-1.364882 2.889166-1.325031 2.859278-1.225405C2.839352-1.105853 2.819427-.986301 2.819427-.876712C2.819427-.288917 3.217933 .109589 3.73599 .109589C4.034869 .109589 4.303861-.049813 4.523039-.418431C4.772105-.856787 4.881694-1.404732 4.881694-1.424658C4.881694-1.524284 4.79203-1.524284 4.762142-1.524284C4.662516-1.524284 4.652553-1.484433 4.622665-1.344956C4.423412-.617684 4.194271-.109589 3.755915-.109589C3.566625-.109589 3.437111-.219178 3.437111-.577833C3.437111-.747198 3.476961-.976339 3.516812-1.135741C3.556663-1.305106 3.556663-1.344956 3.556663-1.444583C3.556663-2.092154 2.929016-2.381071 2.082192-2.49066C2.391034-2.669988 2.709838-2.988792 2.938979-3.227895C3.417186-3.755915 3.875467-4.184309 4.363636-4.184309C4.423412-4.184309 4.433375-4.184309 4.4533-4.174346C4.572852-4.154421 4.582814-4.154421 4.662516-4.094645C4.682441-4.084682 4.682441-4.07472 4.702366-4.054795C4.224159-4.024907 4.134496-3.636364 4.134496-3.516812C4.134496-3.35741 4.244085-3.16812 4.513076-3.16812C4.772105-3.16812 5.061021-3.387298 5.061021-3.775841C5.061021-4.07472 4.83188-4.403487 4.383562-4.403487C4.104608-4.403487 3.646326-4.323786 2.929016-3.526775C2.590286-3.148194 2.201743-2.749689 1.823163-2.600249L2.859278-6.804483Z'/>
+<path id='c29-06-koraki-odvoda-g1-114' d='M.876712-.587796C.846824-.438356 .787049-.209215 .787049-.159402C.787049 .019925 .926526 .109589 1.075965 .109589C1.195517 .109589 1.374844 .029888 1.444583-.169365C1.464508-.209215 1.803238-1.564134 1.843088-1.743462C1.92279-2.072229 2.102117-2.769614 2.161893-3.038605C2.201743-3.16812 2.480697-3.636364 2.719801-3.855542C2.799502-3.92528 3.088418-4.184309 3.516812-4.184309C3.775841-4.184309 3.92528-4.064757 3.935243-4.064757C3.636364-4.014944 3.417186-3.775841 3.417186-3.516812C3.417186-3.35741 3.526775-3.16812 3.795766-3.16812S4.343711-3.39726 4.343711-3.755915C4.343711-4.104608 4.024907-4.403487 3.516812-4.403487C2.86924-4.403487 2.430884-3.915318 2.241594-3.636364C2.161893-4.084682 1.803238-4.403487 1.334994-4.403487C.876712-4.403487 .687422-4.014944 .597758-3.835616C.418431-3.496887 .288917-2.899128 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.779577 .577833-2.998755C.747198-3.706102 .946451-4.184309 1.305106-4.184309C1.474471-4.184309 1.613948-4.104608 1.613948-3.726027C1.613948-3.516812 1.58406-3.407223 1.454545-2.889166L.876712-.587796Z'/>
+<path id='c29-06-koraki-odvoda-g1-115' d='M3.895392-3.726027C3.616438-3.716065 3.417186-3.496887 3.417186-3.277709C3.417186-3.138232 3.506849-2.988792 3.726027-2.988792S4.184309-3.158157 4.184309-3.5467C4.184309-3.995019 3.755915-4.403487 2.998755-4.403487C1.683686-4.403487 1.315068-3.387298 1.315068-2.948941C1.315068-2.171856 2.052304-2.022416 2.34122-1.96264C2.859278-1.863014 3.377335-1.753425 3.377335-1.205479C3.377335-.946451 3.148194-.109589 1.952677-.109589C1.8132-.109589 1.046077-.109589 .816936-.637609C1.195517-.587796 1.444583-.886675 1.444583-1.165629C1.444583-1.39477 1.285181-1.514321 1.075965-1.514321C.816936-1.514321 .518057-1.305106 .518057-.856787C.518057-.288917 1.085928 .109589 1.942715 .109589C3.556663 .109589 3.945205-1.09589 3.945205-1.544209C3.945205-1.902864 3.755915-2.15193 3.636364-2.271482C3.367372-2.550436 3.078456-2.600249 2.6401-2.689913C2.281445-2.769614 1.882939-2.839352 1.882939-3.287671C1.882939-3.576588 2.122042-4.184309 2.998755-4.184309C3.247821-4.184309 3.745953-4.11457 3.895392-3.726027Z'/>
+<path id='c29-06-koraki-odvoda-g2-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='c29-06-koraki-odvoda-g2-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c29-06-koraki-odvoda-g2-61' d='M6.844334-3.257783C6.993773-3.257783 7.183064-3.257783 7.183064-3.457036S6.993773-3.656289 6.854296-3.656289H.886675C.747198-3.656289 .557908-3.656289 .557908-3.457036S.747198-3.257783 .896638-3.257783H6.844334ZM6.854296-1.325031C6.993773-1.325031 7.183064-1.325031 7.183064-1.524284S6.993773-1.723537 6.844334-1.723537H.896638C.747198-1.723537 .557908-1.723537 .557908-1.524284S.747198-1.325031 .886675-1.325031H6.854296Z'/>
+<path id='c29-06-koraki-odvoda-g3-48' d='M3.598506-2.224658C3.598506-2.991781 3.507846-3.542715 3.187049-4.030884C2.970859-4.351681 2.538481-4.630635 1.980573-4.630635C.36264-4.630635 .36264-2.726775 .36264-2.224658S.36264 .139477 1.980573 .139477S3.598506-1.72254 3.598506-2.224658ZM1.980573-.055791C1.659776-.055791 1.234371-.244085 1.094894-.81594C.99726-1.227397 .99726-1.799253 .99726-2.315318C.99726-2.824408 .99726-3.354421 1.101868-3.737983C1.248319-4.288917 1.694645-4.435367 1.980573-4.435367C2.357161-4.435367 2.719801-4.20523 2.84533-3.800747C2.956912-3.424159 2.963885-2.922042 2.963885-2.315318C2.963885-1.799253 2.963885-1.283188 2.873225-.843836C2.733748-.209215 2.259527-.055791 1.980573-.055791Z'/>
+<path id='c29-06-koraki-odvoda-g3-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='c29-06-koraki-odvoda-g3-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+<path id='c29-06-koraki-odvoda-g3-51' d='M1.903861-2.329265C2.447821-2.329265 2.838356-1.952677 2.838356-1.206476C2.838356-.341719 2.336239-.083686 1.931756-.083686C1.652802-.083686 1.039103-.160399 .746202-.571856C1.073973-.585803 1.150685-.81594 1.150685-.962391C1.150685-1.185554 .983313-1.345953 .767123-1.345953C.571856-1.345953 .376588-1.227397 .376588-.941469C.376588-.285928 1.101868 .139477 1.945704 .139477C2.915068 .139477 3.584558-.509091 3.584558-1.206476C3.584558-1.750436 3.138232-2.294396 2.371108-2.454795C3.103362-2.719801 3.368369-3.242839 3.368369-3.668244C3.368369-4.219178 2.733748-4.630635 1.959651-4.630635S.592777-4.254047 .592777-3.696139C.592777-3.459029 .746202-3.326526 .955417-3.326526C1.171606-3.326526 1.311083-3.486924 1.311083-3.682192C1.311083-3.884433 1.171606-4.030884 .955417-4.044832C1.199502-4.351681 1.680697-4.428394 1.93873-4.428394C2.252553-4.428394 2.691905-4.274969 2.691905-3.668244C2.691905-3.375342 2.594271-3.054545 2.412951-2.838356C2.182814-2.57335 1.987547-2.559402 1.638854-2.538481C1.464508-2.524533 1.45056-2.524533 1.415691-2.517559C1.401743-2.517559 1.345953-2.503611 1.345953-2.426899C1.345953-2.329265 1.408717-2.329265 1.527273-2.329265H1.903861Z'/>
+<path id='c29-06-koraki-odvoda-g3-52' d='M3.689166-1.143711V-1.39477H2.915068V-4.505106C2.915068-4.651557 2.915068-4.700374 2.761644-4.700374C2.677958-4.700374 2.650062-4.700374 2.580324-4.60274L.27198-1.39477V-1.143711H2.322291V-.571856C2.322291-.334745 2.322291-.251059 1.75741-.251059H1.569116V0C1.917808-.013948 2.364134-.027895 2.615193-.027895C2.873225-.027895 3.319552-.013948 3.668244 0V-.251059H3.47995C2.915068-.251059 2.915068-.334745 2.915068-.571856V-1.143711H3.689166ZM2.371108-3.947198V-1.39477H.530012L2.371108-3.947198Z'/>
+<path id='c29-06-koraki-odvoda-g3-54' d='M1.046077-2.280448C1.046077-2.852304 1.094894-3.368369 1.3599-3.793773C1.597011-4.170361 1.973599-4.428394 2.419925-4.428394C2.629141-4.428394 2.908095-4.372603 3.047572-4.184309C2.873225-4.170361 2.726775-4.051806 2.726775-3.849564C2.726775-3.675218 2.84533-3.521793 3.054545-3.521793S3.38929-3.66127 3.38929-3.863512C3.38929-4.267995 3.096389-4.630635 2.405978-4.630635C1.401743-4.630635 .376588-3.710087 .376588-2.21071C.376588-.404483 1.227397 .139477 1.994521 .139477C2.84533 .139477 3.584558-.509091 3.584558-1.422665C3.584558-2.308344 2.880199-2.963885 2.064259-2.963885C1.506351-2.963885 1.199502-2.594271 1.046077-2.280448ZM1.994521-.083686C1.645828-.083686 1.373848-.285928 1.227397-.592777C1.12279-.801993 1.066999-1.150685 1.066999-1.569116C1.066999-2.245579 1.471482-2.768618 2.02939-2.768618C2.350187-2.768618 2.566376-2.643088 2.740722-2.385056C2.908095-2.12005 2.915068-1.827148 2.915068-1.422665C2.915068-1.025156 2.915068-.732254 2.726775-.460274C2.559402-.216189 2.336239-.083686 1.994521-.083686Z'/>
+<path id='c29-06-koraki-odvoda-g3-56' d='M2.475716-2.517559C3.019676-2.782565 3.368369-3.110336 3.368369-3.591532C3.368369-4.267995 2.66401-4.630635 1.987547-4.630635C1.220423-4.630635 .592777-4.128518 .592777-3.466002C.592777-3.138232 .746202-2.901121 .871731-2.761644C.99726-2.615193 1.046077-2.587298 1.457534-2.343213C1.066999-2.175841 .376588-1.799253 .376588-1.066999C.376588-.292902 1.17858 .139477 1.973599 .139477C2.859278 .139477 3.584558-.425405 3.584558-1.17858C3.584558-1.638854 3.312578-2.02939 2.908095-2.266501C2.817435-2.322291 2.57335-2.461768 2.475716-2.517559ZM1.338979-3.180075C1.157659-3.284682 .962391-3.472976 .962391-3.731009C.962391-4.170361 1.471482-4.428394 1.973599-4.428394C2.517559-4.428394 2.998755-4.086675 2.998755-3.591532C2.998755-2.970859 2.273474-2.657036 2.259527-2.657036S2.231631-2.66401 2.182814-2.691905L1.338979-3.180075ZM1.680697-2.21071L2.636115-1.659776C2.817435-1.555168 3.166127-1.345953 3.166127-.934496C3.166127-.411457 2.587298-.083686 1.987547-.083686C1.345953-.083686 .795019-.495143 .795019-1.066999C.795019-1.583064 1.17858-1.980573 1.680697-2.21071Z'/>
+<path id='c29-06-koraki-odvoda-g3-57' d='M2.915068-2.078207C2.915068-.348692 2.057285-.083686 1.638854-.083686C1.48543-.083686 1.115816-.097634 .927522-.313823C1.21345-.341719 1.234371-.578829 1.234371-.641594C1.234371-.81594 1.115816-.969365 .9066-.969365S.571856-.829888 .571856-.627646C.571856-.153425 .969365 .139477 1.645828 .139477C2.643088 .139477 3.584558-.801993 3.584558-2.294396C3.584558-4.02391 2.817435-4.630635 2.001494-4.630635C1.771357-4.630635 1.290162-4.595766 .892653-4.20523C.655542-3.975093 .376588-3.703113 .376588-3.075467C.376588-2.189788 1.080946-1.534247 1.896887-1.534247C2.454795-1.534247 2.75467-1.903861 2.915068-2.217684V-2.078207ZM1.931756-1.729514C1.659776-1.729514 1.401743-1.820174 1.206476-2.140971C1.046077-2.399004 1.046077-2.691905 1.046077-3.075467C1.046077-3.47995 1.046077-3.758904 1.248319-4.037858C1.415691-4.281943 1.645828-4.428394 2.008468-4.428394C2.364134-4.428394 2.57335-4.20523 2.684932-4.02391C2.873225-3.731009 2.894147-3.242839 2.894147-2.998755C2.894147-2.092154 2.371108-1.729514 1.931756-1.729514Z'/>
+</defs>
+<g id='c29-06-koraki-odvoda-page1'>
+<g stroke-miterlimit='10' transform='translate(-41.566553,90.883035)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='osi'>
+<path d='M0 0H194.81702' fill='none'/>
+<g transform='translate(192.34056,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(202.80219,-2.15277)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,90.883035)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g1-115'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 0V147.87016' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,145.3937)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-2.39468,155.85533)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,90.883035)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g1-114'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 0V-2.84544' fill='none'/>
+<g transform='translate(-12.36115,-14.61844)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,90.883035)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g2-49'/>
+<use x='-36.585214' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g2-48'/>
+<use x='-31.603875' y='87.267671' xlink:href='#c29-06-koraki-odvoda-g0-0'/>
+<use x='-25.377195' y='87.267671' xlink:href='#c29-06-koraki-odvoda-g3-49'/>
+<use x='-21.405955' y='87.267671' xlink:href='#c29-06-koraki-odvoda-g3-52'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M28.45274 0V-2.84544' fill='none'/>
+<g transform='translate(16.0916,-14.61844)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,90.883035)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g2-49'/>
+<use x='-36.585214' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g2-48'/>
+<use x='-31.603875' y='87.267671' xlink:href='#c29-06-koraki-odvoda-g0-0'/>
+<use x='-25.377195' y='87.267671' xlink:href='#c29-06-koraki-odvoda-g3-49'/>
+<use x='-21.405955' y='87.267671' xlink:href='#c29-06-koraki-odvoda-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M56.90549 0V-2.84544' fill='none'/>
+<g transform='translate(44.54434,-14.61844)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,90.883035)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g2-49'/>
+<use x='-36.585214' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g2-48'/>
+<use x='-31.603875' y='87.267671' xlink:href='#c29-06-koraki-odvoda-g0-0'/>
+<use x='-25.377195' y='87.267671' xlink:href='#c29-06-koraki-odvoda-g3-49'/>
+<use x='-21.405955' y='87.267671' xlink:href='#c29-06-koraki-odvoda-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M85.35823 0V-2.84544' fill='none'/>
+<g transform='translate(74.99014,-14.61844)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,90.883035)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g2-49'/>
+<use x='-36.585214' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g2-48'/>
+<use x='-31.603875' y='87.267671' xlink:href='#c29-06-koraki-odvoda-g0-0'/>
+<use x='-25.377195' y='87.267671' xlink:href='#c29-06-koraki-odvoda-g3-56'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M113.81097 0V-2.84544' fill='none'/>
+<g transform='translate(103.44289,-14.61844)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,90.883035)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g2-49'/>
+<use x='-36.585214' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g2-48'/>
+<use x='-31.603875' y='87.267671' xlink:href='#c29-06-koraki-odvoda-g0-0'/>
+<use x='-25.377195' y='87.267671' xlink:href='#c29-06-koraki-odvoda-g3-54'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M142.26372 0V-2.84544' fill='none'/>
+<g transform='translate(131.89563,-14.61844)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,90.883035)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g2-49'/>
+<use x='-36.585214' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g2-48'/>
+<use x='-31.603875' y='87.267671' xlink:href='#c29-06-koraki-odvoda-g0-0'/>
+<use x='-25.377195' y='87.267671' xlink:href='#c29-06-koraki-odvoda-g3-52'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M170.71646 0V-2.84544' fill='none'/>
+<g transform='translate(160.34837,-14.61844)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,90.883035)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g2-49'/>
+<use x='-36.585214' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g2-48'/>
+<use x='-31.603875' y='87.267671' xlink:href='#c29-06-koraki-odvoda-g0-0'/>
+<use x='-25.377195' y='87.267671' xlink:href='#c29-06-koraki-odvoda-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 0H-2.84544' fill='none'/>
+<g transform='translate(-27.2146,-4.07)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,90.883035)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g2-49'/>
+<use x='-36.585214' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g2-48'/>
+<use x='-31.603875' y='87.267671' xlink:href='#c29-06-koraki-odvoda-g0-0'/>
+<use x='-25.377195' y='87.267671' xlink:href='#c29-06-koraki-odvoda-g3-57'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 46.94684H-2.84544' fill='none'/>
+<g transform='translate(-27.2146,42.87683)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,90.883035)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g2-49'/>
+<use x='-36.585214' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g2-48'/>
+<use x='-31.603875' y='87.267671' xlink:href='#c29-06-koraki-odvoda-g0-0'/>
+<use x='-25.377195' y='87.267671' xlink:href='#c29-06-koraki-odvoda-g3-54'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 93.89413H-2.84544' fill='none'/>
+<g transform='translate(-27.2146,89.82413)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,90.883035)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g2-49'/>
+<use x='-36.585214' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g2-48'/>
+<use x='-31.603875' y='87.267671' xlink:href='#c29-06-koraki-odvoda-g0-0'/>
+<use x='-25.377195' y='87.267671' xlink:href='#c29-06-koraki-odvoda-g3-51'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 140.84099H-2.84544' fill='none'/>
+<g transform='translate(-20.96457,136.77098)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,90.883035)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g2-49'/>
+<use x='-36.585214' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g2-48'/>
+<use x='-31.603875' y='87.267671' xlink:href='#c29-06-koraki-odvoda-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='skrajsanje'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M71.13185 0L184.94283 125.1919' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(131.67032,53.2347)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,90.883035)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-41.566553' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g1-114'/>
+<use x='-34.027732' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g2-61'/>
+<use x='-23.511652' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g1-115'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='zaokrozitev'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 122.34688L77.96066 36.70384' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(33.50844,97.18167)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,90.883035)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-41.566553' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g1-114'/>
+<use x='-34.027732' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g2-61'/>
+<use x='-23.511652' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g1-107'/>
+<use x='-18.011433' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g1-61'/>
+<use x='-13.030094' y='90.883035' xlink:href='#c29-06-koraki-odvoda-g1-115'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='meja'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M0 122.31822C0 122.31822 2.2613 119.83069 3.1298 118.87538S5.3872 116.38828 6.25963 115.43297C7.13205 114.47766 8.54524 112.94948 9.41766 111.99013S11.67899 109.47798 12.54749 108.51863S14.8088 106.03108 15.6773 105.07578C16.5458 104.12047 17.93863 102.58867 18.80713 101.63336S21.06845 99.14589 21.93695 98.19052S24.19429 95.70305 25.06677 94.74768S27.35275 92.26413 28.22523 91.30484C29.09772 90.34555 30.48656 88.79306 31.35506 87.83377S33.61638 85.3463 34.48488 84.39093S36.7462 81.90346 37.6147 80.94809S39.87602 78.4606 40.74452 77.50523C41.61302 76.54987 43.0019 75.02168 43.87433 74.0624C44.74675 73.1031 46.15996 71.55061 47.03238 70.59132S49.29369 68.10385 50.16219 67.14848C51.03069 66.19312 52.42351 64.66101 53.292 63.70564C54.1605 62.75027 55.55333 61.21817 56.42183 60.2628S58.68315 57.77924 59.55165 56.81995S61.80905 54.30818 62.68147 53.34889C63.5539 52.3896 64.96709 50.8614 65.83951 49.90604C66.71193 48.95067 68.10083 47.41856 68.96933 46.4632C69.83783 45.50783 71.23065 43.97176 72.09915 43.02036C72.96765 42.06895 74.36047 40.54965 75.22897 39.60616C76.09747 38.66266 77.49028 37.14003 78.35878 36.2202S80.61612 33.84116 81.4886 32.97662C82.36108 32.11209 83.7746 30.71556 84.64708 29.98921S86.9084 28.19162 87.7769 27.7416C88.6454 27.29156 90.03828 26.78514 90.90672 26.74564C91.77516 26.70613 93.16766 27.06596 94.0361 27.45679C94.90454 27.84761 96.29742 28.87158 97.16592 29.56244S99.42326 31.58734 100.29575 32.4361C101.16823 33.28485 102.58173 34.76382 103.45421 35.67967S105.71553 38.0974 106.58403 39.03699S108.84535 41.50017 109.71385 42.45161C110.58235 43.40306 111.97517 44.93915 112.84367 45.89445C113.71217 46.84976 115.105 48.38156 115.9735 49.33687S118.23088 51.82434 119.1033 52.77971S121.38893 55.26718 122.26135 56.22255S124.52267 58.70612 125.39117 59.6654C126.25967 60.6247 127.65248 62.17717 128.52098 63.13646S130.7823 65.62395 131.6508 66.57932C132.5193 67.53468 133.91212 69.06679 134.78062 70.02216C135.64912 70.97752 137.03802 72.50963 137.91045 73.465C138.78287 74.42036 140.19606 75.94855 141.06848 76.90784S143.3298 79.41962 144.1983 80.3789C145.0668 81.3382 146.45963 82.86638 147.32813 83.82175C148.19662 84.77711 149.58945 86.30922 150.45795 87.26459S152.71925 89.75208 153.58775 90.70744C154.45625 91.66281 155.8451 93.191 156.71758 94.15028C157.59006 95.10957 159.00357 96.66206 159.87605 97.62135C160.74854 98.58064 162.13737 100.10883 163.00587 101.0642C163.87437 102.01956 165.2672 103.55167 166.1357 104.50703C167.0042 105.4624 168.397 106.99457 169.2655 107.94987C170.134 108.90518 171.52682 110.43698 172.39532 111.39229S174.65273 113.8758 175.52515 114.83514C176.39757 115.7945 177.81076 117.34729 178.68318 118.30664S180.9445 120.79417 181.813 121.74948S184.94283 125.1919 184.94283 125.1919' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='meritve'>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M186.78145 124.53761C186.78145 125.55305 185.95827 126.37624 184.94283 126.37624C183.92738 126.37624 183.1042 125.55305 183.1042 124.53761S183.92738 122.69899 184.94283 122.69899C185.95827 122.69899 186.78145 123.52217 186.78145 124.53761ZM184.94283 124.53761' stroke='none'/>
+</g>
+<g transform='translate(184.94283,124.53761)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,90.883035)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M172.55508 109.48636C172.55508 110.5018 171.7319 111.32498 170.71646 111.32498S168.87784 110.5018 168.87784 109.48636S169.70102 107.64774 170.71646 107.64774S172.55508 108.47092 172.55508 109.48636ZM170.71646 109.48636' stroke='none'/>
+</g>
+<g transform='translate(170.71646,109.48636)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,90.883035)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M144.10234 78.24504C144.10234 79.26048 143.27916 80.08366 142.26372 80.08366S140.4251 79.26048 140.4251 78.24504S141.24828 76.40642 142.26372 76.40642S144.10234 77.2296 144.10234 78.24504ZM142.26372 78.24504' stroke='none'/>
+</g>
+<g transform='translate(142.26372,78.24504)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,90.883035)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M115.6496 46.94684C115.6496 47.96228 114.82642 48.78546 113.81097 48.78546C112.79553 48.78546 111.97235 47.96228 111.97235 46.94684S112.79553 45.10822 113.81097 45.10822C114.82642 45.10822 115.6496 45.9314 115.6496 46.94684ZM113.81097 46.94684' stroke='none'/>
+</g>
+<g transform='translate(113.81097,46.94684)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,90.883035)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M87.19685 14.59627C87.19685 15.61171 86.37367 16.43489 85.35823 16.43489S83.5196 15.61171 83.5196 14.59627S84.34279 12.75764 85.35823 12.75764S87.19685 13.58083 87.19685 14.59627ZM85.35823 14.59627' stroke='none'/>
+</g>
+<g transform='translate(85.35823,14.59627)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,90.883035)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M58.74411 47.9428C58.74411 48.95824 57.92093 49.78142 56.90549 49.78142S55.06686 48.95824 55.06686 47.9428C55.06686 46.92735 55.89005 46.10417 56.90549 46.10417S58.74411 46.92735 58.74411 47.9428ZM56.90549 47.9428' stroke='none'/>
+</g>
+<g transform='translate(56.90549,47.9428)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,90.883035)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M30.29137 84.61842C30.29137 85.63387 29.46819 86.45705 28.45274 86.45705C27.4373 86.45705 26.61412 85.63387 26.61412 84.61842C26.61412 83.60298 27.4373 82.7798 28.45274 82.7798C29.46819 82.7798 30.29137 83.60298 30.29137 84.61842ZM28.45274 84.61842' stroke='none'/>
+</g>
+<g transform='translate(28.45274,84.61842)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,90.883035)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M1.83862 103.45421C1.83862 104.46965 1.01544 105.29283 0 105.29283S-1.83862 104.46965-1.83862 103.45421S-1.01544 101.61559 0 101.61559S1.83862 102.43877 1.83862 103.45421ZM0 103.45421' stroke='none'/>
+</g>
+<g transform='translate(0.0,103.45421)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,90.883035)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='najboljsi'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M91.04869 0V26.74564' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M93.31163 26.74564C93.31163 27.99544 92.2985 29.00858 91.04869 29.00858C89.79889 29.00858 88.78575 27.99544 88.78575 26.74564C88.78575 25.49583 89.79889 24.4827 91.04869 24.4827C92.2985 24.4827 93.31163 25.49583 93.31163 26.74564ZM91.04869 26.74564'/>
+</g>
+<g transform='translate(91.04869,26.74564)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,90.883035)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 29.22</span>: Relative error \(r\) of the forward quotient for the sensitivity of the deflection to \(A_{\mathrm{AC}}\) as a function of the relative step <span class="nobr">\(s = h/A_{\mathrm{AC}}\),</span> on logarithmic scales of both axes. Blue points: computation (double precision). Orange: the estimate \(s + k/s\) from the lemma, with the grey dashed partial lines \(r = s\) (truncation) and \(r = k/s\) (round-off). Open circle: the smallest estimate at <span class="nobr">\(s_* = \sqrt{k}\).</span></figcaption></figure>
+<p>The lemma says what the step should be, and the test shows what happens at a wrong one. Take first a step that is too small, <span class="nobr">\(s = 10^{-14}\).</span> The truncation term there is only <span class="nobr">\(10^{-14}\),</span> and by it alone we would get the <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivative</a> almost exactly. But the difference \(\varphi(h) - \varphi(0) = -36{,}28 \cdot 10^{-18}\) m is only \(3{,}4 \cdot 10^{-15}\) of the value of the deflection. In absolute value it is only \(30\) times the round-off error \(\delta = 1{,}19 \cdot 10^{-18}\) m of each of the two values, so the error of the difference can be up to \(2\delta/(36{,}28 \cdot 10^{-18}\ \text{m}) = 6{,}6\,\%\) of the difference. This is the round-off term \(k/s\) of the table. The measured error is <span class="nobr">\(4{,}1 \cdot 10^{-3}\),</span> which is \(4{,}8 \cdot 10^{5}\) times more than the best measured one at <span class="nobr">\(s = 10^{-8}\).</span> The truncation term alone does not predict this, because it does not include round-off. A step that is too small is therefore an error that no further reduction of the step removes, it only makes it larger.</p>
+<p>At a step that is too large, <span class="nobr">\(s = 10^{-1}\),</span> the error is of another kind and we see its cause at once: we replaced the derivative by a secant across \(10\,\%\) of the area. For the function \(c/A\) we can even write it exactly: <span class="nobr">\(\big(c/(A(1+s)) - c/A\big)/h = -c/(A^2(1+s))\),</span> so the relative error is <span class="nobr">\(1 - 1/(1+s) = s/(1+s) = 0{,}0909\).</span> It is smaller than the estimate \(s\) because \(\varphi''\) falls.</p>
+<p>The difference across both sides, <span class="nobr">\(D_{\mathrm{h}}^{\mathrm{c}} = \big(\hat g(\vek A + h\vek e_{\mathrm{e}}) - \hat g(\vek A - h\vek e_{\mathrm{e}})\big)/(2h)\),</span> has a truncation error of order \(h^2\) (CHK, equation (6.2), PDF p. 104, stated there without proof), and on the same truss at \(s = 10^{-4}\) it is exact to \(1{,}0 \cdot 10^{-8}\) instead of <span class="nobr">\(1{,}0 \cdot 10^{-4}\).</span> But it costs two solutions per variable instead of one. A gradient with \(n\) variables needs \(n\) extra solutions of equation <a class="xref" href="sec-obcutljivost.html#eq-obc-ravnovesje" data-knowl="eq-obc-ravnovesje">(29.33)</a> with the forward difference, \(2n\) with the difference across both sides, besides the solution at the design itself. CHK (PDF p. 104) says of both that they can be very inexact and expensive, but are easy to write down. The two analytic ways are therefore treated by the statements below.</p>
+
+<h3 id="sec-obc-direktna"><span class="h-num">29.6.2</span> The direct method</h3>
+<p>Instead of changing the design, we differentiate the equilibrium equation. If both sides are equal for every <span class="nobr">\(\vek A\),</span> so are their <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivatives</a>. For this we must know that \(\vek u\) as a <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> of the areas has a derivative at all, and that is what the <a class="xref auto" href="sec-implicitna-funkcija.html#thm-implicitna-funkcija" data-knowl="thm-implicitna-funkcija">implicit function theorem</a> guarantees.</p>
+
+<div class="blk lema" id="lem-direktna-metoda"><div class="blk-head"><span class="blk-label">Lemma 29.42</span> <span class="blk-title">Direct method (neposredna metoda)</span></div><div class="blk-body"><p>Let \(\mat K(\vek A) = \sum_{\mathrm{e}} A_{\mathrm{e}}\,\mat K_{\mathrm{e}}\) with given <a class="xref auto" href="sec-matrike.html#def-simetricna-matrika" data-knowl="def-simetricna-matrika">symmetric matrices</a> \(\mat K_{\mathrm{e}}\) of order <span class="nobr">\(m\),</span> the right-hand side \(\vek f(\vek A)\) <a class="xref auto" href="sec-sprememba-polja.html#def-zvezno-odvedljivo-polje" data-knowl="def-zvezno-odvedljivo-polje">continuously differentiable</a> and \(\vek A^*\) a design at which \(\mat K(\vek A^*)\) is <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite</a>. Then in a neighbourhood of \(\vek A^*\) the solution \(\vek u(\vek A)\) of the equation \(\mat K(\vek A)\,\vek u = \vek f(\vek A)\) is a continuously differentiable <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> of the areas, and its <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivative</a> \(\vek w_{\mathrm{e}} = \partial\vek u/\partial A_{\mathrm{e}}\) at \(\vek A^*\) solves a system with the same <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a>,</p>
+<div class="eq" id="eq-obc-direktna">\[\mat K\,\vek w_{\mathrm{e}} = \vek p_{\mathrm{e}} , \qquad \vek p_{\mathrm{e}} = \frac{\partial\vek f}{\partial A_{\mathrm{e}}} - \mat K_{\mathrm{e}}\,\vek u . \tag{29.37}\]</div>
+<p>For the function \(g(\vek A, \vek u)\) of definition <a class="xref" href="sec-obcutljivost.html#def-obcutljivost" data-knowl="def-obcutljivost">29.40</a> it follows that <span class="nobr">\(\partial\hat g/\partial A_{\mathrm{e}} = \partial g/\partial A_{\mathrm{e}} + (\partial g/\partial\vek u)\,\vek w_{\mathrm{e}}\),</span> where \(\partial g/\partial\vek u\) is the row with entries <span class="nobr">\(\partial g/\partial u_{\mathrm{r}}\).</span></p>
+
+<div class="hid-row"><details class="hid zamisel"><summary>Idea</summary><div class="hid-body"><p>Solving \(\vek F(\vek A, \vek u) = \mat K(\vek A)\,\vek u - \vek f(\vek A) = \vek 0\) for the unknowns \(\vek u\) at given \(\vek A\) is exactly a case of the <a class="xref auto" href="sec-implicitna-funkcija.html#thm-implicitna-funkcija" data-knowl="thm-implicitna-funkcija">implicit function theorem</a>, whose pivot condition is ensured by <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definiteness</a>.</p>
+</div></details><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that theorem <a class="xref" href="sec-implicitna-funkcija.html#thm-implicitna-funkcija" data-knowl="thm-implicitna-funkcija">8.34</a> applies to <span class="nobr">\(\vek F\),</span> and that its <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivative</a> <a class="xref" href="sec-implicitna-funkcija.html#eq-mif-odvod-g" data-knowl="eq-mif-odvod-g">(8.19)</a> gives <a class="xref" href="sec-obcutljivost.html#eq-obc-direktna" data-knowl="eq-obc-direktna">(29.37)</a>.</p>
+<ol>
+<li>The points \((\vek A, \vek u)\) have \(n + m\) <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">coordinates</a>. The term \(\mat K(\vek A)\vek u\) is a <a class="xref auto" href="sec-zveznost.html#def-polinom" data-knowl="def-polinom">polynomial</a> in \(\vek A\) and <span class="nobr">\(\vek u\),</span> \(\vek f\) is <a class="xref auto" href="sec-sprememba-polja.html#def-zvezno-odvedljivo-polje" data-knowl="def-zvezno-odvedljivo-polje">continuously differentiable</a>, so \(\vek F\) is continuously differentiable on <span class="nobr">\(\mathbb{R}^{n+m}\).</span> The point \((\vek A^*, \vek u^*)\) with \(\vek u^* = \mat K(\vek A^*)^{-1}\vek f(\vek A^*)\) satisfies <span class="nobr">\(\vek F = \vek 0\).</span></li>
+<li>The <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\partial\vek F/\partial\vek u = \mat K(\vek A)\) has, by theorem <a class="xref" href="sec-skalarni-produkt-funkcij.html#thm-sistem-pozitivno-definitna" data-knowl="thm-sistem-pozitivno-definitna">6.29</a>, all \(m\) pivots (definition <a class="xref" href="sec-implicitna-funkcija.html#def-pivoti" data-knowl="def-pivoti">8.20</a>) at <span class="nobr">\(\vek A^*\),</span> because it is <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite</a>. The condition of theorem <a class="xref" href="sec-implicitna-funkcija.html#thm-implicitna-funkcija" data-knowl="thm-implicitna-funkcija">8.34</a> is met.</li>
+<li>The theorem gives a continuously differentiable \(\vek u(\vek A)\) near \(\vek A^*\) with <span class="nobr">\(\vek F(\vek A, \vek u(\vek A)) = \vek 0\),</span> and by equation <a class="xref" href="sec-implicitna-funkcija.html#eq-mif-odvod-g" data-knowl="eq-mif-odvod-g">(8.19)</a>, <span class="nobr">\(\partial\vek u/\partial A_{\mathrm{e}} = -\mat K^{-1}\,\partial\vek F/\partial A_{\mathrm{e}}\).</span></li>
+<li>Column \(e\) of the matrix \(\partial\vek F/\partial\vek A\) is <span class="nobr">\(\partial\vek F/\partial A_{\mathrm{e}} = \mat K_{\mathrm{e}}\,\vek u - \partial\vek f/\partial A_{\mathrm{e}} = -\vek p_{\mathrm{e}}\),</span> because <span class="nobr">\(\partial\mat K/\partial A_{\mathrm{e}} = \mat K_{\mathrm{e}}\).</span> Hence <span class="nobr">\(\vek w_{\mathrm{e}} = \mat K^{-1}\vek p_{\mathrm{e}}\),</span> which is <a class="xref" href="sec-obcutljivost.html#eq-obc-direktna" data-knowl="eq-obc-direktna">(29.37)</a>.</li>
+<li>The <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> \(\hat g(\vek A) = g(\vek A, \vek u(\vek A))\) is composed of continuously differentiable maps. By the <a class="xref auto" href="sec-zamenjava-spremenljivk.html#lem-verizno-pravilo" data-knowl="lem-verizno-pravilo">chain rule</a> (lemma <a class="xref" href="sec-implicitna-funkcija.html#lem-verizno-pravilo-n" data-knowl="lem-verizno-pravilo-n">8.29</a>), <span class="nobr">\(\partial\hat g/\partial A_{\mathrm{e}} = \partial g/\partial A_{\mathrm{e}} + \sum_{\mathrm{r}} (\partial g/\partial u_{\mathrm{r}})\,\partial u_{\mathrm{r}}/\partial A_{\mathrm{e}}\),</span> which is the last claim.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> CHK section 6.2.1 (PDF pp. 104-105), equation (6.4) and the chain rule (6.3). CHK obtains equation <a class="xref" href="sec-obcutljivost.html#eq-obc-direktna" data-knowl="eq-obc-direktna">(29.37)</a> by differentiating the equilibrium equation. The proof that the derivative exists, by the implicit function theorem, is not from the source.</p></div></div>
+<p>The right-hand side \(\vek p_{\mathrm{e}}\) has the form of a load on the joints, so CHK calls it a pseudo-load (navidezna obremenitev): equation <a class="xref" href="sec-obcutljivost.html#eq-obc-direktna" data-knowl="eq-obc-direktna">(29.37)</a> is the equilibrium equation, only that instead of the <a data-del="realna" class="xref kaz" href="sec-obcutljivost.html#fig-obcutljivost-obtezbi" data-knowl="fig-obcutljivost-obtezbi">force \(\vek F\)</a> the load \(\vek p_{\mathrm{e}}\) acts on the joint <span class="nobr">\(C\).</span> When the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat K\) is factorized (chapter <a class="xref" href="ch-mke-palice.html">7</a>), each such solution takes only a forward and a back substitution (CHK, PDF pp. 104-105), but it must be done for each of the \(n\) areas.</p>
+<p>On our <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">truss</a> \(\vek f = (0, -10\,000)\) N, independent of the areas, so \(\vek p_{\mathrm{e}} = -\mat K_{\mathrm{e}}\,\vek u\) with \(\vek u = (-2{,}7211, -10{,}7143)\) mm. Two solutions of equation <a class="xref" href="sec-obcutljivost.html#eq-obc-direktna" data-knowl="eq-obc-direktna">(29.37)</a> give</p>
+<div class="eq">\[\vek w_{\mathrm{AC}} = (0{,}027211,\ 0{,}036281)\ \text{mm/mm}^2 , \qquad \vek w_{\mathrm{BC}} = (0,\ 0{,}070862)\ \text{mm/mm}^2 .\]</div>
+<p>When the area \(A_{\mathrm{AC}}\) is increased a little by <span class="nobr">\(\Delta A\),</span> the joint \(C\) moves about \(0{,}027\,\Delta A\) mm/mm² to the right and \(0{,}036\,\Delta A\) mm/mm² upward, and the deflection decreases: \(\partial\hat g/\partial A_{\mathrm{AC}} = -0{,}036281\) mm/mm² \(= -36{,}281\) m/m². The <a class="xref auto" href="sec-obcutljivost.html#def-obcutljivost" data-knowl="def-obcutljivost">sensitivity</a> to \(A_{\mathrm{BC}}\) is \(-70{,}862\) m/m². The zero in \(\vek w_{\mathrm{BC}}\) is no accident: by the unit force method (theorem <a class="xref" href="sec-virtualne-sile.html#thm-enotska-sila" data-knowl="thm-enotska-sila">4.95</a>, <span class="nobr">\(\hat N_{\mathrm{AC}} = 1\),</span> <span class="nobr">\(\hat N_{\mathrm{BC}} = 0\))</span> the horizontal displacement of the joint \(C\) equals the elongation of bar <span class="nobr">\(AC\),</span> which does not depend on <span class="nobr">\(A_{\mathrm{BC}}\).</span></p>
+
+<h3 id="sec-obc-prirejena"><span class="h-num">29.6.3</span> The adjoint method</h3>
+<p>The <a class="xref auto" href="sec-obcutljivost.html#lem-direktna-metoda" data-knowl="lem-direktna-metoda">direct method</a> solves one system per variable, even when we want the <a class="xref auto" href="sec-obcutljivost.html#def-obcutljivost" data-knowl="def-obcutljivost">sensitivity</a> of a single <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a>. We turn the question around: instead of &quot;how does \(\vek u\) change with \(A_{\mathrm{e}}\)&quot; we ask &quot;how does one function \(g\) respond to each displacement&quot;. The answer is one solution for all <span class="nobr">\(A_{\mathrm{e}}\).</span></p>
+
+<div class="blk izrek" id="thm-adjungirana-metoda"><div class="blk-head"><span class="blk-label">Theorem 29.43</span> <span class="blk-title">Adjoint method (prirejena metoda)</span></div><div class="blk-body"><p>Let <span class="nobr">\(\mat K\),</span> \(\vek f\) and \(\vek A^*\) be as in lemma <a class="xref" href="sec-obcutljivost.html#lem-direktna-metoda" data-knowl="lem-direktna-metoda">29.42</a> (so \(\mat K\) is <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite</a> at <span class="nobr">\(\vek A^*\))</span> and \(g(\vek A, \vek u)\) as in definition <a class="xref" href="sec-obcutljivost.html#def-obcutljivost" data-knowl="def-obcutljivost">29.40</a>. Let \(\vek\lambda\) be the solution of the adjoint system (prirejeni sistem)</p>
+<div class="eq" id="eq-obc-prirejena">\[\mat K\,\vek\lambda = \Big(\frac{\partial g}{\partial\vek u}\Big)^\T . \tag{29.38}\]</div>
+<p>Then at <span class="nobr">\(\vek A^*\),</span> for every <span class="nobr">\(e\),</span></p>
+<div class="eq" id="eq-obc-obcutljivost">\[\frac{\partial\hat g}{\partial A_{\mathrm{e}}} = \frac{\partial g}{\partial A_{\mathrm{e}}} + \vek\lambda^\T\Big(\frac{\partial\vek f}{\partial A_{\mathrm{e}}} - \mat K_{\mathrm{e}}\,\vek u\Big) , \tag{29.39}\]</div>
+<p>and for all \(n\) areas only one system <a class="xref" href="sec-obcutljivost.html#eq-obc-prirejena" data-knowl="eq-obc-prirejena">(29.38)</a> is needed for each <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> <span class="nobr">\(g\).</span></p>
+
+<div class="hid-row"><details class="hid zamisel"><summary>Idea</summary><div class="hid-body"><p>The <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivative</a> \(\vek w_{\mathrm{e}}\) of lemma <a class="xref" href="sec-obcutljivost.html#lem-direktna-metoda" data-knowl="lem-direktna-metoda">29.42</a> enters the <a class="xref auto" href="sec-obcutljivost.html#def-obcutljivost" data-knowl="def-obcutljivost">sensitivity</a> only through the row <span class="nobr">\(\partial g/\partial\vek u\).</span> If this row already contains <span class="nobr">\(\mat K\),</span> which multiplies \(\vek w_{\mathrm{e}}\) into <span class="nobr">\(\vek p_{\mathrm{e}}\),</span> we arrive at \(\vek p_{\mathrm{e}}\) without <span class="nobr">\(\vek w_{\mathrm{e}}\).</span></p>
+</div></details><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that the row \(\partial g/\partial\vek u\) can be written as <span class="nobr">\(\vek\lambda^\T\mat K\),</span> which eliminates <span class="nobr">\(\vek w_{\mathrm{e}}\).</span></p>
+<ol>
+<li>The <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat K\) is <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite</a>, so by theorem <a class="xref" href="sec-skalarni-produkt-funkcij.html#thm-sistem-pozitivno-definitna" data-knowl="thm-sistem-pozitivno-definitna">6.29</a> system <a class="xref" href="sec-obcutljivost.html#eq-obc-prirejena" data-knowl="eq-obc-prirejena">(29.38)</a> has exactly one solution \(\vek\lambda\) for every right-hand side.</li>
+<li>The matrix \(\mat K\) is symmetric (corollary <a class="xref" href="sec-sestavljanje.html#cor-matrika-konstrukcije" data-knowl="cor-matrika-konstrukcije">7.14</a>), so <a class="xref auto" href="sec-matrike.html#def-transponirana-matrika" data-knowl="def-transponirana-matrika">transposing</a> equation <a class="xref" href="sec-obcutljivost.html#eq-obc-prirejena" data-knowl="eq-obc-prirejena">(29.38)</a> gives <span class="nobr">\(\partial g/\partial\vek u = \vek\lambda^\T\mat K\).</span></li>
+<li>By lemma <a class="xref" href="sec-obcutljivost.html#lem-direktna-metoda" data-knowl="lem-direktna-metoda">29.42</a>, <span class="nobr">\(\partial\hat g/\partial A_{\mathrm{e}} = \partial g/\partial A_{\mathrm{e}} + (\partial g/\partial\vek u)\,\vek w_{\mathrm{e}} = \partial g/\partial A_{\mathrm{e}} + \vek\lambda^\T\,\mat K\,\vek w_{\mathrm{e}}\).</span></li>
+<li>By equation <a class="xref" href="sec-obcutljivost.html#eq-obc-direktna" data-knowl="eq-obc-direktna">(29.37)</a>, <span class="nobr">\(\mat K\,\vek w_{\mathrm{e}} = \vek p_{\mathrm{e}} = \partial\vek f/\partial A_{\mathrm{e}} - \mat K_{\mathrm{e}}\vek u\).</span> Substituting gives <a class="xref" href="sec-obcutljivost.html#eq-obc-obcutljivost" data-knowl="eq-obc-obcutljivost">(29.39)</a>.</li>
+<li>The <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vector</a> \(\vek\lambda\) does not depend on <span class="nobr">\(e\),</span> so one system <a class="xref" href="sec-obcutljivost.html#eq-obc-prirejena" data-knowl="eq-obc-prirejena">(29.38)</a> serves all variables.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> CHK section 6.2.2 (PDF pp. 105-106), equations (6.7) and (6.8), where the proof is by substituting (6.4) into (6.6). The comparison of costs (PDF p. 106) we summarize below. The notation with \(\mat K_{\mathrm{e}}\) is ours.</p></div></div>
+<p>The name comes from the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> of system <a class="xref" href="sec-obcutljivost.html#eq-obc-prirejena" data-knowl="eq-obc-prirejena">(29.38)</a> being the adjoint (<a class="xref auto" href="sec-matrike.html#def-transponirana-matrika" data-knowl="def-transponirana-matrika">transposed</a>) matrix of the system of the direct method. For symmetric \(\mat K\) they are the same, as for every <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">truss</a> of ours, but in general it would be the transpose. Let us compare costs. The direct method solves \(n\) systems <span class="nobr">\(\mat K\vek w_{\mathrm{e}} = \vek p_{\mathrm{e}}\),</span> one for each area. The adjoint method solves one for each function that we differentiate, that is for the objective and each of the \(l\) constraints, in all <span class="nobr">\(l + 1\).</span> For a truss with \(n = 100\) bars and one deflection constraint this is \(100\) against \(2\) solutions with a factorized matrix. CHK (PDF p. 106) summarizes: the adjoint method is better when there are fewer constraints than design variables, otherwise the direct one. On our truss the objective is the volume \(V = \sum_{\mathrm{e}} A_{\mathrm{e}}L_{\mathrm{e}}\) with \(\partial V/\partial A_{\mathrm{e}} = L_{\mathrm{e}}\) and no system, so the adjoint method needs one system for the deflection, the direct method two, and at \(n = 2\) the advantage is not yet large.</p>
+<p>The theorem holds when the matrix \(\mat K\) is <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite</a>, and for a truss we lose it when the area of a bar drops to zero. Let us test it: we reduce the area of bar \(BC\) and \(A_{\mathrm{AC}} = 100\) mm² stays. Bar \(AC\) is horizontal and cannot carry a vertical force, so the joint \(C\) moves more and more. The deflection and the sensitivity to <span class="nobr">\(A_{\mathrm{BC}}\),</span> computed by theorem <a class="xref" href="sec-obcutljivost.html#thm-adjungirana-metoda" data-knowl="thm-adjungirana-metoda">29.43</a> and from the closed form \(-c_2/A_{\mathrm{BC}}^2\) (both give the same), are:</p>
+<table>
+<thead>
+<tr>
+<th>\(A_{\mathrm{BC}}\) in mm²</th>
+<th>deflection \(g\) in mm</th>
+<th>\(\partial\hat g/\partial A_{\mathrm{BC}}\) in mm/mm²</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>\(100\)</td>
+<td>\(10{,}7\)</td>
+<td>\(-0{,}0709\)</td>
+</tr>
+<tr>
+<td>\(10\)</td>
+<td>\(74{,}5\)</td>
+<td>\(-7{,}09\)</td>
+</tr>
+<tr>
+<td>\(1\)</td>
+<td>\(712\)</td>
+<td>\(-709\)</td>
+</tr>
+<tr>
+<td>\(0{,}1\)</td>
+<td>\(7090\)</td>
+<td>\(-70\,862\)</td>
+</tr>
+</tbody>
+</table>
+<p>Each row has a \(10\) times smaller area and a \(100\) times larger sensitivity, as for <span class="nobr">\(1/A^2\).</span> At <span class="nobr">\(A_{\mathrm{BC}} = 0\),</span> \(\mat K = A_{\mathrm{AC}}\,\mat K_{\mathrm{AC}}\) has a zero second row and column, it is singular (<a class="xref auto" href="sec-determinanta.html#def-determinanta" data-knowl="def-determinanta">determinant</a> zero), the adjoint system <a class="xref" href="sec-obcutljivost.html#eq-obc-prirejena" data-knowl="eq-obc-prirejena">(29.38)</a> has no solution and the theorem does not apply. The lower two rows have deflections of \(0{,}71\) m and \(7{,}1\) m on a truss with a span of \(4\) m, where the small-displacement model of section <a class="xref" href="sec-palicje-ravnina-mke.html#sec-palicje-konzola-mke">7.5.2</a> no longer holds. The formula therefore says only that the sensitivity grows beyond all bounds as the bar vanishes, not what the deflection of such a bar would really be. Section <a class="xref" href="sec-najmanjsa-podajnost.html">29.5</a> has the same difficulty for bars whose area falls toward zero.</p>
+
+<h3 id="sec-obc-podajnost"><span class="h-num">29.6.4</span> Sensitivity of the compliance</h3>
+<p>For the compliance \(C(\vek A) = \vek f^\T\vek u\) (definition <a class="xref" href="sec-najmanjsa-podajnost.html#def-podajnost" data-knowl="def-podajnost">29.32</a>) the <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> \(g = \vek f^\T\vek u\) is itself part of the equilibrium equation, and the theorem will give a special, simple result.</p>
+
+<div class="blk posledica" id="cor-obcutljivost-podajnosti"><div class="blk-head"><span class="blk-label">Corollary 29.44</span> <span class="blk-title">Sensitivity of the compliance (občutljivost podajnosti)</span></div><div class="blk-body"><p>Let \(\vek f\) be independent of the areas and \(\mat K(\vek A) = \sum_{\mathrm{e}} A_{\mathrm{e}}\,\mat K_{\mathrm{e}}\) <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite</a> at <span class="nobr">\(\vek A\),</span> with \(\mat K_{\mathrm{e}}\) from equation <a class="xref" href="sec-obcutljivost.html#eq-obc-ke" data-knowl="eq-obc-ke">(29.32)</a>. Let bar \(e\) have the elongation \(\Delta L_{\mathrm{e}}\) and the <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">strain</a> <span class="nobr">\(\varepsilon_{\mathrm{e}} = \Delta L_{\mathrm{e}}/L_{\mathrm{e}}\).</span> Then</p>
+<div class="eq" id="eq-obc-podajnost">\[\frac{\partial C}{\partial A_{\mathrm{e}}} = -\,\vek u^\T\mat K_{\mathrm{e}}\,\vek u = -E\,\varepsilon_{\mathrm{e}}^2\,L_{\mathrm{e}} = -\frac{2\,U_{\mathrm{e}}}{A_{\mathrm{e}}} , \tag{29.40}\]</div>
+<p>where \(U_{\mathrm{e}} = \tfrac12 E\,\varepsilon_{\mathrm{e}}^2\,A_{\mathrm{e}} L_{\mathrm{e}}\) is the strain energy of bar <span class="nobr">\(e\).</span> The <a class="xref auto" href="sec-obcutljivost.html#def-obcutljivost" data-knowl="def-obcutljivost">sensitivity</a> is negative for every bar: more material in any bar decreases the compliance.</p>
+
+<div class="hid-row"><details class="hid zamisel"><summary>Idea</summary><div class="hid-body"><p>For \(g = \vek f^\T\vek u\) the adjoint system is the equilibrium equation, so the adjoint solution is \(\vek u\) itself and we need no new system.</p>
+</div></details><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that theorem <a class="xref" href="sec-obcutljivost.html#thm-adjungirana-metoda" data-knowl="thm-adjungirana-metoda">29.43</a> gives <span class="nobr">\(\vek\lambda = \vek u\),</span> and then express \(\vek u^\T\mat K_{\mathrm{e}}\vek u\) by the elongation.</p>
+<ol>
+<li>For <span class="nobr">\(g(\vek A, \vek u) = \vek f^\T\vek u\),</span> \(\partial g/\partial\vek A = \vek 0\) and <span class="nobr">\(\partial g/\partial\vek u = \vek f^\T\).</span> The adjoint system <a class="xref" href="sec-obcutljivost.html#eq-obc-prirejena" data-knowl="eq-obc-prirejena">(29.38)</a> is <span class="nobr">\(\mat K\vek\lambda = \vek f\),</span> which is the equilibrium equation, so <span class="nobr">\(\vek\lambda = \vek u\).</span></li>
+<li>Since <span class="nobr">\(\partial\vek f/\partial A_{\mathrm{e}} = \vek 0\),</span> equation <a class="xref" href="sec-obcutljivost.html#eq-obc-obcutljivost" data-knowl="eq-obc-obcutljivost">(29.39)</a> gives <span class="nobr">\(\partial C/\partial A_{\mathrm{e}} = -\vek u^\T\mat K_{\mathrm{e}}\vek u\).</span></li>
+<li>By equation <a class="xref" href="sec-obcutljivost.html#eq-obc-ke" data-knowl="eq-obc-ke">(29.32)</a>, <span class="nobr">\(\vek u^\T\mat K_{\mathrm{e}}\vek u = (E/L_{\mathrm{e}})\,(\vek b_{\mathrm{e}}^\T\vek u)^2 = (E/L_{\mathrm{e}})\,\Delta L_{\mathrm{e}}^2\),</span> because \(\vek b_{\mathrm{e}}^\T\vek u\) is the elongation of the bar. With \(\Delta L_{\mathrm{e}} = \varepsilon_{\mathrm{e}}L_{\mathrm{e}}\) this is <span class="nobr">\(E\,\varepsilon_{\mathrm{e}}^2\,L_{\mathrm{e}}\).</span></li>
+<li>By definition <a class="xref" href="sec-delo-sil-na-palici.html#def-deformacijska-energija-palice" data-knowl="def-deformacijska-energija-palice">4.2</a> with \(w = \tfrac12 E\varepsilon_{\mathrm{e}}^2\) constant along the bar, <span class="nobr">\(U_{\mathrm{e}} = \tfrac12E\varepsilon_{\mathrm{e}}^2A_{\mathrm{e}}L_{\mathrm{e}}\),</span> so <span class="nobr">\(E\varepsilon_{\mathrm{e}}^2L_{\mathrm{e}} = 2U_{\mathrm{e}}/A_{\mathrm{e}}\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> CHK examples 6.1 and 6.2 (PDF pp. 105-106): equation (6.5) at \(\partial\vek f/\partial A_{\mathrm{e}} = \vek 0\) and the conclusion <span class="nobr">\(\vek\lambda = \vek u\).</span> The expression with the elongation and with the energy of the bar is not from the source.</p></div></div>
+<p>By theorem <a class="xref" href="sec-najmanjsa-podajnost.html#thm-pogoj-podajnosti" data-knowl="thm-pogoj-podajnosti">29.37</a>, at <a class="xref auto" href="sec-polnost.html#def-supremum" data-knowl="def-supremum">minimum</a> compliance \(E\varepsilon_{\mathrm{e}}^2\) is the same in all bars with <span class="nobr">\(A_{\mathrm{e}} &gt; 0\).</span> By equation <a class="xref" href="sec-obcutljivost.html#eq-obc-podajnost" data-knowl="eq-obc-podajnost">(29.40)</a> this is \(-\partial C/\partial A_{\mathrm{e}}\) divided by <span class="nobr">\(L_{\mathrm{e}}\):</span> every bar with \(A_{\mathrm{e}} &gt; 0\) gives, at the optimum, the same decrease of compliance per unit volume, <span class="nobr">\(-\partial C/\partial(A_{\mathrm{e}}L_{\mathrm{e}}) = E\varepsilon_{\mathrm{e}}^2\).</span></p>
+
+<div class="blk primer" id="ex-obcutljivost-palicje"><div class="blk-head"><span class="blk-label">Example 29.45</span> <span class="blk-title">Sensitivities of the wall truss (občutljivosti stenskega paličja)</span></div><div class="blk-body"><p>The wall <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">truss</a> of the introduction of this section has, by section <a class="xref" href="sec-palicje-ravnina-mke.html#sec-palicje-konzola-mke">7.5.2</a>, the <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial forces</a> \(N_{\mathrm{AC}} = -13{,}33\) kN and \(N_{\mathrm{BC}} = 16{,}67\) kN and the compliance \(C = 107{,}14\) J. Let \(g = -v_{\mathrm{C}}\) be the deflection. The adjoint system <a class="xref" href="sec-obcutljivost.html#eq-obc-prirejena" data-knowl="eq-obc-prirejena">(29.38)</a> is <span class="nobr">\(\mat K\vek\lambda = (0, -1)^\T\),</span> which is the equilibrium system with a unit force \(1\) N downward at the joint <span class="nobr"><a data-del="enotska" class="xref kaz" href="sec-obcutljivost.html#fig-obcutljivost-obtezbi" data-knowl="fig-obcutljivost-obtezbi">\(C\)</a>:</span> the solution is \(\vek\lambda = \vek u/(10\,000\ \text{N}) = (-2{,}7211, -10{,}7143)\cdot 10^{-7}\) m/N. The adjoint load is thus the unit force of the unit force method (theorem <a class="xref" href="sec-virtualne-sile.html#thm-enotska-sila" data-knowl="thm-enotska-sila">4.95</a>, <span class="nobr">\(\vek d = -\vek e_{\mathrm{y}}\)),</span> and the axial forces are, by the <a data-del="enotske-sile" class="xref kaz" href="sec-obcutljivost.html#fig-obcutljivost-obtezbi" data-knowl="fig-obcutljivost-obtezbi">right half of the figure</a>, \(\hat N_{\mathrm{AC}} = -4/3\) and <span class="nobr">\(\hat N_{\mathrm{BC}} = 5/3\),</span> per unit force.</p>
+<ol>
+<li>The displacements \(\vek\lambda\) are the displacements under the unit force, for which bar \(e\) carries the force <span class="nobr">\(\hat N_{\mathrm{e}}\).</span> The elongation of a bar is its force times <span class="nobr">\(L_{\mathrm{e}}/(EA_{\mathrm{e}})\),</span> so \(\vek b_{\mathrm{e}}^\T\vek\lambda = \hat N_{\mathrm{e}} L_{\mathrm{e}}/(EA_{\mathrm{e}})\) and <span class="nobr">\(\vek b_{\mathrm{e}}^\T\vek u = N_{\mathrm{e}} L_{\mathrm{e}}/(EA_{\mathrm{e}})\).</span> By equation <a class="xref" href="sec-obcutljivost.html#eq-obc-ke" data-knowl="eq-obc-ke">(29.32)</a>, \(\vek\lambda^\T\mat K_{\mathrm{e}}\vek u = (E/L_{\mathrm{e}})\,(\hat N_{\mathrm{e}}L_{\mathrm{e}}/(EA_{\mathrm{e}}))\,(N_{\mathrm{e}}L_{\mathrm{e}}/(EA_{\mathrm{e}})) = \hat N_{\mathrm{e}}\,N_{\mathrm{e}}\,L_{\mathrm{e}}/(EA_{\mathrm{e}}^2)\) and by equation <a class="xref" href="sec-obcutljivost.html#eq-obc-obcutljivost" data-knowl="eq-obc-obcutljivost">(29.39)</a> <span class="nobr">\(\partial\hat g/\partial A_{\mathrm{e}} = -\hat N_{\mathrm{e}}\,N_{\mathrm{e}}\,L_{\mathrm{e}}/(E\,A_{\mathrm{e}}^2)\).</span></li>
+<li>Bar <span class="nobr">\(AC\):</span> \(-(-4/3)(-13\,333)(4)/(196\cdot 10^9\cdot (10^{-4})^2) = -36{,}281\) m/m². Bar <span class="nobr">\(BC\):</span> \(-(5/3)(16\,667)(5)/(196\cdot 10^9\cdot(10^{-4})^2) = -70{,}862\) m/m². The same numbers were given by the <a class="xref auto" href="sec-obcutljivost.html#lem-direktna-metoda" data-knowl="lem-direktna-metoda">direct method</a> and the adjoint equation <a class="xref" href="sec-obcutljivost.html#eq-obc-obcutljivost" data-knowl="eq-obc-obcutljivost">(29.39)</a>, and a third time by the closed form: for a truss whose forces are fixed by equilibrium, <span class="nobr">\(g = \sum_{\mathrm{e}} \hat N_{\mathrm{e}}N_{\mathrm{e}}L_{\mathrm{e}}/(EA_{\mathrm{e}})\),</span> and its <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivative</a> with respect to \(A_{\mathrm{e}}\) is the one above.</li>
+<li>A check. Multiply all areas by <span class="nobr">\(s\):</span> the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat K\) is multiplied by <span class="nobr">\(s\),</span> the solution \(\vek u\) is divided by <span class="nobr">\(s\),</span> so <span class="nobr">\(g(s\vek A) = g(\vek A)/s\).</span> By the <a class="xref auto" href="sec-zamenjava-spremenljivk.html#lem-verizno-pravilo" data-knowl="lem-verizno-pravilo">chain rule</a> at <span class="nobr">\(s = 1\),</span> <span class="nobr">\(\sum_{\mathrm{e}} A_{\mathrm{e}}\,\partial\hat g/\partial A_{\mathrm{e}} = -g\):</span> \(100\cdot(-0{,}036281) + 100\cdot(-0{,}070862) = -10{,}714\) mm, which is <span class="nobr">\(-g\).</span></li>
+<li>Compliance: \(E\varepsilon_{\mathrm{AC}}^2 = 196 \cdot 10^9 \cdot (-6{,}803 \cdot 10^{-4})^2 = 90{,}70\) kJ/m³ and \(E\varepsilon_{\mathrm{BC}}^2 = 196\cdot 10^9\cdot(8{,}503\cdot 10^{-4})^2 = 141{,}72\) kJ/m³. By equation <a class="xref" href="sec-obcutljivost.html#eq-obc-podajnost" data-knowl="eq-obc-podajnost">(29.40)</a>, \(\partial C/\partial A_{\mathrm{AC}} = -362\,812\) J/m² \(= -0{,}3628\) J/mm² and \(\partial C/\partial A_{\mathrm{BC}} = -0{,}7086\) J/mm², which is \(F\,\partial\hat g/\partial A_{\mathrm{e}}\) <span class="nobr">(\(F = 10\)</span> kN). The check with <span class="nobr">\(s\):</span> \(100\cdot(-0{,}3628 - 0{,}7086) = -107{,}14\) J <span class="nobr">\(= -C\).</span></li>
+</ol>
+</div></div>
+<p>For this <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">truss</a> the expression \(\hat N_{\mathrm{e}} N_{\mathrm{e}} L_{\mathrm{e}}/(EA_{\mathrm{e}}^2)\) is computed without solving anything, because \(N_{\mathrm{e}}\) and \(\hat N_{\mathrm{e}}\) are fixed by equilibrium. For a statically indeterminate truss the forces depend on the areas. The deflection there is no longer a sum \(\sum_{\mathrm{e}} c_{\mathrm{e}}/A_{\mathrm{e}}\) with constant <span class="nobr">\(c_{\mathrm{e}}\),</span> and we do not get the forces \(N_{\mathrm{e}}\) and \(\hat N_{\mathrm{e}}\) without solving the systems for \(\vek u\) and <span class="nobr">\(\vek\lambda\).</span> The adjoint equation <a class="xref" href="sec-obcutljivost.html#eq-obc-obcutljivost" data-knowl="eq-obc-obcutljivost">(29.39)</a> holds there too, since it uses only the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat K_{\mathrm{e}}\) and the solutions \(\vek u\) and <span class="nobr">\(\vek\lambda\).</span> Step 1 of the example uses only the elongations of the bar under these two solutions, so \(\partial\hat g/\partial A_{\mathrm{e}} = -\hat N_{\mathrm{e}}N_{\mathrm{e}}L_{\mathrm{e}}/(EA_{\mathrm{e}}^2)\) holds there as well, with the two forces computed from \(\vek u\) and <span class="nobr">\(\vek\lambda\).</span></p>
+<p>We now have the derivative of the deflection and of the compliance with respect to each area, and we compute it without repeating the whole computation for each area separately. The next section uses these <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivatives</a> to correct the design step by step.</p>
+
+</main>
+<footer><nav class="pager"><a href="sec-najmanjsa-podajnost.html" rel="prev">← 29.5</a><a href="index.html">Contents</a><a href="sec-zaporedne-aproksimacije.html" rel="next">29.7 →</a></nav></footer>
+</body>
+</html>

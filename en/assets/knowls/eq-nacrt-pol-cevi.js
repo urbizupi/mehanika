@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nacrt-pol-cevi"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{a}}^b \\sigma_{\\theta\\theta}\\,\\mathrm{d}r = p\\,a , \\tag{17.44}\\]</div>", "href": "sec-nacrt-analize.html#eq-nacrt-pol-cevi"};

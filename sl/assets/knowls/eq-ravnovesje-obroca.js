@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ravnovesje-obroca"] = {"html": "<div class=\"eq\">\\[F_{\\mathrm{r}} = \\sum_{\\mathrm{j}} Q_{\\psi_\\mathrm{j}}\\cos\\psi_{\\mathrm{j}} . \\tag{25.32}\\]</div>", "href": "sec-obremenitev-lezaja.html#eq-ravnovesje-obroca"};

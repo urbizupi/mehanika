@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ck-odsek"] = {"html": "<div class=\"eq\">\\[\\mat K_{\\mathrm{k}} = \\mat K_0 + w\\,\\mat K_1 + \\bar w\\,\\mat K_1^\\T , \\qquad \\mat M_{\\mathrm{k}} = \\mat M_0 + w\\,\\mat M_1 + \\bar w\\,\\mat M_1^\\T , \\tag{19.19}\\]</div>", "href": "sec-ciklicno-nihanje.html#eq-ck-odsek"};

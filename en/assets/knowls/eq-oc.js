@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-oc"] = {"html": "<div class=\"eq\">\\[A_{\\mathrm{e}}^{k+1} = \\min\\Big\\{\\ \\overline A_{\\mathrm{e}}^{\\,k},\\ \\max\\big\\{\\ \\underline A_{\\mathrm{e}}^{\\,k},\\ A_{\\mathrm{e}}^k\\,(B_{\\mathrm{e}}^k/\\lambda)^{\\eta}\\ \\big\\}\\Big\\} , \\tag{29.46}\\]</div>", "href": "sec-zaporedne-aproksimacije.html#eq-oc"};

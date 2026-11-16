@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-spoj-vrzel"] = {"html": "<div class=\"eq\">\\[\\Delta = w_\\mathrm{c} - w_\\mathrm{s} = \\frac{pR^2}{Eh}\\Big(1 - \\frac{\\nu}{2} - \\frac{1 - \\nu}{2}\\Big) = \\frac{pR^2}{2Eh} = 9{,}566\\ \\mu\\text{m} . \\tag{22.49}\\]</div>", "href": "sec-spoji-lupin.html#eq-spoj-vrzel"};

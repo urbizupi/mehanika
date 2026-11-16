@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dmke-material"] = {"html": "<div class=\"eq\">\\[\\mat c_{\\mathrm{e}} = \\tau_\\varepsilon\\,\\mat k_{\\mathrm{e}} . \\tag{20.32}\\]</div>", "href": "sec-dusenje-mke.html#eq-dmke-material"};

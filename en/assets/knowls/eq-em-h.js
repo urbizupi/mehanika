@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-em-h"] = {"html": "<div class=\"eq\">\\[\\vek h = \\mat M_{11}\\,\\vek s + \\mat M_{12} , \\qquad \\boldsymbol y = \\vek q_1 - \\vek s\\,u_{\\mathrm{g}} . \\tag{21.10}\\]</div>", "href": "sec-efektivna-masa.html#eq-em-h"};

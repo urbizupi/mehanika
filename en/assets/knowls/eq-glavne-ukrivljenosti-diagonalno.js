@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-glavne-ukrivljenosti-diagonalno"] = {"html": "<div class=\"eq\">\\[\\kappa_1 = \\frac{b_{11}}{A_1^2} = \\frac1{R_1} , \\qquad \\kappa_2 = \\frac{b_{22}}{A_2^2} = \\frac1{R_2} . \\tag{22.13}\\]</div>", "href": "sec-ukrivljenost-ploskve.html#eq-glavne-ukrivljenosti-diagonalno"};

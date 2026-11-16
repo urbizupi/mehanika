@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-naloga-podajnosti"] = {"html": "<div class=\"eq\">\\[\\min_{\\vek{A}}\\ C(\\vek A)\\quad \\text{subject to}\\quad \\sum_{\\mathrm{e}=1}^{n} L_{\\mathrm{e}} A_{\\mathrm{e}} \\le V_0 ,\\quad A_{\\mathrm{e}} \\ge 0\\ (e = 1, \\dots, n) , \\tag{29.29}\\]</div>", "href": "sec-najmanjsa-podajnost.html#eq-naloga-podajnosti"};

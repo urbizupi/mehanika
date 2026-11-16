@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-hl-efektivna"] = {"html": "<div class=\"eq\">\\[\\frac{1}{E^*} = \\frac{1 - \\nu_1^2}{E_1} + \\frac{1 - \\nu_2^2}{E_2} , \\qquad \\frac{1}{R} = \\frac{1}{R_1} + \\frac{1}{R_2} . \\tag{25.15}\\]</div>", "href": "sec-hertz-linijski.html#eq-hl-efektivna"};

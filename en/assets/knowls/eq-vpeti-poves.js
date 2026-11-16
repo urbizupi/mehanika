@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vpeti-poves"] = {"html": "<div class=\"eq\">\\[w = w_{\\mathrm{p}}\\Big(1 - \\mathrm{e}^{-\\beta x}(\\cos\\beta x + \\sin\\beta x)\\Big) , \\qquad w_{\\mathrm{p}} = \\frac{pR^2}{Eh}\\Big(1 - \\frac{\\nu}{2}\\Big) , \\tag{22.45}\\]</div>", "href": "sec-upogib-valja.html#eq-vpeti-poves"};

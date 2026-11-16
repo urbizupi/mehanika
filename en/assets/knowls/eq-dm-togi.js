@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dm-togi"] = {"html": "<div class=\"eq\">\\[\\mat K_{11}\\,\\vek s + \\mat K_{12} = \\vek 0 , \\qquad \\mat K_{21}\\,\\vek s + K_{22} = 0 . \\tag{21.22}\\]</div>", "href": "sec-dodatna-masa.html#eq-dm-togi"};

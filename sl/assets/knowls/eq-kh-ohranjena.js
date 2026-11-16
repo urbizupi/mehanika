@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kh-ohranjena"] = {"html": "<div class=\"eq\">\\[\\mathcal{E}^*(t) = \\tfrac12\\int_0^L\\Big(\\mu\\,w_{\\mathrm{t}}(x, t)^2 + (T - \\mu v^2)\\,w_{\\mathrm{x}}(x, t)^2\\Big)\\,\\mathrm{d}x = T_2 - T_0 + V . \\tag{26.19}\\]</div>", "href": "sec-kriticna-hitrost.html#eq-kh-ohranjena"};

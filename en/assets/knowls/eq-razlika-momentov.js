@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-razlika-momentov"] = {"html": "<div class=\"eq\">\\[w_{\\mathrm{podprta}} - w_{\\mathrm{vpeta}} = -\\frac{M_{\\mathrm{a}}\\,(a^2 - r^2)}{2D(1+\\nu)} , \\qquad M_{\\mathrm{r}} = M_\\theta = M_{\\mathrm{a}} . \\tag{18.45}\\]</div>", "href": "sec-krozne-plosce.html#eq-razlika-momentov"};

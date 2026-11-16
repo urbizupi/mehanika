@@ -1,0 +1,1151 @@
+<!doctype html>
+<html lang="sl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>20.4 Viskoelastični modeli · Poglavje 20</title>
+<script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/style.css">
+<noscript><style>#loadbar { display: none; }</style></noscript>
+<script src="assets/config.js"></script>
+<script src="assets/load.js"></script>
+<script defer src="assets/interaktivno.js"></script>
+<script defer src="assets/book.js"></script>
+<script defer src="assets/predavanje.js"></script>
+<script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<div id="loadbar" aria-hidden="true"></div>
+<header class="top"><a class="home" href="index.html">Mehanika</a><nav class="pager"><a href="sec-histerezno-dusenje.html" rel="prev">← 20.3</a><a href="index.html">Kazalo</a><a href="sec-dedni-integral.html" rel="next">20.5 →</a></nav>
+<span class="tools"><a class="lang" href="../en/sec-viskoelasticni-modeli.html" hreflang="en">English</a><button type="button" class="theme-toggle" title="Svetla ali temna tema" aria-label="Svetla ali temna tema"></button><button type="button" data-details="open">Razpri vse</button><button type="button" data-details="close">Skrij vse</button><button type="button" class="fig-side-toggle" aria-pressed="false">Slike ob strani</button></span></header>
+<main>
+<p class="updated">Posodobljeno 16. 11. 2026 ob 10.52</p>
+<p class="crumb"><a href="ch-dusenje.html"><span class="h-num">Poglavje 20</span> Modeli dušenja</a></p>
+<h2 id="sec-viskoelasticni-modeli"><span class="h-num">20.4</span> Viskoelastični modeli</h2>
+<!-- nofig: signpost -->
+<p>Jekleno palico raztegnemo za tisočinko dolžine in jo držimo. Sila, s katero jo vlečemo, ostane praktično enaka. Pri palici iz najlona ni tako: če jo raztegnemo in držimo na dolžini, sila počasi pojema, in če jo obesimo na stalno utež, se podaljšuje še dolgo potem, ko smo utež obesili. Pri jeklu smo to v poglavju <a class="xref" href="ch-konstitutivne-enacbe.html">3</a> zanemarili in zapisali \(\sigma = E\varepsilon\) (definicija <a class="xref" href="sec-natezni-preizkus.html#def-modul-elasticnosti" data-knowl="def-modul-elasticnosti">3.1</a>). Pri najlonu to ne gre. Take materiale smo imenovali <a class="xref auto forward" href="sec-viskoelasticni-modeli.html#def-viskoelasticen-material" data-knowl="def-viskoelasticen-material" title="Definirano kasneje v knjigi">viskoelastične</a> in obljubili, da jih obravnavamo v tem poglavju. Kako zapišemo zakon, v katerem napetost ni odvisna samo od <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">deformacije</a> v tem trenutku, in kaj iz njega sledi za dušenje?</p>
+<!-- nofig: signpost -->
+<p>Material preizkusimo na dva načina, ki ju navaja BOWER (§3.6.1.1, PDF str. 132). Pri prvem palico v trenutku \(t = 0\) hitro raztegnemo na deformacijo \(\varepsilon_0\) in jo držimo. Napetost, ki jo za to potrebujemo, pojema. Temu pojavu pravimo relaksacija (relaxation), kar pomeni popuščanje: napetost popušča, čeprav deformacije ne spreminjamo. Pri drugem palico v trenutku \(t = 0\) obremenimo z napetostjo \(\sigma_0\) in jo držimo. Deformacija se še naprej povečuje. Temu pojavu pravimo lezenje (creep), ker deformacija počasi leze naprej. Iz teh dveh poskusov BOWER določi <a class="xref auto forward" href="sec-viskoelasticni-modeli.html#def-relaksacijski-modul" data-knowl="def-relaksacijski-modul" title="Definirano kasneje v knjigi">relaksacijski modul</a> in <a class="xref auto forward" href="sec-viskoelasticni-modeli.html#def-podajnost-lezenja" data-knowl="def-podajnost-lezenja" title="Definirano kasneje v knjigi">podajnost lezenja</a>, in iz njiju bomo naredili definicije.</p>
+<!-- nofig: signpost -->
+<p>Računamo pri treh predpostavkah. Deformacije so majhne, BOWER (PDF str. 130) navaja manj kot <span class="nobr">\(0{,}5\ \%\),</span> zato lahko kot v poglavju <a class="xref" href="ch-konstitutivne-enacbe.html">3</a> napetost in deformacijo računamo na prvotnem prerezu in dolžini. Temperatura je stalna, ker je odziv polimerov močno odvisen od nje (BOWER, PDF str. 131-132). Obremenitev je enoosna kot pri nateznem preizkusu. Kaj se pri tem dogaja v materialu? Pri kovinah smo to pogledali v razdelku <a class="xref" href="sec-izgube-energije.html">20.1</a>: toplota teče med deli kristala in med zrni, zato se pot obremenjevanja razlikuje od poti razbremenjevanja. Pri polimerih BOWER razlikuje dve vrsti (PDF str. 133). Močno premreženi polimeri imajo zakasnjeno elastično obnašanje (retarded elastic behaviour): deformacija se pri stalni napetosti umiri pri končni vrednosti in se po razbremenitvi vrne. Nepremreženi polimeri imajo lezenje s stalno hitrostjo (steady-state creep): deformacija se pri stalni napetosti ne umiri. Obe vrsti bomo srečali v modelih.</p>
+
+<div class="zgodovina"><p class="zgodovina-label">Iz zgodovine</p><p>Leta 1849 je ruska vlada ustanovila osrednji laboratorij za uteži in mere in za njegovega direktorja postavila A. T. Kupfferja (1799-1865) (TIMO, PDF str. 193). Kupffer je lastnosti kovin preučeval zato, ker lahko vplivajo na merske etalone (TIMO, PDF str. 193). Pri torzijskem nihanju je raziskoval dušenje in pokazal, da je le del dušenja posledica upora zraka, preostanek pa viskoznost materiala (TIMO, PDF str. 194). Pri jeklenih palicah je ugotovil, da se poves po razbremenitvi ne izniči takoj, ampak se več dni zmanjšuje, kar TIMO imenuje elastična naknadna deformacija (elastic afterstrain). Ta pojav povzroča tudi dušenje nihanja (TIMO, PDF str. 194). Kupffer je pokazal še, da se dušenje zaradi naknadne deformacije z višanjem temperature povečuje, in za delo o vplivu temperature je leta 1855 dobil nagrado Kraljeve družbe v Göttingenu (TIMO, PDF str. 194).</p>
+<p>Zgodba je tu iz dveh razlogov. Ločitev dušenja zraka od dušenja v materialu je vprašanje razdelka <a class="xref" href="sec-izgube-energije.html">20.1</a>. Počasno vračanje deformacije v več dneh je lezenje, ki ga opišeta <a class="xref auto forward" href="sec-viskoelasticni-modeli.html#def-kelvin-voigtov-clen" data-knowl="def-kelvin-voigtov-clen" title="Definirano kasneje v knjigi">Kelvin-Voigtov člen</a> in <a class="xref auto forward" href="sec-viskoelasticni-modeli.html#def-standardni-trdnik" data-knowl="def-standardni-trdnik" title="Definirano kasneje v knjigi">standardni trdnik</a> v tem razdelku.</p>
+</div>
+<p>Vrnimo se k palici, ki jo raztegnemo in držimo, in k vprašanju, kako zapisati zakon, v katerem napetost ni odvisna samo od deformacije v tem trenutku. Model mora imeti dve lastnosti hkrati: odzvati se mora takoj, kot vzmet, in vendar morata napetost in deformacija sčasoma popuščati, kot pri dušilniku. Oba elementa že poznamo. Vzmet je linearno elastični material, \(\sigma = E\varepsilon\) (definicija <a class="xref" href="sec-natezni-preizkus.html#def-linearno-elasticen" data-knowl="def-linearno-elasticen">3.3</a>). Dušilnik poznamo iz poglavja <a class="xref" href="ch-nihanje-ena-ps.html">9</a>: sila, s katero upira raztegovanju, je sorazmerna s hitrostjo raztezanja (definicija <a class="xref" href="sec-model-ena-ps.html#def-viskozni-dusilnik" data-knowl="def-viskozni-dusilnik">9.1</a>). Narišimo ju na palici in ju sestavljajmo kot vezje.</p>
+
+<figure class="blk slika" id="fig-c20-clena"><p><span class="svgfig" role="img" aria-label="Maxwellov člen, Kelvin-Voigtov člen in standardni trdnik, narisani kot vzmeti in dušilniki, ki jih vleče napetost"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='429.81pt' height='548.32pt' viewBox='-72.000004 -72.000006 318.377126 406.161953'>
+<defs>
+<path id='c20-04-clena-g0-49' d='M4.030884-1.910834C3.66127-2.343213 3.549689-2.461768 3.284682-2.650062C2.859278-2.956912 2.412951-3.075467 2.02939-3.075467C1.164633-3.075467 .536986-2.336239 .536986-1.499377C.536986-.683437 1.136737 .069738 2.008468 .069738C2.977833 .069738 3.654296-.72528 3.905355-1.094894C4.274969-.662516 4.38655-.54396 4.651557-.355666C5.076961-.048817 5.523288 .069738 5.906849 .069738C6.771606 .069738 7.399253-.669489 7.399253-1.506351C7.399253-2.322291 6.799502-3.075467 5.927771-3.075467C4.958406-3.075467 4.281943-2.280448 4.030884-1.910834ZM4.254047-1.652802C4.533001-2.106102 5.139726-2.810461 5.990535-2.810461C6.708842-2.810461 7.203985-2.175841 7.203985-1.506351S6.660025-.313823 6.018431-.313823C5.369863-.313823 4.923537-.843836 4.254047-1.652802ZM3.682192-1.352927C3.403238-.899626 2.796513-.195268 1.945704-.195268C1.227397-.195268 .732254-.829888 .732254-1.499377S1.276214-2.691905 1.917808-2.691905C2.566376-2.691905 3.012702-2.161893 3.682192-1.352927Z'/>
+<path id='c20-04-clena-g1-17' d='M4.861768-2.759651C4.911582-2.938979 4.941469-3.068493 4.941469-3.337484C4.941469-3.985056 4.542964-4.403487 3.795766-4.403487C3.008717-4.403487 2.49066-3.88543 2.251557-3.536737C2.201743-4.104608 1.783313-4.403487 1.334994-4.403487C.876712-4.403487 .687422-4.014944 .597758-3.835616C.418431-3.496887 .288917-2.899128 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.779577 .577833-2.998755C.747198-3.706102 .946451-4.184309 1.305106-4.184309C1.474471-4.184309 1.613948-4.104608 1.613948-3.726027C1.613948-3.516812 1.58406-3.407223 1.454545-2.889166L.876712-.587796C.846824-.438356 .787049-.209215 .787049-.159402C.787049 .019925 .926526 .109589 1.075965 .109589C1.195517 .109589 1.374844 .029888 1.444583-.169365C1.454545-.18929 1.574097-.657534 1.633873-.9066L1.853051-1.803238C1.912827-2.022416 1.972603-2.241594 2.022416-2.470735C2.042341-2.530511 2.122042-2.859278 2.132005-2.919054C2.161893-3.008717 2.470735-3.566625 2.809465-3.835616C3.028643-3.995019 3.337484-4.184309 3.765878-4.184309S4.303861-3.845579 4.303861-3.486924C4.303861-3.437111 4.303861-3.257783 4.204234-2.859278L3.068493 1.723537C3.038605 1.843088 3.038605 1.863014 3.038605 1.882939C3.038605 2.032379 3.148194 2.15193 3.317559 2.15193C3.626401 2.15193 3.696139 1.863014 3.726027 1.753425L4.861768-2.759651Z'/>
+<path id='c20-04-clena-g1-27' d='M5.160648-3.716065C5.290162-3.716065 5.648817-3.716065 5.648817-4.054795C5.648817-4.293898 5.439601-4.293898 5.260274-4.293898H2.988792C1.484433-4.293898 .37858-2.650062 .37858-1.464508C.37858-.587796 .966376 .109589 1.872976 .109589C3.048568 .109589 4.373599-1.09589 4.373599-2.630137C4.373599-2.799502 4.373599-3.277709 4.064757-3.716065H5.160648ZM1.882939-.109589C1.39477-.109589 .996264-.468244 .996264-1.185554C.996264-1.484433 1.115816-2.30137 1.464508-2.889166C1.882939-3.576588 2.480697-3.716065 2.819427-3.716065C3.656289-3.716065 3.73599-3.058531 3.73599-2.749689C3.73599-2.281445 3.536737-1.464508 3.198007-.956413C2.809465-.368618 2.271482-.109589 1.882939-.109589Z'/>
+<path id='c20-04-clena-g1-34' d='M1.404732-2.261519C1.733499-2.122042 2.022416-2.122042 2.261519-2.122042C2.520548-2.122042 3.068493-2.122042 3.068493-2.430884C3.068493-2.669988 2.719801-2.699875 2.34122-2.699875C2.132005-2.699875 1.783313-2.67995 1.414695-2.510585C1.185554-2.630137 1.016189-2.819427 1.016189-3.088418C1.016189-3.696139 1.992528-4.054795 2.889166-4.054795C3.048568-4.054795 3.407223-4.054795 3.805729-3.775841C3.915318-3.696139 3.935243-3.676214 4.004981-3.676214C4.134496-3.676214 4.273973-3.805729 4.273973-3.945205C4.273973-4.134496 3.666252-4.513076 2.988792-4.513076C1.843088-4.513076 .767123-3.845579 .767123-3.088418C.767123-2.660025 1.125778-2.410959 1.165629-2.381071C.577833-2.052304 .259029-1.494396 .259029-1.036115C.259029-.388543 .826899 .219178 1.882939 .219178C3.198007 .219178 3.755915-.657534 3.755915-.806974C3.755915-.86675 3.706102-.9066 3.646326-.9066C3.596513-.9066 3.566625-.86675 3.5467-.836862C3.407223-.607721 3.16812-.239103 1.972603-.239103C1.364882-.239103 .518057-.388543 .518057-1.09589C.518057-1.43462 .797011-1.96264 1.404732-2.261519ZM1.733499-2.391034C1.96264-2.470735 2.171856-2.480697 2.34122-2.480697C2.590286-2.480697 2.630137-2.470735 2.809465-2.420922C2.660025-2.351183 2.6401-2.34122 2.261519-2.34122C2.042341-2.34122 1.92279-2.34122 1.733499-2.391034Z'/>
+<path id='c20-04-clena-g1-69' d='M7.053549-2.321295C7.073474-2.371108 7.103362-2.440847 7.103362-2.460772C7.103362-2.470735 7.103362-2.570361 6.983811-2.570361C6.894147-2.570361 6.874222-2.510585 6.854296-2.450809C6.206725-.976339 5.838107-.308842 4.134496-.308842H2.67995C2.540473-.308842 2.520548-.308842 2.460772-.318804C2.361146-.328767 2.331258-.33873 2.331258-.418431C2.331258-.448319 2.331258-.468244 2.381071-.647572L3.058531-3.367372H4.044832C4.891656-3.367372 4.891656-3.158157 4.891656-2.909091C4.891656-2.839352 4.891656-2.719801 4.821918-2.420922C4.801993-2.371108 4.79203-2.34122 4.79203-2.311333C4.79203-2.261519 4.83188-2.201743 4.921544-2.201743C5.001245-2.201743 5.031133-2.251557 5.070984-2.400996L5.638854-4.732254C5.638854-4.79203 5.589041-4.841843 5.519303-4.841843C5.429639-4.841843 5.409714-4.782067 5.379826-4.662516C5.17061-3.905355 4.991283-3.676214 4.07472-3.676214H3.138232L3.73599-6.07721C3.825654-6.425903 3.835616-6.465753 4.273973-6.465753H5.678705C6.894147-6.465753 7.193026-6.176837 7.193026-5.3599C7.193026-5.120797 7.193026-5.100872 7.153176-4.83188C7.153176-4.772105 7.143213-4.702366 7.143213-4.652553S7.173101-4.533001 7.262765-4.533001C7.372354-4.533001 7.382316-4.592777 7.402242-4.782067L7.601494-6.505604C7.631382-6.774595 7.581569-6.774595 7.332503-6.774595H2.30137C2.102117-6.774595 2.002491-6.774595 2.002491-6.575342C2.002491-6.465753 2.092154-6.465753 2.281445-6.465753C2.650062-6.465753 2.929016-6.465753 2.929016-6.286426C2.929016-6.246575 2.929016-6.22665 2.879203-6.047323L1.564134-.777086C1.464508-.388543 1.444583-.308842 .657534-.308842C.488169-.308842 .37858-.308842 .37858-.119552C.37858 0 .468244 0 .657534 0H5.828144C6.057285 0 6.067248-.009963 6.136986-.169365L7.053549-2.321295Z'/>
+<path id='c20-04-clena-g2-43' d='M4.07472-2.291407H6.854296C6.993773-2.291407 7.183064-2.291407 7.183064-2.49066S6.993773-2.689913 6.854296-2.689913H4.07472V-5.479452C4.07472-5.618929 4.07472-5.808219 3.875467-5.808219S3.676214-5.618929 3.676214-5.479452V-2.689913H.886675C.747198-2.689913 .557908-2.689913 .557908-2.49066S.747198-2.291407 .886675-2.291407H3.676214V.498132C3.676214 .637609 3.676214 .826899 3.875467 .826899S4.07472 .637609 4.07472 .498132V-2.291407Z'/>
+<path id='c20-04-clena-g2-61' d='M6.844334-3.257783C6.993773-3.257783 7.183064-3.257783 7.183064-3.457036S6.993773-3.656289 6.854296-3.656289H.886675C.747198-3.656289 .557908-3.656289 .557908-3.457036S.747198-3.257783 .896638-3.257783H6.844334ZM6.854296-1.325031C6.993773-1.325031 7.183064-1.325031 7.183064-1.524284S6.993773-1.723537 6.844334-1.723537H.896638C.747198-1.723537 .557908-1.723537 .557908-1.524284S.747198-1.325031 .886675-1.325031H6.854296Z'/>
+<path id='c20-04-clena-g3-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='c20-04-clena-g3-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+</defs>
+<g id='c20-04-clena-page1'>
+<g stroke-miterlimit='10' transform='translate(-34.70123,-45.496487)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='maxwell'>
+<g class='del' data-del='vzmet'>
+<g class='del' data-del='vzmet'>
+<path d='M0 0H7.11317L11.3809 8.5359L19.91681-8.5359L28.45271 8.5359L36.98862-8.5359L45.52452 8.5359L49.79225 0H68.2864' fill='none'/>
+</g>
+<g transform='translate(30.16405,16.43661)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-45.496487)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-34.70123' y='-45.496487' xlink:href='#c20-04-clena-g1-69'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='dusilnik'>
+<g class='del' data-del='dusilnik'>
+<path d='M68.2864 0H78.24504' fill='none'/>
+<path d='M78.24504-8.5359V8.5359H115.23326V-8.5359ZM115.23326 8.5359' fill='none'/>
+<path d='M98.16187-5.69046V5.69046' fill='none'/>
+<path d='M98.16187 0H142.26372' fill='none'/>
+</g>
+<g transform='translate(94.07712,18.38104)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-45.496487)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-34.70123' y='-45.496487' xlink:href='#c20-04-clena-g1-17'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='sila'>
+<g stroke-width='0.9'>
+<path d='M0 0H-32.76503' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,-30.16,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-21.53078,3.78297)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-45.496487)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-34.70123' y='-45.496487' xlink:href='#c20-04-clena-g1-27'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M142.26372 0H175.02875' fill='none'/>
+<g transform='translate(172.42372,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(157.72159,3.78297)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-45.496487)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-34.70123' y='-45.496487' xlink:href='#c20-04-clena-g1-27'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<path d='M1.83862 0C1.83862 1.01544 1.01544 1.83862 0 1.83862S-1.83862 1.01544-1.83862 0S-1.01544-1.83862 0-1.83862S1.83862-1.01544 1.83862 0ZM0 0' stroke='none'/>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-45.496487)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+<path d='M144.10234 0C144.10234 1.01544 143.27916 1.83862 142.26372 1.83862S140.4251 1.01544 140.4251 0S141.24828-1.83862 142.26372-1.83862S144.10234-1.01544 144.10234 0ZM142.26372 0' stroke='none'/>
+<g transform='translate(142.26372,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-45.496487)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='razteg'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M.33748-21.33955H67.94893' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,6.14052,-21.33955)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,0.22499,-21.33955)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(62.14589,-21.33955)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(68.06142,-21.33955)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g fill='#000' stroke='#000'>
+<g fill='#000' stroke='#000'>
+</g>
+<g transform='translate(29.56856,-29.20306)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-45.496487)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-34.70123' y='-45.496487' xlink:href='#c20-04-clena-g1-34'/>
+<use x='-30.055471' y='-44.002106' xlink:href='#c20-04-clena-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M68.62389-21.33955H141.92624' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,74.42693,-21.33955)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,68.5114,-21.33955)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(136.1232,-21.33955)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(142.03873,-21.33955)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g fill='#000' stroke='#000'>
+<g fill='#000' stroke='#000'>
+</g>
+<g transform='translate(100.70041,-29.20306)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-45.496487)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-34.70123' y='-45.496487' xlink:href='#c20-04-clena-g1-34'/>
+<use x='-30.055471' y='-44.002106' xlink:href='#c20-04-clena-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M.33748-44.10184H141.92624' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,6.14052,-44.10184)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,0.22499,-44.10184)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(136.1232,-44.10184)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(142.03873,-44.10184)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g fill='#000' stroke='#000'>
+<g fill='#000' stroke='#000'>
+</g>
+<g transform='translate(46.87328,-53.49313)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-45.496487)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-34.70123' y='-45.496487' xlink:href='#c20-04-clena-g1-34'/>
+<use x='-27.288138' y='-45.496487' xlink:href='#c20-04-clena-g2-61'/>
+<use x='-16.772058' y='-45.496487' xlink:href='#c20-04-clena-g1-34'/>
+<use x='-12.126298' y='-44.002106' xlink:href='#c20-04-clena-g3-49'/>
+<use x='-5.443063' y='-45.496487' xlink:href='#c20-04-clena-g2-43'/>
+<use x='4.519551' y='-45.496487' xlink:href='#c20-04-clena-g1-34'/>
+<use x='9.16531' y='-44.002106' xlink:href='#c20-04-clena-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='kelvin'>
+<path d='M0-130.88278H19.91682' fill='none'/>
+<path d='M19.91682-159.33553V-102.43004' fill='none'/>
+<path d='M139.41826-159.33553V-130.88278' fill='none'/>
+<path d='M139.41826-130.88278H159.33553' fill='none'/>
+<path d='M139.41826-130.88278V-102.43004' fill='none'/>
+<path d='M19.91682-102.43004H25.60728' fill='none'/>
+<path d='M19.91682-159.33553H25.60728' fill='none'/>
+<path d='M133.7278-102.43004H139.41826' fill='none'/>
+<path d='M133.7278-159.33553H139.41826' fill='none'/>
+<g class='del' data-del='vzmet'>
+<g class='del' data-del='vzmet'>
+<path d='M25.60728-102.43004H32.72046L36.98819-93.89413L45.5241-110.96594L54.06-93.89413L62.5959-110.96594L71.1318-93.89413L75.39954-102.43004H133.7278' fill='none'/>
+</g>
+<g transform='translate(50.08087,-87.41614)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-45.496487)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-34.70123' y='-45.496487' xlink:href='#c20-04-clena-g1-69'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='dusilnik'>
+<g class='del' data-del='dusilnik'>
+<path d='M25.60728-159.33553H35.56592' fill='none'/>
+<path d='M35.56592-167.87143V-150.7996H72.55414V-167.87143ZM72.55414-150.7996' fill='none'/>
+<path d='M55.48276-165.02599V-153.64505' fill='none'/>
+<path d='M55.48276-159.33553H133.7278' fill='none'/>
+</g>
+<g transform='translate(58.51118,-140.95447)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-45.496487)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-34.70123' y='-45.496487' xlink:href='#c20-04-clena-g1-17'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='sila'>
+<g stroke-width='0.9'>
+<path d='M0-130.88278H-32.76503' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,-30.16,-130.88278)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-21.53078,-127.09981)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-45.496487)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-34.70123' y='-45.496487' xlink:href='#c20-04-clena-g1-27'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M159.33553-130.88278H192.10056' fill='none'/>
+<g transform='translate(189.49553,-130.88278)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(174.7934,-127.09981)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-45.496487)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-34.70123' y='-45.496487' xlink:href='#c20-04-clena-g1-27'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<path d='M1.83862-130.88278C1.83862-129.86734 1.01544-129.04416 0-129.04416S-1.83862-129.86734-1.83862-130.88278S-1.01544-132.7214 0-132.7214S1.83862-131.89822 1.83862-130.88278ZM0-130.88278' stroke='none'/>
+<g transform='translate(0.0,-130.88278)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-45.496487)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M161.17415-130.88278C161.17415-129.86734 160.35097-129.04416 159.33553-129.04416C158.32008-129.04416 157.4969-129.86734 157.4969-130.88278S158.32008-132.7214 159.33553-132.7214C160.35097-132.7214 161.17415-131.89822 161.17415-130.88278ZM159.33553-130.88278' stroke='none'/>
+<g transform='translate(159.33553,-130.88278)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-45.496487)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='razteg'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M20.2543-184.94281H139.08078' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,26.05734,-184.94281)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,20.14182,-184.94281)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(133.27774,-184.94281)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(139.19327,-184.94281)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g fill='#000' stroke='#000'>
+<g fill='#000' stroke='#000'>
+</g>
+<g transform='translate(77.33595,-192.80632)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-45.496487)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-34.70123' y='-45.496487' xlink:href='#c20-04-clena-g1-34'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='trdnik'>
+<path d='M0-284.52744H19.91682' fill='none'/>
+<path d='M19.91682-318.67064V-250.38423' fill='none'/>
+<path d='M224.77649-318.67064V-250.38423' fill='none'/>
+<path d='M224.77649-284.52744H244.69376' fill='none'/>
+<path d='M19.91682-250.38423H25.60728' fill='none'/>
+<path d='M219.08603-250.38423H224.77649' fill='none'/>
+<path d='M19.91682-318.67064H31.29819' fill='none'/>
+<path d='M213.39557-318.67064H224.77649' fill='none'/>
+<g class='del' data-del='vzmet'>
+<g class='del' data-del='vzmet'>
+<path d='M25.60728-250.38423H32.72046L36.98819-241.84833L45.5241-258.92014L54.06-241.84833L62.5959-258.92014L71.1318-241.84833L75.39954-250.38423H219.08603' fill='none'/>
+</g>
+<g transform='translate(46.13293,-233.86993)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-45.496487)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-34.70123' y='-45.496487' xlink:href='#c20-04-clena-g1-69'/>
+<use x='-27.346855' y='-44.002106' xlink:href='#c20-04-clena-g0-49'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='vzmet'>
+<path d='M31.29819-318.67064H38.41136L42.6791-310.13474L51.215-327.20654L59.7509-310.13474L68.2868-327.20654L76.82271-310.13474L81.09044-318.67064H99.5846' fill='none'/>
+</g>
+<g transform='translate(56.66191,-300.73404)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-45.496487)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-34.70123' y='-45.496487' xlink:href='#c20-04-clena-g1-69'/>
+<use x='-27.346855' y='-44.002106' xlink:href='#c20-04-clena-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='dusilnik'>
+<g class='del' data-del='dusilnik'>
+<path d='M99.5846-318.67064H109.54323' fill='none'/>
+<path d='M109.54323-327.20654V-310.13472H146.53145V-327.20654ZM146.53145-310.13472' fill='none'/>
+<path d='M129.46007-324.3611V-312.98018' fill='none'/>
+<path d='M129.46007-318.67064H213.39557' fill='none'/>
+</g>
+<g transform='translate(125.3753,-300.28958)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-45.496487)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-34.70123' y='-45.496487' xlink:href='#c20-04-clena-g1-17'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='sila'>
+<g stroke-width='0.9'>
+<path d='M0-284.52744H-32.76503' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,-30.16,-284.52744)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-21.53078,-280.74446)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-45.496487)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-34.70123' y='-45.496487' xlink:href='#c20-04-clena-g1-27'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M244.69376-284.52744H277.45879' fill='none'/>
+<g transform='translate(274.85376,-284.52744)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(260.15163,-280.74446)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-45.496487)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-34.70123' y='-45.496487' xlink:href='#c20-04-clena-g1-27'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<path d='M1.83862-284.52744C1.83862-283.512 1.01544-282.68881 0-282.68881S-1.83862-283.512-1.83862-284.52744S-1.01544-286.36606 0-286.36606S1.83862-285.54288 1.83862-284.52744ZM0-284.52744' stroke='none'/>
+<g transform='translate(0.0,-284.52744)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-45.496487)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M246.53238-284.52744C246.53238-283.512 245.7092-282.68881 244.69376-282.68881C243.67831-282.68881 242.85513-283.512 242.85513-284.52744S243.67831-286.36606 244.69376-286.36606C245.7092-286.36606 246.53238-285.54288 246.53238-284.52744ZM244.69376-284.52744' stroke='none'/>
+<g transform='translate(244.69376,-284.52744)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-45.496487)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='razteg'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M99.92207-345.70065H213.05809' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,105.72511,-345.70065)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,99.80959,-345.70065)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(207.25505,-345.70065)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(213.17058,-345.70065)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g fill='#000' stroke='#000'>
+<g fill='#000' stroke='#000'>
+</g>
+<g transform='translate(151.91544,-353.56416)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-45.496487)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-34.70123' y='-45.496487' xlink:href='#c20-04-clena-g1-34'/>
+<use x='-30.055471' y='-44.002106' xlink:href='#c20-04-clena-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M20.2543-369.88567H224.43901' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,26.05734,-369.88567)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,20.14182,-369.88567)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(218.63597,-369.88567)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(224.5515,-369.88567)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g fill='#000' stroke='#000'>
+<g fill='#000' stroke='#000'>
+</g>
+<g transform='translate(120.01506,-377.74918)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-45.496487)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-34.70123' y='-45.496487' xlink:href='#c20-04-clena-g1-34'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 20.10</span>: Trije modeli palice, vsak je palica, ki jo na obeh koncih vleče napetost <span class="nobr">\(\sigma\).</span> Zgoraj Maxwellov člen: vzmet \(E\) in dušilnik \(\eta\) v zaporedju, deformaciji obeh se seštejeta, <span class="nobr">\(\varepsilon = \varepsilon_1 + \varepsilon_2\).</span> Sredina Kelvin-Voigtov člen: vzmet in dušilnik vzporedno, deformacija je ista. Spodaj standardni trdnik: vzmet \(E_\infty\) vzporedno z Maxwellovo vejo iz vzmeti \(E_1\) in dušilnika <span class="nobr">\(\eta\),</span> \(\varepsilon_2\) je deformacija dušilnika. Sili sta narisani na osi, na kateri delujeta, in se začneta v točki, ki jo vlečeta. Raztezki so črte s prečkama na koncih.</figcaption></figure>
+<p>Začnemo s palico: vsak model je <a data-del="sila" class="xref kaz" href="sec-viskoelasticni-modeli.html#fig-c20-clena" data-knowl="fig-c20-clena">palica, ki jo vlečeta sili na koncih</a>. Vlečemo jo z napetostjo <span class="nobr">\(\sigma\),</span> torej s silo \(\sigma A\) na prerezu <span class="nobr">\(A\).</span> Sila je narisana na osi palice in se začne v točki, ki jo vlečemo. Nato narišemo <a data-del="vzmet" class="xref kaz" href="sec-viskoelasticni-modeli.html#fig-c20-clena" data-knowl="fig-c20-clena">vzmet</a> z modulom \(E\) kot zavito žico, ker se ob sili raztegne, in po <a class="xref auto" href="sec-hookov-zakon.html#thm-hookov-zakon" data-knowl="thm-hookov-zakon">Hookovem zakonu</a> je njena napetost sorazmerna z deformacijo, <span class="nobr">\(\sigma = E\varepsilon\).</span> Nato <a data-del="dusilnik" class="xref kaz" href="sec-viskoelasticni-modeli.html#fig-c20-clena" data-knowl="fig-c20-clena">dušilnik</a>: bat v valju z oljem, ki se pretaka mimo bata in upira njegovemu premikanju, zato je napetost sorazmerna s hitrostjo deformacije. Dušilnik s koeficientom \(c\) iz poglavja <a class="xref" href="ch-nihanje-ena-ps.html">9</a> upira raztegovanju s silo <span class="nobr">\(c\,\dot\ell\),</span> če se razdalja med koncema spreminja s hitrostjo <span class="nobr">\(\dot\ell\).</span> Na palici dolžine \(L\) in preseka \(A\) je sila \(F = \sigma A\) in podaljšek <span class="nobr">\(\Delta\ell = \varepsilon L\),</span> zato je <span class="nobr">\(\sigma = (c L/A)\,\dot\varepsilon\).</span> Število \(\eta = cL/A\) imenujemo viskoznost (viscosity) dušilnika, njena enota je Pa s, ker je \(\sigma\) v Pa in \(\dot\varepsilon\) v 1/s. Isto črko uporablja CM (PDF str. 426). V poglavju <a class="xref" href="ch-nihanje-vec-ps.html">10</a> je \(\eta_{\mathrm{r}}\) <a class="xref auto" href="sec-modalne-koordinate.html#def-modalne-koordinate" data-knowl="def-modalne-koordinate">modalna koordinata</a>, a modalnih koordinat tu ni, zato se pomena ne srečata. Tudi \(\tau\) je drugod v knjigi <a class="xref auto" href="sec-posevni-prerez.html#def-normalna-strizna-napetost" data-knowl="def-normalna-strizna-napetost">strižna napetost</a>, v tem poglavju strižne napetosti ni in s \(\tau\) merimo čas.</p>
+<p>Dva elementa povežemo na dva načina. Pri <a data-del="maxwell" class="xref kaz" href="sec-viskoelasticni-modeli.html#fig-c20-clena" data-knowl="fig-c20-clena">zaporedni vezavi</a> ležita vzmet in dušilnik eden za drugim na osi, skozi oba teče ista sila in imata isto napetost <span class="nobr">\(\sigma\),</span> njuna <a data-del="razteg" class="xref kaz" href="sec-viskoelasticni-modeli.html#fig-c20-clena" data-knowl="fig-c20-clena">raztezka</a> \(\varepsilon_1\) in \(\varepsilon_2\) pa se seštejeta v skupno deformacijo <span class="nobr">\(\varepsilon\).</span> Pri <a data-del="kelvin" class="xref kaz" href="sec-viskoelasticni-modeli.html#fig-c20-clena" data-knowl="fig-c20-clena">vzporedni vezavi</a> ležita ob osi eden poleg drugega med dvema togima <a class="xref auto" href="sec-kirchhoffova-plosca.html#def-plosca" data-knowl="def-plosca">ploščama</a>, ki ju vleče sila. Raztezek je za oba isti, <span class="nobr">\(\varepsilon\),</span> napetosti pa se seštejeta. Tretji <a data-del="trdnik" class="xref kaz" href="sec-viskoelasticni-modeli.html#fig-c20-clena" data-knowl="fig-c20-clena">model</a> združi obe vezavi: vzmet \(E_\infty\) je vzporedna z vejo, v kateri sta vzmet \(E_1\) in dušilnik \(\eta\) v <a class="xref auto" href="sec-zaporedja.html#def-zaporedje" data-knowl="def-zaporedje">zaporedju</a>.</p>
+
+<div class="blk definicija" id="def-viskoelasticen-material"><div class="blk-head"><span class="blk-label">Definicija 20.19</span> <span class="blk-title">Linearni viskoelastični material (linear viscoelastic material)</span></div><div class="blk-body"><p>Naj bo palica pod enoosno napetostjo \(\sigma(t)\) in z majhno <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">deformacijo</a> \(\varepsilon(t)\) pri stalni temperaturi, kot v poglavju <a class="xref" href="ch-konstitutivne-enacbe.html">3</a>. Elastični člen (spring element) z modulom \(E &gt; 0\) ima <span class="nobr">\(\sigma = E\varepsilon\).</span> Viskozni člen (dashpot element) z viskoznostjo \(\eta &gt; 0\) ima <span class="nobr">\(\sigma = \eta\,\dot\varepsilon\),</span> njegova deformacija je <a class="xref auto" href="sec-zveznost.html#def-zveznost" data-knowl="def-zveznost">zvezna funkcija</a> časa tudi ob skoku napetosti, ker bi <a class="xref auto" href="sec-model-ena-ps.html#def-viskozni-dusilnik" data-knowl="def-viskozni-dusilnik">dušilnik</a> pri skoku deformacije potreboval neskončno napetost. Pri zaporedni vezavi imata člena isto napetost in se njuni deformaciji seštejeta. Pri vzporedni vezavi imata isto deformacijo in se njuni napetosti seštejeta. Material je linearni viskoelastični material, če sta \(\sigma(t)\) in \(\varepsilon(t)\) povezana z enačbo \(\sum_{\mathrm{m}=0}^{M} p_{\mathrm{m}}\,\sigma^{(m)} = \sum_{\mathrm{n}=0}^{N} q_{\mathrm{n}}\,\varepsilon^{(n)}\) s stalnimi koeficienti \(p_{\mathrm{m}}\) in <span class="nobr">\(q_{\mathrm{n}}\),</span> kjer je \(\sigma^{(m)}\) \(m\)-ti odvod napetosti po času in \(\varepsilon^{(n)}\) \(n\)-ti odvod deformacije. To je enačba vsakega modela iz vzmeti in dušilnikov. Pri \(M = N = 1\) je material linearni viskoelastični material prvega reda (first-order linear viscoelastic material) in enačba je</p>
+<div class="eq" id="eq-ve-prvi-red">\[p_0\,\sigma + p_1\,\dot\sigma = q_0\,\varepsilon + q_1\,\dot\varepsilon \tag{20.15}\]</div>
+<p>s stalnimi koeficienti <span class="nobr">\(p_0, p_1, q_0, q_1\).</span> Pri skokovni spremembi \(\sigma\) ali \(\varepsilon\) velja enačba <a class="xref" href="sec-viskoelasticni-modeli.html#eq-ve-prvi-red" data-knowl="eq-ve-prvi-red">(20.15)</a> v vsaki točki, kjer sta \(\sigma\) in \(\varepsilon\) <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">odvedljivi</a>, ob skoku pa veljajo zveze elementov zgoraj.</p>
+
+<p class="vir"><span class="vir-label">Vir:</span> CM (9.1.1)-(9.1.2) (PDF str. 419), splošna oblika, CM §9.2 (PDF str. 425-433), enačba (9.2.12) za primer <span class="nobr">\(M = N = 1\),</span> in BOWER §3.6.3 (PDF str. 137-138). Zapis ob skoku je iz tega razdelka. Višji redi (štirielementni modeli, CM §9.2.5, PDF str. 433-435) tu niso obravnavani.</p></div></div>
+<p>Trije modeli s slike so posebni primeri: pri <a class="xref auto forward" href="sec-viskoelasticni-modeli.html#def-maxwellov-clen" data-knowl="def-maxwellov-clen" title="Definirano kasneje v knjigi">Maxwellovem členu</a> je <span class="nobr">\(q_0 = 0\),</span> pri Kelvin-Voigtovem <span class="nobr">\(p_1 = 0\),</span> pri standardnem trdniku so vsi štirje koeficienti različni od nič. Vsak bomo izpeljali iz elementov v izreku o njegovem odzivu.</p>
+<p>To je poenostavitev in treba jo je povedati. Vzmet in dušilnik imata skupaj en sam čas, razmerje <span class="nobr">\(\eta/E\),</span> resnični polimer pa ima po BOWER (PDF str. 139) odziv, ki ga tri elementi ne zadanejo čez dolg čas. CM (PDF str. 419) piše, da taki modeli dajo kvalitativno sliko in ne zadostnega kvantitativnega opisa nobenega pravega materiala. Za natančnejši opis vzamemo več Maxwellovih členov hkrati (<a class="xref auto forward" href="sec-dedni-integral.html#def-pronyjeva-vrsta" data-knowl="def-pronyjeva-vrsta" title="Definirano kasneje v knjigi">Pronyjeva vrsta</a>, BOWER §3.6.4, PDF str. 139), kar je predmet razdelka <a class="xref" href="sec-dedni-integral.html">20.5</a>.</p>
+<p>Zdaj iz poskusov naredimo števili. Pri relaksaciji se deformacija ob \(t = 0\) skokovito poveča na <span class="nobr">\(\varepsilon_0\),</span> prej je bila palica v mirovanju.</p>
+
+<div class="blk definicija" id="def-relaksacijski-modul"><div class="blk-head"><span class="blk-label">Definicija 20.20</span> <span class="blk-title">Relaksacijski modul (relaxation modulus)</span></div><div class="blk-body"><p>Naj bo palica iz <a class="xref auto" href="sec-viskoelasticni-modeli.html#def-viskoelasticen-material" data-knowl="def-viskoelasticen-material">linearnega viskoelastičnega materiala</a> do časa \(t = 0\) v mirovanju in naj bo \(\varepsilon(t) = \varepsilon_0\) za vse <span class="nobr">\(t \ge 0\).</span> Naj bo napetost omejena na vsakem <a class="xref auto" href="sec-konvergenca-zaporedij.html#def-interval" data-knowl="def-interval">intervalu</a> <span class="nobr">\((0, T]\).</span> Relaksacijski modul (relaxation modulus) je <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcija</a> <span class="nobr">\(E_{\mathrm{rel}} : (0, \infty) \to \mathbb{R}\),</span></p>
+<div class="eq" id="eq-relaksacijski-modul">\[E_{\mathrm{rel}}(t) = \frac{\sigma(t)}{\varepsilon_0} , \tag{20.16}\]</div>
+<p>v enoti Pa. Če obstajata, je \(E_0 = E_{\mathrm{rel}}(0+)\) trenutni modul (instantaneous modulus) in \(E_\infty = \lim_{\mathrm{t}\to\infty} E_{\mathrm{rel}}(t)\) dolgotrajni modul (long-time modulus). Pri linearnem materialu \(E_{\mathrm{rel}}\) ni odvisen od <span class="nobr">\(\varepsilon_0\),</span> kar bomo videli pri vsakem modelu.</p>
+
+<p class="vir"><span class="vir-label">Vir:</span> CM §9.2.1 (PDF str. 425), kjer je relaksacijski modul označen z <span class="nobr">\(Y(t)\),</span> in BOWER §3.6.1.1 (PDF str. 132), kjer je \(G(t) = \tau(t)/2\Delta\varepsilon\) za strig. Tu je zapisan z <span class="nobr">\(E_{\mathrm{rel}}\),</span> da ostane povezan z modulom \(E\) iz poglavja <a class="xref" href="ch-konstitutivne-enacbe.html">3</a>.</p></div></div>
+<p>Pri lezenju se napetost ob \(t = 0\) skokovito poveča na <span class="nobr">\(\sigma_0\).</span></p>
+
+<div class="blk definicija" id="def-podajnost-lezenja"><div class="blk-head"><span class="blk-label">Definicija 20.21</span> <span class="blk-title">Podajnost lezenja (creep compliance)</span></div><div class="blk-body"><p>Naj bo palica iz <a class="xref auto" href="sec-viskoelasticni-modeli.html#def-viskoelasticen-material" data-knowl="def-viskoelasticen-material">linearnega viskoelastičnega materiala</a> do časa \(t = 0\) v mirovanju in naj bo \(\sigma(t) = \sigma_0\) za vse <span class="nobr">\(t \ge 0\).</span> Podajnost lezenja (creep compliance) je <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcija</a> <span class="nobr">\(J_{\mathrm{lez}} : (0, \infty) \to \mathbb{R}\),</span></p>
+<div class="eq" id="eq-podajnost-lezenja">\[J_{\mathrm{lez}}(t) = \frac{\varepsilon(t)}{\sigma_0} , \tag{20.17}\]</div>
+<p>v enoti 1/Pa. Vrednost \(J_{\mathrm{lez}}(0+)\) je trenutna podajnost in \(\lim_{\mathrm{t}\to\infty} J_{\mathrm{lez}}(t)\) dolgotrajna podajnost, če obstajata.</p>
+
+<p class="vir"><span class="vir-label">Vir:</span> CM §9.2.1 (PDF str. 425), kjer je podajnost označena z <span class="nobr">\(J(t)\),</span> in BOWER §3.6.1.1 (PDF str. 132). Črka \(J\) je v knjigi tudi Jacobijeva matrika iz poglavij o deformaciji, zato je dodan indeks.</p></div></div>
+<p>Beseda podajnost pove, kako zelo material popusti na enoto napetosti, in je obratna vrednost togosti. Pri vzmeti sta \(J_{\mathrm{lez}} = 1/E\) in \(E_{\mathrm{rel}} = E\) stalni. Pri viskoelastičnem materialu sta <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkciji</a> časa.</p>
+<p>Za vsak model bomo postavili dve vprašanji. Prvo: ali se deformacija pri stalni napetosti umiri, kakor se mora pri trdnem materialu, ki drži obliko? Drugo: ali se material na skok deformacije odzove s končno napetostjo, kakor vzmet? Začnemo z modelom, ki pade pri prvem. Če je dušilnik zaporedno z vzmetjo, imamo Maxwellov člen, ki ga <a data-del="maxwell" class="xref kaz" href="sec-viskoelasticni-modeli.html#fig-c20-clena" data-knowl="fig-c20-clena">slika</a> kaže v zgornji vrstici.</p>
+
+<div class="blk definicija" id="def-maxwellov-clen"><div class="blk-head"><span class="blk-label">Definicija 20.22</span> <span class="blk-title">Maxwellov člen (Maxwell element)</span></div><div class="blk-body"><p>Maxwellov člen je zaporedna vezava elastičnega člena z modulom \(E &gt; 0\) in viskoznega člena z viskoznostjo <span class="nobr">\(\eta &gt; 0\).</span> Število \(\tau = \eta/E\) je <a class="xref auto" href="sec-viskoelasticni-modeli.html#def-relaksacijski-modul" data-knowl="def-relaksacijski-modul">relaksacijski</a> čas (relaxation time) in ima enoto sekunde.</p>
+
+<p class="vir"><span class="vir-label">Vir:</span> CM §9.2.2 (PDF str. 426), BOWER §3.6.3 (PDF str. 137-138).</p></div></div>
+<p>Število \(\tau\) se imenuje relaksacijski čas po tem, kaj pomeni v poskusu: izrek spodaj pokaže, da pri skokovni deformaciji napetost v času \(\tau\) pade na \(1/\mathrm{e}\) začetne vrednosti.</p>
+
+<div class="blk izrek" id="thm-maxwellov-clen"><div class="blk-head"><span class="blk-label">Izrek 20.23</span> <span class="blk-title">Odziv Maxwellovega člena (response of a Maxwell element)</span></div><div class="blk-body"><p>Naj bo <a class="xref auto" href="sec-viskoelasticni-modeli.html#def-maxwellov-clen" data-knowl="def-maxwellov-clen">Maxwellov člen</a> z <span class="nobr">\(E\),</span> \(\eta\) in <span class="nobr">\(\tau = \eta/E\).</span></p>
+<ol>
+<li>Napetost in <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">deformacija</a> zadoščata enačbi <span class="nobr">\(\sigma + \tau\dot\sigma = \eta\,\dot\varepsilon\).</span></li>
+<li>Pri skoku deformacije na \(\varepsilon_0\) ob \(t = 0\) je \(\sigma(t) = E\varepsilon_0\,\mathrm{e}^{-t/\tau}\) za <span class="nobr">\(t &gt; 0\),</span> torej <span class="nobr">\(E_{\mathrm{rel}}(t) = E\,\mathrm{e}^{-t/\tau}\),</span> \(E_0 = E\) in <span class="nobr">\(E_\infty = 0\).</span></li>
+<li>Pri skoku napetosti na \(\sigma_0\) ob \(t = 0\) je \(\varepsilon(t) = \sigma_0\,(1/E + t/\eta)\) za <span class="nobr">\(t \ge 0\),</span> torej <span class="nobr">\(J_{\mathrm{lez}}(t) = 1/E + t/\eta\),</span> ki za \(t \to \infty\) narašča čez vsako mejo.</li>
+<li>Če napetost \(\sigma_0\) po času \(T &gt; 0\) odstranimo, deformacija najprej skoči nazaj za \(\sigma_0/E\) in nato ostane na vrednosti <span class="nobr">\(\sigma_0 T/\eta\),</span> ki ni nič.</li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo štiri trditve. Pri vseh uporabimo oba elementa in vezavo iz definicije <a class="xref" href="sec-viskoelasticni-modeli.html#def-viskoelasticen-material" data-knowl="def-viskoelasticen-material">20.19</a>, pri točki 2 še lemo <a class="xref" href="sec-linearne-enacbe.html#lem-prvi-red" data-knowl="lem-prvi-red">9.34</a>.</p>
+<ol>
+<li>Naj bosta \(\varepsilon_1\) <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">deformacija</a> vzmeti in \(\varepsilon_2\) deformacija <a class="xref auto" href="sec-model-ena-ps.html#def-viskozni-dusilnik" data-knowl="def-viskozni-dusilnik">dušilnika</a>, <span class="nobr">\(\varepsilon = \varepsilon_1 + \varepsilon_2\),</span> napetost \(\sigma\) je ista (zaporedna vezava). Elementa dasta \(\varepsilon_1 = \sigma/E\) in <span class="nobr">\(\dot\varepsilon_2 = \sigma/\eta\).</span></li>
+<li>Odvajamo prvo enačbo, <span class="nobr">\(\dot\varepsilon_1 = \dot\sigma/E\).</span> Vsota je <span class="nobr">\(\dot\varepsilon = \dot\sigma/E + \sigma/\eta\).</span> Pomnožimo z \(\eta\) in uporabimo <span class="nobr">\(\eta/E = \tau\):</span> <span class="nobr">\(\eta\,\dot\varepsilon = \tau\dot\sigma + \sigma\).</span> To je točka 1.</li>
+<li><a class="xref auto" href="sec-viskoelasticni-modeli.html#def-relaksacijski-modul" data-knowl="def-relaksacijski-modul">Relaksacija</a>: napetost je omejena, zato je \(\varepsilon_2(t) = \int_0^t \sigma(u)/\eta\,\mathrm{d}u\) zvezna in \(\varepsilon_2(0) = 0\) (osnovni izrek, izrek <a class="xref" href="sec-integral.html#thm-osnovni-izrek" data-knowl="thm-osnovni-izrek">3.40</a>). Vzmet torej prevzame ves skok, \(\varepsilon_1(0+) = \varepsilon_0\) in <span class="nobr">\(\sigma(0+) = E\varepsilon_0\).</span></li>
+<li>Za \(t &gt; 0\) je \(\varepsilon = \varepsilon_0\) stalna, <span class="nobr">\(\dot\varepsilon = 0\),</span> in točka 1 da <span class="nobr">\(\tau\dot\sigma + \sigma = 0\),</span> torej <span class="nobr">\(\dot\sigma - (-1/\tau)\,\sigma = 0\).</span> Po lemi <a class="xref" href="sec-linearne-enacbe.html#lem-prvi-red" data-knowl="lem-prvi-red">9.34</a> z <span class="nobr">\(s = -1/\tau\),</span> \(f = 0\) in \(y_0 = E\varepsilon_0\) ima ta enačba natanko eno rešitev, <span class="nobr">\(\sigma(t) = E\varepsilon_0\,\mathrm{e}^{-t/\tau}\).</span> To je točka 2.</li>
+<li><a class="xref auto" href="sec-viskoelasticni-modeli.html#def-podajnost-lezenja" data-knowl="def-podajnost-lezenja">Lezenje</a>: za \(t \ge 0\) je <span class="nobr">\(\sigma = \sigma_0\),</span> zato je \(\varepsilon_1 = \sigma_0/E\) stalna. Dušilnik da \(\dot\varepsilon_2 = \sigma_0/\eta\) z \(\varepsilon_2(0) = 0\) kot v koraku 3. Po osnovnem izreku je \(\varepsilon_2(t) = \sigma_0 t/\eta\) in <span class="nobr">\(\varepsilon = \varepsilon_1 + \varepsilon_2 = \sigma_0(1/E + t/\eta)\).</span> To je točka 3.</li>
+<li>Razbremenitev: za \(t &gt; T\) je <span class="nobr">\(\sigma = 0\),</span> torej \(\dot\varepsilon_2 = 0\) in \(\varepsilon_2\) ostane na vrednosti <span class="nobr">\(\sigma_0 T/\eta\),</span> ki jo je imela ob \(T\) (zvezna kot v koraku 3). Vzmet ima \(\varepsilon_1 = 0\) in je skočila nazaj za <span class="nobr">\(\sigma_0/E\).</span> Končna deformacija je <span class="nobr">\(\sigma_0 T/\eta\).</span> To je točka 4.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> CM (9.2.12)-(9.2.19) (PDF str. 426-428) in BOWER §3.6.3 (PDF str. 137-138). Dokaz je z lemo <a class="xref" href="sec-linearne-enacbe.html#lem-prvi-red" data-knowl="lem-prvi-red">9.34</a>, CM uporablja Laplaceovo transformacijo.</p></div></div>
+<p>Poglejmo to na številih. Vzamemo Maxwellov člen z \(E = 1\) in <span class="nobr">\(\tau = 1\),</span> brezdimenzijsko, to je izbran model in ne material. Pri \(t/\tau = 0{,}5;\ 1;\ 2;\ 5\) je \(E_{\mathrm{rel}}/E = 0{,}6065;\ 0{,}3679;\ 0{,}1353;\ 0{,}0067\) in gre proti nič, podajnost \(E J_{\mathrm{lez}}\) pa je <span class="nobr">\(1{,}5;\ 2;\ 3;\ 6\).</span> Če člen obremenimo z \(\sigma_0 = 1\) do \(T = 2\tau\) in razbremenimo, ostane deformacija <span class="nobr">\(2\):</span> od <span class="nobr">\(3\),</span> ki jih je dosegla, jo je vzmet vrnila <span class="nobr">\(1\).</span></p>
+
+<figure class="blk slika" id="fig-c20-relaksacija-lezenje"><p><span class="svgfig" role="img" aria-label="Relaksacijski modul in podajnost lezenja Maxwellovega člena, Kelvin-Voigtovega člena in standardnega trdnika"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='561.82pt' height='234.49pt' viewBox='-72.000004 -72.000002 416.166416 173.695791'>
+<defs>
+<path id='c20-04-relaksacija-lezenje-g0-28' d='M2.929016-3.716065H4.60274C4.732254-3.716065 5.090909-3.716065 5.090909-4.054795C5.090909-4.293898 4.881694-4.293898 4.692403-4.293898H1.902864C1.703611-4.293898 1.315068-4.293898 .876712-3.825654C.547945-3.466999 .268991-2.988792 .268991-2.929016C.268991-2.919054 .268991-2.82939 .388543-2.82939C.468244-2.82939 .488169-2.86924 .547945-2.948941C1.036115-3.716065 1.603985-3.716065 1.8132-3.716065H2.6401L1.663761-.518057C1.62391-.398506 1.564134-.18929 1.564134-.14944C1.564134-.039851 1.633873 .119552 1.853051 .119552C2.181818 .119552 2.231631-.159402 2.261519-.308842L2.929016-3.716065Z'/>
+<path id='c20-04-relaksacija-lezenje-g0-61' d='M4.373599-7.0934C4.423412-7.222914 4.423412-7.262765 4.423412-7.272727C4.423412-7.382316 4.333748-7.47198 4.224159-7.47198C4.154421-7.47198 4.084682-7.442092 4.054795-7.382316L.597758 2.11208C.547945 2.241594 .547945 2.281445 .547945 2.291407C.547945 2.400996 .637609 2.49066 .747198 2.49066C.876712 2.49066 .9066 2.420922 .966376 2.251557L4.373599-7.0934Z'/>
+<path id='c20-04-relaksacija-lezenje-g0-69' d='M7.053549-2.321295C7.073474-2.371108 7.103362-2.440847 7.103362-2.460772C7.103362-2.470735 7.103362-2.570361 6.983811-2.570361C6.894147-2.570361 6.874222-2.510585 6.854296-2.450809C6.206725-.976339 5.838107-.308842 4.134496-.308842H2.67995C2.540473-.308842 2.520548-.308842 2.460772-.318804C2.361146-.328767 2.331258-.33873 2.331258-.418431C2.331258-.448319 2.331258-.468244 2.381071-.647572L3.058531-3.367372H4.044832C4.891656-3.367372 4.891656-3.158157 4.891656-2.909091C4.891656-2.839352 4.891656-2.719801 4.821918-2.420922C4.801993-2.371108 4.79203-2.34122 4.79203-2.311333C4.79203-2.261519 4.83188-2.201743 4.921544-2.201743C5.001245-2.201743 5.031133-2.251557 5.070984-2.400996L5.638854-4.732254C5.638854-4.79203 5.589041-4.841843 5.519303-4.841843C5.429639-4.841843 5.409714-4.782067 5.379826-4.662516C5.17061-3.905355 4.991283-3.676214 4.07472-3.676214H3.138232L3.73599-6.07721C3.825654-6.425903 3.835616-6.465753 4.273973-6.465753H5.678705C6.894147-6.465753 7.193026-6.176837 7.193026-5.3599C7.193026-5.120797 7.193026-5.100872 7.153176-4.83188C7.153176-4.772105 7.143213-4.702366 7.143213-4.652553S7.173101-4.533001 7.262765-4.533001C7.372354-4.533001 7.382316-4.592777 7.402242-4.782067L7.601494-6.505604C7.631382-6.774595 7.581569-6.774595 7.332503-6.774595H2.30137C2.102117-6.774595 2.002491-6.774595 2.002491-6.575342C2.002491-6.465753 2.092154-6.465753 2.281445-6.465753C2.650062-6.465753 2.929016-6.465753 2.929016-6.286426C2.929016-6.246575 2.929016-6.22665 2.879203-6.047323L1.564134-.777086C1.464508-.388543 1.444583-.308842 .657534-.308842C.488169-.308842 .37858-.308842 .37858-.119552C.37858 0 .468244 0 .657534 0H5.828144C6.057285 0 6.067248-.009963 6.136986-.169365L7.053549-2.321295Z'/>
+<path id='c20-04-relaksacija-lezenje-g0-74' d='M5.389788-6.07721C5.469489-6.405978 5.489415-6.495641 6.03736-6.495641C6.196762-6.495641 6.306351-6.495641 6.306351-6.684932C6.306351-6.774595 6.246575-6.804483 6.166874-6.804483C5.917808-6.804483 5.310087-6.774595 5.061021-6.774595C4.732254-6.774595 3.92528-6.804483 3.596513-6.804483C3.506849-6.804483 3.387298-6.804483 3.387298-6.60523C3.387298-6.495641 3.466999-6.495641 3.726027-6.495641C3.955168-6.495641 4.054795-6.495641 4.303861-6.475716C4.542964-6.445828 4.612702-6.41594 4.612702-6.276463C4.612702-6.216687 4.592777-6.146949 4.572852-6.067248L3.427148-1.494396C3.188045-.52802 2.510585 0 1.992528 0C1.733499 0 1.205479-.099626 1.046077-.617684C1.075965-.607721 1.145704-.607721 1.165629-.607721C1.554172-.607721 1.8132-.946451 1.8132-1.24533C1.8132-1.564134 1.544209-1.663761 1.374844-1.663761C1.195517-1.663761 .707347-1.544209 .707347-.86675C.707347-.249066 1.235367 .219178 2.022416 .219178C2.938979 .219178 3.975093-.438356 4.224159-1.424658L5.389788-6.07721Z'/>
+<path id='c20-04-relaksacija-lezenje-g0-116' d='M2.052304-3.985056H2.988792C3.188045-3.985056 3.287671-3.985056 3.287671-4.184309C3.287671-4.293898 3.188045-4.293898 3.008717-4.293898H2.132005C2.49066-5.708593 2.540473-5.907846 2.540473-5.967621C2.540473-6.136986 2.420922-6.236613 2.251557-6.236613C2.221669-6.236613 1.942715-6.22665 1.853051-5.877958L1.464508-4.293898H.52802C.328767-4.293898 .229141-4.293898 .229141-4.104608C.229141-3.985056 .308842-3.985056 .508095-3.985056H1.384807C.667497-1.155666 .627646-.986301 .627646-.806974C.627646-.268991 1.006227 .109589 1.544209 .109589C2.560399 .109589 3.128269-1.344956 3.128269-1.424658C3.128269-1.524284 3.048568-1.524284 3.008717-1.524284C2.919054-1.524284 2.909091-1.494396 2.859278-1.384807C2.430884-.348692 1.902864-.109589 1.564134-.109589C1.354919-.109589 1.255293-.239103 1.255293-.56787C1.255293-.806974 1.275218-.876712 1.315068-1.046077L2.052304-3.985056Z'/>
+<path id='c20-04-relaksacija-lezenje-g1-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c20-04-relaksacija-lezenje-g1-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='c20-04-relaksacija-lezenje-g1-51' d='M2.889166-3.506849C3.706102-3.775841 4.283935-4.473225 4.283935-5.260274C4.283935-6.07721 3.407223-6.635118 2.450809-6.635118C1.444583-6.635118 .687422-6.03736 .687422-5.280199C.687422-4.951432 .9066-4.762142 1.195517-4.762142C1.504359-4.762142 1.703611-4.98132 1.703611-5.270237C1.703611-5.768369 1.235367-5.768369 1.085928-5.768369C1.39477-6.256538 2.052304-6.386052 2.410959-6.386052C2.819427-6.386052 3.367372-6.166874 3.367372-5.270237C3.367372-5.150685 3.347447-4.572852 3.088418-4.134496C2.789539-3.656289 2.450809-3.626401 2.201743-3.616438C2.122042-3.606476 1.882939-3.58655 1.8132-3.58655C1.733499-3.576588 1.663761-3.566625 1.663761-3.466999C1.663761-3.35741 1.733499-3.35741 1.902864-3.35741H2.34122C3.158157-3.35741 3.526775-2.67995 3.526775-1.703611C3.526775-.348692 2.839352-.059776 2.400996-.059776C1.972603-.059776 1.225405-.229141 .876712-.816936C1.225405-.767123 1.534247-.986301 1.534247-1.364882C1.534247-1.723537 1.265255-1.92279 .976339-1.92279C.737235-1.92279 .418431-1.783313 .418431-1.344956C.418431-.438356 1.344956 .219178 2.430884 .219178C3.646326 .219178 4.552927-.687422 4.552927-1.703611C4.552927-2.520548 3.92528-3.297634 2.889166-3.506849Z'/>
+<path id='c20-04-relaksacija-lezenje-g1-52' d='M2.929016-1.643836V-.777086C2.929016-.418431 2.909091-.308842 2.171856-.308842H1.96264V0C2.371108-.029888 2.889166-.029888 3.307597-.029888S4.254047-.029888 4.662516 0V-.308842H4.4533C3.716065-.308842 3.696139-.418431 3.696139-.777086V-1.643836H4.692403V-1.952677H3.696139V-6.485679C3.696139-6.684932 3.696139-6.744707 3.536737-6.744707C3.447073-6.744707 3.417186-6.744707 3.337484-6.625156L.278954-1.952677V-1.643836H2.929016ZM2.988792-1.952677H.557908L2.988792-5.668742V-1.952677Z'/>
+<path id='c20-04-relaksacija-lezenje-g1-53' d='M4.473225-2.002491C4.473225-3.188045 3.656289-4.184309 2.580324-4.184309C2.102117-4.184309 1.673724-4.024907 1.315068-3.676214V-5.618929C1.514321-5.559153 1.843088-5.489415 2.161893-5.489415C3.387298-5.489415 4.084682-6.396015 4.084682-6.525529C4.084682-6.585305 4.054795-6.635118 3.985056-6.635118C3.975093-6.635118 3.955168-6.635118 3.905355-6.60523C3.706102-6.515567 3.217933-6.316314 2.550436-6.316314C2.15193-6.316314 1.693649-6.386052 1.225405-6.595268C1.145704-6.625156 1.125778-6.625156 1.105853-6.625156C1.006227-6.625156 1.006227-6.545455 1.006227-6.386052V-3.437111C1.006227-3.257783 1.006227-3.178082 1.145704-3.178082C1.215442-3.178082 1.235367-3.20797 1.275218-3.267746C1.384807-3.427148 1.753425-3.965131 2.560399-3.965131C3.078456-3.965131 3.327522-3.506849 3.407223-3.327522C3.566625-2.958904 3.58655-2.570361 3.58655-2.072229C3.58655-1.723537 3.58655-1.125778 3.347447-.707347C3.108344-.318804 2.739726-.059776 2.281445-.059776C1.554172-.059776 .986301-.587796 .816936-1.175592C.846824-1.165629 .876712-1.155666 .986301-1.155666C1.315068-1.155666 1.484433-1.404732 1.484433-1.643836S1.315068-2.132005 .986301-2.132005C.846824-2.132005 .498132-2.062267 .498132-1.603985C.498132-.747198 1.185554 .219178 2.30137 .219178C3.457036 .219178 4.473225-.737235 4.473225-2.002491Z'/>
+<path id='c20-04-relaksacija-lezenje-g2-101' d='M3.068493-1.590037C3.214944-1.590037 3.263761-1.590037 3.263761-1.743462C3.263761-2.357161 2.922042-3.110336 1.882939-3.110336C.969365-3.110336 .27198-2.385056 .27198-1.527273C.27198-.641594 1.046077 .069738 1.973599 .069738C2.915068 .069738 3.263761-.683437 3.263761-.836862C3.263761-.864757 3.249813-.934496 3.145205-.934496C3.054545-.934496 3.040598-.892653 3.019676-.822914C2.803487-.258032 2.273474-.153425 2.022416-.153425C1.694645-.153425 1.380822-.299875 1.171606-.564882C.913574-.892653 .9066-1.318057 .9066-1.590037H3.068493ZM.913574-1.771357C.990286-2.75467 1.617933-2.915068 1.882939-2.915068C2.740722-2.915068 2.768618-1.945704 2.775592-1.771357H.913574Z'/>
+<path id='c20-04-relaksacija-lezenje-g2-108' d='M1.436613-4.839851L.390535-4.763138V-4.51208C.857783-4.51208 .913574-4.463263 .913574-4.121544V-.550934C.913574-.251059 .843836-.251059 .390535-.251059V0C.404483 0 .892653-.027895 1.171606-.027895C1.436613-.027895 1.694645-.020922 1.959651 0V-.251059C1.506351-.251059 1.436613-.251059 1.436613-.550934V-4.839851Z'/>
+<path id='c20-04-relaksacija-lezenje-g2-114' d='M1.387796-1.590037C1.387796-2.175841 1.659776-2.880199 2.322291-2.880199C2.259527-2.831382 2.203736-2.740722 2.203736-2.629141C2.203736-2.399004 2.385056-2.308344 2.517559-2.308344C2.684932-2.308344 2.838356-2.419925 2.838356-2.629141C2.838356-2.866252 2.615193-3.075467 2.287422-3.075467C1.93873-3.075467 1.555168-2.859278 1.345953-2.329265H1.338979V-3.075467L.341719-2.998755V-2.747696C.808966-2.747696 .864757-2.698879 .864757-2.357161V-.550934C.864757-.251059 .795019-.251059 .341719-.251059V0C.376588 0 .850809-.027895 1.136737-.027895C1.436613-.027895 1.743462-.013948 2.043337 0V-.251059H1.903861C1.387796-.251059 1.387796-.327771 1.387796-.564882V-1.590037Z'/>
+<path id='c20-04-relaksacija-lezenje-g2-122' d='M3.075467-2.761644C3.124284-2.824408 3.138232-2.84533 3.138232-2.894147C3.138232-3.005729 3.054545-3.005729 2.942964-3.005729H.460274L.376588-1.841096H.613699C.662516-2.57335 .822914-2.810461 1.617933-2.810461H2.440847L.334745-.265006C.27198-.188294 .27198-.160399 .27198-.125529C.27198 0 .341719 0 .467248 0H3.033624L3.159153-1.352927H2.922042C2.852304-.536986 2.705853-.223163 1.834122-.223163H.976339L3.075467-2.761644Z'/>
+</defs>
+<g id='c20-04-relaksacija-lezenje-page1'>
+<g stroke-miterlimit='10' transform='translate(-53.842737,86.634791)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='relaksacija'>
+<path d='M0 0H174.90018' fill='none'/>
+<g transform='translate(172.42372,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(182.88535,-2.5)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-53.842737,86.634791)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-53.842737' y='86.634791' xlink:href='#c20-04-relaksacija-lezenje-g0-116'/>
+<use x='-50.245102' y='86.634791' xlink:href='#c20-04-relaksacija-lezenje-g0-61'/>
+<use x='-45.263763' y='86.634791' xlink:href='#c20-04-relaksacija-lezenje-g0-28'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 0V137.91153' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,135.43507)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-14.89238,148.3967)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-53.842737,86.634791)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-53.842737' y='86.634791' xlink:href='#c20-04-relaksacija-lezenje-g0-69'/>
+<use x='-46.488362' y='88.129171' xlink:href='#c20-04-relaksacija-lezenje-g2-114'/>
+<use x='-43.375019' y='88.129171' xlink:href='#c20-04-relaksacija-lezenje-g2-101'/>
+<use x='-39.832727' y='88.129171' xlink:href='#c20-04-relaksacija-lezenje-g2-108'/>
+<use x='-37.079158' y='86.634791' xlink:href='#c20-04-relaksacija-lezenje-g0-61'/>
+<use x='-32.097819' y='86.634791' xlink:href='#c20-04-relaksacija-lezenje-g0-69'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M31.29819 1.70709V-1.70709' fill='none'/>
+<g transform='translate(28.79819,-11.7845)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-53.842737,86.634791)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-53.842737' y='86.634791' xlink:href='#c20-04-relaksacija-lezenje-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M62.59637 1.70709V-1.70709' fill='none'/>
+<g transform='translate(60.09637,-11.7845)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-53.842737,86.634791)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-53.842737' y='86.634791' xlink:href='#c20-04-relaksacija-lezenje-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M93.89456 1.70709V-1.70709' fill='none'/>
+<g transform='translate(91.39456,-11.7845)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-53.842737,86.634791)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-53.842737' y='86.634791' xlink:href='#c20-04-relaksacija-lezenje-g1-51'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M125.19276 1.70709V-1.70709' fill='none'/>
+<g transform='translate(122.69276,-11.7845)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-53.842737,86.634791)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-53.842737' y='86.634791' xlink:href='#c20-04-relaksacija-lezenje-g1-52'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M156.49095 1.70709V-1.70709' fill='none'/>
+<g transform='translate(153.99095,-11.7845)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-53.842737,86.634791)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-53.842737' y='86.634791' xlink:href='#c20-04-relaksacija-lezenje-g1-53'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M1.70709 59.75093H-1.70709' fill='none'/>
+<g transform='translate(-10.34007,56.52872)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-53.842737,86.634791)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-53.842737' y='86.634791' xlink:href='#c20-04-relaksacija-lezenje-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M1.70709 119.50143H-1.70709' fill='none'/>
+<g transform='translate(-10.34007,116.27922)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-53.842737,86.634791)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-53.842737' y='86.634791' xlink:href='#c20-04-relaksacija-lezenje-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='standardni'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M0 119.50186L4.01245 112.32616L8.0249 105.99706L12.03735 100.43294L16.05025 95.53784L20.0627 91.22885L24.07515 87.43999L28.08762 84.11003L32.1005 81.17645L36.11296 78.60062L40.12541 76.32954L44.13786 74.33287L48.15076 72.5815L52.16321 71.03416L56.17566 69.67743L60.18813 68.48221L64.201 67.43025L68.21347 66.50941L72.22592 65.6906L76.23837 64.97945L80.25127 64.34602L84.26372 63.79594L88.27617 63.30666L92.28864 62.88162L96.30151 62.5052L100.31398 62.17047L104.32643 61.87785L108.33888 61.62083L112.35178 61.39984L116.36423 61.19666L120.37668 61.02344L124.38914 60.86757L128.40202 60.73647L132.41449 60.61707L136.42694 60.5094L140.43939 60.41995L144.45229 60.34138L148.46474 60.27061L152.47719 60.20766L156.48965 60.15295' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='maxwell'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M0 59.75093L4.01245 52.57523L8.0249 46.24612L12.03735 40.68199L16.05025 35.78691L20.0627 31.47792L24.07515 27.68906L28.08762 24.3591L32.1005 21.4255L36.11296 18.84967L40.12541 16.57861L44.13786 14.58194L48.15076 12.83055L52.16321 11.28323L56.17566 9.9265L60.18813 8.73128L64.201 7.67932L68.21347 6.75847L72.22592 5.93965L76.23837 5.22852L80.25127 4.59508L84.26372 4.04501L88.27617 3.55571L92.28864 3.13068L96.30151 2.75427L100.31398 2.41954L104.32643 2.1269L108.33888 1.86989L112.35178 1.64891L116.36423 1.44572L120.37668 1.27249L124.38914 1.11664L128.40202 .98552L132.41449 .86613L136.42694 .75845L140.43939 .66902L144.45229 .59044L148.46474 .51967L152.47719 .45673L156.48965 .40202' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='kelvin'>
+<g stroke-width='0.9'>
+<path d='M0 59.75093H156.49008' fill='none'/>
+</g>
+<g stroke-width='0.9'>
+<path d='M8.5359 59.75093V135.19464' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,8.5359,132.58961)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='lezenje'>
+<path d='M239.00287 0H374.06894' fill='none'/>
+<g transform='translate(371.59248,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(382.05411,-2.5)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-53.842737,86.634791)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-53.842737' y='86.634791' xlink:href='#c20-04-relaksacija-lezenje-g0-116'/>
+<use x='-50.245102' y='86.634791' xlink:href='#c20-04-relaksacija-lezenje-g0-61'/>
+<use x='-45.263763' y='86.634791' xlink:href='#c20-04-relaksacija-lezenje-g0-28'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M239.00287 0V137.91153' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,239.00287,135.43507)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(226.48032,147.39667)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-53.842737,86.634791)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-53.842737' y='86.634791' xlink:href='#c20-04-relaksacija-lezenje-g0-69'/>
+<use x='-44.253745' y='86.634791' xlink:href='#c20-04-relaksacija-lezenje-g0-74'/>
+<use x='-38.729323' y='88.129171' xlink:href='#c20-04-relaksacija-lezenje-g2-108'/>
+<use x='-36.473877' y='88.129171' xlink:href='#c20-04-relaksacija-lezenje-g2-101'/>
+<use x='-32.931585' y='88.129171' xlink:href='#c20-04-relaksacija-lezenje-g2-122'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M270.30106 1.70709V-1.70709' fill='none'/>
+<g transform='translate(267.80106,-11.7845)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-53.842737,86.634791)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-53.842737' y='86.634791' xlink:href='#c20-04-relaksacija-lezenje-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M301.59924 1.70709V-1.70709' fill='none'/>
+<g transform='translate(299.09924,-11.7845)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-53.842737,86.634791)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-53.842737' y='86.634791' xlink:href='#c20-04-relaksacija-lezenje-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M332.89743 1.70709V-1.70709' fill='none'/>
+<g transform='translate(330.39743,-11.7845)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-53.842737,86.634791)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-53.842737' y='86.634791' xlink:href='#c20-04-relaksacija-lezenje-g1-51'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M364.19563 1.70709V-1.70709' fill='none'/>
+<g transform='translate(361.69563,-11.7845)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-53.842737,86.634791)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-53.842737' y='86.634791' xlink:href='#c20-04-relaksacija-lezenje-g1-52'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M240.70996 31.29819H237.29578' fill='none'/>
+<g transform='translate(228.6628,28.07597)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-53.842737,86.634791)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-53.842737' y='86.634791' xlink:href='#c20-04-relaksacija-lezenje-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M240.70996 62.59637H237.29578' fill='none'/>
+<g transform='translate(228.6628,59.37416)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-53.842737,86.634791)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-53.842737' y='86.634791' xlink:href='#c20-04-relaksacija-lezenje-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M240.70996 93.89456H237.29578' fill='none'/>
+<g transform='translate(228.6628,90.67235)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-53.842737,86.634791)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-53.842737' y='86.634791' xlink:href='#c20-04-relaksacija-lezenje-g1-51'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M240.70996 125.19276H237.29578' fill='none'/>
+<g transform='translate(228.6628,121.97055)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-53.842737,86.634791)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-53.842737' y='86.634791' xlink:href='#c20-04-relaksacija-lezenje-g1-52'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='standardni'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M239.00287 15.6491L242.37277 16.46573L245.7431 17.2433L249.11345 17.98093L252.48335 18.67905L255.8537 19.3394L259.22403 19.9672L262.59438 20.56024L265.96428 21.12378L269.33463 21.65779L272.70497 22.16315L276.0753 22.64072L279.4452 23.09483L282.81555 23.52509L286.1859 23.93188L289.55623 24.31871L292.92615 24.68515L296.29648 25.03073L299.66682 25.35939L303.03717 25.67111L306.40707 25.96677L309.7774 26.24506L313.14775 26.50989L316.5181 26.76215L319.888 26.99962L323.25835 27.22539L326.62868 27.43811L329.99902 27.64043L333.36893 27.83276L336.73927 28.01424L340.1096 28.1866L343.47995 28.34941L346.84985 28.50397L350.2202 28.65114L353.59053 28.7892L356.96088 28.92076L360.33078 29.04579L363.70113 29.16301L367.07147 29.2759L370.44138 29.38226' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='maxwell'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M239.00287 31.29819L242.34802 34.64334L245.69362 37.98894L249.03877 41.33409L252.38437 44.67969L255.72952 48.02486L259.07512 51.37044L262.42029 54.7156L265.76587 58.0612L269.11104 61.40636L272.45663 64.75195L275.80179 68.0971L279.14738 71.4427L282.49298 74.7883L285.83813 78.13345L289.18373 81.47905L292.52888 84.82422L295.87448 88.1698L299.21965 91.51497L302.56523 94.86057L305.9104 98.20572L309.256 101.55132L312.60115 104.89647L315.94675 108.24207L319.29234 111.58766L322.6375 114.93282L325.9831 118.27841L329.32825 121.62358L332.67384 124.96916L336.01901 128.31433' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M336.02725 128.32257L343.14487 136.15175' fill='none'/>
+<g transform='matrix(0.67265,0.73988,-0.73988,0.67265,341.39258,134.22432)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='kelvin'>
+<g stroke-width='0.9'>
+<path d='M239.00287 0L242.37277 3.18842L245.7431 6.05948L249.11345 8.63618L252.48335 10.94937L255.8537 13.02809L259.22403 14.89105L262.59438 16.56602L265.96428 18.07167L269.33463 19.4206L272.70497 20.63579L276.0753 21.7216L279.4452 22.70149L282.81555 23.57805L286.1859 24.36691L289.55623 25.07458L292.92615 25.70975L296.29648 26.28023L299.66682 26.7934L303.03717 27.2536L306.40707 27.66692L309.7774 28.03595L313.14775 28.37111L316.5181 28.66852L319.888 28.93768L323.25835 29.17908L326.62868 29.39485L329.99902 29.58891L333.36893 29.76431L336.73927 29.92061L340.1096 30.0617L343.47995 30.18675L346.84985 30.30267L350.2202 30.40295L353.59053 30.4937L356.96088 30.57835L360.33078 30.65042L363.70113 30.71599L367.07147 30.77547L370.44138 30.82843' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M239.00287 31.29819H369.88565' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 20.11</span>: Odziva treh modelov na skok, brezdimenzijsko, čas v enotah <span class="nobr">\(\tau\).</span> Vsi trije imajo vzmet z modulom <span class="nobr">\(E\),</span> pri standardnem trdniku je <span class="nobr">\(E_\infty = E_1 = E\),</span> torej \(E_0/E_\infty = 2\) in <span class="nobr">\(\tau_\varepsilon = 2\tau\).</span> Levo: napetost ob skoku deformacije za 1, <span class="nobr">\(E_{\mathrm{rel}}/E\).</span> Desno: deformacija ob skoku napetosti za 1, <span class="nobr">\(E\,J_{\mathrm{lez}}\).</span> Modro Maxwellov člen, <span class="ink-l">črno</span><span class="ink-d">belo</span> Kelvin-Voigtov člen, oranžno standardni trdnik. Puščica na levem grafu ob Kelvin-Voigtovem členu pomeni neomejeno napetost ob skoku, puščica na desnem grafu nadaljevanje premice Maxwellovega člena. Črtkano: dolgotrajna vrednost <span class="nobr">\(1\).</span></figcaption></figure>
+<p>To izrek pove na sliki. Narišemo <a data-del="relaksacija" class="xref kaz" href="sec-viskoelasticni-modeli.html#fig-c20-relaksacija-lezenje" data-knowl="fig-c20-relaksacija-lezenje">levi graf</a>: napetost ob skoku deformacije za \(1\) v enotah <span class="nobr">\(E\).</span> Najprej <a data-del="maxwell" class="xref kaz" href="sec-viskoelasticni-modeli.html#fig-c20-relaksacija-lezenje" data-knowl="fig-c20-relaksacija-lezenje">Maxwellov člen</a>. Začne pri <span class="nobr">\(1\),</span> ker vzmet prevzame ves skok, in pada proti nič, ker se dušilnik počasi podaljša in vzmet sprosti. Nato <a data-del="lezenje" class="xref kaz" href="sec-viskoelasticni-modeli.html#fig-c20-relaksacija-lezenje" data-knowl="fig-c20-relaksacija-lezenje">desni graf</a>, deformacija ob skoku napetosti. Maxwellova krivulja gre kot premica neomejeno navzgor, torej Maxwellov člen pri stalni napetosti nikoli ne najde ravnovesja. Prvo vprašanje za trden material pade: člen se obnaša kot tekočina, ki teče pod stalno napetostjo (CM, PDF str. 419, ki Maxwellov model imenuje model viskoelastične tekočine). Po razbremenitvi ostane deformacija trajna, ravno nasprotno kot pri jekleni palici, ki se vrne. Za polimere, pri katerih trajna deformacija prevladuje, je to primerno: BOWER (PDF str. 138) pravi, da Maxwellov model daje lezenje s stalno hitrostjo in predstavlja nepremreženi polimer.</p>
+<p>Pri vzporedni vezavi je obratno. Pri Kelvin-Voigtovem členu iz <a data-del="kelvin" class="xref kaz" href="sec-viskoelasticni-modeli.html#fig-c20-clena" data-knowl="fig-c20-clena">srednje vrstice</a> ima vzmet isto deformacijo kot dušilnik, zato dušilnik zadržuje vzmet.</p>
+
+<div class="blk definicija" id="def-kelvin-voigtov-clen"><div class="blk-head"><span class="blk-label">Definicija 20.24</span> <span class="blk-title">Kelvin-Voigtov člen (Kelvin-Voigt element)</span></div><div class="blk-body"><p>Kelvin-Voigtov člen je vzporedna vezava elastičnega člena z modulom \(E &gt; 0\) in viskoznega člena z viskoznostjo <span class="nobr">\(\eta &gt; 0\).</span> Napetost in <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">deformacija</a> zadoščata enačbi <span class="nobr">\(\sigma = E\varepsilon + \eta\,\dot\varepsilon\).</span> Število \(\tau_\varepsilon = \eta/E\) je čas zakasnitve (retardation time) in ima enoto sekunde.</p>
+
+<p class="vir"><span class="vir-label">Vir:</span> CM §9.2.3 (PDF str. 429, enačba (9.2.22)), BOWER §3.6.3 (PDF str. 137-138).</p></div></div>
+<p>Enačba v definiciji je vsota napetosti vzmeti \(E\varepsilon\) in napetosti dušilnika <span class="nobr">\(\eta\dot\varepsilon\),</span> ki imata isto deformacijo. Čas \(\tau_\varepsilon\) se imenuje čas zakasnitve, ker deformacija napetosti sledi z zakasnitvijo: ob skoku napetosti ne skoči, ampak se novi vrednosti približa v času te velikosti, kot bo pokazano spodaj.</p>
+
+<div class="blk izrek" id="thm-kelvin-voigtov-clen"><div class="blk-head"><span class="blk-label">Izrek 20.25</span> <span class="blk-title">Odziv Kelvin-Voigtovega člena (response of a Kelvin-Voigt element)</span></div><div class="blk-body"><p>Naj bo <a class="xref auto" href="sec-viskoelasticni-modeli.html#def-kelvin-voigtov-clen" data-knowl="def-kelvin-voigtov-clen">Kelvin-Voigtov člen</a> z <span class="nobr">\(E\),</span> \(\eta\) in <span class="nobr">\(\tau_\varepsilon = \eta/E\).</span></p>
+<ol>
+<li>Pri skoku napetosti na \(\sigma_0\) ob \(t = 0\) je \(\varepsilon(t) = (\sigma_0/E)\,(1 - \mathrm{e}^{-t/\tau_\varepsilon})\) za <span class="nobr">\(t \ge 0\),</span> torej <span class="nobr">\(J_{\mathrm{lez}}(t) = (1 - \mathrm{e}^{-t/\tau_\varepsilon})/E\).</span> Ta je omejena z \(1/E\) in se ji približa za <span class="nobr">\(t \to \infty\).</span></li>
+<li>Če napetost po času \(T\) odstranimo, je \(\varepsilon(t) = \varepsilon(T)\,\mathrm{e}^{-(t - T)/\tau_\varepsilon}\) za <span class="nobr">\(t \ge T\).</span> <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">Deformacija</a> pada proti nič: po vsakem času \(\tau_\varepsilon\) je \(\mathrm{e}\)-krat manjša.</li>
+<li>Naj deformacija v času \(h &gt; 0\) enakomerno naraste od \(0\) do <span class="nobr">\(\varepsilon_0\),</span> \(\varepsilon(t) = \varepsilon_0 t/h\) za <span class="nobr">\(0 \le t \le h\).</span> Tedaj je \(\sigma(t) = \varepsilon_0\,(E t + \eta)/h\) na tem <a class="xref auto" href="sec-konvergenca-zaporedij.html#def-interval" data-knowl="def-interval">intervalu</a> in srednja vrednost napetosti je <span class="nobr">\(\eta\varepsilon_0/h + E\varepsilon_0/2\).</span> Za \(h \to 0\) preseže vsako mejo.</li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo tri trditve. Prvi dve rešimo z lemo <a class="xref" href="sec-linearne-enacbe.html#lem-prvi-red" data-knowl="lem-prvi-red">9.34</a>, tretjo z osnovnim izrekom.</p>
+<ol>
+<li>Pri stalni napetosti \(\sigma_0\) za \(t \ge 0\) dobimo iz enačbe člena <span class="nobr">\(\eta\,\dot\varepsilon + E\varepsilon = \sigma_0\),</span> torej <span class="nobr">\(\dot\varepsilon - (-1/\tau_\varepsilon)\,\varepsilon = \sigma_0/\eta\).</span></li>
+<li><a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">Deformacija</a> je zvezna ob <span class="nobr">\(t = 0\),</span> ker bi bila sicer sila <a class="xref auto" href="sec-model-ena-ps.html#def-viskozni-dusilnik" data-knowl="def-viskozni-dusilnik">dušilnika</a> \(\eta\dot\varepsilon\) neskončna: \(\dot\varepsilon = (\sigma_0 - E\varepsilon)/\eta\) mora biti omejen. Torej <span class="nobr">\(\varepsilon(0) = 0\).</span></li>
+<li>Po lemi <a class="xref" href="sec-linearne-enacbe.html#lem-prvi-red" data-knowl="lem-prvi-red">9.34</a> z <span class="nobr">\(s = -1/\tau_\varepsilon\),</span> \(f = \sigma_0/\eta\) in \(y_0 = 0\) je <span class="nobr">\(\varepsilon(t) = \mathrm{e}^{-t/\tau_\varepsilon}\int_0^t \mathrm{e}^{u/\tau_\varepsilon}\,\sigma_0/\eta\,\mathrm{d}u\).</span> <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">Funkcija</a> \(\tau_\varepsilon\,\mathrm{e}^{u/\tau_\varepsilon}\) ima <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">odvod</a> <span class="nobr">\(\mathrm{e}^{u/\tau_\varepsilon}\),</span> zato je po osnovnem izreku <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integral</a> enak <span class="nobr">\((\sigma_0/\eta)\,\tau_\varepsilon\,(\mathrm{e}^{t/\tau_\varepsilon} - 1) = (\sigma_0/E)(\mathrm{e}^{t/\tau_\varepsilon} - 1)\),</span> saj je <span class="nobr">\(\tau_\varepsilon/\eta = 1/E\).</span> Od tod točka 1. Ker <span class="nobr">\(\mathrm{e}^{-t/\tau_\varepsilon} \to 0\),</span> je <span class="nobr">\(\varepsilon \to \sigma_0/E\).</span></li>
+<li>Za \(t \ge T\) je \(\sigma = 0\) in enačba je \(\dot\varepsilon - (-1/\tau_\varepsilon)\,\varepsilon = 0\) z začetkom v času \(T\) in <span class="nobr">\(y_0 = \varepsilon(T)\).</span> Lema <a class="xref" href="sec-linearne-enacbe.html#lem-prvi-red" data-knowl="lem-prvi-red">9.34</a>, uporabljena z začetkom v \(T\) namesto v <span class="nobr">\(0\),</span> da točko 2.</li>
+<li>Točka 3: na \(0 &lt; t &lt; h\) je \(\dot\varepsilon = \varepsilon_0/h\) stalen, in <span class="nobr">\(\sigma = E\varepsilon + \eta\dot\varepsilon = \varepsilon_0(Et + \eta)/h\).</span> Srednja vrednost je \(\frac1h\int_0^h \sigma\,\mathrm{d}t = \varepsilon_0(Eh/2 + \eta)/h\) (osnovni izrek), kar je <span class="nobr">\(\eta\varepsilon_0/h + E\varepsilon_0/2\).</span> Prvi člen raste čez vsako mejo, ko gre <span class="nobr">\(h \to 0\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> CM (9.2.22)-(9.2.26) (PDF str. 429-430), CM (9.2.54) (PDF str. 434), kjer Diracova delta kaže, da model nima udarnega odziva, in BOWER (PDF str. 138), ki pravi, da Kelvin-Voigtov model nima dobro določenega relaksacijskega modula. Točki 2 in 3 sta zapisani v tem razdelku, ne iz vira.</p></div></div>
+<p>Poglejmo številke za \(E = 1\) in <span class="nobr">\(\tau_\varepsilon = 1\):</span> \(E J_{\mathrm{lez}} = 0{,}3935;\ 0{,}6321;\ 0{,}8647;\ 0{,}9933\) pri <span class="nobr">\(t/\tau_\varepsilon = 0{,}5;\ 1;\ 2;\ 5\).</span> To je <a data-del="kelvin" class="xref kaz" href="sec-viskoelasticni-modeli.html#fig-c20-relaksacija-lezenje" data-knowl="fig-c20-relaksacija-lezenje">krivulja</a> na desnem grafu, ki se vzpne in umiri. Po času \(\tau_\varepsilon\) doseže delež \(1 - 1/\mathrm{e} = 0{,}6321\) končne vrednosti, kar je razlaga imena. Prvo vprašanje je tu opravljeno: deformacija se umiri pri \(\sigma_0/E\) in se po razbremenitvi vrne, kar BOWER (PDF str. 138) imenuje zakasnjeno elastično obnašanje premreženega polimera, podobno kot pri naknadni deformaciji, ki jo je opisal Kupffer, le da jo model vrne v času <span class="nobr">\(\tau_\varepsilon\).</span> Drugo vprašanje pade. Če deformacijo v času \(h = 0{,}01\,\tau_\varepsilon\) povečamo od \(0\) do <span class="nobr">\(\varepsilon_0\),</span> je <a class="xref auto" href="sec-najvecja-strizna.html#def-sfericni-deviatorni" data-knowl="def-sfericni-deviatorni">srednja napetost</a> po točki 3 več kot <span class="nobr">\(\eta\varepsilon_0/h = 100\,E\varepsilon_0\),</span> manjši \(h\) pa da še večjo. Skoka deformacije Kelvin-Voigtov člen ne prenese: potreboval bi neskončno napetost, kar kaže <a data-del="kelvin" class="xref kaz" href="sec-viskoelasticni-modeli.html#fig-c20-relaksacija-lezenje" data-knowl="fig-c20-relaksacija-lezenje">puščica ob osi</a> levega grafa. Zato relaksacijski modul (definicija <a class="xref" href="sec-viskoelasticni-modeli.html#def-relaksacijski-modul" data-knowl="def-relaksacijski-modul">20.20</a>) ni določen, kot pravi tudi BOWER.</p>
+<p>Prvi model je ostal brez omejenosti, drugi brez trenutnega odziva. Vsak ima, kar drugemu manjka, zato ju združimo. Tretji model, <a data-del="trdnik" class="xref kaz" href="sec-viskoelasticni-modeli.html#fig-c20-clena" data-knowl="fig-c20-clena">spodnja vrstica</a>, ima vzmet \(E_\infty\) vzporedno z Maxwellovo vejo.</p>
+
+<div class="blk definicija" id="def-standardni-trdnik"><div class="blk-head"><span class="blk-label">Definicija 20.26</span> <span class="blk-title">Standardni trdnik (standard linear solid)</span></div><div class="blk-body"><p>Standardni trdnik je vzporedna vezava elastičnega člena z modulom \(E_\infty &gt; 0\) in <a class="xref auto" href="sec-viskoelasticni-modeli.html#def-maxwellov-clen" data-knowl="def-maxwellov-clen">Maxwellovega člena</a> z modulom \(E_1 &gt; 0\) in viskoznostjo <span class="nobr">\(\eta &gt; 0\).</span> Označimo <span class="nobr">\(E_0 = E_\infty + E_1\),</span> \(\tau = \eta/E_1\) (<a class="xref auto" href="sec-viskoelasticni-modeli.html#def-relaksacijski-modul" data-knowl="def-relaksacijski-modul">relaksacijski</a> čas veje) in \(\tau_\varepsilon = \tau E_0/E_\infty\) (čas zakasnitve).</p>
+
+<p class="vir"><span class="vir-label">Vir:</span> CM §9.2.4 (PDF str. 431-433), Fig. 9.2.9(b), ki ga imenuje trielementni model, in primer 9.2.1 (PDF str. 435), standardni linearni trdnik. BOWER §3.6.3 (PDF str. 138) ga imenuje triparametrični model (three-parameter model).</p></div></div>
+<p>Imeni \(\tau\) in \(\tau_\varepsilon\) razloži izrek spodaj: \(\tau\) določa, kako hitro popušča napetost ob skoku deformacije, \(\tau_\varepsilon\) pa, kako hitro se umirja deformacija ob skoku napetosti. Razmerje \(\tau_\varepsilon/\tau = E_0/E_\infty &gt; 1\) pove, da sta različna.</p>
+
+<div class="blk izrek" id="thm-standardni-trdnik"><div class="blk-head"><span class="blk-label">Izrek 20.27</span> <span class="blk-title">Odziv standardnega trdnika (response of the standard linear solid)</span></div><div class="blk-body"><p>Naj bo standardni trdnik z <span class="nobr">\(E_\infty\),</span> <span class="nobr">\(E_1\),</span> \(\eta\) in <span class="nobr">\(E_0\),</span> <span class="nobr">\(\tau\),</span> \(\tau_\varepsilon\) iz definicije <a class="xref" href="sec-viskoelasticni-modeli.html#def-standardni-trdnik" data-knowl="def-standardni-trdnik">20.26</a>.</p>
+<ol>
+<li>Napetost in <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">deformacija</a> zadoščata enačbi <span class="nobr">\(\sigma + \tau\dot\sigma = E_\infty\varepsilon + \tau E_0\,\dot\varepsilon\).</span></li>
+<li><a class="xref auto" href="sec-viskoelasticni-modeli.html#def-relaksacijski-modul" data-knowl="def-relaksacijski-modul">Relaksacijski modul</a> je <span class="nobr">\(E_{\mathrm{rel}}(t) = E_\infty + (E_0 - E_\infty)\,\mathrm{e}^{-t/\tau}\),</span> torej gre od \(E_0\) ob \(t = 0+\) do <span class="nobr">\(E_\infty &gt; 0\).</span></li>
+<li><a class="xref auto" href="sec-viskoelasticni-modeli.html#def-podajnost-lezenja" data-knowl="def-podajnost-lezenja">Podajnost lezenja</a> je <span class="nobr">\(J_{\mathrm{lez}}(t) = 1/E_\infty - (1/E_\infty - 1/E_0)\,\mathrm{e}^{-t/\tau_\varepsilon}\),</span> torej gre od \(1/E_0\) do <span class="nobr">\(1/E_\infty\).</span></li>
+<li>Če napetost \(\sigma_0\) po času \(T\) odstranimo, deformacija najprej skoči nazaj za <span class="nobr">\(\sigma_0/E_0\),</span> nato pada proti nič: po vsakem času \(\tau_\varepsilon\) je \(\mathrm{e}\)-krat manjša.</li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo štiri trditve. Veji sta vzporedni in imata isto <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">deformacijo</a> <span class="nobr">\(\varepsilon\),</span> napetost je vsota \(\sigma = \sigma_\infty + \sigma_{\mathrm{M}}\) z \(\sigma_\infty = E_\infty\varepsilon\) in napetostjo \(\sigma_{\mathrm{M}}\) Maxwellove veje.</p>
+<ol>
+<li>Maxwellova veja ima po izreku <a class="xref" href="sec-viskoelasticni-modeli.html#thm-maxwellov-clen" data-knowl="thm-maxwellov-clen">20.23</a>, točka 1, z \(E_1\) namesto \(E\) in \(\eta = \tau E_1\) enačbo <span class="nobr">\(\sigma_{\mathrm{M}} + \tau\dot\sigma_{\mathrm{M}} = \tau E_1\,\dot\varepsilon\).</span></li>
+<li>Točka 1 izreka: <span class="nobr">\(\sigma + \tau\dot\sigma = E_\infty\varepsilon + \tau E_\infty\dot\varepsilon + (\sigma_{\mathrm{M}} + \tau\dot\sigma_{\mathrm{M}}) = E_\infty\varepsilon + \tau E_\infty\dot\varepsilon + \tau E_1\dot\varepsilon = E_\infty\varepsilon + \tau E_0\dot\varepsilon\).</span></li>
+<li><a class="xref auto" href="sec-viskoelasticni-modeli.html#def-relaksacijski-modul" data-knowl="def-relaksacijski-modul">Relaksacija</a>: po izreku <a class="xref" href="sec-viskoelasticni-modeli.html#thm-maxwellov-clen" data-knowl="thm-maxwellov-clen">20.23</a>, točka 2 (z <span class="nobr">\(E_1\)),</span> je \(\sigma_{\mathrm{M}} = E_1\varepsilon_0\,\mathrm{e}^{-t/\tau}\) za <span class="nobr">\(t &gt; 0\),</span> in <span class="nobr">\(\sigma_\infty = E_\infty\varepsilon_0\).</span> Vsota je \(\sigma = \varepsilon_0(E_\infty + E_1\mathrm{e}^{-t/\tau})\) z <span class="nobr">\(E_1 = E_0 - E_\infty\).</span> To je točka 2.</li>
+<li><a class="xref auto" href="sec-viskoelasticni-modeli.html#def-podajnost-lezenja" data-knowl="def-podajnost-lezenja">Lezenje</a>: za \(t \ge 0\) je <span class="nobr">\(\sigma = \sigma_0\).</span> <a class="xref auto" href="sec-model-ena-ps.html#def-viskozni-dusilnik" data-knowl="def-viskozni-dusilnik">Dušilnik</a> se ob \(t = 0\) ne premakne (njegova deformacija \(\varepsilon_2\) je zvezna in <span class="nobr">\(\varepsilon_2(0) = 0\)),</span> zato je deformacija vzmeti Maxwellove veje \(\varepsilon - \varepsilon_2 = \varepsilon\) in <span class="nobr">\(\sigma_0 = E_\infty\varepsilon(0+) + E_1\varepsilon(0+) = E_0\,\varepsilon(0+)\).</span></li>
+<li>Za \(t &gt; 0\) je \(\dot\sigma = 0\) in točka 1 da <span class="nobr">\(\tau E_0\,\dot\varepsilon + E_\infty\varepsilon = \sigma_0\),</span> torej \(\dot\varepsilon - (-1/\tau_\varepsilon)\,\varepsilon = \sigma_0/(\tau E_0)\) s <span class="nobr">\(\tau_\varepsilon = \tau E_0/E_\infty\).</span> Lema <a class="xref" href="sec-linearne-enacbe.html#lem-prvi-red" data-knowl="lem-prvi-red">9.34</a> z \(y_0 = \sigma_0/E_0\) da \(\varepsilon = \mathrm{e}^{-t/\tau_\varepsilon}\big(\sigma_0/E_0 + \tfrac{\sigma_0}{\tau E_0}\,\tau_\varepsilon(\mathrm{e}^{t/\tau_\varepsilon} - 1)\big)\) (<a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integral</a> kot v izreku <a class="xref" href="sec-viskoelasticni-modeli.html#thm-kelvin-voigtov-clen" data-knowl="thm-kelvin-voigtov-clen">20.25</a>). Ker je <span class="nobr">\(\tau_\varepsilon/(\tau E_0) = 1/E_\infty\),</span> je <span class="nobr">\(\varepsilon = \sigma_0\big(1/E_\infty - (1/E_\infty - 1/E_0)\,\mathrm{e}^{-t/\tau_\varepsilon}\big)\).</span> To je točka 3.</li>
+<li>Razbremenitev ob <span class="nobr">\(T\):</span> dušilnik se ne premakne, zato je \(\sigma = E_\infty\varepsilon + E_1(\varepsilon - \varepsilon_2)\) linearna v \(\varepsilon\) z istim <span class="nobr">\(\varepsilon_2\).</span> Padec \(\sigma\) z \(\sigma_0\) na \(0\) je torej \(-\sigma_0 = E_0\,\Delta\varepsilon\) in <span class="nobr">\(\Delta\varepsilon = -\sigma_0/E_0\).</span> Za \(t &gt; T\) je \(\sigma = 0\) in točka 1 da <span class="nobr">\(\dot\varepsilon - (-1/\tau_\varepsilon)\,\varepsilon = 0\),</span> po lemi <a class="xref" href="sec-linearne-enacbe.html#lem-prvi-red" data-knowl="lem-prvi-red">9.34</a> je <span class="nobr">\(\varepsilon = \varepsilon(T+)\,\mathrm{e}^{-(t - T)/\tau_\varepsilon}\).</span> To je točka 4.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> CM §9.2.4 in primer 9.2.1 (PDF str. 431-433, 435), BOWER §3.6.3 (PDF str. 138). Razčlenitev na vzmet in Maxwellovo vejo je zapisana v tem razdelku, ne iz vira.</p></div></div>
+<p>Vzemimo <span class="nobr">\(E_0/E_\infty = 2\),</span> torej \(E_1 = E_\infty\) in <span class="nobr">\(\tau_\varepsilon = 2\tau\).</span> To je izbran model in ne material, številke so brezdimenzijske. Za \(t/\tau = 0{,}5;\ 1;\ 2;\ 5\) so vrednosti v tabeli.</p>
+<table>
+<thead>
+<tr>
+<th>\(t/\tau\)</th>
+<th>\(0{,}5\)</th>
+<th>\(1\)</th>
+<th>\(2\)</th>
+<th>\(5\)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>\(E_{\mathrm{rel}}/E_\infty\)</td>
+<td>\(1{,}6065\)</td>
+<td>\(1{,}3679\)</td>
+<td>\(1{,}1353\)</td>
+<td>\(1{,}0067\)</td>
+</tr>
+<tr>
+<td>\(E_\infty J_{\mathrm{lez}}\)</td>
+<td>\(0{,}6106\)</td>
+<td>\(0{,}6967\)</td>
+<td>\(0{,}8161\)</td>
+<td>\(0{,}9590\)</td>
+</tr>
+</tbody>
+</table>
+<p><a data-del="standardni" class="xref kaz" href="sec-viskoelasticni-modeli.html#fig-c20-relaksacija-lezenje" data-knowl="fig-c20-relaksacija-lezenje">Krivulja standardnega trdnika</a> na levem grafu pada od \(2\) do <span class="nobr">\(1\),</span> na desnem raste od \(0{,}5\) do <span class="nobr">\(1\).</span> Prvo vprašanje je opravljeno, ker se deformacija umiri pri <span class="nobr">\(\sigma_0/E_\infty\).</span> Drugo je opravljeno, ker se palica na skok napetosti odzove takoj z <span class="nobr">\(\varepsilon(0+) = \sigma_0/E_0\),</span> in ob skoku deformacije dobi končno napetost <span class="nobr">\(E_0\varepsilon_0\).</span> To je najmanjši model, ki opravi oba preizkusa. Vrednosti smo preverili z neodvisnim računom: numerično integriranje (RK4, korak <span class="nobr">\(0{,}001\,\tau\))</span> enačbe deformacije dušilnika, <span class="nobr">\(\dot\varepsilon_2 = (\varepsilon - \varepsilon_2)/\tau\),</span> da iste štiri vrednosti v obeh vrsticah, SymPy pa pokaže, da obe funkciji zadoščata enačbi iz točke 1.</p>
+<p>Pri tem modelu je lahko narediti dve napaki. Prva je vzeti isti čas pri relaksaciji in pri lezenju. Če v podajnosti namesto \(\tau_\varepsilon\) vzamemo <span class="nobr">\(\tau\),</span> je pri \(t = \tau\) vrednost \(E_\infty J_{\mathrm{lez}} = 0{,}8161\) namesto <span class="nobr">\(0{,}6967\),</span> torej bi lezenje bilo videti dvakrat hitrejše. Pravi razlog, da je <span class="nobr">\(\tau_\varepsilon &gt; \tau\),</span> vidimo na dušilniku. Njegova deformacija \(\varepsilon_2\) dohiteva deformacijo \(\varepsilon\) s hitrostjo \(\dot\varepsilon_2 = (\varepsilon - \varepsilon_2)/\tau\) (korak 1 izreka <a class="xref" href="sec-viskoelasticni-modeli.html#thm-maxwellov-clen" data-knowl="thm-maxwellov-clen">20.23</a> z <span class="nobr">\(E_1\)).</span> Pri skoku deformacije je \(\varepsilon\) nespremenljiva in razlika \(\varepsilon - \varepsilon_2\) pada s hitrostjo <span class="nobr">\(1/\tau\).</span> Pri skoku napetosti se z dušilnikom premakne tudi <span class="nobr">\(\varepsilon\):</span> iz \(\sigma_0 = E_\infty\varepsilon + E_1(\varepsilon - \varepsilon_2)\) je <span class="nobr">\(\varepsilon - \varepsilon_2 = (\sigma_0 - E_\infty\varepsilon_2)/E_0\),</span> torej razlika pada \(E_\infty/E_0\)-krat počasneje, s hitrostjo <span class="nobr">\(1/\tau_\varepsilon\).</span> Druga napaka je misel, da je <span class="nobr">\(J_{\mathrm{lez}}(t) = 1/E_{\mathrm{rel}}(t)\).</span> Pri \(t = 0+\) in \(t \to \infty\) to drži, \(E_0 J_{\mathrm{lez}}(0+) = 1\) in <span class="nobr">\(E_\infty J_{\mathrm{lez}}(\infty) = 1\).</span> Vmes je produkt \(E_{\mathrm{rel}}\,J_{\mathrm{lez}}\) pri \(t/\tau = 1;\ 2;\ 5\) enak \(0{,}9530;\ 0{,}9265;\ 0{,}9654\) in ni <span class="nobr">\(1\).</span> Prava zveza je zveza med Laplaceovima transformirankama (CM (9.2.9), PDF str. 425), ki je tu ne dokazujemo in jo samo navajamo.</p>
+<p>Kaj smo dobili? Trije modeli, vsak izpeljan iz vzmeti in dušilnika, so pokazali, da se napetost in deformacija v viskoelastičnem materialu gibljeta z zakasnitvijo in da je to tisto, kar potrebujemo za izgube. Maxwellov člen pade pri prvem vprašanju, Kelvin-Voigtov člen pri drugem, standardni trdnik opravi obe. Naslednji razdelek (<a class="xref" href="sec-dedni-integral.html">20.5</a>) zapiše napetost za poljubno zgodovino deformacije kot vsoto popuščanj, in razdelek <a class="xref" href="sec-kompleksni-modul.html">20.6</a> pokaže, koliko energije standardni trdnik izgubi na nihaj.</p>
+
+</main>
+<footer><nav class="pager"><a href="sec-histerezno-dusenje.html" rel="prev">← 20.3</a><a href="index.html">Kazalo</a><a href="sec-dedni-integral.html" rel="next">20.5 →</a></nav></footer>
+</body>
+</html>

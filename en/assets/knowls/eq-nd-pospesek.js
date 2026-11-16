@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nd-pospesek"] = {"html": "<div class=\"eq\">\\[\\vek a_{\\mathrm{k}+1} = \\frac{\\vek q_{\\mathrm{k}+1} - \\vek q_{\\mathrm{k}} - \\Delta t\\,\\vek v_{\\mathrm{k}} - \\Delta t^2(\\frac12 - \\beta)\\vek a_{\\mathrm{k}}}{\\beta\\,\\Delta t^2} , \\tag{17.40}\\]</div>", "href": "sec-nelinearna-dinamika.html#eq-nd-pospesek"};

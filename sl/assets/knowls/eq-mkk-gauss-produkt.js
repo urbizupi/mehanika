@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mkk-gauss-produkt"] = {"html": "<div class=\"eq\">\\[\\int_{[-1,1]^2} g\\,\\mathrm{d}A = \\sum_{\\mathrm{a}=1}^{n} \\sum_{\\mathrm{b}=1}^{m} w_{\\mathrm{a}}\\,v_{\\mathrm{b}}\\,g(\\xi_{\\mathrm{a}}, \\eta_{\\mathrm{b}}) . \\tag{15.32}\\]</div>", "href": "sec-mkk-gauss.html#eq-mkk-gauss-produkt"};

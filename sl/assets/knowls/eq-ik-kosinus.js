@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ik-kosinus"] = {"html": "<div class=\"eq\">\\[c = \\frac{r^2 - l_1^2 - l_2^2}{2\\,l_1 l_2} . \\tag{27.18}\\]</div>", "href": "sec-inverzna-kinematika.html#eq-ik-kosinus"};

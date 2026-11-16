@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-poves-koncni"] = {"html": "<div class=\"eq\">\\[v = c_1\\cosh\\beta x\\cos\\beta x + c_2\\sinh\\beta x\\sin\\beta x + c_3\\cosh\\beta x\\sin\\beta x + c_4\\sinh\\beta x\\cos\\beta x , \\tag{25.5}\\]</div>", "href": "sec-elasticna-podlaga.html#eq-poves-koncni"};

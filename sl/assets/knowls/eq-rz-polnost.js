@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rz-polnost"] = {"html": "<div class=\"eq\">\\[\\sum_{\\mathrm{r}=1}^{\\infty} c_{\\mathrm{r}}^2 = \\mathcal{M}(v, v) . \\tag{13.63}\\]</div>", "href": "sec-ritz-zvezni.html#eq-rz-polnost"};

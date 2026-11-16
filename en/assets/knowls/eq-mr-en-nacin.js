@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mr-en-nacin"] = {"html": "<div class=\"eq\">\\[\\tilde\\omega_2^2 = \\frac{\\omega_1'^2}{1 - b_1^2/(J_{\\mathrm{h}} + J_{\\mathrm{link}})} . \\tag{28.50}\\]</div>", "href": "sec-modalna-redukcija-clena.html#eq-mr-en-nacin"};

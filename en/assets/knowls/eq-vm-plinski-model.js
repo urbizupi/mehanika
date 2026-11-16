@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vm-plinski-model"] = {"html": "<div class=\"eq\">\\[F_{\\mathrm{g}}(\\theta) = \\begin{cases} F_0\\,(1 - \\theta/\\pi) , &amp; 0 \\le \\theta \\le \\pi , \\\\ 0 , &amp; \\pi &lt; \\theta &lt; 4\\pi , \\end{cases} \\qquad F_0 = 20\\ \\text{kN} , \\tag{23.14}\\]</div>", "href": "sec-vrtilni-moment.html#eq-vm-plinski-model"};

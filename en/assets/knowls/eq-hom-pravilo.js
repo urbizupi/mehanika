@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-hom-pravilo"] = {"html": "<div class=\"eq\">\\[\\vek p^i = \\mat R^i_{\\mathrm{j}}\\,\\vek p^j + \\vek o^i_{\\mathrm{j}} . \\tag{27.7}\\]</div>", "href": "sec-homogene-transformacije.html#eq-hom-pravilo"};

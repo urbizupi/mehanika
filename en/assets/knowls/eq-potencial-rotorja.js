@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-potencial-rotorja"] = {"html": "<div class=\"eq\">\\[V(\\vek d) = \\tfrac12\\,\\vek d^\\T\\mat K\\,\\vek d + \\sum_{\\mathrm{b}}\\tfrac25\\,\\kappa_{\\mathrm{b}}\\max(v_{\\mathrm{b}}, 0)^{5/2} - \\vek F^\\T\\vek d , \\tag{25.47}\\]</div>", "href": "sec-lezaj-v-mke.html#eq-potencial-rotorja"};

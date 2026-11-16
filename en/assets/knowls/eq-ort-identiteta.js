@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ort-identiteta"] = {"html": "<div class=\"eq\">\\[\\int_0^L (Du)\\,v\\,\\mathrm{d}x = B(u, v) + b(u, v) , \\tag{13.46}\\]</div>", "href": "sec-ortogonalnost-zveznih.html#eq-ort-identiteta"};

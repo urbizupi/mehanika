@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-cs-harmonik"] = {"html": "<div class=\"eq\">\\[\\vek F_{\\mathrm{k}} = \\frac{1}{N}\\sum_{\\mathrm{j}=0}^{N-1}\\hat{\\vek f}_{\\mathrm{j}}\\,\\mathrm{e}^{-2\\pi\\mathrm{i}jk/N} , \\qquad k = 0, \\dots, N-1 \\tag{19.18}\\]</div>", "href": "sec-ciklicna-simetrija.html#eq-cs-harmonik"};

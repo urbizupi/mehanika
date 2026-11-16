@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rp-tok"] = {"html": "<div class=\"eq\">\\[\\vek q\\cdot\\vek n = \\bar q_{\\mathrm{n}} \\quad\\text{oziroma}\\quad -k\\,\\frac{\\partial T}{\\partial n} = \\bar q_{\\mathrm{n}} , \\tag{14.11}\\]</div>", "href": "sec-robni-pogoji-toplote.html#eq-rp-tok"};

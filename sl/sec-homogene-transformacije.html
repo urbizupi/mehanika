@@ -1,0 +1,1459 @@
+<!doctype html>
+<html lang="sl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>27.3 Položaj in orientacija skupaj: homogene transformacije · Poglavje 27</title>
+<script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/style.css">
+<noscript><style>#loadbar { display: none; }</style></noscript>
+<script src="assets/config.js"></script>
+<script src="assets/load.js"></script>
+<script defer src="assets/interaktivno.js"></script>
+<script defer src="assets/book.js"></script>
+<script defer src="assets/predavanje.js"></script>
+<script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<div id="loadbar" aria-hidden="true"></div>
+<header class="top"><a class="home" href="index.html">Mehanika</a><nav class="pager"><a href="sec-orientacija-clenov.html" rel="prev">← 27.2</a><a href="index.html">Kazalo</a><a href="sec-dh-zapis.html" rel="next">27.4 →</a></nav>
+<span class="tools"><a class="lang" href="../en/sec-homogene-transformacije.html" hreflang="en">English</a><button type="button" class="theme-toggle" title="Svetla ali temna tema" aria-label="Svetla ali temna tema"></button><button type="button" data-details="open">Razpri vse</button><button type="button" data-details="close">Skrij vse</button><button type="button" class="fig-side-toggle" aria-pressed="false">Slike ob strani</button></span></header>
+<main>
+<p class="updated">Posodobljeno 16. 11. 2026 ob 10.52</p>
+<p class="crumb"><a href="ch-roboti.html"><span class="h-num">Poglavje 27</span> Kinematika in dinamika robotov</a></p>
+<h2 id="sec-homogene-transformacije"><span class="h-num">27.3</span> Položaj in orientacija skupaj: homogene transformacije</h2>
+<p>V razdelku <a class="xref" href="sec-orientacija-clenov.html">27.2</a> smo zasuk člena zapisali z <a class="xref auto" href="sec-determinanta.html#def-orientacija" data-knowl="def-orientacija">orientacijsko</a> <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matriko</a> <span class="nobr">\(\mat R^i_{\mathrm{j}}\).</span> Člen robota pa se ne samo zasuka, njegov <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">okvir</a> ima tudi svoje <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">izhodišče</a>, in to se pri vsakem zglobu premakne. Če iščemo, kje je konica roke, moramo zasuk in premik združiti. Vprašanje je: ali ju lahko zapišemo z eno samo matriko, tako da dolgo verigo členov obvladamo z množenjem, kakor smo v razdelku <a class="xref" href="sec-orientacija-clenov.html">27.2</a> obvladali zasuke?</p>
+<p>Vzemimo roko A iz razdelka <a class="xref" href="sec-robotske-verige.html">27.1</a>, dvočlensko ravninsko roko z dolžinama \(l_1 = 1\) m in \(l_2 = 0{,}5\) m, v legi <span class="nobr">\(q = (30°, 60°)\).</span> Slika <a class="xref" href="sec-homogene-transformacije.html#fig-hom-veriga" data-knowl="fig-hom-veriga">27.12</a> jo nariše po korakih. Najprej je <a data-del="ogrodje0" class="xref kaz" href="sec-homogene-transformacije.html#fig-hom-veriga" data-knowl="fig-hom-veriga">okvir 0 z osema \(x_0\) in \(y_0\)</a> in izhodiščem \(O_0\) v osi prvega zgloba. Okvir je, kakor v razdelku <a class="xref" href="sec-orientacija-clenov.html">27.2</a>, točka, izhodišče, in trije med seboj pravokotni <a class="xref auto" href="sec-vektorji.html#def-enotski-vektor" data-knowl="def-enotski-vektor">enotski vektorji</a>, ki tvorijo desni sistem. Os \(z\) kaže iz ravnine in je pri vseh okvirjih te slike skupna. Nato <a data-del="clena" class="xref kaz" href="sec-homogene-transformacije.html#fig-hom-veriga" data-knowl="fig-hom-veriga">oba člena</a> kot debeli črti, prvi dolg 1 m, drugi 0,5 m. S prvim členom se zavrti <a data-del="ogrodje1" class="xref kaz" href="sec-homogene-transformacije.html#fig-hom-veriga" data-knowl="fig-hom-veriga">okvir 1</a>: ima isto izhodišče, os \(x_1\) pa leži vzdolž člena in je glede na \(x_0\) zasukana za <span class="nobr">\(q_1 = 30°\).</span> Na koncu prvega člena je drugi zglob. Z drugim členom se zavrti <a data-del="ogrodje2" class="xref kaz" href="sec-homogene-transformacije.html#fig-hom-veriga" data-knowl="fig-hom-veriga">okvir 2</a> z izhodiščem \(O_2\) v tem zglobu in osjo \(x_2\) vzdolž drugega člena. Glede na okvir 1 je zasukan za <span class="nobr">\(q_2 = 60°\),</span> glede na okvir 0 torej za <span class="nobr">\(90°\).</span> Izhodišče \(O_2\) je od izhodišča okvirja 1 oddaljeno za <a data-del="o12" class="xref kaz" href="sec-homogene-transformacije.html#fig-hom-veriga" data-knowl="fig-hom-veriga">dolžino prvega člena</a>, to je za <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vektor</a> \(\vek o^1_2 = (1; 0; 0)\) m v okvirju 1. Na koncu drugega člena je <span class="nobr"><a data-del="konica" class="xref kaz" href="sec-homogene-transformacije.html#fig-hom-veriga" data-knowl="fig-hom-veriga">konica \(P\)</a>,</span> od \(O_2\) do nje pa kaže <a data-del="p2" class="xref kaz" href="sec-homogene-transformacije.html#fig-hom-veriga" data-knowl="fig-hom-veriga">vektor \(\vek p^2\)</a> s komponentami \((0{,}5; 0; 0)\) m v okvirju 2. Iščemo komponente <a data-del="o02" class="xref kaz" href="sec-homogene-transformacije.html#fig-hom-veriga" data-knowl="fig-hom-veriga">vektorja \(\vek p^0\)</a> od \(O_0\) do \(P\) v okvirju 0.</p>
+
+<figure class="blk slika" id="fig-hom-veriga"><p><span class="svgfig" role="img" aria-label="Dvočlenska ravninska roka z okvirji 0, 1 in 2, vektorjema o in p ter konico P"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='185.57pt' height='144.46pt' viewBox='-72.000004 -72 137.458122 107.005828'>
+<defs>
+<path id='c27-03-veriga-g0-111' d='M5.399751-2.171856C5.399751-3.506849 4.483188-4.513076 2.859278-4.513076C1.225405-4.513076 .318804-3.496887 .318804-2.171856C.318804-.936488 1.195517 .059776 2.859278 .059776C4.533001 .059776 5.399751-.946451 5.399751-2.171856ZM2.859278-.33873C1.594022-.33873 1.594022-1.414695 1.594022-2.281445C1.594022-2.729763 1.594022-3.237858 1.763387-3.576588C1.952677-3.945205 2.371108-4.154421 2.859278-4.154421C3.277709-4.154421 3.696139-3.995019 3.915318-3.646326C4.124533-3.307597 4.124533-2.759651 4.124533-2.281445C4.124533-1.414695 4.124533-.33873 2.859278-.33873Z'/>
+<path id='c27-03-veriga-g0-112' d='M2.191781-3.277709C2.191781-3.466999 2.201743-3.476961 2.34122-3.616438C2.739726-4.024907 3.257783-4.084682 3.476961-4.084682C4.144458-4.084682 4.702366-3.476961 4.702366-2.221669C4.702366-.816936 4.004981-.298879 3.35741-.298879C3.217933-.298879 2.749689-.298879 2.30137-.836862C2.191781-.966376 2.191781-.976339 2.191781-1.165629V-3.277709ZM2.191781-.388543C2.620174-.039851 3.058531 .059776 3.466999 .059776C4.961395 .059776 5.977584-.836862 5.977584-2.221669C5.977584-3.5467 5.070984-4.483188 3.636364-4.483188C2.889166-4.483188 2.361146-4.174346 2.132005-3.995019V-4.483188L.368618-4.403487V-3.935243C.986301-3.935243 1.05604-3.935243 1.05604-3.556663V1.464508H.368618V1.932752C.647572 1.92279 1.24533 1.902864 1.62391 1.902864C2.012453 1.902864 2.600249 1.92279 2.879203 1.932752V1.464508H2.191781V-.388543Z'/>
+<path id='c27-03-veriga-g1-79' d='M7.372354-4.343711C7.372354-5.947696 6.316314-7.023661 4.83188-7.023661C2.67995-7.023661 .488169-4.762142 .488169-2.440847C.488169-.787049 1.603985 .219178 3.038605 .219178C5.150685 .219178 7.372354-1.96264 7.372354-4.343711ZM3.098381-.039851C2.11208-.039851 1.414695-.846824 1.414695-2.161893C1.414695-2.600249 1.554172-4.054795 2.321295-5.220423C3.008717-6.256538 3.985056-6.774595 4.772105-6.774595C5.589041-6.774595 6.485679-6.216687 6.485679-4.732254C6.485679-4.014944 6.216687-2.460772 5.230386-1.235367C4.752179-.627646 3.935243-.039851 3.098381-.039851Z'/>
+<path id='c27-03-veriga-g1-80' d='M3.01868-3.148194H4.712329C6.127024-3.148194 7.511831-4.184309 7.511831-5.300125C7.511831-6.067248 6.854296-6.804483 5.549191-6.804483H2.321295C2.132005-6.804483 2.022416-6.804483 2.022416-6.615193C2.022416-6.495641 2.11208-6.495641 2.311333-6.495641C2.440847-6.495641 2.620174-6.485679 2.739726-6.475716C2.899128-6.455791 2.958904-6.425903 2.958904-6.316314C2.958904-6.276463 2.948941-6.246575 2.919054-6.127024L1.58406-.777086C1.484433-.388543 1.464508-.308842 .67746-.308842C.508095-.308842 .398506-.308842 .398506-.119552C.398506 0 .518057 0 .547945 0C.826899 0 1.534247-.029888 1.8132-.029888C2.022416-.029888 2.241594-.019925 2.450809-.019925C2.669988-.019925 2.889166 0 3.098381 0C3.16812 0 3.297634 0 3.297634-.199253C3.297634-.308842 3.20797-.308842 3.01868-.308842C2.650062-.308842 2.371108-.308842 2.371108-.488169C2.371108-.547945 2.391034-.597758 2.400996-.657534L3.01868-3.148194ZM3.73599-6.117061C3.825654-6.465753 3.845579-6.495641 4.273973-6.495641H5.230386C6.057285-6.495641 6.585305-6.22665 6.585305-5.539228C6.585305-5.150685 6.386052-4.293898 5.997509-3.935243C5.499377-3.486924 4.901619-3.407223 4.463263-3.407223H3.058531L3.73599-6.117061Z'/>
+<path id='c27-03-veriga-g1-120' d='M3.327522-3.008717C3.387298-3.267746 3.616438-4.184309 4.313823-4.184309C4.363636-4.184309 4.60274-4.184309 4.811955-4.054795C4.533001-4.004981 4.333748-3.755915 4.333748-3.516812C4.333748-3.35741 4.443337-3.16812 4.712329-3.16812C4.931507-3.16812 5.250311-3.347447 5.250311-3.745953C5.250311-4.26401 4.662516-4.403487 4.323786-4.403487C3.745953-4.403487 3.39726-3.875467 3.277709-3.646326C3.028643-4.303861 2.49066-4.403487 2.201743-4.403487C1.165629-4.403487 .597758-3.118306 .597758-2.86924C.597758-2.769614 .697385-2.769614 .71731-2.769614C.797011-2.769614 .826899-2.789539 .846824-2.879203C1.185554-3.935243 1.843088-4.184309 2.181818-4.184309C2.371108-4.184309 2.719801-4.094645 2.719801-3.516812C2.719801-3.20797 2.550436-2.540473 2.181818-1.145704C2.022416-.52802 1.673724-.109589 1.235367-.109589C1.175592-.109589 .946451-.109589 .737235-.239103C.986301-.288917 1.205479-.498132 1.205479-.777086C1.205479-1.046077 .986301-1.125778 .836862-1.125778C.537983-1.125778 .288917-.86675 .288917-.547945C.288917-.089664 .787049 .109589 1.225405 .109589C1.882939 .109589 2.241594-.587796 2.271482-.647572C2.391034-.278954 2.749689 .109589 3.347447 .109589C4.373599 .109589 4.941469-1.175592 4.941469-1.424658C4.941469-1.524284 4.851806-1.524284 4.821918-1.524284C4.732254-1.524284 4.712329-1.484433 4.692403-1.414695C4.363636-.348692 3.686177-.109589 3.367372-.109589C2.978829-.109589 2.819427-.428394 2.819427-.767123C2.819427-.986301 2.879203-1.205479 2.988792-1.643836L3.327522-3.008717Z'/>
+<path id='c27-03-veriga-g1-121' d='M4.841843-3.795766C4.881694-3.935243 4.881694-3.955168 4.881694-4.024907C4.881694-4.204234 4.742217-4.293898 4.592777-4.293898C4.493151-4.293898 4.333748-4.234122 4.244085-4.084682C4.224159-4.034869 4.144458-3.726027 4.104608-3.5467C4.034869-3.287671 3.965131-3.01868 3.905355-2.749689L3.457036-.956413C3.417186-.806974 2.988792-.109589 2.331258-.109589C1.823163-.109589 1.713574-.547945 1.713574-.916563C1.713574-1.374844 1.882939-1.992528 2.221669-2.86924C2.381071-3.277709 2.420922-3.387298 2.420922-3.58655C2.420922-4.034869 2.102117-4.403487 1.603985-4.403487C.657534-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.836862-3.88543 1.235367-4.184309 1.574097-4.184309C1.653798-4.184309 1.823163-4.184309 1.823163-3.865504C1.823163-3.616438 1.723537-3.35741 1.653798-3.16812C1.255293-2.11208 1.075965-1.544209 1.075965-1.075965C1.075965-.18929 1.703611 .109589 2.291407 .109589C2.67995 .109589 3.01868-.059776 3.297634-.33873C3.16812 .179328 3.048568 .667497 2.650062 1.195517C2.391034 1.534247 2.012453 1.823163 1.554172 1.823163C1.414695 1.823163 .966376 1.793275 .797011 1.404732C.956413 1.404732 1.085928 1.404732 1.225405 1.285181C1.325031 1.195517 1.424658 1.066002 1.424658 .876712C1.424658 .56787 1.155666 .52802 1.05604 .52802C.826899 .52802 .498132 .687422 .498132 1.175592C.498132 1.673724 .936488 2.042341 1.554172 2.042341C2.580324 2.042341 3.606476 1.135741 3.88543 .009963L4.841843-3.795766Z'/>
+<path id='c27-03-veriga-g2-48' d='M3.598506-2.224658C3.598506-2.991781 3.507846-3.542715 3.187049-4.030884C2.970859-4.351681 2.538481-4.630635 1.980573-4.630635C.36264-4.630635 .36264-2.726775 .36264-2.224658S.36264 .139477 1.980573 .139477S3.598506-1.72254 3.598506-2.224658ZM1.980573-.055791C1.659776-.055791 1.234371-.244085 1.094894-.81594C.99726-1.227397 .99726-1.799253 .99726-2.315318C.99726-2.824408 .99726-3.354421 1.101868-3.737983C1.248319-4.288917 1.694645-4.435367 1.980573-4.435367C2.357161-4.435367 2.719801-4.20523 2.84533-3.800747C2.956912-3.424159 2.963885-2.922042 2.963885-2.315318C2.963885-1.799253 2.963885-1.283188 2.873225-.843836C2.733748-.209215 2.259527-.055791 1.980573-.055791Z'/>
+<path id='c27-03-veriga-g2-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='c27-03-veriga-g2-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+</defs>
+<g id='c27-03-veriga-page1'>
+<g stroke-miterlimit='10' transform='translate(-40.115573,19.763746)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='ogrodje0'>
+<path d='M0 0H38.32692' fill='none'/>
+<g transform='translate(35.85046,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(37.57841,-7.93852)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.115573,19.763746)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-40.115573' y='19.763746' xlink:href='#c27-03-veriga-g1-120'/>
+<use x='-34.421641' y='21.258127' xlink:href='#c27-03-veriga-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 0V38.32692' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,35.85046)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-13.02193,41.49855)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.115573,19.763746)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-40.115573' y='19.763746' xlink:href='#c27-03-veriga-g1-121'/>
+<use x='-35.231069' y='21.258127' xlink:href='#c27-03-veriga-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-15.74687,-10.4663)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.115573,19.763746)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-40.115573' y='19.763746' xlink:href='#c27-03-veriga-g1-79'/>
+<use x='-32.516307' y='21.258127' xlink:href='#c27-03-veriga-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='clena'>
+<g stroke-width='2.6'>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M0 0L73.92043 42.67911' fill='none'/>
+</g>
+</g>
+<g stroke-width='2.6'>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M73.92043 42.67911V85.35823' fill='none'/>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M2.26294 0C2.26294 1.2498 1.2498 2.26294 0 2.26294S-2.26294 1.2498-2.26294 0S-1.2498-2.26294 0-2.26294S2.26294-1.2498 2.26294 0ZM0 0'/>
+</g>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.115573,19.763746)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M76.18336 42.67911C76.18336 43.92891 75.17023 44.94205 73.92043 44.94205C72.67062 44.94205 71.65749 43.92891 71.65749 42.67911C71.65749 41.4293 72.67062 40.41617 73.92043 40.41617C75.17023 40.41617 76.18336 41.4293 76.18336 42.67911ZM73.92043 42.67911'/>
+</g>
+<g transform='translate(73.92043,42.67911)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.115573,19.763746)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='ogrodje1'>
+<g fill='#00f' stroke='#00f'>
+<path d='M0 0L23.31851 13.47194' fill='none'/>
+<g transform='matrix(0.86586,0.50024,-0.50024,0.86586,21.17424,12.23311)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(30.71986,7.71057)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.115573,19.763746)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-40.115573' y='19.763746' xlink:href='#c27-03-veriga-g1-120'/>
+<use x='-34.421641' y='21.258127' xlink:href='#c27-03-veriga-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M0 0L-13.47194 23.31851' fill='none'/>
+<g transform='matrix(-0.50024,0.86586,-0.86586,-0.50024,-12.23311,21.17424)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-28.67102,32.66429)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.115573,19.763746)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-40.115573' y='19.763746' xlink:href='#c27-03-veriga-g1-121'/>
+<use x='-35.231069' y='21.258127' xlink:href='#c27-03-veriga-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='ogrodje2'>
+<g fill='#f00' stroke='#f00'>
+<path d='M73.92043 42.67911V66.77966' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,73.92043,64.3032)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(77.5534,69.72906)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.115573,19.763746)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-40.115573' y='19.763746' xlink:href='#c27-03-veriga-g1-120'/>
+<use x='-34.421641' y='21.258127' xlink:href='#c27-03-veriga-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M73.92043 42.67911H49.81987' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,52.29633,42.67911)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(32.44576,41.49855)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.115573,19.763746)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-40.115573' y='19.763746' xlink:href='#c27-03-veriga-g1-121'/>
+<use x='-35.231069' y='21.258127' xlink:href='#c27-03-veriga-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(77.5534,32.21281)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.115573,19.763746)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-40.115573' y='19.763746' xlink:href='#c27-03-veriga-g1-79'/>
+<use x='-32.516307' y='21.258127' xlink:href='#c27-03-veriga-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='konica'>
+<path d='M75.75905 85.35823C75.75905 86.37367 74.93587 87.19685 73.92043 87.19685C72.90498 87.19685 72.0818 86.37367 72.0818 85.35823S72.90498 83.5196 73.92043 83.5196C74.93587 83.5196 75.75905 84.34279 75.75905 85.35823ZM73.92043 85.35823' stroke='none'/>
+<g transform='translate(73.92043,85.35823)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.115573,19.763746)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(80.45529,81.94157)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.115573,19.763746)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-40.115573' y='19.763746' xlink:href='#c27-03-veriga-g1-80'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='o12'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M5.27156-8.45227L78.60706 33.88937' fill='none'/>
+<g transform='matrix(-0.86601,-0.5,0.5,-0.86601,10.29707,-5.55075)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-0.86601,-0.5,0.5,-0.86601,5.17416,-8.5085)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.86601,0.5,-0.5,0.86601,73.58154,30.98785)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.86601,0.5,-0.5,0.86601,78.70445,33.9456)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(45.49727,1.02055)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.115573,19.763746)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-40.115573' y='19.763746' xlink:href='#c27-03-veriga-g0-111'/>
+<use x='-34.387085' y='16.148382' xlink:href='#c27-03-veriga-g2-49'/>
+<use x='-34.387085' y='22.236574' xlink:href='#c27-03-veriga-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='p2'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M88.20367 43.01659V85.02075' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,88.20367,48.81963)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,88.20367,42.9041)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,88.20367,79.21771)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,88.20367,85.13324)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(91.76164,60.92087)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.115573,19.763746)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-40.115573' y='19.763746' xlink:href='#c27-03-veriga-g0-112'/>
+<use x='-33.750587' y='16.148382' xlink:href='#c27-03-veriga-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='o02'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 0V4.41649' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,-6.82864)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M6.1547 0L.75389 1.91983L2.52464 0L.75389-1.91983Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 0L73.92043 85.35823' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(19.63525,59.63745)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-40.115573,19.763746)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-40.115573' y='19.763746' xlink:href='#c27-03-veriga-g0-112'/>
+<use x='-33.750587' y='16.148382' xlink:href='#c27-03-veriga-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 27.12</span>: Roka A v legi <span class="nobr">\(q = (30°, 60°)\),</span> merilo 3 cm = 1 m. Okvir 0 (<span class="ink-l">črno</span><span class="ink-d">belo</span>) in okvir 1 (modro) imata skupno izhodišče <span class="nobr">\(O_0\),</span> okvir 1 je zasukan za <span class="nobr">\(30°\).</span> Okvir 2 (oranžno) ima izhodišče \(O_2\) v drugem zglobu in je glede na okvir 0 zasukan za <span class="nobr">\(90°\).</span> Vektor \(\vek o^1_2\) je dolg 1 m, \(\vek p^2\) 0,5 m, črtkani \(\vek p^0\) povezuje \(O_0\) s konico <span class="nobr">\(P\).</span></figcaption></figure>
+<p>Najprej povejmo, kaj pomenijo črke. Koordinate točke \(P\) v okvirju \(j\) so komponente vektorja od izhodišča \(O_{\mathrm{j}}\) do \(P\) v oseh okvirja <span class="nobr">\(j\).</span> Pišemo jih kot stolpec \(\vek p^j\) s tremi števili. Izhodišče okvirja \(j\) ima v okvirju \(i\) koordinate <span class="nobr">\(\vek o^i_{\mathrm{j}}\).</span> Orientacijsko matriko \(\mat R^i_{\mathrm{j}}\) smo v razdelku <a class="xref" href="sec-orientacija-clenov.html">27.2</a> določili tako, da so v njenih stolpcih <a class="xref auto" href="sec-vektorji.html#def-enotski-vektorji-osi" data-knowl="def-enotski-vektorji-osi">enotski vektorji osi</a> okvirja <span class="nobr">\(j\),</span> zapisani v okvirju \(i\) (definicija <a class="xref" href="sec-orientacija-clenov.html#def-matrika-orientacije" data-knowl="def-matrika-orientacije">27.8</a>). Po lemi <a class="xref" href="sec-orientacija-clenov.html#lem-orientacija-in-zasuk" data-knowl="lem-orientacija-in-zasuk">27.9</a> je ortogonalna z <a class="xref auto" href="sec-determinanta.html#def-determinanta" data-knowl="def-determinanta">determinanto</a> \(1\) in iz komponent vektorja v okvirju \(j\) dobimo njegove komponente v okvirju \(i\) z množenjem, <span class="nobr">\(\vek a^i = \mat R^i_{\mathrm{j}}\,\vek a^j\).</span></p>
+
+<div class="blk lema" id="lem-koordinate-tocke"><div class="blk-head"><span class="blk-label">Lema 27.19</span> <span class="blk-title">Koordinate točke v dveh okvirjih (coordinates of a point in two frames)</span></div><div class="blk-body"><p>Naj bosta \(i\) in \(j\) <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">okvirja</a> in \(P\) točka s <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinatama</a> \(\vek p^i\) in <span class="nobr">\(\vek p^j\).</span> Tedaj je</p>
+<div class="eq" id="eq-hom-pravilo">\[\vek p^i = \mat R^i_{\mathrm{j}}\,\vek p^j + \vek o^i_{\mathrm{j}} . \tag{27.7}\]</div>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da je koordinata v <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">okvirju</a> \(i\) vsota zasukane <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinate</a> iz okvirja \(j\) in izhodišča okvirja <span class="nobr">\(j\).</span> <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">Vektor</a> do točke razdelimo na dva dela in vsakega zapišemo v okvirju <span class="nobr">\(i\).</span></p>
+<ol>
+<li>Vektor od \(O_{\mathrm{i}}\) do \(P\) je vsota vektorja od \(O_{\mathrm{i}}\) do \(O_{\mathrm{j}}\) in vektorja od \(O_{\mathrm{j}}\) do \(P\) (pravilo za seštevanje vektorjev).</li>
+<li>Komponente prvega vektorja v okvirju \(i\) so po definiciji <span class="nobr">\(\vek o^i_{\mathrm{j}}\).</span> Komponente drugega v okvirju \(j\) so po definiciji koordinat <span class="nobr">\(\vek p^j\).</span></li>
+<li>Po lemi <a class="xref" href="sec-orientacija-clenov.html#lem-orientacija-in-zasuk" data-knowl="lem-orientacija-in-zasuk">27.9</a> so komponente drugega vektorja v okvirju \(i\) enake <span class="nobr">\(\mat R^i_{\mathrm{j}}\,\vek p^j\).</span></li>
+<li>Komponente vsote so vsota komponent, zato je <span class="nobr">\(\vek p^i = \vek o^i_{\mathrm{j}} + \mat R^i_{\mathrm{j}}\,\vek p^j\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> SPONG (2.58) (PDF str. 83) za točko, trdno pripeto na okvir, in njegov zapis z vektorjem \(d\) in matriko <span class="nobr">\(R^0_1\).</span> Dokaz ni iz vira.</p></div></div>
+<p>Za roko A to pomeni dva koraka. Točka \(P\) ima v okvirju 2 koordinate \(\vek p^2 = (0{,}5; 0; 0)\) m. Zasuk okvirja 2 glede na 1 je \(q_2 = 60°\) in \(\vek o^1_2 = (1; 0; 0)\) m, zato je po enačbi <a class="xref" href="sec-homogene-transformacije.html#eq-hom-pravilo" data-knowl="eq-hom-pravilo">(27.7)</a></p>
+<div class="eq">\[\vek p^1 = \begin{pmatrix} \cos 60° &amp; -\sin 60° &amp; 0 \\ \sin 60° &amp; \cos 60° &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{pmatrix}\begin{pmatrix} 0{,}5 \\ 0 \\ 0 \end{pmatrix} + \begin{pmatrix} 1 \\ 0 \\ 0 \end{pmatrix} = \begin{pmatrix} 1{,}25 \\ 0{,}433 \\ 0 \end{pmatrix}\ \text{m} .\]</div>
+<p>Okvir 1 je glede na okvir 0 zasukan za \(q_1 = 30°\) in ima isto izhodišče, <span class="nobr">\(\vek o^0_1 = \vek 0\),</span> zato je</p>
+<div class="eq">\[\vek p^0 = \begin{pmatrix} \cos 30° &amp; -\sin 30° &amp; 0 \\ \sin 30° &amp; \cos 30° &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{pmatrix}\begin{pmatrix} 1{,}25 \\ 0{,}433 \\ 0 \end{pmatrix} = \begin{pmatrix} 0{,}866 \\ 1{,}000 \\ 0 \end{pmatrix}\ \text{m} .\]</div>
+<p>Konica je pri \((0{,}866; 1{,}0)\) m, kar se ujema z vektorjem \(\vek p^0\) na sliki <a class="xref" href="sec-homogene-transformacije.html#fig-hom-veriga" data-knowl="fig-hom-veriga">27.12</a>: kaže navzgor in rahlo v desno, izhodišče \(O_2\) je pri \((0{,}866; 0{,}5)\) m, konica pa je še 0,5 m više, ker os \(x_2\) kaže navpično.</p>
+<p>Pri dveh členih sta dva koraka še pregledna. Pri \(n\) členih pa bi morali enačbo <a class="xref" href="sec-homogene-transformacije.html#eq-hom-pravilo" data-knowl="eq-hom-pravilo">(27.7)</a> vstaviti \(n\)-krat vase, <span class="nobr">\(\vek p^0 = \mat R^0_1(\mat R^1_2(\cdots) + \vek o^1_2) + \vek o^0_1\),</span> in prav to je ovira. Zasuke smo znali sestavljati z množenjem matrik. Premik se v enačbi pojavi kot vsota, zato množenje ne gre. Trik je v tem, da koordinatam dodamo četrto komponento, število <span class="nobr">\(1\),</span> in matriko \(\mat R\) dopolnimo z vektorjem \(\vek o\) v četrti stolpec. Tedaj vsota \(\vek o\cdot 1\) nastane znotraj množenja matrike s stolpcem.</p>
+
+<div class="blk definicija" id="def-homogena-transformacija"><div class="blk-head"><span class="blk-label">Definicija 27.20</span> <span class="blk-title">Homogena transformacija (homogeneous transformation)</span></div><div class="blk-body"><p>Naj bo \(\mat R\) <a class="xref auto" href="sec-vrtenje-osi.html#def-ortogonalna-matrika" data-knowl="def-ortogonalna-matrika">ortogonalna matrika</a> velikosti \(3 \times 3\) z \(\det\mat R = 1\) in \(\vek o\) stolpec s tremi števili. Homogena transformacija je <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrika</a> velikosti \(4 \times 4\)</p>
+<div class="eq" id="eq-hom-matrika">\[\mat T = \begin{pmatrix} \mat R &amp; \vek o \\ \vek 0^\T &amp; 1 \end{pmatrix} , \tag{27.8}\]</div>
+<p>kjer je \(\vek 0^\T = (0, 0, 0)\) vrstica iz ničel. Homogene koordinate točke s <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinatama</a> \(\vek p\) so stolpec s štirimi števili</p>
+<div class="eq" id="eq-hom-koordinate">\[\tilde{\vek p} = \begin{pmatrix} \vek p \\ 1 \end{pmatrix} . \tag{27.9}\]</div>
+<p>Pri <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">okvirjih</a> \(i\) in \(j\) je \(\mat T^i_{\mathrm{j}}\) homogena transformacija z \(\mat R = \mat R^i_{\mathrm{j}}\) in <span class="nobr">\(\vek o = \vek o^i_{\mathrm{j}}\).</span></p>
+
+<p class="vir"><span class="vir-label">Vir:</span> SPONG (2.66), (2.68), (2.69) (PDF str. 85). SPONG označuje matriko s <span class="nobr">\(H\),</span> mi s \(\mat T\) (razlog v opombi pod lemo <a class="xref" href="sec-homogene-transformacije.html#lem-homogeno-delovanje" data-knowl="lem-homogeno-delovanje">27.21</a>).</p></div></div>
+<p>Ime homogene koordinate (homogeneous coordinates) prevzamemo po viru (SPONG, PDF str. 85), ki razloga za ime ne navaja. Za nas pomeni le, da je četrta komponenta vedno <span class="nobr">\(1\).</span> Slika <a class="xref" href="sec-homogene-transformacije.html#fig-hom-blok" data-knowl="fig-hom-blok">27.13</a> pokaže matriko kot sestavljanko. <a data-del="blokR" class="xref kaz" href="sec-homogene-transformacije.html#fig-hom-blok" data-knowl="fig-hom-blok">Zgornji levi blok</a> je orientacijska matrika <span class="nobr">\(\mat R^i_{\mathrm{j}}\),</span> <a data-del="stolpec" class="xref kaz" href="sec-homogene-transformacije.html#fig-hom-blok" data-knowl="fig-hom-blok">četrti stolpec</a> nosi izhodišče <span class="nobr">\(\vek o^i_{\mathrm{j}}\),</span> <a data-del="vrstica" class="xref kaz" href="sec-homogene-transformacije.html#fig-hom-blok" data-knowl="fig-hom-blok">spodnja vrstica</a> je vedno \((0\ 0\ 0)\) in <a data-del="enica" class="xref kaz" href="sec-homogene-transformacije.html#fig-hom-blok" data-knowl="fig-hom-blok">spodnji desni element</a> vedno <span class="nobr">\(1\).</span> Cela <a data-del="T" class="xref kaz" href="sec-homogene-transformacije.html#fig-hom-blok" data-knowl="fig-hom-blok">matrika</a> deluje na <a data-del="tocka" class="xref kaz" href="sec-homogene-transformacije.html#fig-hom-blok" data-knowl="fig-hom-blok">stolpec \(\vek p^j\) z dodano enico</a>, <a data-del="rezultat" class="xref kaz" href="sec-homogene-transformacije.html#fig-hom-blok" data-knowl="fig-hom-blok">rezultat</a> pa pove naslednja lema.</p>
+
+<figure class="blk slika" id="fig-hom-blok"><p><span class="svgfig" role="img" aria-label="Matrika 4 krat 4 iz zasuka, premika in vrstice 0 0 0 1, pomnožena s stolpcem točke z dodano enico"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='329.91pt' height='123.26pt' viewBox='-72.000004 -72.000007 244.377345 91.306301'>
+<defs>
+<path id='c27-03-blok-g0-82' d='M2.819427-3.596513V-6.366127H3.995019C5.599004-6.366127 5.618929-5.589041 5.618929-4.98132C5.618929-4.423412 5.618929-3.596513 3.975093-3.596513H2.819427ZM5.479452-3.387298C6.635118-3.686177 7.143213-4.333748 7.143213-4.991283C7.143213-5.997509 6.047323-6.834371 4.174346-6.834371H.388543V-6.366127H1.464508V-.468244H.388543V0C.747198-.029888 1.723537-.029888 2.141968-.029888S3.536737-.029888 3.895392 0V-.468244H2.819427V-3.237858H3.985056C4.124533-3.237858 4.562889-3.237858 4.871731-2.899128C5.190535-2.550436 5.190535-2.361146 5.190535-1.633873C5.190535-.976339 5.190535-.488169 5.88792-.14944C6.326276 .069738 6.94396 .109589 7.352428 .109589C8.418431 .109589 8.547945-.787049 8.547945-.946451C8.547945-1.165629 8.408468-1.165629 8.308842-1.165629C8.099626-1.165629 8.089664-1.066002 8.079701-.936488C8.029888-.468244 7.740971-.249066 7.442092-.249066C6.844334-.249066 6.75467-.956413 6.704857-1.374844C6.684932-1.484433 6.60523-2.171856 6.595268-2.221669C6.455791-2.919054 5.907846-3.227895 5.479452-3.387298Z'/>
+<path id='c27-03-blok-g0-111' d='M5.399751-2.171856C5.399751-3.506849 4.483188-4.513076 2.859278-4.513076C1.225405-4.513076 .318804-3.496887 .318804-2.171856C.318804-.936488 1.195517 .059776 2.859278 .059776C4.533001 .059776 5.399751-.946451 5.399751-2.171856ZM2.859278-.33873C1.594022-.33873 1.594022-1.414695 1.594022-2.281445C1.594022-2.729763 1.594022-3.237858 1.763387-3.576588C1.952677-3.945205 2.371108-4.154421 2.859278-4.154421C3.277709-4.154421 3.696139-3.995019 3.915318-3.646326C4.124533-3.307597 4.124533-2.759651 4.124533-2.281445C4.124533-1.414695 4.124533-.33873 2.859278-.33873Z'/>
+<path id='c27-03-blok-g0-112' d='M2.191781-3.277709C2.191781-3.466999 2.201743-3.476961 2.34122-3.616438C2.739726-4.024907 3.257783-4.084682 3.476961-4.084682C4.144458-4.084682 4.702366-3.476961 4.702366-2.221669C4.702366-.816936 4.004981-.298879 3.35741-.298879C3.217933-.298879 2.749689-.298879 2.30137-.836862C2.191781-.966376 2.191781-.976339 2.191781-1.165629V-3.277709ZM2.191781-.388543C2.620174-.039851 3.058531 .059776 3.466999 .059776C4.961395 .059776 5.977584-.836862 5.977584-2.221669C5.977584-3.5467 5.070984-4.483188 3.636364-4.483188C2.889166-4.483188 2.361146-4.174346 2.132005-3.995019V-4.483188L.368618-4.403487V-3.935243C.986301-3.935243 1.05604-3.935243 1.05604-3.556663V1.464508H.368618V1.932752C.647572 1.92279 1.24533 1.902864 1.62391 1.902864C2.012453 1.902864 2.600249 1.92279 2.879203 1.932752V1.464508H2.191781V-.388543Z'/>
+<path id='c27-03-blok-g1-1' d='M1.912827-2.49066C1.912827-2.779577 1.673724-3.01868 1.384807-3.01868S.856787-2.779577 .856787-2.49066S1.09589-1.96264 1.384807-1.96264S1.912827-2.201743 1.912827-2.49066Z'/>
+<path id='c27-03-blok-g2-105' d='M2.259527-4.358655C2.259527-4.470237 2.175841-4.623661 1.980573-4.623661C1.792279-4.623661 1.590037-4.442341 1.590037-4.2401C1.590037-4.121544 1.680697-3.975093 1.868991-3.975093C2.071233-3.975093 2.259527-4.170361 2.259527-4.358655ZM.836862-.81594C.808966-.72528 .774097-.641594 .774097-.523039C.774097-.195268 1.053051 .069738 1.436613 .069738C2.133998 .069738 2.440847-.892653 2.440847-.99726C2.440847-1.08792 2.350187-1.08792 2.329265-1.08792C2.231631-1.08792 2.224658-1.046077 2.196762-.969365C2.036364-.411457 1.729514-.125529 1.457534-.125529C1.318057-.125529 1.283188-.216189 1.283188-.369614C1.283188-.530012 1.332005-.662516 1.39477-.81594C1.464508-1.004234 1.54122-1.192528 1.617933-1.373848C1.680697-1.54122 1.931756-2.175841 1.959651-2.259527C1.980573-2.329265 2.001494-2.412951 2.001494-2.48269C2.001494-2.810461 1.72254-3.075467 1.338979-3.075467C.648568-3.075467 .327771-2.127024 .327771-2.008468C.327771-1.917808 .425405-1.917808 .446326-1.917808C.54396-1.917808 .550934-1.952677 .571856-2.02939C.753176-2.629141 1.060025-2.880199 1.318057-2.880199C1.429639-2.880199 1.492403-2.824408 1.492403-2.636115C1.492403-2.475716 1.45056-2.371108 1.276214-1.93873L.836862-.81594Z'/>
+<path id='c27-03-blok-g2-106' d='M3.061519-4.358655C3.061519-4.47721 2.970859-4.623661 2.782565-4.623661C2.580324-4.623661 2.39203-4.428394 2.39203-4.2401C2.39203-4.128518 2.475716-3.975093 2.670984-3.975093C2.859278-3.975093 3.061519-4.156413 3.061519-4.358655ZM1.583064 .341719C1.464508 .822914 1.094894 1.227397 .683437 1.227397C.592777 1.227397 .509091 1.21345 .432379 1.185554C.613699 1.101868 .669489 .934496 .669489 .829888C.669489 .662516 .536986 .571856 .397509 .571856C.18132 .571856 0 .760149 0 .983313C0 1.248319 .27198 1.422665 .690411 1.422665S1.924782 1.171606 2.140971 .320797L2.768618-2.175841C2.789539-2.252553 2.803487-2.315318 2.803487-2.419925C2.803487-2.803487 2.475716-3.075467 2.057285-3.075467C1.283188-3.075467 .836862-2.106102 .836862-2.008468C.836862-1.917808 .934496-1.917808 .955417-1.917808C1.039103-1.917808 1.046077-1.93873 1.094894-2.043337C1.26924-2.447821 1.63188-2.880199 2.036364-2.880199C2.21071-2.880199 2.273474-2.761644 2.273474-2.538481C2.273474-2.461768 2.259527-2.364134 2.252553-2.329265L1.583064 .341719Z'/>
+<path id='c27-03-blok-g3-43' d='M4.07472-2.291407H6.854296C6.993773-2.291407 7.183064-2.291407 7.183064-2.49066S6.993773-2.689913 6.854296-2.689913H4.07472V-5.479452C4.07472-5.618929 4.07472-5.808219 3.875467-5.808219S3.676214-5.618929 3.676214-5.479452V-2.689913H.886675C.747198-2.689913 .557908-2.689913 .557908-2.49066S.747198-2.291407 .886675-2.291407H3.676214V.498132C3.676214 .637609 3.676214 .826899 3.875467 .826899S4.07472 .637609 4.07472 .498132V-2.291407Z'/>
+<path id='c27-03-blok-g3-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='c27-03-blok-g3-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c27-03-blok-g3-61' d='M6.844334-3.257783C6.993773-3.257783 7.183064-3.257783 7.183064-3.457036S6.993773-3.656289 6.854296-3.656289H.886675C.747198-3.656289 .557908-3.656289 .557908-3.457036S.747198-3.257783 .896638-3.257783H6.844334ZM6.854296-1.325031C6.993773-1.325031 7.183064-1.325031 7.183064-1.524284S6.993773-1.723537 6.844334-1.723537H.896638C.747198-1.723537 .557908-1.723537 .557908-1.524284S.747198-1.325031 .886675-1.325031H6.854296Z'/>
+</defs>
+<g id='c27-03-blok-page1'>
+<g stroke-miterlimit='10' transform='translate(-71.701122,19.007412)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='T'>
+<path d='M0 0V91.04869H102.43004V0ZM102.43004 91.04869' fill='none'/>
+</g>
+<g class='del' data-del='blokR'>
+<g fill='#00f' stroke='#00f'>
+<g fill='#d9d9ff'>
+<path d='M0 22.76227V91.04869H68.2864V22.76227ZM68.2864 91.04869'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(27.72395,54.75708)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.701122,19.007412)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-71.701122' y='19.007412' xlink:href='#c27-03-blok-g0-82'/>
+<use x='-63.108391' y='15.392048' xlink:href='#c27-03-blok-g2-105'/>
+<use x='-63.108391' y='21.600608' xlink:href='#c27-03-blok-g2-106'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='stolpec'>
+<g fill='#f00' stroke='#f00'>
+<g fill='#ffd9d9'>
+<path d='M68.2864 22.76227V91.04869H102.43004V22.76227ZM102.43004 91.04869'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(80.37646,54.75708)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.701122,19.007412)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-71.701122' y='19.007412' xlink:href='#c27-03-blok-g0-111'/>
+<use x='-65.972634' y='15.392048' xlink:href='#c27-03-blok-g2-105'/>
+<use x='-65.972634' y='21.600608' xlink:href='#c27-03-blok-g2-106'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='vrstica'>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#b3ffb3'>
+<path d='M0 0V22.76227H68.2864V0ZM68.2864 22.76227'/>
+</g>
+</g>
+<g transform='translate(21.08777,8.1587)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.701122,19.007412)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-71.701122' y='19.007412' xlink:href='#c27-03-blok-g3-48'/>
+<use x='-61.185118' y='19.007412' xlink:href='#c27-03-blok-g3-48'/>
+<use x='-50.669114' y='19.007412' xlink:href='#c27-03-blok-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='enica'>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#b3ffb3'>
+<path d='M68.2864 0V22.76227H102.43004V0ZM102.43004 22.76227'/>
+</g>
+</g>
+<g transform='translate(82.85823,8.1587)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.701122,19.007412)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-71.701122' y='19.007412' xlink:href='#c27-03-blok-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='tocka'>
+<g transform='translate(110.99936,43.30234)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.701122,19.007412)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-71.701122' y='19.007412' xlink:href='#c27-03-blok-g1-1'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M122.34688 0V91.04869H156.49008V0ZM156.49008 91.04869' fill='none'/>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M122.34688 22.76227H156.49008' fill='none'/>
+</g>
+<g transform='translate(134.11705,53.74728)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.701122,19.007412)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-71.701122' y='19.007412' xlink:href='#c27-03-blok-g0-112'/>
+<use x='-65.336136' y='15.392048' xlink:href='#c27-03-blok-g2-106'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(136.91826,8.1587)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.701122,19.007412)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-71.701122' y='19.007412' xlink:href='#c27-03-blok-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='rezultat'>
+<g transform='translate(162.55981,43.69019)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.701122,19.007412)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-71.701122' y='19.007412' xlink:href='#c27-03-blok-g3-61'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M176.40692 0V91.04869H244.69376V0ZM244.69376 91.04869' fill='none'/>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M176.40692 22.76227H244.69376' fill='none'/>
+</g>
+<g transform='translate(187.73683,54.75708)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.701122,19.007412)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-71.701122' y='19.007412' xlink:href='#c27-03-blok-g0-82'/>
+<use x='-63.108391' y='15.392048' xlink:href='#c27-03-blok-g2-105'/>
+<use x='-63.108391' y='21.600608' xlink:href='#c27-03-blok-g2-106'/>
+<use x='-58.91057' y='19.007412' xlink:href='#c27-03-blok-g0-112'/>
+<use x='-52.545584' y='15.392048' xlink:href='#c27-03-blok-g2-106'/>
+<use x='-46.133898' y='19.007412' xlink:href='#c27-03-blok-g3-43'/>
+<use x='-36.171284' y='19.007412' xlink:href='#c27-03-blok-g0-111'/>
+<use x='-30.442797' y='15.392048' xlink:href='#c27-03-blok-g2-105'/>
+<use x='-30.442797' y='21.600608' xlink:href='#c27-03-blok-g2-106'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(208.05013,8.1587)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-71.701122,19.007412)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-71.701122' y='19.007412' xlink:href='#c27-03-blok-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 27.13</span>: Homogena transformacija \(\mat T^i_{\mathrm{j}}\) (modro <span class="nobr">\(\mat R^i_{\mathrm{j}}\),</span> oranžno <span class="nobr">\(\vek o^i_{\mathrm{j}}\),</span> sivo vrstica <span class="nobr">\((0\ 0\ 0\ 1)\)),</span> njeno delovanje na homogene koordinate točke in rezultat. Zgornji trije elementi rezultata so desna stran enačbe <a class="xref" href="sec-homogene-transformacije.html#eq-hom-pravilo" data-knowl="eq-hom-pravilo">(27.7)</a>, spodnji je <span class="nobr">\(1\).</span></figcaption></figure>
+<div class="blk lema" id="lem-homogeno-delovanje"><div class="blk-head"><span class="blk-label">Lema 27.21</span> <span class="blk-title">Delovanje homogene transformacije (action of a homogeneous transformation)</span></div><div class="blk-body"><p>Za <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">okvirja</a> \(i\) in \(j\) in točko \(P\) je</p>
+<div class="eq" id="eq-hom-delovanje">\[\mat T^i_{\mathrm{j}}\,\tilde{\vek p}^j = \tilde{\vek p}^i . \tag{27.10}\]</div>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da množenje s štirimi vrsticami <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrike</a> da pravilo <a class="xref" href="sec-homogene-transformacije.html#eq-hom-pravilo" data-knowl="eq-hom-pravilo">(27.7)</a> in enico. Vrstice obravnavamo posebej, kakor pri produktu matrike in vektorja (definicija <a class="xref" href="sec-matrike.html#def-produkt-matrike-in-vektorja" data-knowl="def-produkt-matrike-in-vektorja">1.96</a>).</p>
+<ol>
+<li>Vrstica \(k\) matrike \(\mat T^i_{\mathrm{j}}\) za \(k = 1, 2, 3\) je <span class="nobr">\((R_{\mathrm{k}1}, R_{\mathrm{k}2}, R_{\mathrm{k}3}, o_{\mathrm{k}})\).</span> Njen produkt s stolpcem \((p_1, p_2, p_3, 1)\) je <span class="nobr">\(R_{\mathrm{k}1}p_1 + R_{\mathrm{k}2}p_2 + R_{\mathrm{k}3}p_3 + o_{\mathrm{k}}\cdot 1\),</span> to je komponenta \(k\) <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vektorja</a> <span class="nobr">\(\mat R^i_{\mathrm{j}}\,\vek p^j + \vek o^i_{\mathrm{j}}\).</span></li>
+<li>Četrta vrstica je <span class="nobr">\((0, 0, 0, 1)\),</span> njen produkt s stolpcem je <span class="nobr">\(0\cdot p_1 + 0\cdot p_2 + 0\cdot p_3 + 1\cdot 1 = 1\).</span></li>
+<li>Po lemi <a class="xref" href="sec-homogene-transformacije.html#lem-koordinate-tocke" data-knowl="lem-koordinate-tocke">27.19</a> je <span class="nobr">\(\mat R^i_{\mathrm{j}}\,\vek p^j + \vek o^i_{\mathrm{j}} = \vek p^i\).</span> Skupaj s korakom 2 je rezultat <span class="nobr">\((\vek p^i; 1) = \tilde{\vek p}^i\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> SPONG (2.70) (PDF str. 85). Dokaz ni iz vira.</p></div></div>
+<div class="opomba"><p>Oznake. Črka \(T\) je v knjigi že <a class="xref auto" href="sec-kineticna-energija.html#def-kineticna-energija" data-knowl="def-kineticna-energija">kinetična energija</a> (poglavje <a class="xref" href="ch-analiticna-dinamika.html">8</a>), a ta je poševna, matrika \(\mat T\) je krepka z indeksoma \(i\) in <span class="nobr">\(j\).</span> Črka \(\mat R\) je v poglavju <a class="xref" href="ch-napetost.html">2</a> faktor <a class="xref auto" href="sec-piola-kirchhoff.html#thm-polarni-razcep" data-knowl="thm-polarni-razcep">polarnega razcepa</a>, v poglavju <a class="xref" href="ch-analiticna-dinamika.html">8</a> pa dvorazsežni zasuk <span class="nobr">\(\mat R(\varphi)\).</span> V tem poglavju je \(\mat R\) vedno orientacijska matrika z indeksoma. Vir piše <span class="nobr">\(H\),</span> mi <span class="nobr">\(\mat T\),</span> ker bo v tem poglavju \(\mat T^{i-1}_{\mathrm{i}}\) matrika posameznega člena. Tudi matrika \(\mat Q\) iz poglavja <a class="xref" href="ch-napetost.html">2</a> (novi okvirji v vrsticah) je <a class="xref auto" href="sec-matrike.html#def-transponirana-matrika" data-knowl="def-transponirana-matrika">transponirana matrika</a> <span class="nobr">\(\mat R^i_{\mathrm{j}}\),</span> kakor smo zapisali v razdelku <a class="xref" href="sec-orientacija-clenov.html">27.2</a>.</p>
+</div>
+<p>Roka A v obliki z matrikami. Okvir 1 je glede na 0 le zasukan, okvir 2 glede na 1 zasukan in za \(\vek o^1_2 = (1; 0; 0)\) m premaknjen:</p>
+<div class="eq">\[\mat T^0_1 = \begin{pmatrix} 0{,}866 &amp; -0{,}5 &amp; 0 &amp; 0 \\ 0{,}5 &amp; 0{,}866 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 1 \end{pmatrix} , \qquad \mat T^1_2 = \begin{pmatrix} 0{,}5 &amp; -0{,}866 &amp; 0 &amp; 1 \\ 0{,}866 &amp; 0{,}5 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 1 \end{pmatrix} .\]</div>
+<p>Po lemi <a class="xref" href="sec-homogene-transformacije.html#lem-homogeno-delovanje" data-knowl="lem-homogeno-delovanje">27.21</a> je \(\tilde{\vek p}^1 = \mat T^1_2\,\tilde{\vek p}^2\) in <span class="nobr">\(\tilde{\vek p}^0 = \mat T^0_1\,\tilde{\vek p}^1\),</span> torej <span class="nobr">\(\tilde{\vek p}^0 = \mat T^0_1\,(\mat T^1_2\,\tilde{\vek p}^2)\).</span> Ko izračunamo oba produkta s stolpcem <span class="nobr">\((0{,}5; 0; 0; 1)\),</span> dobimo isti rezultat \((0{,}866; 1{,}0; 0; 1)\) kakor zgoraj. Na okvir 0 smo torej prišli z dvema množenjema, brez vstavljanja enačbe vase.</p>
+<p>Ali sta matriki tudi sami sestavljivi, torej ali je produkt \(\mat T^0_1\mat T^1_2\) matrika \(\mat T^0_2\) okvirja 2 glede na okvir 0? Če je, je vsako verigo okvirjev mogoče zapisati z enim produktom.</p>
+
+<div class="blk lema" id="lem-homogena-sestavljanje"><div class="blk-head"><span class="blk-label">Lema 27.22</span> <span class="blk-title">Sestavljanje homogenih transformacij (composition of homogeneous transformations)</span></div><div class="blk-body"><p>Za tri <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">okvirje</a> <span class="nobr">\(i\),</span> \(j\) in \(k\) je</p>
+<div class="eq" id="eq-hom-sestavljanje">\[\mat T^i_{\mathrm{k}} = \mat T^i_{\mathrm{j}}\,\mat T^j_{\mathrm{k}} . \tag{27.11}\]</div>
+<p>Za \(n + 1\) okvirjev, ki si sledijo od \(0\) do <span class="nobr">\(n\),</span> je zato <span class="nobr">\(\mat T^0_{\mathrm{n}} = \mat T^0_1\,\mat T^1_2\cdots\mat T^{n-1}_{\mathrm{n}}\).</span></p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da produkt \(\mat T^i_{\mathrm{j}}\mat T^j_{\mathrm{k}}\) po blokih da zasuk \(\mat R^i_{\mathrm{k}}\) in izhodišče <span class="nobr">\(\vek o^i_{\mathrm{k}}\).</span> Produkt zapišemo po blokih, nato oba bloka prepoznamo.</p>
+<ol>
+<li>Za <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matriki</a> \(\begin{pmatrix} \mat A &amp; \vek a \\ \vek 0^\T &amp; 1 \end{pmatrix}\) in \(\begin{pmatrix} \mat B &amp; \vek b \\ \vek 0^\T &amp; 1 \end{pmatrix}\) je po pravilu vrstica krat stolpec zgornji levi blok produkta <span class="nobr">\(\mat A\mat B\),</span> zgornji desni <span class="nobr">\(\mat A\vek b + \vek a\cdot 1\),</span> spodnja vrstica pa <span class="nobr">\((\vek 0^\T\mat B,\ \vek 0^\T\vek b + 1) = (\vek 0^\T,\ 1)\).</span></li>
+<li>Pri <span class="nobr">\(\mat A = \mat R^i_{\mathrm{j}}\),</span> \(\mat B = \mat R^j_{\mathrm{k}}\) je \(\mat A\mat B = \mat R^i_{\mathrm{k}}\) po lemi <a class="xref" href="sec-orientacija-clenov.html#lem-sestavljanje-orientacij" data-knowl="lem-sestavljanje-orientacij">27.12</a> o sestavljanju orientacij.</li>
+<li>Pri \(\vek a = \vek o^i_{\mathrm{j}}\) in \(\vek b = \vek o^j_{\mathrm{k}}\) uporabimo lemo <a class="xref" href="sec-homogene-transformacije.html#lem-koordinate-tocke" data-knowl="lem-koordinate-tocke">27.19</a> za točko <span class="nobr">\(P = O_{\mathrm{k}}\).</span> Njena <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinata</a> v <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">okvirju</a> \(k\) je <span class="nobr">\(\vek 0\),</span> v okvirju \(j\) je \(\vek o^j_{\mathrm{k}}\) in v okvirju \(i\) je <span class="nobr">\(\vek o^i_{\mathrm{k}}\).</span> Zato je <span class="nobr">\(\vek o^i_{\mathrm{k}} = \mat R^i_{\mathrm{j}}\,\vek o^j_{\mathrm{k}} + \vek o^i_{\mathrm{j}} = \mat A\vek b + \vek a\).</span></li>
+<li>Iz korakov 1 do 3 je produkt enak <span class="nobr">\(\begin{pmatrix} \mat R^i_{\mathrm{k}} &amp; \vek o^i_{\mathrm{k}} \\ \vek 0^\T &amp; 1 \end{pmatrix} = \mat T^i_{\mathrm{k}}\).</span></li>
+<li>Za verigo z \(n\) okvirji uporabimo korak 4 ponavljajoče: <span class="nobr">\(\mat T^0_2 = \mat T^0_1\mat T^1_2\),</span> \(\mat T^0_3 = \mat T^0_2\mat T^2_3\) in tako naprej do <span class="nobr">\(\mat T^0_{\mathrm{n}}\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> SPONG (2.63) in (2.64) (PDF str. 84) za sestavljanje zasuka in premika, (2.65) in (2.66) (PDF str. 84-85) za zapis z matriko <span class="nobr">\(4 \times 4\).</span> Dokaz ni iz vira.</p></div></div>
+<p>Za roko A je produkt</p>
+<div class="eq">\[\mat T^0_2 = \mat T^0_1\,\mat T^1_2 = \begin{pmatrix} 0 &amp; -1 &amp; 0 &amp; 0{,}866 \\ 1 &amp; 0 &amp; 0 &amp; 0{,}5 \\ 0 &amp; 0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 1 \end{pmatrix} .\]</div>
+<p>Zgornji levi blok je zasuk za <span class="nobr">\(90°\),</span> kakor smo ga našli iz kotov <span class="nobr">\(30° + 60°\),</span> četrti stolpec je izhodišče \(O_2\) pri \((0{,}866; 0{,}5; 0)\) m, kakor na sliki <a class="xref" href="sec-homogene-transformacije.html#fig-hom-veriga" data-knowl="fig-hom-veriga">27.12</a>, in <span class="nobr">\(\mat T^0_2\,(0{,}5; 0; 0; 1)^\T = (0{,}866; 1{,}0; 0; 1)^\T\).</span></p>
+<p>Lema ne pravi, da je vrstni red vseh faktorjev poljuben, in tega ne bi smelo biti. Zamenjajmo ga pri roki A.</p>
+
+<div class="blk primer" id="ex-hom-vrstni-red"><div class="blk-head"><span class="blk-label">Primer 27.23</span> <span class="blk-title">Napačen vrstni red faktorjev (the wrong order of factors)</span></div><div class="blk-body"><p>Za roko A v legi \(q = (30°, 60°)\) je po lemi <a class="xref" href="sec-homogene-transformacije.html#lem-homogena-sestavljanje" data-knowl="lem-homogena-sestavljanje">27.22</a> \(\mat T^0_2 = \mat T^0_1\mat T^1_2\) z <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">izhodiščem</a> okvirja 2 pri \((0{,}866; 0{,}5; 0)\) m in konico pri \((0{,}866; 1{,}0; 0)\) m. Zamenjajmo faktorja in izračunajmo</p>
+<div class="eq">\[\mat T^1_2\,\mat T^0_1 = \begin{pmatrix} 0 &amp; -1 &amp; 0 &amp; 1 \\ 1 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 1 \end{pmatrix} .\]</div>
+<p>Zasuk je še vedno <span class="nobr">\(90°\),</span> ker zasuka okoli iste osi \(z\) komutirata (adicijska izreka za sinus in kosinus, posledica <a class="xref" href="sec-sinus-kosinus.html#cor-adicijska-izreka" data-knowl="cor-adicijska-izreka">8.15</a>). Izhodišče pa je zdaj \(\mat R^1_2\,\vek o^0_1 + \vek o^1_2 = (1; 0; 0)\) m, ker je <span class="nobr">\(\vek o^0_1 = \vek 0\).</span> Konica pri \(\vek p^2 = (0{,}5; 0; 0)\) m bi bila pri \((1{,}0; 0{,}5; 0)\) m. Od prave konice je oddaljena za \(0{,}5176\) m, kar je skoraj toliko kot dolžina drugega člena (slika <a class="xref" href="sec-homogene-transformacije.html#fig-hom-vrstni-red" data-knowl="fig-hom-vrstni-red">27.14</a>).</p>
+
+<p class="vir"><span class="vir-label">Vir:</span> Primer je naš, števila so izračunana z NumPy.</p></div></div>
+<figure class="blk slika" id="fig-hom-vrstni-red"><p><span class="svgfig" role="img" aria-label="Pravi in napačni okvir 2 ter konici P in P&#x27; pri roki A"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='186.07pt' height='158.09pt' viewBox='-72.000004 -72.000003 137.83187 117.106929'>
+<defs>
+<path id='c27-03-vrstni-red-t-g0-106' d='M1.58406-7.113325C1.58406-7.292653 1.58406-7.47198 1.384807-7.47198S1.185554-7.292653 1.185554-7.113325V2.132005C1.185554 2.311333 1.185554 2.49066 1.384807 2.49066S1.58406 2.311333 1.58406 2.132005V-7.113325Z'/>
+<path id='c27-03-vrstni-red-t-g1-48' d='M2.022416-3.291656C2.078207-3.410212 2.085181-3.466002 2.085181-3.514819C2.085181-3.731009 1.889913-3.898381 1.673724-3.898381C1.408717-3.898381 1.325031-3.682192 1.290162-3.57061L.369614-.550934C.36264-.536986 .334745-.446326 .334745-.439352C.334745-.355666 .550934-.285928 .606725-.285928C.655542-.285928 .662516-.299875 .711333-.404483L2.022416-3.291656Z'/>
+<path id='c27-03-vrstni-red-t-g2-80' d='M3.01868-3.148194H4.712329C6.127024-3.148194 7.511831-4.184309 7.511831-5.300125C7.511831-6.067248 6.854296-6.804483 5.549191-6.804483H2.321295C2.132005-6.804483 2.022416-6.804483 2.022416-6.615193C2.022416-6.495641 2.11208-6.495641 2.311333-6.495641C2.440847-6.495641 2.620174-6.485679 2.739726-6.475716C2.899128-6.455791 2.958904-6.425903 2.958904-6.316314C2.958904-6.276463 2.948941-6.246575 2.919054-6.127024L1.58406-.777086C1.484433-.388543 1.464508-.308842 .67746-.308842C.508095-.308842 .398506-.308842 .398506-.119552C.398506 0 .518057 0 .547945 0C.826899 0 1.534247-.029888 1.8132-.029888C2.022416-.029888 2.241594-.019925 2.450809-.019925C2.669988-.019925 2.889166 0 3.098381 0C3.16812 0 3.297634 0 3.297634-.199253C3.297634-.308842 3.20797-.308842 3.01868-.308842C2.650062-.308842 2.371108-.308842 2.371108-.488169C2.371108-.547945 2.391034-.597758 2.400996-.657534L3.01868-3.148194ZM3.73599-6.117061C3.825654-6.465753 3.845579-6.495641 4.273973-6.495641H5.230386C6.057285-6.495641 6.585305-6.22665 6.585305-5.539228C6.585305-5.150685 6.386052-4.293898 5.997509-3.935243C5.499377-3.486924 4.901619-3.407223 4.463263-3.407223H3.058531L3.73599-6.117061Z'/>
+<path id='c27-03-vrstni-red-t-g2-120' d='M3.327522-3.008717C3.387298-3.267746 3.616438-4.184309 4.313823-4.184309C4.363636-4.184309 4.60274-4.184309 4.811955-4.054795C4.533001-4.004981 4.333748-3.755915 4.333748-3.516812C4.333748-3.35741 4.443337-3.16812 4.712329-3.16812C4.931507-3.16812 5.250311-3.347447 5.250311-3.745953C5.250311-4.26401 4.662516-4.403487 4.323786-4.403487C3.745953-4.403487 3.39726-3.875467 3.277709-3.646326C3.028643-4.303861 2.49066-4.403487 2.201743-4.403487C1.165629-4.403487 .597758-3.118306 .597758-2.86924C.597758-2.769614 .697385-2.769614 .71731-2.769614C.797011-2.769614 .826899-2.789539 .846824-2.879203C1.185554-3.935243 1.843088-4.184309 2.181818-4.184309C2.371108-4.184309 2.719801-4.094645 2.719801-3.516812C2.719801-3.20797 2.550436-2.540473 2.181818-1.145704C2.022416-.52802 1.673724-.109589 1.235367-.109589C1.175592-.109589 .946451-.109589 .737235-.239103C.986301-.288917 1.205479-.498132 1.205479-.777086C1.205479-1.046077 .986301-1.125778 .836862-1.125778C.537983-1.125778 .288917-.86675 .288917-.547945C.288917-.089664 .787049 .109589 1.225405 .109589C1.882939 .109589 2.241594-.587796 2.271482-.647572C2.391034-.278954 2.749689 .109589 3.347447 .109589C4.373599 .109589 4.941469-1.175592 4.941469-1.424658C4.941469-1.524284 4.851806-1.524284 4.821918-1.524284C4.732254-1.524284 4.712329-1.484433 4.692403-1.414695C4.363636-.348692 3.686177-.109589 3.367372-.109589C2.978829-.109589 2.819427-.428394 2.819427-.767123C2.819427-.986301 2.879203-1.205479 2.988792-1.643836L3.327522-3.008717Z'/>
+<path id='c27-03-vrstni-red-t-g2-121' d='M4.841843-3.795766C4.881694-3.935243 4.881694-3.955168 4.881694-4.024907C4.881694-4.204234 4.742217-4.293898 4.592777-4.293898C4.493151-4.293898 4.333748-4.234122 4.244085-4.084682C4.224159-4.034869 4.144458-3.726027 4.104608-3.5467C4.034869-3.287671 3.965131-3.01868 3.905355-2.749689L3.457036-.956413C3.417186-.806974 2.988792-.109589 2.331258-.109589C1.823163-.109589 1.713574-.547945 1.713574-.916563C1.713574-1.374844 1.882939-1.992528 2.221669-2.86924C2.381071-3.277709 2.420922-3.387298 2.420922-3.58655C2.420922-4.034869 2.102117-4.403487 1.603985-4.403487C.657534-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.836862-3.88543 1.235367-4.184309 1.574097-4.184309C1.653798-4.184309 1.823163-4.184309 1.823163-3.865504C1.823163-3.616438 1.723537-3.35741 1.653798-3.16812C1.255293-2.11208 1.075965-1.544209 1.075965-1.075965C1.075965-.18929 1.703611 .109589 2.291407 .109589C2.67995 .109589 3.01868-.059776 3.297634-.33873C3.16812 .179328 3.048568 .667497 2.650062 1.195517C2.391034 1.534247 2.012453 1.823163 1.554172 1.823163C1.414695 1.823163 .966376 1.793275 .797011 1.404732C.956413 1.404732 1.085928 1.404732 1.225405 1.285181C1.325031 1.195517 1.424658 1.066002 1.424658 .876712C1.424658 .56787 1.155666 .52802 1.05604 .52802C.826899 .52802 .498132 .687422 .498132 1.175592C.498132 1.673724 .936488 2.042341 1.554172 2.042341C2.580324 2.042341 3.606476 1.135741 3.88543 .009963L4.841843-3.795766Z'/>
+<path id='c27-03-vrstni-red-t-g3-48' d='M3.598506-2.224658C3.598506-2.991781 3.507846-3.542715 3.187049-4.030884C2.970859-4.351681 2.538481-4.630635 1.980573-4.630635C.36264-4.630635 .36264-2.726775 .36264-2.224658S.36264 .139477 1.980573 .139477S3.598506-1.72254 3.598506-2.224658ZM1.980573-.055791C1.659776-.055791 1.234371-.244085 1.094894-.81594C.99726-1.227397 .99726-1.799253 .99726-2.315318C.99726-2.824408 .99726-3.354421 1.101868-3.737983C1.248319-4.288917 1.694645-4.435367 1.980573-4.435367C2.357161-4.435367 2.719801-4.20523 2.84533-3.800747C2.956912-3.424159 2.963885-2.922042 2.963885-2.315318C2.963885-1.799253 2.963885-1.283188 2.873225-.843836C2.733748-.209215 2.259527-.055791 1.980573-.055791Z'/>
+<path id='c27-03-vrstni-red-t-g3-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+</defs>
+<g id='c27-03-vrstni-red-t-page1'>
+<g stroke-miterlimit='10' transform='translate(-55.706202,28.204445)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='osi'>
+<path d='M0 0H35.48148' fill='none'/>
+<g transform='translate(33.00502,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(34.73297,-7.93852)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.706202,28.204445)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.706202' y='28.204445' xlink:href='#c27-03-vrstni-red-t-g2-120'/>
+<use x='-50.01227' y='29.698825' xlink:href='#c27-03-vrstni-red-t-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 0V35.48148' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,33.00502)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-13.02193,38.6531)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.706202,28.204445)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.706202' y='28.204445' xlink:href='#c27-03-vrstni-red-t-g2-121'/>
+<use x='-50.821698' y='29.698825' xlink:href='#c27-03-vrstni-red-t-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='prav'>
+<g stroke-width='2.6'>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M0 0L73.92043 42.67911' fill='none'/>
+</g>
+</g>
+<g stroke-width='2.6'>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M73.92043 42.67911V85.35823' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M73.92043 42.67911V63.93422' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,73.92043,61.45776)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(60.08606,66.88362)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.706202,28.204445)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-55.706202' y='28.204445' xlink:href='#c27-03-vrstni-red-t-g2-120'/>
+<use x='-50.01227' y='29.698825' xlink:href='#c27-03-vrstni-red-t-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M73.92043 42.67911H52.66489' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,55.14134,42.67911)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(35.29077,41.49855)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.706202,28.204445)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-55.706202' y='28.204445' xlink:href='#c27-03-vrstni-red-t-g2-121'/>
+<use x='-50.821698' y='29.698825' xlink:href='#c27-03-vrstni-red-t-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M75.75905 85.35823C75.75905 86.37367 74.93587 87.19685 73.92043 87.19685C72.90498 87.19685 72.0818 86.37367 72.0818 85.35823S72.90498 83.5196 73.92043 83.5196C74.93587 83.5196 75.75905 84.34279 75.75905 85.35823ZM73.92043 85.35823' stroke='none'/>
+</g>
+<g transform='translate(73.92043,85.35823)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.706202,28.204445)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(70.01591,90.41393)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.706202,28.204445)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-55.706202' y='28.204445' xlink:href='#c27-03-vrstni-red-t-g2-80'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='narobe'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<path d='M0 0H85.35823' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M85.35823 0V21.2551' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,85.35823,18.77864)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(88.99121,23.08942)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.706202,28.204445)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-55.706202' y='28.204445' xlink:href='#c27-03-vrstni-red-t-g2-120'/>
+<use x='-50.01227' y='24.589081' xlink:href='#c27-03-vrstni-red-t-g1-48'/>
+<use x='-50.01227' y='30.677273' xlink:href='#c27-03-vrstni-red-t-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M85.35823 0H64.10312' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,66.57957,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(55.05646,-11.1508)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.706202,28.204445)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-55.706202' y='28.204445' xlink:href='#c27-03-vrstni-red-t-g2-121'/>
+<use x='-50.464259' y='24.589081' xlink:href='#c27-03-vrstni-red-t-g1-48'/>
+<use x='-50.821698' y='30.677273' xlink:href='#c27-03-vrstni-red-t-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.6'>
+<path d='M85.35823 0V42.67911' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M87.19685 42.67911C87.19685 43.69455 86.37367 44.51773 85.35823 44.51773S83.5196 43.69455 83.5196 42.67911S84.34279 40.84048 85.35823 40.84048S87.19685 41.66367 87.19685 42.67911ZM85.35823 42.67911' stroke='none'/>
+</g>
+<g transform='translate(85.35823,42.67911)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.706202,28.204445)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(90.41393,31.5283)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.706202,28.204445)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-55.706202' y='28.204445' xlink:href='#c27-03-vrstni-red-t-g2-80'/>
+<use x='-47.92634' y='24.589081' xlink:href='#c27-03-vrstni-red-t-g1-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='razlika'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M78.35175 85.03809L92.3647 42.99925' fill='none'/>
+<g transform='matrix(-0.31621,0.94864,-0.94864,-0.31621,80.1867,79.5331)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-0.31621,0.94864,-0.94864,-0.31621,78.3162,85.14478)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.31621,-0.94864,0.94864,0.31621,90.52974,48.50424)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.31621,-0.94864,0.94864,0.31621,92.40025,42.89256)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g transform='translate(94.68167,65.7775)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.706202,28.204445)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.706202' y='28.204445' xlink:href='#c27-03-vrstni-red-t-g0-106'/>
+<use x='-52.938793' y='28.204445' xlink:href='#c27-03-vrstni-red-t-g2-80'/>
+<use x='-45.158932' y='28.204445' xlink:href='#c27-03-vrstni-red-t-g2-80'/>
+<use x='-37.37907' y='24.589081' xlink:href='#c27-03-vrstni-red-t-g1-48'/>
+<use x='-34.583994' y='28.204445' xlink:href='#c27-03-vrstni-red-t-g0-106'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 27.14</span>: Pravi in napačni vrstni red pri roki A v legi <span class="nobr">\(q = (30°, 60°)\),</span> merilo 3 cm = 1 m. Modro: okvir 2 in konica \(P\) iz produkta <span class="nobr">\(\mat T^0_1\mat T^1_2\).</span> Oranžno: okvir \(2'\) in konica \(P'\) iz produkta <span class="nobr">\(\mat T^1_2\mat T^0_1\),</span> ki ima premik \((1; 0; 0)\) m odmerjen vzdolž osi \(x_0\) namesto vzdolž prvega člena. Razdalja \(|PP'|\) je \(0{,}5176\) m.</figcaption></figure>
+<p>Slika ponazori, kaj se je zgodilo. V pravem produktu se <a data-del="prav" class="xref kaz" href="sec-homogene-transformacije.html#fig-hom-vrstni-red" data-knowl="fig-hom-vrstni-red">okvir 2 s konico \(P\)</a> premakne po prvem členu, vzdolž <span class="nobr">\(x_1\),</span> ki je zasukana za <span class="nobr">\(30°\).</span> V napačnem produktu je isti stolpec \(\vek o^1_2 = (1; 0; 0)\) m <a data-del="narobe" class="xref kaz" href="sec-homogene-transformacije.html#fig-hom-vrstni-red" data-knowl="fig-hom-vrstni-red">prebran v okvirju 0</a>: premik je vzdolž <span class="nobr"><a data-del="osi" class="xref kaz" href="sec-homogene-transformacije.html#fig-hom-vrstni-red" data-knowl="fig-hom-vrstni-red">osi \(x_0\)</a>,</span> okvir \(2'\) stoji pri \((1; 0; 0)\) m in konica \(P'\) je 0,134 m desno in 0,5 m nižje od prave. Razdalja <a data-del="razlika" class="xref kaz" href="sec-homogene-transformacije.html#fig-hom-vrstni-red" data-knowl="fig-hom-vrstni-red">med točkama</a> je 0,5176 m. Stolpec \(\vek o^1_2\) je izražen v okvirju 1, zato ga je treba pred seštevanjem zasukati z <span class="nobr">\(\mat R^0_1\),</span> kar stori pravi produkt. Napačni produkt tega zasuka nima in stolpec obravnava, kakor da bi bil v okvirju 0. Pri pravem produktu se sosednja indeksa pokrajšata, <span class="nobr">\(\mat T^i_{\mathrm{j}}\mat T^j_{\mathrm{k}}\),</span> in ta pogoj nam pove, v kakšnem vrstnem redu faktorje pišemo.</p>
+<p>Kako obrnemo transformacijo, torej kako iz okvirja 2 vidimo podlago? Orientacijsko matriko znamo obrniti s transponiranjem, ker je ortogonalna (definicija <a class="xref" href="sec-vrtenje-osi.html#def-ortogonalna-matrika" data-knowl="def-ortogonalna-matrika">2.39</a>). Tu pa je tudi premik.</p>
+
+<div class="blk lema" id="lem-homogena-inverz"><div class="blk-head"><span class="blk-label">Lema 27.24</span> <span class="blk-title">Inverz homogene transformacije (inverse of a homogeneous transformation)</span></div><div class="blk-body"><p>Za <a class="xref auto" href="sec-homogene-transformacije.html#def-homogena-transformacija" data-knowl="def-homogena-transformacija">homogeno transformacijo</a> \(\mat T = \begin{pmatrix} \mat R &amp; \vek o \\ \vek 0^\T &amp; 1 \end{pmatrix}\) je <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrika</a></p>
+<div class="eq" id="eq-hom-inverz">\[\mat M = \begin{pmatrix} \mat R^\T &amp; -\mat R^\T\vek o \\ \vek 0^\T &amp; 1 \end{pmatrix} \tag{27.12}\]</div>
+<p>njen inverz, <span class="nobr">\(\mat M = \mat T^{-1}\).</span> Za <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">okvirja</a> \(i\) in \(j\) je <span class="nobr">\(\mat T^j_{\mathrm{i}} = (\mat T^i_{\mathrm{j}})^{-1}\),</span> torej \(\mat R^j_{\mathrm{i}} = (\mat R^i_{\mathrm{j}})^\T\) in <span class="nobr">\(\vek o^j_{\mathrm{i}} = -(\mat R^i_{\mathrm{j}})^\T\vek o^i_{\mathrm{j}}\).</span></p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da je <span class="nobr">\(\mat T\mat M = \mat M\mat T = \mat I\),</span> in nato prepoznati \(\mat M\) kot <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matriko</a> <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">okvirja</a> \(i\) v okvirju <span class="nobr">\(j\).</span> Produkt blokov je isti kot v koraku 1 dokaza leme <a class="xref" href="sec-homogene-transformacije.html#lem-homogena-sestavljanje" data-knowl="lem-homogena-sestavljanje">27.22</a>.</p>
+<ol>
+<li>Za \(\mat T\mat M\) je zgornji levi blok \(\mat R\mat R^\T = \mat I\) (definicija <a class="xref" href="sec-vrtenje-osi.html#def-ortogonalna-matrika" data-knowl="def-ortogonalna-matrika">2.39</a>), zgornji desni \(\mat R(-\mat R^\T\vek o) + \vek o\cdot 1 = -\vek o + \vek o = \vek 0\) in spodnja vrstica <span class="nobr">\((\vek 0^\T, 1)\).</span> Torej je \(\mat T\mat M = \mat I\) velikosti <span class="nobr">\(4 \times 4\).</span></li>
+<li>Za \(\mat M\mat T\) je zgornji levi blok <span class="nobr">\(\mat R^\T\mat R = \mat I\),</span> zgornji desni <span class="nobr">\(\mat R^\T\vek o + (-\mat R^\T\vek o)\cdot 1 = \vek 0\),</span> spodnja vrstica <span class="nobr">\((\vek 0^\T, 1)\).</span> Torej je tudi \(\mat M\mat T = \mat I\) in po definiciji <a class="xref" href="sec-matrike.html#def-inverzna-matrika" data-knowl="def-inverzna-matrika">1.107</a> je <span class="nobr">\(\mat M = \mat T^{-1}\).</span></li>
+<li>Okvir \(j\) je v okvirju \(j\) enak samemu sebi, zato je \(\mat T^j_{\mathrm{j}} = \mat I\) <span class="nobr">(\(\mat R^j_{\mathrm{j}} = \mat I\),</span> <span class="nobr">\(\vek o^j_{\mathrm{j}} = \vek 0\)).</span> Po lemi <a class="xref" href="sec-homogene-transformacije.html#lem-homogena-sestavljanje" data-knowl="lem-homogena-sestavljanje">27.22</a> je <span class="nobr">\(\mat T^j_{\mathrm{i}}\mat T^i_{\mathrm{j}} = \mat T^j_{\mathrm{j}} = \mat I\).</span></li>
+<li>Naj bo <span class="nobr">\(\mat T = \mat T^i_{\mathrm{j}}\).</span> Iz koraka 3 in koraka 1 je <span class="nobr">\(\mat T^j_{\mathrm{i}} = \mat T^j_{\mathrm{i}}(\mat T\mat M) = (\mat T^j_{\mathrm{i}}\mat T)\mat M = \mat M\).</span> S primerjavo blokov dobimo \(\mat R^j_{\mathrm{i}} = \mat R^\T\) in <span class="nobr">\(\vek o^j_{\mathrm{i}} = -\mat R^\T\vek o\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> SPONG (2.67) (PDF str. 85) navaja obliko inverza kot lahko vajo. Dokaz ni iz vira.</p></div></div>
+<p>Premik v inverzu ni samo <span class="nobr">\(-\vek o\).</span> Vektor od \(O_{\mathrm{j}}\) do \(O_{\mathrm{i}}\) ima v okvirju \(i\) komponente <span class="nobr">\(-\vek o^i_{\mathrm{j}}\),</span> v okvirju \(j\) pa jih dobimo z zasukom iz okvirja \(i\) v okvir <span class="nobr">\(j\),</span> to je z matriko <span class="nobr">\(\mat R^j_{\mathrm{i}} = (\mat R^i_{\mathrm{j}})^\T\).</span> Pri roki A velja <span class="nobr">\((\mat R^0_2)^\T\,(0{,}866; 0{,}5; 0)^\T = (0{,}5; -0{,}866; 0)^\T\),</span> zato je \(\vek o^2_0 = (-0{,}5; 0{,}866; 0)\) m. Na sliki <a class="xref" href="sec-homogene-transformacije.html#fig-hom-veriga" data-knowl="fig-hom-veriga">27.12</a> je vektor od \(O_2\) do \(O_0\) res usmerjen navzdol in levo. Os \(x_2\) kaže navzgor, zato je komponenta vzdolž nje \(-0{,}5\) m, os \(y_2\) kaže levo, zato je komponenta vzdolž nje \(+0{,}866\) m. Drug primer: za \(\mat R = \mat R_{\mathrm{z},30°}\) in \(\vek o = (1; 0{,}5; 0)\) m je \(-\mat R^\T\vek o = (-1{,}116; 0{,}067; 0)\) m, medtem ko \(-\vek o = (-1; -0{,}5; 0)\) m ni komponenta tega vektorja v okvirju <span class="nobr">\(j\).</span></p>
+<p>Doslej so bile <a class="xref auto" href="sec-homogene-transformacije.html#def-homogena-transformacija" data-knowl="def-homogena-transformacija">homogene transformacije</a> matrike z določeno obliko. Kdaj pa je taka matrika sploh lega člena, ki ga lahko premaknemo v resnici? Odgovor iz poglavja <a class="xref" href="ch-analiticna-dinamika.html">8</a>: gibanje togega telesa je \(\vek x(t) = \vek c(t) + \mat Q(t)\vek X\) (definicija <a class="xref" href="sec-posplosene-koordinate.html#def-togo-gibanje" data-knowl="def-togo-gibanje">8.38</a>) in drugih gibanj ni (lema <a class="xref" href="sec-posplosene-koordinate.html#lem-izometrija" data-knowl="lem-izometrija">8.37</a>). To je ista oblika kakor enačba <a class="xref" href="sec-homogene-transformacije.html#eq-hom-pravilo" data-knowl="eq-hom-pravilo">(27.7)</a>. Natančno povezavo pove naslednja lema, slika <a class="xref" href="sec-homogene-transformacije.html#fig-hom-lega-clena" data-knowl="fig-hom-lega-clena">27.15</a> pa jo nariše.</p>
+
+<figure class="blk slika" id="fig-hom-lega-clena"><p><span class="svgfig" role="img" aria-label="Člen v začetni legi in v legi ob času t, vektor c, vektor QX in točka x"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='211.00pt' height='177.96pt' viewBox='-72.000004 -72 156.299905 131.823711'>
+<defs>
+<path id='c27-03-lega-clena-g0-81' d='M5.897883-.179328C7.531756-.816936 7.960149-2.291407 7.960149-3.377335C7.960149-5.529265 6.515567-6.94396 4.303861-6.94396C2.022416-6.94396 .637609-5.469489 .637609-3.377335C.637609-1.344956 1.992528 .109589 4.303861 .109589C4.523039 .109589 4.851806 .099626 5.250311 .019925C5.529265 1.145704 5.728518 1.932752 6.655044 1.932752C7.671233 1.932752 8.019925 .757161 8.019925 .079701C8.019925 0 8.019925-.179328 7.840598-.179328C7.691158-.179328 7.671233-.049813 7.66127 .019925C7.601494 .398506 6.983811 .408468 6.814446 .408468C6.585305 .408468 6.286426 .408468 5.897883-.179328ZM3.35741-.508095C2.132005-1.09589 2.102117-2.610212 2.102117-3.387298C2.102117-3.785803 2.102117-4.732254 2.470735-5.439601C2.988792-6.396015 3.845579-6.545455 4.293898-6.545455C4.83188-6.545455 5.608966-6.346202 6.087173-5.499377C6.465753-4.83188 6.495641-3.975093 6.495641-3.387298C6.495641-2.82939 6.495641-1.344956 5.539228-.687422C5.32005-1.016189 4.961395-1.544209 4.293898-1.544209C3.785803-1.544209 3.327522-1.205479 3.327522-.727273C3.327522-.667497 3.337484-.557908 3.35741-.508095ZM5.120797-.448319C4.871731-.33873 4.572852-.288917 4.303861-.288917C3.755915-.288917 3.686177-.607721 3.686177-.727273C3.686177-.996264 3.975093-1.185554 4.303861-1.185554C4.582814-1.185554 4.921544-1.075965 5.120797-.448319Z'/>
+<path id='c27-03-lega-clena-g0-88' d='M4.821918-3.955168L6.495641-6.156912C6.60523-6.296389 6.615193-6.306351 6.963885-6.336239C7.202989-6.366127 7.262765-6.366127 7.541719-6.366127H7.830635V-6.834371C7.412204-6.804483 6.924035-6.804483 6.495641-6.804483C6.107098-6.804483 5.339975-6.804483 4.98132-6.834371V-6.366127C5.160648-6.366127 5.549191-6.366127 5.897883-6.256538C5.88792-6.236613 5.838107-6.176837 5.818182-6.146949L4.503113-4.403487L3.078456-6.366127H3.905355V-6.834371C3.496887-6.804483 2.550436-6.804483 2.102117-6.804483C1.703611-6.804483 .836862-6.804483 .488169-6.834371V-6.366127H1.464508L3.676214-3.307597L1.663761-.667497C1.574097-.547945 1.554172-.52802 1.235367-.498132C1.036115-.478207 .826899-.468244 .627646-.468244H.33873V0C.757161-.029888 1.24533-.029888 1.673724-.029888C2.062267-.029888 2.82939-.029888 3.188045 0V-.468244C3.008717-.468244 2.620174-.468244 2.271482-.577833C2.281445-.597758 2.331258-.657534 2.351183-.687422L3.995019-2.86924L5.728518-.468244H4.901619V0C5.310087-.029888 6.256538-.029888 6.704857-.029888C7.103362-.029888 7.970112-.029888 8.318804 0V-.468244H7.342466L4.821918-3.955168Z'/>
+<path id='c27-03-lega-clena-g0-99' d='M3.58655-4.054795C3.407223-3.895392 3.387298-3.686177 3.387298-3.596513C3.387298-3.158157 3.73599-2.968867 4.004981-2.968867C4.313823-2.968867 4.632628-3.178082 4.632628-3.596513C4.632628-4.4533 3.476961-4.513076 2.899128-4.513076C1.115816-4.513076 .37858-3.367372 .37858-2.211706C.37858-.886675 1.315068 .059776 2.849315 .059776C4.463263 .059776 4.762142-1.09589 4.762142-1.165629C4.762142-1.305106 4.622665-1.305106 4.523039-1.305106C4.343711-1.305106 4.333748-1.285181 4.283935-1.155666C4.024907-.52802 3.5467-.33873 3.038605-.33873C1.653798-.33873 1.653798-1.803238 1.653798-2.261519C1.653798-2.819427 1.653798-4.11457 2.938979-4.11457C3.287671-4.11457 3.457036-4.084682 3.58655-4.054795Z'/>
+<path id='c27-03-lega-clena-g0-120' d='M3.447073-2.450809L4.612702-3.745953C4.742217-3.88543 4.801993-3.955168 5.628892-3.955168V-4.423412C5.280199-4.403487 4.762142-4.393524 4.712329-4.393524C4.463263-4.393524 3.965131-4.41345 3.686177-4.423412V-3.955168C3.825654-3.955168 3.945205-3.935243 4.064757-3.865504C4.024907-3.805729 4.024907-3.785803 3.985056-3.745953L3.148194-2.809465L2.171856-3.955168H2.570361V-4.423412C2.311333-4.41345 1.683686-4.393524 1.364882-4.393524S.597758-4.41345 .268991-4.423412V-3.955168H.976339L2.530511-2.122042L1.225405-.657534C1.05604-.468244 .697385-.468244 .219178-.468244V0C.56787-.019925 1.085928-.029888 1.135741-.029888C1.384807-.029888 1.96264-.009963 2.161893 0V-.468244C1.982565-.468244 1.793275-.518057 1.793275-.577833C1.793275-.587796 1.793275-.597758 1.863014-.67746L2.82939-1.763387L3.92528-.468244H3.536737V0C3.795766-.009963 4.403487-.029888 4.732254-.029888C5.051059-.029888 5.499377-.009963 5.828144 0V-.468244H5.120797L3.447073-2.450809Z'/>
+<path id='c27-03-lega-clena-g1-120' d='M3.327522-3.008717C3.387298-3.267746 3.616438-4.184309 4.313823-4.184309C4.363636-4.184309 4.60274-4.184309 4.811955-4.054795C4.533001-4.004981 4.333748-3.755915 4.333748-3.516812C4.333748-3.35741 4.443337-3.16812 4.712329-3.16812C4.931507-3.16812 5.250311-3.347447 5.250311-3.745953C5.250311-4.26401 4.662516-4.403487 4.323786-4.403487C3.745953-4.403487 3.39726-3.875467 3.277709-3.646326C3.028643-4.303861 2.49066-4.403487 2.201743-4.403487C1.165629-4.403487 .597758-3.118306 .597758-2.86924C.597758-2.769614 .697385-2.769614 .71731-2.769614C.797011-2.769614 .826899-2.789539 .846824-2.879203C1.185554-3.935243 1.843088-4.184309 2.181818-4.184309C2.371108-4.184309 2.719801-4.094645 2.719801-3.516812C2.719801-3.20797 2.550436-2.540473 2.181818-1.145704C2.022416-.52802 1.673724-.109589 1.235367-.109589C1.175592-.109589 .946451-.109589 .737235-.239103C.986301-.288917 1.205479-.498132 1.205479-.777086C1.205479-1.046077 .986301-1.125778 .836862-1.125778C.537983-1.125778 .288917-.86675 .288917-.547945C.288917-.089664 .787049 .109589 1.225405 .109589C1.882939 .109589 2.241594-.587796 2.271482-.647572C2.391034-.278954 2.749689 .109589 3.347447 .109589C4.373599 .109589 4.941469-1.175592 4.941469-1.424658C4.941469-1.524284 4.851806-1.524284 4.821918-1.524284C4.732254-1.524284 4.712329-1.484433 4.692403-1.414695C4.363636-.348692 3.686177-.109589 3.367372-.109589C2.978829-.109589 2.819427-.428394 2.819427-.767123C2.819427-.986301 2.879203-1.205479 2.988792-1.643836L3.327522-3.008717Z'/>
+<path id='c27-03-lega-clena-g1-121' d='M4.841843-3.795766C4.881694-3.935243 4.881694-3.955168 4.881694-4.024907C4.881694-4.204234 4.742217-4.293898 4.592777-4.293898C4.493151-4.293898 4.333748-4.234122 4.244085-4.084682C4.224159-4.034869 4.144458-3.726027 4.104608-3.5467C4.034869-3.287671 3.965131-3.01868 3.905355-2.749689L3.457036-.956413C3.417186-.806974 2.988792-.109589 2.331258-.109589C1.823163-.109589 1.713574-.547945 1.713574-.916563C1.713574-1.374844 1.882939-1.992528 2.221669-2.86924C2.381071-3.277709 2.420922-3.387298 2.420922-3.58655C2.420922-4.034869 2.102117-4.403487 1.603985-4.403487C.657534-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.836862-3.88543 1.235367-4.184309 1.574097-4.184309C1.653798-4.184309 1.823163-4.184309 1.823163-3.865504C1.823163-3.616438 1.723537-3.35741 1.653798-3.16812C1.255293-2.11208 1.075965-1.544209 1.075965-1.075965C1.075965-.18929 1.703611 .109589 2.291407 .109589C2.67995 .109589 3.01868-.059776 3.297634-.33873C3.16812 .179328 3.048568 .667497 2.650062 1.195517C2.391034 1.534247 2.012453 1.823163 1.554172 1.823163C1.414695 1.823163 .966376 1.793275 .797011 1.404732C.956413 1.404732 1.085928 1.404732 1.225405 1.285181C1.325031 1.195517 1.424658 1.066002 1.424658 .876712C1.424658 .56787 1.155666 .52802 1.05604 .52802C.826899 .52802 .498132 .687422 .498132 1.175592C.498132 1.673724 .936488 2.042341 1.554172 2.042341C2.580324 2.042341 3.606476 1.135741 3.88543 .009963L4.841843-3.795766Z'/>
+<path id='c27-03-lega-clena-g2-76' d='M2.873225-4.191283C2.93599-4.442341 2.956912-4.51208 3.598506-4.51208C3.814695-4.51208 3.884433-4.51208 3.884433-4.665504C3.884433-4.672478 3.87746-4.763138 3.765878-4.763138C3.605479-4.763138 3.417186-4.749191 3.249813-4.742217C3.075467-4.735243 2.866252-4.735243 2.691905-4.735243C2.545455-4.735243 2.357161-4.742217 2.21071-4.742217S1.896887-4.763138 1.75741-4.763138C1.715567-4.763138 1.610959-4.763138 1.610959-4.609714C1.610959-4.51208 1.694645-4.51208 1.834122-4.51208C1.841096-4.51208 1.973599-4.51208 2.099128-4.498132C2.245579-4.484184 2.259527-4.470237 2.259527-4.400498C2.259527-4.38655 2.259527-4.351681 2.231631-4.247073L1.30411-.54396C1.241345-.306849 1.227397-.251059 .690411-.251059C.571856-.251059 .481196-.251059 .481196-.104608C.481196 0 .564882 0 .690411 0H4.198257C4.372603 0 4.379577-.006974 4.435367-.139477C4.505106-.327771 5.028144-1.680697 5.028144-1.736488C5.028144-1.75741 5.014197-1.834122 4.909589-1.834122C4.825903-1.834122 4.811955-1.799253 4.770112-1.687671C4.505106-1.025156 4.198257-.251059 2.922042-.251059H2.133998C1.917808-.251059 1.910834-.258032 1.910834-.320797C1.910834-.327771 1.910834-.36264 1.93873-.467248L2.873225-4.191283Z'/>
+<path id='c27-03-lega-clena-g3-48' d='M3.598506-2.224658C3.598506-2.991781 3.507846-3.542715 3.187049-4.030884C2.970859-4.351681 2.538481-4.630635 1.980573-4.630635C.36264-4.630635 .36264-2.726775 .36264-2.224658S.36264 .139477 1.980573 .139477S3.598506-1.72254 3.598506-2.224658ZM1.980573-.055791C1.659776-.055791 1.234371-.244085 1.094894-.81594C.99726-1.227397 .99726-1.799253 .99726-2.315318C.99726-2.824408 .99726-3.354421 1.101868-3.737983C1.248319-4.288917 1.694645-4.435367 1.980573-4.435367C2.357161-4.435367 2.719801-4.20523 2.84533-3.800747C2.956912-3.424159 2.963885-2.922042 2.963885-2.315318C2.963885-1.799253 2.963885-1.283188 2.873225-.843836C2.733748-.209215 2.259527-.055791 1.980573-.055791Z'/>
+</defs>
+<g id='c27-03-lega-clena-page1'>
+<g stroke-miterlimit='10' transform='translate(-63.197108,37.544283)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='osi'>
+<path d='M-8.5359 0H126.5306' fill='none'/>
+<g transform='translate(124.05414,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(134.51576,-1.40279)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-63.197108,37.544283)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-63.197108' y='37.544283' xlink:href='#c27-03-lega-clena-g1-120'/>
+<use x='-57.503176' y='39.038664' xlink:href='#c27-03-lega-clena-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-8.5359V92.38696' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,89.9105)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-4.69447,102.31656)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-63.197108,37.544283)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-63.197108' y='37.544283' xlink:href='#c27-03-lega-clena-g1-121'/>
+<use x='-58.312604' y='39.038664' xlink:href='#c27-03-lega-clena-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='telo0'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0-7.11317V7.11317H79.66776V-7.11317ZM79.66776 7.11317' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M59.16843 0C59.16843 1.2498 58.15529 2.26294 56.90549 2.26294S54.64255 1.2498 54.64255 0S55.65569-2.26294 56.90549-2.26294S59.16843-1.2498 59.16843 0ZM56.90549 0'/>
+</g>
+<g transform='translate(56.90549,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-63.197108,37.544283)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(52.55829,-19.03)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-63.197108,37.544283)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-63.197108' y='37.544283' xlink:href='#c27-03-lega-clena-g0-88'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='telot'>
+<g fill='#00f' stroke='#00f'>
+<path d='M49.08113 27.983L41.96797 40.3034L110.96246 80.13728L118.07562 67.81688ZM110.96246 80.13728' fill='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M45.52455 34.1432L56.39749 39.37076' fill='none'/>
+<g transform='matrix(0.9012,0.43326,-0.43326,0.9012,54.16571,38.29782)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-dasharray='0.6,2.0' stroke-dashoffset='0.0'>
+<path d='M114.66452 76.82231L122.34688 81.09048' fill='none'/>
+<g transform='translate(125.97986,79.6877)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-63.197108,37.544283)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-63.197108' y='37.544283' xlink:href='#c27-03-lega-clena-g1-120'/>
+<use x='-57.503176' y='39.038664' xlink:href='#c27-03-lega-clena-g2-76'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M45.52455 34.1432L32.056 57.40683' fill='none'/>
+<g transform='matrix(-0.50102,0.8654,-0.8654,-0.50102,33.29675,55.2637)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(15.35353,66.75063)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-63.197108,37.544283)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-63.197108' y='37.544283' xlink:href='#c27-03-lega-clena-g1-121'/>
+<use x='-58.312604' y='39.038664' xlink:href='#c27-03-lega-clena-g2-76'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='c'>
+<g fill='#f00' stroke='#f00'>
+<path d='M0 0L42.04292 31.53194' fill='none'/>
+<g transform='matrix(0.79997,0.59999,-0.59999,0.79997,40.06183,30.04608)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(14.0182,20.70479)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-63.197108,37.544283)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-63.197108' y='37.544283' xlink:href='#c27-03-lega-clena-g0-99'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='QX'>
+<g stroke-width='1.1'>
+<path d='M45.52455 34.1432L91.22108 60.52701' fill='none'/>
+<g transform='matrix(0.86601,0.5,-0.5,0.86601,88.89087,59.18163)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.18118 0L1.84291 1.19954L2.96574 0L1.84291-1.19954Z'/>
+ </g>
+ </g>
+</g>
+</g>
+<g transform='translate(88.99121,41.6435)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-63.197108,37.544283)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-63.197108' y='37.544283' xlink:href='#c27-03-lega-clena-g0-81'/>
+<use x='-54.590543' y='37.544283' xlink:href='#c27-03-lega-clena-g0-88'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M96.64317 62.59595C96.64317 63.61139 95.81999 64.43457 94.80455 64.43457S92.96593 63.61139 92.96593 62.59595C92.96593 61.5805 93.78911 60.75732 94.80455 60.75732S96.64317 61.5805 96.64317 62.59595ZM94.80455 62.59595' stroke='none'/>
+<g transform='translate(94.80455,62.59595)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-63.197108,37.544283)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(98.43753,66.22893)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-63.197108,37.544283)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-63.197108' y='37.544283' xlink:href='#c27-03-lega-clena-g0-120'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 27.15</span>: Lega člena ob času \(0\) in ob času <span class="nobr">\(t\),</span> merilo 4 cm = 1 m. Črtkano: člen ob času <span class="nobr">\(0\),</span> ko okvir člena sovpada z okvirjem 0, in točka \(\vek X = (0{,}5; 0)\) m. Modro: isti člen ob času \(t\) z okvirjem \(L\) v \(\vek c = (0{,}4; 0{,}3)\) m, zasukanim za <span class="nobr">\(30°\).</span> <span class="ink-l">Črna</span><span class="ink-d">Bela</span> puščica \(\mat Q\vek X\) je od \(\vek c\) do točke \(\vek x = \vek c + \mat Q\vek X = (0{,}833; 0{,}55)\) m.</figcaption></figure>
+<p>Na sliki je <a data-del="telo0" class="xref kaz" href="sec-homogene-transformacije.html#fig-hom-lega-clena" data-knowl="fig-hom-lega-clena">člen ob času \(0\)</a> pritrjen na <a data-del="osi" class="xref kaz" href="sec-homogene-transformacije.html#fig-hom-lega-clena" data-knowl="fig-hom-lega-clena">okvir 0</a> in ima točko z vektorjem <span class="nobr">\(\vek X\).</span> Ob času \(t\) je <a data-del="telot" class="xref kaz" href="sec-homogene-transformacije.html#fig-hom-lega-clena" data-knowl="fig-hom-lega-clena">člen</a> premaknjen za <a data-del="c" class="xref kaz" href="sec-homogene-transformacije.html#fig-hom-lega-clena" data-knowl="fig-hom-lega-clena">vektor \(\vek c\)</a> in zasukan za <span class="nobr">\(\mat Q\),</span> njegova točka je pri <span class="nobr">\(\vek x\),</span> dosežemo jo z <a data-del="QX" class="xref kaz" href="sec-homogene-transformacije.html#fig-hom-lega-clena" data-knowl="fig-hom-lega-clena">vektorjem \(\mat Q\vek X\)</a> od izhodišča člena.</p>
+
+<div class="blk lema" id="lem-lega-clena"><div class="blk-head"><span class="blk-label">Lema 27.25</span> <span class="blk-title">Lega člena je homogena transformacija (the placement of a link is a homogeneous transformation)</span></div><div class="blk-body"><p>Naj se <a class="xref auto" href="sec-deformacija-v-tocki.html#def-togo-telo" data-knowl="def-togo-telo">togo telo</a> giblje po definiciji <a class="xref" href="sec-posplosene-koordinate.html#def-togo-gibanje" data-knowl="def-togo-gibanje">8.38</a>, <span class="nobr">\(\vek x(t) = \vek c(t) + \mat Q(t)\vek X\).</span> Naj bo \(L\) <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">okvir</a>, pritrjen na telo, ki ob času \(0\) sovpada z okvirjem 0: njegovo izhodišče je točka <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">telesa</a>, ki je ob času \(0\) v izhodišču okvirja 0, njegove osi pa so ob času \(0\) osi okvirja 0. Tedaj velja:</p>
+<ol>
+<li><span class="nobr">\(\mat R^0_{\mathrm{L}}(t) = \mat Q(t)\),</span> \(\vek o^0_{\mathrm{L}}(t) = \vek c(t)\) in zato <span class="nobr">\(\mat T^0_{\mathrm{L}}(t) = \begin{pmatrix} \mat Q(t) &amp; \vek c(t) \\ \vek 0^\T &amp; 1 \end{pmatrix}\).</span></li>
+<li>Točka telesa, ki ima ob času \(0\) koordinate <span class="nobr">\(\vek X\),</span> ima v okvirju \(L\) ob vsakem času koordinate <span class="nobr">\(\vek X\),</span> v okvirju 0 pa \(\vek x(t) = \mat T^0_{\mathrm{L}}(t)\,\tilde{\vek X}\) (v homogenih koordinatah).</li>
+<li>Obratno, vsaka <a class="xref auto" href="sec-homogene-transformacije.html#def-homogena-transformacija" data-knowl="def-homogena-transformacija">homogena transformacija</a> \(\mat T = \begin{pmatrix} \mat R &amp; \vek o \\ \vek 0^\T &amp; 1 \end{pmatrix}\) ohranja razdalje: za točki s homogenima <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinatama</a> \(\tilde{\vek p}\) in \(\tilde{\vek p}\,'\) je \(|\mat T\tilde{\vek p} - \mat T\tilde{\vek p}\,'| = |\vek p - \vek p\,'|\) (razdalja je razdalja zgornjih treh komponent).</li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da stolpci <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrike</a> \(\mat Q\) in <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vektor</a> \(\vek c\) nosita <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">okvir</a> člena, in da transformacija ne spremeni razdalj. Točki 1 in 2 sledita iz lege izhodišča in osi okvirja <span class="nobr">\(L\),</span> točka 3 iz ortogonalnosti.</p>
+<ol>
+<li>Izhodišče okvirja \(L\) je točka <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">telesa</a> z <span class="nobr">\(\vek X = \vek 0\).</span> Njena lega je <span class="nobr">\(\vek x(t) = \vek c(t) + \mat Q(t)\vek 0 = \vek c(t)\),</span> zato je <span class="nobr">\(\vek o^0_{\mathrm{L}} = \vek c\).</span></li>
+<li>Os \(k\) okvirja \(L\) je ob času \(0\) <a class="xref auto" href="sec-vektorji.html#def-enotski-vektor" data-knowl="def-enotski-vektor">enotski vektor</a> \(\vek e_{\mathrm{k}}\) okvirja 0, torej vektor od točke \(\vek 0\) do točke <span class="nobr">\(\vek X = \vek e_{\mathrm{k}}\).</span> Ob času \(t\) je ta vektor razlika leg teh točk, <span class="nobr">\(\vek c + \mat Q\vek e_{\mathrm{k}} - \vek c = \mat Q\vek e_{\mathrm{k}}\),</span> to je stolpec \(k\) matrike <span class="nobr">\(\mat Q\).</span> Po definiciji <a class="xref" href="sec-orientacija-clenov.html#def-matrika-orientacije" data-knowl="def-matrika-orientacije">27.8</a> je to stolpec \(k\) matrike <span class="nobr">\(\mat R^0_{\mathrm{L}}\),</span> torej <span class="nobr">\(\mat R^0_{\mathrm{L}} = \mat Q\).</span> S tem je točka 1 dokazana.</li>
+<li>Točka telesa z \(\vek X\) ima po koraku 2 vektor od izhodišča <span class="nobr">\(\vek x - \vek c = \mat Q\vek X = \sum_{\mathrm{k}} X_{\mathrm{k}}\,\mat Q\vek e_{\mathrm{k}}\),</span> to je \(X_{\mathrm{k}}\) krat os \(k\) okvirja <span class="nobr">\(L\).</span> Njene <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinate</a> v okvirju \(L\) so zato \(\vek X\) ob vsakem času. Po lemi <a class="xref" href="sec-homogene-transformacije.html#lem-homogeno-delovanje" data-knowl="lem-homogeno-delovanje">27.21</a> je \(\mat T^0_{\mathrm{L}}\tilde{\vek X}\) enako <span class="nobr">\((\vek x; 1)\),</span> kar je točka 2.</li>
+<li>Za točko 3 naj bosta \(\vek v = \vek p - \vek p\,'\) razlika koordinat in \(\mat T\tilde{\vek p} - \mat T\tilde{\vek p}\,'\) razlika slik. Po bločnem množenju iz korakov 1 in 2 dokaza leme <a class="xref" href="sec-homogene-transformacije.html#lem-homogeno-delovanje" data-knowl="lem-homogeno-delovanje">27.21</a> je za vsako <a class="xref auto" href="sec-homogene-transformacije.html#def-homogena-transformacija" data-knowl="def-homogena-transformacija">homogeno transformacijo</a> <span class="nobr">\(\mat T\tilde{\vek p} = (\mat R\vek p + \vek o;\ 1)\),</span> zato je zgornji del razlike slik <span class="nobr">\((\mat R\vek p + \vek o) - (\mat R\vek p\,' + \vek o) = \mat R\vek v\),</span> spodnji pa <span class="nobr">\(1 - 1 = 0\).</span></li>
+<li>Kvadrat dolžine je <span class="nobr">\(|\mat R\vek v|^2 = (\mat R\vek v)^\T(\mat R\vek v) = \vek v^\T\mat R^\T\mat R\,\vek v = \vek v^\T\vek v = |\vek v|^2\),</span> po lemi <a class="xref" href="sec-matrike.html#lem-transponiran-produkt" data-knowl="lem-transponiran-produkt">1.101</a> o <a class="xref auto" href="sec-matrike.html#def-transponirana-matrika" data-knowl="def-transponirana-matrika">transponiranju</a> produkta in definiciji <a class="xref" href="sec-vrtenje-osi.html#def-ortogonalna-matrika" data-knowl="def-ortogonalna-matrika">2.39</a>. Dolžini sta torej enaki.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> Povezava s poglavjem <a class="xref" href="ch-analiticna-dinamika.html">8</a> (definicija <a class="xref" href="sec-posplosene-koordinate.html#def-togo-gibanje" data-knowl="def-togo-gibanje">8.38</a>, lema <a class="xref" href="sec-posplosene-koordinate.html#lem-izometrija" data-knowl="lem-izometrija">8.37</a>). SPONG (2.58) (PDF str. 83) in opomba 3 (PDF str. 83) o izključitvi zrcaljenj, v poglavju lema <a class="xref" href="sec-posplosene-koordinate.html#lem-det-zasuka" data-knowl="lem-det-zasuka">8.39</a>. Dokaz ni iz vira.</p></div></div>
+<p>Točka 3 leme je tudi preizkus, ali je dana matrika res lega <a class="xref auto forward" href="sec-masna-matrika-clena.html#cor-togi-clen" data-knowl="cor-togi-clen" title="Definirano kasneje v knjigi">togega člena</a>. Zapis z matriko \(4 \times 4\) s pravilno obliko ga ne opravi sam.</p>
+
+<div class="blk primer" id="ex-hom-strizna"><div class="blk-head"><span class="blk-label">Primer 27.26</span> <span class="blk-title">Strižna matrika ni homogena transformacija (a shear matrix is not a homogeneous transformation)</span></div><div class="blk-body"><p>Vzemimo <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matriko</a> oblike <a class="xref" href="sec-homogene-transformacije.html#eq-hom-matrika" data-knowl="eq-hom-matrika">(27.8)</a> z zgornjim levim blokom <span class="nobr">\(\mat A = \begin{pmatrix} 1 &amp; 0{,}2 &amp; 0 \\ 0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{pmatrix}\),</span> <span class="nobr">\(\vek o = \vek 0\).</span> Ima pravilno velikost in pravilno spodnjo vrstico, \(\det\mat A = 1\) (matrika je zgornja trikotna z enicami na diagonali). Točki \(\vek a = (0; 0; 0)\) in \(\vek b = (0; 1; 0)\) m sta v razdalji \(1\) m. Njuni sliki sta \(\vek a' = (0; 0; 0)\) in \(\vek b' = \mat A\vek b = (0{,}2; 1; 0)\) m, razdalja je \(\sqrt{0{,}2^2 + 1^2} = 1{,}0198\) m. Matrika razdalje ni ohranila, zato ni lega nobenega <a class="xref auto forward" href="sec-masna-matrika-clena.html#cor-togi-clen" data-knowl="cor-togi-clen" title="Definirano kasneje v knjigi">togega člena</a> (slika <a class="xref" href="sec-homogene-transformacije.html#fig-hom-strizna" data-knowl="fig-hom-strizna">27.16</a>).</p>
+<p>Razlog je v koraku 5 dokaza: potrebujemo <span class="nobr">\(\mat A^\T\mat A = \mat I\),</span> tu pa je <span class="nobr">\(\mat A^\T\mat A = \begin{pmatrix} 1 &amp; 0{,}2 &amp; 0 \\ 0{,}2 &amp; 1{,}04 &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{pmatrix}\),</span> kar od \(\mat I\) odstopa za <span class="nobr">\(0{,}2\).</span> <a class="xref auto" href="sec-determinanta.html#def-determinanta" data-knowl="def-determinanta">Determinanta</a> \(1\) preprečuje le <a class="xref auto" href="sec-zrcalna-simetrija.html#def-zrcaljenje" data-knowl="def-zrcaljenje">zrcaljenje</a> in stiskanje celotnega volumna, ne pa strižnega zamika.</p>
+
+<p class="vir"><span class="vir-label">Vir:</span> Primer je naš, števila so izračunana z NumPy.</p></div></div>
+<figure class="blk slika" id="fig-hom-strizna"><p><span class="svgfig" role="img" aria-label="Enotski kvadrat in njegova strižna slika v obliki paralelograma"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='220.56pt' height='175.08pt' viewBox='-72.000004 -71.999999 163.378192 129.685579'>
+<defs>
+<path id='c27-03-strizna-g0-97' d='M3.726027-.767123C3.726027-.458281 3.726027 0 4.762142 0H5.240349C5.439601 0 5.559153 0 5.559153-.239103C5.559153-.468244 5.429639-.468244 5.300125-.468244C4.692403-.478207 4.692403-.607721 4.692403-.836862V-2.978829C4.692403-3.865504 3.985056-4.513076 2.500623-4.513076C1.932752-4.513076 .71731-4.473225 .71731-3.596513C.71731-3.158157 1.066002-2.968867 1.334994-2.968867C1.643836-2.968867 1.96264-3.178082 1.96264-3.596513C1.96264-3.895392 1.77335-4.064757 1.743462-4.084682C2.022416-4.144458 2.34122-4.154421 2.460772-4.154421C3.20797-4.154421 3.556663-3.73599 3.556663-2.978829V-2.6401C2.849315-2.610212 .318804-2.520548 .318804-1.075965C.318804-.119552 1.554172 .059776 2.241594 .059776C3.038605 .059776 3.506849-.348692 3.726027-.767123ZM3.556663-2.331258V-1.384807C3.556663-.428394 2.6401-.298879 2.391034-.298879C1.882939-.298879 1.484433-.647572 1.484433-1.085928C1.484433-2.161893 3.058531-2.30137 3.556663-2.331258Z'/>
+<path id='c27-03-strizna-g0-98' d='M2.132005-3.995019V-6.914072L.368618-6.834371V-6.366127C.986301-6.366127 1.05604-6.366127 1.05604-5.977584V0H1.524284L2.012453-.557908C2.092154-.478207 2.580324 .059776 3.466999 .059776C4.951432 .059776 5.977584-.836862 5.977584-2.221669C5.977584-3.5467 5.041096-4.483188 3.596513-4.483188C2.86924-4.483188 2.371108-4.194271 2.132005-3.995019ZM2.191781-.986301V-3.486924C2.460772-3.835616 2.938979-4.124533 3.486924-4.124533C4.702366-4.124533 4.702366-2.919054 4.702366-2.221669C4.702366-1.753425 4.702366-1.205479 4.443337-.816936C4.154421-.408468 3.696139-.298879 3.377335-.298879C2.67995-.298879 2.291407-.836862 2.191781-.986301Z'/>
+<path id='c27-03-strizna-g1-54' d='M6.276463-6.744707C6.356164-6.884184 6.356164-6.90411 6.356164-6.933998C6.356164-7.003736 6.296389-7.13325 6.156912-7.13325C6.03736-7.13325 6.007472-7.073474 5.937733-6.933998L1.464508 1.763387C1.384807 1.902864 1.384807 1.92279 1.384807 1.952677C1.384807 2.032379 1.454545 2.15193 1.58406 2.15193C1.703611 2.15193 1.733499 2.092154 1.803238 1.952677L6.276463-6.744707Z'/>
+<path id='c27-03-strizna-g2-14' d='M3.535741-1.743462C3.535741-2.587298 2.859278-3.242839 2.036364-3.242839C1.199502-3.242839 .536986-2.566376 .536986-1.750436C.536986-.9066 1.21345-.251059 2.036364-.251059C2.873225-.251059 3.535741-.927522 3.535741-1.743462ZM2.036364-.592777C1.380822-.592777 .878705-1.12279 .878705-1.743462C.878705-2.39203 1.39477-2.901121 2.036364-2.901121C2.691905-2.901121 3.194022-2.371108 3.194022-1.750436C3.194022-1.101868 2.677958-.592777 2.036364-.592777Z'/>
+<path id='c27-03-strizna-g2-48' d='M2.022416-3.291656C2.078207-3.410212 2.085181-3.466002 2.085181-3.514819C2.085181-3.731009 1.889913-3.898381 1.673724-3.898381C1.408717-3.898381 1.325031-3.682192 1.290162-3.57061L.369614-.550934C.36264-.536986 .334745-.446326 .334745-.439352C.334745-.355666 .550934-.285928 .606725-.285928C.655542-.285928 .662516-.299875 .711333-.404483L2.022416-3.291656Z'/>
+<path id='c27-03-strizna-g3-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='c27-03-strizna-g3-120' d='M3.327522-3.008717C3.387298-3.267746 3.616438-4.184309 4.313823-4.184309C4.363636-4.184309 4.60274-4.184309 4.811955-4.054795C4.533001-4.004981 4.333748-3.755915 4.333748-3.516812C4.333748-3.35741 4.443337-3.16812 4.712329-3.16812C4.931507-3.16812 5.250311-3.347447 5.250311-3.745953C5.250311-4.26401 4.662516-4.403487 4.323786-4.403487C3.745953-4.403487 3.39726-3.875467 3.277709-3.646326C3.028643-4.303861 2.49066-4.403487 2.201743-4.403487C1.165629-4.403487 .597758-3.118306 .597758-2.86924C.597758-2.769614 .697385-2.769614 .71731-2.769614C.797011-2.769614 .826899-2.789539 .846824-2.879203C1.185554-3.935243 1.843088-4.184309 2.181818-4.184309C2.371108-4.184309 2.719801-4.094645 2.719801-3.516812C2.719801-3.20797 2.550436-2.540473 2.181818-1.145704C2.022416-.52802 1.673724-.109589 1.235367-.109589C1.175592-.109589 .946451-.109589 .737235-.239103C.986301-.288917 1.205479-.498132 1.205479-.777086C1.205479-1.046077 .986301-1.125778 .836862-1.125778C.537983-1.125778 .288917-.86675 .288917-.547945C.288917-.089664 .787049 .109589 1.225405 .109589C1.882939 .109589 2.241594-.587796 2.271482-.647572C2.391034-.278954 2.749689 .109589 3.347447 .109589C4.373599 .109589 4.941469-1.175592 4.941469-1.424658C4.941469-1.524284 4.851806-1.524284 4.821918-1.524284C4.732254-1.524284 4.712329-1.484433 4.692403-1.414695C4.363636-.348692 3.686177-.109589 3.367372-.109589C2.978829-.109589 2.819427-.428394 2.819427-.767123C2.819427-.986301 2.879203-1.205479 2.988792-1.643836L3.327522-3.008717Z'/>
+<path id='c27-03-strizna-g3-121' d='M4.841843-3.795766C4.881694-3.935243 4.881694-3.955168 4.881694-4.024907C4.881694-4.204234 4.742217-4.293898 4.592777-4.293898C4.493151-4.293898 4.333748-4.234122 4.244085-4.084682C4.224159-4.034869 4.144458-3.726027 4.104608-3.5467C4.034869-3.287671 3.965131-3.01868 3.905355-2.749689L3.457036-.956413C3.417186-.806974 2.988792-.109589 2.331258-.109589C1.823163-.109589 1.713574-.547945 1.713574-.916563C1.713574-1.374844 1.882939-1.992528 2.221669-2.86924C2.381071-3.277709 2.420922-3.387298 2.420922-3.58655C2.420922-4.034869 2.102117-4.403487 1.603985-4.403487C.657534-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.836862-3.88543 1.235367-4.184309 1.574097-4.184309C1.653798-4.184309 1.823163-4.184309 1.823163-3.865504C1.823163-3.616438 1.723537-3.35741 1.653798-3.16812C1.255293-2.11208 1.075965-1.544209 1.075965-1.075965C1.075965-.18929 1.703611 .109589 2.291407 .109589C2.67995 .109589 3.01868-.059776 3.297634-.33873C3.16812 .179328 3.048568 .667497 2.650062 1.195517C2.391034 1.534247 2.012453 1.823163 1.554172 1.823163C1.414695 1.823163 .966376 1.793275 .797011 1.404732C.956413 1.404732 1.085928 1.404732 1.225405 1.285181C1.325031 1.195517 1.424658 1.066002 1.424658 .876712C1.424658 .56787 1.155666 .52802 1.05604 .52802C.826899 .52802 .498132 .687422 .498132 1.175592C.498132 1.673724 .936488 2.042341 1.554172 2.042341C2.580324 2.042341 3.606476 1.135741 3.88543 .009963L4.841843-3.795766Z'/>
+<path id='c27-03-strizna-g4-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='c27-03-strizna-g4-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c27-03-strizna-g4-56' d='M1.62391-4.552927C1.165629-4.851806 1.125778-5.190535 1.125778-5.3599C1.125778-5.967621 1.77335-6.386052 2.480697-6.386052C3.20797-6.386052 3.845579-5.867995 3.845579-5.150685C3.845579-4.582814 3.457036-4.104608 2.859278-3.755915L1.62391-4.552927ZM3.078456-3.606476C3.795766-3.975093 4.283935-4.493151 4.283935-5.150685C4.283935-6.067248 3.39726-6.635118 2.49066-6.635118C1.494396-6.635118 .687422-5.897883 .687422-4.971357C.687422-4.79203 .707347-4.343711 1.125778-3.875467C1.235367-3.755915 1.603985-3.506849 1.853051-3.337484C1.275218-3.048568 .418431-2.49066 .418431-1.504359C.418431-.448319 1.43462 .219178 2.480697 .219178C3.606476 .219178 4.552927-.607721 4.552927-1.673724C4.552927-2.032379 4.443337-2.480697 4.064757-2.899128C3.875467-3.108344 3.716065-3.20797 3.078456-3.606476ZM2.082192-3.188045L3.307597-2.410959C3.58655-2.221669 4.054795-1.92279 4.054795-1.315068C4.054795-.577833 3.307597-.059776 2.49066-.059776C1.633873-.059776 .916563-.67746 .916563-1.504359C.916563-2.082192 1.235367-2.719801 2.082192-3.188045Z'/>
+<path id='c27-03-strizna-g4-57' d='M3.656289-3.16812V-2.849315C3.656289-.518057 2.620174-.059776 2.042341-.059776C1.872976-.059776 1.334994-.079701 1.066002-.418431C1.504359-.418431 1.58406-.707347 1.58406-.876712C1.58406-1.185554 1.344956-1.334994 1.125778-1.334994C.966376-1.334994 .667497-1.24533 .667497-.856787C.667497-.18929 1.205479 .219178 2.052304 .219178C3.337484 .219178 4.552927-1.135741 4.552927-3.277709C4.552927-5.957659 3.407223-6.635118 2.520548-6.635118C1.972603-6.635118 1.484433-6.455791 1.05604-6.007472C.647572-5.559153 .418431-5.140722 .418431-4.393524C.418431-3.148194 1.295143-2.171856 2.410959-2.171856C3.01868-2.171856 3.427148-2.590286 3.656289-3.16812ZM2.420922-2.400996C2.261519-2.400996 1.803238-2.400996 1.494396-3.028643C1.315068-3.39726 1.315068-3.895392 1.315068-4.383562C1.315068-4.921544 1.315068-5.389788 1.524284-5.758406C1.793275-6.256538 2.171856-6.386052 2.520548-6.386052C2.978829-6.386052 3.307597-6.047323 3.476961-5.599004C3.596513-5.280199 3.636364-4.652553 3.636364-4.194271C3.636364-3.367372 3.297634-2.400996 2.420922-2.400996Z'/>
+<path id='c27-03-strizna-g4-61' d='M6.844334-3.257783C6.993773-3.257783 7.183064-3.257783 7.183064-3.457036S6.993773-3.656289 6.854296-3.656289H.886675C.747198-3.656289 .557908-3.656289 .557908-3.457036S.747198-3.257783 .896638-3.257783H6.844334ZM6.854296-1.325031C6.993773-1.325031 7.183064-1.325031 7.183064-1.524284S6.993773-1.723537 6.844334-1.723537H.896638C.747198-1.723537 .557908-1.723537 .557908-1.524284S.747198-1.325031 .886675-1.325031H6.854296Z'/>
+</defs>
+<g id='c27-03-strizna-page1'>
+<g stroke-miterlimit='10' transform='translate(-43.145456,46.048297)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='osi'>
+<path d='M-11.38092 0H117.99469' fill='none'/>
+<g transform='translate(115.51823,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(125.97986,-2.15277)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.145456,46.048297)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-43.145456' y='46.048297' xlink:href='#c27-03-strizna-g3-120'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-11.38092V100.92287' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,98.44641)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-2.6308,110.85246)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.145456,46.048297)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-43.145456' y='46.048297' xlink:href='#c27-03-strizna-g3-121'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='pred'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 0H85.35823V85.35823H0Z' fill='none'/>
+</g>
+</g>
+</g>
+<path d='M1.83862 0C1.83862 1.01544 1.01544 1.83862 0 1.83862S-1.83862 1.01544-1.83862 0S-1.01544-1.83862 0-1.83862S1.83862-1.01544 1.83862 0ZM0 0' stroke='none'/>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.145456,46.048297)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+<path d='M1.83862 85.35823C1.83862 86.37367 1.01544 87.19685 0 87.19685S-1.83862 86.37367-1.83862 85.35823S-1.01544 83.5196 0 83.5196S1.83862 84.34279 1.83862 85.35823ZM0 85.35823' stroke='none'/>
+<g transform='translate(0.0,85.35823)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.145456,46.048297)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(-9.22319,-8.07741)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.145456,46.048297)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-43.145456' y='46.048297' xlink:href='#c27-03-strizna-g0-97'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-10.02184,88.99121)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.145456,46.048297)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-43.145456' y='46.048297' xlink:href='#c27-03-strizna-g0-98'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-17.07181 .33748V85.02075' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,-17.07181,6.14052)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,-17.07181,0.22499)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,-17.07181,79.21771)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,-17.07181,85.13324)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(-25.62978,39.4569)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.145456,46.048297)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-43.145456' y='46.048297' xlink:href='#c27-03-strizna-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='po'>
+<g fill='#f00' stroke='#f00'>
+<path d='M0 0H85.35823L102.43004 85.35823H17.07181Z' fill='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M18.91043 85.35823C18.91043 86.37367 18.08725 87.19685 17.07181 87.19685S15.23318 86.37367 15.23318 85.35823S16.05637 83.5196 17.07181 83.5196S18.91043 84.34279 18.91043 85.35823ZM17.07181 85.35823' stroke='none'/>
+</g>
+<g transform='translate(17.07181,85.35823)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.145456,46.048297)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(20.70479,88.99121)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.145456,46.048297)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-43.145456' y='46.048297' xlink:href='#c27-03-strizna-g0-98'/>
+<use x='-36.780469' y='42.432933' xlink:href='#c27-03-strizna-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<path d='M0 0L17.07181 85.35823' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(19.28207,37.58366)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.145456,46.048297)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-43.145456' y='46.048297' xlink:href='#c27-03-strizna-g4-49'/>
+<use x='-38.164116' y='46.048297' xlink:href='#c27-03-strizna-g3-59'/>
+<use x='-35.396708' y='46.048297' xlink:href='#c27-03-strizna-g4-48'/>
+<use x='-30.415369' y='46.048297' xlink:href='#c27-03-strizna-g4-49'/>
+<use x='-25.43403' y='46.048297' xlink:href='#c27-03-strizna-g4-57'/>
+<use x='-20.452691' y='46.048297' xlink:href='#c27-03-strizna-g4-56'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='kot'>
+<g fill='#00f' stroke='#00f'>
+<path d='M12.80363 0C12.80363 6.10349 8.49341 11.35927 2.50851 12.55492' fill='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(10.18588,13.1491)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.145456,46.048297)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-43.145456' y='46.048297' xlink:href='#c27-03-strizna-g1-54'/>
+<use x='-43.145456' y='46.048297' xlink:href='#c27-03-strizna-g4-61'/>
+<use x='-32.629376' y='46.048297' xlink:href='#c27-03-strizna-g4-57'/>
+<use x='-27.648036' y='46.048297' xlink:href='#c27-03-strizna-g4-48'/>
+<use x='-22.666697' y='42.432933' xlink:href='#c27-03-strizna-g2-14'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 27.16</span>: Strižni blok iz primera <a class="xref" href="sec-homogene-transformacije.html#ex-hom-strizna" data-knowl="ex-hom-strizna">27.26</a>, merilo 3 cm = 1 m. Sivo črtkano: enotski kvadrat s točkama \(\vek a\) in \(\vek b\) v razdalji 1 m. Oranžno: njegova slika s točko \(\vek b'\) v razdalji \(1{,}0198\) m od <span class="nobr">\(\vek a\).</span> Pravi kot v izhodišču ni več pravi.</figcaption></figure>
+<p>Na sliki je <a data-del="pred" class="xref kaz" href="sec-homogene-transformacije.html#fig-hom-strizna" data-knowl="fig-hom-strizna">kvadrat s točkama \(\vek a\) in \(\vek b\)</a> pred preslikavo. <a data-del="po" class="xref kaz" href="sec-homogene-transformacije.html#fig-hom-strizna" data-knowl="fig-hom-strizna">Paralelogram</a> s točko \(\vek b'\) je njegova slika. Stranici od \(\vek a\) do <span class="nobr">\(\vek b\),</span> ki je bila vzdolž <span class="nobr"><a data-del="osi" class="xref kaz" href="sec-homogene-transformacije.html#fig-hom-strizna" data-knowl="fig-hom-strizna">osi \(y\)</a>,</span> se je smer nagnila, <a data-del="kot" class="xref kaz" href="sec-homogene-transformacije.html#fig-hom-strizna" data-knowl="fig-hom-strizna">kot med stranicama</a> ni več \(90°\) in dolžina je \(1{,}0198\) m. Matrika \(\mat R\) homogene transformacije pa ohranja dolžine (lema <a class="xref" href="sec-homogene-transformacije.html#lem-lega-clena" data-knowl="lem-lega-clena">27.25</a>, točka 3) in <a class="xref auto" href="sec-skalarni-produkt.html#def-skalarni-produkt" data-knowl="def-skalarni-produkt">skalarne produkte</a>,</p>
+<div class="eq">\[(\mat R\vek u)\cdot(\mat R\vek v) = \vek u\cdot(\mat R^\T\mat R\,\vek v) = \vek u\cdot\vek v ,\]</div>
+<p>po enačbi <a class="xref" href="sec-piola-kirchhoff.html#eq-transponirana-v-skalarnem" data-knowl="eq-transponirana-v-skalarnem">(2.78)</a> in definiciji <a class="xref" href="sec-vrtenje-osi.html#def-ortogonalna-matrika" data-knowl="def-ortogonalna-matrika">2.39</a>. Kot med vektorjema je določen z njunim skalarnim produktom in dolžinama, zato ga \(\mat R\) prav tako ohrani. To je prav tisto, kar zahteva <a class="xref auto" href="sec-deformacija-v-tocki.html#def-togo-telo" data-knowl="def-togo-telo">togo telo</a>.</p>
+<p>Zdaj imamo za verigo členov vse, kar potrebujemo: vsakemu členu pripada matrika <span class="nobr">\(\mat T\),</span> matrike zmnožimo (lema <a class="xref" href="sec-homogene-transformacije.html#lem-homogena-sestavljanje" data-knowl="lem-homogena-sestavljanje">27.22</a>), podlago pogledamo iz katerega koli člena z inverzom (lema <a class="xref" href="sec-homogene-transformacije.html#lem-homogena-inverz" data-knowl="lem-homogena-inverz">27.24</a>). Ostane vprašanje, kako za vsak zglob izberemo okvir, da so matrike \(\mat T^{i-1}_{\mathrm{i}}\) čim preprostejše, in kako iz kotov in pomikov zglobov izračunamo <span class="nobr">\(\mat T^0_{\mathrm{n}}\).</span> To je tema naslednjega razdelka (<a class="xref" href="sec-dh-zapis.html">27.4</a>).</p>
+
+</main>
+<footer><nav class="pager"><a href="sec-orientacija-clenov.html" rel="prev">← 27.2</a><a href="index.html">Kazalo</a><a href="sec-dh-zapis.html" rel="next">27.4 →</a></nav></footer>
+</body>
+</html>

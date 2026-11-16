@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vv-vztrajnostni-moment"] = {"html": "<div class=\"eq\">\\[T_{\\mathrm{vzt}}^{(n)}(\\theta) = b_{\\mathrm{n}}\\,|S_{\\mathrm{n}}|\\,\\sin(n\\theta - \\sigma_{\\mathrm{n}}) , \\qquad \\sigma_{\\mathrm{n}} = \\arg S_{\\mathrm{n}} , \\tag{23.37}\\]</div>", "href": "sec-vecvaljni-motorji.html#eq-vv-vztrajnostni-moment"};

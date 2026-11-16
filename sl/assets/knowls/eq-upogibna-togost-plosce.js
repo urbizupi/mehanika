@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-upogibna-togost-plosce"] = {"html": "<div class=\"eq\">\\[D = \\frac{E\\,h^3}{12\\,(1 - \\nu^2)} , \\tag{18.6}\\]</div>", "href": "sec-kirchhoffova-plosca.html#eq-upogibna-togost-plosce"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vzt-izrek"] = {"html": "<div class=\"eq\">\\[J\\,\\ddot\\theta = S(\\theta) , \\qquad \\dot\\theta &gt; 0 , \\tag{23.27}\\]</div>", "href": "sec-vztrajnik.html#eq-vzt-izrek"};

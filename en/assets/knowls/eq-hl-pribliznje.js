@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-hl-pribliznje"] = {"html": "<div class=\"eq\">\\[w_{\\mathrm{L}}(0) = \\frac{2F'}{\\pi E^*}\\Big(\\ln\\frac{2L}{b} + \\frac12\\Big) , \\tag{25.21}\\]</div>", "href": "sec-hertz-linijski.html#eq-hl-pribliznje"};

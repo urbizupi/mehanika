@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vm-odvod-lege"] = {"html": "<div class=\"eq\">\\[x_{\\mathrm{B}}' = -\\frac{a\\sin(\\theta + \\beta)}{\\cos\\beta} . \\tag{23.18}\\]</div>", "href": "sec-vrtilni-moment.html#eq-vm-odvod-lege"};

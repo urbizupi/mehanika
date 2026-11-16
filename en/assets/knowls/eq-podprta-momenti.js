@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-podprta-momenti"] = {"html": "<div class=\"eq\">\\[M_{\\mathrm{r}} = -\\frac{(3+\\nu)\\,q}{16}\\,(a^2 - r^2) , \\qquad M_\\theta = -\\frac q{16}\\big((3+\\nu)\\,a^2 - (1+3\\nu)\\,r^2\\big) , \\qquad Q_{\\mathrm{r}} = -\\frac{qr}2 . \\tag{18.44}\\]</div>", "href": "sec-krozne-plosce.html#eq-podprta-momenti"};

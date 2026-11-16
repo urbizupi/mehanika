@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rm-lega-bata"] = {"html": "<div class=\"eq\">\\[x_{\\mathrm{B}}(\\theta) = a\\cos\\theta + \\sqrt{l^2 - a^2\\sin^2\\theta} . \\tag{23.5}\\]</div>", "href": "sec-rocicni-mehanizem.html#eq-rm-lega-bata"};

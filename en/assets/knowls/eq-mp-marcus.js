@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mp-marcus"] = {"html": "<div class=\"eq\">\\[M_{\\mathrm{K}} = -D\\,\\nabla^2 w_{\\mathrm{K}} = -\\frac{M_{\\mathrm{x}} + M_{\\mathrm{y}}}{1 + \\nu} , \\tag{18.67}\\]</div>", "href": "sec-mindlinove-plosce.html#eq-mp-marcus"};

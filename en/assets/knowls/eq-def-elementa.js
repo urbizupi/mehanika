@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-def-elementa"] = {"html": "<div class=\"eq\">\\[\\varepsilon_{\\mathrm{h}} = \\frac{u(x_{\\mathrm{b}}) - u(x_{\\mathrm{a}})}{h} , \\tag{17.17}\\]</div>", "href": "sec-napetosti-iz-mke.html#eq-def-elementa"};

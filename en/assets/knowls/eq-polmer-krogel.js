@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-polmer-krogel"] = {"html": "<div class=\"eq\">\\[\\frac1R = \\frac1{R_{\\mathrm{A}}} + \\frac1{R_{\\mathrm{B}}} . \\tag{25.23}\\]</div>", "href": "sec-hertz-tockovni.html#eq-polmer-krogel"};

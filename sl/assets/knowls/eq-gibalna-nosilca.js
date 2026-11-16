@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-gibalna-nosilca"] = {"html": "<div class=\"eq\">\\[\\rho A\\,w_{\\mathrm{tt}} + EI\\,w_{\\mathrm{xxxx}} = q \\quad \\text{na } \\Omega , \\tag{13.31}\\]</div>", "href": "sec-hamilton-nosilec.html#eq-gibalna-nosilca"};

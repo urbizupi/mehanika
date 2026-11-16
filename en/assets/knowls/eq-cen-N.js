@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-cen-N"] = {"html": "<div class=\"eq\">\\[N(x) = \\rho A\\,\\Omega^2\\,\\frac{L^2 - x^2}{2} . \\tag{28.39}\\]</div>", "href": "sec-centrifugalna-ojacitev.html#eq-cen-N"};

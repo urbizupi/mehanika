@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nacini-gib-enacba"] = {"html": "<div class=\"eq\">\\[w_{\\mathrm{tt}} + 2v\\,w_{\\mathrm{xt}} + (v^2 - c^2)\\,w_{\\mathrm{xx}} = 0 , \\qquad w(0, t) = w(L, t) = 0 . \\tag{26.10}\\]</div>", "href": "sec-nacini-gibajoce-strune.html#eq-nacini-gib-enacba"};

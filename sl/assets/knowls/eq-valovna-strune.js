@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-valovna-strune"] = {"html": "<div class=\"eq\">\\[w_{\\mathrm{tt}} = \\frac{T}{\\mu}\\,w_{\\mathrm{xx}} . \\tag{13.2}\\]</div>", "href": "sec-valovna-enacba.html#eq-valovna-strune"};

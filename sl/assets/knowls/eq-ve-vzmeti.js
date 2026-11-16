@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ve-vzmeti"] = {"html": "<div class=\"eq\">\\[\\begin{bmatrix} k_1 + k_2 &amp; -k_2 \\\\ -k_2 &amp; k_2 \\end{bmatrix}\\begin{bmatrix} u_1 \\\\ u_2 \\end{bmatrix} = \\begin{bmatrix} 0 \\\\ F \\end{bmatrix} . \\tag{17.24}\\]</div>", "href": "sec-velike-enacbe.html#eq-ve-vzmeti"};

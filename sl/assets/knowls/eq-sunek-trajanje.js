@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sunek-trajanje"] = {"html": "<div class=\"eq\">\\[T = \\frac{2\\,\\delta_{\\max}}{v}\\int_0^1 \\frac{1}{\\sqrt{1 - x^{5/2}}}\\,\\mathrm{d}x . \\tag{25.49}\\]</div>", "href": "sec-povezave-kontakt.html#eq-sunek-trajanje"};

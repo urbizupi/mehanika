@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-richardson-napacen-q"] = {"html": "<div class=\"eq\">\\[\\hat Q' - Q = \\gamma\\,C\\,(h/2)^q + r , \\quad \\gamma = 1 - \\frac{2^q - 1}{2^{q'} - 1} , \\quad |r| \\le M h^{q+1}\\Big(\\tfrac12 + \\tfrac{3}{2\\,(2^{q'} - 1)}\\Big) . \\tag{17.10}\\]</div>", "href": "sec-konvergenca-mreze.html#eq-richardson-napacen-q"};

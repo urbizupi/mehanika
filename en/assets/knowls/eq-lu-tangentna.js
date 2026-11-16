@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-lu-tangentna"] = {"html": "<div class=\"eq\">\\[\\vek a_1 = \\frac{\\partial\\vek r}{\\partial q_1} , \\qquad \\vek a_2 = \\frac{\\partial\\vek r}{\\partial q_2} \\tag{22.2}\\]</div>", "href": "sec-srednja-ploskev.html#eq-lu-tangentna"};

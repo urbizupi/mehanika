@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vm-povprecje"] = {"html": "<div class=\"eq\">\\[\\overline{M_{\\mathrm{b}}} = \\frac{1}{4\\pi}\\int_0^{4\\pi} M_{\\mathrm{b}}\\,\\mathrm{d}\\theta = \\frac{1}{4\\pi}\\int_0^{4\\pi} Q_{\\mathrm{g}}\\,\\mathrm{d}\\theta = \\overline{Q_{\\mathrm{g}}} , \\tag{23.22}\\]</div>", "href": "sec-vrtilni-moment.html#eq-vm-povprecje"};

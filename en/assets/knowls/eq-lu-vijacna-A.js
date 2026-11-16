@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-lu-vijacna-A"] = {"html": "<div class=\"eq\">\\[\\mat A = \\begin{pmatrix} R^2 + c^2 &amp; R^2 - c^2 \\\\ R^2 - c^2 &amp; R^2 + c^2 \\end{pmatrix} = \\begin{pmatrix} 3125 &amp; 1875 \\\\ 1875 &amp; 3125 \\end{pmatrix}\\ \\text{mm}^2 . \\tag{22.8}\\]</div>", "href": "sec-srednja-ploskev.html#eq-lu-vijacna-A"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dh-produkt"] = {"html": "<div class=\"eq\">\\[\\mat T_{\\mathrm{DH}}(\\theta, d, a, \\alpha) = \\mat R_{\\mathrm{z},\\theta}\\ \\mat P_{\\mathrm{z},\\mathrm{d}}\\ \\mat P_{\\mathrm{x},\\mathrm{a}}\\ \\mat R_{\\mathrm{x},\\alpha} , \\tag{27.14}\\]</div>", "href": "sec-dh-zapis.html#eq-dh-produkt"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-zir-g"] = {"html": "<div class=\"eq\">\\[\\mat G = \\begin{pmatrix} 0 &amp; 0 &amp; 0 &amp; 0 \\\\ 0 &amp; 0 &amp; 0 &amp; 0 \\\\ 0 &amp; 0 &amp; 0 &amp; J_{\\mathrm{p}} \\\\ 0 &amp; 0 &amp; -J_{\\mathrm{p}} &amp; 0 \\end{pmatrix} . \\tag{24.17}\\]</div>", "href": "sec-ziroskopski-moment.html#eq-zir-g"};

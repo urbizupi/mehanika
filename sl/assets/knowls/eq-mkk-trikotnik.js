@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mkk-trikotnik"] = {"html": "<div class=\"eq\">\\[T = \\{\\, P_1 + s\\,\\vek u + t\\,\\vek v \\;:\\; s \\ge 0,\\ t \\ge 0,\\ s + t \\le 1 \\,\\} . \\tag{15.1}\\]</div>", "href": "sec-mkk-trikotnik.html#eq-mkk-trikotnik"};

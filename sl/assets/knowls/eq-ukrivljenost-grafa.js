@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ukrivljenost-grafa"] = {"html": "<div class=\"eq\">\\[\\kappa = \\frac{|v''|}{(1 + v'^2)^{3/2}} . \\tag{22.9}\\]</div>", "href": "sec-ukrivljenost-ploskve.html#eq-ukrivljenost-grafa"};

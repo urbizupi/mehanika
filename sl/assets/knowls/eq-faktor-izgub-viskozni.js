@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-faktor-izgub-viskozni"] = {"html": "<div class=\"eq\">\\[\\gamma = \\frac{c\\,\\Omega}{k} = 2\\zeta\\,r . \\tag{20.3}\\]</div>", "href": "sec-izgube-energije.html#eq-faktor-izgub-viskozni"};

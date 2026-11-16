@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-c29-ravnovesje-vozlisca"] = {"html": "<div class=\"eq\">\\[N_{\\mathrm{AC}} + \\frac{a}{s}\\,N_{\\mathrm{BC}} = 0 , \\qquad -\\frac{h}{s}\\,N_{\\mathrm{BC}} = -F , \\tag{29.4}\\]</div>", "href": "sec-palicje-z-napetostmi.html#eq-c29-ravnovesje-vozlisca"};

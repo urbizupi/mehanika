@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-j-pravokotnik"] = {"html": "<div class=\"eq\">\\[J = \\frac{16\\,a^3 b}{3} - \\frac{1024\\,a^4}{\\pi^5}\\sum_{\\mathrm{n}\\ \\text{odd}}\\frac{1}{n^5}\\tanh\\frac{n\\pi b}{2a} . \\tag{16.31}\\]</div>", "href": "sec-pravokotni-prerez.html#eq-j-pravokotnik"};

@@ -1,0 +1,1107 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>14.10 Finite elements for heat conduction (končni elementi za prevajanje toplote) · Chapter 14</title>
+<script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/style.css">
+<noscript><style>#loadbar { display: none; }</style></noscript>
+<script src="assets/config.js"></script>
+<script src="assets/load.js"></script>
+<script defer src="assets/interaktivno.js"></script>
+<script defer src="assets/book.js"></script>
+<script defer src="assets/predavanje.js"></script>
+<script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<div id="loadbar" aria-hidden="true"></div>
+<header class="top"><a class="home" href="index.html">Mechanics</a><nav class="pager"><a href="sec-sibka-oblika-toplote.html" rel="prev">← 14.9</a><a href="index.html">Contents</a><a href="sec-prehodni-pojav-mke.html" rel="next">14.11 →</a></nav>
+<span class="tools"><a class="lang" href="../sl/sec-mke-toplote.html" hreflang="sl">Slovenščina</a><button type="button" class="theme-toggle" title="Light or dark theme" aria-label="Light or dark theme"></button><button type="button" data-details="open">Expand all</button><button type="button" data-details="close">Collapse all</button><button type="button" class="fig-side-toggle" aria-pressed="false">Figures alongside</button></span></header>
+<main>
+<p class="updated">Last updated 16 November 2026, 10:52</p>
+<p class="crumb"><a href="ch-prevajanje-toplote.html"><span class="h-num">Chapter 14</span> Heat conduction</a></p>
+<h2 id="sec-mke-toplote"><span class="h-num">14.10</span> Finite elements for heat conduction (končni elementi za prevajanje toplote)</h2>
+<p>Section <a class="xref" href="sec-sibka-oblika-toplote.html">14.9</a> showed that steady <a class="xref auto" href="sec-enacba-prevajanja.html#thm-enacba-prevajanja" data-knowl="thm-enacba-prevajanja">heat conduction</a> has a <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">weak form</a> and a <a class="xref auto" href="sec-variacijski-racun.html#def-funkcional" data-knowl="def-funkcional">functional</a>, both known from chapter <a class="xref" href="ch-sibka-oblika.html">6</a>. So for the temperature the same two methods apply as for the displacement of a bar, the Ritz and the <a class="xref auto" href="sec-galerkinova-metoda.html#def-galerkinova-metoda" data-knowl="def-galerkinova-metoda">Galerkin method</a>, and by theorem <a class="xref" href="sec-galerkinova-metoda.html#thm-galerkin-ritz" data-knowl="thm-galerkin-ritz">6.44</a> they coincide. How does a computation come from this, which <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> do we get, and what do we know about the result in advance? First we read when finite elements first turned to heat. Then we show that the matrix of a conduction element is the matrix of a bar element from chapter <a class="xref" href="ch-mke-palice.html">7</a> with the letters given a new meaning. We add the loss through a lateral surface, which is new, and put everything together on the <a class="xref auto" href="sec-stacionarno-1d.html#thm-rebro" data-knowl="thm-rebro">fin</a> that section <a class="xref" href="sec-stacionarno-1d.html">14.4</a> solved exactly. This shows where the result is exact, where it is not, and on which side of the true value the <a class="xref auto forward" href="sec-mke-toplote.html#lem-toplota-ob-korenu" data-knowl="lem-toplota-ob-korenu" title="Defined later in the book">heat at the root</a> lies.</p>
+
+<div class="zgodovina"><p class="zgodovina-label">From history</p><p>The name &quot;finite element&quot; was coined in 1960, and new elements for stress analysis were soon developed largely by intuition and physical argument. In 1963 the method was recognized as a form of the Rayleigh-<a class="xref auto" href="sec-ritzova-metoda.html#def-ritzova-metoda" data-knowl="def-ritzova-metoda">Ritz method</a>, a classical approximation technique, and so it was no longer only a special trick for stress analysis but a widely applicable method with a sound mathematical basis (COOK, PDF p. 24). Two years later, in 1965, papers appeared on heat conduction and on seepage flow through a porous medium, done with finite elements (COOK, PDF p. 24). The reason why heat conduction came so early is the content of section <a class="xref" href="sec-sibka-oblika-toplote.html">14.9</a>: steady conduction has a functional, so the Ritz route of chapter <a class="xref" href="ch-sibka-oblika.html">6</a> applies unchanged. We drew this link ourselves, the source does not state it.</p>
+</div>
+<p>Back to what we were looking at: steady conduction has a functional, and now we use it.</p>
+
+<h3 id="sec-model-rebra"><span class="h-num">14.10.1</span> The model of the fin (model rebra)</h3>
+<p>We compute on a <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">body</a> that we have solved exactly, so that we can compare. It is the fin of section <a class="xref" href="sec-stacionarno-1d.html">14.4</a> (theorem <a class="xref" href="sec-stacionarno-1d.html#thm-rebro" data-knowl="thm-rebro">14.22</a>): a straight bar of length \(L\) with a constant cross-section of area \(A\) and perimeter <span class="nobr">\(P\),</span> of a material with conductivity \(k\) (chapter <a class="xref" href="ch-nosilci.html">5</a> uses \(k\) for the <a class="xref auto" href="sec-energija-nosilca.html#lem-strizni-faktor" data-knowl="lem-strizni-faktor">shear factor</a>, here it is the material quantity of definition <a class="xref" href="sec-fourierjev-zakon.html#def-fourierjev-zakon" data-knowl="def-fourierjev-zakon">14.3</a>). The bar is attached at \(x = 0\) to a wall at temperature \(T_0\) above the surroundings, it gives off heat to the air through its lateral surface with heat transfer coefficient \(h\) (definition <a class="xref" href="sec-robni-pogoji-toplote.html#def-newtonov-zakon-ohlajanja" data-knowl="def-newtonov-zakon-ohlajanja">14.13</a>), and the end at \(x = L\) is insulated. We measure the temperature \(T(x)\) from the temperature of the surroundings, so the <a class="xref auto" href="sec-fourierjev-zakon.html#def-toplotni-tok" data-knowl="def-toplotni-tok">heat flux</a> through the lateral surface is <span class="nobr">\(h\,T\).</span> We take the idealizations of section <a class="xref" href="sec-stacionarno-1d.html">14.4</a> as given: the temperature is the same over the whole cross-section, \(k\) and \(h\) are constant, radiation is neglected. We write the element length <span class="nobr">\(h_{\mathrm{e}}\),</span> because the letter \(h\) is taken by the heat transfer coefficient (chapter <a class="xref" href="ch-mke-palice.html">7</a> used it for the element length).</p>
+<p>By theorem <a class="xref" href="sec-stacionarno-1d.html#thm-rebro" data-knowl="thm-rebro">14.22</a> the temperature solves \(kA\,T'' = hP\,T\) with \(T(0) = T_0\) and <span class="nobr">\(T'(L) = 0\),</span> namely</p>
+<div class="eq" id="eq-pt10-rebro-tocno">\[T(x) = T_0\,\frac{\cosh m(L - x)}{\cosh mL} , \qquad m^2 = \frac{hP}{kA} . \tag{14.51}\]</div>
+<p>The number \(m\) has the unit 1/m, and \(mL\) has no unit: it says how many times the distance \(L\) is longer than the length \(1/m\) over which the temperature of a long fin falls by the factor <span class="nobr">\(e\).</span> The heat that the wall supplies to the fin is <span class="nobr">\(Q = -kA\,T'(0) = \dfrac{kA\,T_0}{L}\,mL\tanh mL\).</span> The book has no source for the \(k\) of steel, so we compute with the dimensionless numbers \(mL = 1\) and \(mL = 2\) and measure heat in units of <span class="nobr">\(kA\,T_0/L\).</span> At \(mL = 1\) the temperature of the tip is \(T(L)/T_0 = 1/\cosh 1 = 0{,}64805\) and <span class="nobr">\(Q = 0{,}76159\),</span> at \(mL = 2\) it is \(T(L)/T_0 = 0{,}26580\) and \(Q = 1{,}92806\) (computation in num-10.py).</p>
+<p>We get the weak form as follows: multiply the equation \(kA\,T'' = hP\,T\) by a <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">test function</a> \(w\) with \(w(0) = 0\) and integrate over <span class="nobr">\([0, L]\).</span> By <a class="xref auto" href="sec-integral.html#cor-per-partes" data-knowl="cor-per-partes">integration by parts</a> (lemma <a class="xref" href="sec-funkcije-s-pregibi.html#lem-per-partes-pregibi" data-knowl="lem-per-partes-pregibi">6.13</a>) <span class="nobr">\(\int_0^L kA\,T''\,w\,\mathrm{d}x = kA\,T'(L)\,w(L) - kA\,T'(0)\,w(0) - \int_0^L kA\,T'\,w'\,\mathrm{d}x\).</span> Both boundary terms are zero: the first because the end is insulated, <span class="nobr">\(T'(L) = 0\),</span> the second because <span class="nobr">\(w(0) = 0\).</span> The weak form is therefore</p>
+<div class="eq" id="eq-pt10-sibka-rebro">\[B(T, w) = \int_0^L \big(kA\,T'\,w' + hP\,T\,w\big)\,\mathrm{d}x = 0 \qquad \text{for every } w,\ w(0) = 0 . \tag{14.52}\]</div>
+<p>The form \(B\) is bilinear and symmetric, since both terms under the <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integral</a> are symmetric in \(T\) and <span class="nobr">\(w\).</span> It is positive, \(B(w, w) &gt; 0\) for every <span class="nobr">\(w \ne 0\):</span> both terms under the integral are non-negative, and \(hP\,w^2\) is positive on some <a class="xref auto" href="sec-konvergenca-zaporedij.html#def-interval" data-knowl="def-interval">interval</a> around a point where <span class="nobr">\(w \ne 0\),</span> because \(w\) is continuous. So the theorems of chapter <a class="xref" href="ch-sibka-oblika.html">6</a> on the Ritz method hold, and the <a class="xref auto" href="sec-variacijski-racun.html#def-funkcional" data-knowl="def-funkcional">functional</a> is <span class="nobr">\(\Pi(v) = \tfrac12\,B(v, v)\),</span> since the right-hand side is zero (definition <a class="xref" href="sec-ritzova-metoda.html#def-ritzova-metoda" data-knowl="def-ritzova-metoda">6.32</a>).</p>
+
+<h3 id="sec-element-prevajanja"><span class="h-num">14.10.2</span> The matrix of a conduction element (prevodnostna matrika elementa)</h3>
+<p>The mesh divides the <a class="xref auto" href="sec-konvergenca-zaporedij.html#def-interval" data-knowl="def-interval">interval</a> \([0, L]\) into elements as in definition <a class="xref" href="sec-element-palice.html#def-koncni-element" data-knowl="def-koncni-element">7.1</a>: on an element \([x_{\mathrm{a}}, x_{\mathrm{b}}]\) of length \(h_{\mathrm{e}}\) the field is the straight line through the nodal temperatures \(T_1\) and <span class="nobr">\(T_2\),</span> given by \(T_{\mathrm{h}} = \psi_1^e\,T_1 + \psi_2^e\,T_2\) with the shape <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> of definition <a class="xref" href="sec-element-palice.html#def-oblikovna-funkcija" data-knowl="def-oblikovna-funkcija">7.2</a>. What does this element do when we fix the temperatures of its nodes? We draw it together with the bar element, to see which quantity corresponds to which (figure <a class="xref" href="sec-mke-toplote.html#fig-pt-10-element" data-knowl="fig-pt-10-element">14.38</a>).</p>
+
+<figure class="blk slika" id="fig-pt-10-element"><p><span class="svgfig" role="img" aria-label="Bar element with displacements and forces, and conduction element with temperatures and heat flows"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='354.09pt' height='185.32pt' viewBox='-72.000004 -72 262.292364 137.277031'>
+<defs>
+<path id='pt-10-element-g0-0' d='M6.56538-2.291407C6.734745-2.291407 6.914072-2.291407 6.914072-2.49066S6.734745-2.689913 6.56538-2.689913H1.175592C1.006227-2.689913 .826899-2.689913 .826899-2.49066S1.006227-2.291407 1.175592-2.291407H6.56538Z'/>
+<path id='pt-10-element-g1-70' d='M3.01868-3.237858H3.985056C4.732254-3.237858 4.811955-3.078456 4.811955-2.789539C4.811955-2.719801 4.811955-2.600249 4.742217-2.30137C4.722291-2.251557 4.712329-2.211706 4.712329-2.191781C4.712329-2.11208 4.772105-2.072229 4.83188-2.072229C4.931507-2.072229 4.931507-2.102117 4.98132-2.281445L5.529265-4.443337C5.559153-4.552927 5.559153-4.572852 5.559153-4.60274C5.559153-4.622665 5.539228-4.712329 5.439601-4.712329S5.330012-4.662516 5.290162-4.503113C5.080946-3.726027 4.851806-3.5467 4.004981-3.5467H3.098381L3.73599-6.07721C3.825654-6.425903 3.835616-6.465753 4.273973-6.465753H5.589041C6.814446-6.465753 7.043587-6.136986 7.043587-5.369863C7.043587-5.140722 7.043587-5.100872 7.013699-4.83188C6.993773-4.702366 6.993773-4.682441 6.993773-4.652553C6.993773-4.60274 7.023661-4.533001 7.113325-4.533001C7.222914-4.533001 7.232877-4.592777 7.252802-4.782067L7.452055-6.505604C7.481943-6.774595 7.43213-6.774595 7.183064-6.774595H2.30137C2.102117-6.774595 2.002491-6.774595 2.002491-6.575342C2.002491-6.465753 2.092154-6.465753 2.281445-6.465753C2.650062-6.465753 2.929016-6.465753 2.929016-6.286426C2.929016-6.246575 2.929016-6.22665 2.879203-6.047323L1.564134-.777086C1.464508-.388543 1.444583-.308842 .657534-.308842C.488169-.308842 .37858-.308842 .37858-.119552C.37858 0 .498132 0 .52802 0C.816936 0 1.554172-.029888 1.843088-.029888C2.171856-.029888 2.998755 0 3.327522 0C3.417186 0 3.536737 0 3.536737-.18929C3.536737-.268991 3.476961-.288917 3.476961-.298879C3.447073-.308842 3.427148-.308842 3.198007-.308842C2.978829-.308842 2.929016-.308842 2.67995-.328767C2.391034-.358655 2.361146-.398506 2.361146-.52802C2.361146-.547945 2.361146-.607721 2.400996-.757161L3.01868-3.237858Z'/>
+<path id='pt-10-element-g1-81' d='M4.363636-.059776C5.907846-.647572 7.372354-2.420922 7.372354-4.343711C7.372354-5.947696 6.316314-7.023661 4.83188-7.023661C2.67995-7.023661 .488169-4.762142 .488169-2.440847C.488169-.787049 1.603985 .219178 3.038605 .219178C3.287671 .219178 3.626401 .179328 4.014944 .069738C3.975093 .687422 3.975093 .707347 3.975093 .836862C3.975093 1.155666 3.975093 1.932752 4.801993 1.932752C5.987547 1.932752 6.465753 .109589 6.465753 0C6.465753-.069738 6.396015-.099626 6.356164-.099626C6.276463-.099626 6.256538-.049813 6.236613 .009963C5.997509 .71731 5.419676 .966376 5.070984 .966376C4.612702 .966376 4.463263 .697385 4.363636-.059776ZM2.480697-.139477C1.703611-.448319 1.364882-1.225405 1.364882-2.122042C1.364882-2.809465 1.62391-4.224159 2.381071-5.300125C3.108344-6.316314 4.044832-6.774595 4.772105-6.774595C5.768369-6.774595 6.495641-5.997509 6.495641-4.662516C6.495641-3.666252 5.987547-1.334994 4.313823-.398506C4.26401-.747198 4.164384-1.474471 3.437111-1.474471C2.909091-1.474471 2.420922-.976339 2.420922-.458281C2.420922-.259029 2.480697-.14944 2.480697-.139477ZM3.098381-.029888C2.958904-.029888 2.6401-.029888 2.6401-.458281C2.6401-.856787 3.01868-1.255293 3.437111-1.255293S4.044832-1.016189 4.044832-.408468C4.044832-.259029 4.034869-.249066 3.935243-.209215C3.676214-.099626 3.377335-.029888 3.098381-.029888Z'/>
+<path id='pt-10-element-g1-84' d='M4.254047-6.047323C4.323786-6.326276 4.363636-6.386052 4.483188-6.41594C4.572852-6.435866 4.901619-6.435866 5.110834-6.435866C6.117061-6.435866 6.56538-6.396015 6.56538-5.618929C6.56538-5.469489 6.525529-5.080946 6.485679-4.821918C6.475716-4.782067 6.455791-4.662516 6.455791-4.632628C6.455791-4.572852 6.485679-4.503113 6.575342-4.503113C6.684932-4.503113 6.704857-4.582814 6.724782-4.732254L6.993773-6.465753C7.003736-6.505604 7.013699-6.60523 7.013699-6.635118C7.013699-6.744707 6.914072-6.744707 6.744707-6.744707H1.215442C.976339-6.744707 .966376-6.734745 .896638-6.545455L.298879-4.79203C.288917-4.772105 .239103-4.632628 .239103-4.612702C.239103-4.552927 .288917-4.503113 .358655-4.503113C.458281-4.503113 .468244-4.552927 .52802-4.712329C1.066002-6.256538 1.325031-6.435866 2.799502-6.435866H3.188045C3.466999-6.435866 3.466999-6.396015 3.466999-6.316314C3.466999-6.256538 3.437111-6.136986 3.427148-6.107098L2.092154-.787049C2.002491-.418431 1.972603-.308842 .9066-.308842C.547945-.308842 .488169-.308842 .488169-.119552C.488169 0 .597758 0 .657534 0C.926526 0 1.205479-.019925 1.474471-.019925C1.753425-.019925 2.042341-.029888 2.321295-.029888S2.879203-.019925 3.148194-.019925C3.437111-.019925 3.73599 0 4.014944 0C4.11457 0 4.234122 0 4.234122-.199253C4.234122-.308842 4.154421-.308842 3.895392-.308842C3.646326-.308842 3.516812-.308842 3.257783-.328767C2.968867-.358655 2.889166-.388543 2.889166-.547945C2.889166-.557908 2.889166-.607721 2.929016-.757161L4.254047-6.047323Z'/>
+<path id='pt-10-element-g1-100' d='M5.140722-6.804483C5.140722-6.814446 5.140722-6.914072 5.011208-6.914072C4.861768-6.914072 3.915318-6.824408 3.745953-6.804483C3.666252-6.794521 3.606476-6.744707 3.606476-6.615193C3.606476-6.495641 3.696139-6.495641 3.845579-6.495641C4.323786-6.495641 4.343711-6.425903 4.343711-6.326276L4.313823-6.127024L3.716065-3.765878C3.536737-4.134496 3.247821-4.403487 2.799502-4.403487C1.633873-4.403487 .398506-2.938979 .398506-1.484433C.398506-.547945 .946451 .109589 1.723537 .109589C1.92279 .109589 2.420922 .069738 3.01868-.637609C3.098381-.219178 3.447073 .109589 3.92528 .109589C4.273973 .109589 4.503113-.119552 4.662516-.438356C4.83188-.797011 4.961395-1.404732 4.961395-1.424658C4.961395-1.524284 4.871731-1.524284 4.841843-1.524284C4.742217-1.524284 4.732254-1.484433 4.702366-1.344956C4.533001-.697385 4.353674-.109589 3.945205-.109589C3.676214-.109589 3.646326-.368618 3.646326-.56787C3.646326-.806974 3.666252-.876712 3.706102-1.046077L5.140722-6.804483ZM3.068493-1.185554C3.01868-1.006227 3.01868-.986301 2.86924-.816936C2.430884-.268991 2.022416-.109589 1.743462-.109589C1.24533-.109589 1.105853-.657534 1.105853-1.046077C1.105853-1.544209 1.424658-2.769614 1.653798-3.227895C1.96264-3.815691 2.410959-4.184309 2.809465-4.184309C3.457036-4.184309 3.596513-3.367372 3.596513-3.307597S3.576588-3.188045 3.566625-3.138232L3.068493-1.185554Z'/>
+<path id='pt-10-element-g1-113' d='M4.503113-4.293898C4.503113-4.333748 4.473225-4.393524 4.403487-4.393524C4.293898-4.393524 3.895392-3.995019 3.726027-3.706102C3.506849-4.244085 3.118306-4.403487 2.799502-4.403487C1.62391-4.403487 .398506-2.929016 .398506-1.484433C.398506-.508095 .986301 .109589 1.713574 .109589C2.141968 .109589 2.530511-.129514 2.889166-.488169C2.799502-.139477 2.470735 1.205479 2.440847 1.295143C2.361146 1.574097 2.281445 1.613948 1.723537 1.62391C1.594022 1.62391 1.494396 1.62391 1.494396 1.823163C1.494396 1.833126 1.494396 1.932752 1.62391 1.932752C1.942715 1.932752 2.291407 1.902864 2.620174 1.902864C2.958904 1.902864 3.317559 1.932752 3.646326 1.932752C3.696139 1.932752 3.825654 1.932752 3.825654 1.733499C3.825654 1.62391 3.726027 1.62391 3.566625 1.62391C3.088418 1.62391 3.088418 1.554172 3.088418 1.464508C3.088418 1.39477 3.108344 1.334994 3.128269 1.24533L4.503113-4.293898ZM1.743462-.109589C1.145704-.109589 1.105853-.876712 1.105853-1.046077C1.105853-1.524284 1.39477-2.610212 1.564134-3.028643C1.872976-3.765878 2.391034-4.184309 2.799502-4.184309C3.447073-4.184309 3.58655-3.377335 3.58655-3.307597C3.58655-3.247821 3.038605-1.066002 3.008717-1.026152C2.859278-.747198 2.30137-.109589 1.743462-.109589Z'/>
+<path id='pt-10-element-g2-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='pt-10-element-g2-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='pt-10-element-g3-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='pt-10-element-g3-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+</defs>
+<g id='pt-10-element-page1'>
+<g stroke-miterlimit='10' transform='translate(-17.643812,30.651399)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='lega'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 85.35823V62.59595' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M113.81097 85.35823V62.59595' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='palica'>
+<g stroke-width='2.0'>
+<path d='M14.22636 85.35823H150.79962' fill='none'/>
+</g>
+<path d='M16.06499 85.35823C16.06499 86.37367 15.2418 87.19685 14.22636 87.19685S12.38774 86.37367 12.38774 85.35823S13.21092 83.5196 14.22636 83.5196S16.06499 84.34279 16.06499 85.35823ZM14.22636 85.35823' stroke='none'/>
+<g transform='translate(14.22636,85.35823)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.643812,30.651399)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M152.63824 85.35823C152.63824 86.37367 151.81506 87.19685 150.79962 87.19685S148.961 86.37367 148.961 85.35823S149.78418 83.5196 150.79962 83.5196S152.63824 84.34279 152.63824 85.35823ZM150.79962 85.35823' stroke='none'/>
+<g transform='translate(150.79962,85.35823)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.643812,30.651399)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(11.72636,93.25894)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.643812,30.651399)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.643812' y='30.651399' xlink:href='#pt-10-element-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(148.29962,93.25894)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.643812,30.651399)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.643812' y='30.651399' xlink:href='#pt-10-element-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='pomiki'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M.33748 68.2864H13.88889' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,6.14052,68.2864)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,0.22499,68.2864)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(8.08585,68.2864)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(14.00137,68.2864)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M114.14845 68.2864H150.46214' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,119.95149,68.2864)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,114.03596,68.2864)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(144.6591,68.2864)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(150.57463,68.2864)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g transform='translate(2.26768,56.2867)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.643812,30.651399)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.643812' y='30.651399' xlink:href='#pt-10-element-g1-100'/>
+<use x='-12.458379' y='32.14578' xlink:href='#pt-10-element-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(127.45958,56.2867)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.643812,30.651399)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.643812' y='30.651399' xlink:href='#pt-10-element-g1-100'/>
+<use x='-12.458379' y='32.14578' xlink:href='#pt-10-element-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='sile'>
+<g class='del' data-del='F1'>
+<g stroke-width='1.0'>
+<path d='M14.22636 85.35823H-21.42653' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,-18.77864,85.35823)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.33095 0L1.67535 1.31036L2.89789 0L1.67535-1.31036Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-40.35695,82.69156)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.643812,30.651399)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.643812' y='30.651399' xlink:href='#pt-10-element-g1-70'/>
+<use x='-11.237268' y='32.14578' xlink:href='#pt-10-element-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='F2'>
+<g stroke-width='1.0'>
+<path d='M150.79962 85.35823H186.45253' fill='none'/>
+<g transform='translate(183.80464,85.35823)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.33095 0L1.67535 1.31036L2.89789 0L1.67535-1.31036Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(194.46626,82.69156)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.643812,30.651399)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.643812' y='30.651399' xlink:href='#pt-10-element-g1-70'/>
+<use x='-11.237268' y='32.14578' xlink:href='#pt-10-element-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='prevodnik'>
+<g stroke-width='2.0'>
+<path d='M0 0H113.81097' fill='none'/>
+</g>
+<path d='M1.83862 0C1.83862 1.01544 1.01544 1.83862 0 1.83862S-1.83862 1.01544-1.83862 0S-1.01544-1.83862 0-1.83862S1.83862-1.01544 1.83862 0ZM0 0' stroke='none'/>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.643812,30.651399)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+<path d='M115.6496 0C115.6496 1.01544 114.82642 1.83862 113.81097 1.83862C112.79553 1.83862 111.97235 1.01544 111.97235 0S112.79553-1.83862 113.81097-1.83862C114.82642-1.83862 115.6496-1.01544 115.6496 0ZM113.81097 0' stroke='none'/>
+<g transform='translate(113.81097,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.643812,30.651399)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(-2.5,-14.34514)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.643812,30.651399)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.643812' y='30.651399' xlink:href='#pt-10-element-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(111.31097,-14.34514)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.643812,30.651399)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.643812' y='30.651399' xlink:href='#pt-10-element-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='nicla'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M-14.22636 12.80363H128.03734' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='visine'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-14.22636 13.14111V46.60936' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,-14.22636,18.94415)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,-14.22636,13.02863)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,-14.22636,40.80632)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,-14.22636,46.72185)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M128.03734 13.14111V29.53798' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,128.03734,18.94415)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,128.03734,13.02863)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,128.03734,23.73494)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,128.03734,29.65047)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M-14.22636 46.94684H0' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M113.81097 29.87546H128.03734' fill='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(-29.61194,27.20879)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.643812,30.651399)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.643812' y='30.651399' xlink:href='#pt-10-element-g1-84'/>
+<use x='-11.821881' y='32.14578' xlink:href='#pt-10-element-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(133.09305,18.67288)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.643812,30.651399)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.643812' y='30.651399' xlink:href='#pt-10-element-g1-84'/>
+<use x='-11.821881' y='32.14578' xlink:href='#pt-10-element-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='profil'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.4'>
+<path d='M0 46.94684L113.81097 29.87546' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='toki'>
+<g class='del' data-del='Q1'>
+<g stroke-width='1.0'>
+<path d='M-54.06003 0H-7.0262' fill='none'/>
+<g transform='translate(-9.67409,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.33095 0L1.67535 1.31036L2.89789 0L1.67535-1.31036Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-34.64857,5.7774)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.643812,30.651399)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.643812' y='30.651399' xlink:href='#pt-10-element-g1-81'/>
+<use x='-9.767797' y='32.14578' xlink:href='#pt-10-element-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='Q2'>
+<g stroke-width='1.0'>
+<path d='M113.81097 0H160.84523' fill='none'/>
+<g transform='translate(158.19734,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.33095 0L1.67535 1.31036L2.89789 0L1.67535-1.31036Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(129.33374,5.7774)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.643812,30.651399)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.643812' y='30.651399' xlink:href='#pt-10-element-g0-0'/>
+<use x='-9.895064' y='30.651399' xlink:href='#pt-10-element-g1-81'/>
+<use x='-2.019049' y='32.14578' xlink:href='#pt-10-element-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='q'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.0'>
+<path d='M28.45274-21.33955H81.17747' fill='none'/>
+<g transform='translate(78.52959,-21.33955)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.33095 0L1.67535 1.31036L2.89789 0L1.67535-1.31036Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(54.49403,-29.47807)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.643812,30.651399)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-17.643812' y='30.651399' xlink:href='#pt-10-element-g1-113'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 14.38</span>: Top: a bar element between nodes \(1\) and <span class="nobr">\(2\),</span> the node displacements \(d_1\) and \(d_2\) (from the grey dashed position) and the forces <span class="nobr">\(F_1\),</span> <span class="nobr">\(F_2\),</span> each starting at its node. Bottom: the same element as a conductor of heat. The blue line is the temperature \(T_{\mathrm{h}}\) above the zero level, its heights are \(T_1\) and <span class="nobr">\(T_2\).</span> The arrow \(Q_1\) ends at node <span class="nobr">\(1\),</span> because heat enters the element there, the arrow \(-Q_2\) starts at node <span class="nobr">\(2\),</span> because heat leaves there, and the blue arrow \(q\) shows the direction of the heat flux from the warm to the cold end. Displacements, heights and forces are drawn greatly enlarged, the values are chosen arbitrarily.</figcaption></figure>
+<p>First we draw the <a data-del="palica" class="xref kaz" href="sec-mke-toplote.html#fig-pt-10-element" data-knowl="fig-pt-10-element">bar</a> as an element with two nodes. If the nodes are <a data-del="pomiki" class="xref kaz" href="sec-mke-toplote.html#fig-pt-10-element" data-knowl="fig-pt-10-element">displaced</a> from the <a data-del="lega" class="xref kaz" href="sec-mke-toplote.html#fig-pt-10-element" data-knowl="fig-pt-10-element">grey dashed position</a> by \(d_1\) and <span class="nobr">\(d_2\),</span> the surroundings must hold them with the <a data-del="sile" class="xref kaz" href="sec-mke-toplote.html#fig-pt-10-element" data-knowl="fig-pt-10-element">forces</a> \(F_1\) and <span class="nobr">\(F_2\),</span> which by lemma <a class="xref" href="sec-element-palice.html#lem-togost-elementa-palice" data-knowl="lem-togost-elementa-palice">7.5</a> are <span class="nobr">\(\vek F_{\mathrm{e}} = \mat k_{\mathrm{e}}\,\vek d_{\mathrm{e}}\).</span> Below we do the same with the <a data-del="prevodnik" class="xref kaz" href="sec-mke-toplote.html#fig-pt-10-element" data-knowl="fig-pt-10-element">conductor element</a>: instead of node displacements we have temperatures, shown by the <a data-del="profil" class="xref kaz" href="sec-mke-toplote.html#fig-pt-10-element" data-knowl="fig-pt-10-element">profile</a> \(T_{\mathrm{h}}\) with the <span class="nobr"><a data-del="visine" class="xref kaz" href="sec-mke-toplote.html#fig-pt-10-element" data-knowl="fig-pt-10-element">heights \(T_1\) and \(T_2\)</a>,</span> and instead of forces the <a data-del="toki" class="xref kaz" href="sec-mke-toplote.html#fig-pt-10-element" data-knowl="fig-pt-10-element">heat flows</a> that the surroundings must supply or remove so that the nodes stay at these temperatures. The height of the profile is not a length but the temperature above the <a data-del="nicla" class="xref kaz" href="sec-mke-toplote.html#fig-pt-10-element" data-knowl="fig-pt-10-element">zero level</a>. In the <a class="xref auto" href="sec-harmonicno-vzbujanje.html#thm-harmonicni-odziv" data-knowl="thm-harmonicni-odziv">steady state</a> the heat must flow through the element from the warm end to the cold end, and the <a data-del="q" class="xref kaz" href="sec-mke-toplote.html#fig-pt-10-element" data-knowl="fig-pt-10-element">arrow of the heat flux</a> \(q\) shows the direction of this flow.</p>
+<p>Before we state the claim, let us say what we expect. Steady state means that the temperature of the element does not change in time, so with no loss through the lateral surface and no source, all the heat that enters at the left end must leave at the right end (corollary <a class="xref" href="sec-enacba-prevajanja.html#cor-prevajanje-palice" data-knowl="cor-prevajanje-palice">14.10</a> of section <a class="xref" href="sec-enacba-prevajanja.html">14.2</a>). By Fourier's law (definition <a class="xref" href="sec-fourierjev-zakon.html#def-fourierjev-zakon" data-knowl="def-fourierjev-zakon">14.3</a>) the <a class="xref auto" href="sec-fourierjev-zakon.html#def-toplotni-tok" data-knowl="def-toplotni-tok">heat flux</a> is <span class="nobr">\(q = -k\,T_{\mathrm{h}}'\),</span> and since \(T_{\mathrm{h}}\) is a straight line, \(q\) is constant along the element.</p>
+
+<div class="blk lema" id="lem-prevodnostna-matrika-elementa"><div class="blk-head"><span class="blk-label">Lemma 14.53</span> <span class="blk-title">Conductivity matrix of an element (prevodnostna matrika elementa)</span></div><div class="blk-body"><p>Let \([x_{\mathrm{a}}, x_{\mathrm{b}}]\) be a finite element with two nodes and length \(h_{\mathrm{e}}\) (definition <a class="xref" href="sec-element-palice.html#def-koncni-element" data-knowl="def-koncni-element">7.1</a>), \(kA\) constant on the element, and let there be no heat source on it and no loss through the lateral surface. Let \(\vek T_{\mathrm{e}} = (T_1, T_2)^\T\) be the column of nodal temperatures and <span class="nobr">\(\mat b_{\mathrm{e}} = \frac1{h_{\mathrm{e}}}(-1,\ 1)\).</span> Then:</p>
+<ol>
+<li>The temperature gradient on the element is constant, <span class="nobr">\(T_{\mathrm{h}}' = \mat b_{\mathrm{e}}\,\vek T_{\mathrm{e}}\).</span></li>
+<li>The part of the <a class="xref auto" href="sec-variacijski-racun.html#def-funkcional" data-knowl="def-funkcional">functional</a> \(\tfrac12\int kA\,(T_{\mathrm{h}}')^2\,\mathrm{d}x\) that the element contributes is \(\tfrac12\,\vek T_{\mathrm{e}}^\T\,\mat k_{\mathrm{e}}\,\vek T_{\mathrm{e}}\) with
+<div class="eq" id="eq-pt10-prevodnostna">\[\mat k_{\mathrm{e}} = \int_{\mathrm{x}_\mathrm{a}}^{x_{\mathrm{b}}} \mat b_{\mathrm{e}}^\T\,kA\,\mat b_{\mathrm{e}}\,\mathrm{d}x = \frac{kA}{h_{\mathrm{e}}}\begin{pmatrix} 1 &amp; -1 \\ -1 &amp; 1 \end{pmatrix} . \tag{14.53}\]</div></li>
+<li>The heat flows that the surroundings supply to the element at nodes \(1\) and \(2\) (positive when heat enters the element) are <span class="nobr">\(\vek Q_{\mathrm{e}} = (Q_1, Q_2)^\T = \mat k_{\mathrm{e}}\,\vek T_{\mathrm{e}}\).</span> So <span class="nobr">\(Q_1 = -Q_2 = \dfrac{kA}{h_{\mathrm{e}}}\,(T_1 - T_2)\).</span></li>
+<li>For \(T_1 = T_2\) both flows are zero: <span class="nobr">\(\mat k_{\mathrm{e}}\,(1,\ 1)^\T = \vek 0\).</span></li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show four claims. The first and second are computations from lemma <a class="xref" href="sec-element-palice.html#lem-togost-elementa-palice" data-knowl="lem-togost-elementa-palice">7.5</a>, the third is the balance of flow, the fourth a consequence of lemma <a class="xref" href="sec-element-palice.html#lem-vsota-oblikovnih" data-knowl="lem-vsota-oblikovnih">7.3</a>.</p>
+<ol>
+<li>The shape <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> are the same as for the bar, so by step 1 of the proof of lemma <a class="xref" href="sec-element-palice.html#lem-togost-elementa-palice" data-knowl="lem-togost-elementa-palice">7.5</a> <span class="nobr">\(T_{\mathrm{h}}' = (-T_1 + T_2)/h_{\mathrm{e}} = \mat b_{\mathrm{e}}\,\vek T_{\mathrm{e}}\),</span> a number independent of <span class="nobr">\(x\).</span></li>
+<li>The product \(\mat b_{\mathrm{e}}^\T\mat b_{\mathrm{e}}\) is the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\frac1{h_{\mathrm{e}}^2}\begin{pmatrix} 1 &amp; -1 \\ -1 &amp; 1 \end{pmatrix}\) (step 2 of the proof of lemma <a class="xref" href="sec-element-palice.html#lem-togost-elementa-palice" data-knowl="lem-togost-elementa-palice">7.5</a>). The integrand \(\mat b_{\mathrm{e}}^\T\,kA\,\mat b_{\mathrm{e}}\) does not depend on <span class="nobr">\(x\),</span> so the <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integral</a> equals the integrand times \(h_{\mathrm{e}}\) (lemma <a class="xref" href="sec-integral.html#lem-lastnosti-integrala" data-knowl="lem-lastnosti-integrala">3.39</a>). This is equation <a class="xref" href="sec-mke-toplote.html#eq-pt10-prevodnostna" data-knowl="eq-pt10-prevodnostna">(14.53)</a>. Since \((T_{\mathrm{h}}')^2 = \vek T_{\mathrm{e}}^\T\,\mat b_{\mathrm{e}}^\T\mat b_{\mathrm{e}}\,\vek T_{\mathrm{e}}\) is a number, the contribution of the element is <span class="nobr">\(\tfrac12\,kA\,h_{\mathrm{e}}\,(T_{\mathrm{h}}')^2 = \tfrac12\,\vek T_{\mathrm{e}}^\T\,\mat k_{\mathrm{e}}\,\vek T_{\mathrm{e}}\).</span></li>
+<li>By definition <a class="xref" href="sec-fourierjev-zakon.html#def-fourierjev-zakon" data-knowl="def-fourierjev-zakon">14.3</a> the <a class="xref auto" href="sec-fourierjev-zakon.html#def-toplotni-tok" data-knowl="def-toplotni-tok">heat flux</a> in the direction \(+x\) is <span class="nobr">\(q = -k\,T_{\mathrm{h}}' = k\,(T_1 - T_2)/h_{\mathrm{e}}\),</span> constant along the element. Through the cross-section \(A\) the flow \(A\,q\) goes in the direction <span class="nobr">\(+x\).</span> At the left end this flow enters the element, so <span class="nobr">\(Q_1 = A\,q = \dfrac{kA}{h_{\mathrm{e}}}\,(T_1 - T_2)\).</span> At the right end the same flow leaves, so the element receives \(Q_2 = -A\,q\) from the surroundings. The sum \(Q_1 + Q_2 = 0\) is just the balance of the element in the <a class="xref auto" href="sec-harmonicno-vzbujanje.html#thm-harmonicni-odziv" data-knowl="thm-harmonicni-odziv">steady state</a> without source and loss. Comparison with \(\mat k_{\mathrm{e}}\,\vek T_{\mathrm{e}} = \frac{kA}{h_{\mathrm{e}}}\,(T_1 - T_2,\ T_2 - T_1)^\T\) gives the claim.</li>
+<li>For \(T_1 = T_2\) the gradient is zero by claim 1 and both flows are zero by claim 3.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> COOK §12.2, equations (12.2-4) (PDF pp. 473-474), where [k] is called the &quot;conductivity matrix&quot;. The notation and the signs of claim 3 are ours.</p></div></div>
+<p>The lemma is the same computation as for the bar, with \(EA\) replaced by <span class="nobr">\(kA\).</span> So everything we know from chapters <a class="xref" href="ch-sibka-oblika.html">6</a> and <a class="xref" href="ch-mke-palice.html">7</a> carries over word for word. The table shows what corresponds to what (after COOK, PDF p. 474).</p>
+<table>
+<thead>
+<tr>
+<th>bar (chapter <a class="xref" href="ch-mke-palice.html">7</a>)</th>
+<th><a class="xref auto" href="sec-enacba-prevajanja.html#thm-enacba-prevajanja" data-knowl="thm-enacba-prevajanja">heat conduction</a></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>displacement of a node \(d\)</td>
+<td>temperature of a node \(T\)</td>
+</tr>
+<tr>
+<td>stiffness <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat k_{\mathrm{e}}\) with \(EA\)</td>
+<td><a class="xref auto" href="sec-mke-toplote.html#lem-prevodnostna-matrika-elementa" data-knowl="lem-prevodnostna-matrika-elementa">conductivity matrix</a> \(\mat k_{\mathrm{e}}\) with \(kA\)</td>
+</tr>
+<tr>
+<td>force on a node \(F\)</td>
+<td>heat flow into a node \(Q\)</td>
+</tr>
+<tr>
+<td>support with a prescribed displacement</td>
+<td><a class="xref auto" href="sec-robni-pogoji-toplote.html#def-robni-problem-prevajanja" data-knowl="def-robni-problem-prevajanja">prescribed temperature</a></td>
+</tr>
+<tr>
+<td>reaction of a support</td>
+<td>heat supplied by the support</td>
+</tr>
+</tbody>
+</table>
+<p>The matrix is the same, but the sign means something different for each quantity. The <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> in a bar is \(N = EA\,u'\) and is positive when the bar stretches. The flow in the direction \(+x\) is \(-kA\,T'\) and is positive when the temperature falls along <span class="nobr">\(x\),</span> because heat flows from warm to cold. In figure <a class="xref" href="sec-mke-toplote.html#fig-pt-10-element" data-knowl="fig-pt-10-element">14.38</a> the bar is stretched, <span class="nobr">\(d_2 &gt; d_1\),</span> and the temperature falls, <span class="nobr">\(T_1 &gt; T_2\).</span> So the <a data-del="F1" class="xref kaz" href="sec-mke-toplote.html#fig-pt-10-element" data-knowl="fig-pt-10-element">force \(F_1\)</a> equals \(\tfrac{EA}{h_{\mathrm{e}}}\,(d_1 - d_2) &lt; 0\) and points out of the element, while the <a data-del="Q1" class="xref kaz" href="sec-mke-toplote.html#fig-pt-10-element" data-knowl="fig-pt-10-element">flow \(Q_1\)</a> is \(\tfrac{kA}{h_{\mathrm{e}}}\,(T_1 - T_2) &gt; 0\) and points into it. At the right end both arrows point out of the element: the <span class="nobr"><a data-del="F2" class="xref kaz" href="sec-mke-toplote.html#fig-pt-10-element" data-knowl="fig-pt-10-element">force \(F_2\)</a>,</span> because we pull the bar, and the <span class="nobr"><a data-del="Q2" class="xref kaz" href="sec-mke-toplote.html#fig-pt-10-element" data-knowl="fig-pt-10-element">arrow \(-Q_2\)</a>,</span> because heat leaves there. The directions at node \(1\) are opposite because of the values drawn, not because of the matrix: for <span class="nobr">\(T_2 &gt; T_1\),</span> \(Q_1\) would be negative too, and heat would leave the element at node <span class="nobr">\(1\).</span></p>
+<p>A test. A <a class="xref auto" href="sec-stacionarno-1d.html#thm-rebro" data-knowl="thm-rebro">fin</a> with two elements has \(h_{\mathrm{e}} = L/2\) and conductivity matrix <span class="nobr">\(\mat k_{\mathrm{e}} = (2kA/L)\begin{pmatrix} 1 &amp; -1 \\ -1 &amp; 1 \end{pmatrix}\).</span> Its rows sum to zero, as claim 4 says, so the matrix is singular by itself, like a bar without a support (section <a class="xref" href="sec-robni-pogoji-mke.html#sec-singularna-togost">7.3.1</a>). The physical reason is the same: if all nodes are at the same temperature, heat flows nowhere, and we can change this common temperature by any number without anything happening. In conduction without lateral loss, only the prescribed temperature of at least one node fixes it, here \(T_0\) at <span class="nobr">\(x = 0\).</span> In the fin, the surroundings, which take heat away through the lateral surface, also act as a support (COOK, PDF p. 481): the matrix this loss adds is <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite</a> by the next lemma, so the matrix of the fin is not singular even without a prescribed temperature. A <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">body</a> without lateral loss and with only prescribed flows has a solution by lemma <a class="xref" href="sec-robni-pogoji-toplote.html#lem-izolirano-telo" data-knowl="lem-izolirano-telo">14.18</a> only if the sum of the flows is zero, and then any constant may be added.</p>
+
+<div class="blk lema" id="lem-konvekcijska-matrika"><div class="blk-head"><span class="blk-label">Lemma 14.54</span> <span class="blk-title">Matrix of lateral heat loss (matrika izgube skozi stransko ploskev)</span></div><div class="blk-body"><p>Let \([x_{\mathrm{a}}, x_{\mathrm{b}}]\) be a finite element with two nodes and length <span class="nobr">\(h_{\mathrm{e}}\),</span> let the cross-section have perimeter <span class="nobr">\(P\),</span> let the heat transfer coefficient on the lateral surface be \(h\) and constant (definition <a class="xref" href="sec-robni-pogoji-toplote.html#def-newtonov-zakon-ohlajanja" data-knowl="def-newtonov-zakon-ohlajanja">14.13</a>), and let the temperature be measured from the surroundings. The part of the <a class="xref auto" href="sec-variacijski-racun.html#def-funkcional" data-knowl="def-funkcional">functional</a> \(\tfrac12\int hP\,T_{\mathrm{h}}^2\,\mathrm{d}x\) that the element contributes is \(\tfrac12\,\vek T_{\mathrm{e}}^\T\,\mat s_{\mathrm{e}}\,\vek T_{\mathrm{e}}\) with</p>
+<div class="eq" id="eq-pt10-stranska">\[\mat s_{\mathrm{e}} = \int_{\mathrm{x}_\mathrm{a}}^{x_{\mathrm{b}}} \mat\psi_{\mathrm{e}}^\T\,hP\,\mat\psi_{\mathrm{e}}\,\mathrm{d}x = \frac{hP\,h_{\mathrm{e}}}{6}\begin{pmatrix} 2 &amp; 1 \\ 1 &amp; 2 \end{pmatrix} . \tag{14.54}\]</div>
+<p>The <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> is symmetric and <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite</a>, and the sum of its entries \(hP\,h_{\mathrm{e}}\) is the heat transfer coefficient times the lateral surface of the element: at equal temperature \(T\) of both nodes the loss of heat through the lateral surface is <span class="nobr">\(hP\,h_{\mathrm{e}}\,T\).</span></p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that the <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integral</a> of the product of shape <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> is the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> of lemma <a class="xref" href="sec-masna-matrika.html#lem-masa-elementa-palice" data-knowl="lem-masa-elementa-palice">10.31</a>, only with another constant.</p>
+<ol>
+<li>For \(T_{\mathrm{h}} = \mat\psi_{\mathrm{e}}\,\vek T_{\mathrm{e}}\) we have \(T_{\mathrm{h}}^2 = \vek T_{\mathrm{e}}^\T\mat\psi_{\mathrm{e}}^\T\mat\psi_{\mathrm{e}}\,\vek T_{\mathrm{e}}\) (lemma <a class="xref" href="sec-matrike.html#lem-transponiran-produkt" data-knowl="lem-transponiran-produkt">1.101</a>), and \(\vek T_{\mathrm{e}}\) does not depend on <span class="nobr">\(x\),</span> so by linearity of the integral we take it out.</li>
+<li>The integrals \(\int\psi_{\mathrm{i}}\psi_{\mathrm{j}}\,\mathrm{d}x\) are <span class="nobr">\(h_{\mathrm{e}}/3\),</span> <span class="nobr">\(h_{\mathrm{e}}/6\),</span> <span class="nobr">\(h_{\mathrm{e}}/6\),</span> \(h_{\mathrm{e}}/3\) (step 3 of the proof of lemma <a class="xref" href="sec-masna-matrika.html#lem-masa-elementa-palice" data-knowl="lem-masa-elementa-palice">10.31</a>). The factor \(hP\) is constant and goes in front of the integral, which gives equation <a class="xref" href="sec-mke-toplote.html#eq-pt10-stranska" data-knowl="eq-pt10-stranska">(14.54)</a>.</li>
+<li><a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">Positive definiteness</a>: for \((a, b) \ne (0, 0)\) we have \((a, b)\,\mat s_{\mathrm{e}}\,(a, b)^\T = \tfrac{hP\,h_{\mathrm{e}}}{6}\big(a^2 + b^2 + (a + b)^2\big) &gt; 0\) (step 5 of the same lemma).</li>
+<li>The sum of the entries is <span class="nobr">\(\tfrac{hP\,h_{\mathrm{e}}}{6}\,(2 + 1 + 1 + 2) = hP\,h_{\mathrm{e}}\).</span> Step 1 gives the same for <span class="nobr">\(T_1 = T_2 = T\):</span> by lemma <a class="xref" href="sec-element-palice.html#lem-vsota-oblikovnih" data-knowl="lem-vsota-oblikovnih">7.3</a> <span class="nobr">\(T_{\mathrm{h}} = T\),</span> so <span class="nobr">\(\int hP\,T^2\,\mathrm{d}x = hP\,h_{\mathrm{e}}\,T^2\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> COOK §12.2, (12.2-4) and (12.2-6) (PDF p. 474), where the term with lateral convection is added to the matrix \([k]\) and where COOK compares it with the matrix of an elastic foundation. The proof in steps is ours.</p></div></div>
+<p>We called the matrix the side matrix, because it comes from the loss through the lateral surface of the bar. Its <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integral</a> is the same as for the consistent mass matrix of lemma <a class="xref" href="sec-masna-matrika.html#lem-masa-elementa-palice" data-knowl="lem-masa-elementa-palice">10.31</a>, with \(\rho A\) replaced by <span class="nobr">\(hP\).</span> There the matrix multiplies the acceleration, here it multiplies the temperature, so it plays the role of a stiffness, like an <a class="xref auto forward" href="sec-elasticna-podlaga.html#def-elasticna-podlaga" data-knowl="def-elasticna-podlaga" title="Defined later in the book">elastic foundation</a>. In section <a class="xref" href="sec-prehodni-pojav-mke.html">14.11</a> the same integral appears once more, there with the density and the <a class="xref auto" href="sec-enacba-prevajanja.html#def-specificna-toplota" data-knowl="def-specificna-toplota">specific heat</a>, and it will multiply the time <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivative</a>. If the end of the fin were not insulated but gave off heat with <a class="xref auto" href="sec-robni-pogoji-toplote.html#def-newtonov-zakon-ohlajanja" data-knowl="def-newtonov-zakon-ohlajanja">heat transfer coefficient</a> <span class="nobr">\(h\),</span> we would add a term \(hA\) to the diagonal of node <span class="nobr">\(n\),</span> as for a spring at a node (COOK, PDF p. 474). At \(mL = 1\) and \(hA\,L/(kA) = 1\) with two elements we get the temperatures \(0{,}6040\) and \(0{,}3656\) (in units of <span class="nobr">\(T_0\))</span> instead of \(0{,}7266\) and \(0{,}6428\) with the insulated tip. The difference is large because at \(mL = 1\) the number \(hL/k = 1\) means \(A = PL\) (divide \(hL/k\) by <span class="nobr">\((mL)^2 = hPL^2/(kA)\)):</span> the tip has as much area as the whole lateral surface. For a slender fin with <span class="nobr">\(A = PL/20\),</span> so <span class="nobr">\(hL/k = 0{,}05\),</span> we get \(0{,}7162\) and <span class="nobr">\(0{,}6193\),</span> close to the values with the insulated tip.</p>
+
+<h3 id="sec-rebro-mke"><span class="h-num">14.10.3</span> Assembly and comparison with the exact solution (sestavljanje in primerjava s točno rešitvijo)</h3>
+<p>Now we have everything. By theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a> the matrix of the structure is the sum of the expanded <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> <span class="nobr">\(\mat k_{\mathrm{e}} + \mat s_{\mathrm{e}}\),</span> then we prescribe \(T_0\) at node \(0\) and solve the reduced system (theorem <a class="xref" href="sec-robni-pogoji-mke.html#thm-reduciran-sistem" data-knowl="thm-reduciran-sistem">7.18</a>). With \(n = 2\) elements and \(mL = 1\) we have <span class="nobr">\(h_{\mathrm{e}} = L/2\).</span> In units of \(kA/L\) we have \(\mat k_{\mathrm{e}} = \begin{pmatrix} 2 &amp; -2 \\ -2 &amp; 2 \end{pmatrix}\) and <span class="nobr">\(\mat s_{\mathrm{e}} = \tfrac{(mL)^2}{12}\begin{pmatrix} 2 &amp; 1 \\ 1 &amp; 2 \end{pmatrix}\),</span> because <span class="nobr">\(hP\,h_{\mathrm{e}}/6 = hP\,L/12 = (mL)^2\,\tfrac{kA}{12\,L}\).</span> By SymPy the matrix of the structure is</p>
+<div class="eq" id="eq-pt10-K">\[\mat K = \begin{pmatrix} 13/6 &amp; -23/12 &amp; 0 \\ -23/12 &amp; 13/3 &amp; -23/12 \\ 0 &amp; -23/12 &amp; 13/6 \end{pmatrix} , \tag{14.55}\]</div>
+<p>where for instance the middle entry is <span class="nobr">\(2 + 2 + \tfrac{2}{12} + \tfrac{2}{12} = \tfrac{13}{3}\),</span> since both elements contribute to it, each with its term from \(\mat k_{\mathrm{e}}\) and from <span class="nobr">\(\mat s_{\mathrm{e}}\).</span> The reduced system for \(T_1\) and \(T_2\) has the right-hand side \(-K_{10}\,T_0 = \tfrac{23}{12}\,T_0\) and \(0\) and the solution</p>
+<div class="eq">\[T_1 = \tfrac{598}{823}\,T_0 = 0{,}72661\,T_0 , \qquad T_2 = \tfrac{529}{823}\,T_0 = 0{,}64277\,T_0 .\]</div>
+<p>The heat that the support must supply is row \(0\) of the matrix \(\mat K\) times the <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vector</a> of temperatures: <span class="nobr">\(Q_{\mathrm{h}} = K_{00}\,T_0 + K_{01}\,T_1 = \tfrac{637}{823}\,\tfrac{kA\,T_0}{L} = 0{,}77400\,\tfrac{kA\,T_0}{L}\).</span> The exact value is <span class="nobr">\(0{,}76159\).</span> The exact temperature of the tip is <span class="nobr">\(0{,}64805\,T_0\),</span> and the approximation gives <span class="nobr">\(0{,}64277\,T_0\).</span></p>
+
+<figure class="blk slika" id="fig-pt-10-rebro"><p><span class="svgfig" role="img" aria-label="Exact temperature of the fin and approximations with two and four elements, and on the right the heat at the root against the number of elements"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='571.86pt' height='212.38pt' viewBox='-72.000004 -72.000004 423.59993 157.322182'>
+<defs>
+<path id='pt-10-rebro-g0-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='pt-10-rebro-g0-76' d='M3.726027-6.027397C3.815691-6.386052 3.845579-6.495641 4.782067-6.495641C5.080946-6.495641 5.160648-6.495641 5.160648-6.684932C5.160648-6.804483 5.051059-6.804483 5.001245-6.804483C4.672478-6.804483 3.855542-6.774595 3.526775-6.774595C3.227895-6.774595 2.500623-6.804483 2.201743-6.804483C2.132005-6.804483 2.012453-6.804483 2.012453-6.60523C2.012453-6.495641 2.102117-6.495641 2.291407-6.495641C2.311333-6.495641 2.500623-6.495641 2.669988-6.475716C2.849315-6.455791 2.938979-6.445828 2.938979-6.316314C2.938979-6.276463 2.929016-6.246575 2.899128-6.127024L1.564134-.777086C1.464508-.388543 1.444583-.308842 .657534-.308842C.488169-.308842 .388543-.308842 .388543-.109589C.388543 0 .478207 0 .657534 0H5.270237C5.50934 0 5.519303 0 5.579078-.169365L6.366127-2.321295C6.405978-2.430884 6.405978-2.450809 6.405978-2.460772C6.405978-2.500623 6.37609-2.570361 6.286426-2.570361S6.1868-2.520548 6.117061-2.361146C5.778331-1.444583 5.339975-.308842 3.616438-.308842H2.67995C2.540473-.308842 2.520548-.308842 2.460772-.318804C2.361146-.328767 2.331258-.33873 2.331258-.418431C2.331258-.448319 2.331258-.468244 2.381071-.647572L3.726027-6.027397Z'/>
+<path id='pt-10-rebro-g0-81' d='M4.363636-.059776C5.907846-.647572 7.372354-2.420922 7.372354-4.343711C7.372354-5.947696 6.316314-7.023661 4.83188-7.023661C2.67995-7.023661 .488169-4.762142 .488169-2.440847C.488169-.787049 1.603985 .219178 3.038605 .219178C3.287671 .219178 3.626401 .179328 4.014944 .069738C3.975093 .687422 3.975093 .707347 3.975093 .836862C3.975093 1.155666 3.975093 1.932752 4.801993 1.932752C5.987547 1.932752 6.465753 .109589 6.465753 0C6.465753-.069738 6.396015-.099626 6.356164-.099626C6.276463-.099626 6.256538-.049813 6.236613 .009963C5.997509 .71731 5.419676 .966376 5.070984 .966376C4.612702 .966376 4.463263 .697385 4.363636-.059776ZM2.480697-.139477C1.703611-.448319 1.364882-1.225405 1.364882-2.122042C1.364882-2.809465 1.62391-4.224159 2.381071-5.300125C3.108344-6.316314 4.044832-6.774595 4.772105-6.774595C5.768369-6.774595 6.495641-5.997509 6.495641-4.662516C6.495641-3.666252 5.987547-1.334994 4.313823-.398506C4.26401-.747198 4.164384-1.474471 3.437111-1.474471C2.909091-1.474471 2.420922-.976339 2.420922-.458281C2.420922-.259029 2.480697-.14944 2.480697-.139477ZM3.098381-.029888C2.958904-.029888 2.6401-.029888 2.6401-.458281C2.6401-.856787 3.01868-1.255293 3.437111-1.255293S4.044832-1.016189 4.044832-.408468C4.044832-.259029 4.034869-.249066 3.935243-.209215C3.676214-.099626 3.377335-.029888 3.098381-.029888Z'/>
+<path id='pt-10-rebro-g0-84' d='M4.254047-6.047323C4.323786-6.326276 4.363636-6.386052 4.483188-6.41594C4.572852-6.435866 4.901619-6.435866 5.110834-6.435866C6.117061-6.435866 6.56538-6.396015 6.56538-5.618929C6.56538-5.469489 6.525529-5.080946 6.485679-4.821918C6.475716-4.782067 6.455791-4.662516 6.455791-4.632628C6.455791-4.572852 6.485679-4.503113 6.575342-4.503113C6.684932-4.503113 6.704857-4.582814 6.724782-4.732254L6.993773-6.465753C7.003736-6.505604 7.013699-6.60523 7.013699-6.635118C7.013699-6.744707 6.914072-6.744707 6.744707-6.744707H1.215442C.976339-6.744707 .966376-6.734745 .896638-6.545455L.298879-4.79203C.288917-4.772105 .239103-4.632628 .239103-4.612702C.239103-4.552927 .288917-4.503113 .358655-4.503113C.458281-4.503113 .468244-4.552927 .52802-4.712329C1.066002-6.256538 1.325031-6.435866 2.799502-6.435866H3.188045C3.466999-6.435866 3.466999-6.396015 3.466999-6.316314C3.466999-6.256538 3.437111-6.136986 3.427148-6.107098L2.092154-.787049C2.002491-.418431 1.972603-.308842 .9066-.308842C.547945-.308842 .488169-.308842 .488169-.119552C.488169 0 .597758 0 .657534 0C.926526 0 1.205479-.019925 1.474471-.019925C1.753425-.019925 2.042341-.029888 2.321295-.029888S2.879203-.019925 3.148194-.019925C3.437111-.019925 3.73599 0 4.014944 0C4.11457 0 4.234122 0 4.234122-.199253C4.234122-.308842 4.154421-.308842 3.895392-.308842C3.646326-.308842 3.516812-.308842 3.257783-.328767C2.968867-.358655 2.889166-.388543 2.889166-.547945C2.889166-.557908 2.889166-.607721 2.929016-.757161L4.254047-6.047323Z'/>
+<path id='pt-10-rebro-g0-110' d='M.876712-.587796C.846824-.438356 .787049-.209215 .787049-.159402C.787049 .019925 .926526 .109589 1.075965 .109589C1.195517 .109589 1.374844 .029888 1.444583-.169365C1.454545-.18929 1.574097-.657534 1.633873-.9066L1.853051-1.803238C1.912827-2.022416 1.972603-2.241594 2.022416-2.470735C2.062267-2.6401 2.141968-2.929016 2.15193-2.968867C2.30137-3.277709 2.82939-4.184309 3.775841-4.184309C4.224159-4.184309 4.313823-3.815691 4.313823-3.486924C4.313823-2.86924 3.825654-1.594022 3.666252-1.165629C3.576588-.936488 3.566625-.816936 3.566625-.707347C3.566625-.239103 3.915318 .109589 4.383562 .109589C5.32005 .109589 5.688667-1.344956 5.688667-1.424658C5.688667-1.524284 5.599004-1.524284 5.569116-1.524284C5.469489-1.524284 5.469489-1.494396 5.419676-1.344956C5.220423-.667497 4.891656-.109589 4.403487-.109589C4.234122-.109589 4.164384-.209215 4.164384-.438356C4.164384-.687422 4.254047-.926526 4.343711-1.145704C4.533001-1.673724 4.951432-2.769614 4.951432-3.337484C4.951432-4.004981 4.523039-4.403487 3.805729-4.403487C2.909091-4.403487 2.420922-3.765878 2.251557-3.536737C2.201743-4.094645 1.793275-4.403487 1.334994-4.403487S.687422-4.014944 .587796-3.835616C.428394-3.496887 .288917-2.909091 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.779577 .577833-2.998755C.747198-3.706102 .946451-4.184309 1.305106-4.184309C1.504359-4.184309 1.613948-4.054795 1.613948-3.726027C1.613948-3.516812 1.58406-3.407223 1.454545-2.889166L.876712-.587796Z'/>
+<path id='pt-10-rebro-g0-120' d='M3.327522-3.008717C3.387298-3.267746 3.616438-4.184309 4.313823-4.184309C4.363636-4.184309 4.60274-4.184309 4.811955-4.054795C4.533001-4.004981 4.333748-3.755915 4.333748-3.516812C4.333748-3.35741 4.443337-3.16812 4.712329-3.16812C4.931507-3.16812 5.250311-3.347447 5.250311-3.745953C5.250311-4.26401 4.662516-4.403487 4.323786-4.403487C3.745953-4.403487 3.39726-3.875467 3.277709-3.646326C3.028643-4.303861 2.49066-4.403487 2.201743-4.403487C1.165629-4.403487 .597758-3.118306 .597758-2.86924C.597758-2.769614 .697385-2.769614 .71731-2.769614C.797011-2.769614 .826899-2.789539 .846824-2.879203C1.185554-3.935243 1.843088-4.184309 2.181818-4.184309C2.371108-4.184309 2.719801-4.094645 2.719801-3.516812C2.719801-3.20797 2.550436-2.540473 2.181818-1.145704C2.022416-.52802 1.673724-.109589 1.235367-.109589C1.175592-.109589 .946451-.109589 .737235-.239103C.986301-.288917 1.205479-.498132 1.205479-.777086C1.205479-1.046077 .986301-1.125778 .836862-1.125778C.537983-1.125778 .288917-.86675 .288917-.547945C.288917-.089664 .787049 .109589 1.225405 .109589C1.882939 .109589 2.241594-.587796 2.271482-.647572C2.391034-.278954 2.749689 .109589 3.347447 .109589C4.373599 .109589 4.941469-1.175592 4.941469-1.424658C4.941469-1.524284 4.851806-1.524284 4.821918-1.524284C4.732254-1.524284 4.712329-1.484433 4.692403-1.414695C4.363636-.348692 3.686177-.109589 3.367372-.109589C2.978829-.109589 2.819427-.428394 2.819427-.767123C2.819427-.986301 2.879203-1.205479 2.988792-1.643836L3.327522-3.008717Z'/>
+<path id='pt-10-rebro-g1-104' d='M2.182814-4.630635C2.189788-4.644583 2.21071-4.735243 2.21071-4.742217C2.21071-4.777086 2.182814-4.839851 2.099128-4.839851C1.959651-4.839851 1.380822-4.78406 1.206476-4.770112C1.150685-4.763138 1.053051-4.756164 1.053051-4.609714C1.053051-4.51208 1.150685-4.51208 1.234371-4.51208C1.569116-4.51208 1.569116-4.463263 1.569116-4.407472C1.569116-4.358655 1.555168-4.316812 1.54122-4.254047L.557908-.306849C.523039-.18132 .523039-.167372 .523039-.153425C.523039-.048817 .606725 .069738 .760149 .069738C.836862 .069738 .969365 .034869 1.046077-.111582C1.066999-.153425 1.129763-.404483 1.164633-.550934L1.325031-1.171606C1.345953-1.276214 1.415691-1.54122 1.436613-1.645828C1.506351-1.910834 1.506351-1.917808 1.645828-2.140971C1.868991-2.48269 2.217684-2.880199 2.761644-2.880199C3.152179-2.880199 3.173101-2.559402 3.173101-2.39203C3.173101-1.973599 2.873225-1.199502 2.761644-.9066C2.684932-.711333 2.657036-.648568 2.657036-.530012C2.657036-.160399 2.963885 .069738 3.319552 .069738C4.016936 .069738 4.323786-.892653 4.323786-.99726C4.323786-1.08792 4.233126-1.08792 4.212204-1.08792C4.11457-1.08792 4.107597-1.046077 4.079701-.969365C3.919303-.411457 3.612453-.125529 3.340473-.125529C3.194022-.125529 3.166127-.223163 3.166127-.369614C3.166127-.530012 3.200996-.620672 3.326526-.934496C3.410212-1.150685 3.696139-1.889913 3.696139-2.280448C3.696139-2.39203 3.696139-2.684932 3.438107-2.887173C3.319552-2.977833 3.11731-3.075467 2.789539-3.075467C2.280448-3.075467 1.910834-2.796513 1.652802-2.496638L2.182814-4.630635Z'/>
+<path id='pt-10-rebro-g2-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='pt-10-rebro-g2-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='pt-10-rebro-g2-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='pt-10-rebro-g2-52' d='M2.929016-1.643836V-.777086C2.929016-.418431 2.909091-.308842 2.171856-.308842H1.96264V0C2.371108-.029888 2.889166-.029888 3.307597-.029888S4.254047-.029888 4.662516 0V-.308842H4.4533C3.716065-.308842 3.696139-.418431 3.696139-.777086V-1.643836H4.692403V-1.952677H3.696139V-6.485679C3.696139-6.684932 3.696139-6.744707 3.536737-6.744707C3.447073-6.744707 3.417186-6.744707 3.337484-6.625156L.278954-1.952677V-1.643836H2.929016ZM2.988792-1.952677H.557908L2.988792-5.668742V-1.952677Z'/>
+<path id='pt-10-rebro-g2-54' d='M1.315068-3.267746V-3.506849C1.315068-6.027397 2.550436-6.386052 3.058531-6.386052C3.297634-6.386052 3.716065-6.326276 3.935243-5.987547C3.785803-5.987547 3.387298-5.987547 3.387298-5.539228C3.387298-5.230386 3.626401-5.080946 3.845579-5.080946C4.004981-5.080946 4.303861-5.17061 4.303861-5.559153C4.303861-6.156912 3.865504-6.635118 3.038605-6.635118C1.763387-6.635118 .418431-5.349938 .418431-3.148194C.418431-.488169 1.574097 .219178 2.500623 .219178C3.606476 .219178 4.552927-.71731 4.552927-2.032379C4.552927-3.297634 3.666252-4.254047 2.560399-4.254047C1.882939-4.254047 1.514321-3.745953 1.315068-3.267746ZM2.500623-.059776C1.872976-.059776 1.574097-.657534 1.514321-.806974C1.334994-1.275218 1.334994-2.072229 1.334994-2.251557C1.334994-3.028643 1.653798-4.024907 2.550436-4.024907C2.709838-4.024907 3.16812-4.024907 3.476961-3.407223C3.656289-3.038605 3.656289-2.530511 3.656289-2.042341C3.656289-1.564134 3.656289-1.066002 3.486924-.707347C3.188045-.109589 2.729763-.059776 2.500623-.059776Z'/>
+<path id='pt-10-rebro-g2-56' d='M1.62391-4.552927C1.165629-4.851806 1.125778-5.190535 1.125778-5.3599C1.125778-5.967621 1.77335-6.386052 2.480697-6.386052C3.20797-6.386052 3.845579-5.867995 3.845579-5.150685C3.845579-4.582814 3.457036-4.104608 2.859278-3.755915L1.62391-4.552927ZM3.078456-3.606476C3.795766-3.975093 4.283935-4.493151 4.283935-5.150685C4.283935-6.067248 3.39726-6.635118 2.49066-6.635118C1.494396-6.635118 .687422-5.897883 .687422-4.971357C.687422-4.79203 .707347-4.343711 1.125778-3.875467C1.235367-3.755915 1.603985-3.506849 1.853051-3.337484C1.275218-3.048568 .418431-2.49066 .418431-1.504359C.418431-.448319 1.43462 .219178 2.480697 .219178C3.606476 .219178 4.552927-.607721 4.552927-1.673724C4.552927-2.032379 4.443337-2.480697 4.064757-2.899128C3.875467-3.108344 3.716065-3.20797 3.078456-3.606476ZM2.082192-3.188045L3.307597-2.410959C3.58655-2.221669 4.054795-1.92279 4.054795-1.315068C4.054795-.577833 3.307597-.059776 2.49066-.059776C1.633873-.059776 .916563-.67746 .916563-1.504359C.916563-2.082192 1.235367-2.719801 2.082192-3.188045Z'/>
+<path id='pt-10-rebro-g2-57' d='M3.656289-3.16812V-2.849315C3.656289-.518057 2.620174-.059776 2.042341-.059776C1.872976-.059776 1.334994-.079701 1.066002-.418431C1.504359-.418431 1.58406-.707347 1.58406-.876712C1.58406-1.185554 1.344956-1.334994 1.125778-1.334994C.966376-1.334994 .667497-1.24533 .667497-.856787C.667497-.18929 1.205479 .219178 2.052304 .219178C3.337484 .219178 4.552927-1.135741 4.552927-3.277709C4.552927-5.957659 3.407223-6.635118 2.520548-6.635118C1.972603-6.635118 1.484433-6.455791 1.05604-6.007472C.647572-5.559153 .418431-5.140722 .418431-4.393524C.418431-3.148194 1.295143-2.171856 2.410959-2.171856C3.01868-2.171856 3.427148-2.590286 3.656289-3.16812ZM2.420922-2.400996C2.261519-2.400996 1.803238-2.400996 1.494396-3.028643C1.315068-3.39726 1.315068-3.895392 1.315068-4.383562C1.315068-4.921544 1.315068-5.389788 1.524284-5.758406C1.793275-6.256538 2.171856-6.386052 2.520548-6.386052C2.978829-6.386052 3.307597-6.047323 3.476961-5.599004C3.596513-5.280199 3.636364-4.652553 3.636364-4.194271C3.636364-3.367372 3.297634-2.400996 2.420922-2.400996Z'/>
+<path id='pt-10-rebro-g2-61' d='M6.844334-3.257783C6.993773-3.257783 7.183064-3.257783 7.183064-3.457036S6.993773-3.656289 6.854296-3.656289H.886675C.747198-3.656289 .557908-3.656289 .557908-3.457036S.747198-3.257783 .896638-3.257783H6.844334ZM6.854296-1.325031C6.993773-1.325031 7.183064-1.325031 7.183064-1.524284S6.993773-1.723537 6.844334-1.723537H.896638C.747198-1.723537 .557908-1.723537 .557908-1.524284S.747198-1.325031 .886675-1.325031H6.854296Z'/>
+<path id='pt-10-rebro-g3-48' d='M3.598506-2.224658C3.598506-2.991781 3.507846-3.542715 3.187049-4.030884C2.970859-4.351681 2.538481-4.630635 1.980573-4.630635C.36264-4.630635 .36264-2.726775 .36264-2.224658S.36264 .139477 1.980573 .139477S3.598506-1.72254 3.598506-2.224658ZM1.980573-.055791C1.659776-.055791 1.234371-.244085 1.094894-.81594C.99726-1.227397 .99726-1.799253 .99726-2.315318C.99726-2.824408 .99726-3.354421 1.101868-3.737983C1.248319-4.288917 1.694645-4.435367 1.980573-4.435367C2.357161-4.435367 2.719801-4.20523 2.84533-3.800747C2.956912-3.424159 2.963885-2.922042 2.963885-2.315318C2.963885-1.799253 2.963885-1.283188 2.873225-.843836C2.733748-.209215 2.259527-.055791 1.980573-.055791Z'/>
+</defs>
+<g id='pt-10-rebro-page1'>
+<g stroke-miterlimit='10' transform='translate(-52.501043,69.306704)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='osi'>
+<path d='M0 0H183.43608' fill='none'/>
+<g transform='translate(180.95963,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(191.42125,-2.15277)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.501043,69.306704)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-52.501043' y='69.306704' xlink:href='#pt-10-rebro-g0-120'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 0V123.68515' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,121.2087)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-3.61632,131.67032)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.501043,69.306704)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-52.501043' y='69.306704' xlink:href='#pt-10-rebro-g0-84'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M170.71646 2.27626V-2.27626' fill='none'/>
+<g transform='translate(167.31367,-12.74255)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.501043,69.306704)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-52.501043' y='69.306704' xlink:href='#pt-10-rebro-g0-76'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M2.27626 113.81097H-2.27626' fill='none'/>
+<g transform='translate(-16.2391,111.1443)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.501043,69.306704)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-52.501043' y='69.306704' xlink:href='#pt-10-rebro-g0-84'/>
+<use x='-46.679112' y='70.801085' xlink:href='#pt-10-rebro-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='tocna'>
+<g stroke-width='1.1'>
+<path d='M0 113.81097C0 113.81097 2.09036 111.15445 2.8932 110.15799S4.98357 107.59154 5.7864 106.62918C6.58925 105.66682 7.87677 104.15038 8.67961 103.22194S10.76997 100.83342 11.57281 99.93756C12.37566 99.0417 13.66318 97.63004 14.46602 96.7652S16.55638 94.5387 17.35922 93.7044C18.16206 92.87012 19.44958 91.55699 20.25243 90.75215C21.05527 89.94731 22.34279 88.67982 23.14563 87.90367S25.236 85.90677 26.03883 85.15808C26.84167 84.4094 28.1292 83.22987 28.93204 82.50757C29.73488 81.78526 31.0224 80.64854 31.82524 79.95213S33.9156 78.15942 34.71844 77.48831C35.52129 76.8172 36.80882 75.76181 37.61166 75.11522S39.70203 73.45143 40.50487 72.8281C41.30771 72.20476 42.59523 71.2231 43.39807 70.62259S45.48843 69.07797 46.29128 68.5C47.09412 67.92203 48.38164 67.01353 49.18448 66.45688C49.98732 65.90022 51.27484 65.0238 52.07768 64.48799S54.16805 63.1106 54.97089 62.59508S57.06125 61.26848 57.86409 60.77249S59.95445 59.49696 60.7573 59.02025C61.56013 58.54353 62.84766 57.79451 63.6505 57.3366C64.45334 56.87868 65.74086 56.16008 66.5437 55.7198C67.34654 55.27953 68.63406 54.58586 69.4369 54.16336C70.23975 53.74086 71.52728 53.08011 72.33012 52.67465C73.13297 52.2692 74.42049 51.63051 75.22333 51.24107C76.02617 50.85164 77.31369 50.24052 78.11653 49.86784S80.2069 48.9121 81.00974 48.55495S83.1001 47.63594 83.90294 47.29373S85.9933 46.41536 86.79614 46.08852C87.59898 45.76167 88.8865 45.25064 89.68935 44.93802C90.49219 44.6254 91.77971 44.13399 92.58255 43.83527C93.38539 43.53654 94.67291 43.06935 95.47575 42.78503C96.2786 42.50072 97.56612 42.05695 98.36896 41.78606S100.45932 41.09082 101.26216 40.83264S103.35252 40.1703 104.15536 39.92526S106.24574 39.29909 107.04858 39.06651C107.85143 38.83394 109.13895 38.46939 109.94179 38.249C110.74463 38.0286 112.03215 37.68593 112.83499 37.47794C113.63783 37.26994 114.92535 36.94594 115.7282 36.74986C116.53104 36.55379 117.81856 36.24944 118.6214 36.06476S120.71176 35.59216 121.5146 35.41875C122.31744 35.24533 123.60497 34.97675 124.4078 34.81483C125.21065 34.65292 126.49817 34.4028 127.30101 34.25174S129.39137 33.86615 130.19421 33.72598C130.99706 33.58582 132.28458 33.37083 133.08742 33.24146C133.89026 33.11208 135.17778 32.91243 135.98062 32.79341C136.78346 32.6744 138.07098 32.49223 138.87383 32.38358C139.67667 32.27492 140.9642 32.10861 141.76704 32.0102C142.56989 31.91177 143.8574 31.7624 144.66025 31.67416C145.46309 31.58592 146.75061 31.4521 147.55345 31.37416C148.3563 31.29622 149.64381 31.18037 150.44666 31.11237C151.2495 31.04436 152.53702 30.94243 153.33986 30.884C154.1427 30.82558 155.43022 30.73978 156.23306 30.69124S158.32343 30.5728 159.12627 30.53407C159.92911 30.49535 161.21663 30.4411 162.01947 30.41208S164.10983 30.34427 164.91267 30.32481C165.71552 30.30536 167.00304 30.28159 167.80588 30.27184C168.60872 30.26208 170.69908 30.25447 170.69908 30.25447' fill='none'/>
+</g>
+<path d='M113.81097 119.50143H130.88278' fill='none'/>
+<g transform='translate(134.51576,116.08478)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.501043,69.306704)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-52.501043' y='69.306704' xlink:href='#pt-10-rebro-g0-84'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='dva'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.1'>
+<path d='M0 113.81097L85.35823 44.19865L170.71646 27.6248' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M87.19685 44.19865C87.19685 45.2141 86.37367 46.03728 85.35823 46.03728S83.5196 45.2141 83.5196 44.19865C83.5196 43.18321 84.34279 42.36003 85.35823 42.36003S87.19685 43.18321 87.19685 44.19865ZM85.35823 44.19865' stroke='none'/>
+</g>
+<g transform='translate(85.35823,44.19865)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.501043,69.306704)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M172.55508 27.6248C172.55508 28.64024 171.7319 29.46342 170.71646 29.46342S168.87784 28.64024 168.87784 27.6248S169.70102 25.78618 170.71646 25.78618S172.55508 26.60936 172.55508 27.6248ZM170.71646 27.6248' stroke='none'/>
+</g>
+<g transform='translate(170.71646,27.6248)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.501043,69.306704)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.1'>
+<path d='M113.81097 105.27505H130.88278' fill='none'/>
+<g transform='translate(134.76576,102.05284)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.501043,69.306704)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-52.501043' y='69.306704' xlink:href='#pt-10-rebro-g0-110'/>
+<use x='-43.753785' y='69.306704' xlink:href='#pt-10-rebro-g2-61'/>
+<use x='-33.237705' y='69.306704' xlink:href='#pt-10-rebro-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='stiri'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.1'>
+<path d='M0 113.81097L42.67911 70.7307L85.35823 46.09894L128.03734 33.4976L170.71646 29.6306' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M44.51773 70.7307C44.51773 71.74614 43.69455 72.56932 42.67911 72.56932S40.84048 71.74614 40.84048 70.7307S41.66367 68.89207 42.67911 68.89207S44.51773 69.71526 44.51773 70.7307ZM42.67911 70.7307' stroke='none'/>
+</g>
+<g transform='translate(42.67911,70.7307)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.501043,69.306704)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M87.19685 46.09894C87.19685 47.11438 86.37367 47.93756 85.35823 47.93756S83.5196 47.11438 83.5196 46.09894S84.34279 44.26031 85.35823 44.26031S87.19685 45.0835 87.19685 46.09894ZM85.35823 46.09894' stroke='none'/>
+</g>
+<g transform='translate(85.35823,46.09894)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.501043,69.306704)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M129.87596 33.4976C129.87596 34.51305 129.05278 35.33623 128.03734 35.33623S126.19872 34.51305 126.19872 33.4976C126.19872 32.48216 127.0219 31.65898 128.03734 31.65898S129.87596 32.48216 129.87596 33.4976ZM128.03734 33.4976' stroke='none'/>
+</g>
+<g transform='translate(128.03734,33.4976)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.501043,69.306704)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M172.55508 29.6306C172.55508 30.64604 171.7319 31.46922 170.71646 31.46922S168.87784 30.64604 168.87784 29.6306S169.70102 27.79198 170.71646 27.79198S172.55508 28.61516 172.55508 29.6306ZM170.71646 29.6306' stroke='none'/>
+</g>
+<g transform='translate(170.71646,29.6306)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.501043,69.306704)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.1'>
+<path d='M113.81097 91.04869H130.88278' fill='none'/>
+<g transform='translate(134.76576,87.82648)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.501043,69.306704)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-52.501043' y='69.306704' xlink:href='#pt-10-rebro-g0-110'/>
+<use x='-43.753785' y='69.306704' xlink:href='#pt-10-rebro-g2-61'/>
+<use x='-33.237705' y='69.306704' xlink:href='#pt-10-rebro-g2-52'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='koren'>
+<path d='M1.83862 113.81097C1.83862 114.82642 1.01544 115.6496 0 115.6496S-1.83862 114.82642-1.83862 113.81097C-1.83862 112.79553-1.01544 111.97235 0 111.97235S1.83862 112.79553 1.83862 113.81097ZM0 113.81097' stroke='none'/>
+<g transform='translate(0.0,113.81097)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.501043,69.306704)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='toplota'>
+<path d='M256.0748 0H388.29585' fill='none'/>
+<g transform='translate(385.8194,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(396.28102,-2.15277)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.501043,69.306704)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-52.501043' y='69.306704' xlink:href='#pt-10-rebro-g0-110'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M256.0748 0V117.99469' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,256.0748,115.51823)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(249.53116,127.92429)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.501043,69.306704)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-52.501043' y='69.306704' xlink:href='#pt-10-rebro-g0-81'/>
+<use x='-44.625028' y='70.801085' xlink:href='#pt-10-rebro-g1-104'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M258.35106 0H253.79854' fill='none'/>
+<g transform='translate(237.38776,-2.25)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.501043,69.306704)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-52.501043' y='69.306704' xlink:href='#pt-10-rebro-g2-49'/>
+<use x='-47.519704' y='69.306704' xlink:href='#pt-10-rebro-g0-59'/>
+<use x='-44.752295' y='69.306704' xlink:href='#pt-10-rebro-g2-57'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M258.35106 85.35823H253.79854' fill='none'/>
+<g transform='translate(237.38776,83.10823)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.501043,69.306704)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-52.501043' y='69.306704' xlink:href='#pt-10-rebro-g2-50'/>
+<use x='-47.519704' y='69.306704' xlink:href='#pt-10-rebro-g0-59'/>
+<use x='-44.752295' y='69.306704' xlink:href='#pt-10-rebro-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M284.52754 2.27626V-2.27626' fill='none'/>
+<g transform='translate(282.02754,-12.35367)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.501043,69.306704)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-52.501043' y='69.306704' xlink:href='#pt-10-rebro-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M312.98029 2.27626V-2.27626' fill='none'/>
+<g transform='translate(310.48029,-12.35367)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.501043,69.306704)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-52.501043' y='69.306704' xlink:href='#pt-10-rebro-g2-52'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M341.43303 2.27626V-2.27626' fill='none'/>
+<g transform='translate(338.93303,-12.35367)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.501043,69.306704)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-52.501043' y='69.306704' xlink:href='#pt-10-rebro-g2-56'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M369.88577 2.27626V-2.27626' fill='none'/>
+<g transform='translate(364.88576,-12.35367)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.501043,69.306704)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-52.501043' y='69.306704' xlink:href='#pt-10-rebro-g2-49'/>
+<use x='-47.519704' y='69.306704' xlink:href='#pt-10-rebro-g2-54'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='Q'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M256.0748 23.95706H386.95758' fill='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(390.59056,21.51262)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.501043,69.306704)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-52.501043' y='69.306704' xlink:href='#pt-10-rebro-g0-81'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='tocke'>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M286.36617 101.94595C286.36617 102.9614 285.54298 103.78458 284.52754 103.78458S282.68892 102.9614 282.68892 101.94595C282.68892 100.93051 283.5121 100.10733 284.52754 100.10733S286.36617 100.93051 286.36617 101.94595ZM284.52754 101.94595' stroke='none'/>
+</g>
+<g transform='translate(284.52754,101.94595)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.501043,69.306704)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M314.81891 43.56131C314.81891 44.57675 313.99573 45.39993 312.98029 45.39993C311.96484 45.39993 311.14166 44.57675 311.14166 43.56131S311.96484 41.72269 312.98029 41.72269C313.99573 41.72269 314.81891 42.54587 314.81891 43.56131ZM312.98029 43.56131' stroke='none'/>
+</g>
+<g transform='translate(312.98029,43.56131)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.501043,69.306704)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M343.27165 28.85129C343.27165 29.86673 342.44847 30.68991 341.43303 30.68991S339.5944 29.86673 339.5944 28.85129S340.41759 27.01266 341.43303 27.01266S343.27165 27.83585 343.27165 28.85129ZM341.43303 28.85129' stroke='none'/>
+<g transform='translate(341.43303,28.85129)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.501043,69.306704)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M371.7244 25.18051C371.7244 26.19595 370.90121 27.01913 369.88577 27.01913S368.04715 26.19595 368.04715 25.18051S368.87033 23.34189 369.88577 23.34189S371.7244 24.16507 371.7244 25.18051ZM369.88577 25.18051' stroke='none'/>
+<g transform='translate(369.88577,25.18051)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-52.501043,69.306704)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 14.39</span>: A fin with an insulated tip at <span class="nobr">\(mL = 2\).</span> Left: the exact temperature \(T\) (<span class="ink-l">black</span><span class="ink-d">white</span>) and the approximations with \(n = 2\) (blue) and \(n = 4\) (orange) elements, \(x\) in units of <span class="nobr">\(L\),</span> \(T\) in units of <span class="nobr">\(T_0\).</span> The nodes (dots) lie slightly below the exact curve, the straight lines between them lie above it in the middle of the elements. Right: the heat \(Q_{\mathrm{h}}\) at the root in units of \(kA\,T_0/L\) for <span class="nobr">\(n = 2\),</span> <span class="nobr">\(4\),</span> <span class="nobr">\(8\),</span> \(16\) elements (dots) and the exact value \(Q = 1{,}92806\) (grey dashed line). The vertical scale on the right starts at \(1{,}9\) and is stretched.</figcaption></figure>
+<p>We build the figure with <a data-del="osi" class="xref kaz" href="sec-mke-toplote.html#fig-pt-10-rebro" data-knowl="fig-pt-10-rebro">two coordinate axes</a>: \(x\) along the <a class="xref auto" href="sec-stacionarno-1d.html#thm-rebro" data-knowl="thm-rebro">fin</a> and the temperature vertically, <span class="nobr"><a data-del="koren" class="xref kaz" href="sec-mke-toplote.html#fig-pt-10-rebro" data-knowl="fig-pt-10-rebro">starting at \(T_0\) at \(x = 0\)</a>.</span> First we draw the <a data-del="tocna" class="xref kaz" href="sec-mke-toplote.html#fig-pt-10-rebro" data-knowl="fig-pt-10-rebro">exact curve</a> of equation <a class="xref" href="sec-mke-toplote.html#eq-pt10-rebro-tocno" data-knowl="eq-pt10-rebro-tocno">(14.51)</a> at <span class="nobr">\(mL = 2\).</span> It falls ever more slowly, because by <a class="xref auto" href="sec-fourierjev-zakon.html#def-fourierjev-zakon" data-knowl="def-fourierjev-zakon">Fourier's law</a> the slope is proportional to the heat flowing through the cross-section, and there is less and less of it towards the tip: part has already left through the lateral surface, and nothing flows through the insulated end. Over it we lay the <a data-del="dva" class="xref kaz" href="sec-mke-toplote.html#fig-pt-10-rebro" data-knowl="fig-pt-10-rebro">piecewise linear field with two elements</a> and the <a data-del="stiri" class="xref kaz" href="sec-mke-toplote.html#fig-pt-10-rebro" data-knowl="fig-pt-10-rebro">field with four elements</a>. The segments are straight lines through the nodes, each with its own constant gradient by lemma <a class="xref" href="sec-mke-toplote.html#lem-prevodnostna-matrika-elementa" data-knowl="lem-prevodnostna-matrika-elementa">14.53</a>. At the nodes both fields lie slightly below the exact curve, with <a data-del="dva" class="xref kaz" href="sec-mke-toplote.html#fig-pt-10-rebro" data-knowl="fig-pt-10-rebro">two elements</a> by \(0{,}023\,T_0\) at the tip. In the middle of the elements, however, they lie above it, with two elements by at most \(0{,}071\,T_0\) at <span class="nobr">\(x = 0{,}215\,L\).</span> The exact curve bends upwards, so the straight line between two of its points lies above it, and this outweighs the small deficit at the nodes (NumPy). On the right is the <a data-del="toplota" class="xref kaz" href="sec-mke-toplote.html#fig-pt-10-rebro" data-knowl="fig-pt-10-rebro">heat at the root</a>: the <a data-del="tocke" class="xref kaz" href="sec-mke-toplote.html#fig-pt-10-rebro" data-knowl="fig-pt-10-rebro">dots</a> are the values \(Q_{\mathrm{h}}\) for more and more elements, the <a data-del="Q" class="xref kaz" href="sec-mke-toplote.html#fig-pt-10-rebro" data-knowl="fig-pt-10-rebro">grey line</a> is the exact value <span class="nobr">\(Q\).</span> The dots lie above the line and approach it with every doubling of the number of elements.</p>
+<p>The table gives these numbers, and also those at <span class="nobr">\(mL = 1\),</span> computed in num-10.py. The last column is the error of the tip temperature <span class="nobr">\(T_{\mathrm{h}}(L) - T(L)\),</span> in units of <span class="nobr">\(T_0\).</span></p>
+<table>
+<thead>
+<tr>
+<th>\(mL\)</th>
+<th>\(n\)</th>
+<th>\(Q_{\mathrm{h}}\)</th>
+<th>\(Q_{\mathrm{h}} - Q\)</th>
+<th>error</th>
+<th>\(T_{\mathrm{h}}(L) - T(L)\)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>2</td>
+<td>0,77400</td>
+<td>0,01240</td>
+<td>1,63 %</td>
+<td>\(-0{,}00528\)</td>
+</tr>
+<tr>
+<td>1</td>
+<td>4</td>
+<td>0,76468</td>
+<td>0,00308</td>
+<td>0,40 %</td>
+<td>\(-0{,}00129\)</td>
+</tr>
+<tr>
+<td>1</td>
+<td>8</td>
+<td>0,76236</td>
+<td>0,00077</td>
+<td>0,10 %</td>
+<td>\(-0{,}00032\)</td>
+</tr>
+<tr>
+<td>1</td>
+<td>16</td>
+<td>0,76179</td>
+<td>0,00019</td>
+<td>0,03 %</td>
+<td>\(-0{,}00008\)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2</td>
+<td>2,01942</td>
+<td>0,09136</td>
+<td>4,74 %</td>
+<td>\(-0{,}02308\)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>4</td>
+<td>1,95103</td>
+<td>0,02298</td>
+<td>1,19 %</td>
+<td>\(-0{,}00544\)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>8</td>
+<td>1,93381</td>
+<td>0,00575</td>
+<td>0,30 %</td>
+<td>\(-0{,}00134\)</td>
+</tr>
+<tr>
+<td>2</td>
+<td>16</td>
+<td>1,92949</td>
+<td>0,00144</td>
+<td>0,07 %</td>
+<td>\(-0{,}00033\)</td>
+</tr>
+</tbody>
+</table>
+<p>We notice two things. The heat is above the exact value in all eight computations, and the excess decreases by about a factor of \(4\) with each doubling of \(n\) (the ratios for \(n = 4, 8, 16\) are <span class="nobr">\(4{,}02\),</span> <span class="nobr">\(4{,}01\),</span> \(4{,}00\) at \(mL = 1\) and <span class="nobr">\(3{,}98\),</span> <span class="nobr">\(3{,}99\),</span> \(4{,}00\) at <span class="nobr">\(mL = 2\)).</span> The tip temperature, however, is below the exact value in all these computations. We explain both observations in two claims. The first says where the result is exact, the second why the <a class="xref auto forward" href="sec-mke-toplote.html#lem-toplota-ob-korenu" data-knowl="lem-toplota-ob-korenu" title="Defined later in the book">heat at the root</a> is above the exact value.</p>
+
+<h3 id="sec-tocnost-toplote"><span class="h-num">14.10.4</span> When the result is exact (kdaj je rezultat točen)</h3>
+<p>For a bar, chapter <a class="xref" href="ch-sibka-oblika.html">6</a> showed that nodal displacements are exact if \(EA\) is constant on every element (theorem <a class="xref" href="sec-ocene-napake.html#thm-tocnost-v-tocki" data-knowl="thm-tocnost-v-tocki">6.38</a>). We expect the same claim for temperature. The <a class="xref auto" href="sec-stacionarno-1d.html#thm-rebro" data-knowl="thm-rebro">fin</a> does not satisfy it, because it has a lateral loss, so first we look at a <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">body</a> without it.</p>
+
+<div class="blk posledica" id="cor-tocne-vozliscne-temperature"><div class="blk-head"><span class="blk-label">Corollary 14.55</span> <span class="blk-title">Exact nodal temperatures (točne vozliščne temperature)</span></div><div class="blk-body"><p>Let a bar of length \(L\) have a temperature prescribed at <span class="nobr">\(x = 0\),</span> no loss through the lateral surface, a product \(kA &gt; 0\) that is piecewise constant, a given heat source per unit length and a given flow at the end <span class="nobr">\(x = L\).</span> Let the <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-mreza" data-knowl="def-mreza">nodes of a mesh</a> of linear elements also lie at every jump of <span class="nobr">\(kA\).</span> Then the temperature at every node equals the true temperature.</p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that the <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-sibka-oblika" data-knowl="def-sibka-oblika">weak form</a> of this bar is the weak form of the bar of theorem <a class="xref" href="sec-ocene-napake.html#thm-tocnost-v-tocki" data-knowl="thm-tocnost-v-tocki">6.38</a> and that its assumptions hold.</p>
+<ol>
+<li>By theorem <a class="xref" href="sec-sibka-oblika-toplote.html#thm-sibka-oblika-toplote" data-knowl="thm-sibka-oblika-toplote">14.49</a> the weak form is \(B(T, w) = \ell(w)\) with \(B(T, w) = \int_0^L kA\,T'\,w'\,\mathrm{d}x\) and a <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-linearna-forma" data-knowl="def-linearna-forma">linear form</a> \(\ell\) from the source and the end flow. By form this is the weak form of a bar in which \(kA\) stands for \(EA\) and the loads are the source and the end flow (chapter <a class="xref" href="ch-sibka-oblika.html">6</a>).</li>
+<li>The field \(G_{\mathrm{P}}\) of theorem <a class="xref" href="sec-ocene-napake.html#thm-tocnost-v-tocki" data-knowl="thm-tocnost-v-tocki">6.38</a> has \(kA\,G_{\mathrm{P}}' = 1\) on \((0, x_{\mathrm{P}})\) and \(0\) after, and is continuous. Let \(x_{\mathrm{P}}\) be a node. On every element \(kA\) is constant, so \(G_{\mathrm{P}}'\) is constant, hence \(G_{\mathrm{P}}\) is a straight line on every element.</li>
+<li>A field that is continuous and a straight line on every element is a combination of tent <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> (definition <a class="xref" href="sec-skalarni-produkt-funkcij.html#def-sotorna-funkcija" data-knowl="def-sotorna-funkcija">6.25</a>), so it lies in the trial family.</li>
+<li>By theorem <a class="xref" href="sec-ocene-napake.html#thm-tocnost-v-tocki" data-knowl="thm-tocnost-v-tocki">6.38</a>, therefore, \(T_{\mathrm{h}}(x_{\mathrm{P}}) = T(x_{\mathrm{P}})\) at every node <span class="nobr">\(x_{\mathrm{P}}\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> The proof is not from a source. Exact nodal values for a bar with two-node elements are stated by ONATE1 (PDF p. 363), see the source of theorem <a class="xref" href="sec-ocene-napake.html#thm-tocnost-v-tocki" data-knowl="thm-tocnost-v-tocki">6.38</a>.</p></div></div>
+<p>We test the corollary on two examples and then at its <a class="xref auto" href="sec-limita-odvod.html#def-limita" data-knowl="def-limita">limit</a>.</p>
+<p><strong>A layer with a jump of conductivity.</strong> A bar has \(kA = 1\) on \([0, 0{,}4]\) and \(kA = 4\) on \([0{,}4, 1]\) (in arbitrary units, <span class="nobr">\(L = 1\)),</span> \(T(0) = 0\) and a flow \(1\) entering at the end <span class="nobr">\(x = L\).</span> The temperature rises with slope <span class="nobr">\(1/kA\),</span> so <span class="nobr">\(T(0{,}4) = 0{,}4\),</span> \(T(0{,}5) = 0{,}4 + 0{,}1/4 = 0{,}425\) and <span class="nobr">\(T(1) = 0{,}55\).</span> The mesh with nodes <span class="nobr">\(0\),</span> \(0{,}4\) and \(1\) has a node at the jump and gives \(0{,}4\) and <span class="nobr">\(0{,}55\),</span> exactly as the corollary predicts. The mesh with nodes <span class="nobr">\(0\),</span> \(0{,}5\) and \(1\) has the jump inside the first element, whose mean \(kA\) is \((0{,}4\cdot 1 + 0{,}1\cdot 4)/0{,}5 = 1{,}6\) (as for the bar, section <a class="xref" href="sec-element-palice.html#sec-togost-elementa">7.1.2</a>), and gives \(T(0{,}5) = 0{,}3125\) instead of \(0{,}425\) (error <span class="nobr">\(-26{,}5\,\%\))</span> and \(T(1) = 0{,}4375\) instead of \(0{,}55\) <span class="nobr">(\(-20{,}5\,\%\)).</span> The condition that the node lies at the jump is therefore not a <a class="xref auto" href="sec-integral.html#def-delitev" data-knowl="def-delitev">refinement</a>: where it holds the result is exact, where it fails the error is a fifth or more. The reason is in step 2: the field \(G_{\mathrm{P}}\) has a kink at the jump and is not a straight line inside the element.</p>
+<p><strong>A heat source.</strong> A bar has <span class="nobr">\(kA = 1\),</span> <span class="nobr">\(L = 1\),</span> temperature \(0\) at <span class="nobr">\(x = 0\),</span> an insulated end and a uniform source \(1\) per unit length. The exact temperature is <span class="nobr">\(T = x - x^2/2\).</span> With two elements we get \(T_{\mathrm{h}}(0{,}5) = 0{,}375\) and <span class="nobr">\(T_{\mathrm{h}}(1) = 0{,}5\),</span> which is exact. In the middle of an element, at <span class="nobr">\(x = 0{,}25\),</span> we get \(T_{\mathrm{h}} = 0{,}1875\) instead of <span class="nobr">\(0{,}21875\),</span> a difference \(0{,}03125 = g\,h_{\mathrm{e}}^2/(8\,kA)\) with source \(g = 1\) (computation in num-10.py). So the corollary concerns the nodes and no other points.</p>
+<p><strong>The fin, where the corollary does not hold.</strong> With the loss through the lateral surface the table above showed that the tip temperature is not exact <span class="nobr">(\(0{,}64277\)</span> against <span class="nobr">\(0{,}64805\)).</span> This does not contradict the corollary, because one assumption is missing. The field \(G_{\mathrm{P}}\) with \(B(G_{\mathrm{P}}, w) = w(x_{\mathrm{P}})\) for every \(w\) now satisfies \(kA\,G_{\mathrm{P}}'' = hP\,G_{\mathrm{P}}\) on both sides of the point \(x_{\mathrm{P}}\) and is there a combination of \(\cosh\) and <span class="nobr">\(\sinh\),</span> not a straight line, so it does not lie in the family of piecewise <a class="xref auto forward" href="sec-mkk-izoparametricni.html#lem-linearna-polja-izoparametricni" data-knowl="lem-linearna-polja-izoparametricni" title="Defined later in the book">linear fields</a> and step 3 fails.</p>
+
+<h3 id="sec-toplota-ob-korenu"><span class="h-num">14.10.5</span> The heat at the root is above the exact value (toplota ob korenu je nad točno)</h3>
+<p>So the nodal temperatures of the <a class="xref auto" href="sec-stacionarno-1d.html#thm-rebro" data-knowl="thm-rebro">fin</a> are not exact. The heat \(Q_{\mathrm{h}}\) that the support must supply, however, has by the table an important property: it is always above the true value. We see why if we write it with energy.</p>
+
+<div class="blk lema" id="lem-toplota-ob-korenu"><div class="blk-head"><span class="blk-label">Lemma 14.56</span> <span class="blk-title">Heat at the root of a fin (toplota ob korenu rebra)</span></div><div class="blk-body"><p>Let \(T\) be the exact temperature of the <a class="xref auto" href="sec-stacionarno-1d.html#thm-rebro" data-knowl="thm-rebro">fin</a> of section <a class="xref" href="sec-mke-toplote.html#sec-model-rebra">14.10.1</a>, \(Q = -kA\,T'(0)\) the heat supplied by the wall, \(T_{\mathrm{h}}\) the finite element solution with linear elements on an arbitrary mesh with a node at <span class="nobr">\(x = 0\),</span> and \(Q_{\mathrm{h}} = (\mat K\,\vek T)_0\) row \(0\) of the system, that is, the heat that the support must supply. Then</p>
+<div class="eq" id="eq-pt10-presezek">\[Q_{\mathrm{h}} - Q = \frac{B(T - T_{\mathrm{h}},\ T - T_{\mathrm{h}})}{T_0} \ge 0 , \tag{14.56}\]</div>
+<p>with equality only for <span class="nobr">\(T_{\mathrm{h}} = T\).</span> The heat at the root is thus never below the exact value.</p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that \(B(T, T)\) and \(B(T_{\mathrm{h}}, T_{\mathrm{h}})\) are \(T_0\) times the heat, and then use theorem <a class="xref" href="sec-ritzova-metoda.html#thm-ritz-energija" data-knowl="thm-ritz-energija">6.34</a>.</p>
+<ol>
+<li>By theorem <a class="xref" href="sec-stacionarno-1d.html#thm-rebro" data-knowl="thm-rebro">14.22</a> <span class="nobr">\(kA\,T'' = hP\,T\).</span> Hence <span class="nobr">\(B(T, T) = \int_0^L \big(kA\,T'\,T' + kA\,T''\,T\big)\,\mathrm{d}x = \int_0^L (kA\,T'\,T)'\,\mathrm{d}x\).</span> By the fundamental theorem (theorem <a class="xref" href="sec-integral.html#thm-osnovni-izrek" data-knowl="thm-osnovni-izrek">3.40</a>) this is <span class="nobr">\(kA\,T'(L)\,T(L) - kA\,T'(0)\,T(0) = 0 + Q\,T_0\),</span> because the end is insulated.</li>
+<li>By theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a> (claim 3) <span class="nobr">\(K_{\mathrm{IJ}} = B(\psi_{\mathrm{J}}, \psi_{\mathrm{I}})\).</span> The theorem is stated for a bar without the side term, but the proof stays the same, because the side term is also an <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integral</a> over <span class="nobr">\([0, L]\),</span> the sum of the integrals over the elements that lemma <a class="xref" href="sec-mke-toplote.html#lem-konvekcijska-matrika" data-knowl="lem-konvekcijska-matrika">14.54</a> gives. For the field <span class="nobr">\(T_{\mathrm{h}} = \sum_{\mathrm{I}} T_{\mathrm{I}}\,\psi_{\mathrm{I}}\),</span> therefore, <span class="nobr">\(Q_{\mathrm{h}} = \sum_{\mathrm{J}} K_{0\mathrm{J}}\,T_{\mathrm{J}} = B(T_{\mathrm{h}}, \psi_0)\).</span> The reduced system (theorem <a class="xref" href="sec-robni-pogoji-mke.html#thm-reduciran-sistem" data-knowl="thm-reduciran-sistem">7.18</a>) says \(B(T_{\mathrm{h}}, \psi_{\mathrm{i}}) = 0\) for every node <span class="nobr">\(i \ne 0\),</span> since the right-hand side is zero.</li>
+<li>Hence <span class="nobr">\(B(T_{\mathrm{h}}, T_{\mathrm{h}}) = \sum_{\mathrm{I}} T_{\mathrm{I}}\,B(T_{\mathrm{h}}, \psi_{\mathrm{I}}) = T_0\,B(T_{\mathrm{h}}, \psi_0) = T_0\,Q_{\mathrm{h}}\),</span> because all other terms are zero by step 2 and \(T_0\) is the temperature at node <span class="nobr">\(0\).</span></li>
+<li>The <a class="xref auto" href="sec-variacijski-racun.html#def-funkcional" data-knowl="def-funkcional">functional</a> is <span class="nobr">\(\Pi(v) = \tfrac12\,B(v, v)\),</span> and \(T\) and \(T_{\mathrm{h}}\) are <a class="xref auto" href="sec-ritz-zvezni.html#def-dopustno-polje" data-knowl="def-dopustno-polje">admissible fields</a> with the same temperature \(T_0\) at <span class="nobr">\(x = 0\).</span> By claim 1 of theorem <a class="xref" href="sec-ritzova-metoda.html#thm-ritz-energija" data-knowl="thm-ritz-energija">6.34</a>, <span class="nobr">\(\Pi(T_{\mathrm{h}}) - \Pi(T) = \tfrac12\,B(T_{\mathrm{h}} - T,\ T_{\mathrm{h}} - T)\).</span></li>
+<li>By steps 1 and 3 the left side equals <span class="nobr">\(\tfrac12\,T_0\,(Q_{\mathrm{h}} - Q)\).</span> Dividing by \(\tfrac12\,T_0 &gt; 0\) gives equation <a class="xref" href="sec-mke-toplote.html#eq-pt10-presezek" data-knowl="eq-pt10-presezek">(14.56)</a>. The right side is non-negative, because \(B\) is positive (section <a class="xref" href="sec-mke-toplote.html#sec-model-rebra">14.10.1</a>), and zero only for <span class="nobr">\(T_{\mathrm{h}} = T\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> The proof is not from a source. For the general theorem on the energy of the Ritz solution see the source of theorem <a class="xref" href="sec-ritzova-metoda.html#thm-ritz-energija" data-knowl="thm-ritz-energija">6.34</a>.</p></div></div>
+<p>The proof showed that the excess heat is exactly the square of the energy norm of the error (definition <a class="xref" href="sec-skalarni-produkt-funkcij.html#def-energijska-norma" data-knowl="def-energijska-norma">6.18</a>), divided by <span class="nobr">\(T_0\).</span> This explains the numbers in the table: at <span class="nobr">\(mL = 1\),</span> \(n = 2\) we have <span class="nobr">\(B(T - T_{\mathrm{h}}, T - T_{\mathrm{h}})/T_0 = 0{,}01240\),</span> the same as <span class="nobr">\(Q_{\mathrm{h}} - Q\),</span> and the same holds in all eight rows to the fifth decimal (num-10.py). Why the excess decreases by a factor of \(4\) when the elements are halved, the lemma does not say. Theorem <a class="xref" href="sec-ocene-napake.html#thm-konvergenca-odsekoma-linearnih" data-knowl="thm-konvergenca-odsekoma-linearnih">6.41</a> gives an <a class="xref auto" href="sec-polnost.html#def-zgornja-meja" data-knowl="def-zgornja-meja">upper bound</a> for a bar without the side term: the square of the energy norm of the error is at most proportional to <span class="nobr">\(h^2\).</span> The theorem does not cover the side term, and we do not prove a bound for it here. The table, however, shows ratios from \(3{,}98\) to <span class="nobr">\(4{,}02\),</span> as for a decrease with <span class="nobr">\(h_{\mathrm{e}}^2\).</span></p>
+<p>What does the lemma not say? It says nothing about the temperature of the tip. There \(T_{\mathrm{h}}\) is below the exact value in all eight computations, but this is an observation, not a theorem: the temperature at one point is not an energy, and the <a class="xref auto" href="sec-ritzova-metoda.html#def-ritzova-metoda" data-knowl="def-ritzova-metoda">Ritz method</a> bounds the energy (theorem <a class="xref" href="sec-ritzova-metoda.html#thm-ritz-energija" data-knowl="thm-ritz-energija">6.34</a>), not every value (as for the hanging bar in chapter <a class="xref" href="ch-sibka-oblika.html">6</a>, where the work of the weight is too small and the displacement of the end too large). For design this means: the finite element model overestimates the heat that the fin gives off and underestimates the temperature of the tip. The first is on the safe side if we ask whether the fin removes enough heat, the second is not on the safe side if we ask about overheating of the tip. For these two values of \(mL\) the error of the heat is below \(5\,\%\) already at two elements and below \(1{,}2\,\%\) at four. The error of the tip temperature, divided by the exact tip temperature, is only \(0{,}8\,\%\) and \(0{,}2\,\%\) at <span class="nobr">\(mL = 1\),</span> but \(8{,}7\,\%\) at two and \(2{,}0\,\%\) at four elements at <span class="nobr">\(mL = 2\).</span></p>
+<p>What have we gained and what is left? The conduction element is the bar element with the letters given a new meaning, so assembly, supports and the <a class="xref auto" href="sec-robni-pogoji-mke.html#thm-reduciran-sistem" data-knowl="thm-reduciran-sistem">reduced system</a> carry over without a new proof. The side <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat s_{\mathrm{e}}\) is new, and with it two results: exactness of the nodal temperatures where \(G_{\mathrm{P}}\) is a straight line, and an upper bound for the <a class="xref auto" href="sec-mke-toplote.html#lem-toplota-ob-korenu" data-knowl="lem-toplota-ob-korenu">heat at the root</a>, where there is a <a class="xref auto" href="sec-variacijski-racun.html#def-funkcional" data-knowl="def-funkcional">functional</a>. Three steps remain. Temperature changing in time brings one more matrix, which section <a class="xref" href="sec-prehodni-pojav-mke.html">14.11</a> will multiply by the time <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivative</a>. Plane and spatial elements for heat are in chapter <a class="xref" href="ch-mke-kontinuum.html">15</a>, where temperature is the first field on triangles and tetrahedra. Radiation and temperature-dependent conductivity we did not treat, because then the problem is nonlinear and the functional is no longer quadratic (COOK, PDF pp. 476-478).</p>
+
+</main>
+<footer><nav class="pager"><a href="sec-sibka-oblika-toplote.html" rel="prev">← 14.9</a><a href="index.html">Contents</a><a href="sec-prehodni-pojav-mke.html" rel="next">14.11 →</a></nav></footer>
+</body>
+</html>

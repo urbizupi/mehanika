@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-togost-linearna"] = {"html": "<div class=\"eq\">\\[\\mat K(\\vek A) = \\sum_{\\mathrm{e}=1}^{n} A_{\\mathrm{e}}\\,\\mat K_{\\mathrm{e}} , \\qquad \\vek v^\\T \\mat K_{\\mathrm{e}}\\,\\vek v = E\\,L_{\\mathrm{e}}\\,\\varepsilon_{\\mathrm{e}}(\\vek v)^2 , \\tag{29.25}\\]</div>", "href": "sec-najmanjsa-podajnost.html#eq-togost-linearna"};

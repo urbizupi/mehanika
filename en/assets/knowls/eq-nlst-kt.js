@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nlst-kt"] = {"html": "<div class=\"eq\">\\[\\frac{K_{\\mathrm{t}}}{kL^2} = \\frac{\\partial g}{\\partial\\theta} = \\cos^2\\theta - (\\sin\\theta - s_0)\\sin\\theta - p\\cos\\theta . \\tag{17.29}\\]</div>", "href": "sec-nelinearna-statika.html#eq-nlst-kt"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-podprta-krozna"] = {"html": "<div class=\"eq\">\\[w = \\frac{q\\,(a^2 - r^2)}{64D}\\Big(\\frac{5+\\nu}{1+\\nu}\\,a^2 - r^2\\Big) , \\qquad w(0) = \\frac{5+\\nu}{1+\\nu}\\,\\frac{qa^4}{64D} , \\tag{18.43}\\]</div>", "href": "sec-krozne-plosce.html#eq-podprta-krozna"};

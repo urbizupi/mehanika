@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mkk-izo-preslikava"] = {"html": "<div class=\"eq\">\\[\\Phi(\\xi, \\eta) = \\sum_{\\mathrm{i}=1}^{m} N_{\\mathrm{i}}(\\xi, \\eta)\\,\\vek p_{\\mathrm{i}} , \\tag{15.23}\\]</div>", "href": "sec-mkk-izoparametricni.html#eq-mkk-izo-preslikava"};

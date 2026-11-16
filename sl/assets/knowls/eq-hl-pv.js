@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-hl-pv"] = {"html": "<div class=\"eq\">\\[\\mathrm{PV}\\int_{-\\mathrm{b}}^{b}\\frac{1}{(x - s)\\sqrt{b^2 - s^2}}\\,\\mathrm{d}s = 0 , \\qquad \\mathrm{PV}\\int_{-\\mathrm{b}}^{b}\\frac{\\sqrt{b^2 - s^2}}{x - s}\\,\\mathrm{d}s = \\pi x . \\tag{25.17}\\]</div>", "href": "sec-hertz-linijski.html#eq-hl-pv"};

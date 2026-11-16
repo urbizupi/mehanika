@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-cev-sibka-oblika"] = {"html": "<div class=\"eq\">\\[B(u, w) = \\int_{\\mathrm{a}}^b \\big(\\sigma_{\\mathrm{rr}}(u)\\,w' + \\sigma_{\\theta\\theta}(u)\\,\\frac{w}{r}\\big)\\,r\\,\\mathrm{d}r , \\qquad \\ell(w) = p\\,a\\,w(a) , \\tag{17.16}\\]</div>", "href": "sec-napetosti-iz-mke.html#eq-cev-sibka-oblika"};

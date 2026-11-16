@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-up-normalna"] = {"html": "<div class=\"eq\">\\[\\frac{N_\\varphi}{R_1} + \\frac{N_\\theta}{R_2} = p_{\\mathrm{n}} , \\tag{22.36}\\]</div>", "href": "sec-uporabe-membranske.html#eq-up-normalna"};

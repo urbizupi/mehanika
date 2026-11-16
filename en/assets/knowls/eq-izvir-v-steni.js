@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-izvir-v-steni"] = {"html": "<div class=\"eq\">\\[T(x) - T_{\\mathrm{s}} = \\frac{Q}{2k}\\,x\\,(L - x) , \\qquad q(x) = Q\\Big(x - \\frac L2\\Big) . \\tag{14.18}\\]</div>", "href": "sec-stacionarno-1d.html#eq-izvir-v-steni"};

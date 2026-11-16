@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-Fr-Qmax"] = {"html": "<div class=\"eq\">\\[F_{\\mathrm{r}} \\approx Z\\,Q_{\\max}\\,J_{\\mathrm{r}}(\\chi) , \\qquad Q_{\\max} = K_{\\mathrm{n}}(\\delta_{\\mathrm{r}} - P_{\\mathrm{d}}/2)^n . \\tag{25.34}\\]</div>", "href": "sec-obremenitev-lezaja.html#eq-Fr-Qmax"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kvm-zagon"] = {"html": "<div class=\"eq\">\\[m\\ddot p + c\\dot p + k\\,p = m\\,a_{\\mathrm{u}}\\,(\\Omega^2 - \\mathrm{i}\\dot\\Omega)\\,\\mathrm{e}^{\\mathrm{i}\\gamma} . \\tag{24.37}\\]</div>", "href": "sec-kriticne-vec-mas.html#eq-kvm-zagon"};

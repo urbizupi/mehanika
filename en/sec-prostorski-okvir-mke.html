@@ -19,7 +19,7 @@
 <header class="top"><a class="home" href="index.html">Mechanics</a><nav class="pager"><a href="sec-ravninski-okvir-mke.html" rel="prev">← 12.4</a><a href="index.html">Contents</a><a href="sec-kazenska-metoda.html" rel="next">12.6 →</a></nav>
 <span class="tools"><a class="lang" href="../sl/sec-prostorski-okvir-mke.html" hreflang="sl">Slovenščina</a><button type="button" class="theme-toggle" title="Light or dark theme" aria-label="Light or dark theme"></button><button type="button" data-details="open">Expand all</button><button type="button" data-details="close">Collapse all</button><button type="button" class="fig-side-toggle" aria-pressed="false">Figures alongside</button></span></header>
 <main>
-<p class="updated">Last updated 5 November 2026, 9:28</p>
+<p class="updated">Last updated 16 November 2026, 10:52</p>
 <p class="crumb"><a href="ch-mke-nosilci.html"><span class="h-num">Chapter 12</span> Beam and frame finite elements</a></p>
 <h2 id="sec-prostorski-okvir-mke"><span class="h-num">12.5</span> The space frame (prostorski okvir)</h2>
 <p>In section <a class="xref" href="sec-okvirji.html#sec-prostorski-okvirji">5.14.5</a> of chapter <a class="xref" href="ch-nosilci.html">5</a> we turned the L-<a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">frame</a> out of the plane. The force \(F = 500\) N acts in the direction of the axis <span class="nobr">\(Y\),</span> perpendicular to the plane of the frame, and we obtained the six <a class="xref auto" href="sec-sila-v-palici.html#def-notranja-sila" data-knowl="def-notranja-sila">internal forces</a> from equilibrium (the table in that section). How far does the point \(C\) move? Equilibrium does not tell, because the displacement is determined by stiffness. By that table the column has the torque \(M_{\mathrm{x}} = F\,b = 500\) N m along its whole length, so it twists, and the displacement of the point \(C\) depends on how the cross section resists twisting. Besides <span class="nobr">\(EA\),</span> \(EI_{\mathrm{y}}\) and \(EI_{\mathrm{z}}\) we need one more stiffness, the torsional one.</p>
@@ -27,10 +27,10 @@
 
 <h3 id="sec-model-prostorskega-okvirja"><span class="h-num">12.5.1</span> Model and unknowns of the element</h3>
 <p>The element is a straight <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beam</a> with its axis through the <a class="xref auto" href="sec-geometrija-prereza.html#def-tezisce" data-knowl="def-tezisce">centroids</a> of the sections. The local axis \(\bar x\) runs along the element from node 1 towards node 2, the local axes \(\bar y\) and \(\bar z\) are the <a class="xref auto" href="sec-glavne-napetosti.html#def-glavne-osi" data-knowl="def-glavne-osi">principal axes</a> of the section (corollary <a class="xref" href="sec-geometrija-prereza.html#cor-glavne-osi-prereza" data-knowl="cor-glavne-osi-prereza">5.31</a>) and the triple <span class="nobr">\(\bar x\),</span> <span class="nobr">\(\bar y\),</span> \(\bar z\) is <a class="xref auto" href="sec-simetrija-napetosti.html#def-desnosucni-sistem" data-knowl="def-desnosucni-sistem">right-handed</a>. Bending in the plane \(\bar x\bar y\) is the Euler-Bernoulli bending of chapter <a class="xref" href="ch-nosilci.html">5</a> with the moment of inertia <span class="nobr">\(I_{\mathrm{z}} = \int \bar y^2\,\mathrm{d}A\),</span> and bending in the plane \(\bar x\bar z\) is the same theory with \(I_{\mathrm{y}} = \int \bar z^2\,\mathrm{d}A\) (section <a class="xref" href="sec-okvirji.html#sec-prostorski-okvirji">5.14.5</a>). The axial displacement \(\bar u\) and the transverse displacements \(\bar v\) (in the direction <span class="nobr">\(\bar y\))</span> and \(\bar w\) (in the direction <span class="nobr">\(\bar z\))</span> are displacements of the element axis.</p>
-<p>Torsion needs a model that chapter <a class="xref" href="ch-nosilci.html">5</a> did not have. We assume uniform torsion (enakomerna torzija): the sections rotate about the axis of the element by the angle \(\varphi_{\mathrm{x}}(\bar x)\) and in doing so may freely bulge out of their plane (warping of the section, zvitje prereza: sections free to warp). A transverse force that passes through the centroid does not rotate the section. For a section with two axes of symmetry, such as our rectangle, the centroid is also the shear centre (strižno središče), the point through which a transverse force must pass so that the section does not rotate about the axis of the element during bending (explained in chapter <a class="xref stub" href="ch-torzija.html">16</a>). Torsion therefore causes no bending and bending causes no rotation of the section. The torque is proportional to the rotation of the section per unit length,</p>
+<p>Torsion needs a model that chapter <a class="xref" href="ch-nosilci.html">5</a> did not have. We assume uniform torsion (enakomerna torzija): the sections rotate about the axis of the element by the angle \(\varphi_{\mathrm{x}}(\bar x)\) and in doing so may freely bulge out of their plane (warping of the section, zvitje prereza: sections free to warp). A transverse force that passes through the centroid does not rotate the section. For a section with two axes of symmetry, such as our rectangle, the centroid is also the <a class="xref auto forward" href="sec-strizno-sredisce.html#def-strizno-sredisce" data-knowl="def-strizno-sredisce" title="Defined later in the book">shear centre</a> (strižno središče), the point through which a transverse force must pass so that the section does not rotate about the axis of the element during bending (explained in chapter <a class="xref" href="ch-torzija.html">16</a>). Torsion therefore causes no bending and bending causes no rotation of the section. The torque is proportional to the rotation of the section per unit length,</p>
 <div class="eq" id="eq-torzijski-moment">\[M_{\mathrm{x}} = G J\,\varphi_{\mathrm{x}}' , \tag{12.16}\]</div>
 <p>where \(G\) is the <a class="xref auto" href="sec-hookov-zakon.html#def-strizni-modul" data-knowl="def-strizni-modul">shear modulus</a> and \(J\) the torsion constant (torzijska konstanta) of the section, a number with the unit m\(^4\) that depends only on the shape of the section. We take the equation as an assumption of the model, as we took the <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> as <span class="nobr">\(N = EA\,\bar u'\).</span> Equilibrium of a slice of the element is by equation <a class="xref" href="sec-notranje-sile-nosilca.html#eq-nns-diferencialne" data-knowl="eq-nns-diferencialne">(5.12)</a> in the component \(x\) equal to \(M_{\mathrm{x}}' + m_{\mathrm{x}} = 0\) <span class="nobr">(\(m_{\mathrm{x}}\)</span> is the distributed torque per unit length), which has the same form as \(N' + q_{\mathrm{x}} = 0\) for the axial force. Without a distributed torque \(M_{\mathrm{x}}\) is constant along the element and the rotation \(\varphi_{\mathrm{x}}\) is linear.</p>
-<p>We take the value of \(J\) for our strip \(20 \times 40\) mm as data and do not compute it. The computation needs the <a class="xref auto" href="sec-posevni-prerez.html#def-normalna-strizna-napetost" data-knowl="def-normalna-strizna-napetost">shear stresses</a> in a section that warps and is in chapter <a class="xref stub" href="ch-torzija.html">16</a>. SADD (9.5.12) (PDF p. 264) gives for a rectangular section with sides \(2a\) and <span class="nobr">\(2b\),</span> <span class="nobr">\(a &lt; b\),</span> the torque \(T = G\,\alpha\,J\) with the rotation \(\alpha\) per unit length, in which \(J\) is the series</p>
+<p>We take the value of \(J\) for our strip \(20 \times 40\) mm as data and do not compute it. The computation needs the <a class="xref auto" href="sec-posevni-prerez.html#def-normalna-strizna-napetost" data-knowl="def-normalna-strizna-napetost">shear stresses</a> in a section that warps and is in chapter <a class="xref" href="ch-torzija.html">16</a>. SADD (9.5.12) (PDF p. 264) gives for a rectangular section with sides \(2a\) and <span class="nobr">\(2b\),</span> <span class="nobr">\(a &lt; b\),</span> the torque \(T = G\,\alpha\,J\) with the rotation \(\alpha\) per unit length, in which \(J\) is the series</p>
 <div class="eq" id="eq-torzijska-konstanta-pravokotnika">\[J = \frac{16\,a^3 b}{3} - \frac{1024\,a^4}{\pi^5}\sum_{\mathrm{n} = 1, 3, 5, \dots}\frac{1}{n^5}\tanh\frac{n\pi b}{2a} , \tag{12.17}\]</div>
 <p>where SADD writes the shear modulus as \(\mu\) (its \(\mu\) is our <span class="nobr">\(G\))</span> and we have taken \(G\,\alpha\) out. Beware that SADD in (9.3.23) calls the product \(G J\) by the symbol <span class="nobr">\(J\),</span> while we use \(J\) for the geometric part only. For \(a = 10\) mm and \(b = 20\) mm the first term is \(106\,667\) mm\(^4\) and the terms of the series are <span class="nobr">\(0{,}99627\),</span> <span class="nobr">\(0{,}00412\),</span> <span class="nobr">\(0{,}00032\),</span> ..., hence</p>
 <div class="eq">\[J = 73\,178\ \text{mm}^4 = 7{,}3178\cdot 10^{-8}\ \text{m}^4 , \qquad G J = 75{,}385\ \text{GPa}\cdot J = 5516{,}5\ \text{N m}^2 .\]</div>
@@ -50,7 +50,7 @@
 <p>that is, the displacement and the rotation vector of each node in local axes, and with the fields along the axis: the axial displacement \(\bar u_{\mathrm{h}}\) and the rotation \(\bar\varphi_{\mathrm{xh}}\) are linear (shape <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> of definition <a class="xref" href="sec-element-palice.html#def-oblikovna-funkcija" data-knowl="def-oblikovna-funkcija">7.2</a>), the transverse displacements are Hermite (definition <a class="xref" href="sec-element-nosilca.html#def-hermitove-funkcije" data-knowl="def-hermitove-funkcije">12.1</a>), \(\bar v_{\mathrm{h}} = \mat H_{\mathrm{e}}\,(\bar v_1, \bar\varphi_{\mathrm{z}1}, \bar v_2, \bar\varphi_{\mathrm{z}2})^\T\) and <span class="nobr">\(\bar w_{\mathrm{h}} = \mat H_{\mathrm{e}}\,(\bar w_1, -\bar\varphi_{\mathrm{y}1}, \bar w_2, -\bar\varphi_{\mathrm{y}2})^\T\),</span> because by equation <a class="xref" href="sec-prostorski-okvir-mke.html#eq-zasuka-iz-nagibov" data-knowl="eq-zasuka-iz-nagibov">(12.19)</a> <span class="nobr">\(\bar w' = -\bar\varphi_{\mathrm{y}}\).</span> In the global axes <span class="nobr">\(X\),</span> <span class="nobr">\(Y\),</span> \(Z\) the element has a column \(\vek d_{\mathrm{e}}\) of twelve numbers in the same order.</p>
 
 <p class="vir"><span class="vir-label">Source:</span> COOK §2.3 (PDF pp. 41-43: element with twelve unknowns, torsional stiffness <span class="nobr">\(GK/L\),</span> the model holds for two axes of symmetry and free warping), GR §5.3.4 (PDF pp. 404-405: principal bending axes and free warping, rotations <span class="nobr">\(\psi_{\mathrm{y}}\),</span> \(\psi_{\mathrm{z}}\) tied to the displacements by (5.149)). ONATE2 §4.4 (PDF pp. 211-216) has for the space beam an element of Timoshenko type with reduced integration, so we do not cite it here for the matrix. The notation and the sign \(\varphi_{\mathrm{y}} = -w'\) are ours, derived in the text before the definition (COOK PDF p. 42 only mentions sign differences caused by the directions of the rotations).</p></div></div>
-<p>Figure <a class="xref" href="sec-prostorski-okvir-mke.html#fig-pok-element" data-knowl="fig-pok-element">12.15</a> shows the twelve unknowns of the element. Each of the two nodes has three displacements (left) and three components of the rotation vector (right). The rotation vector is drawn as an arrow with two heads along the axis about which it rotates, in the sense of the right-handed screw, like the moments in figure <a class="xref" href="sec-okvirji.html#fig-nok-prostorski-clen" data-knowl="fig-nok-prostorski-clen">5.85</a>.</p>
+<p>Figure <a class="xref" href="sec-prostorski-okvir-mke.html#fig-pok-element" data-knowl="fig-pok-element">12.15</a> shows the twelve unknowns of the element. The <a data-del="element" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-element" data-knowl="fig-pok-element">element</a> is drawn twice as a straight beam with a rectangular cross section, between <a data-del="vozl1" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-element" data-knowl="fig-pok-element">node 1</a> and <a data-del="vozl2" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-element" data-knowl="fig-pok-element">node 2</a>. The <a data-del="osi" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-element" data-knowl="fig-pok-element">local axes</a> are below: \(\bar x\) along the element, \(\bar y\) upward and \(\bar z\) toward the viewer, which the oblique <a class="xref auto" href="sec-skalarni-produkt.html#def-projekcija" data-knowl="def-projekcija">projection</a> draws down and to the left. On the left each of the two nodes has three displacements: the <a data-del="u" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-element" data-knowl="fig-pok-element">axial displacement \(\bar u\)</a> in the direction \(\bar x\) and the transverse displacements <a data-del="v" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-element" data-knowl="fig-pok-element">\(\bar v\)</a> in the direction \(\bar y\) and <a data-del="w" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-element" data-knowl="fig-pok-element">\(\bar w\)</a> in the direction <span class="nobr">\(\bar z\).</span> On the right each node has three components of the rotation vector: <a data-del="fx" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-element" data-knowl="fig-pok-element">\(\bar\varphi_{\mathrm{x}}\)</a> about the axis of the element, which is the rotation of the cross section in torsion, and <a data-del="fy" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-element" data-knowl="fig-pok-element">\(\bar\varphi_{\mathrm{y}}\)</a> about \(\bar y\) and <a data-del="fz" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-element" data-knowl="fig-pok-element">\(\bar\varphi_{\mathrm{z}}\)</a> about <span class="nobr">\(\bar z\),</span> which equation <a class="xref" href="sec-prostorski-okvir-mke.html#eq-zasuka-iz-nagibov" data-knowl="eq-zasuka-iz-nagibov">(12.19)</a> relates to the slopes of the axis, \(\bar\varphi_{\mathrm{y}} = -\bar w'\) and <span class="nobr">\(\bar\varphi_{\mathrm{z}} = \bar v'\).</span> The rotation vector is drawn as an arrow with two heads along the axis about which it rotates, in the sense of the right-handed screw, like the moments in figure <a class="xref" href="sec-okvirji.html#fig-nok-prostorski-clen" data-knowl="fig-nok-prostorski-clen">5.85</a>.</p>
 
 <figure class="blk slika" id="fig-pok-element"><p><span class="svgfig" role="img" aria-label="A space frame element with twelve unknowns"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='632.62pt' height='192.28pt' viewBox='-72.000004 -72.000009 468.60798 142.428483'>
 <defs>
@@ -77,6 +77,7 @@
 <g stroke-width='0.6'>
 <g stroke-linecap='round'>
 <g stroke-linejoin='round'>
+<g class='del' data-del='element'>
 <g stroke-width='0.5'>
 <path d='M3.1298-3.75586V8.7634' fill='none'/>
 </g>
@@ -113,12 +114,25 @@
 <g stroke-width='0.5'>
 <path d='M-3.1298 3.75586H127.75296' fill='none'/>
 </g>
+</g>
+<g class='del' data-del='vozl1'>
 <path d='M1.13135 0C1.13135 .62483 .62483 1.13135 0 1.13135S-1.13135 .62483-1.13135 0S-.62483-1.13135 0-1.13135S1.13135-.62483 1.13135 0ZM0 0' stroke='none'/>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-35.592328,-23.805459)scale(-1,-1)'>
 <g fill='#000'>
 <g stroke='none'/>
 </g>
 </g>
+<g transform='translate(-16.72636,20.10924)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-35.592328,-23.805459)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-35.592328' y='-23.805459' xlink:href='#pok-element-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='u'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='0.9'>
 <path d='M0 0H31.3423' fill='none'/>
@@ -144,6 +158,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='v'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='0.9'>
 <path d='M0 0V28.49686' fill='none'/>
@@ -169,6 +185,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='w'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='0.9'>
 <path d='M0 0L-14.48508-11.58803' fill='none'/>
@@ -194,6 +212,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='vozl2'>
 <path d='M132.01413 0C132.01413 .62483 131.50761 1.13135 130.88278 1.13135S129.75143 .62483 129.75143 0S130.25795-1.13135 130.88278-1.13135S132.01413-.62483 132.01413 0ZM130.88278 0' stroke='none'/>
 <g transform='translate(130.88278,0.0)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-35.592328,-23.805459)scale(-1,-1)'>
@@ -202,6 +222,17 @@
 </g>
 </g>
 </g>
+<g transform='translate(141.18643,17.2638)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-35.592328,-23.805459)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-35.592328' y='-23.805459' xlink:href='#pok-element-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='u'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='0.9'>
 <path d='M130.88278 0H162.2251' fill='none'/>
@@ -227,6 +258,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='v'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='0.9'>
 <path d='M130.88278 0V28.49686' fill='none'/>
@@ -252,6 +285,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='w'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='0.9'>
 <path d='M130.88278 0L116.3977-11.58803' fill='none'/>
@@ -277,24 +312,8 @@
 </g>
 </g>
 </g>
-<g transform='translate(-16.72636,20.10924)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-35.592328,-23.805459)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='-35.592328' y='-23.805459' xlink:href='#pok-element-g2-49'/>
 </g>
-</g>
-</g>
-</g>
-<g transform='translate(141.18643,17.2638)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-35.592328,-23.805459)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='-35.592328' y='-23.805459' xlink:href='#pok-element-g2-50'/>
-</g>
-</g>
-</g>
-</g>
+<g class='del' data-del='element'>
 <g stroke-width='0.5'>
 <path d='M247.82367-3.75586V8.7634' fill='none'/>
 </g>
@@ -331,6 +350,8 @@
 <g stroke-width='0.5'>
 <path d='M241.56406 3.75586H372.44682' fill='none'/>
 </g>
+</g>
+<g class='del' data-del='vozl1'>
 <path d='M245.82521 0C245.82521 .62483 245.3187 1.13135 244.69386 1.13135C244.06903 1.13135 243.56252 .62483 243.56252 0S244.06903-1.13135 244.69386-1.13135C245.3187-1.13135 245.82521-.62483 245.82521 0ZM244.69386 0' stroke='none'/>
 <g transform='translate(244.69386,0.0)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-35.592328,-23.805459)scale(-1,-1)'>
@@ -339,6 +360,17 @@
 </g>
 </g>
 </g>
+<g transform='translate(227.9675,20.10924)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-35.592328,-23.805459)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-35.592328' y='-23.805459' xlink:href='#pok-element-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='fx'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='0.9'>
 <path d='M244.69386 0H276.03616' fill='none'/>
@@ -372,6 +404,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='fy'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='0.9'>
 <path d='M244.69386 0V28.49686' fill='none'/>
@@ -405,6 +439,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='fz'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='0.9'>
 <path d='M244.69386 0L230.20879-11.58803' fill='none'/>
@@ -438,6 +474,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='vozl2'>
 <path d='M376.708 0C376.708 .62483 376.20148 1.13135 375.57664 1.13135C374.95181 1.13135 374.4453 .62483 374.4453 0S374.95181-1.13135 375.57664-1.13135C376.20148-1.13135 376.708-.62483 376.708 0ZM375.57664 0' stroke='none'/>
 <g transform='translate(375.57664,0.0)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-35.592328,-23.805459)scale(-1,-1)'>
@@ -446,6 +484,17 @@
 </g>
 </g>
 </g>
+<g transform='translate(385.8803,17.2638)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-35.592328,-23.805459)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-35.592328' y='-23.805459' xlink:href='#pok-element-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='fx'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='0.9'>
 <path d='M375.57664 0H406.91896' fill='none'/>
@@ -479,6 +528,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='fy'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='0.9'>
 <path d='M375.57664 0V28.49686' fill='none'/>
@@ -512,6 +563,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='fz'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='0.9'>
 <path d='M375.57664 0L361.09157-11.58803' fill='none'/>
@@ -545,24 +598,8 @@
 </g>
 </g>
 </g>
-<g transform='translate(227.9675,20.10924)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-35.592328,-23.805459)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='-35.592328' y='-23.805459' xlink:href='#pok-element-g2-49'/>
 </g>
-</g>
-</g>
-</g>
-<g transform='translate(385.8803,17.2638)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-35.592328,-23.805459)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='-35.592328' y='-23.805459' xlink:href='#pok-element-g2-50'/>
-</g>
-</g>
-</g>
-</g>
+<g class='del' data-del='osi'>
 <path d='M-5.69046-68.2864H24.10056' fill='none'/>
 <g transform='translate(21.6241,-68.2864)'>
 <g stroke-dasharray='none' stroke-dashoffset='0.0'>
@@ -624,6 +661,7 @@
 </g>
 </g>
 </g>
+</g>
 </svg></span></p>
 <figcaption><span class="blk-label">Figure 12.15</span>: A space frame element with right-handed local axes <span class="nobr">\(\bar x\),</span> <span class="nobr">\(\bar y\),</span> \(\bar z\) (the axis \(\bar z\) points towards the viewer, down left) and twelve unknowns. Left: the three displacements of each node (plain arrows). Right: the three components of the rotation vector of each node (arrows with two heads, sense of the right-handed screw). Each component is drawn along the axis named by its index, in the positive direction.</figcaption></figure>
 <h3 id="sec-togost-prostorskega-elementa"><span class="h-num">12.5.2</span> The element matrix</h3>
@@ -642,7 +680,7 @@ where \(\mat k_{\mathrm{e}}\) is the <a class="xref auto" href="sec-model-nosilc
 <div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We have to show that the energy is a sum of four quadratic forms in separate groups of unknowns (hence the zeros outside the blocks) and that the forces of the surroundings equal \(\bar{\mat k}_{\mathrm{e}}\bar{\vek d}_{\mathrm{e}}\) in each block.</p>
 <ol>
 <li>The axis passes through the <a class="xref auto" href="sec-geometrija-prereza.html#def-tezisce" data-knowl="def-tezisce">centroid</a> and the axes <span class="nobr">\(\bar y\),</span> \(\bar z\) are principal, so \(\int\bar y\,\mathrm{d}A = \int\bar z\,\mathrm{d}A = 0\) and \(\int\bar y\bar z\,\mathrm{d}A = 0\) (corollary <a class="xref" href="sec-geometrija-prereza.html#cor-glavne-osi-prereza" data-knowl="cor-glavne-osi-prereza">5.31</a>). With \(\sigma_{\mathrm{xx}} = E(\bar u' - \bar y\,\bar v'' - \bar z\,\bar w'')\) from equation <a class="xref" href="sec-prostorski-okvir-mke.html#eq-deformacija-prostorska" data-knowl="eq-deformacija-prostorska">(12.20)</a> we therefore have <span class="nobr">\(\tfrac12\int E(\bar u' - \bar y\,\bar v'' - \bar z\,\bar w'')^2\,\mathrm{d}A = \tfrac12\big(EA\,\bar u'^2 + EI_{\mathrm{z}}\,\bar v''^2 + EI_{\mathrm{y}}\,\bar w''^2\big)\):</span> the mixed terms are products with three sums that are zero (as in the proof of lemma <a class="xref" href="sec-napetosti-pri-upogibu.html#lem-locitev-osne-upogibne" data-knowl="lem-locitev-osne-upogibne">5.33</a> for one plane).</li>
-<li>The torsional energy per unit length is the work of the moment \(M_{\mathrm{x}}\) on the rotation \(\varphi_{\mathrm{x}}'\) of the section with the relation <a class="xref" href="sec-prostorski-okvir-mke.html#eq-torzijski-moment" data-knowl="eq-torzijski-moment">(12.16)</a>, that is <span class="nobr">\(\tfrac12\,GJ\,\bar\varphi_{\mathrm{x}}'^2\).</span> By the assumption of the model (the centroid is the shear centre) torsion is not <a class="xref auto" href="sec-model-nosilca.html#def-dvojica-sil" data-knowl="def-dvojica-sil">coupled</a> to bending, so the energies add. The energy of the element is <span class="nobr">\(U_{\mathrm{e}} = \tfrac12\int_0^h\big(EA\,\bar u_{\mathrm{h}}'^2 + GJ\,\bar\varphi_{\mathrm{xh}}'^2 + EI_{\mathrm{z}}\,\bar v_{\mathrm{h}}''^2 + EI_{\mathrm{y}}\,\bar w_{\mathrm{h}}''^2\big)\,\mathrm{d}\bar x\).</span></li>
+<li>The torsional energy per unit length is the work of the moment \(M_{\mathrm{x}}\) on the rotation \(\varphi_{\mathrm{x}}'\) of the section with the relation <a class="xref" href="sec-prostorski-okvir-mke.html#eq-torzijski-moment" data-knowl="eq-torzijski-moment">(12.16)</a>, that is <span class="nobr">\(\tfrac12\,GJ\,\bar\varphi_{\mathrm{x}}'^2\).</span> By the assumption of the model (the centroid is the <a class="xref auto forward" href="sec-strizno-sredisce.html#def-strizno-sredisce" data-knowl="def-strizno-sredisce" title="Defined later in the book">shear centre</a>) torsion is not <a class="xref auto" href="sec-model-nosilca.html#def-dvojica-sil" data-knowl="def-dvojica-sil">coupled</a> to bending, so the energies add. The energy of the element is <span class="nobr">\(U_{\mathrm{e}} = \tfrac12\int_0^h\big(EA\,\bar u_{\mathrm{h}}'^2 + GJ\,\bar\varphi_{\mathrm{xh}}'^2 + EI_{\mathrm{z}}\,\bar v_{\mathrm{h}}''^2 + EI_{\mathrm{y}}\,\bar w_{\mathrm{h}}''^2\big)\,\mathrm{d}\bar x\).</span></li>
 <li>Each of the four terms contains only its own group of unknowns (axial <span class="nobr">\(\bar u_1\),</span> <span class="nobr">\(\bar u_2\),</span> torsional <span class="nobr">\(\bar\varphi_{\mathrm{x}1}\),</span> <span class="nobr">\(\bar\varphi_{\mathrm{x}2}\),</span> the bending ones four each). A quadratic form in separate groups has all <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> entries between the groups equal to zero, so the matrix is assembled from four blocks and is symmetric.</li>
 <li>Axial block: \(\tfrac12\int_0^h EA\,\bar u_{\mathrm{h}}'^2\,\mathrm{d}\bar x = \tfrac12\,\tfrac{EA}{h}(\bar u_2 - \bar u_1)^2\) (lemma <a class="xref" href="sec-element-palice.html#lem-togost-elementa-palice" data-knowl="lem-togost-elementa-palice">7.5</a>, point 2). Torsional block: since \(\bar\varphi_{\mathrm{xh}}' = (\bar\varphi_{\mathrm{x}2} - \bar\varphi_{\mathrm{x}1})/h\) is constant, <span class="nobr">\(\tfrac12\int_0^h GJ\,\bar\varphi_{\mathrm{xh}}'^2\,\mathrm{d}\bar x = \tfrac12\,\tfrac{GJ}{h}(\bar\varphi_{\mathrm{x}2} - \bar\varphi_{\mathrm{x}1})^2\),</span> the same computation under another name.</li>
 <li>Bending block in the plane <span class="nobr">\(\bar x\bar y\):</span> \(\bar v_{\mathrm{h}} = \mat H_{\mathrm{e}}\,\vek d_{\mathrm{y}}\) with <span class="nobr">\(\vek d_{\mathrm{y}} = (\bar v_1, \bar\varphi_{\mathrm{z}1}, \bar v_2, \bar\varphi_{\mathrm{z}2})^\T\),</span> so by lemma <a class="xref" href="sec-element-nosilca.html#lem-togost-elementa-nosilca" data-knowl="lem-togost-elementa-nosilca">12.4</a> (point 1) the energy is \(\tfrac12\,\vek d_{\mathrm{y}}^\T\mat k_{\mathrm{e}}\,\vek d_{\mathrm{y}}\) with <span class="nobr">\(EI_{\mathrm{z}}\).</span></li>
@@ -724,8 +762,8 @@ where \(\mat k_{\mathrm{e}}\) is the <a class="xref auto" href="sec-model-nosilc
 <p>For \(F = 50\) N the solution of the system (NumPy) gives</p>
 <div class="eq">\[\begin{aligned} v_{\mathrm{B}} &amp;= 3{,}189\ \text{mm} , &amp; v_{\mathrm{C}} &amp;= 15{,}441\ \text{mm} , &amp; \varphi_{\mathrm{X},\mathrm{B}} = \varphi_{\mathrm{X},\mathrm{C}} &amp;= -4{,}783\cdot 10^{-3} , \\ \varphi_{\mathrm{Z},\mathrm{B}} &amp;= 9{,}064\cdot 10^{-3} , &amp; \varphi_{\mathrm{Z},\mathrm{C}} &amp;= 13{,}847\cdot 10^{-3} . \end{aligned}\]</div>
 <p>The point \(C\) therefore moves by \(15{,}44\) mm in the direction of the force. Why at \(50\) N and not at \(500\) N, as in section <a class="xref" href="sec-okvirji.html#sec-prostorski-okvirji">5.14.5</a>? Statics holds at every size of the force and the <a class="xref auto" href="sec-sila-v-palici.html#def-notranja-sila" data-knowl="def-notranja-sila">internal forces</a> are proportional to <span class="nobr">\(F\).</span> The displacements, however, are a computation of the linear model, which requires small slopes, \(v'^2 \le 10^{-2}\) (section <a class="xref" href="sec-kinematika-nosilca.html#sec-polje-pomikov-nosilca">5.3.3</a>). At \(500\) N the model would give \(v_{\mathrm{C}} = 154{,}4\) mm, \(15\) % of the length of the element, and the slope <span class="nobr">\(\varphi_{\mathrm{Z},\mathrm{C}} = 0{,}138\),</span> so <span class="nobr">\(\varphi^2 = 0{,}019\),</span> beyond the <a class="xref auto" href="sec-limita-odvod.html#def-limita" data-knowl="def-limita">limit</a>. At \(50\) N we have <span class="nobr">\(\varphi_{\mathrm{Z},\mathrm{C}}^2 = 1{,}9\cdot 10^{-4}\).</span></p>
-<p>We check the result in three ways. The first is each of the numbers in the system. The rotation of the column about the axis \(X\) is the rotation of a bending cantilever with the force \(F\) at the top, <span class="nobr">\(\varphi_{\mathrm{X},\mathrm{B}} = -F\,a^2/(2EI_{\mathrm{w}}) = -4{,}783\cdot 10^{-3}\),</span> and since the torque of the beam is zero (the force \(F\) passes through its axis), the beam does not twist and <span class="nobr">\(\varphi_{\mathrm{X},\mathrm{C}} = \varphi_{\mathrm{X},\mathrm{B}}\).</span> The rotation \(\varphi_{\mathrm{Z},\mathrm{B}} = F\,b\,a/(GJ) = 9{,}064\cdot 10^{-3}\) is the twisting of the column with the constant torque \(F\,b\) (by equation <a class="xref" href="sec-prostorski-okvir-mke.html#eq-torzijski-moment" data-knowl="eq-torzijski-moment">(12.16)</a>). The displacement \(v_{\mathrm{C}}\) is the sum of three parts: the bending of the column \(v_{\mathrm{B}} = F\,a^3/(3EI_{\mathrm{w}}) = 3{,}1888\) mm, the rotation \(\varphi_{\mathrm{Z},\mathrm{B}}\) of the <a class="xref auto" href="sec-simetrija-napetosti.html#lem-rocica" data-knowl="lem-rocica">lever arm</a> <span class="nobr">\(b\),</span> that is the twisting of the column, \(b\,\varphi_{\mathrm{Z},\mathrm{B}} = F\,b^2\,a/(GJ) = 9{,}0637\) mm, and the bending of the beam \(F\,b^3/(3EI_{\mathrm{w}}) = 3{,}1888\) mm. The sum is \(15{,}4413\) mm, which is the result of the system.</p>
-<p>The second way is by energy. The work of the force is by Clapeyron's theorem (theorem <a class="xref" href="sec-potencialna-energija.html#thm-clapeyron" data-knowl="thm-clapeyron">4.86</a>) \(\tfrac12\,F\,v_{\mathrm{C}} = 0{,}38603\) J, and the <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">strain</a> energy of the elements from their fields is \(0{,}22659\) J (torsion of the column) \(+\ 0{,}07972\) J (bending of the column) \(+\ 0{,}07972\) J (bending of the beam) \(= 0{,}38603\) J. Torsion carries \(58{,}7\) % of the energy and \(58{,}7\) % of the displacement. The sum \(v_{\mathrm{C}} = F\big(b^2 a/(GJ) + a^3/(3EI_{\mathrm{w}}) + b^3/(3EI_{\mathrm{w}})\big)\) uses only the internal forces from statics and the formulas for the cantilever and for torsion, so it is independent of the finite element method, and it agrees with it in all the digits.</p>
+<p>We check the result in three ways. The first is each of the numbers in the system. The rotation of the column about the axis \(X\) is the rotation of a bending cantilever with the force \(F\) at the top, <span class="nobr">\(\varphi_{\mathrm{X},\mathrm{B}} = -F\,a^2/(2EI_{\mathrm{w}}) = -4{,}783\cdot 10^{-3}\),</span> and since the torque of the beam is zero (the force \(F\) passes through its axis), the beam does not twist and <span class="nobr">\(\varphi_{\mathrm{X},\mathrm{C}} = \varphi_{\mathrm{X},\mathrm{B}}\).</span> The rotation \(\varphi_{\mathrm{Z},\mathrm{B}} = F\,b\,a/(GJ) = 9{,}064\cdot 10^{-3}\) is the twisting of the column with the constant torque \(F\,b\) (by equation <a class="xref" href="sec-prostorski-okvir-mke.html#eq-torzijski-moment" data-knowl="eq-torzijski-moment">(12.16)</a>). The displacement \(v_{\mathrm{C}}\) is the sum of three parts, which figure <a class="xref" href="sec-prostorski-okvir-mke.html#fig-pok-deli" data-knowl="fig-pok-deli">12.16</a> draws as bars with lengths proportional to the numbers: the <a data-del="upstebra" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-deli" data-knowl="fig-pok-deli">bending of the column</a> \(v_{\mathrm{B}} = F\,a^3/(3EI_{\mathrm{w}}) = 3{,}1888\) mm, the rotation \(\varphi_{\mathrm{Z},\mathrm{B}}\) of the <a class="xref auto" href="sec-simetrija-napetosti.html#lem-rocica" data-knowl="lem-rocica">lever arm</a> <span class="nobr">\(b\),</span> that is the <a data-del="zvijanje" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-deli" data-knowl="fig-pok-deli">twisting of the column</a>, \(b\,\varphi_{\mathrm{Z},\mathrm{B}} = F\,b^2\,a/(GJ) = 9{,}0637\) mm, and the <a data-del="upprecke" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-deli" data-knowl="fig-pok-deli">bending of the beam</a> \(F\,b^3/(3EI_{\mathrm{w}}) = 3{,}1888\) mm. The <a data-del="vsota" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-deli" data-knowl="fig-pok-deli">sum</a> is \(15{,}4413\) mm, which is the result of the system. All three bars are in the <a data-del="J" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-deli" data-knowl="fig-pok-deli">top row</a>, which is computed with the torsion constant <span class="nobr">\(J\).</span></p>
+<p>The second way is by energy. The work of the force is by Clapeyron's theorem (theorem <a class="xref" href="sec-potencialna-energija.html#thm-clapeyron" data-knowl="thm-clapeyron">4.86</a>) \(\tfrac12\,F\,v_{\mathrm{C}} = 0{,}38603\) J, and the <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">strain</a> energy of the elements from their fields is \(0{,}22659\) J (torsion of the column) \(+\ 0{,}07972\) J (bending of the column) \(+\ 0{,}07972\) J (bending of the beam) \(= 0{,}38603\) J. <a data-del="zvijanje" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-deli" data-knowl="fig-pok-deli">Torsion</a> carries \(58{,}7\) % of the energy and \(58{,}7\) % of the displacement. The sum \(v_{\mathrm{C}} = F\big(b^2 a/(GJ) + a^3/(3EI_{\mathrm{w}}) + b^3/(3EI_{\mathrm{w}})\big)\) uses only the internal forces from statics and the formulas for the cantilever and for torsion, so it is independent of the finite element method, and it agrees with it in all the digits.</p>
 
 <figure class="blk slika" id="fig-pok-deli"><p><span class="svgfig" role="img" aria-label="The three parts of the displacement of the point C: bending of the column, twisting of the column, bending of the beam, with the true torsion constant and with the polar moment"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='323.09pt' height='152.08pt' viewBox='-72.000004 -72.000008 239.327402 112.650441'>
 <defs>
@@ -749,19 +787,10 @@ where \(\mat k_{\mathrm{e}}\) is the <a class="xref auto" href="sec-model-nosilc
 <g stroke-width='0.6'>
 <g stroke-linecap='round'>
 <g stroke-linejoin='round'>
+<g class='del' data-del='upstebra'>
 <g fill='#00f' stroke='#00f'>
 <g fill='#d9d9ff'>
 <path d='M0 28.45274V51.21501H45.36479V28.45274ZM45.36479 51.21501'/>
-</g>
-</g>
-<g fill='#f00' stroke='#f00'>
-<g fill='#ffd9d9'>
-<path d='M45.36479 28.45274V51.21501H174.30821V28.45274ZM174.30821 51.21501'/>
-</g>
-</g>
-<g fill='#0f0' stroke='#0f0'>
-<g fill='#b3ffb3'>
-<path d='M174.30821 28.45274V51.21501H219.673V28.45274ZM219.673 51.21501'/>
 </g>
 </g>
 <g transform='translate(13.79347,37.58366)'>
@@ -776,6 +805,13 @@ where \(\mat k_{\mathrm{e}}\) is the <a class="xref auto" href="sec-model-nosilc
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='zvijanje'>
+<g fill='#f00' stroke='#f00'>
+<g fill='#ffd9d9'>
+<path d='M45.36479 28.45274V51.21501H174.30821V28.45274ZM174.30821 51.21501'/>
+</g>
+</g>
 <g transform='translate(100.94737,37.58366)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.823788,9.837058)scale(-1,-1)'>
 <g fill='#000'>
@@ -786,6 +822,13 @@ where \(\mat k_{\mathrm{e}}\) is the <a class="xref auto" href="sec-model-nosilc
 <use x='-39.093702' y='9.837058' xlink:href='#pok-deli-g2-54'/>
 </g>
 </g>
+</g>
+</g>
+</g>
+<g class='del' data-del='upprecke'>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#b3ffb3'>
+<path d='M174.30821 28.45274V51.21501H219.673V28.45274ZM219.673 51.21501'/>
 </g>
 </g>
 <g transform='translate(188.1017,37.58366)'>
@@ -800,6 +843,8 @@ where \(\mat k_{\mathrm{e}}\) is the <a class="xref auto" href="sec-model-nosilc
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='J'>
 <g transform='translate(-14.40764,36.417)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.823788,9.837058)scale(-1,-1)'>
 <g fill='#000'>
@@ -809,6 +854,8 @@ where \(\mat k_{\mathrm{e}}\) is the <a class="xref auto" href="sec-model-nosilc
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='vsota'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.45'>
@@ -875,19 +922,11 @@ where \(\mat k_{\mathrm{e}}\) is the <a class="xref auto" href="sec-model-nosilc
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='upstebra'>
 <g fill='#00f' stroke='#00f'>
 <g fill='#d9d9ff'>
 <path d='M0 0V22.76227H45.36479V0ZM45.36479 22.76227'/>
-</g>
-</g>
-<g fill='#f00' stroke='#f00'>
-<g fill='#ffd9d9'>
-<path d='M45.36479 0V22.76227H116.1337V0ZM116.1337 22.76227'/>
-</g>
-</g>
-<g fill='#0f0' stroke='#0f0'>
-<g fill='#b3ffb3'>
-<path d='M116.1337 0V22.76227H161.49849V0ZM161.49849 22.76227'/>
 </g>
 </g>
 <g transform='translate(13.79347,9.13092)'>
@@ -902,6 +941,13 @@ where \(\mat k_{\mathrm{e}}\) is the <a class="xref auto" href="sec-model-nosilc
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='zvijanjeip'>
+<g fill='#f00' stroke='#f00'>
+<g fill='#ffd9d9'>
+<path d='M45.36479 0V22.76227H116.1337V0ZM116.1337 22.76227'/>
+</g>
+</g>
 <g transform='translate(71.86032,9.13092)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.823788,9.837058)scale(-1,-1)'>
 <g fill='#000'>
@@ -912,6 +958,13 @@ where \(\mat k_{\mathrm{e}}\) is the <a class="xref auto" href="sec-model-nosilc
 <use x='-39.093702' y='9.837058' xlink:href='#pok-deli-g2-55'/>
 </g>
 </g>
+</g>
+</g>
+</g>
+<g class='del' data-del='upprecke'>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#b3ffb3'>
+<path d='M116.1337 0V22.76227H161.49849V0ZM161.49849 22.76227'/>
 </g>
 </g>
 <g transform='translate(129.92717,9.13092)'>
@@ -926,6 +979,8 @@ where \(\mat k_{\mathrm{e}}\) is the <a class="xref auto" href="sec-model-nosilc
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='Ip'>
 <g transform='translate(-16.9189,9.3948)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.823788,9.837058)scale(-1,-1)'>
 <g fill='#000'>
@@ -936,6 +991,8 @@ where \(\mat k_{\mathrm{e}}\) is the <a class="xref auto" href="sec-model-nosilc
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='vsotaip'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.45'>
@@ -1009,9 +1066,10 @@ where \(\mat k_{\mathrm{e}}\) is the <a class="xref auto" href="sec-model-nosilc
 </g>
 </g>
 </g>
+</g>
 </svg></span></p>
 <figcaption><span class="blk-label">Figure 12.16</span>: The three parts of the displacement of the point \(C\) of the L-frame in space at \(F = 50\) N, in mm. Top, with the true torsion constant <span class="nobr">\(J\):</span> bending of the column \(3{,}19\) (blue), twisting of the column \(9{,}06\) (orange) and bending of the beam \(3{,}19\) (grey), in all <span class="nobr">\(15{,}44\).</span> Bottom, with the wrong polar moment \(I_{\mathrm{p}}\) in place of <span class="nobr">\(J\):</span> twisting <span class="nobr">\(4{,}97\),</span> in all <span class="nobr">\(11{,}35\).</span> The lengths of the bars are proportional to the number.</figcaption></figure>
-<p>The third way shows why we need <span class="nobr">\(J\).</span> If instead of \(J\) we took the polar moment \(I_{\mathrm{p}} = 133\,333\) mm<span class="nobr">\(^4\),</span> the twisting would be \(F\,b^2\,a/(G\,I_{\mathrm{p}}) = 4{,}97\) mm instead of \(9{,}06\) mm and \(v_{\mathrm{C}} = 11{,}35\) mm instead of \(15{,}44\) mm, which is \(26\) % too little (figure <a class="xref" href="sec-prostorski-okvir-mke.html#fig-pok-deli" data-knowl="fig-pok-deli">12.16</a>). A frame that twists therefore needs a property of the section that is not a moment of inertia. This is the torsion constant <span class="nobr">\(J\),</span> which we compute in chapter <a class="xref stub" href="ch-torzija.html">16</a>.</p>
+<p>The third way shows why we need <span class="nobr">\(J\).</span> If instead of \(J\) we took the <span class="nobr"><a data-del="Ip" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-deli" data-knowl="fig-pok-deli">polar moment \(I_{\mathrm{p}} = 133\,333\) mm\(^4\)</a>,</span> the <a data-del="zvijanjeip" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-deli" data-knowl="fig-pok-deli">twisting</a> would be \(F\,b^2\,a/(G\,I_{\mathrm{p}}) = 4{,}97\) mm instead of <a data-del="zvijanje" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-deli" data-knowl="fig-pok-deli">\(9{,}06\) mm</a> and <a data-del="vsotaip" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-deli" data-knowl="fig-pok-deli">\(v_{\mathrm{C}} = 11{,}35\) mm</a> instead of <a data-del="vsota" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-deli" data-knowl="fig-pok-deli">\(15{,}44\) mm</a>, which is \(26\) % too little (figure <a class="xref" href="sec-prostorski-okvir-mke.html#fig-pok-deli" data-knowl="fig-pok-deli">12.16</a>, bottom row). The <a data-del="upstebra" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-deli" data-knowl="fig-pok-deli">bending of the column</a> and the <a data-del="upprecke" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-deli" data-knowl="fig-pok-deli">bending of the beam</a> are the same in both rows, since \(J\) does not enter them. A frame that twists therefore needs a property of the section that is not a moment of inertia. This is the torsion constant <span class="nobr">\(J\),</span> which we compute in chapter <a class="xref" href="ch-torzija.html">16</a>.</p>
 <p>The internal forces at \(F = 500\) N we obtain from the forces at the ends of the elements, \(\bar{\vek F}_{\mathrm{e}} = \bar{\mat k}_{\mathrm{e}}\,\bar{\vek d}_{\mathrm{e}}\) with <span class="nobr">\(\bar{\vek d}_{\mathrm{e}} = \mat R\,\vek d_{\mathrm{e}}\):</span> at the start of the element the internal forces are \(-\bar{\vek F}\) of the first half of the column, at the end the second half (lemma <a class="xref" href="sec-prostorski-okvir-mke.html#lem-togost-prostorskega-elementa" data-knowl="lem-togost-prostorskega-elementa">12.22</a>, step 7). We obtain (NumPy, local components <span class="nobr">\(N\),</span> <span class="nobr">\(V_{\mathrm{y}}\),</span> <span class="nobr">\(V_{\mathrm{z}}\),</span> <span class="nobr">\(M_{\mathrm{x}}\),</span> <span class="nobr">\(M_{\mathrm{y}}\),</span> <span class="nobr">\(M_{\mathrm{z}}\)):</span></p>
 <table>
 <thead>
@@ -1056,7 +1114,7 @@ where \(\mat k_{\mathrm{e}}\) is the <a class="xref auto" href="sec-model-nosilc
 </tbody>
 </table>
 <p>This is the table of section <a class="xref" href="sec-okvirji.html#sec-prostorski-okvirji">5.14.5</a> in all the numbers. The computation did not use statics, only the element matrices and assembly. The reaction of the clamp, \((\mat K\,\vek d - \vek f)\) in the rows of the node \(A\) (section <a class="xref" href="sec-robni-pogoji-mke.html#sec-reakcije">7.3.4</a>), is the force \((0, -500, 0)\) N and the moment \((500, 0, -500)\) N m, which is opposite to the load: the <a class="xref auto" href="sec-simetrija-napetosti.html#def-moment-sile" data-knowl="def-moment-sile">moment of the force</a> \(F\) about \(A\) is \(\vek r\times\vek F = (1, 0, 1)\times(0, 500, 0) = (-500, 0, 500)\) N m.</p>
-<p>Figure <a class="xref" href="sec-prostorski-okvir-mke.html#fig-pok-l-okvir" data-knowl="fig-pok-l-okvir">12.17</a> shows the frame and its deformed shape at \(50\) N, assembled from the Hermite fields of both elements. The column twists: the sections rotate about the axis \(Z\) by an angle that grows linearly from zero at the clamp to \(\varphi_{\mathrm{Z},\mathrm{B}} = 9{,}064\cdot 10^{-3}\) at <span class="nobr">\(B\).</span></p>
+<p>Figure <a class="xref" href="sec-prostorski-okvir-mke.html#fig-pok-l-okvir" data-knowl="fig-pok-l-okvir">12.17</a> shows the frame and its deformed shape at \(50\) N. The <a data-del="osi" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-l-okvir" data-knowl="fig-pok-l-okvir">axes</a> are in oblique <a class="xref auto" href="sec-skalarni-produkt.html#def-projekcija" data-knowl="def-projekcija">projection</a>: \(X\) to the right, \(Z\) upward and \(Y\) toward the viewer, drawn down and to the left. In <a data-del="prvotna" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-l-okvir" data-knowl="fig-pok-l-okvir">grey</a> is the frame before loading: the column from the <a data-del="vpetje" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-l-okvir" data-knowl="fig-pok-l-okvir">clamp</a> at the <a data-del="A" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-l-okvir" data-knowl="fig-pok-l-okvir">point \(A\)</a> up to the <a data-del="B" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-l-okvir" data-knowl="fig-pok-l-okvir">node \(B\)</a> and the beam from \(B\) to the <span class="nobr"><a data-del="C" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-l-okvir" data-knowl="fig-pok-l-okvir">point \(C\)</a>.</span> At the free end the <a data-del="F" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-l-okvir" data-knowl="fig-pok-l-okvir">force \(F\)</a> acts in the direction of the axis <span class="nobr">\(Y\),</span> drawn at the displaced position of the point <span class="nobr">\(C\).</span> In <a data-del="deformirana" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-l-okvir" data-knowl="fig-pok-l-okvir">orange</a> is the deformed shape, assembled from the Hermite fields of both elements and magnified \(65\) times so that it can be seen. The <a data-del="vC" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-l-okvir" data-knowl="fig-pok-l-okvir">displacement \(v_{\mathrm{C}}\)</a> is the distance between \(C\) and the end of the orange beam, \(15{,}44\) mm in the direction of the force. The column twists: the <a data-del="prerezi" class="xref kaz" href="sec-prostorski-okvir-mke.html#fig-pok-l-okvir" data-knowl="fig-pok-l-okvir">sections</a> rotate about the axis \(Z\) by an angle that grows linearly from zero at the clamp to \(\varphi_{\mathrm{Z},\mathrm{B}} = 9{,}064\cdot 10^{-3}\) at <span class="nobr">\(B\).</span></p>
 
 <figure class="blk slika" id="fig-pok-l-okvir"><p><span class="svgfig" role="img" aria-label="The L-frame in space with the deformed shape and the rotated sections of the column"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='370.11pt' height='156.90pt' viewBox='-72.000004 -72.000008 274.152428 116.219925'>
 <defs>
@@ -1077,16 +1135,21 @@ where \(\mat k_{\mathrm{e}}\) is the <a class="xref auto" href="sec-model-nosilc
 <g stroke-width='0.6'>
 <g stroke-linecap='round'>
 <g stroke-linejoin='round'>
+<g class='del' data-del='vpetje'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-width='0.45'>
 <path d='M-25.60728 10.243H51.21501L25.60728-10.243H-51.21501Z' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='prvotna'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-width='1.6'>
 <path d='M0 0V85.35823H85.35823' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='deformirana'>
 <g fill='#f00' stroke='#f00'>
 <g stroke-width='1.6'>
 <path d='M0 0L-.02864 4.23952L-.1424 8.42215L-.28436 12.57614L-.48364 16.67326L-.768 20.74216L-1.08104 24.75374L-1.42271 28.7371L-1.84949 32.6636L-2.27626 36.59009L-2.75992 40.45972L-3.27222 44.32933L-3.81273 48.17029L-4.38191 51.98303L-4.97931 55.76756L-5.60536 59.55165L-6.23097 63.30753L-6.85703 67.06296L-7.51173 70.7906L-8.19423 74.54604L-8.84892 78.2737' fill='none'/>
@@ -1097,6 +1160,8 @@ where \(\mat k_{\mathrm{e}}\) is the <a class="xref auto" href="sec-model-nosilc
 <path d='M-8.84892 78.2737L-5.86108 77.24908L-2.95918 76.16805L-.08553 75.0297L2.70303 73.86311L5.4343 72.63966L8.13734 71.388L10.78352 70.07903L13.40103 68.7705L15.96211 67.40463L18.4941 66.01056L20.9983 64.58784L23.47342 63.16512L25.89209 61.68552L28.31033 60.20592L30.729 58.72632L33.09038 57.2185L35.45218 55.68204L37.81354 54.14555L40.17534 52.63774L42.50848 51.10127' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='prerezi'>
 <g stroke-width='0.5'>
 <path d='M-11.52332 3.07294H19.20569L11.52332-3.07294H-19.20569Z' fill='none'/>
 </g>
@@ -1112,6 +1177,8 @@ where \(\mat k_{\mathrm{e}}\) is the <a class="xref auto" href="sec-model-nosilc
 <g stroke-width='0.5'>
 <path d='M-9.90175 84.24852L7.11317 77.41971L-7.7961 72.29843L-24.81061 79.15546Z' fill='none'/>
 </g>
+</g>
+<g class='del' data-del='B'>
 <g transform='translate(5.0557,90.41393)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-20.752181,28.204445)scale(-1,-1)'>
 <g fill='#000'>
@@ -1121,6 +1188,8 @@ where \(\mat k_{\mathrm{e}}\) is the <a class="xref auto" href="sec-model-nosilc
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='A'>
 <g transform='translate(24.97253,-4.83937)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-20.752181,28.204445)scale(-1,-1)'>
 <g fill='#000'>
@@ -1130,6 +1199,8 @@ where \(\mat k_{\mathrm{e}}\) is the <a class="xref auto" href="sec-model-nosilc
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='C'>
 <g transform='translate(90.41393,90.41393)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-20.752181,28.204445)scale(-1,-1)'>
 <g fill='#000'>
@@ -1139,6 +1210,8 @@ where \(\mat k_{\mathrm{e}}\) is the <a class="xref auto" href="sec-model-nosilc
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='F'>
 <g stroke-width='0.9'>
 <path d='M42.50848 51.10127L23.61128 35.95915' fill='none'/>
 <g transform='matrix(-0.78035,-0.62526,0.62526,-0.78035,25.6441,37.58797)'>
@@ -1158,6 +1231,8 @@ where \(\mat k_{\mathrm{e}}\) is the <a class="xref auto" href="sec-model-nosilc
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='vC'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.45'>
@@ -1221,6 +1296,8 @@ where \(\mat k_{\mathrm{e}}\) is the <a class="xref auto" href="sec-model-nosilc
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='osi'>
 <path d='M176.40692 11.38092H203.35292' fill='none'/>
 <g transform='translate(200.87646,11.38092)'>
 <g stroke-dasharray='none' stroke-dashoffset='0.0'>
@@ -1268,6 +1345,7 @@ where \(\mat k_{\mathrm{e}}\) is the <a class="xref auto" href="sec-model-nosilc
 <g fill='#000'>
 <g stroke='none'>
 <use x='-20.752181' y='28.204445' xlink:href='#pok-l-okvir-g0-89'/>
+</g>
 </g>
 </g>
 </g>

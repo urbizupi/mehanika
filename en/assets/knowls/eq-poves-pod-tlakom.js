@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-poves-pod-tlakom"] = {"html": "<div class=\"eq\">\\[w(x) = \\frac{1 - \\nu^2}{\\pi E}\\int_{\\mathrm{A}} \\frac{p(s)}{|x - s|}\\,\\mathrm{d}A(s) . \\tag{25.12}\\]</div>", "href": "sec-boussinesq.html#eq-poves-pod-tlakom"};

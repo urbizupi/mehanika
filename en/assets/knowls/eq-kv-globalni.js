@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kv-globalni"] = {"html": "<div class=\"eq\">\\[f(\\vek x^*) \\le f(\\vek x) \\quad \\text{for every point } \\vek x \\in S . \\tag{29.11}\\]</div>", "href": "sec-konveksnost.html#eq-kv-globalni"};

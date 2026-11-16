@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-cev-temperatura"] = {"html": "<div class=\"eq\">\\[T(r) = T_{\\mathrm{a}} + (T_{\\mathrm{b}} - T_{\\mathrm{a}})\\,\\frac{\\ln(r/a)}{\\ln(b/a)} , \\tag{14.22}\\]</div>", "href": "sec-stacionarno-1d.html#eq-cev-temperatura"};

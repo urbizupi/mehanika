@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-prony-napetost"] = {"html": "<div class=\"eq\">\\[\\sigma(t) = E_\\infty\\,\\varepsilon(t) + \\sum_{\\mathrm{j}=1}^N E_{\\mathrm{j}}\\,\\big(\\varepsilon(t) - \\alpha_{\\mathrm{j}}(t)\\big) , \\tag{20.19}\\]</div>", "href": "sec-dedni-integral.html#eq-prony-napetost"};

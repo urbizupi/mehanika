@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mkk-gauss-element"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{T}} \\operatorname{div}\\vek v\\,\\mathrm{d}V = \\int_{\\mathrm{S}} \\vek v\\cdot\\vek n\\,\\mathrm{d}A , \\tag{15.11}\\]</div>", "href": "sec-mkk-telo-iz-elementov.html#eq-mkk-gauss-element"};

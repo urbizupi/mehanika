@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-zk-dg"] = {"html": "<div class=\"eq\">\\[\\mat D_{\\mathrm{G}} = G \\begin{pmatrix} 4/3 &amp; -2/3 &amp; 0 \\\\ -2/3 &amp; 4/3 &amp; 0 \\\\ 0 &amp; 0 &amp; 1 \\end{pmatrix} . \\tag{15.40}\\]</div>", "href": "sec-mkk-zaklepanje.html#eq-zk-dg"};

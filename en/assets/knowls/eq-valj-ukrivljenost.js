@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-valj-ukrivljenost"] = {"html": "<div class=\"eq\">\\[\\kappa_{\\mathrm{n}}(\\psi) = b_{22}\\,\\frac{\\sin^2\\psi}{R^2} = \\frac{\\sin^2\\psi}{R} . \\tag{22.12}\\]</div>", "href": "sec-ukrivljenost-ploskve.html#eq-valj-ukrivljenost"};

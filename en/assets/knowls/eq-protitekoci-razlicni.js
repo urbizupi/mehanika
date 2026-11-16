@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-protitekoci-razlicni"] = {"html": "<div class=\"eq\">\\[\\vek F = e\\omega^2\\Big[(m_1 + m_2)\\cos d\\,\\vek u + (m_1 - m_2)\\sin d\\,\\vek u^{\\perp}\\Big] , \\qquad d = \\omega t + \\frac{\\alpha - \\beta}{2} , \\tag{23.34}\\]</div>", "href": "sec-uravnotezenje-enovaljnega.html#eq-protitekoci-razlicni"};

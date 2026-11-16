@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-izm-prenos"] = {"html": "<div class=\"eq\">\\[f_{\\mathrm{t}}(t) = F_0 + \\sum_{\\mathrm{n}=1}^N F_{\\mathrm{n}}\\,\\mathrm{TR}(r_{\\mathrm{n}})\\cos(n\\Omega t + \\alpha_{\\mathrm{n}} + \\beta_{\\mathrm{n}}) , \\tag{23.43}\\]</div>", "href": "sec-izolacija-motorja.html#eq-izm-prenos"};

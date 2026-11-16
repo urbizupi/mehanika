@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vrtenina-r2"] = {"html": "<div class=\"eq\">\\[\\kappa_2 = \\frac{\\sin\\varphi}{r} = \\frac1{R_2} , \\qquad R_2 = \\frac{r}{\\sin\\varphi} , \\tag{22.14}\\]</div>", "href": "sec-ukrivljenost-ploskve.html#eq-vrtenina-r2"};

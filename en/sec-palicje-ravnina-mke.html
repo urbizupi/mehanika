@@ -19,17 +19,17 @@
 <header class="top"><a class="home" href="index.html">Mechanics</a><nav class="pager"><a href="sec-kvadratni-element.html" rel="prev">← 7.4</a><a href="index.html">Contents</a><a href="sec-prostorsko-palicje.html" rel="next">7.6 →</a></nav>
 <span class="tools"><a class="lang" href="../sl/sec-palicje-ravnina-mke.html" hreflang="sl">Slovenščina</a><button type="button" class="theme-toggle" title="Light or dark theme" aria-label="Light or dark theme"></button><button type="button" data-details="open">Expand all</button><button type="button" data-details="close">Collapse all</button><button type="button" class="fig-side-toggle" aria-pressed="false">Figures alongside</button></span></header>
 <main>
-<p class="updated">Last updated 5 November 2026, 9:28</p>
+<p class="updated">Last updated 16 November 2026, 10:52</p>
 <p class="crumb"><a href="ch-mke-palice.html"><span class="h-num">Chapter 7</span> Basics of FEM for bars and trusses</a></p>
 <h2 id="sec-palicje-ravnina-mke"><span class="h-num">7.5</span> The plane truss (paličje v ravnini)</h2>
 <p>So far we have written the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> of a bar for displacements along the bar, one number per node (section <a class="xref" href="sec-element-palice.html#sec-togost-elementa">7.1.2</a>). In a truss the bars point in different directions and the nodes move in the plane, each with two numbers. What does the matrix of one bar look like in the axes of the whole truss? And if we know it, can we compute the truss of chapters <a class="xref" href="ch-energijski-principi.html">4</a> and <a class="xref" href="ch-nosilci.html">5</a> by the same procedure as any other, even one with a hundred bars? In this section we write the matrix of a bar in an arbitrary direction and with it compute the wall truss of chapter <a class="xref" href="ch-energijski-principi.html">4</a> for the fifth time. Then we look at when the matrix of the structure is not <a class="xref auto" href="sec-matrike.html#def-inverzna-matrika" data-knowl="def-inverzna-matrika">invertible</a>, because the truss is not supported enough or moves without any bar stretching.</p>
-<p>The model is the truss of definition <a class="xref" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">4.4</a>: straight bars connected by pins, forces only at the nodes, the weight of the bars negligible. Every bar has a constant \(EA\) and is one finite element (definition <a class="xref" href="sec-element-palice.html#def-koncni-element" data-knowl="def-koncni-element">7.1</a>) with two nodes. The displacements are small, and we write the matrix of the structure on the shape before loading, as in chapter <a class="xref" href="ch-energijski-principi.html">4</a>. The displacement of node \(i\) in the axes \(x\) and \(y\) of the whole truss (the global axes, globalne osi) is denoted by the column <span class="nobr">\(\vek u_{\mathrm{i}} = (u_{\mathrm{i}}, v_{\mathrm{i}})\).</span></p>
+<p>The model is the truss of definition <a class="xref" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">4.4</a>: straight bars connected by pins, forces only at the nodes, the weight of the bars negligible. Every bar has a constant \(EA\) and is one finite element (definition <a class="xref" href="sec-element-palice.html#def-koncni-element" data-knowl="def-koncni-element">7.1</a>) with two nodes. The displacements are small, and we write the matrix of the structure on the shape before loading, as in chapter <a class="xref" href="ch-energijski-principi.html">4</a>. The displacement of node \(i\) <a data-del="osi" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-osi" data-knowl="fig-pra-osi">in the axes \(x\) and \(y\) of the whole truss</a> (the global axes, globalne osi) is denoted by the <span class="nobr"><a data-del="u" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-osi" data-knowl="fig-pra-osi">column \(\vek u_{\mathrm{i}} = (u_{\mathrm{i}}, v_{\mathrm{i}})\)</a>.</span></p>
 
 <h3 id="sec-lokalne-globalne-osi"><span class="h-num">7.5.1</span> Local and global axes (lokalne in globalne osi)</h3>
-<p>Let the bar go from node \(i\) to node <span class="nobr">\(j\),</span> with the nodes at the <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">coordinates</a> \((x_{\mathrm{i}}, y_{\mathrm{i}})\) and <span class="nobr">\((x_{\mathrm{j}}, y_{\mathrm{j}})\).</span> The length of the bar is \(L = \sqrt{(x_{\mathrm{j}} - x_{\mathrm{i}})^2 + (y_{\mathrm{j}} - y_{\mathrm{i}})^2}\) and the <a class="xref auto" href="sec-vektorji.html#def-enotski-vektor" data-knowl="def-enotski-vektor">unit vector</a> from \(i\) towards \(j\) is</p>
+<p>Let the <a data-del="palica" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-osi" data-knowl="fig-pra-osi">bar</a> go from <a data-del="i" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-osi" data-knowl="fig-pra-osi">node \(i\)</a> to <span class="nobr"><a data-del="j" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-osi" data-knowl="fig-pra-osi">node \(j\)</a>,</span> with the nodes at the <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">coordinates</a> \((x_{\mathrm{i}}, y_{\mathrm{i}})\) and <span class="nobr">\((x_{\mathrm{j}}, y_{\mathrm{j}})\).</span> The length of the bar is \(L = \sqrt{(x_{\mathrm{j}} - x_{\mathrm{i}})^2 + (y_{\mathrm{j}} - y_{\mathrm{i}})^2}\) and the <a data-del="n" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-osi" data-knowl="fig-pra-osi">unit vector from \(i\) towards \(j\)</a> is</p>
 <div class="eq">\[\vek n = (c, s) = \Big(\frac{x_{\mathrm{j}} - x_{\mathrm{i}}}{L},\ \frac{y_{\mathrm{j}} - y_{\mathrm{i}}}{L}\Big) .\]</div>
-<p>The numbers \(c\) and \(s\) are the cosine and the sine of the angle between the bar and the axis <span class="nobr">\(x\),</span> so they form the first row of the rotation matrix (definition <a class="xref" href="sec-vrtenje-osi.html#def-matrika-zasuka" data-knowl="def-matrika-zasuka">2.37</a>) when the new axis \(\bar x\) lies along the bar (figure <a class="xref" href="sec-palicje-ravnina-mke.html#fig-pra-osi" data-knowl="fig-pra-osi">7.16</a>).</p>
-<p>The \(2 \times 2\) <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> of lemma <a class="xref" href="sec-element-palice.html#lem-togost-elementa-palice" data-knowl="lem-togost-elementa-palice">7.5</a> holds for the displacements \(\bar u_{\mathrm{i}}\) and \(\bar u_{\mathrm{j}}\) of the ends along the bar. Which numbers are these if we know the displacements \(\vek u_{\mathrm{i}}\) and \(\vek u_{\mathrm{j}}\) in the global axes? By section <a class="xref" href="sec-virtualni-pomiki-palice.html#sec-palicje-virtualno">4.4.9</a>, when an end moves, the bar is lengthened by the <a class="xref auto" href="sec-skalarni-produkt.html#def-projekcija" data-knowl="def-projekcija">projection</a> of the displacement on the direction of the bar, <span class="nobr">\(\vek n\cdot\vek u\),</span> while the part of the displacement perpendicular to the bar only turns it (equation <a class="xref" href="sec-virtualni-pomiki-palice.html#eq-virtualni-podaljsek" data-knowl="eq-virtualni-podaljsek">(4.48)</a>). The same holds when both ends move. The <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vector</a> of the bar is then <span class="nobr">\(L\,\vek n + \vek u_{\mathrm{j}} - \vek u_{\mathrm{i}}\),</span> and the derivation of section <a class="xref" href="sec-virtualni-pomiki-palice.html#sec-palicje-virtualno">4.4.9</a>, in which the difference of the end displacements stands in place of the displacement of the node, gives the elongation \(\vek n\cdot(\vek u_{\mathrm{j}} - \vek u_{\mathrm{i}})\) up to a neglected term, the square of the length of the difference of the displacements divided by <span class="nobr">\(2L\).</span> This term is small when the displacements of the ends are much smaller than the length \(L\) of the bar. For the bar \(BC\) of the wall <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">truss</a> <span class="nobr">(\(L = 5\)</span> m), when \(C\) moves 1 mm downwards, the elongation to first order is \(0{,}6\) mm, and the exact computation gives \(0{,}600064\) mm. Hence the displacement of an end along the bar is the projection</p>
+<p>The numbers \(c\) and \(s\) are the cosine and the sine of the <a data-del="kot" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-osi" data-knowl="fig-pra-osi">angle \(\theta\) between the bar and the axis \(x\)</a>, so they form the first row of the rotation matrix (definition <a class="xref" href="sec-vrtenje-osi.html#def-matrika-zasuka" data-knowl="def-matrika-zasuka">2.37</a>) when the <a data-del="lokalna" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-osi" data-knowl="fig-pra-osi">new axis \(\bar x\) lies along the bar</a> (figure <a class="xref" href="sec-palicje-ravnina-mke.html#fig-pra-osi" data-knowl="fig-pra-osi">7.16</a>).</p>
+<p>The \(2 \times 2\) <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> of lemma <a class="xref" href="sec-element-palice.html#lem-togost-elementa-palice" data-knowl="lem-togost-elementa-palice">7.5</a> holds for the displacements \(\bar u_{\mathrm{i}}\) and \(\bar u_{\mathrm{j}}\) of the ends along the bar. Which numbers are these if we know the <a data-del="u" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-osi" data-knowl="fig-pra-osi">displacements \(\vek u_{\mathrm{i}}\)</a> and \(\vek u_{\mathrm{j}}\) in the global axes? By section <a class="xref" href="sec-virtualni-pomiki-palice.html#sec-palicje-virtualno">4.4.9</a>, when an end moves, the bar is lengthened by the <a data-del="vzdolz" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-osi" data-knowl="fig-pra-osi">projection of the displacement on the direction of the bar</a>, <span class="nobr">\(\vek n\cdot\vek u\),</span> while <a data-del="w" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-osi" data-knowl="fig-pra-osi">the part of the displacement perpendicular to the bar</a> only turns it (equation <a class="xref" href="sec-virtualni-pomiki-palice.html#eq-virtualni-podaljsek" data-knowl="eq-virtualni-podaljsek">(4.48)</a>). The same holds when both ends move. The <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vector</a> of the bar is then <span class="nobr">\(L\,\vek n + \vek u_{\mathrm{j}} - \vek u_{\mathrm{i}}\),</span> and the derivation of section <a class="xref" href="sec-virtualni-pomiki-palice.html#sec-palicje-virtualno">4.4.9</a>, in which the difference of the end displacements stands in place of the displacement of the node, gives the elongation \(\vek n\cdot(\vek u_{\mathrm{j}} - \vek u_{\mathrm{i}})\) up to a neglected term, the square of the length of the difference of the displacements divided by <span class="nobr">\(2L\).</span> This term is small when the displacements of the ends are much smaller than the length \(L\) of the bar. For the bar \(BC\) of the wall <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">truss</a> <span class="nobr">(\(L = 5\)</span> m), when \(C\) moves 1 mm downwards, the elongation to first order is \(0{,}6\) mm, and the exact computation gives \(0{,}600064\) mm. Hence the displacement of an end along the bar is the <a class="xref auto" href="sec-skalarni-produkt.html#def-projekcija" data-knowl="def-projekcija">projection</a></p>
 <div class="eq">\[\bar u_{\mathrm{i}} = \vek n\cdot\vek u_{\mathrm{i}} = c\,u_{\mathrm{i}} + s\,v_{\mathrm{i}} , \qquad \bar u_{\mathrm{j}} = \vek n\cdot\vek u_{\mathrm{j}} = c\,u_{\mathrm{j}} + s\,v_{\mathrm{j}} .\]</div>
 <p>We put them into a column of four numbers <span class="nobr">\(\vek d_{\mathrm{e}} = (u_{\mathrm{i}}, v_{\mathrm{i}}, u_{\mathrm{j}}, v_{\mathrm{j}})\),</span> the displacements of the ends of the bar in the global axes. The numbers \(\bar u_{\mathrm{i}}\) and \(\bar u_{\mathrm{j}}\) are obtained from it by the \(2 \times 4\) matrix</p>
 <div class="eq">\[\mat T_{\mathrm{e}} = \begin{bmatrix} \vek n^\T &amp; \vek 0^\T \\ \vek 0^\T &amp; \vek n^\T \end{bmatrix} = \begin{bmatrix} c &amp; s &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; c &amp; s \end{bmatrix} , \qquad \begin{pmatrix} \bar u_{\mathrm{i}} \\ \bar u_{\mathrm{j}} \end{pmatrix} = \mat T_{\mathrm{e}}\,\vek d_{\mathrm{e}} .\]</div>
@@ -62,6 +62,7 @@
 <g stroke-width='0.6'>
 <g stroke-linecap='round'>
 <g stroke-linejoin='round'>
+<g class='del' data-del='osi'>
 <path d='M-66.57967 0H-33.94319' fill='none'/>
 <g transform='translate(-36.41965,0.0)'>
 <g stroke-dasharray='none' stroke-dashoffset='0.0'>
@@ -96,9 +97,13 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='palica'>
 <g stroke-width='1.6'>
 <path d='M0 0L184.94325 110.96596' fill='none'/>
 </g>
+</g>
+<g class='del' data-del='i'>
 <g fill='#fff'>
 <g fill='#fff'>
 <path d='M2.26294 0C2.26294 1.2498 1.2498 2.26294 0 2.26294S-2.26294 1.2498-2.26294 0S-1.2498-2.26294 0-2.26294S2.26294-1.2498 2.26294 0ZM0 0'/>
@@ -109,6 +114,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='j'>
 <g fill='#fff'>
 <g fill='#fff'>
 <path d='M187.20619 110.96596C187.20619 112.21576 186.19305 113.2289 184.94325 113.2289S182.68031 112.21576 182.68031 110.96596S183.69345 108.70302 184.94325 108.70302S187.20619 109.71616 187.20619 110.96596ZM184.94325 110.96596'/>
@@ -121,6 +128,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='i'>
 <g transform='translate(-10.77719,-12.07774)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(.272416,55.841711)scale(-1,-1)'>
 <g fill='#000'>
@@ -130,6 +139,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='j'>
 <g transform='translate(192.27533,118.3929)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(.272416,55.841711)scale(-1,-1)'>
 <g fill='#000'>
@@ -139,6 +150,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='kot'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.45'>
@@ -156,6 +169,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='n'>
 <g stroke-width='0.9'>
 <path d='M81.37491-20.34386L122.13957 4.11497' fill='none'/>
 <g transform='matrix(0.85747,0.5145,-0.5145,0.85747,119.90585,2.77469)'>
@@ -181,6 +196,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='lokalna'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='0.9'>
 <path d='M11.0967-33.28954L155.42969 53.31' fill='none'/>
@@ -205,6 +222,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='u'>
 <g fill='#f00' stroke='#f00'>
 <g stroke-width='1.0'>
 <path d='M0 0L30.90993 44.64816' fill='none'/>
@@ -229,6 +248,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='w'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.45'>
@@ -249,6 +270,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='vzdolz'>
 <g fill='#00f' stroke='#00f'>
 <path d='M5.04663-7.5363L49.8815 19.37238' fill='none'/>
 <g transform='matrix(-0.8574,-0.51459,0.51459,-0.8574,4.91803,-7.61348)'>
@@ -297,6 +320,7 @@
 </g>
 </g>
 </g>
+</g>
 </svg></span></p>
 <figcaption><span class="blk-label">Figure 7.16</span>: A bar from node \(i\) to node \(j\) in the global axes \(x\) and <span class="nobr">\(y\).</span> The local axis \(\bar x\) (blue) points along the bar, the unit vector \(\vek n = (c, s)\) has the components \(c = \cos\theta\) and <span class="nobr">\(s = \sin\theta\).</span> The displacement \(\vek u_{\mathrm{i}}\) of node \(i\) (orange) is split into a part along the bar, <span class="nobr">\(\bar u_{\mathrm{i}} = \vek n\cdot\vek u_{\mathrm{i}}\),</span> which lengthens or shortens the bar, and a perpendicular part \(\bar w_{\mathrm{i}}\) (dashed), which only turns the bar and does not change its length to first order. The displacement is drawn much larger than the real one.</figcaption></figure>
 <p>How does the matrix of the bar depend on these four numbers? A lemma connects the energy of the bar with the global displacements.</p>
@@ -317,10 +341,10 @@
 </ol>
 </div></details></div>
 <p class="vir"><span class="vir-label">Source:</span> COOK (2.4-5), (2.4-6), (2.4-7) (PDF pp. 44-45), FELIPPA (3.1), (3.2) (PDF p. 39), ONATE1 (1.29), (1.30) (PDF p. 51). The sources derive the matrix from the rotation of forces and displacements. The proof with energy is not from the sources.</p></div></div>
-<p>The proof showed that the matrix of a bar in an arbitrary direction is a single product <span class="nobr">\(\vek n\,\vek n^\T\),</span> multiplied by \(EA/L\) and placed in four positions with alternating signs (figure <a class="xref" href="sec-palicje-ravnina-mke.html#fig-pra-matrika" data-knowl="fig-pra-matrika">7.17</a>). We test it on the wall truss of chapter <a class="xref" href="ch-energijski-principi.html">4</a> <span class="nobr">(\(E = 196\)</span> GPa, <span class="nobr">\(A = 1\ \text{cm}^2\),</span> \(EA = 1{,}96\cdot 10^7\) N). The bar \(AC\) <span class="nobr">(\(L = 4\)</span> m) is horizontal, <span class="nobr">\(\vek n = (1, 0)\),</span> and \(EA/L = 4{,}9\cdot 10^6\) N/m. The only nonzero block is <span class="nobr">\(\vek n\,\vek n^\T = \begin{bmatrix} 1 &amp; 0 \\ 0 &amp; 0 \end{bmatrix}\),</span> so in the matrix \(\mat k_{\mathrm{AC}}\) only four elements \(\pm 4{,}9\cdot 10^6\) N/m are nonzero, in the rows and columns of the horizontal displacements. A horizontal bar does not resist a vertical displacement of its end, because to first order it does not lengthen. The bar \(BC\) <span class="nobr">(\(L = 5\)</span> m, \(EA/L = 3{,}92\cdot 10^6\) N/m) has <span class="nobr">\(\vek n = (4, -3)/5 = (0{,}8, -0{,}6)\),</span> so <span class="nobr">\(c^2 = 0{,}64\),</span> <span class="nobr">\(cs = -0{,}48\),</span> \(s^2 = 0{,}36\) and</p>
+<p>The proof showed that the matrix of a bar in an arbitrary direction is a single product <span class="nobr">\(\vek n\,\vek n^\T\),</span> <a data-del="faktor" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-matrika" data-knowl="fig-pra-matrika">multiplied by \(EA/L\)</a> and <a data-del="mreza" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-matrika" data-knowl="fig-pra-matrika">placed in four positions with alternating signs</a> (figure <a class="xref" href="sec-palicje-ravnina-mke.html#fig-pra-matrika" data-knowl="fig-pra-matrika">7.17</a>). We test it on the wall truss of chapter <a class="xref" href="ch-energijski-principi.html">4</a> <span class="nobr">(\(E = 196\)</span> GPa, <span class="nobr">\(A = 1\ \text{cm}^2\),</span> \(EA = 1{,}96\cdot 10^7\) N). The bar \(AC\) <span class="nobr">(\(L = 4\)</span> m) is horizontal, <span class="nobr">\(\vek n = (1, 0)\),</span> and \(EA/L = 4{,}9\cdot 10^6\) N/m. The only nonzero block is <span class="nobr">\(\vek n\,\vek n^\T = \begin{bmatrix} 1 &amp; 0 \\ 0 &amp; 0 \end{bmatrix}\),</span> so in the matrix \(\mat k_{\mathrm{AC}}\) only four elements \(\pm 4{,}9\cdot 10^6\) N/m are nonzero, in the rows and columns of the horizontal displacements. A horizontal bar does not resist a vertical displacement of its end, because to first order it does not lengthen. The bar \(BC\) <span class="nobr">(\(L = 5\)</span> m, \(EA/L = 3{,}92\cdot 10^6\) N/m) has <span class="nobr">\(\vek n = (4, -3)/5 = (0{,}8, -0{,}6)\),</span> so <span class="nobr"><a data-del="c2" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-matrika" data-knowl="fig-pra-matrika">\(c^2 = 0{,}64\)</a>,</span> <span class="nobr"><a data-del="cs" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-matrika" data-knowl="fig-pra-matrika">\(cs = -0{,}48\)</a>,</span> <a data-del="s2" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-matrika" data-knowl="fig-pra-matrika">\(s^2 = 0{,}36\)</a> and</p>
 <div class="eq">\[\vek n\,\vek n^\T\,\frac{EA}{L} = \begin{bmatrix} 2{,}5088 &amp; -1{,}8816 \\ -1{,}8816 &amp; 1{,}4112 \end{bmatrix}\cdot 10^6\ \text{N/m} .\]</div>
-<p>The first element of the block is \(3{,}92\cdot 10^6 \cdot 0{,}64 = 2{,}5088\cdot 10^6\) N/m. The matrix \(\mat k_{\mathrm{BC}}\) has this block on the diagonal, in the rows of nodes \(B\) and <span class="nobr">\(C\),</span> with one sign, and the off-diagonal blocks with the opposite sign. We check it by computing a force. Let node \(C\) move 1 mm downwards and let \(B\) stay at rest. The elongation is \(\vek n\cdot(0, -1\ \text{mm}) = 0{,}6\) mm, the <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> \(N = 3{,}92\cdot 10^6 \cdot 0{,}6\cdot 10^{-3} = 2352\) N and the force on the end \(C\) of the bar \(N\,\vek n = (1881{,}6,\ -1411{,}2)\) N. The block \(\vek n\,\vek n^\T\,EA/L\) multiplied by the displacement \((0, -10^{-3})\) m gives the same: \((-1{,}8816\cdot 10^6)(-10^{-3}) = 1881{,}6\) N and \(1{,}4112\cdot 10^6 \cdot (-10^{-3}) = -1411{,}2\) N. A column of the matrix tells what force the node needs for a unit displacement (definition <a class="xref" href="sec-element-palice.html#def-togostna-matrika" data-knowl="def-togostna-matrika">7.4</a>), and the force on the bar has the direction of the bar, because the bar carries only an axial force.</p>
-<p>The order of the nodes does not affect the result. If we swap \(i\) and <span class="nobr">\(j\),</span> \(\vek n\) changes to <span class="nobr">\(-\vek n\),</span> while the product \(\vek n\,\vek n^\T\) does not change, so we get the same matrix (COOK, PDF p. 45).</p>
+<p>The first element of the block is \(3{,}92\cdot 10^6 \cdot 0{,}64 = 2{,}5088\cdot 10^6\) N/m. The matrix \(\mat k_{\mathrm{BC}}\) has this block <a data-del="mreza" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-matrika" data-knowl="fig-pra-matrika">on the diagonal, in the rows of nodes \(B\) and <span class="nobr">\(C\),</span> with one sign, and the off-diagonal blocks with the opposite sign</a>. We check it by computing a force. Let node \(C\) move 1 mm downwards and let \(B\) stay at rest. The elongation is \(\vek n\cdot(0, -1\ \text{mm}) = 0{,}6\) mm, the <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> \(N = 3{,}92\cdot 10^6 \cdot 0{,}6\cdot 10^{-3} = 2352\) N and the force on the end \(C\) of the bar \(N\,\vek n = (1881{,}6,\ -1411{,}2)\) N. The block \(\vek n\,\vek n^\T\,EA/L\) multiplied by the displacement \((0, -10^{-3})\) m gives the same: \((-1{,}8816\cdot 10^6)(-10^{-3}) = 1881{,}6\) N and \(1{,}4112\cdot 10^6 \cdot (-10^{-3}) = -1411{,}2\) N. A column of the matrix tells what force the node needs for a unit displacement (definition <a class="xref" href="sec-element-palice.html#def-togostna-matrika" data-knowl="def-togostna-matrika">7.4</a>), and the force on the bar has the direction of the bar, because the bar carries only an axial force.</p>
+<p>The order of the nodes does not affect the result. If we <span class="nobr"><a data-del="oznake" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-matrika" data-knowl="fig-pra-matrika">swap \(i\) and \(j\)</a>,</span> \(\vek n\) changes to <span class="nobr">\(-\vek n\),</span> while the product \(\vek n\,\vek n^\T\) does not change, so we get the same matrix (COOK, PDF p. 45).</p>
 
 <figure class="blk slika" id="fig-pra-matrika"><p><span class="svgfig" role="img" aria-label="A 4 x 4 matrix with blocks c squared, cs and s squared and signs"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='250.46pt' height='195.71pt' viewBox='-72.000004 -72.000008 185.527313 144.970859'>
 <defs>
@@ -345,17 +369,9 @@
 <g stroke-width='0.6'>
 <g stroke-linecap='round'>
 <g stroke-linejoin='round'>
+<g class='del' data-del='c2'>
 <g fill='#d9d9ff' stroke='#d9d9ff'>
 <path d='M0 0V-32.72047H32.72047V0ZM32.72047-32.72047' stroke='none'/>
-</g>
-<g fill='#ffd9d9' stroke='#ffd9d9'>
-<path d='M32.72047 0V-32.72047H65.44095V0ZM65.44095-32.72047' stroke='none'/>
-</g>
-<g fill='#ffd9d9' stroke='#ffd9d9'>
-<path d='M0-32.72047V-65.44095H32.72047V-32.72047ZM32.72047-65.44095' stroke='none'/>
-</g>
-<g fill='#b3ffb3' stroke='#b3ffb3'>
-<path d='M32.72047-32.72047V-65.44095H65.44095V-32.72047ZM65.44095-65.44095' stroke='none'/>
 </g>
 <g transform='translate(8.06448,-20.01358)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.159059,-57.92022)scale(-1,-1)'>
@@ -367,6 +383,56 @@
 </g>
 </g>
 </g>
+</g>
+<g fill='#d9d9ff' stroke='#d9d9ff'>
+<path d='M65.44095 0V-32.72047H98.16142V0ZM98.16142-32.72047' stroke='none'/>
+</g>
+<g transform='translate(73.50545,-20.01358)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.159059,-57.92022)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.159059' y='-57.92022' xlink:href='#pra-matrika-g0-0'/>
+<use x='-47.410312' y='-57.92022' xlink:href='#pra-matrika-g1-99'/>
+<use x='-43.098915' y='-61.535584' xlink:href='#pra-matrika-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#d9d9ff' stroke='#d9d9ff'>
+<path d='M0-65.44095V-98.16142H32.72047V-65.44095ZM32.72047-98.16142' stroke='none'/>
+</g>
+<g transform='translate(8.06448,-85.45454)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.159059,-57.92022)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.159059' y='-57.92022' xlink:href='#pra-matrika-g0-0'/>
+<use x='-47.410312' y='-57.92022' xlink:href='#pra-matrika-g1-99'/>
+<use x='-43.098915' y='-61.535584' xlink:href='#pra-matrika-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#d9d9ff' stroke='#d9d9ff'>
+<path d='M65.44095-65.44095V-98.16142H98.16142V-65.44095ZM98.16142-98.16142' stroke='none'/>
+</g>
+<g transform='translate(73.50545,-85.45454)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.159059,-57.92022)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.159059' y='-57.92022' xlink:href='#pra-matrika-g3-43'/>
+<use x='-47.410312' y='-57.92022' xlink:href='#pra-matrika-g1-99'/>
+<use x='-43.098915' y='-61.535584' xlink:href='#pra-matrika-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='cs'>
+<g fill='#ffd9d9' stroke='#ffd9d9'>
+<path d='M32.72047 0V-32.72047H65.44095V0ZM65.44095-32.72047' stroke='none'/>
+</g>
+<g fill='#ffd9d9' stroke='#ffd9d9'>
+<path d='M0-32.72047V-65.44095H32.72047V-32.72047ZM32.72047-65.44095' stroke='none'/>
 </g>
 <g transform='translate(40.6843,-18.86023)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.159059,-57.92022)scale(-1,-1)'>
@@ -390,39 +456,11 @@
 </g>
 </g>
 </g>
-<g transform='translate(40.60501,-52.73407)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.159059,-57.92022)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='-55.159059' y='-57.92022' xlink:href='#pra-matrika-g3-43'/>
-<use x='-47.410312' y='-57.92022' xlink:href='#pra-matrika-g1-115'/>
-<use x='-42.740324' y='-61.535584' xlink:href='#pra-matrika-g4-50'/>
-</g>
-</g>
-</g>
-</g>
-<g fill='#d9d9ff' stroke='#d9d9ff'>
-<path d='M65.44095 0V-32.72047H98.16142V0ZM98.16142-32.72047' stroke='none'/>
-</g>
 <g fill='#ffd9d9' stroke='#ffd9d9'>
 <path d='M98.16144 0V-32.72047H130.88191V0ZM130.88191-32.72047' stroke='none'/>
 </g>
 <g fill='#ffd9d9' stroke='#ffd9d9'>
 <path d='M65.44095-32.72047V-65.44095H98.16142V-32.72047ZM98.16142-65.44095' stroke='none'/>
-</g>
-<g fill='#b3ffb3' stroke='#b3ffb3'>
-<path d='M98.16144-32.72047V-65.44095H130.88191V-32.72047ZM130.88191-65.44095' stroke='none'/>
-</g>
-<g transform='translate(73.50545,-20.01358)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.159059,-57.92022)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='-55.159059' y='-57.92022' xlink:href='#pra-matrika-g0-0'/>
-<use x='-47.410312' y='-57.92022' xlink:href='#pra-matrika-g1-99'/>
-<use x='-43.098915' y='-61.535584' xlink:href='#pra-matrika-g4-50'/>
-</g>
-</g>
-</g>
 </g>
 <g transform='translate(106.12526,-18.86023)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.159059,-57.92022)scale(-1,-1)'>
@@ -446,39 +484,11 @@
 </g>
 </g>
 </g>
-<g transform='translate(106.04597,-52.73407)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.159059,-57.92022)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='-55.159059' y='-57.92022' xlink:href='#pra-matrika-g0-0'/>
-<use x='-47.410312' y='-57.92022' xlink:href='#pra-matrika-g1-115'/>
-<use x='-42.740324' y='-61.535584' xlink:href='#pra-matrika-g4-50'/>
-</g>
-</g>
-</g>
-</g>
-<g fill='#d9d9ff' stroke='#d9d9ff'>
-<path d='M0-65.44095V-98.16142H32.72047V-65.44095ZM32.72047-98.16142' stroke='none'/>
-</g>
 <g fill='#ffd9d9' stroke='#ffd9d9'>
 <path d='M32.72047-65.44095V-98.16142H65.44095V-65.44095ZM65.44095-98.16142' stroke='none'/>
 </g>
 <g fill='#ffd9d9' stroke='#ffd9d9'>
 <path d='M0-98.16144V-130.88191H32.72047V-98.16144ZM32.72047-130.88191' stroke='none'/>
-</g>
-<g fill='#b3ffb3' stroke='#b3ffb3'>
-<path d='M32.72047-98.16144V-130.88191H65.44095V-98.16144ZM65.44095-130.88191' stroke='none'/>
-</g>
-<g transform='translate(8.06448,-85.45454)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.159059,-57.92022)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='-55.159059' y='-57.92022' xlink:href='#pra-matrika-g0-0'/>
-<use x='-47.410312' y='-57.92022' xlink:href='#pra-matrika-g1-99'/>
-<use x='-43.098915' y='-61.535584' xlink:href='#pra-matrika-g4-50'/>
-</g>
-</g>
-</g>
 </g>
 <g transform='translate(40.6843,-84.3012)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.159059,-57.92022)scale(-1,-1)'>
@@ -502,39 +512,11 @@
 </g>
 </g>
 </g>
-<g transform='translate(40.60501,-118.17503)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.159059,-57.92022)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='-55.159059' y='-57.92022' xlink:href='#pra-matrika-g0-0'/>
-<use x='-47.410312' y='-57.92022' xlink:href='#pra-matrika-g1-115'/>
-<use x='-42.740324' y='-61.535584' xlink:href='#pra-matrika-g4-50'/>
-</g>
-</g>
-</g>
-</g>
-<g fill='#d9d9ff' stroke='#d9d9ff'>
-<path d='M65.44095-65.44095V-98.16142H98.16142V-65.44095ZM98.16142-98.16142' stroke='none'/>
-</g>
 <g fill='#ffd9d9' stroke='#ffd9d9'>
 <path d='M98.16144-65.44095V-98.16142H130.88191V-65.44095ZM130.88191-98.16142' stroke='none'/>
 </g>
 <g fill='#ffd9d9' stroke='#ffd9d9'>
 <path d='M65.44095-98.16144V-130.88191H98.16142V-98.16144ZM98.16142-130.88191' stroke='none'/>
-</g>
-<g fill='#b3ffb3' stroke='#b3ffb3'>
-<path d='M98.16144-98.16144V-130.88191H130.88191V-98.16144ZM130.88191-130.88191' stroke='none'/>
-</g>
-<g transform='translate(73.50545,-85.45454)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.159059,-57.92022)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='-55.159059' y='-57.92022' xlink:href='#pra-matrika-g3-43'/>
-<use x='-47.410312' y='-57.92022' xlink:href='#pra-matrika-g1-99'/>
-<use x='-43.098915' y='-61.535584' xlink:href='#pra-matrika-g4-50'/>
-</g>
-</g>
-</g>
 </g>
 <g transform='translate(106.12526,-84.3012)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.159059,-57.92022)scale(-1,-1)'>
@@ -558,6 +540,53 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='s2'>
+<g fill='#b3ffb3' stroke='#b3ffb3'>
+<path d='M32.72047-32.72047V-65.44095H65.44095V-32.72047ZM65.44095-65.44095' stroke='none'/>
+</g>
+<g transform='translate(40.60501,-52.73407)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.159059,-57.92022)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.159059' y='-57.92022' xlink:href='#pra-matrika-g3-43'/>
+<use x='-47.410312' y='-57.92022' xlink:href='#pra-matrika-g1-115'/>
+<use x='-42.740324' y='-61.535584' xlink:href='#pra-matrika-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#b3ffb3' stroke='#b3ffb3'>
+<path d='M98.16144-32.72047V-65.44095H130.88191V-32.72047ZM130.88191-65.44095' stroke='none'/>
+</g>
+<g transform='translate(106.04597,-52.73407)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.159059,-57.92022)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.159059' y='-57.92022' xlink:href='#pra-matrika-g0-0'/>
+<use x='-47.410312' y='-57.92022' xlink:href='#pra-matrika-g1-115'/>
+<use x='-42.740324' y='-61.535584' xlink:href='#pra-matrika-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#b3ffb3' stroke='#b3ffb3'>
+<path d='M32.72047-98.16144V-130.88191H65.44095V-98.16144ZM65.44095-130.88191' stroke='none'/>
+</g>
+<g transform='translate(40.60501,-118.17503)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.159059,-57.92022)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.159059' y='-57.92022' xlink:href='#pra-matrika-g0-0'/>
+<use x='-47.410312' y='-57.92022' xlink:href='#pra-matrika-g1-115'/>
+<use x='-42.740324' y='-61.535584' xlink:href='#pra-matrika-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#b3ffb3' stroke='#b3ffb3'>
+<path d='M98.16144-98.16144V-130.88191H130.88191V-98.16144ZM130.88191-130.88191' stroke='none'/>
+</g>
 <g transform='translate(106.04597,-118.17503)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.159059,-57.92022)scale(-1,-1)'>
 <g fill='#000'>
@@ -569,6 +598,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='mreza'>
 <path d='M0 0V-130.88191H130.88191V0ZM130.88191-130.88191' fill='none'/>
 <g stroke-width='1.0'>
 <path d='M65.44095 0V-130.88191' fill='none'/>
@@ -604,6 +635,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='oznake'>
 <g transform='translate(11.8333,5.13295)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.159059,-57.92022)scale(-1,-1)'>
 <g fill='#000'>
@@ -684,6 +717,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='faktor'>
 <g transform='translate(140.20535,-68.07707)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.159059,-57.92022)scale(-1,-1)'>
 <g fill='#000'>
@@ -704,9 +739,10 @@
 </g>
 </g>
 </g>
+</g>
 </svg></span></p>
 <figcaption><span class="blk-label">Figure 7.17</span>: The matrix \(\mat k_{\mathrm{e}}\) of a bar in the plane, divided into \(2 \times 2\) blocks by nodes. The elements with \(c^2\) (blue), \(cs\) (orange) and \(s^2\) (grey) form the block <span class="nobr">\(\vek n\,\vek n^\T\),</span> which has the sign \(+\) on the diagonal and the sign \(-\) off it. All four blocks are equal up to sign, so the matrix has four equal elements in absolute value and is symmetric. Every row and every column consists of two numbers belonging to the displacements \(u\) and \(v\) of a node.</figcaption></figure>
-<p>We obtain the same result also by another route, which we will need for <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beams</a>. The axes of chapter <a class="xref" href="ch-napetost.html">2</a>, turned by the angle of the bar, are the local axes \(\bar x\) along the bar and \(\bar y\) across it (figure <a class="xref" href="sec-palicje-ravnina-mke.html#fig-pra-osi" data-knowl="fig-pra-osi">7.16</a>). At each node we obtain the displacement in the local axes with the rotation matrix of lemma <a class="xref" href="sec-vrtenje-osi.html#lem-komponente-v-zasukanih-oseh" data-knowl="lem-komponente-v-zasukanih-oseh">2.38</a>. In the plane this is the \(2 \times 2\) matrix</p>
+<p>We obtain the same result also by another route, which we will need for <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beams</a>. The axes of chapter <a class="xref" href="ch-napetost.html">2</a>, turned by the angle of the bar, are the local axes <a data-del="lokalna" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-osi" data-knowl="fig-pra-osi">\(\bar x\) along the bar</a> and \(\bar y\) across it (figure <a class="xref" href="sec-palicje-ravnina-mke.html#fig-pra-osi" data-knowl="fig-pra-osi">7.16</a>). At each node we obtain the displacement in the local axes with the rotation matrix of lemma <a class="xref" href="sec-vrtenje-osi.html#lem-komponente-v-zasukanih-oseh" data-knowl="lem-komponente-v-zasukanih-oseh">2.38</a>. In the plane this is the \(2 \times 2\) matrix</p>
 <div class="eq">\[\mat Q = \begin{bmatrix} c &amp; s \\ -s &amp; c \end{bmatrix} , \qquad \begin{pmatrix} \bar u_{\mathrm{i}} \\ \bar w_{\mathrm{i}} \end{pmatrix} = \mat Q\,\vek u_{\mathrm{i}} ,\]</div>
 <p>since the row \(\bar{\vek e}_{\mathrm{x}}\) of the rotation matrix is <span class="nobr">\(\vek n\).</span> For a bar with pins (lemma <a class="xref" href="sec-delo-sil-na-palici.html#lem-palica-palicja" data-knowl="lem-palica-palicja">4.5</a>) the local stiffness matrix is \(4 \times 4\) for the displacements \((\bar u_{\mathrm{i}}, \bar w_{\mathrm{i}}, \bar u_{\mathrm{j}}, \bar w_{\mathrm{j}})\)</p>
 <div class="eq">\[\bar{\mat k}_{\text{poln}} = \frac{EA}{L}\begin{bmatrix} 1 &amp; 0 &amp; -1 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 \\ -1 &amp; 0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 \end{bmatrix} ,\]</div>
@@ -728,12 +764,12 @@
 <p>The lemma showed that of the rotated matrix only the first row of the matrix \(\mat Q\) remains, because the second rows and columns of the local matrix are zero. For a beam this is not so, because a transverse displacement of an end there requires a force (lemma <a class="xref" href="sec-okvirji.html#lem-konec-vpetega-nosilca" data-knowl="lem-konec-vpetega-nosilca">5.93</a>), so the second route is the one we use in chapter <a class="xref" href="ch-mke-nosilci.html">12</a>. In section <a class="xref" href="sec-okvirji.html#sec-zvarjeno-palicje">5.14.3</a> we did the same by hand: the axial displacement \(u_{\mathrm{s}} = c_{\mathrm{x}}\,u_{\mathrm{C}} + c_{\mathrm{y}}\,v_{\mathrm{C}}\) and the transverse displacement \(v_{\mathrm{L}} = -c_{\mathrm{y}}\,u_{\mathrm{C}} + c_{\mathrm{x}}\,v_{\mathrm{C}}\) are exactly \(\bar u\) and \(\bar w\) with the matrix \(\mat Q\) introduced here. This fulfils the promise of chapter <a class="xref" href="ch-napetost.html">2</a> (section <a class="xref" href="sec-napetost-povezave.html">2.14</a>) that the rotation of axes and the components of a vector in rotated axes give the stiffness matrix of an element in global axes.</p>
 
 <h3 id="sec-palicje-konzola-mke"><span class="h-num">7.5.2</span> The wall truss for the fifth time (stensko paličje petič)</h3>
-<p>We computed the wall <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">truss</a> with bars \(AC\) and \(BC\) in chapter <a class="xref" href="ch-energijski-principi.html">4</a> three times: by the equilibrium of the pin (section <a class="xref" href="sec-delo-sil-na-palici.html#sec-palicje-konzola">4.1.4</a>), by <a class="xref auto" href="sec-virtualni-pomiki-palice.html#def-virtualno-delo" data-knowl="def-virtualno-delo">virtual work</a> (section <a class="xref" href="sec-virtualni-pomiki-palice.html#sec-palicje-virtualno">4.4.9</a>) and by energy (sections <a class="xref" href="sec-potencialna-energija.html#sec-palicje-najmanjsa-energija">4.6.5</a> and <a class="xref" href="sec-potencialna-energija.html#sec-castigliano-prvi">4.6.7</a>). The fourth time we computed it in section <a class="xref" href="sec-okvirji.html#sec-zvarjeno-palicje">5.14.3</a>, there with welded joints. Now we compute it by a procedure that does not require us to think about which bar lengthens how: with the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> of the bars, the assembly, the supports and the reactions of sections <a class="xref" href="sec-element-palice.html">7.1</a>, <a class="xref" href="sec-sestavljanje.html">7.2</a> and <a class="xref" href="sec-robni-pogoji-mke.html">7.3</a>. The data are the same: \(A = (-4, 0)\) m, \(B = (-4, 3)\) m, <span class="nobr">\(C = (0, 0)\),</span> the load \(F = 10\) kN downwards at <span class="nobr">\(C\),</span> \(EA = 1{,}96\cdot 10^7\) N for both bars.</p>
-<p>We number the nodes <span class="nobr">\(A = 1\),</span> <span class="nobr">\(B = 2\),</span> <span class="nobr">\(C = 3\).</span> Node \(i\) has the unknowns \(u_{\mathrm{i}}\) and <span class="nobr">\(v_{\mathrm{i}}\),</span> which we number \(2i - 1\) and \(2i\) (the displacements of node \(i\) stand together). In all there are \(6\) unknowns, <span class="nobr">\(\vek d = (u_{\mathrm{A}}, v_{\mathrm{A}}, u_{\mathrm{B}}, v_{\mathrm{B}}, u_{\mathrm{C}}, v_{\mathrm{C}})\).</span> The connectivity table (definition <a class="xref" href="sec-sestavljanje.html#def-tabela-povezav" data-knowl="def-tabela-povezav">7.10</a>) has two rows: element \(AC\) has the nodes \((A, C)\) and the unknowns <span class="nobr">\((1, 2, 5, 6)\),</span> element \(BC\) the nodes \((B, C)\) and the unknowns <span class="nobr">\((3, 4, 5, 6)\).</span> The matrices of the bars are from lemma <a class="xref" href="sec-palicje-ravnina-mke.html#lem-togost-palice-globalno" data-knowl="lem-togost-palice-globalno">7.28</a> (units \(10^6\) N/m)</p>
+<p>We computed the wall <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">truss</a> with <a data-del="AC" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-konzola-mke" data-knowl="fig-pra-konzola-mke">bars \(AC\)</a> and <a data-del="BC" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-konzola-mke" data-knowl="fig-pra-konzola-mke">\(BC\)</a> in chapter <a class="xref" href="ch-energijski-principi.html">4</a> three times: by the equilibrium of the pin (section <a class="xref" href="sec-delo-sil-na-palici.html#sec-palicje-konzola">4.1.4</a>), by <a class="xref auto" href="sec-virtualni-pomiki-palice.html#def-virtualno-delo" data-knowl="def-virtualno-delo">virtual work</a> (section <a class="xref" href="sec-virtualni-pomiki-palice.html#sec-palicje-virtualno">4.4.9</a>) and by energy (sections <a class="xref" href="sec-potencialna-energija.html#sec-palicje-najmanjsa-energija">4.6.5</a> and <a class="xref" href="sec-potencialna-energija.html#sec-castigliano-prvi">4.6.7</a>). The fourth time we computed it in section <a class="xref" href="sec-okvirji.html#sec-zvarjeno-palicje">5.14.3</a>, there with welded joints. Now we compute it by a procedure that does not require us to think about which bar lengthens how: with the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> of the bars, the assembly, the supports and the reactions of sections <a class="xref" href="sec-element-palice.html">7.1</a>, <a class="xref" href="sec-sestavljanje.html">7.2</a> and <a class="xref" href="sec-robni-pogoji-mke.html">7.3</a>. The data are the same: <a data-del="j1" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-konzola-mke" data-knowl="fig-pra-konzola-mke">\(A = (-4, 0)\) m</a>, <a data-del="j2" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-konzola-mke" data-knowl="fig-pra-konzola-mke">\(B = (-4, 3)\) m</a>, <span class="nobr"><a data-del="j3" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-konzola-mke" data-knowl="fig-pra-konzola-mke">\(C = (0, 0)\)</a>,</span> <span class="nobr"><a data-del="F" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-konzola-mke" data-knowl="fig-pra-konzola-mke">the load \(F = 10\) kN downwards at \(C\)</a>,</span> \(EA = 1{,}96\cdot 10^7\) N for both bars.</p>
+<p>We number the nodes <span class="nobr"><a data-del="j1,j2,j3" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-konzola-mke" data-knowl="fig-pra-konzola-mke"><span class="nobr">\(A = 1\),</span> <span class="nobr">\(B = 2\),</span> \(C = 3\)</a>.</span> Node \(i\) has the unknowns \(u_{\mathrm{i}}\) and <span class="nobr">\(v_{\mathrm{i}}\),</span> which we number \(2i - 1\) and \(2i\) (the displacements of node \(i\) stand together). <a data-del="oznake" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-konzola-mke" data-knowl="fig-pra-konzola-mke">In all there are \(6\) unknowns</a>, <span class="nobr">\(\vek d = (u_{\mathrm{A}}, v_{\mathrm{A}}, u_{\mathrm{B}}, v_{\mathrm{B}}, u_{\mathrm{C}}, v_{\mathrm{C}})\).</span> The connectivity table (definition <a class="xref" href="sec-sestavljanje.html#def-tabela-povezav" data-knowl="def-tabela-povezav">7.10</a>) has two rows: element \(AC\) has the nodes \((A, C)\) and the unknowns <span class="nobr">\((1, 2, 5, 6)\),</span> element \(BC\) the nodes \((B, C)\) and the unknowns <span class="nobr">\((3, 4, 5, 6)\).</span> The matrices of the bars are from lemma <a class="xref" href="sec-palicje-ravnina-mke.html#lem-togost-palice-globalno" data-knowl="lem-togost-palice-globalno">7.28</a> (units \(10^6\) N/m)</p>
 <div class="eq">\[\mat k_{\mathrm{AC}} = \begin{bmatrix} 4{,}9 &amp; 0 &amp; -4{,}9 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 \\ -4{,}9 &amp; 0 &amp; 4{,}9 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 \end{bmatrix} , \qquad \mat k_{\mathrm{BC}} = \begin{bmatrix} 2{,}5088 &amp; -1{,}8816 &amp; -2{,}5088 &amp; 1{,}8816 \\ -1{,}8816 &amp; 1{,}4112 &amp; 1{,}8816 &amp; -1{,}4112 \\ -2{,}5088 &amp; 1{,}8816 &amp; 2{,}5088 &amp; -1{,}8816 \\ 1{,}8816 &amp; -1{,}4112 &amp; -1{,}8816 &amp; 1{,}4112 \end{bmatrix} .\]</div>
-<p>We assemble the matrix of the structure of the truss as for the bar, \(\mat K = \sum_{\mathrm{e}} \mat Z_{\mathrm{e}}^\T\,\mat k_{\mathrm{e}}\,\mat Z_{\mathrm{e}}\) with the selection matrices of definition <a class="xref" href="sec-sestavljanje.html#def-izbirna-matrika" data-knowl="def-izbirna-matrika">7.11</a> (theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a>). By lemma <a class="xref" href="sec-sestavljanje.html#lem-izbirna-matrika" data-knowl="lem-izbirna-matrika">7.12</a> (item 2) this means that we add each element of each matrix at the position given by the row of the connectivity table. Element \((1, 1)\) of the matrix \(\mat k_{\mathrm{AC}}\) goes to position <span class="nobr">\((1, 1)\),</span> element \((1, 3)\) to position <span class="nobr">\((1, 5)\),</span> element \((3, 3)\) to position <span class="nobr">\((5, 5)\).</span> The matrix \(\mat k_{\mathrm{BC}}\) has the unknowns <span class="nobr">\((3, 4, 5, 6)\),</span> so its element \((3, 3)\) goes to position \((5, 5)\) and is added there to \(4{,}9\) from the bar <span class="nobr">\(AC\).</span> We obtain the matrix of the structure</p>
+<p>We assemble the matrix of the structure of the truss as for the bar, \(\mat K = \sum_{\mathrm{e}} \mat Z_{\mathrm{e}}^\T\,\mat k_{\mathrm{e}}\,\mat Z_{\mathrm{e}}\) with the selection matrices of definition <a class="xref" href="sec-sestavljanje.html#def-izbirna-matrika" data-knowl="def-izbirna-matrika">7.11</a> (theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a>). By lemma <a class="xref" href="sec-sestavljanje.html#lem-izbirna-matrika" data-knowl="lem-izbirna-matrika">7.12</a> (item 2) this means that we add each element of each matrix at the position given by the row of the connectivity table. Element \((1, 1)\) of the matrix \(\mat k_{\mathrm{AC}}\) goes to position <span class="nobr">\((1, 1)\),</span> element \((1, 3)\) to position <span class="nobr">\((1, 5)\),</span> element \((3, 3)\) to position <span class="nobr">\((5, 5)\).</span> The matrix \(\mat k_{\mathrm{BC}}\) has the unknowns <span class="nobr">\((3, 4, 5, 6)\),</span> so its element \((3, 3)\) <a data-del="oba" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-konzola-mke" data-knowl="fig-pra-konzola-mke">goes to position \((5, 5)\) and is added there to \(4{,}9\) from the bar \(AC\)</a>. We obtain <a data-del="mreza" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-konzola-mke" data-knowl="fig-pra-konzola-mke">the matrix of the structure</a></p>
 <div class="eq">\[\mat K = 10^6 \begin{bmatrix} 4{,}9 &amp; 0 &amp; 0 &amp; 0 &amp; -4{,}9 &amp; 0 \\ 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 2{,}5088 &amp; -1{,}8816 &amp; -2{,}5088 &amp; 1{,}8816 \\ 0 &amp; 0 &amp; -1{,}8816 &amp; 1{,}4112 &amp; 1{,}8816 &amp; -1{,}4112 \\ -4{,}9 &amp; 0 &amp; -2{,}5088 &amp; 1{,}8816 &amp; 7{,}4088 &amp; -1{,}8816 \\ 0 &amp; 0 &amp; 1{,}8816 &amp; -1{,}4112 &amp; -1{,}8816 &amp; 1{,}4112 \end{bmatrix}\ \text{N/m} ,\]</div>
-<p>where \(7{,}4088 = 4{,}9 + 2{,}5088\) is the only element in which both contributions are nonzero: the bars meet only at <span class="nobr">\(C\),</span> and the bar \(AC\) contributes in the block of node \(C\) only in the direction \(x\) (figure <a class="xref" href="sec-palicje-ravnina-mke.html#fig-pra-konzola-mke" data-knowl="fig-pra-konzola-mke">7.18</a>). Every \(\mat k_{\mathrm{e}}\) is symmetric with energy \(U_{\mathrm{e}} = \tfrac12\,\vek d_{\mathrm{e}}^\T\mat k_{\mathrm{e}}\,\vek d_{\mathrm{e}} = \tfrac12\,\tfrac{EA}{L}\,e^2 \ge 0\) (lemma <a class="xref" href="sec-palicje-ravnina-mke.html#lem-togost-palice-globalno" data-knowl="lem-togost-palice-globalno">7.28</a>), so by corollary <a class="xref" href="sec-sestavljanje.html#cor-matrika-konstrukcije" data-knowl="cor-matrika-konstrukcije">7.14</a> \(\mat K\) is symmetric and by item 2 of theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a> <span class="nobr">\(\vek d^\T\mat K\,\vek d = 2\sum_{\mathrm{e}} U_{\mathrm{e}}\),</span> where \(\vek d_{\mathrm{e}} = \mat Z_{\mathrm{e}}\vek d\) is the column of the four displacements of element <span class="nobr">\(e\).</span> For trusses we already promised the symmetry in section <a class="xref" href="sec-betti-maxwell.html#sec-maxwellov-izrek">4.8.5</a> with <a class="xref auto" href="sec-betti-maxwell.html#thm-betti" data-knowl="thm-betti">Betti's theorem</a> (COOK (2.6-1)-(2.6-3), PDF p. 51), and here it follows directly from the fact that \(\vek n\,\vek n^\T\) is a <a class="xref auto" href="sec-matrike.html#def-simetricna-matrika" data-knowl="def-simetricna-matrika">symmetric matrix</a>.</p>
+<p>where <a data-del="oba" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-konzola-mke" data-knowl="fig-pra-konzola-mke">\(7{,}4088 = 4{,}9 + 2{,}5088\)</a> is the only element in which both contributions are nonzero: the bars meet only at <span class="nobr">\(C\),</span> and the bar \(AC\) contributes in the block of node \(C\) only in the direction \(x\) (figure <a class="xref" href="sec-palicje-ravnina-mke.html#fig-pra-konzola-mke" data-knowl="fig-pra-konzola-mke">7.18</a>). Every \(\mat k_{\mathrm{e}}\) is symmetric with energy \(U_{\mathrm{e}} = \tfrac12\,\vek d_{\mathrm{e}}^\T\mat k_{\mathrm{e}}\,\vek d_{\mathrm{e}} = \tfrac12\,\tfrac{EA}{L}\,e^2 \ge 0\) (lemma <a class="xref" href="sec-palicje-ravnina-mke.html#lem-togost-palice-globalno" data-knowl="lem-togost-palice-globalno">7.28</a>), so by corollary <a class="xref" href="sec-sestavljanje.html#cor-matrika-konstrukcije" data-knowl="cor-matrika-konstrukcije">7.14</a> \(\mat K\) is symmetric and by item 2 of theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a> <span class="nobr">\(\vek d^\T\mat K\,\vek d = 2\sum_{\mathrm{e}} U_{\mathrm{e}}\),</span> where \(\vek d_{\mathrm{e}} = \mat Z_{\mathrm{e}}\vek d\) is the column of the four displacements of element <span class="nobr">\(e\).</span> For trusses we already promised the symmetry in section <a class="xref" href="sec-betti-maxwell.html#sec-maxwellov-izrek">4.8.5</a> with <a class="xref auto" href="sec-betti-maxwell.html#thm-betti" data-knowl="thm-betti">Betti's theorem</a> (COOK (2.6-1)-(2.6-3), PDF p. 51), and here it follows directly from the fact that \(\vek n\,\vek n^\T\) is a <a class="xref auto" href="sec-matrike.html#def-simetricna-matrika" data-knowl="def-simetricna-matrika">symmetric matrix</a>.</p>
 
 <figure class="blk slika" id="fig-pra-konzola-mke"><p><span class="svgfig" role="img" aria-label="A truss with node and element labels and a 6 x 6 matrix with the rows of A and B marked"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='625.00pt' height='225.76pt' viewBox='-72.000004 -72.000006 462.960558 167.231861'>
 <defs>
@@ -767,6 +803,7 @@
 <g stroke-width='0.6'>
 <g stroke-linecap='round'>
 <g stroke-linejoin='round'>
+<g class='del' data-del='zid'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-width='0.45'>
 <path d='M-91.04912-15.93352V84.22037' fill='none'/>
@@ -862,12 +899,40 @@
 <path d='M-91.04912 80.80617L-95.6015 76.25377' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='AC'>
 <g stroke-width='1.6'>
 <path d='M-91.04912 0H0' fill='none'/>
 </g>
+<g transform='translate(-51.91345,-13.40933)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(32.898071,12.129867)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='32.898071' y='12.129867' xlink:href='#pra-konzola-mke-g4-40'/>
+<use x='36.772445' y='12.129867' xlink:href='#pra-konzola-mke-g4-49'/>
+<use x='41.753784' y='12.129867' xlink:href='#pra-konzola-mke-g4-41'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='BC'>
 <g stroke-width='1.6'>
 <path d='M-91.04912 68.28683L0 0' fill='none'/>
 </g>
+<g transform='translate(-44.16794,38.00003)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(32.898071,12.129867)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='32.898071' y='12.129867' xlink:href='#pra-konzola-mke-g4-40'/>
+<use x='36.772445' y='12.129867' xlink:href='#pra-konzola-mke-g4-50'/>
+<use x='41.753784' y='12.129867' xlink:href='#pra-konzola-mke-g4-41'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='j1'>
 <g fill='#fff'>
 <g fill='#fff'>
 <path d='M-88.78618 0C-88.78618 1.2498-89.79932 2.26294-91.04912 2.26294S-93.31206 1.2498-93.31206 0S-92.29892-2.26294-91.04912-2.26294S-88.78618-1.2498-88.78618 0ZM-91.04912 0'/>
@@ -880,6 +945,17 @@
 </g>
 </g>
 </g>
+<g transform='translate(-101.95847,4.77115)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(32.898071,12.129867)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='32.898071' y='12.129867' xlink:href='#pra-konzola-mke-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='j2'>
 <g fill='#fff'>
 <g fill='#fff'>
 <path d='M-88.78618 68.28683C-88.78618 69.53664-89.79932 70.54977-91.04912 70.54977S-93.31206 69.53664-93.31206 68.28683C-93.31206 67.03703-92.29892 66.0239-91.04912 66.0239S-88.78618 67.03703-88.78618 68.28683ZM-91.04912 68.28683'/>
@@ -888,25 +964,6 @@
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(32.898071,12.129867)scale(-1,-1)'>
 <g fill='#000'>
 <g stroke='none'/>
-</g>
-</g>
-</g>
-</g>
-<g fill='#fff'>
-<g fill='#fff'>
-<path d='M2.26294 0C2.26294 1.2498 1.2498 2.26294 0 2.26294S-2.26294 1.2498-2.26294 0S-1.2498-2.26294 0-2.26294S2.26294-1.2498 2.26294 0ZM0 0'/>
-</g>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(32.898071,12.129867)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'/>
-</g>
-</g>
-</g>
-<g transform='translate(-101.95847,4.77115)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(32.898071,12.129867)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='32.898071' y='12.129867' xlink:href='#pra-konzola-mke-g4-49'/>
 </g>
 </g>
 </g>
@@ -920,6 +977,18 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='j3'>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M2.26294 0C2.26294 1.2498 1.2498 2.26294 0 2.26294S-2.26294 1.2498-2.26294 0S-1.2498-2.26294 0-2.26294S2.26294-1.2498 2.26294 0ZM0 0'/>
+</g>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(32.898071,12.129867)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
 <g transform='translate(5.90933,4.77115)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(32.898071,12.129867)scale(-1,-1)'>
 <g fill='#000'>
@@ -929,28 +998,8 @@
 </g>
 </g>
 </g>
-<g transform='translate(-51.91345,-13.40933)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(32.898071,12.129867)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='32.898071' y='12.129867' xlink:href='#pra-konzola-mke-g4-40'/>
-<use x='36.772445' y='12.129867' xlink:href='#pra-konzola-mke-g4-49'/>
-<use x='41.753784' y='12.129867' xlink:href='#pra-konzola-mke-g4-41'/>
 </g>
-</g>
-</g>
-</g>
-<g transform='translate(-44.16794,38.00003)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(32.898071,12.129867)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='32.898071' y='12.129867' xlink:href='#pra-konzola-mke-g4-40'/>
-<use x='36.772445' y='12.129867' xlink:href='#pra-konzola-mke-g4-50'/>
-<use x='41.753784' y='12.129867' xlink:href='#pra-konzola-mke-g4-41'/>
-</g>
-</g>
-</g>
-</g>
+<g class='del' data-del='F'>
 <g stroke-width='0.9'>
 <path d='M0-2.73135V-27.64343' fill='none'/>
 <g transform='matrix(0.0,-1.0,1.0,0.0,0.0,-25.0384)'>
@@ -970,12 +1019,54 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='AC'>
 <g fill='#d9d9ff' stroke='#d9d9ff'>
 <path d='M136.5733 54.06006V31.29779H173.56195V54.06006ZM173.56195 31.29779' stroke='none'/>
 </g>
 <g fill='#d9d9ff' stroke='#d9d9ff'>
 <path d='M284.52791 54.06006V31.29779H321.51656V54.06006ZM321.51656 31.29779' stroke='none'/>
 </g>
+<g fill='#d9d9ff' stroke='#d9d9ff'>
+<path d='M136.5733-36.98906V-59.75134H173.56195V-36.98906ZM173.56195-59.75134' stroke='none'/>
+</g>
+<g transform='translate(149.89377,41.10413)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(32.898071,12.129867)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='32.898071' y='12.129867' xlink:href='#pra-konzola-mke-g5-52'/>
+<use x='36.869311' y='12.129867' xlink:href='#pra-konzola-mke-g2-59'/>
+<use x='39.235438' y='12.129867' xlink:href='#pra-konzola-mke-g5-57'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(294.72339,41.10413)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(32.898071,12.129867)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='32.898071' y='12.129867' xlink:href='#pra-konzola-mke-g0-0'/>
+<use x='39.12475' y='12.129867' xlink:href='#pra-konzola-mke-g5-52'/>
+<use x='43.095991' y='12.129867' xlink:href='#pra-konzola-mke-g2-59'/>
+<use x='45.462118' y='12.129867' xlink:href='#pra-konzola-mke-g5-57'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(146.76877,-49.94499)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(32.898071,12.129867)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='32.898071' y='12.129867' xlink:href='#pra-konzola-mke-g0-0'/>
+<use x='39.12475' y='12.129867' xlink:href='#pra-konzola-mke-g5-52'/>
+<use x='43.095991' y='12.129867' xlink:href='#pra-konzola-mke-g2-59'/>
+<use x='45.462118' y='12.129867' xlink:href='#pra-konzola-mke-g5-57'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='BC'>
 <g fill='#ffd9d9' stroke='#ffd9d9'>
 <path d='M210.5506 8.5355V-14.22678H247.53926V8.5355ZM247.53926-14.22678' stroke='none'/>
 </g>
@@ -1000,17 +1091,11 @@
 <g fill='#ffd9d9' stroke='#ffd9d9'>
 <path d='M321.51656-14.22678V-36.98906H358.50522V-14.22678ZM358.50522-36.98906' stroke='none'/>
 </g>
-<g fill='#d9d9ff' stroke='#d9d9ff'>
-<path d='M136.5733-36.98906V-59.75134H173.56195V-36.98906ZM173.56195-59.75134' stroke='none'/>
-</g>
 <g fill='#ffd9d9' stroke='#ffd9d9'>
 <path d='M210.5506-36.98906V-59.75134H247.53926V-36.98906ZM247.53926-59.75134' stroke='none'/>
 </g>
 <g fill='#ffd9d9' stroke='#ffd9d9'>
 <path d='M247.53926-36.98906V-59.75134H284.52791V-36.98906ZM284.52791-59.75134' stroke='none'/>
-</g>
-<g fill='#b3ffb3' stroke='#b3ffb3'>
-<path d='M284.52791-36.98906V-59.75134H321.51656V-36.98906ZM321.51656-59.75134' stroke='none'/>
 </g>
 <g fill='#ffd9d9' stroke='#ffd9d9'>
 <path d='M321.51656-36.98906V-59.75134H358.50522V-36.98906ZM358.50522-59.75134' stroke='none'/>
@@ -1026,128 +1111,6 @@
 </g>
 <g fill='#ffd9d9' stroke='#ffd9d9'>
 <path d='M321.51656-59.75134V-82.51363H358.50522V-59.75134ZM358.50522-82.51363' stroke='none'/>
-</g>
-<g fill='#0f0' stroke='#0f0'>
-<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
-<g stroke-width='0.45'>
-<path d='M136.5733 54.06006V-82.51363' fill='none'/>
-</g>
-</g>
-</g>
-<g fill='#0f0' stroke='#0f0'>
-<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
-<g stroke-width='0.45'>
-<path d='M136.5733 54.06006H358.50522' fill='none'/>
-</g>
-</g>
-</g>
-<g fill='#0f0' stroke='#0f0'>
-<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
-<g stroke-width='0.45'>
-<path d='M173.56195 54.06006V-82.51363' fill='none'/>
-</g>
-</g>
-</g>
-<g fill='#0f0' stroke='#0f0'>
-<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
-<g stroke-width='0.45'>
-<path d='M136.5733 31.29779H358.50522' fill='none'/>
-</g>
-</g>
-</g>
-<g fill='#0f0' stroke='#0f0'>
-<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
-<g stroke-width='0.45'>
-<path d='M210.5506 54.06006V-82.51363' fill='none'/>
-</g>
-</g>
-</g>
-<g fill='#0f0' stroke='#0f0'>
-<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
-<g stroke-width='0.45'>
-<path d='M136.5733 8.5355H358.50522' fill='none'/>
-</g>
-</g>
-</g>
-<g fill='#0f0' stroke='#0f0'>
-<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
-<g stroke-width='0.45'>
-<path d='M247.53926 54.06006V-82.51363' fill='none'/>
-</g>
-</g>
-</g>
-<g fill='#0f0' stroke='#0f0'>
-<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
-<g stroke-width='0.45'>
-<path d='M136.5733-14.22678H358.50522' fill='none'/>
-</g>
-</g>
-</g>
-<g fill='#0f0' stroke='#0f0'>
-<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
-<g stroke-width='0.45'>
-<path d='M284.52791 54.06006V-82.51363' fill='none'/>
-</g>
-</g>
-</g>
-<g fill='#0f0' stroke='#0f0'>
-<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
-<g stroke-width='0.45'>
-<path d='M136.5733-36.98906H358.50522' fill='none'/>
-</g>
-</g>
-</g>
-<g fill='#0f0' stroke='#0f0'>
-<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
-<g stroke-width='0.45'>
-<path d='M321.51656 54.06006V-82.51363' fill='none'/>
-</g>
-</g>
-</g>
-<g fill='#0f0' stroke='#0f0'>
-<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
-<g stroke-width='0.45'>
-<path d='M136.5733-59.75134H358.50522' fill='none'/>
-</g>
-</g>
-</g>
-<g fill='#0f0' stroke='#0f0'>
-<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
-<g stroke-width='0.45'>
-<path d='M358.50522 54.06006V-82.51363' fill='none'/>
-</g>
-</g>
-</g>
-<g fill='#0f0' stroke='#0f0'>
-<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
-<g stroke-width='0.45'>
-<path d='M136.5733-82.51363H358.50522' fill='none'/>
-</g>
-</g>
-</g>
-<path d='M136.5733 54.06006V-82.51363H358.50522V54.06006ZM358.50522-82.51363' fill='none'/>
-<g transform='translate(149.89377,41.10413)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(32.898071,12.129867)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='32.898071' y='12.129867' xlink:href='#pra-konzola-mke-g5-52'/>
-<use x='36.869311' y='12.129867' xlink:href='#pra-konzola-mke-g2-59'/>
-<use x='39.235438' y='12.129867' xlink:href='#pra-konzola-mke-g5-57'/>
-</g>
-</g>
-</g>
-</g>
-<g transform='translate(294.72339,41.10413)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(32.898071,12.129867)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='32.898071' y='12.129867' xlink:href='#pra-konzola-mke-g0-0'/>
-<use x='39.12475' y='12.129867' xlink:href='#pra-konzola-mke-g5-52'/>
-<use x='43.095991' y='12.129867' xlink:href='#pra-konzola-mke-g2-59'/>
-<use x='45.462118' y='12.129867' xlink:href='#pra-konzola-mke-g5-57'/>
-</g>
-</g>
-</g>
 </g>
 <g transform='translate(217.89189,-4.42044)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(32.898071,12.129867)scale(-1,-1)'>
@@ -1265,18 +1228,6 @@
 </g>
 </g>
 </g>
-<g transform='translate(146.76877,-49.94499)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(32.898071,12.129867)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='32.898071' y='12.129867' xlink:href='#pra-konzola-mke-g0-0'/>
-<use x='39.12475' y='12.129867' xlink:href='#pra-konzola-mke-g5-52'/>
-<use x='43.095991' y='12.129867' xlink:href='#pra-konzola-mke-g2-59'/>
-<use x='45.462118' y='12.129867' xlink:href='#pra-konzola-mke-g5-57'/>
-</g>
-</g>
-</g>
-</g>
 <g transform='translate(214.76688,-49.94499)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(32.898071,12.129867)scale(-1,-1)'>
 <g fill='#000'>
@@ -1302,20 +1253,6 @@
 <use x='43.206679' y='12.129867' xlink:href='#pra-konzola-mke-g5-56'/>
 <use x='47.177919' y='12.129867' xlink:href='#pra-konzola-mke-g5-49'/>
 <use x='51.14916' y='12.129867' xlink:href='#pra-konzola-mke-g5-54'/>
-</g>
-</g>
-</g>
-</g>
-<g transform='translate(291.8692,-49.94499)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(32.898071,12.129867)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='32.898071' y='12.129867' xlink:href='#pra-konzola-mke-g5-55'/>
-<use x='36.869311' y='12.129867' xlink:href='#pra-konzola-mke-g2-59'/>
-<use x='39.235438' y='12.129867' xlink:href='#pra-konzola-mke-g5-52'/>
-<use x='43.206679' y='12.129867' xlink:href='#pra-konzola-mke-g5-48'/>
-<use x='47.177919' y='12.129867' xlink:href='#pra-konzola-mke-g5-56'/>
-<use x='51.14916' y='12.129867' xlink:href='#pra-konzola-mke-g5-56'/>
 </g>
 </g>
 </g>
@@ -1393,6 +1330,128 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='oba'>
+<g fill='#b3ffb3' stroke='#b3ffb3'>
+<path d='M284.52791-36.98906V-59.75134H321.51656V-36.98906ZM321.51656-59.75134' stroke='none'/>
+</g>
+<g transform='translate(291.8692,-49.94499)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(32.898071,12.129867)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='32.898071' y='12.129867' xlink:href='#pra-konzola-mke-g5-55'/>
+<use x='36.869311' y='12.129867' xlink:href='#pra-konzola-mke-g2-59'/>
+<use x='39.235438' y='12.129867' xlink:href='#pra-konzola-mke-g5-52'/>
+<use x='43.206679' y='12.129867' xlink:href='#pra-konzola-mke-g5-48'/>
+<use x='47.177919' y='12.129867' xlink:href='#pra-konzola-mke-g5-56'/>
+<use x='51.14916' y='12.129867' xlink:href='#pra-konzola-mke-g5-56'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='mreza'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M136.5733 54.06006V-82.51363' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M136.5733 54.06006H358.50522' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M173.56195 54.06006V-82.51363' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M136.5733 31.29779H358.50522' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M210.5506 54.06006V-82.51363' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M136.5733 8.5355H358.50522' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M247.53926 54.06006V-82.51363' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M136.5733-14.22678H358.50522' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M284.52791 54.06006V-82.51363' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M136.5733-36.98906H358.50522' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M321.51656 54.06006V-82.51363' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M136.5733-59.75134H358.50522' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M358.50522 54.06006V-82.51363' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M136.5733-82.51363H358.50522' fill='none'/>
+</g>
+</g>
+</g>
+<path d='M136.5733 54.06006V-82.51363H358.50522V54.06006ZM358.50522-82.51363' fill='none'/>
+</g>
+<g class='del' data-del='oznake'>
 <g transform='translate(149.86305,62.96632)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(32.898071,12.129867)scale(-1,-1)'>
 <g fill='#000'>
@@ -1513,6 +1572,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='predpisano'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-width='2.0'>
 <path d='M112.3883 52.63734V-35.56633' fill='none'/>
@@ -1523,8 +1584,11 @@
 <path d='M137.99602 72.55415H283.10518' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='Kff'>
 <g stroke-width='1.8'>
 <path d='M284.52791-36.98906V-82.51363H358.50522V-36.98906ZM358.50522-82.51363' fill='none'/>
+</g>
 </g>
 </g>
 </g>
@@ -1537,12 +1601,12 @@
 <figcaption><span class="blk-label">Figure 7.18</span>: The wall truss with the numbered nodes <span class="nobr">\(1 = A\),</span> <span class="nobr">\(2 = B\),</span> \(3 = C\) and the elements (1) bar <span class="nobr">\(AC\),</span> (2) bar <span class="nobr">\(BC\),</span> and the matrix \(\mat K\) in units of \(10^6\) N/m. Every nonzero element is coloured by the element that contributes it: blue the bar <span class="nobr">\(AC\),</span> orange the bar <span class="nobr">\(BC\),</span> grey at position \((5, 5)\) both, where the element is the sum <span class="nobr">\(4{,}9 + 2{,}5088\).</span> The two grey lines at the edge mark the rows and columns \(1\) to \(4\) (nodes \(A\) and <span class="nobr">\(B\)),</span> which we strike out because the displacements of \(A\) and \(B\) are prescribed. What remains is the \(2 \times 2\) block for the displacements of \(C\) (frame), which is the matrix of section <a class="xref" href="sec-potencialna-energija.html#sec-castigliano-prvi">4.6.7</a>.</figcaption></figure>
 <p>The matrix \(\mat K\) is not <a class="xref auto" href="sec-matrike.html#def-inverzna-matrika" data-knowl="def-inverzna-matrika">invertible</a>. Its second row is zero: a vertical displacement of node \(A\) requires no force, because the bar \(AC\) does not change its length to first order (the elongation is of second order, \(0{,}000125\) mm for a displacement of 1 mm, section <a class="xref" href="sec-virtualni-pomiki-palice.html#sec-palicje-virtualno">4.4.9</a>). Besides, by a computation with SymPy and NumPy \(\mat K\) has the <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">eigenvalues</a> <span class="nobr">\(0\),</span> <span class="nobr">\(0\),</span> <span class="nobr">\(0\),</span> <span class="nobr">\(0\),</span> \(5{,}1795\) and \(12{,}4605\) (in \(10^6\) N/m), so four independent displacements with zero energy. Which are they, if the truss stands without supports (figure <a class="xref" href="sec-palicje-ravnina-mke.html#fig-pra-togi-nacini" data-knowl="fig-pra-togi-nacini">7.19</a>)? The elongation of the bar from \(i\) to \(j\) is <span class="nobr">\(\vek n\cdot(\vek u_{\mathrm{j}} - \vek u_{\mathrm{i}})\),</span> so we look for displacements for which it is zero for both bars.</p>
 <ol>
-<li>A displacement of all nodes by the same <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vector</a> in the direction <span class="nobr">\(x\),</span> because all differences of displacements are zero. This is a rigid-body displacement (togi premik, definition <a class="xref" href="sec-deformacija-v-tocki.html#def-togo-telo" data-knowl="def-togo-telo">1.11</a>).</li>
-<li>The same displacement in the direction <span class="nobr">\(y\).</span></li>
-<li>Node \(A\) moves by \((0, 1)\) mm, nodes \(B\) and \(C\) stay at rest. The elongation of the bar \(AC\) is <span class="nobr">\((1, 0)\cdot(0, -1)\ \text{mm} = 0\),</span> and the displacement does not touch the bar <span class="nobr">\(BC\).</span> This is a rotation of the bar \(AC\) about <span class="nobr">\(C\).</span></li>
-<li>Node \(B\) moves by \((0{,}6, 0{,}8)\) mm, nodes \(A\) and \(C\) stay at rest. The displacement is perpendicular to the bar <span class="nobr">\(BC\),</span> since <span class="nobr">\((0{,}8, -0{,}6)\cdot(0{,}6, 0{,}8) = 0{,}48 - 0{,}48 = 0\),</span> so its elongation is zero. This is a rotation of the bar \(BC\) about <span class="nobr">\(C\).</span></li>
+<li><a data-del="pa" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-togi-nacini" data-knowl="fig-pra-togi-nacini">A displacement of all nodes</a> <a data-del="ma" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-togi-nacini" data-knowl="fig-pra-togi-nacini">by the same vector in the direction \(x\)</a>, because all differences of displacements are zero. This is a rigid-body displacement (togi premik, definition <a class="xref" href="sec-deformacija-v-tocki.html#def-togo-telo" data-knowl="def-togo-telo">1.11</a>).</li>
+<li><a data-del="pb" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-togi-nacini" data-knowl="fig-pra-togi-nacini">The same displacement</a> <span class="nobr"><a data-del="mb" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-togi-nacini" data-knowl="fig-pra-togi-nacini">in the direction \(y\)</a>.</span></li>
+<li><a data-del="mc" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-togi-nacini" data-knowl="fig-pra-togi-nacini">Node \(A\) moves by \((0, 1)\) mm</a>, <a data-del="pc" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-togi-nacini" data-knowl="fig-pra-togi-nacini">nodes \(B\) and \(C\) stay at rest</a>. The elongation of the bar \(AC\) is <span class="nobr">\((1, 0)\cdot(0, -1)\ \text{mm} = 0\),</span> and the displacement does not touch the bar <span class="nobr">\(BC\).</span> This is <a data-del="novaac" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-togi-nacini" data-knowl="fig-pra-togi-nacini">a rotation of the bar \(AC\) about \(C\)</a>.</li>
+<li><a data-del="md" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-togi-nacini" data-knowl="fig-pra-togi-nacini">Node \(B\) moves by \((0{,}6, 0{,}8)\) mm</a>, <a data-del="pd" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-togi-nacini" data-knowl="fig-pra-togi-nacini">nodes \(A\) and \(C\) stay at rest</a>. The displacement is perpendicular to the bar <span class="nobr">\(BC\),</span> since <span class="nobr">\((0{,}8, -0{,}6)\cdot(0{,}6, 0{,}8) = 0{,}48 - 0{,}48 = 0\),</span> so its elongation is zero. This is <a data-del="novabc" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-togi-nacini" data-knowl="fig-pra-togi-nacini">a rotation of the bar \(BC\) about \(C\)</a>.</li>
 </ol>
-<p>Displacements 1 and 2 have a nonzero displacement of node <span class="nobr">\(C\),</span> displacements 3 and 4 do not, and each of these two has a nonzero displacement of another node, so the four displacements are independent. There are no more, because there are exactly four zero eigenvalues. Three of these four we may regard as rigid-body displacements, but the fourth not. A small rotation of the whole truss by an angle \(\theta\) about \(C\) moves the point \((x, y)\) by <span class="nobr">\(\theta\,(-y, x)\),</span> which follows from the displacement of a rotated point \((c\,x - s\,y,\ s\,x + c\,y)\) at \(c \approx 1\) and \(s \approx \theta\) (section <a class="xref" href="sec-pomik-v-prostoru.html">1.6</a>). Node \(A\) moves by \(\theta\,(0, -4)\) m, node \(B\) by \(\theta\,(-3, -4)\) m, node \(C\) by zero. The elongations of the bars are \((1, 0)\cdot(0, 4\theta) = 0\) and <span class="nobr">\((0{,}8, -0{,}6)\cdot(3\theta, 4\theta) = 2{,}4\theta - 2{,}4\theta = 0\),</span> so this is a displacement with zero energy, and <span class="nobr">\(\theta\,(0, -4, -3, -4, 0, 0) = -4\theta\,(0, 1, 0, 0, 0, 0) - 5\theta\,(0, 0, 0{,}6, 0{,}8, 0, 0)\).</span> The rigid rotation is therefore a rotation of both bars about \(C\) by the same angle, and displacements 1 and 2 are a rigid-body displacement of the whole. A rotation of only one bar, which changes the angle between the bars, is not a rigid-body displacement: the angle between the bars changes, while the lengths of the bars do not. In a truss made of a triangle of bars (the example below) each bar connects also a third node, so the bars cannot go each its own way, and only three rigid-body displacements are possible (FELIPPA, PDF p. 45). Here the bars do not form a triangle, so each can rotate about \(C\) on its own. Such a displacement gets its name and definition in the next subsection.</p>
+<p>Displacements 1 and 2 have a nonzero displacement of node <span class="nobr">\(C\),</span> displacements 3 and 4 do not, and each of these two has a nonzero displacement of another node, so the four displacements are independent. There are no more, because there are exactly four zero eigenvalues. Three of these four we may regard as rigid-body displacements, but the fourth not. A small rotation of the whole truss by an angle \(\theta\) about \(C\) moves the point \((x, y)\) by <span class="nobr">\(\theta\,(-y, x)\),</span> which follows from the displacement of a rotated point \((c\,x - s\,y,\ s\,x + c\,y)\) at \(c \approx 1\) and \(s \approx \theta\) (section <a class="xref" href="sec-pomik-v-prostoru.html">1.6</a>). Node \(A\) moves by \(\theta\,(0, -4)\) m, node \(B\) by \(\theta\,(-3, -4)\) m, node \(C\) by zero. The elongations of the bars are \((1, 0)\cdot(0, 4\theta) = 0\) and <span class="nobr">\((0{,}8, -0{,}6)\cdot(3\theta, 4\theta) = 2{,}4\theta - 2{,}4\theta = 0\),</span> so this is a displacement with zero energy, and <span class="nobr">\(\theta\,(0, -4, -3, -4, 0, 0) = -4\theta\,(0, 1, 0, 0, 0, 0) - 5\theta\,(0, 0, 0{,}6, 0{,}8, 0, 0)\).</span> The rigid rotation is therefore <a data-del="novaac,novabc" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-togi-nacini" data-knowl="fig-pra-togi-nacini">a rotation of both bars about \(C\) by the same angle</a>, and displacements 1 and 2 are a rigid-body displacement of the whole. <a data-del="novaac" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-togi-nacini" data-knowl="fig-pra-togi-nacini">A rotation of only one bar</a>, which changes the angle between the bars, is not a rigid-body displacement: the angle between the bars changes, while the lengths of the bars do not. In a truss made of a triangle of bars (the example below) each bar connects also a third node, so the bars cannot go each its own way, and only three rigid-body displacements are possible (FELIPPA, PDF p. 45). Here the bars do not form a triangle, so each can rotate about \(C\) on its own. Such a displacement gets its name and definition in the next subsection.</p>
 
 <figure class="blk slika" id="fig-pra-togi-nacini"><p><span class="svgfig" role="img" aria-label="Four displacements of a truss with zero energy: a displacement in x, a displacement in y, a rotation of the bar AC about C and a rotation of the bar BC about C"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='462.28pt' height='130.24pt' viewBox='-72.000004 -72.000003 342.429569 96.47466'>
 <defs>
@@ -1560,6 +1624,7 @@
 <g stroke-width='0.6'>
 <g stroke-linecap='round'>
 <g stroke-linejoin='round'>
+<g class='del' data-del='pa'>
 <g stroke-width='1.6'>
 <path d='M-56.90549 0H0' fill='none'/>
 </g>
@@ -1600,6 +1665,7 @@
 </g>
 </g>
 </g>
+<g class='del' data-del='ma'>
 <g fill='#00f' stroke='#00f'>
 <path d='M-56.45549-9.9584H-40.28387' fill='none'/>
 <g transform='matrix(-1.0,0.0,0.0,-1.0,-56.60548,-9.9584)'>
@@ -1684,6 +1750,7 @@
  </g>
 </g>
 </g>
+</g>
 <g transform='translate(-27.8714,-30.95274)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-12.753748,-12.173633)scale(-1,-1)'>
 <g fill='#000'>
@@ -1695,6 +1762,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='pb'>
 <g stroke-width='1.6'>
 <path d='M36.9887 0H93.89418' fill='none'/>
 </g>
@@ -1737,6 +1806,7 @@
 </g>
 </g>
 </g>
+<g class='del' data-del='mb'>
 <g fill='#00f' stroke='#00f'>
 <path d='M27.03029 .45V16.6216' fill='none'/>
 <g transform='matrix(0.0,-1.0,1.0,0.0,27.03029,0.3)'>
@@ -1821,6 +1891,7 @@
  </g>
 </g>
 </g>
+</g>
 <g transform='translate(59.40671,-30.95274)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-12.753748,-12.173633)scale(-1,-1)'>
 <g fill='#000'>
@@ -1832,10 +1903,14 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='pc'>
+<g class='del' data-del='novaac'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.8'>
 <path d='M130.88264 18.49432L187.78813 0' fill='none'/>
+</g>
 </g>
 </g>
 </g>
@@ -1881,6 +1956,7 @@
 </g>
 </g>
 </g>
+<g class='del' data-del='mc'>
 <g fill='#00f' stroke='#00f'>
 <path d='M120.92424 .45V18.04433' fill='none'/>
 <g transform='matrix(0.0,-1.0,1.0,0.0,120.92424,0.3)'>
@@ -1909,6 +1985,7 @@
  </g>
 </g>
 </g>
+</g>
 <g transform='translate(153.28271,-30.95274)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-12.753748,-12.173633)scale(-1,-1)'>
 <g fill='#000'>
@@ -1920,10 +1997,14 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='pd'>
+<g class='del' data-del='novabc'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.8'>
 <path d='M235.87338 57.47444L281.68231 0' fill='none'/>
+</g>
 </g>
 </g>
 </g>
@@ -1969,6 +2050,7 @@
 </g>
 </g>
 </g>
+<g class='del' data-del='md'>
 <g fill='#00f' stroke='#00f'>
 <path d='M215.08841 43.03908L225.64497 57.11447' fill='none'/>
 <g transform='matrix(-0.59999,-0.79997,0.79997,-0.59999,214.99841,42.9191)'>
@@ -1997,6 +2079,7 @@
  </g>
 </g>
 </g>
+</g>
 <g transform='translate(246.73824,-30.95274)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-12.753748,-12.173633)scale(-1,-1)'>
 <g fill='#000'>
@@ -2015,11 +2098,12 @@
 </g>
 </g>
 </g>
+</g>
 </svg></span></p>
 <figcaption><span class="blk-label">Figure 7.19</span>: Four independent displacements of the wall truss without supports, in which no bar lengthens, for <span class="nobr">\(A = (-4, 0)\),</span> <span class="nobr">\(B = (-4, 3)\),</span> \(C = (0, 0)\) (m). (a) A displacement of all nodes in the direction <span class="nobr">\(x\).</span> (b) A displacement in the direction <span class="nobr">\(y\).</span> (c) The bar \(AC\) turns about \(C\) (node \(A\) moves perpendicular to the bar). (d) The bar \(BC\) turns about \(C\) (node \(B\) moves perpendicular to the bar). The rigid rotation of the whole is a combination of (c) and (d), while a rotation of only one bar is not a rigid-body displacement. The displacements are drawn much larger than the real ones, the measures of the displacements have end bars. The new position of a bar is blue dashed in (c) and (d).</figcaption></figure>
-<p>The prescribed displacements now show why we have supports. Nodes \(A\) and \(B\) are fixed with immovable pin supports (definition <a class="xref" href="sec-model-nosilca.html#def-podpore" data-knowl="def-podpore">5.5</a>), so \(u_{\mathrm{A}} = v_{\mathrm{A}} = u_{\mathrm{B}} = v_{\mathrm{B}} = 0\) and the unknowns \(1\) to \(4\) are prescribed. We strike out the rows and columns \(1\) to \(4\) by theorem <a class="xref" href="sec-robni-pogoji-mke.html#thm-reduciran-sistem" data-knowl="thm-reduciran-sistem">7.18</a>. Its hypothesis \((\mat K\,\vek d)_{\mathrm{i}} = f_{\mathrm{i}}\) for the free unknowns \(u_{\mathrm{C}}\) and \(v_{\mathrm{C}}\) is the equilibrium of the pin <span class="nobr">\(C\).</span> By lemma <a class="xref" href="sec-palicje-ravnina-mke.html#lem-togost-palice-globalno" data-knowl="lem-togost-palice-globalno">7.28</a> \(\mat k_{\mathrm{e}}\,\vek d_{\mathrm{e}}\) is the force of the pins on bar <span class="nobr">\(e\),</span> so by item 1 of theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a> \((\mat K\,\vek d)_{\mathrm{i}}\) is the force with which the pin \(C\) acts on both bars together in the direction of unknown <span class="nobr">\(i\).</span> The bars act on the pin with the opposite force, so the equilibrium of the pin with the load \(f_{\mathrm{i}}\) requires <span class="nobr">\((\mat K\,\vek d)_{\mathrm{i}} = f_{\mathrm{i}}\).</span> We obtain</p>
+<p>The prescribed displacements now show why we have supports. Nodes \(A\) and \(B\) are <a data-del="zid" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-konzola-mke" data-knowl="fig-pra-konzola-mke">fixed with immovable pin supports</a> (definition <a class="xref" href="sec-model-nosilca.html#def-podpore" data-knowl="def-podpore">5.5</a>), so \(u_{\mathrm{A}} = v_{\mathrm{A}} = u_{\mathrm{B}} = v_{\mathrm{B}} = 0\) and the unknowns \(1\) to \(4\) are prescribed. We <a data-del="predpisano" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-konzola-mke" data-knowl="fig-pra-konzola-mke">strike out the rows and columns \(1\) to \(4\)</a> by theorem <a class="xref" href="sec-robni-pogoji-mke.html#thm-reduciran-sistem" data-knowl="thm-reduciran-sistem">7.18</a>. Its hypothesis \((\mat K\,\vek d)_{\mathrm{i}} = f_{\mathrm{i}}\) for the free unknowns \(u_{\mathrm{C}}\) and \(v_{\mathrm{C}}\) is the equilibrium of the pin <span class="nobr">\(C\).</span> By lemma <a class="xref" href="sec-palicje-ravnina-mke.html#lem-togost-palice-globalno" data-knowl="lem-togost-palice-globalno">7.28</a> \(\mat k_{\mathrm{e}}\,\vek d_{\mathrm{e}}\) is the force of the pins on bar <span class="nobr">\(e\),</span> so by item 1 of theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a> \((\mat K\,\vek d)_{\mathrm{i}}\) is the force with which the pin \(C\) acts on both bars together in the direction of unknown <span class="nobr">\(i\).</span> The bars act on the pin with the opposite force, so the equilibrium of the pin with the load \(f_{\mathrm{i}}\) requires <span class="nobr">\((\mat K\,\vek d)_{\mathrm{i}} = f_{\mathrm{i}}\).</span> We obtain</p>
 <div class="eq">\[\mat K_{\mathrm{ff}} = \begin{bmatrix} 7{,}4088 &amp; -1{,}8816 \\ -1{,}8816 &amp; 1{,}4112 \end{bmatrix}\cdot 10^6\ \text{N/m} , \qquad \mat K_{\mathrm{ff}}\begin{pmatrix} u_{\mathrm{C}} \\ v_{\mathrm{C}} \end{pmatrix} = \begin{pmatrix} 0 \\ -10\,000 \end{pmatrix}\ \text{N} .\]</div>
-<p>This is exactly the matrix of section <a class="xref" href="sec-potencialna-energija.html#sec-castigliano-prvi">4.6.7</a>, which we obtained there by differentiating the energy. We solve by the elimination of chapter <a class="xref" href="ch-sibka-oblika.html">6</a> (theorem <a class="xref" href="sec-skalarni-produkt-funkcij.html#thm-sistem-pozitivno-definitna" data-knowl="thm-sistem-pozitivno-definitna">6.29</a>).</p>
+<p>This is exactly the <a data-del="Kff" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-konzola-mke" data-knowl="fig-pra-konzola-mke">matrix</a> of section <a class="xref" href="sec-potencialna-energija.html#sec-castigliano-prvi">4.6.7</a>, which we obtained there by differentiating the energy. We solve by the elimination of chapter <a class="xref" href="ch-sibka-oblika.html">6</a> (theorem <a class="xref" href="sec-skalarni-produkt-funkcij.html#thm-sistem-pozitivno-definitna" data-knowl="thm-sistem-pozitivno-definitna">6.29</a>).</p>
 <ol>
 <li>The first pivot is \(7{,}4088\cdot 10^6\) N/m. The quotient of the elements in the first column is <span class="nobr">\(-1{,}8816/7{,}4088 = -0{,}25397\),</span> so we add to the second row the first multiplied by <span class="nobr">\(0{,}25397\).</span></li>
 <li>The second pivot is \(1{,}4112\cdot 10^6 - 0{,}25397 \cdot 1{,}8816\cdot 10^6 = 0{,}93333\cdot 10^6\) N/m. Both pivots are positive, as theorem <a class="xref" href="sec-skalarni-produkt-funkcij.html#thm-sistem-pozitivno-definitna" data-knowl="thm-sistem-pozitivno-definitna">6.29</a> requires.</li>
@@ -2046,7 +2130,7 @@
 </ol>
 </div></details></div>
 <p class="vir"><span class="vir-label">Source:</span> COOK (PDF p. 52): &quot;for plane motion only three are linearly independent&quot;. FELIPPA PDF p. 46: &quot;It is easy to check that the complete force system is in equilibrium&quot;. The proof is not from the sources.</p></div></div>
-<p>The proof showed that the reactions and loads together have zero sum of forces and zero moment, because no bar changes its length in a rigid-body displacement. We check it on the wall truss. The forces on the truss are <span class="nobr">\(A\):</span> \((13\,333, 0)\) N, <span class="nobr">\(B\):</span> \((-13\,333, 10\,000)\) N and <span class="nobr">\(C\):</span> \((0, -10\,000)\) N. The sum in the direction \(x\) is <span class="nobr">\(13\,333 - 13\,333 = 0\),</span> in the direction \(y\) it is <span class="nobr">\(10\,000 - 10\,000 = 0\).</span> We compute the moment about \(A\) (we may choose the point freely, because the sum of forces is zero: moving the point adds to the moment the sum of forces multiplied by the vector of the move, which is zero) as \(x\,F_{\mathrm{y}} - y\,F_{\mathrm{x}}\) with the position relative to <span class="nobr">\(A\).</span> The force at <span class="nobr">\(C\),</span> position \((4, 0)\) m, gives \(4\cdot(-10\,000) - 0 = -40\,000\) N m, the force at <span class="nobr">\(B\),</span> position \((0, 3)\) m, gives \(0\cdot 10\,000 - 3\cdot(-13\,333) = +40\,000\) N m, the force at \(A\) gives nothing. The sum is zero. The check is necessary but not sufficient: wrong reactions with zero sums of forces and moments pass it, as we will see with the bridge.</p>
+<p>The proof showed that the reactions and loads together have zero sum of forces and zero moment, because no bar changes its length in a rigid-body displacement. We check it on the wall truss. The forces on the truss are <span class="nobr">\(A\):</span> \((13\,333, 0)\) N, <span class="nobr">\(B\):</span> \((-13\,333, 10\,000)\) N and <span class="nobr">\(C\):</span> \((0, -10\,000)\) N. The sum in the direction \(x\) is <span class="nobr">\(13\,333 - 13\,333 = 0\),</span> in the direction \(y\) it is <span class="nobr">\(10\,000 - 10\,000 = 0\).</span> We compute the moment about \(A\) (we may choose the point freely, because the sum of forces is zero: moving the point adds to the moment the sum of forces multiplied by the <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vector</a> of the move, which is zero) as \(x\,F_{\mathrm{y}} - y\,F_{\mathrm{x}}\) with the position relative to <span class="nobr">\(A\).</span> The force at <span class="nobr">\(C\),</span> position \((4, 0)\) m, gives \(4\cdot(-10\,000) - 0 = -40\,000\) N m, the force at <span class="nobr">\(B\),</span> position \((0, 3)\) m, gives \(0\cdot 10\,000 - 3\cdot(-13\,333) = +40\,000\) N m, the force at \(A\) gives nothing. The sum is zero. The check is necessary but not sufficient: wrong reactions with zero sums of forces and moments pass it, as we will see with the bridge.</p>
 <p>A truss loaded only at the nodes has one more special property.</p>
 
 <div class="blk posledica" id="cor-palicje-tocno"><div class="blk-head"><span class="blk-label">Corollary 7.31</span> <span class="blk-title">The truss by the finite element method is exact (paličje po metodi končnih elementov je točno)</span></div><div class="blk-body"><p>Let the truss of definition <a class="xref" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">4.4</a> be loaded only at the nodes, with supports for which \(\mat K_{\mathrm{ff}}\) has a single solution. If we represent every bar by one linear element, the obtained displacements of the nodes and forces in the bars are exactly the displacements and forces of the truss model of chapter <a class="xref" href="ch-energijski-principi.html">4</a>.</p>
@@ -2060,10 +2144,10 @@
 </ol>
 </div></details></div>
 <p class="vir"><span class="vir-label">Source:</span> The proof is not from the sources.</p></div></div>
-<p>The proof showed that the method and the model agree, because every bar has a linear field and for a linear element there is no error from the shape of the field. Hence the computation of a truss with the matrix is exact, not approximate. For a bar with a load along its length this is not so: its <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> is not constant and a linear element gives only the average (section <a class="xref" href="sec-element-palice.html#sec-sila-v-elementu">7.1.4</a>), as we saw with the hanging bar.</p>
-<p>We test the procedure also on an example from a book, where the reactions and displacements are printed. FELIPPA (PDF p. 30, figure 2.4) computes a truss of three bars with three nodes: <span class="nobr">\(1 = (0, 0)\),</span> <span class="nobr">\(2 = (10, 0)\),</span> <span class="nobr">\(3 = (10, 10)\),</span> bar \(1\)-\(2\) with \(EA = 100\) and length <span class="nobr">\(10\),</span> \(2\)-\(3\) with \(EA = 50\) and length <span class="nobr">\(10\),</span> \(1\)-\(3\) with \(EA = 200\sqrt 2\) and length <span class="nobr">\(10\sqrt 2\).</span> Node \(1\) is fixed with an immovable pin support, node \(2\) with a movable one, which prevents <span class="nobr">\(v_2\),</span> and at node \(3\) the forces \(f_{\mathrm{x}3} = 2\) and \(f_{\mathrm{y}3} = 1\) act (figure <a class="xref" href="sec-palicje-ravnina-mke.html#fig-pra-felippa" data-knowl="fig-pra-felippa">7.20</a>). FELIPPA gives no units, so we leave them out too. The stiffnesses of the bars \(EA/L\) are <span class="nobr">\(10\),</span> \(5\) and <span class="nobr">\(20\).</span> By the same procedure as above we assemble \(\mat K\) and strike out the unknowns <span class="nobr">\(1\),</span> \(2\) and \(4\) (these are <span class="nobr">\(u_1\),</span> \(v_1\) and <span class="nobr">\(v_2\)).</span> What remains is</p>
+<p>The proof showed that the method and the model agree, because every bar has a <a class="xref auto forward" href="sec-mkk-izoparametricni.html#lem-linearna-polja-izoparametricni" data-knowl="lem-linearna-polja-izoparametricni" title="Defined later in the book">linear field</a> and for a linear element there is no error from the shape of the field. Hence the computation of a truss with the matrix is exact, not approximate. For a bar with a load along its length this is not so: its <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> is not constant and a linear element gives only the average (section <a class="xref" href="sec-element-palice.html#sec-sila-v-elementu">7.1.4</a>), as we saw with the hanging bar.</p>
+<p>We test the procedure also on an example from a book, where the reactions and displacements are printed. FELIPPA (PDF p. 30, figure 2.4) computes a truss of three bars with three nodes: <span class="nobr"><a data-del="j1" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-felippa" data-knowl="fig-pra-felippa">\(1 = (0, 0)\)</a>,</span> <span class="nobr"><a data-del="j2" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-felippa" data-knowl="fig-pra-felippa">\(2 = (10, 0)\)</a>,</span> <span class="nobr"><a data-del="j3" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-felippa" data-knowl="fig-pra-felippa">\(3 = (10, 10)\)</a>,</span> <a data-del="p12" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-felippa" data-knowl="fig-pra-felippa">bar \(1\)-\(2\) with \(EA = 100\)</a> and length <span class="nobr">\(10\),</span> <a data-del="p23" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-felippa" data-knowl="fig-pra-felippa">\(2\)-\(3\) with \(EA = 50\)</a> and length <span class="nobr">\(10\),</span> <a data-del="p13" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-felippa" data-knowl="fig-pra-felippa">\(1\)-\(3\) with \(EA = 200\sqrt 2\)</a> and length <span class="nobr">\(10\sqrt 2\).</span> Node \(1\) is <a data-del="podpora1" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-felippa" data-knowl="fig-pra-felippa">fixed with an immovable pin support</a>, node \(2\) <a data-del="podpora2" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-felippa" data-knowl="fig-pra-felippa">with a movable one, which prevents \(v_2\)</a>, and at node \(3\) the forces <a data-del="fx" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-felippa" data-knowl="fig-pra-felippa">\(f_{\mathrm{x}3} = 2\)</a> and <a data-del="fy" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-felippa" data-knowl="fig-pra-felippa">\(f_{\mathrm{y}3} = 1\)</a> act (figure <a class="xref" href="sec-palicje-ravnina-mke.html#fig-pra-felippa" data-knowl="fig-pra-felippa">7.20</a>). FELIPPA gives no units, so we leave them out too. The stiffnesses of the bars \(EA/L\) are <span class="nobr">\(10\),</span> \(5\) and <span class="nobr">\(20\).</span> By the same procedure as above we assemble \(\mat K\) and strike out the unknowns <span class="nobr">\(1\),</span> \(2\) and \(4\) (these are <span class="nobr">\(u_1\),</span> \(v_1\) and <span class="nobr">\(v_2\)).</span> What remains is</p>
 <div class="eq">\[\mat K_{\mathrm{ff}} = \begin{bmatrix} 10 &amp; 0 &amp; 0 \\ 0 &amp; 10 &amp; 10 \\ 0 &amp; 10 &amp; 15 \end{bmatrix} , \qquad \begin{pmatrix} u_2 \\ u_3 \\ v_3 \end{pmatrix} = \begin{pmatrix} 0 \\ 0{,}4 \\ -0{,}2 \end{pmatrix} ,\]</div>
-<p>which agrees with equation (3.23) and the solution (3.25) of FELIPPA (PDF pp. 45-46). The reactions from the rows of the prescribed unknowns are \(r_{\mathrm{x}1} = r_{\mathrm{y}1} = -2\) and <span class="nobr">\(r_{\mathrm{y}2} = 1\),</span> as in FELIPPA (PDF p. 46), and the equilibrium: \(-2 + 2 = 0\) in the direction <span class="nobr">\(x\),</span> \(-2 + 1 + 1 = 0\) in the direction \(y\) and the moment about node <span class="nobr">\(1\):</span> \(10\cdot 1 + (10\cdot 1 - 10\cdot 2) = 0\) (node \(2\) contributes <span class="nobr">\(10\),</span> node \(3\) contributes <span class="nobr">\(-10\)).</span> The forces in the bars are not printed numerically in FELIPPA (figure 3.3, PDF p. 47), so they are our computation: by \(N = \frac{EA}{L}\,\vek n\cdot(\vek u_{\mathrm{j}} - \vek u_{\mathrm{i}})\) they are <span class="nobr">\(0\),</span> \(-1\) and \(2\sqrt 2\) for the bars \(1\)-<span class="nobr">\(2\),</span> \(2\)-\(3\) and \(1\)-<span class="nobr">\(3\).</span> The bar \(1\)-\(2\) has no force because of node <span class="nobr">\(2\):</span> in the direction \(x\) only this bar acts on that node (the support \(2\) holds only vertically, there is no load <span class="nobr">\(f_{\mathrm{x}2}\)),</span> so its force must be zero.</p>
+<p>which agrees with equation (3.23) and the solution (3.25) of FELIPPA (PDF pp. 45-46). The reactions from the rows of the prescribed unknowns are <a data-del="rx1,ry1" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-felippa" data-knowl="fig-pra-felippa">\(r_{\mathrm{x}1} = r_{\mathrm{y}1} = -2\)</a> and <span class="nobr"><a data-del="ry2" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-felippa" data-knowl="fig-pra-felippa">\(r_{\mathrm{y}2} = 1\)</a>,</span> as in FELIPPA (PDF p. 46), and the equilibrium: \(-2 + 2 = 0\) in the direction <span class="nobr">\(x\),</span> \(-2 + 1 + 1 = 0\) in the direction \(y\) and the moment about node <span class="nobr">\(1\):</span> \(10\cdot 1 + (10\cdot 1 - 10\cdot 2) = 0\) (node \(2\) contributes <span class="nobr">\(10\),</span> node \(3\) contributes <span class="nobr">\(-10\)).</span> The forces in the bars are not printed numerically in FELIPPA (figure 3.3, PDF p. 47), so they are our computation: by \(N = \frac{EA}{L}\,\vek n\cdot(\vek u_{\mathrm{j}} - \vek u_{\mathrm{i}})\) they are <span class="nobr"><a data-del="n12" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-felippa" data-knowl="fig-pra-felippa">\(0\)</a>,</span> <a data-del="n23" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-felippa" data-knowl="fig-pra-felippa">\(-1\)</a> and <a data-del="n13" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-felippa" data-knowl="fig-pra-felippa">\(2\sqrt 2\)</a> for the bars \(1\)-<span class="nobr">\(2\),</span> \(2\)-\(3\) and \(1\)-<span class="nobr">\(3\).</span> The bar \(1\)-\(2\) has no force because of node <span class="nobr">\(2\):</span> in the direction \(x\) only this bar acts on that node (the support \(2\) holds only vertically, there is no load <span class="nobr">\(f_{\mathrm{x}2}\)),</span> so its force must be zero.</p>
 
 <figure class="blk slika" id="fig-pra-felippa"><p><span class="svgfig" role="img" aria-label="A truss with three bars, the supports and the loads from FELIPPA"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='573.28pt' height='232.48pt' viewBox='-72.000004 -72.000009 424.65322 172.20537'>
 <defs>
@@ -2092,9 +2176,66 @@
 <g stroke-width='0.6'>
 <g stroke-linecap='round'>
 <g stroke-linejoin='round'>
+<g class='del' data-del='p12'>
 <g stroke-width='1.6'>
-<path d='M0 0H91.05087V91.05087Z' fill='none'/>
+<path d='M0 0H91.05087' fill='none'/>
 </g>
+<g transform='translate(23.62964,-45.06564)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.15415,51.987557)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-47.15415' y='51.987557' xlink:href='#pra-felippa-g1-69'/>
+<use x='-39.225558' y='51.987557' xlink:href='#pra-felippa-g1-65'/>
+<use x='-28.986227' y='51.987557' xlink:href='#pra-felippa-g3-61'/>
+<use x='-18.470147' y='51.987557' xlink:href='#pra-felippa-g3-49'/>
+<use x='-13.488808' y='51.987557' xlink:href='#pra-felippa-g3-48'/>
+<use x='-8.507468' y='51.987557' xlink:href='#pra-felippa-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='p23'>
+<g stroke-width='1.6'>
+<path d='M91.05087 0V91.05087' fill='none'/>
+</g>
+<g transform='translate(98.32582,42.10878)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.15415,51.987557)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-47.15415' y='51.987557' xlink:href='#pra-felippa-g1-69'/>
+<use x='-39.225558' y='51.987557' xlink:href='#pra-felippa-g1-65'/>
+<use x='-28.986227' y='51.987557' xlink:href='#pra-felippa-g3-61'/>
+<use x='-18.470147' y='51.987557' xlink:href='#pra-felippa-g3-53'/>
+<use x='-13.488808' y='51.987557' xlink:href='#pra-felippa-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='p13'>
+<g stroke-width='1.6'>
+<path d='M91.05087 91.05087L0 0' fill='none'/>
+</g>
+<g transform='translate(-21.60605,54.12817)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.15415,51.987557)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-47.15415' y='51.987557' xlink:href='#pra-felippa-g1-69'/>
+<use x='-39.225558' y='51.987557' xlink:href='#pra-felippa-g1-65'/>
+<use x='-28.986227' y='51.987557' xlink:href='#pra-felippa-g3-61'/>
+<use x='-18.470147' y='51.987557' xlink:href='#pra-felippa-g3-50'/>
+<use x='-13.488808' y='51.987557' xlink:href='#pra-felippa-g3-48'/>
+<use x='-8.507468' y='51.987557' xlink:href='#pra-felippa-g3-48'/>
+<use x='-3.526129' y='43.746245' xlink:href='#pra-felippa-g0-112'/>
+<rect x='4.776096' y='43.347761' height='.398484' width='4.981335'/>
+<use x='4.776096' y='51.987557' xlink:href='#pra-felippa-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='podpora1'>
 <path d='M0-2.73155L-10.01564-20.03116H10.01564Z' fill='none'/>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-width='0.45'>
@@ -2141,6 +2282,8 @@
 <path d='M13.65762-20.03116L10.4708-24.5837' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='podpora2'>
 <path d='M91.05087-2.73155L81.03522-18.21017H101.06651Z' fill='none'/>
 <path d='M95.14813-22.76271C95.14813-20.49983 93.31375-18.66545 91.05087-18.66545C88.788-18.66545 86.95361-20.49983 86.95361-22.76271S88.788-26.85997 91.05087-26.85997C93.31375-26.85997 95.14813-25.02559 95.14813-22.76271ZM91.05087-22.76271' fill='none'/>
 <g fill='#0f0' stroke='#0f0'>
@@ -2188,6 +2331,8 @@
 <path d='M104.7085-26.85997L101.52167-31.4125' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='j1'>
 <g fill='#fff'>
 <g fill='#fff'>
 <path d='M2.26294 0C2.26294 1.2498 1.2498 2.26294 0 2.26294S-2.26294 1.2498-2.26294 0S-1.2498-2.26294 0-2.26294S2.26294-1.2498 2.26294 0ZM0 0'/>
@@ -2198,6 +2343,17 @@
 </g>
 </g>
 </g>
+<g transform='translate(-10.45396,5.45396)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.15415,51.987557)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-47.15415' y='51.987557' xlink:href='#pra-felippa-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='j2'>
 <g fill='#fff'>
 <g fill='#fff'>
 <path d='M93.31381 0C93.31381 1.2498 92.30067 2.26294 91.05087 2.26294S88.78793 1.2498 88.78793 0S89.80107-2.26294 91.05087-2.26294S93.31381-1.2498 93.31381 0ZM91.05087 0'/>
@@ -2206,27 +2362,6 @@
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.15415,51.987557)scale(-1,-1)'>
 <g fill='#000'>
 <g stroke='none'/>
-</g>
-</g>
-</g>
-</g>
-<g fill='#fff'>
-<g fill='#fff'>
-<path d='M93.31381 91.05087C93.31381 92.30067 92.30067 93.31381 91.05087 93.31381S88.78793 92.30067 88.78793 91.05087S89.80107 88.78793 91.05087 88.78793S93.31381 89.80107 93.31381 91.05087ZM91.05087 91.05087'/>
-</g>
-<g transform='translate(91.05087,91.05087)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.15415,51.987557)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'/>
-</g>
-</g>
-</g>
-</g>
-<g transform='translate(-10.45396,5.45396)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.15415,51.987557)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='-47.15415' y='51.987557' xlink:href='#pra-felippa-g3-49'/>
 </g>
 </g>
 </g>
@@ -2240,6 +2375,20 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='j3'>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M93.31381 91.05087C93.31381 92.30067 92.30067 93.31381 91.05087 93.31381S88.78793 92.30067 88.78793 91.05087S89.80107 88.78793 91.05087 88.78793S93.31381 89.80107 93.31381 91.05087ZM91.05087 91.05087'/>
+</g>
+<g transform='translate(91.05087,91.05087)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.15415,51.987557)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
 <g transform='translate(80.5969,96.50484)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.15415,51.987557)scale(-1,-1)'>
 <g fill='#000'>
@@ -2249,50 +2398,8 @@
 </g>
 </g>
 </g>
-<g transform='translate(23.62964,-45.06564)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.15415,51.987557)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='-47.15415' y='51.987557' xlink:href='#pra-felippa-g1-69'/>
-<use x='-39.225558' y='51.987557' xlink:href='#pra-felippa-g1-65'/>
-<use x='-28.986227' y='51.987557' xlink:href='#pra-felippa-g3-61'/>
-<use x='-18.470147' y='51.987557' xlink:href='#pra-felippa-g3-49'/>
-<use x='-13.488808' y='51.987557' xlink:href='#pra-felippa-g3-48'/>
-<use x='-8.507468' y='51.987557' xlink:href='#pra-felippa-g3-48'/>
 </g>
-</g>
-</g>
-</g>
-<g transform='translate(98.32582,42.10878)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.15415,51.987557)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='-47.15415' y='51.987557' xlink:href='#pra-felippa-g1-69'/>
-<use x='-39.225558' y='51.987557' xlink:href='#pra-felippa-g1-65'/>
-<use x='-28.986227' y='51.987557' xlink:href='#pra-felippa-g3-61'/>
-<use x='-18.470147' y='51.987557' xlink:href='#pra-felippa-g3-53'/>
-<use x='-13.488808' y='51.987557' xlink:href='#pra-felippa-g3-48'/>
-</g>
-</g>
-</g>
-</g>
-<g transform='translate(-21.60605,54.12817)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.15415,51.987557)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='-47.15415' y='51.987557' xlink:href='#pra-felippa-g1-69'/>
-<use x='-39.225558' y='51.987557' xlink:href='#pra-felippa-g1-65'/>
-<use x='-28.986227' y='51.987557' xlink:href='#pra-felippa-g3-61'/>
-<use x='-18.470147' y='51.987557' xlink:href='#pra-felippa-g3-50'/>
-<use x='-13.488808' y='51.987557' xlink:href='#pra-felippa-g3-48'/>
-<use x='-8.507468' y='51.987557' xlink:href='#pra-felippa-g3-48'/>
-<use x='-3.526129' y='43.746245' xlink:href='#pra-felippa-g0-112'/>
-<rect x='4.776096' y='43.347761' height='.398484' width='4.981335'/>
-<use x='4.776096' y='51.987557' xlink:href='#pra-felippa-g3-50'/>
-</g>
-</g>
-</g>
-</g>
+<g class='del' data-del='fx'>
 <g stroke-width='0.9'>
 <path d='M93.32713 91.05087H117.51135' fill='none'/>
 <g transform='translate(114.90633,91.05087)'>
@@ -2316,6 +2423,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='fy'>
 <g stroke-width='0.9'>
 <path d='M91.05087 93.32713V103.30743' fill='none'/>
 <g transform='matrix(0.0,1.0,-1.0,0.0,91.05087,100.70241)'>
@@ -2339,71 +2448,10 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='n12'>
 <g stroke-width='1.6'>
-<path d='M267.45572 0H358.50659V91.05087Z' fill='none'/>
-</g>
-<g fill='#fff'>
-<g fill='#fff'>
-<path d='M269.71866 0C269.71866 1.2498 268.70552 2.26294 267.45572 2.26294S265.19278 1.2498 265.19278 0S266.20592-2.26294 267.45572-2.26294S269.71866-1.2498 269.71866 0ZM267.45572 0'/>
-</g>
-<g transform='translate(267.45572,0.0)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.15415,51.987557)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'/>
-</g>
-</g>
-</g>
-</g>
-<g fill='#fff'>
-<g fill='#fff'>
-<path d='M360.76953 0C360.76953 1.2498 359.7564 2.26294 358.50659 2.26294C357.25679 2.26294 356.24365 1.2498 356.24365 0S357.25679-2.26294 358.50659-2.26294C359.7564-2.26294 360.76953-1.2498 360.76953 0ZM358.50659 0'/>
-</g>
-<g transform='translate(358.50659,0.0)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.15415,51.987557)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'/>
-</g>
-</g>
-</g>
-</g>
-<g fill='#fff'>
-<g fill='#fff'>
-<path d='M360.76953 91.05087C360.76953 92.30067 359.7564 93.31381 358.50659 93.31381C357.25679 93.31381 356.24365 92.30067 356.24365 91.05087S357.25679 88.78793 358.50659 88.78793C359.7564 88.78793 360.76953 89.80107 360.76953 91.05087ZM358.50659 91.05087'/>
-</g>
-<g transform='translate(358.50659,91.05087)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.15415,51.987557)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'/>
-</g>
-</g>
-</g>
-</g>
-<g transform='translate(272.90968,5.45396)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.15415,51.987557)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='-47.15415' y='51.987557' xlink:href='#pra-felippa-g3-49'/>
-</g>
-</g>
-</g>
-</g>
-<g transform='translate(364.87112,-5.52487)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.15415,51.987557)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='-47.15415' y='51.987557' xlink:href='#pra-felippa-g3-50'/>
-</g>
-</g>
-</g>
-</g>
-<g transform='translate(348.05261,96.50484)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.15415,51.987557)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='-47.15415' y='51.987557' xlink:href='#pra-felippa-g3-51'/>
-</g>
-</g>
-</g>
+<path d='M267.45572 0H358.50659' fill='none'/>
 </g>
 <g fill='#00f' stroke='#00f'>
 <g fill='#00f' stroke='#00f'>
@@ -2420,6 +2468,11 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='n23'>
+<g stroke-width='1.6'>
+<path d='M358.50659 0V91.05087' fill='none'/>
+</g>
 <g fill='#00f' stroke='#00f'>
 <g fill='#00f' stroke='#00f'>
 </g>
@@ -2435,6 +2488,11 @@
 </g>
 </g>
 </g>
+</g>
+</g>
+<g class='del' data-del='n13'>
+<g stroke-width='1.6'>
+<path d='M358.50659 91.05087L267.45572 0' fill='none'/>
 </g>
 <g fill='#00f' stroke='#00f'>
 <g fill='#00f' stroke='#00f'>
@@ -2456,6 +2514,77 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='j1'>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M269.71866 0C269.71866 1.2498 268.70552 2.26294 267.45572 2.26294S265.19278 1.2498 265.19278 0S266.20592-2.26294 267.45572-2.26294S269.71866-1.2498 269.71866 0ZM267.45572 0'/>
+</g>
+<g transform='translate(267.45572,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.15415,51.987557)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(272.90968,5.45396)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.15415,51.987557)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-47.15415' y='51.987557' xlink:href='#pra-felippa-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='j2'>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M360.76953 0C360.76953 1.2498 359.7564 2.26294 358.50659 2.26294C357.25679 2.26294 356.24365 1.2498 356.24365 0S357.25679-2.26294 358.50659-2.26294C359.7564-2.26294 360.76953-1.2498 360.76953 0ZM358.50659 0'/>
+</g>
+<g transform='translate(358.50659,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.15415,51.987557)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(364.87112,-5.52487)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.15415,51.987557)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-47.15415' y='51.987557' xlink:href='#pra-felippa-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='j3'>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M360.76953 91.05087C360.76953 92.30067 359.7564 93.31381 358.50659 93.31381C357.25679 93.31381 356.24365 92.30067 356.24365 91.05087S357.25679 88.78793 358.50659 88.78793C359.7564 88.78793 360.76953 89.80107 360.76953 91.05087ZM358.50659 91.05087'/>
+</g>
+<g transform='translate(358.50659,91.05087)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.15415,51.987557)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(348.05261,96.50484)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-47.15415,51.987557)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-47.15415' y='51.987557' xlink:href='#pra-felippa-g3-51'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='fx'>
 <g stroke-width='0.9'>
 <path d='M360.78285 91.05087H384.96707' fill='none'/>
 <g transform='translate(382.36205,91.05087)'>
@@ -2475,6 +2604,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='fy'>
 <g stroke-width='0.9'>
 <path d='M358.50659 93.32713V103.30743' fill='none'/>
 <g transform='matrix(0.0,1.0,-1.0,0.0,358.50659,100.70241)'>
@@ -2494,6 +2625,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='rx1'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='0.9'>
 <path d='M265.17946 0H240.99524' fill='none'/>
@@ -2522,6 +2655,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='ry1'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='0.9'>
 <path d='M267.45572-2.27626V-26.46048' fill='none'/>
@@ -2550,6 +2685,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='ry2'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='0.9'>
 <path d='M358.50659-16.48018V-6.49988' fill='none'/>
@@ -2570,6 +2707,7 @@
 <use x='-38.368741' y='53.481938' xlink:href='#pra-felippa-g4-50'/>
 <use x='-31.132051' y='51.987557' xlink:href='#pra-felippa-g3-61'/>
 <use x='-20.615971' y='51.987557' xlink:href='#pra-felippa-g3-49'/>
+</g>
 </g>
 </g>
 </g>
@@ -2609,8 +2747,8 @@
 </ol>
 </div></details></div>
 <p class="vir"><span class="vir-label">Source:</span> COOK (PDF pp. 52-53), where the singularity due to a missing support and the mechanism are described with the energy <span class="nobr">\(U = \vek D^\T\mat K\vek D/2\).</span> The proof is not from the sources.</p></div></div>
-<p>The proof showed that positive definiteness is a geometric property: a truss with its supports must prevent every displacement in which some bar lengthens. There are two failures. If the supports do not prevent a rigid-body displacement, the truss is supported too little. An example is the truss of FELIPPA without the movable support at node <span class="nobr">\(2\):</span> the matrix \(\mat K_{\mathrm{ff}}\) for the free unknowns <span class="nobr">\(u_2\),</span> <span class="nobr">\(v_2\),</span> <span class="nobr">\(u_3\),</span> \(v_3\) has the <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">eigenvalues</a> <span class="nobr">\(0\),</span> <span class="nobr">\(10\),</span> \(15 - 5\sqrt 3\) and <span class="nobr">\(15 + 5\sqrt 3\),</span> and the zero one belongs to a rotation about node <span class="nobr">\(1\),</span> <span class="nobr">\((u_2, v_2, u_3, v_3) = (0, 10, -10, 10)\).</span> COOK (PDF p. 53) says the same about the truss of his figure 2.5-2: if the support at node \(3\) were removed, the truss could rotate as a rigid body about node <span class="nobr">\(2\).</span> Programs usually report an error at a zero pivot and stop, while others, according to COOK (PDF p. 53), &quot;may automatically insert a fix&quot;, that is, they correct the matrix without explanation, so we must check the result.</p>
-<p>The second failure is a mechanism, which the supports do not prevent although the truss is not supported too little. Take the wall truss in which node \(B\) is moved to \((4, 0)\) m, so that the bars \(AC\) and \(BC\) lie on the same line and are \(4\) m long. Nodes \(A\) and \(B\) are again fixed, the load is \(10\) kN downwards at <span class="nobr">\(C\).</span> Both bars have \(\vek n = (\pm 1, 0)\) and \(EA/L = 4{,}9\cdot 10^6\) N/m, so \(\mat K_{\mathrm{ff}} = \begin{bmatrix} 9{,}8 &amp; 0 \\ 0 &amp; 0 \end{bmatrix}\cdot 10^6\) N/m, and the second pivot is zero. A vertical displacement of node \(C\) lengthens no bar to first order, because it is perpendicular to both (equation <a class="xref" href="sec-virtualni-pomiki-palice.html#eq-virtualni-podaljsek" data-knowl="eq-virtualni-podaljsek">(4.48)</a>). The elongation is of second order. Exactly, for a vertical displacement \(v\) the new length of each bar is <span class="nobr">\(\sqrt{L^2 + v^2}\),</span> the elongation is <span class="nobr">\(e = \sqrt{L^2 + v^2} - L = v^2/(\sqrt{L^2 + v^2} + L)\),</span> and since the denominator is almost <span class="nobr">\(2L\),</span> \(e \approx v^2/(2L)\) (section <a class="xref" href="sec-virtualni-pomiki-palice.html#sec-palicje-virtualno">4.4.9</a>), which for \(v = 1\) mm and \(L = 4\) m is \(0{,}000125\) mm. What vertical force does such an elongation give? We estimate it ourselves, the estimate is not from a source. The <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> of each bar is <span class="nobr">\(N = EA\,e/L \approx EA\,v^2/(2L^2)\).</span> The bar is inclined by an angle with the sine <span class="nobr">\(v/\sqrt{L^2 + v^2} \approx v/L\),</span> so the vertical component of its force on \(C\) is <span class="nobr">\(N\,v/L\),</span> and the two bars together give <span class="nobr">\(F = 2\,N\,v/L \approx EA\,v^3/L^3\).</span> We neglected two terms: in the elongation the term \(-v^4/(8L^3)\) (relatively <span class="nobr">\(v^2/(4L^2)\))</span> and in the sine the correction <span class="nobr">\(v^2/(2L^2)\).</span> Both are of order \(v^2/L^2 = 6\cdot 10^{-8}\) at <span class="nobr">\(v/L = 2{,}5\cdot 10^{-4}\),</span> so the relative error of the estimate is of order <span class="nobr">\(10^{-7}\).</span> With \(EA = 1{,}96\cdot 10^7\) N, \(F = 0{,}306\) mN at \(v = 1\) mm (SymPy, the expansion of the exact force \(2\,(EA/L)\,e\,v/\sqrt{L^2 + v^2}\) in a series in \(v\) gives <span class="nobr">\(EA\,v^3/L^3 - \tfrac34\,EA\,v^5/L^5 + \dots\)).</span> The quotient of force and displacement is \(0{,}306\) N/m, while the horizontal stiffness is \(9{,}8\cdot 10^6\) N/m. The quotient grows with the square of the displacement, so it is not constant, and the relation is not \(\vek F = \mat K\,\vek d\) with a constant matrix (definition <a class="xref" href="sec-element-palice.html#def-togostna-matrika" data-knowl="def-togostna-matrika">7.4</a>). A rope stretched across a gap carries a load by sagging, which linear theory does not see (figure <a class="xref" href="sec-palicje-ravnina-mke.html#fig-pra-mehanizem" data-knowl="fig-pra-mehanizem">7.21</a>). The system \(\mat K_{\mathrm{ff}}\,\vek d_{\mathrm{f}} = \vek f_{\mathrm{f}}\) has in its second row \(0\cdot v_{\mathrm{C}} = -10\,000\) N, so it has no solution. COOK (PDF p. 53) warns that \(\mat K\) is singular even when there is no <a class="xref auto" href="sec-model-nosilca.html#def-porazdeljena-precna-obtezba" data-knowl="def-porazdeljena-precna-obtezba">transverse load</a> at all: &quot;a lateral load applied at node 2 would not be resisted ... not taken into account by linear theory&quot;. This is geometric nonlinearity and we do not treat it in this book.</p>
+<p>The proof showed that positive definiteness is a geometric property: a truss with its supports must prevent every displacement in which some bar lengthens. There are two failures. If the supports do not prevent a rigid-body displacement, the truss is supported too little. An example is the truss of FELIPPA <a data-del="podpora2" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-felippa" data-knowl="fig-pra-felippa">without the movable support at node \(2\)</a>: the matrix \(\mat K_{\mathrm{ff}}\) for the free unknowns <span class="nobr">\(u_2\),</span> <span class="nobr">\(v_2\),</span> <span class="nobr">\(u_3\),</span> \(v_3\) has the <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">eigenvalues</a> <span class="nobr">\(0\),</span> <span class="nobr">\(10\),</span> \(15 - 5\sqrt 3\) and <span class="nobr">\(15 + 5\sqrt 3\),</span> and the zero one belongs to <span class="nobr"><a data-del="j1" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-felippa" data-knowl="fig-pra-felippa">a rotation about node \(1\)</a>,</span> <span class="nobr">\((u_2, v_2, u_3, v_3) = (0, 10, -10, 10)\).</span> COOK (PDF p. 53) says the same about the truss of his figure 2.5-2: if the support at node \(3\) were removed, the truss could rotate as a rigid body about node <span class="nobr">\(2\).</span> Programs usually report an error at a zero pivot and stop, while others, according to COOK (PDF p. 53), &quot;may automatically insert a fix&quot;, that is, they correct the matrix without explanation, so we must check the result.</p>
+<p>The second failure is a mechanism, which the supports do not prevent although the truss is not supported too little. Take the wall truss in which node \(B\) is moved to \((4, 0)\) m, so that <a data-del="palici" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-mehanizem" data-knowl="fig-pra-mehanizem">the bars \(AC\) and \(BC\) lie on the same line</a> and are \(4\) m long. Nodes <a data-del="A,zidA" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-mehanizem" data-knowl="fig-pra-mehanizem">\(A\)</a> and <a data-del="B,zidB" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-mehanizem" data-knowl="fig-pra-mehanizem">\(B\)</a> are again fixed, the load is \(10\) kN downwards at <span class="nobr"><a data-del="C" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-mehanizem" data-knowl="fig-pra-mehanizem">\(C\)</a>.</span> Both bars have \(\vek n = (\pm 1, 0)\) and \(EA/L = 4{,}9\cdot 10^6\) N/m, so \(\mat K_{\mathrm{ff}} = \begin{bmatrix} 9{,}8 &amp; 0 \\ 0 &amp; 0 \end{bmatrix}\cdot 10^6\) N/m, and the second pivot is zero. A vertical displacement of node \(C\) lengthens no bar to first order, because it is perpendicular to both (equation <a class="xref" href="sec-virtualni-pomiki-palice.html#eq-virtualni-podaljsek" data-knowl="eq-virtualni-podaljsek">(4.48)</a>). The elongation is of second order. Exactly, for a <a data-del="v" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-mehanizem" data-knowl="fig-pra-mehanizem">vertical displacement \(v\)</a> <a data-del="nova" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-mehanizem" data-knowl="fig-pra-mehanizem">the new length of each bar</a> is <span class="nobr">\(\sqrt{L^2 + v^2}\),</span> which <a data-del="lok" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-mehanizem" data-knowl="fig-pra-mehanizem">an arc centred at \(A\)</a> carries onto the line of the bars, <a data-del="e" class="xref kaz" href="sec-palicje-ravnina-mke.html#fig-pra-mehanizem" data-knowl="fig-pra-mehanizem">the elongation</a> is <span class="nobr">\(e = \sqrt{L^2 + v^2} - L = v^2/(\sqrt{L^2 + v^2} + L)\),</span> and since the denominator is almost <span class="nobr">\(2L\),</span> \(e \approx v^2/(2L)\) (section <a class="xref" href="sec-virtualni-pomiki-palice.html#sec-palicje-virtualno">4.4.9</a>), which for \(v = 1\) mm and \(L = 4\) m is \(0{,}000125\) mm. What vertical force does such an elongation give? We estimate it ourselves, the estimate is not from a source. The <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> of each bar is <span class="nobr">\(N = EA\,e/L \approx EA\,v^2/(2L^2)\).</span> The bar is inclined by an angle with the sine <span class="nobr">\(v/\sqrt{L^2 + v^2} \approx v/L\),</span> so the vertical component of its force on \(C\) is <span class="nobr">\(N\,v/L\),</span> and the two bars together give <span class="nobr">\(F = 2\,N\,v/L \approx EA\,v^3/L^3\).</span> We neglected two terms: in the elongation the term \(-v^4/(8L^3)\) (relatively <span class="nobr">\(v^2/(4L^2)\))</span> and in the sine the correction <span class="nobr">\(v^2/(2L^2)\).</span> Both are of order \(v^2/L^2 = 6\cdot 10^{-8}\) at <span class="nobr">\(v/L = 2{,}5\cdot 10^{-4}\),</span> so the relative error of the estimate is of order <span class="nobr">\(10^{-7}\).</span> With \(EA = 1{,}96\cdot 10^7\) N, \(F = 0{,}306\) mN at \(v = 1\) mm (SymPy, the expansion of the exact force \(2\,(EA/L)\,e\,v/\sqrt{L^2 + v^2}\) in a series in \(v\) gives <span class="nobr">\(EA\,v^3/L^3 - \tfrac34\,EA\,v^5/L^5 + \dots\)).</span> The quotient of force and displacement is \(0{,}306\) N/m, while the horizontal stiffness is \(9{,}8\cdot 10^6\) N/m. The quotient grows with the square of the displacement, so it is not constant, and the relation is not \(\vek F = \mat K\,\vek d\) with a constant matrix (definition <a class="xref" href="sec-element-palice.html#def-togostna-matrika" data-knowl="def-togostna-matrika">7.4</a>). A rope stretched across a gap carries a load by sagging, which linear theory does not see (figure <a class="xref" href="sec-palicje-ravnina-mke.html#fig-pra-mehanizem" data-knowl="fig-pra-mehanizem">7.21</a>). The system \(\mat K_{\mathrm{ff}}\,\vek d_{\mathrm{f}} = \vek f_{\mathrm{f}}\) has in its second row \(0\cdot v_{\mathrm{C}} = -10\,000\) N, so it has no solution. COOK (PDF p. 53) warns that \(\mat K\) is singular even when there is no <a class="xref auto" href="sec-model-nosilca.html#def-porazdeljena-precna-obtezba" data-knowl="def-porazdeljena-precna-obtezba">transverse load</a> at all: &quot;a lateral load applied at node 2 would not be resisted ... not taken into account by linear theory&quot;. This is geometric nonlinearity and we do not treat it in this book.</p>
 
 <figure class="blk slika" id="fig-pra-mehanizem"><p><span class="svgfig" role="img" aria-label="Two horizontal bars with a node that moves downwards, and tilted bars with a small elongation"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='322.12pt' height='117.30pt' viewBox='-72.000004 -72.000004 238.604045 86.886775'>
 <defs>
@@ -2628,6 +2766,7 @@
 <g stroke-width='0.6'>
 <g stroke-linecap='round'>
 <g stroke-linejoin='round'>
+<g class='del' data-del='zidA'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-width='0.45'>
 <path d='M-102.42917-17.92502V17.92503' fill='none'/>
@@ -2663,6 +2802,8 @@
 <path d='M-102.42917 14.08408L-107.55055 8.9627' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='zidB'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-width='0.45'>
 <path d='M102.42917-17.92502V17.92502' fill='none'/>
@@ -2698,9 +2839,13 @@
 <path d='M102.42917 14.08408L107.55055 8.9627' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='palici'>
 <g stroke-width='1.6'>
 <path d='M-102.42917 0H102.42917' fill='none'/>
 </g>
+</g>
+<g class='del' data-del='nova'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.9'>
@@ -2712,74 +2857,6 @@
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.9'>
 <path d='M102.42917 0L0-40.97182' fill='none'/>
-</g>
-</g>
-</g>
-<g fill='#0f0' stroke='#0f0'>
-<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
-<g stroke-width='0.45'>
-<path d='M7.887 0C7.887-14.02855 5.20213-27.94263-.00597-40.96625' fill='none'/>
-</g>
-</g>
-</g>
-<g fill='#fff'>
-<g fill='#fff'>
-<path d='M-100.16623 0C-100.16623 1.2498-101.17937 2.26294-102.42917 2.26294S-104.69211 1.2498-104.69211 0S-103.67897-2.26294-102.42917-2.26294S-100.16623-1.2498-100.16623 0ZM-102.42917 0'/>
-</g>
-<g transform='translate(-102.42917,0.0)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(47.009718,-42.912564)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'/>
-</g>
-</g>
-</g>
-</g>
-<g fill='#fff'>
-<g fill='#fff'>
-<path d='M104.69211 0C104.69211 1.2498 103.67897 2.26294 102.42917 2.26294S100.16623 1.2498 100.16623 0S101.17937-2.26294 102.42917-2.26294S104.69211-1.2498 104.69211 0ZM102.42917 0'/>
-</g>
-<g transform='translate(102.42917,0.0)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(47.009718,-42.912564)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'/>
-</g>
-</g>
-</g>
-</g>
-<g fill='#fff'>
-<g fill='#fff'>
-<path d='M2.26294 0C2.26294 1.2498 1.2498 2.26294 0 2.26294S-2.26294 1.2498-2.26294 0S-1.2498-2.26294 0-2.26294S2.26294-1.2498 2.26294 0ZM0 0'/>
-</g>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(47.009718,-42.912564)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'/>
-</g>
-</g>
-</g>
-<g transform='translate(-116.12303,-11.74672)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(47.009718,-42.912564)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='47.009718' y='-42.912564' xlink:href='#pra-mehanizem-g1-65'/>
-</g>
-</g>
-</g>
-</g>
-<g transform='translate(108.62303,-11.74672)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(47.009718,-42.912564)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='47.009718' y='-42.912564' xlink:href='#pra-mehanizem-g1-66'/>
-</g>
-</g>
-</g>
-</g>
-<g transform='translate(-3.93124,6.19385)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(47.009718,-42.912564)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='47.009718' y='-42.912564' xlink:href='#pra-mehanizem-g1-67'/>
-</g>
 </g>
 </g>
 </g>
@@ -2799,6 +2876,84 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='lok'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M7.887 0C7.887-14.02855 5.20213-27.94263-.00597-40.96625' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='A'>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M-100.16623 0C-100.16623 1.2498-101.17937 2.26294-102.42917 2.26294S-104.69211 1.2498-104.69211 0S-103.67897-2.26294-102.42917-2.26294S-100.16623-1.2498-100.16623 0ZM-102.42917 0'/>
+</g>
+<g transform='translate(-102.42917,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(47.009718,-42.912564)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-116.12303,-11.74672)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(47.009718,-42.912564)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='47.009718' y='-42.912564' xlink:href='#pra-mehanizem-g1-65'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='B'>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M104.69211 0C104.69211 1.2498 103.67897 2.26294 102.42917 2.26294S100.16623 1.2498 100.16623 0S101.17937-2.26294 102.42917-2.26294S104.69211-1.2498 104.69211 0ZM102.42917 0'/>
+</g>
+<g transform='translate(102.42917,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(47.009718,-42.912564)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(108.62303,-11.74672)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(47.009718,-42.912564)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='47.009718' y='-42.912564' xlink:href='#pra-mehanizem-g1-66'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='C'>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M2.26294 0C2.26294 1.2498 1.2498 2.26294 0 2.26294S-2.26294 1.2498-2.26294 0S-1.2498-2.26294 0-2.26294S2.26294-1.2498 2.26294 0ZM0 0'/>
+</g>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(47.009718,-42.912564)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(-3.93124,6.19385)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(47.009718,-42.912564)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='47.009718' y='-42.912564' xlink:href='#pra-mehanizem-g1-67'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='v'>
 <g fill='#00f' stroke='#00f'>
 <path d='M10.24275-.45V-40.52182' fill='none'/>
 <g transform='matrix(0.0,1.0,-1.0,0.0,10.24275,-0.3)'>
@@ -2838,6 +2993,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='e'>
 <g fill='#f00' stroke='#f00'>
 <path d='M.45 17.92502H7.437' fill='none'/>
 <g transform='matrix(-1.0,0.0,0.0,-1.0,0.3,17.92502)'>
@@ -2891,8 +3048,9 @@
 </g>
 </g>
 </g>
+</g>
 </svg></span></p>
-<figcaption><span class="blk-label">Figure 7.21</span>: Two bars on the same line, fixed at \(A\) and <span class="nobr">\(B\),</span> with node \(C\) between them (<span class="ink-l">black</span><span class="ink-d">white</span>). At a vertical displacement \(v\) of node \(C\) (blue measure, strongly enlarged) the bars tilt (orange). The elongation \(e\) of each bar is the difference between the new length and <span class="nobr">\(L\),</span> approximately <span class="nobr">\(v^2/(2L)\),</span> so quadratic in <span class="nobr">\(v\),</span> not linear. Linear theory counts it as zero. At \(v = 0{,}4\,L\) it is <span class="nobr">\(e = 0{,}077\,L\),</span> drawn so large that it can be seen. A grey arc centred at \(A\) carries the new length \(\sqrt{L^2 + v^2}\) onto the line of the bars, to a point that is \(e\) to the right of <span class="nobr">\(C\).</span> The bars in the new position are blue dashed.</figcaption></figure>
+<figcaption><span class="blk-label">Figure 7.21</span>: Two bars on the same line, fixed at \(A\) and <span class="nobr">\(B\),</span> with node \(C\) between them (<span class="ink-l">black</span><span class="ink-d">white</span>). At a vertical displacement \(v\) of node \(C\) (blue measure, strongly enlarged) the bars tilt. The elongation \(e\) (orange measure) of each bar is the difference between the new length and <span class="nobr">\(L\),</span> approximately <span class="nobr">\(v^2/(2L)\),</span> so quadratic in <span class="nobr">\(v\),</span> not linear. Linear theory counts it as zero. At \(v = 0{,}4\,L\) it is <span class="nobr">\(e = 0{,}077\,L\),</span> drawn so large that it can be seen. A grey arc centred at \(A\) carries the new length \(\sqrt{L^2 + v^2}\) onto the line of the bars, to a point that is \(e\) to the right of <span class="nobr">\(C\).</span> The bars in the new position are blue dashed.</figcaption></figure>
 <p>A quick check of whether a truss is free of a mechanism is counting. A truss is statically determinate when the number of unknown forces equals the number of <a class="xref auto" href="sec-ravnotezne-enacbe.html#thm-ravnotezne-enacbe" data-knowl="thm-ravnotezne-enacbe">equilibrium equations</a> of the nodes: \(2\) per node in the plane. The unknown forces are the forces in the bars and the reactions. The wall truss has \(2\) bars and \(4\) reactions (two immovable supports), in all \(6 = 2\cdot 3\) nodes, and is statically determinate. With the additional bar \(CD\) of section <a class="xref" href="sec-virtualne-sile.html#sec-staticno-nedoloceno-palicje">4.7.5</a> there are \(3 + 6 = 9\) unknowns for \(8\) equations, and the truss is once statically indeterminate. The bridge with \(12\) nodes, which we will compute later in this chapter, has \(21\) bars and \(3\) reactions, in all <span class="nobr">\(24 = 2\cdot 12\).</span> Counting is a quick check, but it has a <a class="xref auto" href="sec-limita-odvod.html#def-limita" data-knowl="def-limita">limit</a>: it does not exclude a mechanism. Two bars on the same line have \(2\) bars and \(4\) reactions, <span class="nobr">\(6 = 2\cdot 3\),</span> yet the matrix is singular, as we saw. Counting therefore tells when there are not enough equations or too many, but not whether they are really independent. Only the energy tells this: \(\mat K_{\mathrm{ff}}\) must be positive definite by theorem <a class="xref" href="sec-palicje-ravnina-mke.html#thm-pozitivnost-palicja" data-knowl="thm-pozitivnost-palicja">7.33</a>, and we check this by elimination, where a zero pivot points to a displacement that must be found.</p>
 <p>The section showed how the matrix of one bar in an arbitrary direction builds up a truss and how the matrix tells that a truss does not stand.</p>
 

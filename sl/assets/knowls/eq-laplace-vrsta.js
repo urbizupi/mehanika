@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-laplace-vrsta"] = {"html": "<div class=\"eq\">\\[T(x, y) = \\sum_{\\mathrm{n}=1}^{\\infty}f_{\\mathrm{n}}\\,\\sin\\frac{n\\pi x}{a}\\,\\frac{\\sinh(n\\pi y/a)}{\\sinh(n\\pi b/a)} \\tag{14.32}\\]</div>", "href": "sec-stacionarno-ravnina.html#eq-laplace-vrsta"};

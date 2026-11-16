@@ -1,0 +1,1800 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>24.5 Finite elements of a rotor · Chapter 24</title>
+<script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/style.css">
+<noscript><style>#loadbar { display: none; }</style></noscript>
+<script src="assets/config.js"></script>
+<script src="assets/load.js"></script>
+<script defer src="assets/interaktivno.js"></script>
+<script defer src="assets/book.js"></script>
+<script defer src="assets/predavanje.js"></script>
+<script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<div id="loadbar" aria-hidden="true"></div>
+<header class="top"><a class="home" href="index.html">Mechanics</a><nav class="pager"><a href="sec-campbellov-diagram.html" rel="prev">← 24.4</a><a href="index.html">Contents</a><a href="sec-kriticne-vec-mas.html" rel="next">24.6 →</a></nav>
+<span class="tools"><a class="lang" href="../sl/sec-mke-rotorja.html" hreflang="sl">Slovenščina</a><button type="button" class="theme-toggle" title="Light or dark theme" aria-label="Light or dark theme"></button><button type="button" data-details="open">Expand all</button><button type="button" data-details="close">Collapse all</button><button type="button" class="fig-side-toggle" aria-pressed="false">Figures alongside</button></span></header>
+<main>
+<p class="updated">Last updated 16 November 2026, 10:52</p>
+<p class="crumb"><a href="ch-rotorska-dinamika.html"><span class="h-num">Chapter 24</span> Rotordynamics</a></p>
+<h2 id="sec-mke-rotorja"><span class="h-num">24.5</span> Finite elements of a rotor</h2>
+<p>The <a class="xref auto" href="sec-jeffcottov-rotor.html#def-jeffcottov-rotor" data-knowl="def-jeffcottov-rotor">Jeffcott rotor</a> (section <a class="xref" href="sec-jeffcottov-rotor.html">24.1</a>) has one mass on a massless shaft, and a tilting disk (sections <a class="xref" href="sec-ziroskopski-moment.html">24.3</a> and <a class="xref" href="sec-campbellov-diagram.html">24.4</a>) adds two angular unknowns. The running rotor R1 is a steel shaft of diameter 40 mm between two bearings 1 m apart, with a disk of diameter 400 mm and thickness 50 mm at the middle. The shaft has mass \(9{,}802\) kg, the disk \(49{,}009\) kg, so the shaft weighs \(20{,}0\) % of the disk, and the <a class="xref auto" href="sec-rayleighov-kolicnik.html#def-rayleighov-kolicnik" data-knowl="def-rayleighov-kolicnik">Rayleigh quotient</a> (theorem <a class="xref" href="sec-ritz-zvezni.html#thm-rayleigh-zvezni" data-knowl="thm-rayleigh-zvezni">13.54</a>) predicted a frequency \(4{,}53\) % lower for this mass. For a rotor with several disks, or with a shaft whose cross-section changes along its length, such an estimate by hand is not enough. So we do what we did for the <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beam</a> in chapter <a class="xref" href="ch-mke-nosilci.html">12</a>: we divide the shaft into elements, put the disk into a node and assemble the equations from energies. The only new thing is that the shaft turns. This brings two consequences. The bending takes place in two planes at once, and every piece of the shaft has, besides the <a class="xref auto" href="sec-vztrajnost-zasuka.html#lem-kineticna-nosilca-zasuk" data-knowl="lem-kineticna-nosilca-zasuk">rotary inertia</a> (section <a class="xref" href="sec-vztrajnost-zasuka.html">13.10</a>), a gyroscopic contribution that <a class="xref auto" href="sec-model-nosilca.html#def-dvojica-sil" data-knowl="def-dvojica-sil">couples</a> the two planes, just as for the disk in section <a class="xref" href="sec-ziroskopski-moment.html">24.3</a>.</p>
+
+<h3 id="sec-mke-rotorja-model"><span class="h-num">24.5.1</span> Model and unknowns</h3>
+<p>The aim of this section is an equation of the form \(\mat M\ddot{\vek q} - \mathrm{i}\,\Omega\,\mat G\dot{\vek q} + \mat K\vek q = \vek f\) for a rotor of any length with any number of disks, with <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> assembled element by element. The model has named idealizations.</p>
+<ul>
+<li>The shaft is round with a constant diameter within an element, and we treat it as a Rayleigh beam (definition <a class="xref" href="sec-vztrajnost-zasuka.html#def-rayleighov-nosilec" data-knowl="def-rayleighov-nosilec">13.58</a>): the cross-section stays plane and perpendicular to the axis and turns as a whole, shear is neglected. The <a class="xref auto" href="sec-timosenkov-element.html#def-element-timosenko" data-knowl="def-element-timosenko">Timoshenko element</a>, which adds shear, is only named (FPGL, section 5.4.2, PDF pp. 181 to 185).</li>
+<li>The spin speed \(\Omega\) is constant, as for the isochronous machine (izo-stroj) in example <a class="xref" href="sec-izolacija.html#ex-izo-stroj" data-knowl="ex-izo-stroj">9.64</a>. The slopes of the shaft \(v'\) and \(w'\) are small, and the kinetic energy is written to second order in the slopes, as for the disk (lemma <a class="xref" href="sec-ziroskopski-moment.html#lem-kineticna-energija-diska" data-knowl="lem-kineticna-energija-diska">24.15</a>).</li>
+<li>The shaft is massless only in sections <a class="xref" href="sec-jeffcottov-rotor.html">24.1</a> to <a class="xref" href="sec-campbellov-diagram.html">24.4</a>. Here it has mass and <a class="xref auto" href="sec-vztrajnost-zasuka.html#lem-kineticna-nosilca-zasuk" data-knowl="lem-kineticna-nosilca-zasuk">rotary inertia</a>, while shear and <a class="xref auto forward" href="sec-notranje-dusenje.html#def-notranje-dusenje" data-knowl="def-notranje-dusenje" title="Defined later in the book">internal damping</a> do not appear (that is section <a class="xref" href="sec-notranje-dusenje.html">24.7</a>).</li>
+<li>The bearings are short and rigid (the displacement at the bearing is zero, the slope is free), except where we name a spring of stiffness <span class="nobr">\(k_{\mathrm{b}}\).</span> Hydrodynamic bearings and seals are only named (FPGL, section 5.5, PDF pp. 194 to 212). The stiffness of a rolling bearing from Hertz contact is treated in chapter <a class="xref" href="ch-kontakt-lezaji.html">25</a>.</li>
+<li>The rotor and the bearings are <a class="xref auto" href="sec-natezni-preizkus.html#def-izotropen-material" data-knowl="def-izotropen-material">isotropic</a>: the same stiffness in both planes. A case where this does not hold is in section <a class="xref" href="sec-neuravnotezenost-rotorja.html">24.2</a>.</li>
+</ul>
+<p>The notation is the same as before and is only collected here, because some letters meet their other meanings. The letter \(\Omega\) is the spin speed of the shaft (in chapter <a class="xref" href="ch-nihanje-ena-ps.html">9</a> the excitation frequency, and for <a class="xref auto" href="sec-uravnotezenje-rotorja.html#def-neuravnotezenost" data-knowl="def-neuravnotezenost">unbalance</a> the same number). The letter \(\omega\) is the <a class="xref auto" href="sec-jeffcottov-rotor.html#def-vrtincenje" data-knowl="def-vrtincenje">whirl</a> frequency, and the bold \(\boldsymbol\omega\) of chapter <a class="xref" href="ch-analiticna-dinamika.html">8</a> (<a class="xref auto" href="sec-kineticna-energija.html#def-kotna-hitrost" data-knowl="def-kotna-hitrost">angular velocity</a>) does not appear in this section. The polar and transverse mass moments of inertia of the disk are \(J_{\mathrm{p}}\) and \(J_{\mathrm{t}}\) (in chapter <a class="xref" href="ch-nihanje-zveznih-sistemov.html">13</a> \(J_{\mathrm{d}}\) is our <span class="nobr">\(J_{\mathrm{p}}\)),</span> and the second moment of area of the shaft cross-section is \(I\) (definition <a class="xref" href="sec-geometrija-prereza.html#def-vztrajnostni-moment-prereza" data-knowl="def-vztrajnostni-moment-prereza">5.26</a>) and the polar one <span class="nobr">\(I_{\mathrm{p}}\),</span> both in m<span class="nobr">\(^4\).</span> The matrix \(\mat G\) is the gyroscopic matrix (definition <a class="xref" href="sec-ziroskopski-moment.html#def-ziroskopska-matrika" data-knowl="def-ziroskopska-matrika">24.16</a>), while \(G\) without bold type is the <a class="xref auto" href="sec-hookov-zakon.html#def-strizni-modul" data-knowl="def-strizni-modul">shear modulus</a>, which does not appear here. The radius of gyration of the cross-section (definition <a class="xref" href="sec-vztrajnost-zasuka.html#def-polmer-vrtenja" data-knowl="def-polmer-vrtenja">13.61</a>) is written as \(\sqrt{I/A}\) without a letter of its own, because the letter \(r\) means the ratio \(\Omega/\omega_{\mathrm{n}}\) from chapter <a class="xref" href="ch-nihanje-ena-ps.html">9</a>.</p>
+<p>We draw the mesh on rotor R1 with four elements (figure <a class="xref" href="sec-mke-rotorja.html#fig-mreza-rotorja" data-knowl="fig-mreza-rotorja">24.16</a>). We draw the <a data-del="gred" class="xref kaz" href="sec-mke-rotorja.html#fig-mreza-rotorja" data-knowl="fig-mreza-rotorja">axis of the shaft</a>, a horizontal line \(x\) that joins the centres of the cross-sections. We divide it into four equal <a data-del="elementi" class="xref kaz" href="sec-mke-rotorja.html#fig-mreza-rotorja" data-knowl="fig-mreza-rotorja">elements</a> \(e_1\) to \(e_4\) of <span class="nobr"><a data-del="dolzina" class="xref kaz" href="sec-mke-rotorja.html#fig-mreza-rotorja" data-knowl="fig-mreza-rotorja">length \(h = L/n\)</a>,</span> where \(n\) is the number of elements. The boundaries between them are the <a data-del="vozlisca" class="xref kaz" href="sec-mke-rotorja.html#fig-mreza-rotorja" data-knowl="fig-mreza-rotorja">nodes</a> 0 to 4. A node is so called because the ends of neighbouring elements are held together in it like a rope in a knot, and an element is called finite because it is a piece of finite length \(h\) and not an infinitely small one (chapter <a class="xref" href="ch-mke-nosilci.html">12</a>). At node 2, in the middle, sits the <a data-del="disk" class="xref kaz" href="sec-mke-rotorja.html#fig-mreza-rotorja" data-knowl="fig-mreza-rotorja">disk</a> of mass \(m\) and moments \(J_{\mathrm{t}}\) and <span class="nobr">\(J_{\mathrm{p}}\).</span> At the ends of the shaft the bearings are held by <a data-del="lezaji" class="xref kaz" href="sec-mke-rotorja.html#fig-mreza-rotorja" data-knowl="fig-mreza-rotorja">springs</a> of stiffness <span class="nobr">\(k_{\mathrm{b}}\).</span> A rigid bearing is the <a class="xref auto" href="sec-limita-odvod.html#def-limita" data-knowl="def-limita">limiting</a> case <span class="nobr">\(k_{\mathrm{b}} \to \infty\),</span> and we get it by prescribing the displacement at the node to be zero.</p>
+
+<figure class="blk slika" id="fig-mreza-rotorja"><p><span class="svgfig" role="img" aria-label="Rotor R1 divided into four shaft elements"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='352.87pt' height='140.69pt' viewBox='-72.000004 -72.000007 261.384946 104.212523'>
+<defs>
+<path id='c24-05-mreza-g0-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='c24-05-mreza-g0-74' d='M5.389788-6.07721C5.469489-6.405978 5.489415-6.495641 6.03736-6.495641C6.196762-6.495641 6.306351-6.495641 6.306351-6.684932C6.306351-6.774595 6.246575-6.804483 6.166874-6.804483C5.917808-6.804483 5.310087-6.774595 5.061021-6.774595C4.732254-6.774595 3.92528-6.804483 3.596513-6.804483C3.506849-6.804483 3.387298-6.804483 3.387298-6.60523C3.387298-6.495641 3.466999-6.495641 3.726027-6.495641C3.955168-6.495641 4.054795-6.495641 4.303861-6.475716C4.542964-6.445828 4.612702-6.41594 4.612702-6.276463C4.612702-6.216687 4.592777-6.146949 4.572852-6.067248L3.427148-1.494396C3.188045-.52802 2.510585 0 1.992528 0C1.733499 0 1.205479-.099626 1.046077-.617684C1.075965-.607721 1.145704-.607721 1.165629-.607721C1.554172-.607721 1.8132-.946451 1.8132-1.24533C1.8132-1.564134 1.544209-1.663761 1.374844-1.663761C1.195517-1.663761 .707347-1.544209 .707347-.86675C.707347-.249066 1.235367 .219178 2.022416 .219178C2.938979 .219178 3.975093-.438356 4.224159-1.424658L5.389788-6.07721Z'/>
+<path id='c24-05-mreza-g0-101' d='M1.863014-2.30137C2.15193-2.30137 2.889166-2.321295 3.387298-2.530511C4.084682-2.82939 4.134496-3.417186 4.134496-3.556663C4.134496-3.995019 3.755915-4.403487 3.068493-4.403487C1.96264-4.403487 .458281-3.437111 .458281-1.693649C.458281-.67746 1.046077 .109589 2.022416 .109589C3.447073 .109589 4.283935-.946451 4.283935-1.066002C4.283935-1.125778 4.224159-1.195517 4.164384-1.195517C4.11457-1.195517 4.094645-1.175592 4.034869-1.09589C3.247821-.109589 2.161893-.109589 2.042341-.109589C1.265255-.109589 1.175592-.946451 1.175592-1.265255C1.175592-1.384807 1.185554-1.693649 1.334994-2.30137H1.863014ZM1.39477-2.520548C1.783313-4.034869 2.809465-4.184309 3.068493-4.184309C3.536737-4.184309 3.805729-3.895392 3.805729-3.556663C3.805729-2.520548 2.211706-2.520548 1.803238-2.520548H1.39477Z'/>
+<path id='c24-05-mreza-g0-104' d='M2.859278-6.804483C2.859278-6.814446 2.859278-6.914072 2.729763-6.914072C2.500623-6.914072 1.77335-6.834371 1.514321-6.814446C1.43462-6.804483 1.325031-6.794521 1.325031-6.615193C1.325031-6.495641 1.414695-6.495641 1.564134-6.495641C2.042341-6.495641 2.062267-6.425903 2.062267-6.326276L2.032379-6.127024L.587796-.388543C.547945-.249066 .547945-.229141 .547945-.169365C.547945 .059776 .747198 .109589 .836862 .109589C.996264 .109589 1.155666-.009963 1.205479-.14944L1.39477-.9066L1.613948-1.803238C1.673724-2.022416 1.733499-2.241594 1.783313-2.470735C1.803238-2.530511 1.882939-2.859278 1.892902-2.919054C1.92279-3.008717 2.231631-3.566625 2.570361-3.835616C2.789539-3.995019 3.098381-4.184309 3.526775-4.184309S4.064757-3.845579 4.064757-3.486924C4.064757-2.948941 3.686177-1.863014 3.447073-1.255293C3.367372-1.026152 3.317559-.9066 3.317559-.707347C3.317559-.239103 3.666252 .109589 4.134496 .109589C5.070984 .109589 5.439601-1.344956 5.439601-1.424658C5.439601-1.524284 5.349938-1.524284 5.32005-1.524284C5.220423-1.524284 5.220423-1.494396 5.17061-1.344956C5.021171-.816936 4.702366-.109589 4.154421-.109589C3.985056-.109589 3.915318-.209215 3.915318-.438356C3.915318-.687422 4.004981-.926526 4.094645-1.145704C4.254047-1.574097 4.702366-2.759651 4.702366-3.337484C4.702366-3.985056 4.303861-4.403487 3.556663-4.403487C2.929016-4.403487 2.450809-4.094645 2.082192-3.636364L2.859278-6.804483Z'/>
+<path id='c24-05-mreza-g0-107' d='M2.859278-6.804483C2.859278-6.814446 2.859278-6.914072 2.729763-6.914072C2.500623-6.914072 1.77335-6.834371 1.514321-6.814446C1.43462-6.804483 1.325031-6.794521 1.325031-6.615193C1.325031-6.495641 1.414695-6.495641 1.564134-6.495641C2.042341-6.495641 2.062267-6.425903 2.062267-6.326276L2.032379-6.127024L.587796-.388543C.547945-.249066 .547945-.229141 .547945-.169365C.547945 .059776 .747198 .109589 .836862 .109589C.966376 .109589 1.115816 .019925 1.175592-.099626C1.225405-.18929 1.673724-2.032379 1.733499-2.281445C2.072229-2.251557 2.889166-2.092154 2.889166-1.43462C2.889166-1.364882 2.889166-1.325031 2.859278-1.225405C2.839352-1.105853 2.819427-.986301 2.819427-.876712C2.819427-.288917 3.217933 .109589 3.73599 .109589C4.034869 .109589 4.303861-.049813 4.523039-.418431C4.772105-.856787 4.881694-1.404732 4.881694-1.424658C4.881694-1.524284 4.79203-1.524284 4.762142-1.524284C4.662516-1.524284 4.652553-1.484433 4.622665-1.344956C4.423412-.617684 4.194271-.109589 3.755915-.109589C3.566625-.109589 3.437111-.219178 3.437111-.577833C3.437111-.747198 3.476961-.976339 3.516812-1.135741C3.556663-1.305106 3.556663-1.344956 3.556663-1.444583C3.556663-2.092154 2.929016-2.381071 2.082192-2.49066C2.391034-2.669988 2.709838-2.988792 2.938979-3.227895C3.417186-3.755915 3.875467-4.184309 4.363636-4.184309C4.423412-4.184309 4.433375-4.184309 4.4533-4.174346C4.572852-4.154421 4.582814-4.154421 4.662516-4.094645C4.682441-4.084682 4.682441-4.07472 4.702366-4.054795C4.224159-4.024907 4.134496-3.636364 4.134496-3.516812C4.134496-3.35741 4.244085-3.16812 4.513076-3.16812C4.772105-3.16812 5.061021-3.387298 5.061021-3.775841C5.061021-4.07472 4.83188-4.403487 4.383562-4.403487C4.104608-4.403487 3.646326-4.323786 2.929016-3.526775C2.590286-3.148194 2.201743-2.749689 1.823163-2.600249L2.859278-6.804483Z'/>
+<path id='c24-05-mreza-g0-109' d='M.876712-.587796C.846824-.438356 .787049-.209215 .787049-.159402C.787049 .019925 .926526 .109589 1.075965 .109589C1.195517 .109589 1.374844 .029888 1.444583-.169365C1.454545-.18929 1.574097-.657534 1.633873-.9066L1.853051-1.803238C1.912827-2.022416 1.972603-2.241594 2.022416-2.470735C2.062267-2.6401 2.141968-2.929016 2.15193-2.968867C2.30137-3.277709 2.82939-4.184309 3.775841-4.184309C4.224159-4.184309 4.313823-3.815691 4.313823-3.486924C4.313823-3.237858 4.244085-2.958904 4.164384-2.660025L3.88543-1.504359L3.686177-.747198C3.646326-.547945 3.556663-.209215 3.556663-.159402C3.556663 .019925 3.696139 .109589 3.845579 .109589C4.154421 .109589 4.214197-.139477 4.293898-.458281C4.433375-1.016189 4.801993-2.470735 4.891656-2.859278C4.921544-2.988792 5.449564-4.184309 6.535492-4.184309C6.963885-4.184309 7.073474-3.845579 7.073474-3.486924C7.073474-2.919054 6.655044-1.783313 6.455791-1.255293C6.366127-1.016189 6.326276-.9066 6.326276-.707347C6.326276-.239103 6.674969 .109589 7.143213 .109589C8.079701 .109589 8.448319-1.344956 8.448319-1.424658C8.448319-1.524284 8.358655-1.524284 8.328767-1.524284C8.229141-1.524284 8.229141-1.494396 8.179328-1.344956C8.029888-.816936 7.711083-.109589 7.163138-.109589C6.993773-.109589 6.924035-.209215 6.924035-.438356C6.924035-.687422 7.013699-.926526 7.103362-1.145704C7.292653-1.663761 7.711083-2.769614 7.711083-3.337484C7.711083-3.985056 7.312578-4.403487 6.56538-4.403487S5.310087-3.965131 4.941469-3.437111C4.931507-3.566625 4.901619-3.905355 4.622665-4.144458C4.373599-4.353674 4.054795-4.403487 3.805729-4.403487C2.909091-4.403487 2.420922-3.765878 2.251557-3.536737C2.201743-4.104608 1.783313-4.403487 1.334994-4.403487C.876712-4.403487 .687422-4.014944 .597758-3.835616C.418431-3.486924 .288917-2.899128 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.779577 .577833-2.998755C.747198-3.706102 .946451-4.184309 1.305106-4.184309C1.464508-4.184309 1.613948-4.104608 1.613948-3.726027C1.613948-3.516812 1.58406-3.407223 1.454545-2.889166L.876712-.587796Z'/>
+<path id='c24-05-mreza-g0-120' d='M3.327522-3.008717C3.387298-3.267746 3.616438-4.184309 4.313823-4.184309C4.363636-4.184309 4.60274-4.184309 4.811955-4.054795C4.533001-4.004981 4.333748-3.755915 4.333748-3.516812C4.333748-3.35741 4.443337-3.16812 4.712329-3.16812C4.931507-3.16812 5.250311-3.347447 5.250311-3.745953C5.250311-4.26401 4.662516-4.403487 4.323786-4.403487C3.745953-4.403487 3.39726-3.875467 3.277709-3.646326C3.028643-4.303861 2.49066-4.403487 2.201743-4.403487C1.165629-4.403487 .597758-3.118306 .597758-2.86924C.597758-2.769614 .697385-2.769614 .71731-2.769614C.797011-2.769614 .826899-2.789539 .846824-2.879203C1.185554-3.935243 1.843088-4.184309 2.181818-4.184309C2.371108-4.184309 2.719801-4.094645 2.719801-3.516812C2.719801-3.20797 2.550436-2.540473 2.181818-1.145704C2.022416-.52802 1.673724-.109589 1.235367-.109589C1.175592-.109589 .946451-.109589 .737235-.239103C.986301-.288917 1.205479-.498132 1.205479-.777086C1.205479-1.046077 .986301-1.125778 .836862-1.125778C.537983-1.125778 .288917-.86675 .288917-.547945C.288917-.089664 .787049 .109589 1.225405 .109589C1.882939 .109589 2.241594-.587796 2.271482-.647572C2.391034-.278954 2.749689 .109589 3.347447 .109589C4.373599 .109589 4.941469-1.175592 4.941469-1.424658C4.941469-1.524284 4.851806-1.524284 4.821918-1.524284C4.732254-1.524284 4.712329-1.484433 4.692403-1.414695C4.363636-.348692 3.686177-.109589 3.367372-.109589C2.978829-.109589 2.819427-.428394 2.819427-.767123C2.819427-.986301 2.879203-1.205479 2.988792-1.643836L3.327522-3.008717Z'/>
+<path id='c24-05-mreza-g1-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='c24-05-mreza-g1-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c24-05-mreza-g1-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='c24-05-mreza-g1-51' d='M2.889166-3.506849C3.706102-3.775841 4.283935-4.473225 4.283935-5.260274C4.283935-6.07721 3.407223-6.635118 2.450809-6.635118C1.444583-6.635118 .687422-6.03736 .687422-5.280199C.687422-4.951432 .9066-4.762142 1.195517-4.762142C1.504359-4.762142 1.703611-4.98132 1.703611-5.270237C1.703611-5.768369 1.235367-5.768369 1.085928-5.768369C1.39477-6.256538 2.052304-6.386052 2.410959-6.386052C2.819427-6.386052 3.367372-6.166874 3.367372-5.270237C3.367372-5.150685 3.347447-4.572852 3.088418-4.134496C2.789539-3.656289 2.450809-3.626401 2.201743-3.616438C2.122042-3.606476 1.882939-3.58655 1.8132-3.58655C1.733499-3.576588 1.663761-3.566625 1.663761-3.466999C1.663761-3.35741 1.733499-3.35741 1.902864-3.35741H2.34122C3.158157-3.35741 3.526775-2.67995 3.526775-1.703611C3.526775-.348692 2.839352-.059776 2.400996-.059776C1.972603-.059776 1.225405-.229141 .876712-.816936C1.225405-.767123 1.534247-.986301 1.534247-1.364882C1.534247-1.723537 1.265255-1.92279 .976339-1.92279C.737235-1.92279 .418431-1.783313 .418431-1.344956C.418431-.438356 1.344956 .219178 2.430884 .219178C3.646326 .219178 4.552927-.687422 4.552927-1.703611C4.552927-2.520548 3.92528-3.297634 2.889166-3.506849Z'/>
+<path id='c24-05-mreza-g1-52' d='M2.929016-1.643836V-.777086C2.929016-.418431 2.909091-.308842 2.171856-.308842H1.96264V0C2.371108-.029888 2.889166-.029888 3.307597-.029888S4.254047-.029888 4.662516 0V-.308842H4.4533C3.716065-.308842 3.696139-.418431 3.696139-.777086V-1.643836H4.692403V-1.952677H3.696139V-6.485679C3.696139-6.684932 3.696139-6.744707 3.536737-6.744707C3.447073-6.744707 3.417186-6.744707 3.337484-6.625156L.278954-1.952677V-1.643836H2.929016ZM2.988792-1.952677H.557908L2.988792-5.668742V-1.952677Z'/>
+<path id='c24-05-mreza-g2-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='c24-05-mreza-g2-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+<path id='c24-05-mreza-g2-51' d='M1.903861-2.329265C2.447821-2.329265 2.838356-1.952677 2.838356-1.206476C2.838356-.341719 2.336239-.083686 1.931756-.083686C1.652802-.083686 1.039103-.160399 .746202-.571856C1.073973-.585803 1.150685-.81594 1.150685-.962391C1.150685-1.185554 .983313-1.345953 .767123-1.345953C.571856-1.345953 .376588-1.227397 .376588-.941469C.376588-.285928 1.101868 .139477 1.945704 .139477C2.915068 .139477 3.584558-.509091 3.584558-1.206476C3.584558-1.750436 3.138232-2.294396 2.371108-2.454795C3.103362-2.719801 3.368369-3.242839 3.368369-3.668244C3.368369-4.219178 2.733748-4.630635 1.959651-4.630635S.592777-4.254047 .592777-3.696139C.592777-3.459029 .746202-3.326526 .955417-3.326526C1.171606-3.326526 1.311083-3.486924 1.311083-3.682192C1.311083-3.884433 1.171606-4.030884 .955417-4.044832C1.199502-4.351681 1.680697-4.428394 1.93873-4.428394C2.252553-4.428394 2.691905-4.274969 2.691905-3.668244C2.691905-3.375342 2.594271-3.054545 2.412951-2.838356C2.182814-2.57335 1.987547-2.559402 1.638854-2.538481C1.464508-2.524533 1.45056-2.524533 1.415691-2.517559C1.401743-2.517559 1.345953-2.503611 1.345953-2.426899C1.345953-2.329265 1.408717-2.329265 1.527273-2.329265H1.903861Z'/>
+<path id='c24-05-mreza-g2-52' d='M3.689166-1.143711V-1.39477H2.915068V-4.505106C2.915068-4.651557 2.915068-4.700374 2.761644-4.700374C2.677958-4.700374 2.650062-4.700374 2.580324-4.60274L.27198-1.39477V-1.143711H2.322291V-.571856C2.322291-.334745 2.322291-.251059 1.75741-.251059H1.569116V0C1.917808-.013948 2.364134-.027895 2.615193-.027895C2.873225-.027895 3.319552-.013948 3.668244 0V-.251059H3.47995C2.915068-.251059 2.915068-.334745 2.915068-.571856V-1.143711H3.689166ZM2.371108-3.947198V-1.39477H.530012L2.371108-3.947198Z'/>
+<path id='c24-05-mreza-g2-98' d='M1.387796-4.839851L.341719-4.763138V-4.51208C.81594-4.51208 .864757-4.456289 .864757-4.107597V0H1.101868L1.345953-.425405C1.610959-.076712 1.994521 .069738 2.364134 .069738C3.284682 .069738 4.072727-.620672 4.072727-1.506351C4.072727-2.357161 3.354421-3.075467 2.440847-3.075467C2.022416-3.075467 1.638854-2.908095 1.387796-2.657036V-4.839851ZM1.415691-2.336239C1.610959-2.657036 1.987547-2.880199 2.405978-2.880199C2.796513-2.880199 3.075467-2.657036 3.214944-2.447821C3.354421-2.245579 3.438107-1.973599 3.438107-1.513325C3.438107-1.352927 3.438107-.829888 3.152179-.502117C2.873225-.188294 2.531507-.125529 2.329265-.125529C1.771357-.125529 1.492403-.564882 1.415691-.711333V-2.336239Z'/>
+<path id='c24-05-mreza-g2-112' d='M1.93873 1.101868C1.48543 1.101868 1.415691 1.101868 1.415691 .801993V-.334745C1.45056-.299875 1.778331 .069738 2.364134 .069738C3.284682 .069738 4.072727-.620672 4.072727-1.506351C4.072727-2.364134 3.361395-3.075467 2.475716-3.075467C2.078207-3.075467 1.673724-2.929016 1.387796-2.650062V-3.075467L.341719-2.998755V-2.747696C.829888-2.747696 .864757-2.712827 .864757-2.419925V.801993C.864757 1.101868 .795019 1.101868 .341719 1.101868V1.352927C.355666 1.352927 .843836 1.325031 1.136737 1.325031C1.39477 1.325031 1.875965 1.345953 1.93873 1.352927V1.101868ZM1.415691-2.322291C1.624907-2.670984 2.02939-2.852304 2.399004-2.852304C2.984807-2.852304 3.438107-2.238605 3.438107-1.506351C3.438107-.711333 2.915068-.125529 2.322291-.125529C1.708593-.125529 1.436613-.662516 1.415691-.704359V-2.322291Z'/>
+<path id='c24-05-mreza-g2-116' d='M1.401743-2.75467H2.489664V-3.005729H1.401743V-4.288917H1.164633C1.157659-3.66127 .871731-2.970859 .202242-2.949938V-2.75467H.850809V-.871731C.850809-.09066 1.436613 .069738 1.827148 .069738C2.294396 .069738 2.615193-.327771 2.615193-.878705V-1.262267H2.378082V-.885679C2.378082-.411457 2.154919-.153425 1.882939-.153425C1.401743-.153425 1.401743-.739228 1.401743-.864757V-2.75467Z'/>
+</defs>
+<g id='c24-05-mreza-page1'>
+<g stroke-miterlimit='10' transform='translate(-46.189506,-28.417345)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='gred'>
+<g stroke-width='1.6'>
+<path d='M0 0H227.62195' fill='none'/>
+</g>
+<path d='M-25.60728 0H-15.73311' fill='none'/>
+<g transform='translate(-18.20956,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-14.23856,3.63298)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-46.189506,-28.417345)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-46.189506' y='-28.417345' xlink:href='#c24-05-mreza-g0-120'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='disk'>
+<g fill='#00f' stroke='#00f'>
+<g fill='#d9d9ff'>
+<g stroke-width='0.8'>
+<path d='M108.68968-35.56592V35.56592H118.93225V-35.56592ZM118.93225 35.56592'/>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(123.61325,33.5798)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-46.189506,-28.417345)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-46.189506' y='-28.417345' xlink:href='#c24-05-mreza-g0-109'/>
+<use x='-37.442172' y='-28.417345' xlink:href='#c24-05-mreza-g0-59'/>
+<use x='-33.014364' y='-28.417345' xlink:href='#c24-05-mreza-g0-74'/>
+<use x='-27.489942' y='-26.922965' xlink:href='#c24-05-mreza-g2-116'/>
+<use x='-23.87847' y='-28.417345' xlink:href='#c24-05-mreza-g0-59'/>
+<use x='-19.450662' y='-28.417345' xlink:href='#c24-05-mreza-g0-74'/>
+<use x='-13.926239' y='-26.922965' xlink:href='#c24-05-mreza-g2-112'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='elementi'>
+<g transform='translate(23.88155,-14.20642)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-46.189506,-28.417345)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-46.189506' y='-28.417345' xlink:href='#c24-05-mreza-g0-101'/>
+<use x='-41.550635' y='-26.922965' xlink:href='#c24-05-mreza-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(80.78703,-14.20642)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-46.189506,-28.417345)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-46.189506' y='-28.417345' xlink:href='#c24-05-mreza-g0-101'/>
+<use x='-41.550635' y='-26.922965' xlink:href='#c24-05-mreza-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(137.69252,-14.20642)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-46.189506,-28.417345)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-46.189506' y='-28.417345' xlink:href='#c24-05-mreza-g0-101'/>
+<use x='-41.550635' y='-26.922965' xlink:href='#c24-05-mreza-g2-51'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(194.598,-14.20642)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-46.189506,-28.417345)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-46.189506' y='-28.417345' xlink:href='#c24-05-mreza-g0-101'/>
+<use x='-41.550635' y='-26.922965' xlink:href='#c24-05-mreza-g2-52'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='vozlisca'>
+<path d='M1.83862 0C1.83862 1.01544 1.01544 1.83862 0 1.83862S-1.83862 1.01544-1.83862 0S-1.01544-1.83862 0-1.83862S1.83862-1.01544 1.83862 0ZM0 0' stroke='none'/>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-46.189506,-28.417345)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+<g transform='translate(-2.5,9.58142)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-46.189506,-28.417345)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-46.189506' y='-28.417345' xlink:href='#c24-05-mreza-g1-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M58.74411 0C58.74411 1.01544 57.92093 1.83862 56.90549 1.83862S55.06686 1.01544 55.06686 0S55.89005-1.83862 56.90549-1.83862S58.74411-1.01544 58.74411 0ZM56.90549 0' stroke='none'/>
+<g transform='translate(56.90549,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-46.189506,-28.417345)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(54.40549,9.58142)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-46.189506,-28.417345)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-46.189506' y='-28.417345' xlink:href='#c24-05-mreza-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M115.6496 0C115.6496 1.01544 114.82642 1.83862 113.81097 1.83862C112.79553 1.83862 111.97235 1.01544 111.97235 0S112.79553-1.83862 113.81097-1.83862C114.82642-1.83862 115.6496-1.01544 115.6496 0ZM113.81097 0' stroke='none'/>
+<g transform='translate(113.81097,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-46.189506,-28.417345)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(111.31097,9.58142)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-46.189506,-28.417345)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-46.189506' y='-28.417345' xlink:href='#c24-05-mreza-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M172.55508 0C172.55508 1.01544 171.7319 1.83862 170.71646 1.83862S168.87784 1.01544 168.87784 0S169.70102-1.83862 170.71646-1.83862S172.55508-1.01544 172.55508 0ZM170.71646 0' stroke='none'/>
+<g transform='translate(170.71646,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-46.189506,-28.417345)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(168.21646,9.58142)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-46.189506,-28.417345)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-46.189506' y='-28.417345' xlink:href='#c24-05-mreza-g1-51'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M229.46057 0C229.46057 1.01544 228.63739 1.83862 227.62195 1.83862C226.6065 1.83862 225.78333 1.01544 225.78333 0S226.6065-1.83862 227.62195-1.83862C228.63739-1.83862 229.46057-1.01544 229.46057 0ZM227.62195 0' stroke='none'/>
+<g transform='translate(227.62195,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-46.189506,-28.417345)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(225.12195,9.58142)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-46.189506,-28.417345)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-46.189506' y='-28.417345' xlink:href='#c24-05-mreza-g1-52'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='dolzina'>
+<path d='M114.26097-46.94684H170.26646' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,114.11098,-46.94684)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.69885V-3.69885' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(163.28781,-46.94684)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(170.41646,-46.94684)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.69885V-3.69885' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(139.38293,-57.52425)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-46.189506,-28.417345)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-46.189506' y='-28.417345' xlink:href='#c24-05-mreza-g0-104'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='lezaji'>
+<g fill='#f00' stroke='#f00'>
+<path d='M0 0V-15.6491' fill='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M0-15.6491L5.12128-19.06328L-5.12172-24.75374L5.12128-30.4442L-5.12172-36.13466L-.00044-39.54884L0-49.50792' fill='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M-8.5359-49.50792H8.5359' fill='none'/>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-8.5359-49.50792H8.5359' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-8.5359-49.50792L-11.95009-53.49127' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-2.84544-49.50792L-6.25963-53.49127' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M2.84544-49.50792L-.56874-53.49127' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M227.62195 0V-15.6491' fill='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M227.62195-15.6491L232.74323-19.06328L222.50023-24.75374L232.74323-30.4442L222.50023-36.13466L227.6215-39.54884L227.62195-49.50792' fill='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M219.08603-49.50792H236.15785' fill='none'/>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M219.08603-49.50792H236.15784' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M219.08603-49.50792L215.67184-53.49127' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M224.77649-49.50792L221.3623-53.49127' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M230.46739-49.50792L227.0532-53.49127' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(14.85547,-36.86543)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-46.189506,-28.417345)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-46.189506' y='-28.417345' xlink:href='#c24-05-mreza-g0-107'/>
+<use x='-41.002914' y='-26.922965' xlink:href='#c24-05-mreza-g2-98'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(202.64375,-36.86543)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-46.189506,-28.417345)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-46.189506' y='-28.417345' xlink:href='#c24-05-mreza-g0-107'/>
+<use x='-41.002914' y='-26.922965' xlink:href='#c24-05-mreza-g2-98'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 24.16</span>: Rotor R1 divided into four shaft elements <span class="nobr">(\(n = 4\)).</span> The <span class="ink-l">black</span><span class="ink-d">white</span> line is the axis of the shaft with nodes 0 to 4, the element \(e_{\mathrm{i}}\) is the piece between two neighbouring nodes and has length <span class="nobr">\(h = L/n\).</span> The blue rectangle is the disk at node 2, the orange springs at the ends are the bearings of stiffness <span class="nobr">\(k_{\\\mathrm{mathrm}{\mathrm{b}}}\).</span> The height of the disk and the thickness of the shaft are greatly enlarged, in the calculation all displacements are small.</figcaption></figure>
+<p>At every node there are two unknowns for each plane, a displacement and a slope. In the plane \(xy\) these are \(v_{\mathrm{j}}\) and <span class="nobr">\(\varphi_{\mathrm{j}} = v'(x_{\mathrm{j}})\),</span> in the plane \(xz\) they are \(w_{\mathrm{j}}\) and <span class="nobr">\(\psi_{\mathrm{j}} = w'(x_{\mathrm{j}})\).</span> In figure <a class="xref" href="sec-mke-rotorja.html#fig-element-gredi" data-knowl="fig-element-gredi">24.17</a> the <a data-del="ravninay" class="xref kaz" href="sec-mke-rotorja.html#fig-element-gredi" data-knowl="fig-element-gredi">plane \(xy\)</a> and the <a data-del="ravninaz" class="xref kaz" href="sec-mke-rotorja.html#fig-element-gredi" data-knowl="fig-element-gredi">plane \(xz\)</a> each carry one element, in blue and orange, and each shows the displacements <span class="nobr">\(v_1\),</span> \(v_2\) (respectively <span class="nobr">\(w_1\),</span> <span class="nobr">\(w_2\))</span> and the slopes <span class="nobr">\(\varphi_1\),</span> \(\varphi_2\) (respectively <span class="nobr">\(\psi_1\),</span> <span class="nobr">\(\psi_2\))</span> of both nodes. The deflection between the nodes is a <a class="xref auto" href="sec-zveznost.html#def-polinom" data-knowl="def-polinom">polynomial</a> of third degree built from <a class="xref auto" href="sec-element-nosilca.html#def-hermitove-funkcije" data-knowl="def-hermitove-funkcije">Hermite functions</a> (definition <a class="xref" href="sec-element-nosilca.html#def-element-nosilca" data-knowl="def-element-nosilca">12.3</a>), and the planes do not influence each other as long as the cross-section is round. In a turning shaft, however, a gyroscopic term <a class="xref auto" href="sec-model-nosilca.html#def-dvojica-sil" data-knowl="def-dvojica-sil">couples</a> them, and so we join them into one <a class="xref auto" href="sec-kompleksna-stevila.html#def-kompleksno-stevilo" data-knowl="def-kompleksno-stevilo">complex number</a>, as in section <a class="xref" href="sec-jeffcottov-rotor.html">24.1</a>: the point of the axis in the <a data-del="vozlisce" class="xref kaz" href="sec-mke-rotorja.html#fig-element-gredi" data-knowl="fig-element-gredi">plane of the cross-section</a> has the <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">coordinates</a> \(v\) and <span class="nobr">\(w\),</span> and we assign to it <span class="nobr">\(p = v + \mathrm{i}\,w\).</span> The slope of the complex point is <span class="nobr">\(p' = v' + \mathrm{i}\,w' = \varphi + \mathrm{i}\,\psi\).</span> The nodal unknown (vozliščna neznanka) of node \(j\) is the pair of complex numbers <span class="nobr">\((p_{\mathrm{j}}, p_{\mathrm{j}}')\),</span> and the whole unknown of the rotor is a column \(\vek q\) of them, ordered by nodes as for the <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beam</a>: <span class="nobr">\(\vek q = \vek d_{\mathrm{v}} + \mathrm{i}\,\vek d_{\mathrm{w}}\),</span> where \(\vek d_{\mathrm{v}}\) and \(\vek d_{\mathrm{w}}\) are the real columns of nodal quantities of the planes \(xy\) and <span class="nobr">\(xz\).</span> The rotation \(\Omega t\) of the shaft about its axis does not appear in <span class="nobr">\(\vek q\),</span> because only the cross-sections carry it and the axis stays in place (the axis is the same axis at every time).</p>
+
+<figure class="blk slika" id="fig-element-gredi"><p><span class="svgfig" role="img" aria-label="Shaft element in two planes and a point in the plane of the cross-section"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='537.72pt' height='188.04pt' viewBox='-72.000004 -72.000009 398.311203 139.291656'>
+<defs>
+<path id='c24-05-element-gredi-g0-32' d='M4.801993-6.655044C4.811955-6.694894 4.83188-6.75467 4.83188-6.804483C4.83188-6.90411 4.762142-6.914072 4.712329-6.914072C4.612702-6.914072 4.60274-6.894147 4.562889-6.714819L2.909091-.129514C2.15193-.219178 1.77335-.587796 1.77335-1.24533C1.77335-1.444583 1.77335-1.703611 2.311333-3.098381C2.351183-3.217933 2.420922-3.387298 2.420922-3.58655C2.420922-4.034869 2.102117-4.403487 1.603985-4.403487C.657534-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.836862-3.895392 1.235367-4.184309 1.574097-4.184309C1.653798-4.184309 1.823163-4.184309 1.823163-3.865504C1.823163-3.606476 1.723537-3.35741 1.594022-3.008717C1.115816-1.753425 1.115816-1.494396 1.115816-1.325031C1.115816-.37858 1.892902 .029888 2.849315 .089664C2.769614 .448319 2.769614 .468244 2.630137 .996264C2.600249 1.105853 2.400996 1.912827 2.400996 1.942715C2.400996 1.952677 2.400996 2.042341 2.520548 2.042341C2.540473 2.042341 2.590286 2.042341 2.610212 2.002491C2.6401 1.982565 2.699875 1.733499 2.729763 1.594022L3.108344 .109589C3.476961 .109589 4.353674 .109589 5.290162-.956413C5.69863-1.414695 5.907846-1.853051 6.017435-2.15193C6.107098-2.400996 6.326276-3.267746 6.326276-3.706102C6.326276-4.26401 6.057285-4.403487 5.88792-4.403487C5.638854-4.403487 5.389788-4.144458 5.389788-3.92528C5.389788-3.795766 5.449564-3.73599 5.539228-3.656289C5.648817-3.5467 5.897883-3.287671 5.897883-2.809465C5.897883-2.171856 5.379826-1.354919 5.031133-.996264C4.154421-.109589 3.516812-.109589 3.158157-.109589L4.801993-6.655044Z'/>
+<path id='c24-05-element-gredi-g0-39' d='M1.693649 1.693649C1.653798 1.823163 1.643836 1.843088 1.643836 1.892902C1.643836 2.11208 1.833126 2.171856 1.932752 2.171856C1.982565 2.171856 2.201743 2.141968 2.30137 1.912827C2.331258 1.833126 2.381071 1.504359 2.650062 .089664C2.739726 .099626 2.809465 .109589 2.978829 .109589C4.632628 .109589 6.166874-1.454545 6.166874-3.028643C6.166874-3.805729 5.778331-4.403487 5.031133-4.403487C3.58655-4.403487 2.988792-2.470735 2.391034-.52802C1.315068-.727273 .757161-1.285181 .757161-2.002491C.757161-2.281445 .986301-3.377335 1.58406-4.064757C1.663761-4.154421 1.663761-4.174346 1.663761-4.194271C1.663761-4.234122 1.643836-4.293898 1.544209-4.293898C1.265255-4.293898 .498132-2.849315 .498132-1.892902C.498132-.956413 1.155666-.229141 2.221669 .019925L1.693649 1.693649ZM3.068493-.468244C2.988792-.468244 2.968867-.468244 2.889166-.478207C2.769614-.478207 2.759651-.488169 2.759651-.518057C2.759651-.537983 2.929016-1.444583 2.958904-1.594022C3.267746-2.86924 4.044832-3.825654 4.931507-3.825654C5.618929-3.825654 5.88792-3.287671 5.88792-2.809465C5.88792-1.683686 4.60274-.468244 3.068493-.468244Z'/>
+<path id='c24-05-element-gredi-g0-112' d='M.448319 1.215442C.368618 1.554172 .348692 1.62391-.089664 1.62391C-.209215 1.62391-.318804 1.62391-.318804 1.8132C-.318804 1.892902-.268991 1.932752-.18929 1.932752C.079701 1.932752 .368618 1.902864 .647572 1.902864C.976339 1.902864 1.315068 1.932752 1.633873 1.932752C1.683686 1.932752 1.8132 1.932752 1.8132 1.733499C1.8132 1.62391 1.713574 1.62391 1.574097 1.62391C1.075965 1.62391 1.075965 1.554172 1.075965 1.464508C1.075965 1.344956 1.494396-.278954 1.564134-.52802C1.693649-.239103 1.972603 .109589 2.480697 .109589C3.636364 .109589 4.881694-1.344956 4.881694-2.809465C4.881694-3.745953 4.313823-4.403487 3.556663-4.403487C3.058531-4.403487 2.580324-4.044832 2.251557-3.656289C2.15193-4.194271 1.723537-4.403487 1.354919-4.403487C.896638-4.403487 .707347-4.014944 .617684-3.835616C.438356-3.496887 .308842-2.899128 .308842-2.86924C.308842-2.769614 .408468-2.769614 .428394-2.769614C.52802-2.769614 .537983-2.779577 .597758-2.998755C.767123-3.706102 .966376-4.184309 1.325031-4.184309C1.494396-4.184309 1.633873-4.104608 1.633873-3.726027C1.633873-3.496887 1.603985-3.387298 1.564134-3.217933L.448319 1.215442ZM2.201743-3.108344C2.271482-3.377335 2.540473-3.656289 2.719801-3.805729C3.068493-4.11457 3.35741-4.184309 3.526775-4.184309C3.92528-4.184309 4.164384-3.835616 4.164384-3.247821S3.835616-1.514321 3.656289-1.135741C3.317559-.438356 2.839352-.109589 2.470735-.109589C1.8132-.109589 1.683686-.936488 1.683686-.996264C1.683686-1.016189 1.683686-1.036115 1.713574-1.155666L2.201743-3.108344Z'/>
+<path id='c24-05-element-gredi-g0-118' d='M4.662516-3.706102C4.662516-4.244085 4.403487-4.403487 4.224159-4.403487C3.975093-4.403487 3.73599-4.144458 3.73599-3.92528C3.73599-3.795766 3.785803-3.73599 3.895392-3.626401C4.104608-3.427148 4.234122-3.16812 4.234122-2.809465C4.234122-2.391034 3.626401-.109589 2.460772-.109589C1.952677-.109589 1.723537-.458281 1.723537-.976339C1.723537-1.534247 1.992528-2.261519 2.30137-3.088418C2.371108-3.257783 2.420922-3.39726 2.420922-3.58655C2.420922-4.034869 2.102117-4.403487 1.603985-4.403487C.667497-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.856787-3.955168 1.285181-4.184309 1.574097-4.184309C1.653798-4.184309 1.823163-4.184309 1.823163-3.865504C1.823163-3.616438 1.723537-3.347447 1.653798-3.16812C1.215442-2.012453 1.085928-1.554172 1.085928-1.125778C1.085928-.049813 1.96264 .109589 2.420922 .109589C4.094645 .109589 4.662516-3.188045 4.662516-3.706102Z'/>
+<path id='c24-05-element-gredi-g0-119' d='M4.60274-3.377335C4.652553-3.596513 4.752179-3.965131 4.752179-4.024907C4.752179-4.204234 4.612702-4.293898 4.463263-4.293898C4.343711-4.293898 4.164384-4.214197 4.094645-4.014944C4.064757-3.945205 3.596513-2.042341 3.526775-1.783313C3.457036-1.484433 3.437111-1.305106 3.437111-1.125778C3.437111-1.016189 3.437111-.996264 3.447073-.946451C3.217933-.418431 2.919054-.109589 2.530511-.109589C1.733499-.109589 1.733499-.846824 1.733499-1.016189C1.733499-1.334994 1.783313-1.723537 2.251557-2.948941C2.361146-3.247821 2.420922-3.387298 2.420922-3.58655C2.420922-4.034869 2.092154-4.403487 1.603985-4.403487C.657534-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.836862-3.875467 1.225405-4.184309 1.574097-4.184309C1.663761-4.184309 1.823163-4.174346 1.823163-3.855542C1.823163-3.606476 1.713574-3.327522 1.643836-3.158157C1.205479-1.982565 1.085928-1.524284 1.085928-1.145704C1.085928-.239103 1.753425 .109589 2.500623 .109589C2.669988 .109589 3.138232 .109589 3.536737-.587796C3.795766 .049813 4.483188 .109589 4.782067 .109589C5.529265 .109589 5.967621-.518057 6.22665-1.115816C6.56538-1.892902 6.884184-3.227895 6.884184-3.706102C6.884184-4.254047 6.615193-4.403487 6.445828-4.403487C6.196762-4.403487 5.947696-4.144458 5.947696-3.92528C5.947696-3.795766 6.007472-3.73599 6.097136-3.656289C6.206725-3.5467 6.455791-3.287671 6.455791-2.809465C6.455791-2.470735 6.166874-1.494396 5.907846-.986301C5.648817-.458281 5.300125-.109589 4.811955-.109589C4.343711-.109589 4.07472-.408468 4.07472-.976339C4.07472-1.255293 4.144458-1.564134 4.184309-1.703611L4.60274-3.377335Z'/>
+<path id='c24-05-element-gredi-g0-120' d='M3.327522-3.008717C3.387298-3.267746 3.616438-4.184309 4.313823-4.184309C4.363636-4.184309 4.60274-4.184309 4.811955-4.054795C4.533001-4.004981 4.333748-3.755915 4.333748-3.516812C4.333748-3.35741 4.443337-3.16812 4.712329-3.16812C4.931507-3.16812 5.250311-3.347447 5.250311-3.745953C5.250311-4.26401 4.662516-4.403487 4.323786-4.403487C3.745953-4.403487 3.39726-3.875467 3.277709-3.646326C3.028643-4.303861 2.49066-4.403487 2.201743-4.403487C1.165629-4.403487 .597758-3.118306 .597758-2.86924C.597758-2.769614 .697385-2.769614 .71731-2.769614C.797011-2.769614 .826899-2.789539 .846824-2.879203C1.185554-3.935243 1.843088-4.184309 2.181818-4.184309C2.371108-4.184309 2.719801-4.094645 2.719801-3.516812C2.719801-3.20797 2.550436-2.540473 2.181818-1.145704C2.022416-.52802 1.673724-.109589 1.235367-.109589C1.175592-.109589 .946451-.109589 .737235-.239103C.986301-.288917 1.205479-.498132 1.205479-.777086C1.205479-1.046077 .986301-1.125778 .836862-1.125778C.537983-1.125778 .288917-.86675 .288917-.547945C.288917-.089664 .787049 .109589 1.225405 .109589C1.882939 .109589 2.241594-.587796 2.271482-.647572C2.391034-.278954 2.749689 .109589 3.347447 .109589C4.373599 .109589 4.941469-1.175592 4.941469-1.424658C4.941469-1.524284 4.851806-1.524284 4.821918-1.524284C4.732254-1.524284 4.712329-1.484433 4.692403-1.414695C4.363636-.348692 3.686177-.109589 3.367372-.109589C2.978829-.109589 2.819427-.428394 2.819427-.767123C2.819427-.986301 2.879203-1.205479 2.988792-1.643836L3.327522-3.008717Z'/>
+<path id='c24-05-element-gredi-g0-121' d='M4.841843-3.795766C4.881694-3.935243 4.881694-3.955168 4.881694-4.024907C4.881694-4.204234 4.742217-4.293898 4.592777-4.293898C4.493151-4.293898 4.333748-4.234122 4.244085-4.084682C4.224159-4.034869 4.144458-3.726027 4.104608-3.5467C4.034869-3.287671 3.965131-3.01868 3.905355-2.749689L3.457036-.956413C3.417186-.806974 2.988792-.109589 2.331258-.109589C1.823163-.109589 1.713574-.547945 1.713574-.916563C1.713574-1.374844 1.882939-1.992528 2.221669-2.86924C2.381071-3.277709 2.420922-3.387298 2.420922-3.58655C2.420922-4.034869 2.102117-4.403487 1.603985-4.403487C.657534-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.836862-3.88543 1.235367-4.184309 1.574097-4.184309C1.653798-4.184309 1.823163-4.184309 1.823163-3.865504C1.823163-3.616438 1.723537-3.35741 1.653798-3.16812C1.255293-2.11208 1.075965-1.544209 1.075965-1.075965C1.075965-.18929 1.703611 .109589 2.291407 .109589C2.67995 .109589 3.01868-.059776 3.297634-.33873C3.16812 .179328 3.048568 .667497 2.650062 1.195517C2.391034 1.534247 2.012453 1.823163 1.554172 1.823163C1.414695 1.823163 .966376 1.793275 .797011 1.404732C.956413 1.404732 1.085928 1.404732 1.225405 1.285181C1.325031 1.195517 1.424658 1.066002 1.424658 .876712C1.424658 .56787 1.155666 .52802 1.05604 .52802C.826899 .52802 .498132 .687422 .498132 1.175592C.498132 1.673724 .936488 2.042341 1.554172 2.042341C2.580324 2.042341 3.606476 1.135741 3.88543 .009963L4.841843-3.795766Z'/>
+<path id='c24-05-element-gredi-g0-122' d='M1.325031-.826899C1.863014-1.404732 2.15193-1.653798 2.510585-1.96264C2.510585-1.972603 3.128269-2.500623 3.486924-2.859278C4.433375-3.785803 4.652553-4.26401 4.652553-4.303861C4.652553-4.403487 4.562889-4.403487 4.542964-4.403487C4.473225-4.403487 4.443337-4.383562 4.393524-4.293898C4.094645-3.815691 3.88543-3.656289 3.646326-3.656289S3.287671-3.805729 3.138232-3.975093C2.948941-4.204234 2.779577-4.403487 2.450809-4.403487C1.703611-4.403487 1.24533-3.476961 1.24533-3.267746C1.24533-3.217933 1.275218-3.158157 1.364882-3.158157S1.474471-3.20797 1.494396-3.267746C1.683686-3.726027 2.261519-3.73599 2.34122-3.73599C2.550436-3.73599 2.739726-3.666252 2.968867-3.58655C3.367372-3.437111 3.476961-3.437111 3.73599-3.437111C3.377335-3.008717 2.540473-2.291407 2.351183-2.132005L1.454545-1.295143C.777086-.627646 .428394-.059776 .428394 .009963C.428394 .109589 .52802 .109589 .547945 .109589C.627646 .109589 .647572 .089664 .707347-.019925C.936488-.368618 1.235367-.637609 1.554172-.637609C1.783313-.637609 1.882939-.547945 2.132005-.259029C2.30137-.049813 2.480697 .109589 2.769614 .109589C3.755915 .109589 4.333748-1.155666 4.333748-1.424658C4.333748-1.474471 4.293898-1.524284 4.214197-1.524284C4.124533-1.524284 4.104608-1.464508 4.07472-1.39477C3.845579-.747198 3.20797-.557908 2.879203-.557908C2.67995-.557908 2.500623-.617684 2.291407-.687422C1.952677-.816936 1.803238-.856787 1.594022-.856787C1.574097-.856787 1.414695-.856787 1.325031-.826899Z'/>
+<path id='c24-05-element-gredi-g1-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='c24-05-element-gredi-g1-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+</defs>
+<g id='c24-05-element-gredi-page1'>
+<g stroke-miterlimit='10' transform='translate(-43.03617,-26.047783)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='ravninay'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 0H170.71646' fill='none'/>
+<g transform='translate(174.27443,-2.15277)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.03617,-26.047783)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-43.03617' y='-26.047783' xlink:href='#c24-05-element-gredi-g0-120'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.2'>
+<path d='M0 14.22636C37.92729 27.51366 75.88367 45.52455 113.81097 34.1432' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M1.83862 14.22636C1.83862 15.2418 1.01544 16.06499 0 16.06499S-1.83862 15.2418-1.83862 14.22636S-1.01544 12.38774 0 12.38774S1.83862 13.21092 1.83862 14.22636ZM0 14.22636' stroke='none'/>
+</g>
+<g transform='translate(0.0,14.22636)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.03617,-26.047783)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M115.6496 34.1432C115.6496 35.15865 114.82642 35.98183 113.81097 35.98183C112.79553 35.98183 111.97235 35.15865 111.97235 34.1432C111.97235 33.12776 112.79553 32.30458 113.81097 32.30458C114.82642 32.30458 115.6496 33.12776 115.6496 34.1432ZM113.81097 34.1432' stroke='none'/>
+</g>
+<g transform='translate(113.81097,34.1432)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.03617,-26.047783)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-9.95863 .33748V13.88889' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,-9.95863,6.14052)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,-9.95863,0.22499)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,-9.95863,8.08585)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,-9.95863,14.00137)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g transform='translate(-24.5835,5.71039)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.03617,-26.047783)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-43.03617' y='-26.047783' xlink:href='#c24-05-element-gredi-g0-118'/>
+<use x='-38.207039' y='-24.553402' xlink:href='#c24-05-element-gredi-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M170.71646 .33748V33.80573' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,170.71646,6.14052)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,170.71646,0.22499)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,170.71646,28.00269)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,170.71646,33.91821)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g transform='translate(176.00842,15.66902)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.03617,-26.047783)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-43.03617' y='-26.047783' xlink:href='#c24-05-element-gredi-g0-118'/>
+<use x='-38.207039' y='-24.553402' xlink:href='#c24-05-element-gredi-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 14.22636H39.83366' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M31.29819 14.22636C31.29819 17.74797 30.70216 21.24667 29.53833 24.5701' fill='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(42.85567,21.01254)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.03617,-26.047783)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-43.03617' y='-26.047783' xlink:href='#c24-05-element-gredi-g0-39'/>
+<use x='-36.518938' y='-24.553402' xlink:href='#c24-05-element-gredi-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M113.81097 34.1432H170.71646' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M139.41826 34.1432C139.41826 31.65227 139.0525 29.1707 138.33708 26.78526' fill='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(146.70845,25.28027)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.03617,-26.047783)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-43.03617' y='-26.047783' xlink:href='#c24-05-element-gredi-g0-39'/>
+<use x='-36.518938' y='-24.553402' xlink:href='#c24-05-element-gredi-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='ravninaz'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0-88.2037H170.71646' fill='none'/>
+<g transform='translate(174.27443,-90.35648)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.03617,-26.047783)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-43.03617' y='-26.047783' xlink:href='#c24-05-element-gredi-g0-120'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.2'>
+<path d='M0-62.59642C37.92729-71.1319 75.88367-79.6678 113.81097-68.28688' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M1.83862-62.59642C1.83862-61.58098 1.01544-60.7578 0-60.7578S-1.83862-61.58098-1.83862-62.59642S-1.01544-64.43504 0-64.43504S1.83862-63.61186 1.83862-62.59642ZM0-62.59642' stroke='none'/>
+</g>
+<g transform='translate(0.0,-62.59642)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.03617,-26.047783)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M115.6496-68.28688C115.6496-67.27144 114.82642-66.44826 113.81097-66.44826C112.79553-66.44826 111.97235-67.27144 111.97235-68.28688S112.79553-70.1255 113.81097-70.1255C114.82642-70.1255 115.6496-69.30232 115.6496-68.28688ZM113.81097-68.28688' stroke='none'/>
+</g>
+<g transform='translate(113.81097,-68.28688)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.03617,-26.047783)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-9.95863-87.86623V-62.9339' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,-9.95863,-82.06319)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,-9.95863,-87.97871)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,-9.95863,-68.73694)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,-9.95863,-62.82141)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g transform='translate(-25.73947,-76.80286)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.03617,-26.047783)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-43.03617' y='-26.047783' xlink:href='#c24-05-element-gredi-g0-119'/>
+<use x='-35.903741' y='-24.553402' xlink:href='#c24-05-element-gredi-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M170.71646-87.86623V-68.62436' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,170.71646,-82.06319)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,170.71646,-87.97871)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,170.71646,-74.4274)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,170.71646,-68.51187)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g transform='translate(174.85245,-79.64786)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.03617,-26.047783)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-43.03617' y='-26.047783' xlink:href='#c24-05-element-gredi-g0-119'/>
+<use x='-35.903741' y='-24.553402' xlink:href='#c24-05-element-gredi-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0-62.59642H39.83366' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M31.29819-62.59642C31.29819-64.91025 31.03981-67.21931 30.5312-69.47632' fill='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(41.44682,-58.83678)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.03617,-26.047783)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-43.03617' y='-26.047783' xlink:href='#c24-05-element-gredi-g0-32'/>
+<use x='-36.546586' y='-24.553402' xlink:href='#c24-05-element-gredi-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M113.81097-68.28688H170.71646' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M139.41826-68.28688C139.41826-65.79594 139.0525-63.31438 138.33708-60.92894' fill='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(146.72234,-62.25096)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.03617,-26.047783)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-43.03617' y='-26.047783' xlink:href='#c24-05-element-gredi-g0-32'/>
+<use x='-36.546586' y='-24.553402' xlink:href='#c24-05-element-gredi-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='vozlisce'>
+<path d='M247.53935-36.98866H354.15268' fill='none'/>
+<g transform='translate(351.67622,-36.98866)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(362.13785,-38.16922)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.03617,-26.047783)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-43.03617' y='-26.047783' xlink:href='#c24-05-element-gredi-g0-121'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M301.59938-85.35823V9.87416' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,301.59938,7.3977)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(299.05423,17.85933)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.03617,-26.047783)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-43.03617' y='-26.047783' xlink:href='#c24-05-element-gredi-g0-122'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M338.58803-36.98866C338.58803-16.56013 322.02791-.00002 301.59938-.00002S264.61073-16.56013 264.61073-36.98866S281.17085-73.97731 301.59938-73.97731S338.58803-57.41719 338.58803-36.98866ZM301.59938-36.98866' fill='none'/>
+</g>
+</g>
+</g>
+<g stroke-width='1.0'>
+<path d='M301.59938-36.98866L326.8353-16.04285' fill='none'/>
+<g transform='matrix(0.76944,0.63864,-0.63864,0.76944,324.7979,-17.7339)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.33095 0L1.67535 1.31036L2.89789 0L1.67535-1.31036Z'/>
+ </g>
+ </g>
+</g>
+</g>
+<path d='M331.89075-13.37285C331.89075-12.3574 331.06757-11.53423 330.05212-11.53423C329.03668-11.53423 328.2135-12.3574 328.2135-13.37285C328.2135-14.38829 329.03668-15.21147 330.05212-15.21147C331.06757-15.21147 331.89075-14.38829 331.89075-13.37285ZM330.05212-13.37285' stroke='none'/>
+<g transform='translate(330.05212,-13.37285)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.03617,-26.047783)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(337.49513,-6.87103)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.03617,-26.047783)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-43.03617' y='-26.047783' xlink:href='#c24-05-element-gredi-g0-112'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<g fill='#00f' stroke='#00f'>
+<path d='M301.93686-51.21503H329.71465' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,307.7399,-51.21503)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,301.82437,-51.21503)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(323.9116,-51.21503)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(329.82713,-51.21503)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(313.22275,-63.32643)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.03617,-26.047783)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-43.03617' y='-26.047783' xlink:href='#c24-05-element-gredi-g0-118'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<g fill='#f00' stroke='#f00'>
+<path d='M345.70122-36.65118V-13.71033' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,345.70122,-30.84814)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,345.70122,-36.76367)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,345.70122,-19.51337)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,345.70122,-13.59784)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(353.36801,-26.3378)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-43.03617,-26.047783)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-43.03617' y='-26.047783' xlink:href='#c24-05-element-gredi-g0-119'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 24.17</span>: Shaft element in two planes and an end view of a node (everything greatly enlarged). Top: the plane \(xy\) with displacements <span class="nobr">\(v_1\),</span> \(v_2\) and slopes <span class="nobr">\(\\varphi_1\),</span> \(\\varphi_2\) (the blue curve is the deflection <span class="nobr">\(v_{\mathrm{h}}\)).</span> Bottom: the plane \(xz\) with <span class="nobr">\(w_1\),</span> <span class="nobr">\(w_2\),</span> <span class="nobr">\(\\psi_1\),</span> \(\\psi_2\) (orange). Right: the point of the axis in the cross-section, which has coordinates \(v\) (blue) and \(w\) (orange), is the complex number <span class="nobr">\(p = v + \\mathrm{i}\,w\).</span></figcaption></figure>
+<h3 id="sec-element-gredi"><span class="h-num">24.5.2</span> Shaft element</h3>
+<p>What is the kinetic energy of a piece of a turning shaft? We know the disk from lemma <a class="xref" href="sec-ziroskopski-moment.html#lem-kineticna-energija-diska" data-knowl="lem-kineticna-energija-diska">24.15</a>: a <a class="xref auto" href="sec-deformacija-v-tocki.html#def-togo-telo" data-knowl="def-togo-telo">rigid body</a> of mass \(m\) and moments \(J_{\mathrm{p}}\) and \(J_{\mathrm{t}}\) has, for small slopes \(\alpha = v'\) and <span class="nobr">\(\beta = w'\),</span> the energy <span class="nobr">\(T = \tfrac12 m(\dot v^2 + \dot w^2) + \tfrac12 J_{\mathrm{t}}(\dot\alpha^2 + \dot\beta^2) + \tfrac12 J_{\mathrm{p}}\Omega^2 - J_{\mathrm{p}}\Omega\,\alpha\dot\beta\).</span> The shaft is spread along its length, so we cannot assign a single mass to it. But we can cut it into \(N\) pieces of length <span class="nobr">\(\ell = h/N\),</span> take each for a rigid cylinder and add them up, and then let \(\ell\) go to zero. This is the same step as for a sum that passes into an <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integral</a> (<a class="xref auto" href="sec-integral.html#def-darbouxove-vsote" data-knowl="def-darbouxove-vsote">Riemann sum</a>), and it contains no quantity that is itself &quot;infinitely small&quot;. The lemma is derived on this path.</p>
+
+<div class="blk lema" id="lem-element-gredi"><div class="blk-head"><span class="blk-label">Lemma 24.27</span> <span class="blk-title">Element of a rotating shaft (element vrteče se gredi)</span></div><div class="blk-body"><p>Let \([x_{\mathrm{a}}, x_{\mathrm{b}}]\) be a <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beam</a> element of length \(h\) (definition <a class="xref" href="sec-element-nosilca.html#def-element-nosilca" data-knowl="def-element-nosilca">12.3</a>), with a round cross-section of constant diameter <span class="nobr">\(d\),</span> area \(A\) and second moment of area \(I\) (definition <a class="xref" href="sec-geometrija-prereza.html#def-vztrajnostni-moment-prereza" data-knowl="def-vztrajnostni-moment-prereza">5.26</a>), with modulus \(E\) and density <span class="nobr">\(\rho\).</span> The shaft turns with constant speed \(\Omega\) about the axis <span class="nobr">\(x\),</span> the cross-sections stay plane and perpendicular to the axis (Rayleigh model), the slopes are small. The deflection of the axis in both planes is \(v_{\mathrm{h}} = \mat H_{\mathrm{e}}\,\vek d_{\mathrm{v}}\) and \(w_{\mathrm{h}} = \mat H_{\mathrm{e}}\,\vek d_{\mathrm{w}}\) with the nodal columns \(\vek d_{\mathrm{v}} = (v_1, \varphi_1, v_2, \varphi_2)^\T\) and <span class="nobr">\(\vek d_{\mathrm{w}} = (w_1, \psi_1, w_2, \psi_2)^\T\).</span> Then:</p>
+<ol>
+<li>The polar second moment of area \(I_{\mathrm{p}} = \int (y^2 + z^2)\,\mathrm{d}A\) is <span class="nobr">\(I_{\mathrm{p}} = 2I\).</span></li>
+<li>The kinetic energy of the element is, up to the term <span class="nobr">\(\tfrac12\rho I_{\mathrm{p}}\Omega^2 h\),</span> which does not depend on the displacements,
+<div class="eq" id="eq-kineticna-elementa-gredi">\[T_{\mathrm{e}} = \tfrac12\,\dot{\vek d}_{\mathrm{v}}^\T\mat M_{\mathrm{e}}\,\dot{\vek d}_{\mathrm{v}} + \tfrac12\,\dot{\vek d}_{\mathrm{w}}^\T\mat M_{\mathrm{e}}\,\dot{\vek d}_{\mathrm{w}} - \Omega\,\vek d_{\mathrm{v}}^\T\,\mat G_{\mathrm{e}}\,\dot{\vek d}_{\mathrm{w}} , \qquad \mat M_{\mathrm{e}} = \mat m_{\mathrm{e}} + \mat m_{\mathrm{e}}^{\mathrm{r}} , \quad \mat G_{\mathrm{e}} = 2\,\mat m_{\mathrm{e}}^{\mathrm{r}} , \tag{24.27}\]</div>
+where \(\mat m_{\mathrm{e}}\) and \(\mat m_{\mathrm{e}}^{\mathrm{r}}\) are the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> of lemmas <a class="xref" href="sec-masna-matrika-nosilca.html#lem-masa-elementa-nosilca" data-knowl="lem-masa-elementa-nosilca">12.43</a> and <a class="xref" href="sec-vztrajnost-zasuka.html#lem-masa-zasuka-elementa" data-knowl="lem-masa-zasuka-elementa">13.65</a>.</li>
+<li>The <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">strain</a> energy of the element is \(U_{\mathrm{e}} = \tfrac12\,\vek d_{\mathrm{v}}^\T\mat k_{\mathrm{e}}\,\vek d_{\mathrm{v}} + \tfrac12\,\vek d_{\mathrm{w}}^\T\mat k_{\mathrm{e}}\,\vek d_{\mathrm{w}}\) with the matrix \(\mat k_{\mathrm{e}}\) of lemma <a class="xref" href="sec-element-nosilca.html#lem-togost-elementa-nosilca" data-knowl="lem-togost-elementa-nosilca">12.4</a>.</li>
+</ol>
+<p>The matrices <span class="nobr">\(\mat M_{\mathrm{e}}\),</span> \(\mat G_{\mathrm{e}}\) and \(\mat k_{\mathrm{e}}\) are real and symmetric.</p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show three things: the polar moment of the circle, the kinetic energy as a <a class="xref auto" href="sec-limita-odvod.html#def-limita" data-knowl="def-limita">limit</a> of sums of rigid pieces, and the <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">strain</a> energy of both planes. For the energy we use the disk of lemma <a class="xref" href="sec-ziroskopski-moment.html#lem-kineticna-energija-diska" data-knowl="lem-kineticna-energija-diska">24.15</a>, every piece is such a disk.</p>
+<ol>
+<li>A circle is mapped onto itself by a rotation through a right angle, which takes \(y\) into <span class="nobr">\(z\),</span> so \(\int y^2\,\mathrm{d}A = \int z^2\,\mathrm{d}A = I\) and <span class="nobr">\(I_{\mathrm{p}} = \int (y^2 + z^2)\,\mathrm{d}A = 2I\).</span> For \(d = 40\) mm, \(I = 1{,}2566\cdot 10^{-7}\) m\(^4\) and \(I_{\mathrm{p}} = 2{,}5133\cdot 10^{-7}\) m<span class="nobr">\(^4\).</span></li>
+<li>We cut the element into \(N\) pieces of length \(\ell = h/N\) with centres <span class="nobr">\(x_{\mathrm{j}}\).</span> A piece is a round cylinder of mass <span class="nobr">\(\rho A\ell\).</span> Its polar mass moment is \(J_{\mathrm{p}} = \rho I_{\mathrm{p}}\ell = 2\rho I\ell\) by step 1. The transverse moment about a diameter through the centre is <span class="nobr">\(\int\rho\,(y^2 + s^2)\,\mathrm{d}V = \rho\,(I\ell + A\ell^3/12)\),</span> because \(s \in [-\ell/2, \ell/2]\) is the axial distance and <span class="nobr">\(\int_{-\ell/2}^{\ell/2} s^2\,\mathrm{d}s = \ell^3/12\).</span></li>
+<li>By lemma <a class="xref" href="sec-ziroskopski-moment.html#lem-kineticna-energija-diska" data-knowl="lem-kineticna-energija-diska">24.15</a> the piece has the energy <span class="nobr">\(\tfrac12\rho A\ell\,(\dot v^2 + \dot w^2) + \tfrac12\rho(I\ell + A\ell^3/12)\,(\dot v'^2 + \dot w'^2) + \tfrac12 J_{\mathrm{p}}\Omega^2 - 2\rho I\ell\,\Omega\,v'\dot w'\),</span> all values at <span class="nobr">\(x_{\mathrm{j}}\).</span> The sum over \(j\) is the kinetic energy of the element, provided the third-order pieces are not too large.</li>
+<li>The <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> <span class="nobr">\(\dot v_{\mathrm{h}}\),</span> \(\dot w_{\mathrm{h}}\) and their <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivatives</a> in \(x\) are <a class="xref auto" href="sec-zveznost.html#def-polinom" data-knowl="def-polinom">polynomials</a> and therefore continuous. The sum \(\sum_{\mathrm{j}} f(x_{\mathrm{j}})\,\ell\) of a <a class="xref auto" href="sec-zveznost.html#def-zveznost" data-knowl="def-zveznost">continuous function</a> goes, as <span class="nobr">\(\ell \to 0\),</span> to \(\int_{\mathrm{x}_\mathrm{a}}^{x_{\mathrm{b}}} f\,\mathrm{d}x\) (<a class="xref auto" href="sec-integral.html#def-darbouxove-vsote" data-knowl="def-darbouxove-vsote">Riemann sum</a>). The term with \(A\ell^3/12\) is \(\tfrac{A\ell^2}{12I}\) times the term with <span class="nobr">\(I\ell\),</span> so its sum is bounded by \(\ell^2\) times a constant and goes to zero. The limit is <span class="nobr">\(T_{\mathrm{e}} = \int_{\mathrm{x}_\mathrm{a}}^{x_{\mathrm{b}}}\big[\tfrac12\rho A(\dot v_{\mathrm{h}}^2 + \dot w_{\mathrm{h}}^2) + \tfrac12\rho I(\dot v_{\mathrm{h}}'^2 + \dot w_{\mathrm{h}}'^2) - 2\rho I\,\Omega\,v_{\mathrm{h}}'\dot w_{\mathrm{h}}'\big]\mathrm{d}x + \tfrac12\rho I_{\mathrm{p}}\Omega^2h\).</span></li>
+<li>We insert <span class="nobr">\(v_{\mathrm{h}} = \mat H_{\mathrm{e}}\vek d_{\mathrm{v}}\),</span> <span class="nobr">\(w_{\mathrm{h}} = \mat H_{\mathrm{e}}\vek d_{\mathrm{w}}\).</span> The first two terms give \(\tfrac12\dot{\vek d}^\T\mat m_{\mathrm{e}}\dot{\vek d}\) for each plane (steps 1 and 2 of lemma <a class="xref" href="sec-masna-matrika-nosilca.html#lem-masa-elementa-nosilca" data-knowl="lem-masa-elementa-nosilca">12.43</a>), the next two give \(\tfrac12\dot{\vek d}^\T\mat m_{\mathrm{e}}^{\mathrm{r}}\dot{\vek d}\) (steps 1 and 2 of lemma <a class="xref" href="sec-vztrajnost-zasuka.html#lem-masa-zasuka-elementa" data-knowl="lem-masa-zasuka-elementa">13.65</a>). The mixed term is <span class="nobr">\(2\rho I\,\Omega\int v_{\mathrm{h}}'\dot w_{\mathrm{h}}'\,\mathrm{d}x = \Omega\,\vek d_{\mathrm{v}}^\T\big(2\int\rho I\,\mat H_{\mathrm{e}}'^\T\mat H_{\mathrm{e}}'\,\mathrm{d}x\big)\dot{\vek d}_{\mathrm{w}} = \Omega\,\vek d_{\mathrm{v}}^\T\,2\mat m_{\mathrm{e}}^{\mathrm{r}}\,\dot{\vek d}_{\mathrm{w}}\),</span> because \(v_{\mathrm{h}}' = \mat H_{\mathrm{e}}'\vek d_{\mathrm{v}}\) and \(\dot w_{\mathrm{h}}' = \mat H_{\mathrm{e}}'\dot{\vek d}_{\mathrm{w}}\) are numbers. With the minus sign this is equation <a class="xref" href="sec-mke-rotorja.html#eq-kineticna-elementa-gredi" data-knowl="eq-kineticna-elementa-gredi">(24.27)</a>.</li>
+<li>The axis of the shaft is a principal axis of the section in every direction (circle, step 1), so bending in the plane \(xy\) and in the plane \(xz\) each has its own energy \(\tfrac12\int EI\,(v_{\mathrm{h}}'')^2\,\mathrm{d}x\) and \(\tfrac12\int EI\,(w_{\mathrm{h}}'')^2\,\mathrm{d}x\) without a mixed term (theorem <a class="xref" href="sec-napetosti-pri-upogibu.html#thm-upogibna-napetost" data-knowl="thm-upogibna-napetost">5.35</a> and lemma <a class="xref" href="sec-upogibnice.html#lem-superpozicija-upogibnic" data-knowl="lem-superpozicija-upogibnic">5.59</a>). By lemma <a class="xref" href="sec-element-nosilca.html#lem-togost-elementa-nosilca" data-knowl="lem-togost-elementa-nosilca">12.4</a> each <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integral</a> is <span class="nobr">\(\tfrac12\vek d^\T\mat k_{\mathrm{e}}\vek d\).</span></li>
+<li>Symmetry: \(\mat k_{\mathrm{e}}\) and \(\mat m_{\mathrm{e}}\) are symmetric (lemmas <a class="xref" href="sec-element-nosilca.html#lem-togost-elementa-nosilca" data-knowl="lem-togost-elementa-nosilca">12.4</a> and <a class="xref" href="sec-masna-matrika-nosilca.html#lem-masa-elementa-nosilca" data-knowl="lem-masa-elementa-nosilca">12.43</a>), \(\mat m_{\mathrm{e}}^{\mathrm{r}}\) is symmetric because of equation <a class="xref" href="sec-vztrajnost-zasuka.html#eq-masa-zasuka-elementa" data-knowl="eq-masa-zasuka-elementa">(13.74)</a>.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> The proof is not from the source. FPGL (section 5.4.5, PDF pp. 188 to 190, equations 5.53 to 5.60) derives the gyroscopic shaft element from the same energy as for the disk and says that the polar moment of a thin disk cut from the shaft is twice the transverse one, hence &quot;the factor 2&quot;. The matrix there is skew-symmetric, and the signs of the terms follow from FPGL's axes (the axis \(z\) for the shaft, figure 5.4, PDF p. 187), not from our choice of the axis <span class="nobr">\(x\).</span></p></div></div>
+<p>The lemma says how the <a class="xref auto" href="sec-mke-rotorja.html#lem-element-gredi" data-knowl="lem-element-gredi">shaft element</a> is made: the mass <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat M_{\mathrm{e}}\) is the bending matrix (lemma <a class="xref" href="sec-masna-matrika-nosilca.html#lem-masa-elementa-nosilca" data-knowl="lem-masa-elementa-nosilca">12.43</a>) with the addition of <a class="xref auto" href="sec-vztrajnost-zasuka.html#lem-kineticna-nosilca-zasuk" data-knowl="lem-kineticna-nosilca-zasuk">rotary inertia</a> (lemma <a class="xref" href="sec-vztrajnost-zasuka.html#lem-masa-zasuka-elementa" data-knowl="lem-masa-zasuka-elementa">13.65</a>), and the <a class="xref auto" href="sec-ziroskopski-moment.html#def-ziroskopska-matrika" data-knowl="def-ziroskopska-matrika">gyroscopic matrix</a> \(\mat G_{\mathrm{e}}\) is twice that addition. The factor two is not mysterious: for a round shaft <span class="nobr">\(I_{\mathrm{p}} = 2I\),</span> so turning about the axis is twice as hard as turning about a diameter, which we already see for the disk drawn as a flat <a class="xref auto" href="sec-kirchhoffova-plosca.html#def-plosca" data-knowl="def-plosca">plate</a> <span class="nobr">(\(J_{\mathrm{p}} = 2J_{\mathrm{t}}\)</span> for a thin plate).</p>
+<p>The disk and the bearing are elements too. For the disk, the energy is already given by lemma <a class="xref" href="sec-ziroskopski-moment.html#lem-kineticna-energija-diska" data-knowl="lem-kineticna-energija-diska">24.15</a>, and we write it in the form that we shall assemble.</p>
+
+<div class="blk definicija" id="def-element-diska"><div class="blk-head"><span class="blk-label">Definition 24.28</span> <span class="blk-title">Disk and bearing element (element diska in ležaja)</span></div><div class="blk-body"><p>A rigid disk of mass <span class="nobr">\(m\),</span> transverse mass moment \(J_{\mathrm{t}}\) and polar mass moment \(J_{\mathrm{p}}\) is fixed to the shaft at node <span class="nobr">\(j\).</span> Its element has <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> that act on the complex unknown \((p_{\mathrm{j}}, p_{\mathrm{j}}')\) and are real <span class="nobr">\(2\times 2\),</span></p>
+<div class="eq" id="eq-element-diska">\[\mat M_{\mathrm{d}} = \begin{pmatrix} m &amp; 0 \\ 0 &amp; J_{\mathrm{t}} \end{pmatrix} , \qquad \mat G_{\mathrm{d}} = \begin{pmatrix} 0 &amp; 0 \\ 0 &amp; J_{\mathrm{p}} \end{pmatrix} , \tag{24.28}\]</div>
+<p>so the mass acts on the displacement, and \(J_{\mathrm{t}}\) and \(J_{\mathrm{p}}\) act on the slope. A bearing with <a class="xref auto" href="sec-natezni-preizkus.html#def-izotropen-material" data-knowl="def-izotropen-material">isotropic</a> stiffness \(k_{\mathrm{b}}\) (N/m) at node \(j\) is a spring with energy <span class="nobr">\(\tfrac12 k_{\mathrm{b}}(v_{\mathrm{j}}^2 + w_{\mathrm{j}}^2)\).</span> It adds \(k_{\mathrm{b}}\) to the term of the matrix \(\mat K\) at the displacement \(p_{\mathrm{j}}\) and nothing elsewhere.</p>
+
+<p class="vir"><span class="vir-label">Source:</span> FPGL (section 5.3, PDF pp. 175 to 177, equations 5.7 to 5.9) derives the disk elements from the kinetic energy with \(I_{\mathrm{d}}\) and \(I_{\mathrm{p}}\) (our \(J_{\mathrm{t}}\) and <span class="nobr">\(J_{\mathrm{p}}\)),</span> and adds the bearings (section 5.5, PDF p. 194) as diagonal terms.</p></div></div>
+<p>The matrices of equation <a class="xref" href="sec-mke-rotorja.html#eq-element-diska" data-knowl="eq-element-diska">(24.28)</a> have the same form as the matrices of a piece of shaft from lemma <a class="xref" href="sec-mke-rotorja.html#lem-element-gredi" data-knowl="lem-element-gredi">24.27</a>, when the piece is shrunk towards zero: there the mass is <span class="nobr">\(\rho A\ell\),</span> \(J_{\mathrm{t}} = \rho I\ell + \ldots\) and <span class="nobr">\(J_{\mathrm{p}} = 2\rho I\ell\).</span> This is also the reason why the shaft and the disk can be put into the same sum.</p>
+
+<h3 id="sec-sestavljanje-rotorja"><span class="h-num">24.5.3</span> Assembling the rotor</h3>
+<p>Now we have the elements. For the <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beam</a>, theorem <a class="xref" href="sec-sestavljanje-nosilca.html#thm-sestavljanje-nosilca" data-knowl="thm-sestavljanje-nosilca">12.9</a> said that the matrix of the whole is obtained from the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> of the elements with selection matrices <span class="nobr">\(\mat Z_{\mathrm{e}}\),</span> which pick out of the whole column of unknowns those that belong to the element. We do the same for the rotor, except that we also have a sum for the disks and the bearings, and that we make one complex equation out of two real ones.</p>
+
+<div class="blk izrek" id="thm-sestavljanje-rotorja"><div class="blk-head"><span class="blk-label">Theorem 24.29</span> <span class="blk-title">Assembly of a rotor from elements (sestavljanje rotorja)</span></div><div class="blk-body"><p>Let the shaft be divided into \(n\) elements of lemma <a class="xref" href="sec-mke-rotorja.html#lem-element-gredi" data-knowl="lem-element-gredi">24.27</a> with selection <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> \(\mat Z_{\mathrm{e}}\) (definitions <a class="xref" href="sec-sestavljanje.html#def-tabela-povezav" data-knowl="def-tabela-povezav">7.10</a> and <a class="xref" href="sec-sestavljanje.html#def-izbirna-matrika" data-knowl="def-izbirna-matrika">7.11</a>), let the nodes carry disks and bearings of definition <a class="xref" href="sec-mke-rotorja.html#def-element-diska" data-knowl="def-element-diska">24.28</a>, and in rigid bearings the displacement at the node is zero (we omit the corresponding rows and columns). Let</p>
+<div class="eq" id="eq-matrike-rotorja">\[\mat K = \sum_{\mathrm{e}=1}^{n}\mat Z_{\mathrm{e}}^\T\mat k_{\mathrm{e}}\mat Z_{\mathrm{e}} + \sum_{\text{bearings}} k_{\mathrm{b}}\,\vek e_{\mathrm{j}}\vek e_{\mathrm{j}}^\T , \quad \mat M = \sum_{\mathrm{e}=1}^{n}\mat Z_{\mathrm{e}}^\T\mat M_{\mathrm{e}}\mat Z_{\mathrm{e}} + \sum_{\text{disks}}\mat Z_{\mathrm{j}}^\T\mat M_{\mathrm{d}}\mat Z_{\mathrm{j}} , \quad \mat G = \sum_{\mathrm{e}=1}^{n}\mat Z_{\mathrm{e}}^\T\mat G_{\mathrm{e}}\mat Z_{\mathrm{e}} + \sum_{\text{disks}}\mat Z_{\mathrm{j}}^\T\mat G_{\mathrm{d}}\mat Z_{\mathrm{j}} , \tag{24.29}\]</div>
+<p>where \(\vek e_{\mathrm{j}}\) is the unit column at the displacement of node \(j\) and \(\mat Z_{\mathrm{j}}\) the selection matrix of <span class="nobr">\((p_{\mathrm{j}}, p_{\mathrm{j}}')\).</span> Then:</p>
+<ol>
+<li>The kinetic energy of the rotor is, up to a constant, <span class="nobr">\(T = \tfrac12\dot{\vek d}_{\mathrm{v}}^\T\mat M\dot{\vek d}_{\mathrm{v}} + \tfrac12\dot{\vek d}_{\mathrm{w}}^\T\mat M\dot{\vek d}_{\mathrm{w}} - \Omega\,\vek d_{\mathrm{v}}^\T\mat G\,\dot{\vek d}_{\mathrm{w}}\),</span> and the <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">strain</a> energy is <span class="nobr">\(U = \tfrac12\vek d_{\mathrm{v}}^\T\mat K\vek d_{\mathrm{v}} + \tfrac12\vek d_{\mathrm{w}}^\T\mat K\vek d_{\mathrm{w}}\).</span></li>
+<li><a class="xref auto" href="sec-lagrangeeve-enacbe.html#thm-lagrangeeve-enacbe" data-knowl="thm-lagrangeeve-enacbe">Lagrange's equations</a> for forces \(\vek f_{\mathrm{v}}\) and \(\vek f_{\mathrm{w}}\) in the planes are
+<div class="eq" id="eq-gibanje-rotorja-realno">\[\mat M\ddot{\vek d}_{\mathrm{v}} + \Omega\,\mat G\,\dot{\vek d}_{\mathrm{w}} + \mat K\vek d_{\mathrm{v}} = \vek f_{\mathrm{v}} , \qquad \mat M\ddot{\vek d}_{\mathrm{w}} - \Omega\,\mat G\,\dot{\vek d}_{\mathrm{v}} + \mat K\vek d_{\mathrm{w}} = \vek f_{\mathrm{w}} . \tag{24.30}\]</div></li>
+<li>For \(\vek q = \vek d_{\mathrm{v}} + \mathrm{i}\,\vek d_{\mathrm{w}}\) and \(\vek f = \vek f_{\mathrm{v}} + \mathrm{i}\,\vek f_{\mathrm{w}}\) the two equations are one complex equation:
+<div class="eq" id="eq-gibanje-rotorja">\[\mat M\,\ddot{\vek q} - \mathrm{i}\,\Omega\,\mat G\,\dot{\vek q} + \mat K\,\vek q = \vek f . \tag{24.31}\]</div></li>
+<li>The matrix \(\mat K\) is symmetric and <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite</a> if the bearings hold the shaft (at least two different bearings or two prescribed displacements). The matrix \(\mat M\) is symmetric and <a class="xref auto" href="sec-robni-pogoji-mke.html#def-pozitivno-semidefinitna" data-knowl="def-pozitivno-semidefinitna">positive semidefinite</a>, and positive definite if the shaft has mass. The matrix \(\mat G\) is symmetric and positive semidefinite. Therefore the matrix \(\begin{pmatrix}\mat 0 &amp; \mat G \\ -\mat G &amp; \mat 0\end{pmatrix}\) of the real form is skew-symmetric, and the equations have the form of theorem <a class="xref" href="sec-campbellov-diagram.html#thm-realne-frekvence-ziroskopske" data-knowl="thm-realne-frekvence-ziroskopske">24.21</a>, so all frequencies are real.</li>
+<li>The <a class="xref auto" href="sec-uravnotezenje-rotorja.html#def-neuravnotezenost" data-knowl="def-neuravnotezenost">unbalance</a> of the disk at node \(j\) (definition <a class="xref" href="sec-neuravnotezenost-rotorja.html#def-neuravnotezenost-rotorja" data-knowl="def-neuravnotezenost-rotorja">24.6</a>) gives in <span class="nobr">\(\vek f\),</span> at the displacement <span class="nobr">\(p_{\mathrm{j}}\),</span> the term \(m\,a_{\mathrm{u}}\,\Omega^2\,\mathrm{e}^{\mathrm{i}\,\Omega t}\) (up to a <a class="xref auto" href="sec-vecvaljni-motorji.html#def-fazni-kot-rocice" data-knowl="def-fazni-kot-rocice">phase angle</a>), as in theorem <a class="xref" href="sec-neuravnotezenost-rotorja.html#thm-odziv-na-neuravnotezenost" data-knowl="thm-odziv-na-neuravnotezenost">24.7</a>.</li>
+</ol>
+
+<div class="hid-row"><details class="hid zamisel"><summary>Idea</summary><div class="hid-body"><p>We add up the <a class="xref auto" href="sec-mkk-telo-iz-elementov.html#lem-energija-po-elementih" data-knowl="lem-energija-po-elementih">energy element by element</a> as for the <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beam</a>, then compute <a class="xref auto" href="sec-lagrangeeve-enacbe.html#thm-lagrangeeve-enacbe" data-knowl="thm-lagrangeeve-enacbe">Lagrange's equations</a> for \(\vek d_{\mathrm{v}}\) and \(\vek d_{\mathrm{w}}\) separately and join them.</p>
+</div></details><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that the energy is a sum over the elements, that both real equations follow from it, that these combine, and that the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> have the properties of item 4.</p>
+<ol>
+<li>By theorem <a class="xref" href="sec-sestavljanje-nosilca.html#thm-sestavljanje-nosilca" data-knowl="thm-sestavljanje-nosilca">12.9</a>, item 1, \(\vek d_{\mathrm{v},\mathrm{e}} = \mat Z_{\mathrm{e}}\vek d_{\mathrm{v}}\) and \(\vek d_{\mathrm{v}}^\T\mat Z_{\mathrm{e}}^\T\mat A\mat Z_{\mathrm{e}}\vek d_{\mathrm{v}} = \vek d_{\mathrm{v},\mathrm{e}}^\T\mat A\vek d_{\mathrm{v},\mathrm{e}}\) for every matrix <span class="nobr">\(\mat A\),</span> and likewise for \(\vek d_{\mathrm{w}}\) and for the mixed term <span class="nobr">\(\vek d_{\mathrm{v}}^\T\mat Z_{\mathrm{e}}^\T\mat G_{\mathrm{e}}\mat Z_{\mathrm{e}}\dot{\vek d}_{\mathrm{w}}\).</span> The sum over the elements of lemma <a class="xref" href="sec-mke-rotorja.html#lem-element-gredi" data-knowl="lem-element-gredi">24.27</a> with the disks (kinetic energy of the disk from lemma <a class="xref" href="sec-ziroskopski-moment.html#lem-kineticna-energija-diska" data-knowl="lem-kineticna-energija-diska">24.15</a>) and the springs \(\tfrac12 k_{\mathrm{b}}(v_{\mathrm{j}}^2 + w_{\mathrm{j}}^2)\) is item 1.</li>
+<li>Lagrange's equations (theorem <a class="xref" href="sec-lagrangeeve-enacbe.html#thm-lagrangeeve-enacbe" data-knowl="thm-lagrangeeve-enacbe">8.88</a>) for the coordinate \(d_{\mathrm{v},\mathrm{I}}\) are <span class="nobr">\(\tfrac{\mathrm d}{\mathrm dt}\,\partial T/\partial\dot d_{\mathrm{v},\mathrm{I}} - \partial T/\partial d_{\mathrm{v},\mathrm{I}} + \partial U/\partial d_{\mathrm{v},\mathrm{I}} = f_{\mathrm{v},\mathrm{I}}\).</span> From item 1: <span class="nobr">\(\partial T/\partial\dot{\vek d}_{\mathrm{v}} = \mat M\dot{\vek d}_{\mathrm{v}}\),</span> \(\partial T/\partial\vek d_{\mathrm{v}} = -\Omega\,\mat G\dot{\vek d}_{\mathrm{w}}\) and <span class="nobr">\(\partial U/\partial\vek d_{\mathrm{v}} = \mat K\vek d_{\mathrm{v}}\).</span> This is the first equation <a class="xref" href="sec-mke-rotorja.html#eq-gibanje-rotorja-realno" data-knowl="eq-gibanje-rotorja-realno">(24.30)</a>.</li>
+<li>For <span class="nobr">\(\vek d_{\mathrm{w}}\):</span> \(\partial T/\partial\dot{\vek d}_{\mathrm{w}} = \mat M\dot{\vek d}_{\mathrm{w}} - \Omega\,\mat G^\T\vek d_{\mathrm{v}}\) and <span class="nobr">\(\mat G^\T = \mat G\),</span> so \(\tfrac{\mathrm d}{\mathrm dt}\) of it is <span class="nobr">\(\mat M\ddot{\vek d}_{\mathrm{w}} - \Omega\,\mat G\dot{\vek d}_{\mathrm{v}}\).</span> The term \(T\) does not contain <span class="nobr">\(\vek d_{\mathrm{w}}\),</span> so <span class="nobr">\(\partial T/\partial\vek d_{\mathrm{w}} = \vek 0\),</span> and <span class="nobr">\(\partial U/\partial\vek d_{\mathrm{w}} = \mat K\vek d_{\mathrm{w}}\).</span> This is the second equation.</li>
+<li>We add the first equation to the second multiplied by <span class="nobr">\(\mathrm{i}\):</span> <span class="nobr">\(\mat M(\ddot{\vek d}_{\mathrm{v}} + \mathrm{i}\ddot{\vek d}_{\mathrm{w}}) + \Omega\,\mat G\,(\dot{\vek d}_{\mathrm{w}} - \mathrm{i}\dot{\vek d}_{\mathrm{v}}) + \mat K\,(\vek d_{\mathrm{v}} + \mathrm{i}\vek d_{\mathrm{w}}) = \vek f_{\mathrm{v}} + \mathrm{i}\vek f_{\mathrm{w}}\).</span> Because <span class="nobr">\(\dot{\vek d}_{\mathrm{w}} - \mathrm{i}\dot{\vek d}_{\mathrm{v}} = -\mathrm{i}\,(\dot{\vek d}_{\mathrm{v}} + \mathrm{i}\dot{\vek d}_{\mathrm{w}}) = -\mathrm{i}\dot{\vek q}\),</span> this is equation <a class="xref" href="sec-mke-rotorja.html#eq-gibanje-rotorja" data-knowl="eq-gibanje-rotorja">(24.31)</a>.</li>
+<li>The matrices <span class="nobr">\(\mat K\),</span> <span class="nobr">\(\mat M\),</span> \(\mat G\) are by equation <a class="xref" href="sec-mke-rotorja.html#eq-matrike-rotorja" data-knowl="eq-matrike-rotorja">(24.29)</a> sums of real <a class="xref auto" href="sec-matrike.html#def-simetricna-matrika" data-knowl="def-simetricna-matrika">symmetric matrices</a>, hence symmetric. For <span class="nobr">\(\mat K\):</span> \(\vek d^\T\mat K\vek d = \sum_{\mathrm{e}}\int EI\,(v_{\mathrm{h}}'')^2\,\mathrm{d}x + \sum k_{\mathrm{b}}\,v_{\mathrm{j}}^2 \ge 0\) (theorem <a class="xref" href="sec-sestavljanje-nosilca.html#thm-sestavljanje-nosilca" data-knowl="thm-sestavljanje-nosilca">12.9</a>, item 3). If it is zero, then \(v_{\mathrm{h}}'' = 0\) on every element, so \(v_{\mathrm{h}}\) is a <a class="xref auto" href="sec-zveznost.html#def-polinom" data-knowl="def-polinom">polynomial</a> of degree at most one on the whole <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beam</a> (<a class="xref auto" href="sec-zveznost.html#def-zveznost" data-knowl="def-zveznost">continuity</a> of the slope) that is zero at two points or has a prescribed displacement, hence it is zero, and <span class="nobr">\(\vek d = \vek 0\).</span> For <span class="nobr">\(\mat M\):</span> \(\vek d^\T\mat M\vek d \ge \sum_{\mathrm{e}}\int\rho A\,v_{\mathrm{h}}^2\,\mathrm{d}x \ge 0\) (lemmas <a class="xref" href="sec-masna-matrika-nosilca.html#lem-masa-elementa-nosilca" data-knowl="lem-masa-elementa-nosilca">12.43</a> and <a class="xref" href="sec-vztrajnost-zasuka.html#lem-masa-zasuka-elementa" data-knowl="lem-masa-zasuka-elementa">13.65</a>, step 5 of the first), if it is zero then \(v_{\mathrm{h}} = 0\) on every element (continuous nonnegative integrand), so <span class="nobr">\(\vek d = \vek 0\).</span> For <span class="nobr">\(\mat G\):</span> <span class="nobr">\(\vek d^\T\mat G\vek d = 2\sum_{\mathrm{e}}\int\rho I\,(v_{\mathrm{h}}')^2\,\mathrm{d}x + \sum_{\text{disks}} J_{\mathrm{p}}\,\varphi_{\mathrm{j}}^2 \ge 0\),</span> where \(\varphi_{\mathrm{j}}\) is the slope in \(\vek d\) at the node of the disk (equation <a class="xref" href="sec-vztrajnost-zasuka.html#eq-masa-zasuka-elementa" data-knowl="eq-masa-zasuka-elementa">(13.74)</a>).</li>
+<li>The real form of equation <a class="xref" href="sec-mke-rotorja.html#eq-gibanje-rotorja-realno" data-knowl="eq-gibanje-rotorja-realno">(24.30)</a> with \(\vek x = (\vek d_{\mathrm{v}}, \vek d_{\mathrm{w}})\) is \(\hat{\mat M}\ddot{\vek x} + \Omega\,\hat{\mat G}\dot{\vek x} + \hat{\mat K}\vek x = \vek f\) with blocks \(\hat{\mat G} = \begin{pmatrix}\mat 0 &amp; \mat G \\ -\mat G &amp; \mat 0\end{pmatrix}\) and \(\hat{\mat G}^\T = -\hat{\mat G}\) because of <span class="nobr">\(\mat G^\T = \mat G\),</span> and with <span class="nobr">\(\hat{\mat M}\),</span> \(\hat{\mat K}\) symmetric and <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite</a>. Step 5 fulfils the assumptions of theorem <a class="xref" href="sec-campbellov-diagram.html#thm-realne-frekvence-ziroskopske" data-knowl="thm-realne-frekvence-ziroskopske">24.21</a>. Item 5 of the theorem is the <a class="xref auto" href="sec-uravnotezenje-rotorja.html#def-neuravnotezenost" data-knowl="def-neuravnotezenost">unbalance</a> force of the disk, which by theorem <a class="xref" href="sec-neuravnotezenost-rotorja.html#thm-odziv-na-neuravnotezenost" data-knowl="thm-odziv-na-neuravnotezenost">24.7</a> has the form <span class="nobr">\(m\,a_{\mathrm{u}}\,\Omega^2\,\mathrm{e}^{\mathrm{i}\Omega t}\),</span> and which by the definition \(\vek f = \vek f_{\mathrm{v}} + \mathrm{i}\vek f_{\mathrm{w}}\) we place at the displacement of the disk node.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> FPGL (section 5.7, PDF pp. 214 to 215, equation 5.109) assembles the same matrices element by element and with selection matrices and omits the rows for rigid bearings. The proof of the theorem is not from the source.</p></div></div>
+<p>The theorem says that the whole rotor is described by the same complex equation as the <a class="xref auto" href="sec-jeffcottov-rotor.html#def-jeffcottov-rotor" data-knowl="def-jeffcottov-rotor">Jeffcott rotor</a>, only with a column \(\vek q\) in place of the number \(p\) and with matrices in place of numbers: <span class="nobr">\(m\to\mat M\),</span> <span class="nobr">\(k\to\mat K\),</span> and the term \(-\mathrm{i}\,\Omega\,\mat G\dot{\vek q}\) brings the gyroscopic <a class="xref auto" href="sec-model-nosilca.html#def-dvojica-sil" data-knowl="def-dvojica-sil">coupling</a>. For rotor R1 with \(n = 16\) elements, \(\vek q\) is a column of 32 complex unknowns (17 nodes times two, minus two displacements at the bearings), which is 64 real ones. We look for the whirl frequencies as solutions <span class="nobr">\(\vek q = \vek\varphi\,\mathrm{e}^{\mathrm{i}\omega t}\),</span> that is <span class="nobr">\((\mat K + \Omega\,\omega\,\mat G - \omega^2\mat M)\,\vek\varphi = \vek 0\),</span> and \(\omega &gt; 0\) means forward whirl, \(\omega &lt; 0\) backward (definition <a class="xref" href="sec-jeffcottov-rotor.html#def-vrtincenje" data-knowl="def-vrtincenje">24.3</a>). This is a quadratic <a class="xref auto" href="sec-lastni-problem.html#def-lastni-par" data-knowl="def-lastni-par">eigenvalue problem</a> in <span class="nobr">\(\omega\).</span> We solve it numerically by an extension to a matrix of twice the size (the states and their <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivatives</a>), which chapter <a class="xref" href="ch-dusenje.html">20</a> treats as the state form. Everything that the book proves uses only theorem <a class="xref" href="sec-campbellov-diagram.html#thm-realne-frekvence-ziroskopske" data-knowl="thm-realne-frekvence-ziroskopske">24.21</a> or the synchronous whirl of section <a class="xref" href="sec-campbellov-diagram.html">24.4</a>.</p>
+
+<h3 id="sec-mke-rotorja-preizkus"><span class="h-num">24.5.4</span> A test: five numbers that we already know</h3>
+<p>The model is correct if it gives results that are already known, and we make the test on rotors R1 and R2 (the disk at \(0{,}25\) m from the left bearing). All calculations are SymPy and NumPy, in the script <code>outlines/ch-rotorska-dinamika/num-05.py</code>.</p>
+
+<div class="blk primer" id="ex-mke-rotorja-preizkus"><div class="blk-head"><span class="blk-label">Example 24.30</span></div><div class="blk-body"><p>Rotors R1 and R2 with \(n = 16\) <a class="xref auto" href="sec-mke-rotorja.html#lem-element-gredi" data-knowl="lem-element-gredi">shaft elements</a>, as in figure <a class="xref" href="sec-mke-rotorja.html#fig-mreza-rotorja" data-knowl="fig-mreza-rotorja">24.16</a> with more nodes, and \(\Omega\) as needed. Synchronous <a class="xref auto" href="sec-jeffcottov-rotor.html#def-vrtincenje" data-knowl="def-vrtincenje">forward whirl</a>, that is \(\omega = \Omega\) in equation <a class="xref" href="sec-mke-rotorja.html#eq-gibanje-rotorja" data-knowl="eq-gibanje-rotorja">(24.31)</a>, gives \((\mat K - \Omega^2(\mat M - \mat G))\,\vek\varphi = \vek 0\) (section <a class="xref" href="sec-campbellov-diagram.html">24.4</a>).</p>
+<table>
+<thead>
+<tr>
+<th>test</th>
+<th>element</th>
+<th>source</th>
+<th>value elsewhere</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>R1, massless shaft, rigid bearings</td>
+<td>1483,2 rev/min</td>
+<td><a class="xref auto" href="sec-jeffcottov-rotor.html#def-jeffcottov-rotor" data-knowl="def-jeffcottov-rotor">Jeffcott rotor</a>, section <a class="xref" href="sec-jeffcottov-rotor.html">24.1</a></td>
+<td>1483,2</td>
+</tr>
+<tr>
+<td>R2, massless shaft, at rest</td>
+<td>1906 and 8793 rev/min</td>
+<td>model with four degrees of freedom, section <a class="xref" href="sec-campbellov-diagram.html">24.4</a></td>
+<td>1906 and 8793</td>
+</tr>
+<tr>
+<td>R2, massless shaft, <a class="xref auto" href="sec-neuravnotezenost-rotorja.html#def-kriticna-hitrost" data-knowl="def-kriticna-hitrost">critical speed</a></td>
+<td>2046 rev/min</td>
+<td>the same section (<a class="xref auto" href="sec-campbellov-diagram.html#lem-tanki-disk" data-knowl="lem-tanki-disk">thin disk</a>, a single section)</td>
+<td>2046</td>
+</tr>
+<tr>
+<td>R1, springs \(2\cdot 10^6\) N/m, massless shaft</td>
+<td>1303,0 rev/min</td>
+<td>non-<a class="xref auto" href="sec-natezni-preizkus.html#def-izotropen-material" data-knowl="def-izotropen-material">isotropic</a> case, section <a class="xref" href="sec-neuravnotezenost-rotorja.html">24.2</a></td>
+<td>1303</td>
+</tr>
+<tr>
+<td>R1, with shaft mass</td>
+<td>1415,96 rev/min</td>
+<td>Rayleigh with shape factor \(17/35\)</td>
+<td>1415,98</td>
+</tr>
+</tbody>
+</table>
+<p>The first three entries hit exactly the values that are proved in sections <a class="xref" href="sec-jeffcottov-rotor.html">24.1</a> and <a class="xref" href="sec-campbellov-diagram.html">24.4</a> for a model without shaft mass. The fourth entry is the same number as for the same spring in section <a class="xref" href="sec-neuravnotezenost-rotorja.html">24.2</a>: in the bearing the springs of the shaft and of the bearing are connected in series, which gives <span class="nobr">\(k_{\mathrm{eff}} = 1/(1/k + 1/(2k_{\mathrm{b}}))\),</span> and \(\sqrt{k_{\mathrm{eff}}/m}\) equals \(1303{,}0\) rev/min, as in the constructed case. For \(k_{\mathrm{b}} = 10^7\) and \(10^8\) N/m it is \(1441{,}2\) and \(1478{,}8\) rev/min, which again agrees with the same formula and shows that the rigid bearing <span class="nobr">(\(1483{,}2\))</span> is obtained as a <a class="xref auto" href="sec-limita-odvod.html#def-limita" data-knowl="def-limita">limit</a>. For the same spring \(2\cdot 10^6\) N/m but with shaft mass it is \(1235{,}3\) rev/min.</p>
+<p>The fifth entry shows what the shaft mass adds. By theorem <a class="xref" href="sec-ritz-zvezni.html#thm-rayleigh-zvezni" data-knowl="thm-rayleigh-zvezni">13.54</a> the <a class="xref auto" href="sec-rayleighov-kolicnik.html#def-rayleighov-kolicnik" data-knowl="def-rayleighov-kolicnik">Rayleigh quotient</a> with the shape of the static deflection under a central force is an <a class="xref auto" href="sec-polnost.html#def-zgornja-meja" data-knowl="def-zgornja-meja">upper bound</a> for the true frequency. The static shape under a midspan force has an effective shaft mass of \(17/35\) of its mass (SymPy), which gives \(\omega = \sqrt{k/(m + (17/35)\,m_{\mathrm{s}})} = 148{,}281\) 1/s, that is \(1415{,}98\) rev/min, which is \(4{,}53\) % below the value without shaft mass. The <a class="xref auto" href="sec-mkk-telo-iz-elementov.html#def-mreza-elementov" data-knowl="def-mreza-elementov">mesh of elements</a> is below this bound: for \(n = 2, 4, 8, 16\) the first natural speed at rest is <span class="nobr">\(1415{,}88\),</span> <span class="nobr">\(1415{,}84\),</span> <span class="nobr">\(1415{,}84\),</span> \(1415{,}83\) rev/min, and without <a class="xref auto" href="sec-vztrajnost-zasuka.html#lem-kineticna-nosilca-zasuk" data-knowl="lem-kineticna-nosilca-zasuk">rotary inertia</a> <span class="nobr">\(1415{,}94\),</span> <span class="nobr">\(1415{,}90\),</span> <span class="nobr">\(1415{,}90\),</span> <span class="nobr">\(1415{,}90\),</span> so always below <span class="nobr">\(1415{,}98\).</span> The critical speed in synchronous whirl is \(1416{,}00\) rev/min for \(n = 2\) and \(1415{,}96\) rev/min for <span class="nobr">\(n = 4, 8, 16\).</span> The difference between it and the value at rest is only \(0{,}009\) %, because the disk at midspan does not tilt in the first mode <span class="nobr">(\(v' = 0\)</span> at the middle by symmetry), so \(J_{\mathrm{t}}\) and \(J_{\mathrm{p}}\) do not appear and only the contribution of the shaft remains.</p>
+</div></div>
+<p>A mesh of two elements is already within \(0{,}007\) % of Rayleigh and within \(0{,}004\) % of the mesh with sixteen elements. The reason is the shape: the static deflection under a central force is cubic piece by piece, so it lies in the space of the <a class="xref auto" href="sec-element-nosilca.html#def-hermitove-funkcije" data-knowl="def-hermitove-funkcije">Hermite functions</a> of the elements (section <a class="xref" href="sec-mke-rotorja.html#sec-element-gredi">24.5.2</a>, definition <a class="xref" href="sec-element-nosilca.html#def-element-nosilca" data-knowl="def-element-nosilca">12.3</a>), and the <a class="xref auto" href="sec-rayleighov-kolicnik.html#def-rayleighov-kolicnik" data-knowl="def-rayleighov-kolicnik">Rayleigh quotient</a> is obtained already with a coarse mesh.</p>
+
+<h3 id="sec-mke-rotorja-enakomerna"><span class="h-num">24.5.5</span> A test on a uniform shaft</h3>
+<p>For R1 the influence of the shaft hides in the margin of \(0{,}009\) %, because the disk at midspan covers its influence. For a shaft without disks it is visible. We take a simply supported shaft without a disk, that is a uniform shaft of length \(L = 1\) m and diameter 40 mm, and for it we can compute the exact solution in closed form. This solution is the yardstick for the mesh and at the same time a counterexample to the rule of chapter <a class="xref" href="ch-nihanje-zveznih-sistemov.html">13</a>: <a class="xref auto" href="sec-vztrajnost-zasuka.html#lem-kineticna-nosilca-zasuk" data-knowl="lem-kineticna-nosilca-zasuk">rotary inertia</a> always lowers the frequency, by theorem <a class="xref" href="sec-vztrajnost-zasuka.html#thm-frekvence-vztrajnost" data-knowl="thm-frekvence-vztrajnost">13.62</a>. In a turning rotor this does not hold for <a class="xref auto" href="sec-jeffcottov-rotor.html#def-vrtincenje" data-knowl="def-vrtincenje">forward whirl</a>.</p>
+
+<div class="blk lema" id="lem-enakomerna-gred"><div class="blk-head"><span class="blk-label">Lemma 24.31</span> <span class="blk-title">Uniform rotating shaft (enakomerna vrteča se gred)</span></div><div class="blk-body"><p>A simply supported round shaft of length \(L\) with constant <span class="nobr">\(E\),</span> <span class="nobr">\(\rho\),</span> <span class="nobr">\(A\),</span> \(I\) turns with <span class="nobr">\(\Omega\).</span> Let \(\beta = n\pi/L\) (here \(n = 1, 2, \ldots\) is the number of the mode, not the number of elements), \(\omega_{\mathrm{EB}} = \beta^2\sqrt{EI/(\rho A)}\) and <span class="nobr">\(\varepsilon = \beta^2 I/A\),</span> and let \(\varepsilon &lt; 1\) (the radius of gyration \(\sqrt{I/A}\) of definition <a class="xref" href="sec-vztrajnost-zasuka.html#def-polmer-vrtenja" data-knowl="def-polmer-vrtenja">13.61</a>, <span class="nobr">\(\varepsilon = (n\pi\sqrt{I/A}/L)^2\)).</span> The equations of motion of the Rayleigh model of a rotating shaft are \(\rho A\,v_{\mathrm{tt}} - \rho I\,v_{\mathrm{xxtt}} + EI\,v_{\mathrm{xxxx}} - 2\rho I\,\Omega\,w_{\mathrm{xxt}} = 0\) and \(\rho A\,w_{\mathrm{tt}} - \rho I\,w_{\mathrm{xxtt}} + EI\,w_{\mathrm{xxxx}} + 2\rho I\,\Omega\,v_{\mathrm{xxt}} = 0\) with the boundary conditions \(v = v_{\mathrm{xx}} = 0\) and \(w = w_{\mathrm{xx}} = 0\) at both ends. Then:</p>
+<ol>
+<li>The <a class="xref auto" href="sec-kompleksna-stevila.html#def-kompleksna-funkcija" data-knowl="def-kompleksna-funkcija">complex function</a> \(p = v + \mathrm{i}\,w = P\sin(\beta x)\,\mathrm{e}^{\mathrm{i}\omega t}\) <span class="nobr">(\(P \ne 0\),</span> \(\omega\) real) solves both equations and both conditions exactly when
+<div class="eq" id="eq-kvadratna-enakomerna">\[(1 + \varepsilon)\,\omega^2 - 2\varepsilon\,\Omega\,\omega - \omega_{\mathrm{EB}}^2 = 0 . \tag{24.32}\]</div></li>
+<li>Equation <a class="xref" href="sec-mke-rotorja.html#eq-kvadratna-enakomerna" data-knowl="eq-kvadratna-enakomerna">(24.32)</a> has one positive root (forward whirl) and one negative (<a class="xref auto" href="sec-jeffcottov-rotor.html#def-vrtincenje" data-knowl="def-vrtincenje">backward whirl</a>), <span class="nobr">\(\omega_\pm = \big(\varepsilon\,\Omega \pm \sqrt{\varepsilon^2\Omega^2 + (1 + \varepsilon)\,\omega_{\mathrm{EB}}^2}\big)/(1 + \varepsilon)\).</span> At \(\Omega = 0\) they are \(\pm\,\omega_{\mathrm{EB}}/\sqrt{1 + \varepsilon}\) (theorem <a class="xref" href="sec-vztrajnost-zasuka.html#thm-frekvence-vztrajnost" data-knowl="thm-frekvence-vztrajnost">13.62</a>, item 2), and as \(\Omega\) grows the forward frequency grows and the absolute value of the backward frequency falls.</li>
+<li>Synchronous forward whirl, <span class="nobr">\(\omega_+ = \Omega\),</span> occurs exactly at <span class="nobr">\(\Omega = \omega_{\mathrm{EB}}/\sqrt{1 - \varepsilon}\),</span> which is the critical speed (definition <a class="xref" href="sec-neuravnotezenost-rotorja.html#def-kriticna-hitrost" data-knowl="def-kriticna-hitrost">24.8</a>). It is higher than \(\omega_{\mathrm{EB}}/\sqrt{1 + \varepsilon}\) by the factor \(\sqrt{(1 + \varepsilon)/(1 - \varepsilon)}\) and higher than the Euler-Bernoulli value <span class="nobr">\(\omega_{\mathrm{EB}}\).</span></li>
+</ol>
+
+<div class="hid-row"><details class="hid zamisel"><summary>Idea</summary><div class="hid-body"><p>We get the equations of motion as in theorem <a class="xref" href="sec-vztrajnost-zasuka.html#thm-gibalna-rayleigh" data-knowl="thm-gibalna-rayleigh">13.59</a>, except that in the action the third term is gyroscopic. The <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> \(\sin\beta x\) solves all spatial <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivatives</a>, so only the quadratic equation in \(\omega\) remains.</p>
+</div></details><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that the assumed form is a solution exactly for equation <a class="xref" href="sec-mke-rotorja.html#eq-kvadratna-enakomerna" data-knowl="eq-kvadratna-enakomerna">(24.32)</a>, that this equation has roots as item 2 says, and that item 3 follows from <span class="nobr">\(\omega = \Omega\).</span></p>
+<ol>
+<li>The kinetic energy of a piece of shaft is by lemma <a class="xref" href="sec-mke-rotorja.html#lem-element-gredi" data-knowl="lem-element-gredi">24.27</a> (the <a class="xref auto" href="sec-limita-odvod.html#def-limita" data-knowl="def-limita">limit</a> from step 4) \(\int\big[\tfrac12\rho A(v_{\mathrm{t}}^2 + w_{\mathrm{t}}^2) + \tfrac12\rho I(v_{\mathrm{xt}}^2 + w_{\mathrm{xt}}^2) - 2\rho I\,\Omega\,v_{\mathrm{x}} w_{\mathrm{xt}}\big]\mathrm{d}x\) up to a constant, and the <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">strain</a> energy is <span class="nobr">\(\tfrac12\int EI\,(v_{\mathrm{xx}}^2 + w_{\mathrm{xx}}^2)\,\mathrm{d}x\).</span> The action is their difference integrated over time.</li>
+<li>The variation \(v \to v + \alpha\eta\) <span class="nobr">(\(\eta\)</span> and \(\eta_{\mathrm{x}}\) continuous, \(\eta = 0\) at \(x = 0, L\) and at <span class="nobr">\(t_1\),</span> <span class="nobr">\(t_2\))</span> gives by steps 1 to 5 of the proof of theorem <a class="xref" href="sec-vztrajnost-zasuka.html#thm-gibalna-rayleigh" data-knowl="thm-gibalna-rayleigh">13.59</a> the same result as for the <a class="xref auto" href="sec-vztrajnost-zasuka.html#def-rayleighov-nosilec" data-knowl="def-rayleighov-nosilec">Rayleigh beam</a>, except that an additional term \(-2\rho I\,\Omega\int\!\!\int\eta_{\mathrm{x}}\,w_{\mathrm{xt}}\,\mathrm{d}x\,\mathrm{d}t\) comes along. <a class="xref auto" href="sec-integral.html#cor-per-partes" data-knowl="cor-per-partes">Integrating by parts</a> in \(x\) it equals <span class="nobr">\(+2\rho I\,\Omega\int\!\!\int\eta\,w_{\mathrm{xxt}}\,\mathrm{d}x\,\mathrm{d}t\),</span> because the bracket \([\eta\,w_{\mathrm{xt}}]_0^L\) is zero <span class="nobr">(\(\eta = 0\)</span> at the ends). So \(R_{\mathrm{v}} = -\rho A\,v_{\mathrm{tt}} + \rho I\,v_{\mathrm{xxtt}} - EI\,v_{\mathrm{xxxx}} + 2\rho I\,\Omega\,w_{\mathrm{xxt}}\) and the first equation is <span class="nobr">\(R_{\mathrm{v}} = 0\).</span> The natural boundary condition that step 8 of the same theorem gives is <span class="nobr">\(v_{\mathrm{xx}} = 0\),</span> since the additional term contributes nothing at the ends.</li>
+<li>The variation <span class="nobr">\(w \to w + \alpha\zeta\):</span> the term \(-2\rho I\,\Omega\,v_{\mathrm{x}} w_{\mathrm{xt}}\) gives, by parts in \(t\) (because \(\zeta = 0\) at <span class="nobr">\(t_1\),</span> <span class="nobr">\(t_2\))</span> and then in <span class="nobr">\(x\),</span> the term <span class="nobr">\(-2\rho I\,\Omega\int\!\!\int\zeta\,v_{\mathrm{xxt}}\,\mathrm{d}x\,\mathrm{d}t\),</span> so <span class="nobr">\(R_{\mathrm{w}} = -\rho A\,w_{\mathrm{tt}} + \rho I\,w_{\mathrm{xxtt}} - EI\,w_{\mathrm{xxxx}} - 2\rho I\,\Omega\,v_{\mathrm{xxt}}\).</span> This is the second equation, and the boundary condition is <span class="nobr">\(w_{\mathrm{xx}} = 0\).</span></li>
+<li>The complex equation: we add the first equation to the second multiplied by <span class="nobr">\(\mathrm{i}\).</span> The terms with \(\Omega\) give <span class="nobr">\(-2\rho I\,\Omega\,(w_{\mathrm{xxt}} - \mathrm{i}\,v_{\mathrm{xxt}}) = -2\rho I\,\Omega\,(-\mathrm{i})\,(v_{\mathrm{xxt}} + \mathrm{i}\,w_{\mathrm{xxt}}) = 2\mathrm{i}\,\rho I\,\Omega\,p_{\mathrm{xxt}}\),</span> so <span class="nobr">\(\rho A\,p_{\mathrm{tt}} - \rho I\,p_{\mathrm{xxtt}} + EI\,p_{\mathrm{xxxx}} + 2\mathrm{i}\,\rho I\,\Omega\,p_{\mathrm{xxt}} = 0\).</span></li>
+<li>We insert <span class="nobr">\(p = P\sin(\beta x)\,\mathrm{e}^{\mathrm{i}\omega t}\).</span> We have <span class="nobr">\(p_{\mathrm{tt}} = -\omega^2p\),</span> <span class="nobr">\(p_{\mathrm{xxtt}} = \beta^2\omega^2p\),</span> \(p_{\mathrm{xxxx}} = \beta^4p\) and <span class="nobr">\(p_{\mathrm{xxt}} = -\mathrm{i}\,\beta^2\omega\,p\).</span> The conditions \(p = p_{\mathrm{xx}} = 0\) at \(x = 0, L\) hold because <span class="nobr">\(\sin(n\pi) = 0\).</span> The equation gives <span class="nobr">\(\big(-\rho A\,\omega^2 - \rho I\,\beta^2\omega^2 + EI\,\beta^4 + 2\rho I\,\Omega\,\beta^2\omega\big)\,p = 0\).</span> Division by \(\rho A\) with \(\varepsilon = \beta^2I/A\) and \(\omega_{\mathrm{EB}}^2 = EI\beta^4/(\rho A)\) gives <span class="nobr">\(-(1 + \varepsilon)\,\omega^2 + 2\varepsilon\,\Omega\,\omega + \omega_{\mathrm{EB}}^2 = 0\),</span> which is equation <a class="xref" href="sec-mke-rotorja.html#eq-kvadratna-enakomerna" data-knowl="eq-kvadratna-enakomerna">(24.32)</a>. Since \(\sin(\beta x)\,\mathrm{e}^{\mathrm{i}\omega t}\) is nonzero everywhere except at isolated points, this is also a necessary condition (item 1).</li>
+<li>Item 2: the product of the roots of the quadratic equation is <span class="nobr">\(-\omega_{\mathrm{EB}}^2/(1 + \varepsilon) &lt; 0\),</span> so one root is positive and one negative, and \(\omega_\pm\) are as in the formula. At \(\Omega = 0\) they are <span class="nobr">\(\pm\,\omega_{\mathrm{EB}}/\sqrt{1 + \varepsilon}\).</span> The <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivative</a> <span class="nobr">\(\mathrm d\omega_\pm/\mathrm d\Omega = \big(\varepsilon \pm \varepsilon^2\Omega/\sqrt{\varepsilon^2\Omega^2 + (1 + \varepsilon)\omega_{\mathrm{EB}}^2}\big)/(1 + \varepsilon)\),</span> and since the fraction with the root in its denominator is smaller than \(\varepsilon\) for every \(\Omega\) (the root is larger than <span class="nobr">\(\varepsilon\,\Omega\)),</span> the derivative for \(\omega_+\) is positive (the forward frequency grows) and for \(\omega_-\) also positive, so the negative \(\omega_-\) grows towards zero and its absolute value falls.</li>
+<li>Item 3: \(\omega = \Omega\) in equation <a class="xref" href="sec-mke-rotorja.html#eq-kvadratna-enakomerna" data-knowl="eq-kvadratna-enakomerna">(24.32)</a> gives <span class="nobr">\((1 + \varepsilon - 2\varepsilon)\,\Omega^2 = \omega_{\mathrm{EB}}^2\),</span> so <span class="nobr">\(\Omega^2 = \omega_{\mathrm{EB}}^2/(1 - \varepsilon)\).</span> For \(\varepsilon &lt; 1\) this is one positive solution, and \(\omega_- &lt; 0 &lt; \Omega\) never coincides with <span class="nobr">\(\Omega &gt; 0\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> The proof is not from the source. FPGL (section 6.8.1, PDF p. 295, equation 6.67) sets up the critical speeds of a rotor as an eigenvalue problem for <span class="nobr">\(\Omega\),</span> in which under synchronous excitation the gyroscopic matrix enters together with the mass matrix under the same factor <span class="nobr">\(\Omega^2\),</span> which is our <span class="nobr">\(\mat M - \mat G\).</span> Item 2 at rest is theorem <a class="xref" href="sec-vztrajnost-zasuka.html#thm-frekvence-vztrajnost" data-knowl="thm-frekvence-vztrajnost">13.62</a>.</p></div></div>
+<p>Meaning: rotary inertia has two effects on a shaft, and they have opposite signs in synchronous forward whirl. Without turning it lowers the frequency by the factor \(1/\sqrt{1 + \varepsilon}\) (as for the <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beam</a>), and the gyroscopic term adds \(+2\varepsilon\,\Omega\,\omega\) in forward whirl, so that the total effect is \((1 + \varepsilon - 2\varepsilon) = 1 - \varepsilon\) with the opposite sign. This is the same that we saw for the disk in the value \(J_{\mathrm{t}} - J_{\mathrm{p}}\) (section <a class="xref" href="sec-campbellov-diagram.html">24.4</a>): for the disk \(J_{\mathrm{p}} = 2J_{\mathrm{t}}\) for a <a class="xref auto" href="sec-campbellov-diagram.html#lem-tanki-disk" data-knowl="lem-tanki-disk">thin disk</a>, and for a thin slice of shaft similarly <span class="nobr">\(\rho I_{\mathrm{p}} = 2\rho I\),</span> so for synchronous whirl <span class="nobr">\(\rho I - 2\rho I = -\rho I\).</span></p>
+<p>Figure <a class="xref" href="sec-mke-rotorja.html#fig-vrtenje-eps" data-knowl="fig-vrtenje-eps">24.18</a> shows the shape of the curves. We draw the <a data-del="osi" class="xref kaz" href="sec-mke-rotorja.html#fig-vrtenje-eps" data-knowl="fig-vrtenje-eps">axes</a>: on the horizontal one the spin speed \(\Omega\) in units of <span class="nobr">\(\omega_{\mathrm{EB}}\),</span> on the vertical one the whirl frequency <span class="nobr">\(\omega\).</span> The dashed <a data-del="sinhrono" class="xref kaz" href="sec-mke-rotorja.html#fig-vrtenje-eps" data-knowl="fig-vrtenje-eps">line \(\omega = \Omega\)</a> is synchronous whirl. The <a data-del="naprej" class="xref kaz" href="sec-mke-rotorja.html#fig-vrtenje-eps" data-knowl="fig-vrtenje-eps">blue curve</a> is forward whirl <span class="nobr">(\(\omega_+\)),</span> the <a data-del="nazaj" class="xref kaz" href="sec-mke-rotorja.html#fig-vrtenje-eps" data-knowl="fig-vrtenje-eps">orange one</a> is backward whirl <span class="nobr">(\(\omega_-\),</span> negative because it whirls in the direction opposite to the spin). The <a data-del="prehod" class="xref kaz" href="sec-mke-rotorja.html#fig-vrtenje-eps" data-knowl="fig-vrtenje-eps">intersection of the blue curve with the line</a> is the <a class="xref auto" href="sec-neuravnotezenost-rotorja.html#def-kriticna-hitrost" data-knowl="def-kriticna-hitrost">critical speed</a>. For the real shaft the effect is about two hundred times smaller <span class="nobr">(\(0{,}2/(9{,}87\cdot 10^{-4}) = 203\))</span> <span class="nobr">(\(\varepsilon = 9{,}87\cdot 10^{-4}\)</span> for \(d = 40\) mm, \(L = 1\) m) and would not be visible, so for the figure \(\varepsilon = 0{,}2\) is taken (a short thick shaft) and this is stated in the title. With this \(\varepsilon\) the frequency at \(\Omega = 0\) is <span class="nobr">\(0{,}913\,\omega_{\mathrm{EB}}\),</span> at \(\Omega = 0{,}5\,\omega_{\mathrm{EB}}\) it is \(1{,}000\) forward and \(-0{,}833\) backward, at \(\Omega = 2\,\omega_{\mathrm{EB}}\) it is \(1{,}305\) forward and \(-0{,}639\) backward, and the intersection is at <span class="nobr">\(1{,}118\,\omega_{\mathrm{EB}}\).</span></p>
+
+<figure class="blk slika" id="fig-vrtenje-eps"><p><span class="svgfig" role="img" aria-label="Whirl frequencies of a uniform shaft and the synchronous critical speed"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='269.50pt' height='231.18pt' viewBox='-72.000004 -72.000003 199.632279 171.245858'>
+<defs>
+<path id='c24-05-vrtenje-eps-g0-0' d='M6.56538-2.291407C6.734745-2.291407 6.914072-2.291407 6.914072-2.49066S6.734745-2.689913 6.56538-2.689913H1.175592C1.006227-2.689913 .826899-2.689913 .826899-2.49066S1.006227-2.291407 1.175592-2.291407H6.56538Z'/>
+<path id='c24-05-vrtenje-eps-g1-33' d='M6.027397-3.706102C6.027397-4.154421 5.84807-4.403487 5.628892-4.403487C5.369863-4.403487 5.100872-4.164384 5.100872-3.935243C5.100872-3.835616 5.150685-3.726027 5.250311-3.636364C5.419676-3.486924 5.599004-3.217933 5.599004-2.799502C5.599004-2.400996 5.409714-1.833126 5.100872-1.374844C4.801993-.946451 4.433375-.607721 3.965131-.607721C3.39726-.607721 3.088418-.966376 2.998755-1.504359C3.108344-1.763387 3.337484-2.400996 3.337484-2.67995C3.337484-2.799502 3.287671-2.899128 3.158157-2.899128C3.078456-2.899128 2.968867-2.879203 2.889166-2.729763C2.779577-2.530511 2.660025-1.882939 2.660025-1.524284C2.331258-1.05604 1.932752-.607721 1.305106-.607721C.647572-.607721 .438356-1.195517 .438356-1.753425C.438356-2.998755 1.454545-4.044832 1.454545-4.174346C1.454545-4.283935 1.374844-4.363636 1.265255-4.363636C1.135741-4.363636 1.066002-4.234122 1.006227-4.144458C.498132-3.407223 .119552-2.221669 .119552-1.315068C.119552-.627646 .348692 .109589 1.165629 .109589C1.872976 .109589 2.34122-.388543 2.699875-.936488C2.789539-.358655 3.178082 .109589 3.795766 .109589C4.572852 .109589 5.051059-.498132 5.409714-1.24533C5.648817-1.733499 6.027397-3.088418 6.027397-3.706102Z'/>
+<path id='c24-05-vrtenje-eps-g2-10' d='M6.744707-1.613948H6.495641C6.445828-1.354919 6.405978-1.125778 6.316314-.886675C6.266501-.727273 6.236613-.647572 5.65878-.647572H4.861768C4.991283-1.205479 5.300125-1.683686 5.748443-2.34122C6.216687-3.048568 6.625156-3.73599 6.625156-4.523039C6.625156-5.907846 5.280199-7.023661 3.596513-7.023661C1.882939-7.023661 .557908-5.88792 .557908-4.523039C.557908-3.73599 .966376-3.048568 1.43462-2.34122C1.872976-1.683686 2.191781-1.205479 2.321295-.647572H1.524284C.946451-.647572 .916563-.727273 .86675-.876712C.787049-1.105853 .737235-1.364882 .687422-1.613948H.438356L.767123 0H2.361146C2.580324 0 2.610212 0 2.610212-.209215C2.610212-.9066 2.30137-1.783313 2.072229-2.420922C1.863014-2.998755 1.58406-3.785803 1.58406-4.533001C1.58406-6.127024 2.67995-6.804483 3.58655-6.804483C4.542964-6.804483 5.599004-6.087173 5.599004-4.533001C5.599004-3.785803 5.330012-3.028643 5.041096-2.211706C4.891656-1.793275 4.572852-.896638 4.572852-.209215C4.572852 0 4.60274 0 4.83188 0H6.41594L6.744707-1.613948Z'/>
+<path id='c24-05-vrtenje-eps-g2-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c24-05-vrtenje-eps-g2-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='c24-05-vrtenje-eps-g2-61' d='M6.844334-3.257783C6.993773-3.257783 7.183064-3.257783 7.183064-3.457036S6.993773-3.656289 6.854296-3.656289H.886675C.747198-3.656289 .557908-3.656289 .557908-3.457036S.747198-3.257783 .896638-3.257783H6.844334ZM6.854296-1.325031C6.993773-1.325031 7.183064-1.325031 7.183064-1.524284S6.993773-1.723537 6.844334-1.723537H.896638C.747198-1.723537 .557908-1.723537 .557908-1.524284S.747198-1.325031 .886675-1.325031H6.854296Z'/>
+</defs>
+<g id='c24-05-vrtenje-eps-page1'>
+<g stroke-miterlimit='10' transform='translate(-48.644746,35.607135)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='osi'>
+<path d='M0 0H158.39769' fill='none'/>
+<g transform='translate(155.92123,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(166.38286,-3.41666)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.644746,35.607135)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-48.644746' y='35.607135' xlink:href='#c24-05-vrtenje-eps-g2-10'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-62.59639V92.38698' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,89.91052)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-3.29166,100.37215)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.644746,35.607135)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-48.644746' y='35.607135' xlink:href='#c24-05-vrtenje-eps-g1-33'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M73.97733 0V-2.84544' fill='none'/>
+<g transform='translate(71.47733,-12.92285)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.644746,35.607135)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-48.644746' y='35.607135' xlink:href='#c24-05-vrtenje-eps-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M147.95465 0V-2.84544' fill='none'/>
+<g transform='translate(145.45465,-12.92285)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.644746,35.607135)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-48.644746' y='35.607135' xlink:href='#c24-05-vrtenje-eps-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-56.9055H-3.69908' fill='none'/>
+<g transform='translate(-20.10986,-59.71106)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.644746,35.607135)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-48.644746' y='35.607135' xlink:href='#c24-05-vrtenje-eps-g0-0'/>
+<use x='-40.895998' y='35.607135' xlink:href='#c24-05-vrtenje-eps-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 56.9055H-3.69908' fill='none'/>
+<g transform='translate(-12.33206,53.68329)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.644746,35.607135)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-48.644746' y='35.607135' xlink:href='#c24-05-vrtenje-eps-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='sinhrono'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.7'>
+<path d='M0 0L110.96599 85.35825' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(108.49275,96.16797)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.644746,35.607135)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-48.644746' y='35.607135' xlink:href='#c24-05-vrtenje-eps-g1-33'/>
+<use x='-39.318682' y='35.607135' xlink:href='#c24-05-vrtenje-eps-g2-61'/>
+<use x='-28.802602' y='35.607135' xlink:href='#c24-05-vrtenje-eps-g2-10'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='naprej'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.0'>
+<path d='M0 51.94312L3.98242 52.46149L7.96484 52.979L11.94727 53.5026L15.92969 54.02618L19.91211 54.56107L23.89453 55.10202L27.87695 55.6421L31.85938 56.18828L35.8418 56.74573L39.82422 57.29797L43.80664 57.8615L47.78906 58.43025L51.77148 58.99986L55.7539 59.57988L59.73633 60.16078L63.71875 60.7521L67.70117 61.34428L71.6836 61.94168L75.66602 62.54517L79.64844 63.14777L83.63086 63.76253L87.61328 64.37729L91.5957 64.99727L95.57813 65.62332L99.56055 66.25545L103.54297 66.8867L107.52539 67.53012L111.50781 68.17267L115.49023 68.81609L119.47266 69.46992L123.45508 70.1307L127.4375 70.79062L131.41992 71.45662L135.40234 72.12782L139.38477 72.79903L143.36719 73.48238L147.34961 74.15967L151.33203 74.84824L155.31445 75.53593' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='nazaj'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M0-51.94312L3.98242-51.43689L7.96484-50.93587L11.94727-50.44093L15.92969-49.946L19.91211-49.45627L23.89453-48.97263L27.87695-48.49506L31.85938-48.02269L35.8418-47.55554L39.82422-47.08926L43.80664-46.62819L47.78906-46.1784L51.77148-45.72949L55.7539-45.28578L59.73633-44.84729L63.71875-44.42007L67.70117-43.98766L71.6836-43.56133L75.66602-43.1402L79.64844-42.73035L83.63086-42.32051L87.61328-41.91066L91.5957-41.51299L95.57813-41.11963L99.56055-40.72716L103.54297-40.33469L107.52539-39.95871L111.50781-39.5836L115.49023-39.20763L119.47266-38.8438L123.45508-38.47389L127.4375-38.11528L131.41992-37.76276L135.40234-37.40935L139.38477-37.0629L143.36719-36.72078L147.34961-36.37953L151.33203-36.04958L155.31445-35.71962' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='prehod'>
+<path d='M84.54498 63.62013C84.54498 64.63557 83.7218 65.45876 82.70636 65.45876S80.86774 64.63557 80.86774 63.62013S81.69092 61.78151 82.70636 61.78151S84.54498 62.60469 84.54498 63.62013ZM82.70636 63.62013' stroke='none'/>
+<g transform='translate(82.70636,63.62013)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.644746,35.607135)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M82.70636 63.62013V0' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 24.18</span>: Whirl frequencies of the first mode of a uniform shaft (lemma <a class="xref" href="sec-mke-rotorja.html#lem-enakomerna-gred" data-knowl="lem-enakomerna-gred">24.31</a>) against spin speed, in units of <span class="nobr">\(\\omega_{\\\mathrm{mathrm}{\mathrm{EB}}}\).</span> Blue forward whirl, orange backward whirl (negative <span class="nobr">\(\\omega\)),</span> the dashed line is \(\\omega = \\Omega\) and the dot its intersection with the blue curve at <span class="nobr">\(\\Omega = 1{,}118\,\\omega_{\\\mathrm{mathrm}{\mathrm{EB}}}\).</span> The rotary inertia is greatly enlarged for clarity, \(\\varepsilon = 0{,}2\) instead of <span class="nobr">\(9{,}87\\cdot 10^{-4}\).</span></figcaption></figure>
+<p>For the real shaft (R1 without the disk, \(d = 40\) mm, \(L = 1\) m) the numbers from the script are: \(\omega_{\mathrm{EB}} = 494{,}744\) 1/s, that is \(4724{,}5\) rev/min, <span class="nobr">\(\varepsilon = 9{,}8696\cdot 10^{-4}\),</span> at rest \(4722{,}13\) rev/min (as in chapter <a class="xref" href="ch-nihanje-zveznih-sistemov.html">13</a>), critical speed \(4726{,}79\) rev/min, which is \(0{,}049\) % above \(\omega_{\mathrm{EB}}\) and \(0{,}099\) % above the value at rest. At \(3000\) rev/min the forward frequency is \(4725{,}09\) and the backward \(4719{,}17\) rev/min, at \(6000\) rev/min \(4728{,}05\) and <span class="nobr">\(4716{,}21\),</span> at \(12\,000\) rev/min \(4733{,}97\) and <span class="nobr">\(4710{,}31\).</span> The model is the Rayleigh one, which holds as long as <span class="nobr">\(\varepsilon \ll 1\),</span> that is the wavelength is much larger than the radius of gyration \(\sqrt{I/A} = 10\) mm. For the second mode <span class="nobr">(\(n = 2\)</span> in lemma <a class="xref" href="sec-mke-rotorja.html#lem-enakomerna-gred" data-knowl="lem-enakomerna-gred">24.31</a>) \(\varepsilon = 3{,}95\cdot 10^{-3}\) and the critical speed is \(18\,935{,}2\) rev/min.</p>
+<p>The <a class="xref auto" href="sec-mkk-telo-iz-elementov.html#def-mreza-elementov" data-knowl="def-mreza-elementov">mesh of elements</a> confirms this and shows how fast it <a class="xref auto" href="sec-zaporedja.html#def-limita-zaporedja" data-knowl="def-limita-zaporedja">converges</a> (table). Without the gyroscopic term (only \(\mat M\) with rotary inertia, <span class="nobr">\(\mat G = \mat 0\))</span> the mesh would give for synchronous whirl the equation <span class="nobr">\(\mat K\vek\varphi = \Omega^2\mat M\vek\varphi\),</span> which is the same as the equation at rest, so \(4722{,}13\) rev/min, below \(\omega_{\mathrm{EB}}\) and not above it. The gyroscopic term is therefore not a small correction: without it the critical speed has the wrong sense of shift.</p>
+<table>
+<thead>
+<tr>
+<th>\(n\)</th>
+<th>2</th>
+<th>4</th>
+<th>8</th>
+<th>16</th>
+<th>32</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>first critical speed (rev/min)</td>
+<td>4745,45</td>
+<td>4728,02</td>
+<td>4726,87</td>
+<td>4726,79</td>
+<td>4726,79</td>
+</tr>
+<tr>
+<td>deviation from the closed form (%)</td>
+<td>\(+0{,}3947\)</td>
+<td>\(+0{,}0260\)</td>
+<td>\(+0{,}0016\)</td>
+<td>\(+0{,}0001\)</td>
+<td>\(+0{,}000006\)</td>
+</tr>
+<tr>
+<td>second critical speed (rev/min)</td>
+<td>21 017,1</td>
+<td>19 010,0</td>
+<td>18 940,2</td>
+<td>18 935,6</td>
+<td>18 935,3</td>
+</tr>
+<tr>
+<td>deviation from the closed form (%)</td>
+<td>\(+10{,}99\)</td>
+<td>\(+0{,}3948\)</td>
+<td>\(+0{,}0260\)</td>
+<td>\(+0{,}0016\)</td>
+<td>\(+0{,}0001\)</td>
+</tr>
+</tbody>
+</table>
+<p>Figure <a class="xref" href="sec-mke-rotorja.html#fig-konvergenca-gredi" data-knowl="fig-konvergenca-gredi">24.19</a> shows these numbers on a logarithmic scale. We draw the <a data-del="osi" class="xref kaz" href="sec-mke-rotorja.html#fig-konvergenca-gredi" data-knowl="fig-konvergenca-gredi">axes</a>, horizontally the number of elements \(n\) (we double it), vertically the deviation. The <a data-del="prvi" class="xref kaz" href="sec-mke-rotorja.html#fig-konvergenca-gredi" data-knowl="fig-konvergenca-gredi">blue line</a> is the first critical speed, the <a data-del="drugi" class="xref kaz" href="sec-mke-rotorja.html#fig-konvergenca-gredi" data-knowl="fig-konvergenca-gredi">orange one</a> the second. With every doubling of \(n\) the deviation falls by the factor <span class="nobr">\(15{,}2\),</span> <span class="nobr">\(15{,}8\),</span> <span class="nobr">\(15{,}95\),</span> so towards <span class="nobr">\(16 = 2^4\),</span> which the <a data-del="naklon" class="xref kaz" href="sec-mke-rotorja.html#fig-konvergenca-gredi" data-knowl="fig-konvergenca-gredi">triangle with slope</a> \(-4\) shows on the logarithmic scale (an observation from these numbers, we give no proof for the rotor, for the nodes of a beam there is a similar proof in theorem <a class="xref" href="sec-tocnost-vozlisc.html#thm-tocnost-vozlisc-nosilca" data-knowl="thm-tocnost-vozlisc-nosilca">12.14</a>). The second critical speed has at \(n\) the same deviation as the first at <span class="nobr">\(n/2\),</span> because the wave of the second mode has twice as many half-waves and at the same \(n\) only half as many elements per half-wave. So we must adapt the mesh to the mode: for an error below \(0{,}01\) % eight elements suffice for the first and sixteen for the second mode (table), for the third more.</p>
+
+<figure class="blk slika" id="fig-konvergenca-gredi"><p><span class="svgfig" role="img" aria-label="Convergence of the critical speeds of the mesh of a uniform shaft"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='360.46pt' height='218.10pt' viewBox='-72.000004 -72.000008 267.006785 161.554012'>
+<defs>
+<path id='c24-05-konvergenca-g0-0' d='M5.188543-1.57609C5.300125-1.57609 5.467497-1.57609 5.467497-1.743462C5.467497-1.917808 5.307098-1.917808 5.188543-1.917808H1.03213C.920548-1.917808 .753176-1.917808 .753176-1.750436C.753176-1.57609 .913574-1.57609 1.03213-1.57609H5.188543Z'/>
+<path id='c24-05-konvergenca-g1-110' d='M.876712-.587796C.846824-.438356 .787049-.209215 .787049-.159402C.787049 .019925 .926526 .109589 1.075965 .109589C1.195517 .109589 1.374844 .029888 1.444583-.169365C1.454545-.18929 1.574097-.657534 1.633873-.9066L1.853051-1.803238C1.912827-2.022416 1.972603-2.241594 2.022416-2.470735C2.062267-2.6401 2.141968-2.929016 2.15193-2.968867C2.30137-3.277709 2.82939-4.184309 3.775841-4.184309C4.224159-4.184309 4.313823-3.815691 4.313823-3.486924C4.313823-2.86924 3.825654-1.594022 3.666252-1.165629C3.576588-.936488 3.566625-.816936 3.566625-.707347C3.566625-.239103 3.915318 .109589 4.383562 .109589C5.32005 .109589 5.688667-1.344956 5.688667-1.424658C5.688667-1.524284 5.599004-1.524284 5.569116-1.524284C5.469489-1.524284 5.469489-1.494396 5.419676-1.344956C5.220423-.667497 4.891656-.109589 4.403487-.109589C4.234122-.109589 4.164384-.209215 4.164384-.438356C4.164384-.687422 4.254047-.926526 4.343711-1.145704C4.533001-1.673724 4.951432-2.769614 4.951432-3.337484C4.951432-4.004981 4.523039-4.403487 3.805729-4.403487C2.909091-4.403487 2.420922-3.765878 2.251557-3.536737C2.201743-4.094645 1.793275-4.403487 1.334994-4.403487S.687422-4.014944 .587796-3.835616C.428394-3.496887 .288917-2.909091 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.779577 .577833-2.998755C.747198-3.706102 .946451-4.184309 1.305106-4.184309C1.504359-4.184309 1.613948-4.054795 1.613948-3.726027C1.613948-3.516812 1.58406-3.407223 1.454545-2.889166L.876712-.587796Z'/>
+<path id='c24-05-konvergenca-g2-1' d='M4.403487-6.953923C4.333748-7.083437 4.313823-7.13325 4.144458-7.13325S3.955168-7.083437 3.88543-6.953923L.518057-.199253C.468244-.109589 .468244-.089664 .468244-.079701C.468244 0 .52802 0 .687422 0H7.601494C7.760897 0 7.820672 0 7.820672-.079701C7.820672-.089664 7.820672-.109589 7.770859-.199253L4.403487-6.953923ZM3.825654-6.136986L6.505604-.757161H1.135741L3.825654-6.136986Z'/>
+<path id='c24-05-konvergenca-g2-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='c24-05-konvergenca-g2-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c24-05-konvergenca-g2-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='c24-05-konvergenca-g2-51' d='M2.889166-3.506849C3.706102-3.775841 4.283935-4.473225 4.283935-5.260274C4.283935-6.07721 3.407223-6.635118 2.450809-6.635118C1.444583-6.635118 .687422-6.03736 .687422-5.280199C.687422-4.951432 .9066-4.762142 1.195517-4.762142C1.504359-4.762142 1.703611-4.98132 1.703611-5.270237C1.703611-5.768369 1.235367-5.768369 1.085928-5.768369C1.39477-6.256538 2.052304-6.386052 2.410959-6.386052C2.819427-6.386052 3.367372-6.166874 3.367372-5.270237C3.367372-5.150685 3.347447-4.572852 3.088418-4.134496C2.789539-3.656289 2.450809-3.626401 2.201743-3.616438C2.122042-3.606476 1.882939-3.58655 1.8132-3.58655C1.733499-3.576588 1.663761-3.566625 1.663761-3.466999C1.663761-3.35741 1.733499-3.35741 1.902864-3.35741H2.34122C3.158157-3.35741 3.526775-2.67995 3.526775-1.703611C3.526775-.348692 2.839352-.059776 2.400996-.059776C1.972603-.059776 1.225405-.229141 .876712-.816936C1.225405-.767123 1.534247-.986301 1.534247-1.364882C1.534247-1.723537 1.265255-1.92279 .976339-1.92279C.737235-1.92279 .418431-1.783313 .418431-1.344956C.418431-.438356 1.344956 .219178 2.430884 .219178C3.646326 .219178 4.552927-.687422 4.552927-1.703611C4.552927-2.520548 3.92528-3.297634 2.889166-3.506849Z'/>
+<path id='c24-05-konvergenca-g2-52' d='M2.929016-1.643836V-.777086C2.929016-.418431 2.909091-.308842 2.171856-.308842H1.96264V0C2.371108-.029888 2.889166-.029888 3.307597-.029888S4.254047-.029888 4.662516 0V-.308842H4.4533C3.716065-.308842 3.696139-.418431 3.696139-.777086V-1.643836H4.692403V-1.952677H3.696139V-6.485679C3.696139-6.684932 3.696139-6.744707 3.536737-6.744707C3.447073-6.744707 3.417186-6.744707 3.337484-6.625156L.278954-1.952677V-1.643836H2.929016ZM2.988792-1.952677H.557908L2.988792-5.668742V-1.952677Z'/>
+<path id='c24-05-konvergenca-g2-54' d='M1.315068-3.267746V-3.506849C1.315068-6.027397 2.550436-6.386052 3.058531-6.386052C3.297634-6.386052 3.716065-6.326276 3.935243-5.987547C3.785803-5.987547 3.387298-5.987547 3.387298-5.539228C3.387298-5.230386 3.626401-5.080946 3.845579-5.080946C4.004981-5.080946 4.303861-5.17061 4.303861-5.559153C4.303861-6.156912 3.865504-6.635118 3.038605-6.635118C1.763387-6.635118 .418431-5.349938 .418431-3.148194C.418431-.488169 1.574097 .219178 2.500623 .219178C3.606476 .219178 4.552927-.71731 4.552927-2.032379C4.552927-3.297634 3.666252-4.254047 2.560399-4.254047C1.882939-4.254047 1.514321-3.745953 1.315068-3.267746ZM2.500623-.059776C1.872976-.059776 1.574097-.657534 1.514321-.806974C1.334994-1.275218 1.334994-2.072229 1.334994-2.251557C1.334994-3.028643 1.653798-4.024907 2.550436-4.024907C2.709838-4.024907 3.16812-4.024907 3.476961-3.407223C3.656289-3.038605 3.656289-2.530511 3.656289-2.042341C3.656289-1.564134 3.656289-1.066002 3.486924-.707347C3.188045-.109589 2.729763-.059776 2.500623-.059776Z'/>
+<path id='c24-05-konvergenca-g2-56' d='M1.62391-4.552927C1.165629-4.851806 1.125778-5.190535 1.125778-5.3599C1.125778-5.967621 1.77335-6.386052 2.480697-6.386052C3.20797-6.386052 3.845579-5.867995 3.845579-5.150685C3.845579-4.582814 3.457036-4.104608 2.859278-3.755915L1.62391-4.552927ZM3.078456-3.606476C3.795766-3.975093 4.283935-4.493151 4.283935-5.150685C4.283935-6.067248 3.39726-6.635118 2.49066-6.635118C1.494396-6.635118 .687422-5.897883 .687422-4.971357C.687422-4.79203 .707347-4.343711 1.125778-3.875467C1.235367-3.755915 1.603985-3.506849 1.853051-3.337484C1.275218-3.048568 .418431-2.49066 .418431-1.504359C.418431-.448319 1.43462 .219178 2.480697 .219178C3.606476 .219178 4.552927-.607721 4.552927-1.673724C4.552927-2.032379 4.443337-2.480697 4.064757-2.899128C3.875467-3.108344 3.716065-3.20797 3.078456-3.606476ZM2.082192-3.188045L3.307597-2.410959C3.58655-2.221669 4.054795-1.92279 4.054795-1.315068C4.054795-.577833 3.307597-.059776 2.49066-.059776C1.633873-.059776 .916563-.67746 .916563-1.504359C.916563-2.082192 1.235367-2.719801 2.082192-3.188045Z'/>
+<path id='c24-05-konvergenca-g3-48' d='M3.598506-2.224658C3.598506-2.991781 3.507846-3.542715 3.187049-4.030884C2.970859-4.351681 2.538481-4.630635 1.980573-4.630635C.36264-4.630635 .36264-2.726775 .36264-2.224658S.36264 .139477 1.980573 .139477S3.598506-1.72254 3.598506-2.224658ZM1.980573-.055791C1.659776-.055791 1.234371-.244085 1.094894-.81594C.99726-1.227397 .99726-1.799253 .99726-2.315318C.99726-2.824408 .99726-3.354421 1.101868-3.737983C1.248319-4.288917 1.694645-4.435367 1.980573-4.435367C2.357161-4.435367 2.719801-4.20523 2.84533-3.800747C2.956912-3.424159 2.963885-2.922042 2.963885-2.315318C2.963885-1.799253 2.963885-1.283188 2.873225-.843836C2.733748-.209215 2.259527-.055791 1.980573-.055791Z'/>
+<path id='c24-05-konvergenca-g3-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='c24-05-konvergenca-g3-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+<path id='c24-05-konvergenca-g3-51' d='M1.903861-2.329265C2.447821-2.329265 2.838356-1.952677 2.838356-1.206476C2.838356-.341719 2.336239-.083686 1.931756-.083686C1.652802-.083686 1.039103-.160399 .746202-.571856C1.073973-.585803 1.150685-.81594 1.150685-.962391C1.150685-1.185554 .983313-1.345953 .767123-1.345953C.571856-1.345953 .376588-1.227397 .376588-.941469C.376588-.285928 1.101868 .139477 1.945704 .139477C2.915068 .139477 3.584558-.509091 3.584558-1.206476C3.584558-1.750436 3.138232-2.294396 2.371108-2.454795C3.103362-2.719801 3.368369-3.242839 3.368369-3.668244C3.368369-4.219178 2.733748-4.630635 1.959651-4.630635S.592777-4.254047 .592777-3.696139C.592777-3.459029 .746202-3.326526 .955417-3.326526C1.171606-3.326526 1.311083-3.486924 1.311083-3.682192C1.311083-3.884433 1.171606-4.030884 .955417-4.044832C1.199502-4.351681 1.680697-4.428394 1.93873-4.428394C2.252553-4.428394 2.691905-4.274969 2.691905-3.668244C2.691905-3.375342 2.594271-3.054545 2.412951-2.838356C2.182814-2.57335 1.987547-2.559402 1.638854-2.538481C1.464508-2.524533 1.45056-2.524533 1.415691-2.517559C1.401743-2.517559 1.345953-2.503611 1.345953-2.426899C1.345953-2.329265 1.408717-2.329265 1.527273-2.329265H1.903861Z'/>
+<path id='c24-05-konvergenca-g3-52' d='M3.689166-1.143711V-1.39477H2.915068V-4.505106C2.915068-4.651557 2.915068-4.700374 2.761644-4.700374C2.677958-4.700374 2.650062-4.700374 2.580324-4.60274L.27198-1.39477V-1.143711H2.322291V-.571856C2.322291-.334745 2.322291-.251059 1.75741-.251059H1.569116V0C1.917808-.013948 2.364134-.027895 2.615193-.027895C2.873225-.027895 3.319552-.013948 3.668244 0V-.251059H3.47995C2.915068-.251059 2.915068-.334745 2.915068-.571856V-1.143711H3.689166ZM2.371108-3.947198V-1.39477H.530012L2.371108-3.947198Z'/>
+<path id='c24-05-konvergenca-g3-53' d='M1.080946-3.891407C1.436613-3.800747 1.645828-3.800747 1.75741-3.800747C2.677958-3.800747 3.221918-4.428394 3.221918-4.533001C3.221918-4.609714 3.173101-4.630635 3.138232-4.630635C3.124284-4.630635 3.110336-4.630635 3.082441-4.609714C2.915068-4.546949 2.545455-4.407472 2.02939-4.407472C1.834122-4.407472 1.464508-4.42142 1.011208-4.595766C.941469-4.630635 .927522-4.630635 .920548-4.630635C.829888-4.630635 .829888-4.553923 .829888-4.442341V-2.385056C.829888-2.266501 .829888-2.182814 .941469-2.182814C1.004234-2.182814 1.011208-2.196762 1.080946-2.280448C1.380822-2.66401 1.806227-2.719801 2.050311-2.719801C2.468742-2.719801 2.657036-2.385056 2.691905-2.329265C2.817435-2.099128 2.859278-1.834122 2.859278-1.429639C2.859278-1.220423 2.859278-.808966 2.650062-.502117C2.475716-.251059 2.175841-.083686 1.834122-.083686C1.380822-.083686 .913574-.334745 .739228-.795019C1.004234-.774097 1.136737-.948443 1.136737-1.136737C1.136737-1.436613 .878705-1.492403 .788045-1.492403C.774097-1.492403 .439352-1.492403 .439352-1.115816C.439352-.488169 1.011208 .139477 1.84807 .139477C2.740722 .139477 3.521793-.523039 3.521793-1.401743C3.521793-2.189788 2.922042-2.915068 2.057285-2.915068C1.750436-2.915068 1.387796-2.838356 1.080946-2.57335V-3.891407Z'/>
+</defs>
+<g id='c24-05-konvergenca-page1'>
+<g stroke-miterlimit='10' transform='translate(-39.582188,-28.375434)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='osi'>
+<path d='M0-102.31532H218.14818' fill='none'/>
+<g transform='translate(215.67172,-102.31532)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(226.13335,-104.4681)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.582188,-28.375434)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.582188' y='-28.375434' xlink:href='#c24-05-konvergenca-g1-110'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-102.31532V25.6367' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,23.16025)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-4.16667,33.62187)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.582188,-28.375434)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.582188' y='-28.375434' xlink:href='#c24-05-konvergenca-g2-1'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-102.31532V-104.96129' fill='none'/>
+<g transform='translate(-2.5,-115.0387)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.582188,-28.375434)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.582188' y='-28.375434' xlink:href='#c24-05-konvergenca-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M48.36958-102.31532V-104.96129' fill='none'/>
+<g transform='translate(45.86958,-115.0387)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.582188,-28.375434)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.582188' y='-28.375434' xlink:href='#c24-05-konvergenca-g2-52'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M96.73917-102.31532V-104.96129' fill='none'/>
+<g transform='translate(94.23917,-115.0387)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.582188,-28.375434)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.582188' y='-28.375434' xlink:href='#c24-05-konvergenca-g2-56'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M145.10875-102.31532V-104.96129' fill='none'/>
+<g transform='translate(140.10873,-115.0387)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.582188,-28.375434)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.582188' y='-28.375434' xlink:href='#c24-05-konvergenca-g2-49'/>
+<use x='-34.600849' y='-28.375434' xlink:href='#c24-05-konvergenca-g2-54'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M193.47833-102.31532V-104.96129' fill='none'/>
+<g transform='translate(188.47832,-115.0387)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.582188,-28.375434)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.582188' y='-28.375434' xlink:href='#c24-05-konvergenca-g2-51'/>
+<use x='-34.600849' y='-28.375434' xlink:href='#c24-05-konvergenca-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-88.20282H-4.83725' fill='none'/>
+<g transform='translate(-29.2064,-92.27283)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.582188,-28.375434)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.582188' y='-28.375434' xlink:href='#c24-05-konvergenca-g2-49'/>
+<use x='-34.600849' y='-28.375434' xlink:href='#c24-05-konvergenca-g2-48'/>
+<use x='-29.61951' y='-31.990798' xlink:href='#c24-05-konvergenca-g0-0'/>
+<use x='-23.392831' y='-31.990798' xlink:href='#c24-05-konvergenca-g3-53'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<g stroke-dasharray='0.45,2.0' stroke-dashoffset='0.0'>
+<path d='M0-88.20282H203.1521' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-70.56226H-4.83725' fill='none'/>
+<g transform='translate(-29.2064,-74.63226)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.582188,-28.375434)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.582188' y='-28.375434' xlink:href='#c24-05-konvergenca-g2-49'/>
+<use x='-34.600849' y='-28.375434' xlink:href='#c24-05-konvergenca-g2-48'/>
+<use x='-29.61951' y='-31.990798' xlink:href='#c24-05-konvergenca-g0-0'/>
+<use x='-23.392831' y='-31.990798' xlink:href='#c24-05-konvergenca-g3-52'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<g stroke-dasharray='0.45,2.0' stroke-dashoffset='0.0'>
+<path d='M0-70.56226H203.1521' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-52.92169H-4.83725' fill='none'/>
+<g transform='translate(-29.2064,-56.9917)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.582188,-28.375434)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.582188' y='-28.375434' xlink:href='#c24-05-konvergenca-g2-49'/>
+<use x='-34.600849' y='-28.375434' xlink:href='#c24-05-konvergenca-g2-48'/>
+<use x='-29.61951' y='-31.990798' xlink:href='#c24-05-konvergenca-g0-0'/>
+<use x='-23.392831' y='-31.990798' xlink:href='#c24-05-konvergenca-g3-51'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<g stroke-dasharray='0.45,2.0' stroke-dashoffset='0.0'>
+<path d='M0-52.92169H203.1521' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-35.28113H-4.83725' fill='none'/>
+<g transform='translate(-29.2064,-39.35114)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.582188,-28.375434)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.582188' y='-28.375434' xlink:href='#c24-05-konvergenca-g2-49'/>
+<use x='-34.600849' y='-28.375434' xlink:href='#c24-05-konvergenca-g2-48'/>
+<use x='-29.61951' y='-31.990798' xlink:href='#c24-05-konvergenca-g0-0'/>
+<use x='-23.392831' y='-31.990798' xlink:href='#c24-05-konvergenca-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<g stroke-dasharray='0.45,2.0' stroke-dashoffset='0.0'>
+<path d='M0-35.28113H203.1521' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-17.64056H-4.83725' fill='none'/>
+<g transform='translate(-29.2064,-21.71057)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.582188,-28.375434)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.582188' y='-28.375434' xlink:href='#c24-05-konvergenca-g2-49'/>
+<use x='-34.600849' y='-28.375434' xlink:href='#c24-05-konvergenca-g2-48'/>
+<use x='-29.61951' y='-31.990798' xlink:href='#c24-05-konvergenca-g0-0'/>
+<use x='-23.392831' y='-31.990798' xlink:href='#c24-05-konvergenca-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<g stroke-dasharray='0.45,2.0' stroke-dashoffset='0.0'>
+<path d='M0-17.64056H203.1521' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 0H-4.83725' fill='none'/>
+<g transform='translate(-22.95638,-4.07)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.582188,-28.375434)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.582188' y='-28.375434' xlink:href='#c24-05-konvergenca-g2-49'/>
+<use x='-34.600849' y='-28.375434' xlink:href='#c24-05-konvergenca-g2-48'/>
+<use x='-29.61951' y='-31.990798' xlink:href='#c24-05-konvergenca-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<g stroke-dasharray='0.45,2.0' stroke-dashoffset='0.0'>
+<path d='M0 0H203.1521' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 17.64056H-4.83725' fill='none'/>
+<g transform='translate(-22.95638,13.57056)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.582188,-28.375434)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.582188' y='-28.375434' xlink:href='#c24-05-konvergenca-g2-49'/>
+<use x='-34.600849' y='-28.375434' xlink:href='#c24-05-konvergenca-g2-48'/>
+<use x='-29.61951' y='-31.990798' xlink:href='#c24-05-konvergenca-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<g stroke-dasharray='0.45,2.0' stroke-dashoffset='0.0'>
+<path d='M0 17.64056H203.1521' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='prvi'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M0-7.1269L48.36958-27.9779L96.73917-49.11127L145.10875-70.33292L193.47833-91.55457' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M1.83862-7.1269C1.83862-6.11147 1.01544-5.28828 0-5.28828S-1.83862-6.11147-1.83862-7.1269C-1.83862-8.14235-1.01544-8.96553 0-8.96553S1.83862-8.14235 1.83862-7.1269ZM0-7.1269' stroke='none'/>
+</g>
+<g transform='translate(0.0,-7.1269)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.582188,-28.375434)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M50.2082-27.9779C50.2082-26.96246 49.38503-26.13928 48.36958-26.13928C47.35414-26.13928 46.53096-26.96246 46.53096-27.9779C46.53096-28.99335 47.35414-29.81653 48.36958-29.81653C49.38503-29.81653 50.2082-28.99335 50.2082-27.9779ZM48.36958-27.9779' stroke='none'/>
+</g>
+<g transform='translate(48.36958,-27.9779)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.582188,-28.375434)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M98.57779-49.11127C98.57779-48.09583 97.75461-47.27264 96.73917-47.27264C95.72372-47.27264 94.90054-48.09583 94.90054-49.11127S95.72372-50.94989 96.73917-50.94989C97.75461-50.94989 98.57779-50.12671 98.57779-49.11127ZM96.73917-49.11127' stroke='none'/>
+</g>
+<g transform='translate(96.73917,-49.11127)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.582188,-28.375434)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M146.94737-70.33292C146.94737-69.31747 146.12419-68.4943 145.10875-68.4943C144.0933-68.4943 143.27013-69.31747 143.27013-70.33292C143.27013-71.34836 144.0933-72.17154 145.10875-72.17154C146.12419-72.17154 146.94737-71.34836 146.94737-70.33292ZM145.10875-70.33292' stroke='none'/>
+</g>
+<g transform='translate(145.10875,-70.33292)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.582188,-28.375434)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M195.31696-91.55457C195.31696-90.53912 194.49377-89.71594 193.47833-89.71594S191.63971-90.53912 191.63971-91.55457C191.63971-92.57 192.46289-93.39319 193.47833-93.39319S195.31696-92.57 195.31696-91.55457ZM193.47833-91.55457' stroke='none'/>
+</g>
+<g transform='translate(193.47833,-91.55457)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.582188,-28.375434)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(207.90797,-91.42503)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.582188,-28.375434)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-39.582188' y='-28.375434' xlink:href='#c24-05-konvergenca-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='drugi'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M0 18.36383L48.36958-7.1269L96.73917-27.9604L145.10875-49.11127L193.47833-70.33292' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M1.83862 18.36383C1.83862 19.37927 1.01544 20.20245 0 20.20245S-1.83862 19.37927-1.83862 18.36383S-1.01544 16.5252 0 16.5252S1.83862 17.34839 1.83862 18.36383ZM0 18.36383' stroke='none'/>
+</g>
+<g transform='translate(0.0,18.36383)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.582188,-28.375434)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M50.2082-7.1269C50.2082-6.11147 49.38503-5.28828 48.36958-5.28828C47.35414-5.28828 46.53096-6.11147 46.53096-7.1269C46.53096-8.14235 47.35414-8.96553 48.36958-8.96553C49.38503-8.96553 50.2082-8.14235 50.2082-7.1269ZM48.36958-7.1269' stroke='none'/>
+</g>
+<g transform='translate(48.36958,-7.1269)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.582188,-28.375434)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M98.57779-27.9604C98.57779-26.94496 97.75461-26.12178 96.73917-26.12178C95.72372-26.12178 94.90054-26.94496 94.90054-27.9604C94.90054-28.97585 95.72372-29.79903 96.73917-29.79903C97.75461-29.79903 98.57779-28.97585 98.57779-27.9604ZM96.73917-27.9604' stroke='none'/>
+</g>
+<g transform='translate(96.73917,-27.9604)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.582188,-28.375434)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M146.94737-49.11127C146.94737-48.09583 146.12419-47.27264 145.10875-47.27264C144.0933-47.27264 143.27013-48.09583 143.27013-49.11127S144.0933-50.94989 145.10875-50.94989C146.12419-50.94989 146.94737-50.12671 146.94737-49.11127ZM145.10875-49.11127' stroke='none'/>
+</g>
+<g transform='translate(145.10875,-49.11127)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.582188,-28.375434)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M195.31696-70.33292C195.31696-69.31747 194.49377-68.4943 193.47833-68.4943S191.63971-69.31747 191.63971-70.33292C191.63971-71.34836 192.46289-72.17154 193.47833-72.17154S195.31696-71.34836 195.31696-70.33292ZM193.47833-70.33292' stroke='none'/>
+</g>
+<g transform='translate(193.47833,-70.33292)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.582188,-28.375434)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(207.90797,-66.72835)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.582188,-28.375434)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-39.582188' y='-28.375434' xlink:href='#c24-05-konvergenca-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='naklon'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<g stroke-width='0.7'>
+<path d='M116.0867 15.87639L164.45628-5.36273V15.87639Z' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(178.88593,2.07)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.582188,-28.375434)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.582188' y='-28.375434' xlink:href='#c24-05-konvergenca-g2-52'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 24.19</span>: Deviation \(\\Delta\) (in percent) of the critical speeds of the mesh from the closed form of lemma <a class="xref" href="sec-mke-rotorja.html#lem-enakomerna-gred" data-knowl="lem-enakomerna-gred">24.31</a> against the number of elements <span class="nobr">\(n\),</span> both axes logarithmic. Blue the first, orange the second critical speed. The triangle shows slope <span class="nobr">\(-4\):</span> the deviation falls by the factor \(16\) with every doubling of <span class="nobr">\(n\).</span></figcaption></figure>
+<p>What have we shown? A mesh of beam elements with the complex equation <a class="xref" href="sec-mke-rotorja.html#eq-gibanje-rotorja" data-knowl="eq-gibanje-rotorja">(24.31)</a> gives the <a class="xref auto" href="sec-jeffcottov-rotor.html#def-jeffcottov-rotor" data-knowl="def-jeffcottov-rotor">Jeffcott rotor</a>, the four degrees of freedom of the disk (section <a class="xref" href="sec-campbellov-diagram.html">24.4</a>) and a rotor with shaft mass, and it agrees with the closed form of the uniform shaft, which cannot be proved with the <a class="xref auto" href="sec-kinematika-nosilca.html#def-eb-nosilec" data-knowl="def-eb-nosilec">Euler-Bernoulli beam</a> formula alone. The <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> are three, real and symmetric, and therefore theorem <a class="xref" href="sec-campbellov-diagram.html#thm-realne-frekvence-ziroskopske" data-knowl="thm-realne-frekvence-ziroskopske">24.21</a> holds for every rotor that we assemble. In section <a class="xref" href="sec-kriticne-vec-mas.html">24.6</a> we use them for the <a class="xref auto" href="sec-torzija-gredi.html#def-kriticni-vrtljaji-reda" data-knowl="def-kriticni-vrtljaji-reda">critical speeds</a> of a rotor with several disks, and in section <a class="xref" href="sec-uravnotezenje-podajnih.html">24.8</a> for balancing.</p>
+
+</main>
+<footer><nav class="pager"><a href="sec-campbellov-diagram.html" rel="prev">← 24.4</a><a href="index.html">Contents</a><a href="sec-kriticne-vec-mas.html" rel="next">24.6 →</a></nav></footer>
+</body>
+</html>

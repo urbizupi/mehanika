@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-temperaturna-prevodnost"] = {"html": "<div class=\"eq\">\\[\\kappa = \\frac{k}{\\rho c} , \\tag{14.8}\\]</div>", "href": "sec-enacba-prevajanja.html#eq-temperaturna-prevodnost"};

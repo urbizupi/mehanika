@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-napetost-poljubna-temperatura"] = {"html": "<div class=\"eq\">\\[\\sigma_{\\mathrm{xx}} = -E\\,\\alpha\\,\\big(\\Delta T(y) - \\theta_{\\mathrm{m}} - g\\,y\\big) . \\tag{14.37}\\]</div>", "href": "sec-temperaturne-napetosti.html#eq-napetost-poljubna-temperatura"};

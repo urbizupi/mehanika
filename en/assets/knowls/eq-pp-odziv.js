@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pp-odziv"] = {"html": "<div class=\"eq\">\\[\\vek u = \\sum_{\\mathrm{r}=1}^{n}\\frac{\\boldsymbol\\varphi_{\\mathrm{r}}\\,(\\boldsymbol\\varphi_{\\mathrm{r}}^{\\T}\\vek F)}{\\lambda_{\\mathrm{r}} - \\Omega^2} . \\tag{21.2}\\]</div>", "href": "sec-popravek-pospeskov.html#eq-pp-odziv"};

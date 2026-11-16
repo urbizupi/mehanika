@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-cd-lastni"] = {"html": "<div class=\"eq\">\\[(k_{\\mathrm{T}} - m\\omega^2)P + k_{\\mathrm{C}}\\Theta = 0 , \\qquad k_{\\mathrm{C}} P + (k_{\\mathrm{R}} - J_{\\mathrm{t}}\\omega^2 + J_{\\mathrm{p}}\\Omega\\omega)\\Theta = 0 . \\tag{24.25}\\]</div>", "href": "sec-campbellov-diagram.html#eq-cd-lastni"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nlst-kvadraticna"] = {"html": "<div class=\"eq\">\\[|e_{\\mathrm{k}+1}| \\le K\\,e_{\\mathrm{k}}^2 , \\qquad K\\,|e_{\\mathrm{k}}| \\le \\big(K\\,|e_0|\\big)^{2^k} . \\tag{17.30}\\]</div>", "href": "sec-nelinearna-statika.html#eq-nlst-kvadraticna"};

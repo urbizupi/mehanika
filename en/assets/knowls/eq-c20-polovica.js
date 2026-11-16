@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-c20-polovica"] = {"html": "<div class=\"eq\">\\[G = \\begin{pmatrix} 0{,}9492 &amp; -0{,}1461 &amp; -0{,}1142 \\\\ -0{,}1461 &amp; 0{,}5587 &amp; -0{,}4005 \\\\ -0{,}1142 &amp; -0{,}4005 &amp; 0{,}4929 \\end{pmatrix} \\tag{20.47}\\]</div>", "href": "sec-dusenje-zveznih.html#eq-c20-polovica"};

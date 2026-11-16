@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nd-moc"] = {"html": "<div class=\"eq\">\\[\\mathcal P = \\big(c_{\\mathrm{i}}\\Omega - (c_{\\mathrm{e}} + c_{\\mathrm{i}})\\,\\omega\\big)\\,\\omega\\,|p|^2 . \\tag{24.43}\\]</div>", "href": "sec-notranje-dusenje.html#eq-nd-moc"};

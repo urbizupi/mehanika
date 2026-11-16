@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-lambda-h-pritrjena"] = {"html": "<div class=\"eq\">\\[\\lambda_{\\mathrm{h}} = \\frac{6}{h^2}\\,\\frac{1 - \\cos(\\pi h)}{2 + \\cos(\\pi h)} , \\qquad h = \\frac1n . \\tag{17.8}\\]</div>", "href": "sec-konvergenca-mreze.html#eq-lambda-h-pritrjena"};

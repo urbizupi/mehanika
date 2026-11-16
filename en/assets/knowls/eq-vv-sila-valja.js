@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vv-sila-valja"] = {"html": "<div class=\"eq\">\\[F_{\\mathrm{i}}(t) = m_{\\mathrm{B}} a\\Omega^2 \\sum_{\\mathrm{n} \\ge 1} A_{\\mathrm{n}} \\cos n(\\theta - \\varphi_{\\mathrm{i}}) . \\tag{23.35}\\]</div>", "href": "sec-vecvaljni-motorji.html#eq-vv-sila-valja"};

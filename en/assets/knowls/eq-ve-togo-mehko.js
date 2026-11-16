@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ve-togo-mehko"] = {"html": "<div class=\"eq\">\\[4s + 1 + \\frac1s &lt; \\kappa &lt; 4s + 2 + \\frac1s . \\tag{17.25}\\]</div>", "href": "sec-velike-enacbe.html#eq-ve-togo-mehko"};

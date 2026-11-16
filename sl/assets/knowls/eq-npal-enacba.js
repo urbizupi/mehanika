@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-npal-enacba"] = {"html": "<div class=\"eq\">\\[T_{\\mathrm{t}} = \\kappa\\,T_{\\mathrm{xx}} \\qquad (0 &lt; x &lt; L,\\ t &gt; 0) , \\tag{14.24}\\]</div>", "href": "sec-nestacionarno-palica.html#eq-npal-enacba"};

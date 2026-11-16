@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-poves-neskoncni"] = {"html": "<div class=\"eq\">\\[v(x) = -\\frac{P\\beta}{2k}\\,\\mathrm{e}^{-\\beta |x|}\\big(\\cos\\beta x + \\sin\\beta |x|\\big) . \\tag{25.4}\\]</div>", "href": "sec-elasticna-podlaga.html#eq-poves-neskoncni"};

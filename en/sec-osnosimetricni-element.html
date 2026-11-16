@@ -1,0 +1,1300 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>22.8 The axisymmetric cylinder element (osnosimetrični element valja) · Chapter 22</title>
+<script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/style.css">
+<noscript><style>#loadbar { display: none; }</style></noscript>
+<script src="assets/config.js"></script>
+<script src="assets/load.js"></script>
+<script defer src="assets/interaktivno.js"></script>
+<script defer src="assets/book.js"></script>
+<script defer src="assets/predavanje.js"></script>
+<script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<div id="loadbar" aria-hidden="true"></div>
+<header class="top"><a class="home" href="index.html">Mechanics</a><nav class="pager"><a href="sec-spoji-lupin.html" rel="prev">← 22.7</a><a href="index.html">Contents</a><a href="sec-ploscati-elementi.html" rel="next">22.9 →</a></nav>
+<span class="tools"><a class="lang" href="../sl/sec-osnosimetricni-element.html" hreflang="sl">Slovenščina</a><button type="button" class="theme-toggle" title="Light or dark theme" aria-label="Light or dark theme"></button><button type="button" data-details="open">Expand all</button><button type="button" data-details="close">Collapse all</button><button type="button" class="fig-side-toggle" aria-pressed="false">Figures alongside</button></span></header>
+<main>
+<p class="updated">Last updated 16 November 2026, 10:52</p>
+<p class="crumb"><a href="ch-lupine.html"><span class="h-num">Chapter 22</span> Shells</a></p>
+<h2 id="sec-osnosimetricni-element"><span class="h-num">22.8</span> The axisymmetric cylinder element (osnosimetrični element valja)</h2>
+<p>In the section on bending of the cylinder we worked out the edge of a tube by hand: the equation \(D\,w'''' + (Eh/R^2)\,w = q\) has a closed solution because the radius and the thickness are constant and the load is simple (theorem <a class="xref" href="sec-upogib-valja.html#thm-enacba-valja" data-knowl="thm-enacba-valja">22.42</a>, theorem <a class="xref" href="sec-upogib-valja.html#thm-robni-ucinek" data-knowl="thm-robni-ucinek">22.43</a>). A vessel in practice is not like that. The thickness changes at a junction, the <a class="xref auto" href="sec-srednja-ploskev.html#def-lupina" data-knowl="def-lupina">shell</a> turns into a cone or a bottom, the pressure changes with height. Programs do not solve such vessels with a closed formula, they divide them into elements, as we divided the <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beam</a> in chapter <a class="xref" href="ch-mke-nosilci.html">12</a>. This section shows that the element for a cylinder is almost in the book already: it is the beam element of chapter <a class="xref" href="ch-mke-nosilci.html">12</a> with one more <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a>. We then test it on the same tube as before, at the edge where the solution is not smooth, and see how long an element may be so that the moment at the clamp is not wrong. At the end we say what the conical element changes and how the results of an element give the stresses that a program prints.</p>
+<p>The tube is the same as in the previous sections: mid-surface radius \(R = 50\) mm, thickness \(h = 2\) mm, steel with \(E = 196\) GPa and <span class="nobr">\(\nu = 0{,}3\),</span> internal pressure \(p = 3\) MPa, closed ends. Data: \(D = Eh^3/(12(1 - \nu^2)) = 143\,590\) N mm, \(k = Eh/R^2 = 156{,}80\) N/mm<span class="nobr">\(^3\),</span> \(\beta = (k/4D)^{1/4} = 0{,}12854\) mm<span class="nobr">\(^{-1}\),</span> so \(1/\beta = 7{,}780\) mm. Notation: \(h\) is the wall thickness here (as in the whole chapter), so for the element length we write \(h_{\mathrm{e}}\) where chapter <a class="xref" href="ch-mke-nosilci.html">12</a> wrote <span class="nobr">\(h\).</span> The letter \(K\) is the structure stiffness matrix as in chapter <a class="xref" href="ch-mke-nosilci.html">12</a>, not the <a class="xref auto" href="sec-ukrivljenost-ploskve.html#def-gaussova-ukrivljenost" data-knowl="def-gaussova-ukrivljenost">Gaussian curvature</a>. The number \(\beta\) is the decay constant of the edge, not \(\beta_{\mathrm{h}}\) of chapter <a class="xref" href="ch-mke-nosilci.html">12</a>, and \(D\) is the bending stiffness of the shell, not the dynamic factor of definition <a class="xref" href="sec-harmonicno-vzbujanje.html#def-dinamicni-faktor" data-knowl="def-dinamicni-faktor">9.53</a>.</p>
+
+<h3 id="sec-oe-energija"><span class="h-num">22.8.1</span> Energy of a cylinder strip (energija traku valja)</h3>
+<p>First we say what we compute. The <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">body</a> is a thin cylindrical shell (definition <a class="xref" href="sec-srednja-ploskev.html#def-lupina" data-knowl="def-lupina">22.1</a>) with mid-surface radius <span class="nobr">\(R\),</span> constant thickness \(h\) and length <span class="nobr">\(L\).</span> There are three idealizations. The first is Kirchhoff-Love (definition <a class="xref" href="sec-kinematika-lupine.html#def-kirchhoff-love" data-knowl="def-kirchhoff-love">22.24</a>): the normal of the middle surface stays straight and normal to the deformed surface, the transverse stress \(\sigma_{\mathrm{zz}}\) is neglected, displacements are small. The second is that the pressure acts on the middle surface, not on the inner wall. The error is at most \(h/(2R) = 0{,}02\) relative to the radius, as in dropping the factor \(1 + z/R\) in the section on the kinematics of the shell (theorem <a class="xref" href="sec-kinematika-lupine.html#thm-deformacije-lupine" data-knowl="thm-deformacije-lupine">22.26</a>). The third is axial symmetry: load, supports and material are the same on every circle around the axis (<a class="xref auto" href="sec-ukrivljenost-ploskve.html#lem-vrtenina-ukrivljenosti" data-knowl="lem-vrtenina-ukrivljenosti">parallel circle</a>), so the radial displacement \(w\) (positive outward) and the axial displacement \(u\) are <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> of \(x\) only, where \(x\) is the distance along the axis. The solution is thus one-dimensional, which is the reason that the element can be a <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beam</a>.</p>
+<p>We count the energy per unit circumference: for the part of the shell over an arc of the middle circle of length 1 mm. The unit is N mm/mm. In this way \(R\) does not enter as a factor and the comparison with the beam is direct. The <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> per unit circumference \(N_0\) is known from equilibrium: in a closed cylinder the pressure on the end <a class="xref auto" href="sec-kirchhoffova-plosca.html#def-plosca" data-knowl="def-plosca">plate</a> of area \(\pi R^2\) (the plate counted up to the mid-surface radius) is balanced by the force \(N_0\cdot 2\pi R\) of the wall (Newton's law for the free body of the cut cylinder, lemma <a class="xref" href="sec-uporabe-membranske.html#lem-tlacna-posoda" data-knowl="lem-tlacna-posoda">22.36</a>), so \(N_0 = pR/2 = 75\) N/mm.</p>
+
+<div class="blk lema" id="lem-energija-osnosimetricne"><div class="blk-head"><span class="blk-label">Lemma 22.51</span> <span class="blk-title">Energy of a cylinder strip (energija traku valja)</span></div><div class="blk-body"><p>Let the cylinder be as above, loaded axisymmetrically by the internal pressure \(p\) and the <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> \(N_0\) per unit circumference, and let at least one end be free in the axial direction. Let <span class="nobr">\(C = Eh/(1 - \nu^2)\),</span> <span class="nobr">\(D = Eh^3/(12(1 - \nu^2))\),</span> <span class="nobr">\(k = Eh/R^2\).</span> Then:</p>
+<ol>
+<li>The potential energy per unit circumference is
+<div class="eq" id="eq-oe-energija-uw">\[\Pi[u, w] = \int_0^L \Big[ \tfrac12 C\Big(u'^2 + 2\nu\,u'\,\frac{w}{R} + \frac{w^2}{R^2}\Big) + \tfrac12 D\,w''^2 - p\,w - N_0\,u' \Big]\,\mathrm{d}x . \tag{22.52}\]</div></li>
+<li>The axial force \(N_{\mathrm{x}}\) equals \(N_0\) everywhere. When \(u\) is eliminated from the energy, what remains, up to a constant, is
+<div class="eq" id="eq-oe-energija-w">\[\tilde\Pi[w] = \int_0^L \Big[ \tfrac12 D\,w''^2 + \tfrac12 k\,w^2 - q\,w \Big]\,\mathrm{d}x , \qquad q = p - \frac{\nu N_0}{R} . \tag{22.53}\]</div></li>
+<li>A field \(w\) for which \(\tilde\Pi\) is stationary satisfies \(D\,w'''' + k\,w = q\) with the natural conditions \(w'' = 0\) and \(w''' = 0\) at an end where \(w\) and \(w'\) are not prescribed. This is the equation of theorem <a class="xref" href="sec-upogib-valja.html#thm-enacba-valja" data-knowl="thm-enacba-valja">22.42</a>, derived from the energy.</li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show three claims: the expression for the energy from the <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">strains</a>, the elimination of <span class="nobr">\(u\),</span> and stationarity.</p>
+<ol>
+<li>Kinematics (theorem <a class="xref" href="sec-kinematika-lupine.html#thm-deformacije-lupine" data-knowl="thm-deformacije-lupine">22.26</a>, for a cylinder with axis \(x\) and hoop direction <span class="nobr">\(\theta\)):</span> the axial strain of the <a class="xref auto" href="sec-srednja-ploskev.html#def-lupina" data-knowl="def-lupina">middle surface</a> is <span class="nobr">\(\varepsilon_{\mathrm{x}} = u'\).</span> A ring of radius \(R\) becomes a ring of radius \(R + w\) after the displacement <span class="nobr">\(w\),</span> its length \(2\pi R\) becomes <span class="nobr">\(2\pi(R + w)\),</span> so <span class="nobr">\(\varepsilon_\theta = w/R\).</span> The normal turns in the plane of the meridian by <span class="nobr">\(w'\),</span> so the change of curvature in the direction \(x\) is \(\kappa_{\mathrm{x}} = -w''\) (positive when the outer face is stretched, because \(\varepsilon = \varepsilon^0 + z\kappa\) with \(z\) outward). A <a class="xref auto" href="sec-ukrivljenost-ploskve.html#lem-vrtenina-ukrivljenosti" data-knowl="lem-vrtenina-ukrivljenosti">parallel circle</a> stays a circle, so <span class="nobr">\(\kappa_\theta = 0\).</span> There are no shear terms because of the axial symmetry.</li>
+<li>By theorem <a class="xref" href="sec-kinematika-lupine.html#thm-hooke-lupine" data-knowl="thm-hooke-lupine">22.28</a>, <span class="nobr">\(N_{\mathrm{x}} = C(\varepsilon_{\mathrm{x}} + \nu\varepsilon_\theta)\),</span> <span class="nobr">\(N_\theta = C(\varepsilon_\theta + \nu\varepsilon_{\mathrm{x}})\),</span> <span class="nobr">\(M_{\mathrm{x}} = D(\kappa_{\mathrm{x}} + \nu\kappa_\theta) = -D\,w''\).</span> By theorem <a class="xref" href="sec-kinematika-lupine.html#thm-energija-lupine" data-knowl="thm-energija-lupine">22.29</a> the energy per unit area is <span class="nobr">\(\tfrac12(N_{\mathrm{x}}\varepsilon_{\mathrm{x}} + N_\theta\varepsilon_\theta + M_{\mathrm{x}}\kappa_{\mathrm{x}} + M_\theta\kappa_\theta)\).</span> With \(\kappa_\theta = 0\) this is <span class="nobr">\(\tfrac12 C(\varepsilon_{\mathrm{x}}^2 + 2\nu\varepsilon_{\mathrm{x}}\varepsilon_\theta + \varepsilon_\theta^2) + \tfrac12 D\,w''^2\).</span></li>
+<li>The pressure \(p\) per unit area does the work <span class="nobr">\(p\,w\).</span> The force \(N_0\) on the free end does the work <span class="nobr">\(N_0[u]_0^L = \int_0^L N_0\,u'\,\mathrm{d}x\),</span> because \(N_0\) is constant. The potential energy is the strain energy minus the work. Steps 1 and 2 give equation <a class="xref" href="sec-osnosimetricni-element.html#eq-oe-energija-uw" data-knowl="eq-oe-energija-uw">(22.52)</a>. This proves point 1.</li>
+<li>Variation in <span class="nobr">\(u\):</span> the integrand depends on \(u\) only through <span class="nobr">\(u'\),</span> and <span class="nobr">\(\partial(\cdot)/\partial u' = C(u' + \nu w/R) - N_0 = N_{\mathrm{x}} - N_0\).</span> Stationarity requires <span class="nobr">\((N_{\mathrm{x}} - N_0)' = 0\),</span> so \(N_{\mathrm{x}} - N_0\) is constant. At the free end \(u\) is not prescribed, so the natural condition there is <span class="nobr">\(N_{\mathrm{x}} - N_0 = 0\).</span> Hence \(N_{\mathrm{x}} = N_0\) everywhere.</li>
+<li>For a given <span class="nobr">\(\varepsilon_\theta\),</span> \(N_{\mathrm{x}} = N_0\) is the condition of stationarity of the integrand in <span class="nobr">\(\varepsilon_{\mathrm{x}}\).</span> The value of the integrand at \(\varepsilon_{\mathrm{x}} = N_0/C - \nu\varepsilon_\theta\) is \(\tfrac12 C(1 - \nu^2)\varepsilon_\theta^2 + \nu N_0\varepsilon_\theta - N_0^2/(2C)\) (checked with SymPy). With \(C(1 - \nu^2) = Eh\) and \(\varepsilon_\theta = w/R\) this is \(\tfrac12 k\,w^2 + \nu N_0 w/R\) up to a constant.</li>
+<li>Together with \(\tfrac12 D\,w''^2 - p\,w\) we get <span class="nobr">\(\tfrac12 D\,w''^2 + \tfrac12 k\,w^2 - (p - \nu N_0/R)\,w\).</span> This is equation <a class="xref" href="sec-osnosimetricni-element.html#eq-oe-energija-w" data-knowl="eq-oe-energija-w">(22.53)</a>. This proves point 2.</li>
+<li>For a variation <span class="nobr">\(\delta w\),</span> <span class="nobr">\(\delta\tilde\Pi = \int_0^L (D\,w''\,\delta w'' + k\,w\,\delta w - q\,\delta w)\,\mathrm{d}x\).</span> <a class="xref auto" href="sec-integral.html#cor-per-partes" data-knowl="cor-per-partes">Integration by parts</a> twice (with <span class="nobr">\([D\,w''\,\delta w' - D\,w'''\,\delta w]_0^L\))</span> gives <span class="nobr">\(\int_0^L (D\,w'''' + k\,w - q)\,\delta w\,\mathrm{d}x + [D\,w''\,\delta w' - D\,w'''\,\delta w]_0^L\).</span> Since \(\delta w\) is arbitrary inside, the integrand is zero. At an end where \(\delta w\) and \(\delta w'\) are not prescribed, \(D\,w'' = 0\) and <span class="nobr">\(D\,w''' = 0\).</span> This proves point 3.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> The proof is not from the sources. Strains and energy are COOK (16.3-3) and (16.3-5) (PDF p. 586) at meridian angle \(0\) to the axis, where <span class="nobr">\(\varepsilon_{\mathrm{m}\theta} = w/r\).</span> The cylinder equation is from theorem <a class="xref" href="sec-upogib-valja.html#thm-enacba-valja" data-knowl="thm-enacba-valja">22.42</a>.</p></div></div>
+<p>The proof showed that the energy of the cylinder is the energy of a beam with bending stiffness \(D\) on an <a class="xref auto forward" href="sec-elasticna-podlaga.html#def-elasticna-podlaga" data-knowl="def-elasticna-podlaga" title="Defined later in the book">elastic foundation</a> of stiffness <span class="nobr">\(k\).</span> The foundation here is the hoop: whoever wants to widen it must stretch it. The axial force is not an unknown, because equilibrium fixes it, and so \(u\) drops out. For the given tube, \(N_0 = 75\) N/mm, \(q = p - \nu N_0/R = 2{,}55\) MPa, and this is <span class="nobr">\(p(1 - \nu/2)\),</span> as it must be. Without edges the solution is \(w_{\mathrm{p}} = q/k = 16{,}263\) \(\mu\)m (the ring widens uniformly), as in the equation of theorem <a class="xref" href="sec-upogib-valja.html#thm-enacba-valja" data-knowl="thm-enacba-valja">22.42</a>.</p>
+<p>The lemma has the condition that at least one end is axially free. What if none is? Let both ends be axially fixed. Then \(\int_0^L u'\,\mathrm{d}x = 0\) and \(N_{\mathrm{x}}\) is constant by step 4, but no longer equal to <span class="nobr">\(N_0\).</span> In a tube much longer than \(1/\beta\) the edges affect only a small part of the length. If we neglect that part, the axial <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">strain</a> is zero everywhere, so \(N_{\mathrm{x}} = \nu N_\theta = \nu pR = 45\) N/mm instead of 75 N/mm. Then \(q = p(1 - \nu^2) = 2{,}73\) MPa and \(w_{\mathrm{p}} = 17{,}411\) \(\mu\)m instead of \(16{,}263\) \(\mu\)m, a difference of 7 %. The lemma is therefore not self-evident: the elimination of \(u\) at known \(N_0\) works because the axial direction is free.</p>
+
+<h3 id="sec-oe-element"><span class="h-num">22.8.2</span> The cylinder element and its stiffness matrix (element valja in njegova togostna matrika)</h3>
+<p>Since the energy equals that of a <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beam</a> on a foundation, we use the Hermite functions (definition <a class="xref" href="sec-element-nosilca.html#def-hermitove-funkcije" data-knowl="def-hermitove-funkcije">12.1</a>) as in chapter <a class="xref" href="ch-mke-nosilci.html">12</a>. First we say what the element is, then we draw, then we compute.</p>
+
+<div class="blk definicija" id="def-element-valja"><div class="blk-head"><span class="blk-label">Definition 22.52</span> <span class="blk-title">Axisymmetric cylinder element (osnosimetrični element valja)</span></div><div class="blk-body"><p>Let \([x_{\mathrm{a}}, x_{\mathrm{b}}]\) be an <a class="xref auto" href="sec-konvergenca-zaporedij.html#def-interval" data-knowl="def-interval">interval</a> of length \(h_{\mathrm{e}} = x_{\mathrm{b}} - x_{\mathrm{a}}\) on the axis \(x\) of the cylinder of lemma <a class="xref" href="sec-osnosimetricni-element.html#lem-energija-osnosimetricne" data-knowl="lem-energija-osnosimetricne">22.51</a>. The axisymmetric cylinder element (osnosimetrični element valja) is the ring of width \(h_{\mathrm{e}}\) bounded at both ends by a <a class="xref auto" href="sec-ukrivljenost-ploskve.html#lem-vrtenina-ukrivljenosti" data-knowl="lem-vrtenina-ukrivljenosti">parallel circle</a>, over <span class="nobr">\([x_{\mathrm{a}}, x_{\mathrm{b}}]\).</span> A node (vozlišče) is a whole parallel circle. The unknowns at each node are the radial displacement \(w\) and the <a class="xref auto" href="sec-mindlinove-plosce.html#def-mindlinova-plosca" data-knowl="def-mindlinova-plosca">rotation of the normal</a> <span class="nobr">\(\varphi = w'\),</span> so four in the column <span class="nobr">\(\vek d_{\mathrm{e}} = (w_1, \varphi_1, w_2, \varphi_2)^\T\).</span> The field of the element is \(w_{\mathrm{h}} = \mat H_{\mathrm{e}}\,\vek d_{\mathrm{e}}\) with the <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> \(H_1, \dots, H_4\) of equation <a class="xref" href="sec-element-nosilca.html#eq-hermitove-funkcije" data-knowl="eq-hermitove-funkcije">(12.1)</a>. <span class="nobr">\(R\),</span> <span class="nobr">\(h\),</span> <span class="nobr">\(E\),</span> \(\nu\) and \(q\) are known, all constant on the element.</p>
+
+<div class="hid-row"><details class="hid razlaga" open><summary>Explanation</summary><div class="hid-body"><p>Figure <a class="xref" href="sec-osnosimetricni-element.html#fig-oe-element" data-knowl="fig-oe-element">22.26</a> shows the element on a meridian. The <a data-del="osa" class="xref kaz" href="sec-osnosimetricni-element.html#fig-oe-element" data-knowl="fig-oe-element">axis of the cylinder</a> is the dash-dotted line. The <a data-del="sredina" class="xref kaz" href="sec-osnosimetricni-element.html#fig-oe-element" data-knowl="fig-oe-element">middle line</a> is at distance \(R\) from the axis, which the <a data-del="R" class="xref kaz" href="sec-osnosimetricni-element.html#fig-oe-element" data-knowl="fig-oe-element">distance \(R\)</a> on the left shows. The element is the part of this line bounded by <span class="nobr"><a data-del="vozlisca" class="xref kaz" href="sec-osnosimetricni-element.html#fig-oe-element" data-knowl="fig-oe-element">nodes \(1\) and \(2\)</a>,</span> each a <a class="xref auto" href="sec-ukrivljenost-ploskve.html#lem-vrtenina-ukrivljenosti" data-knowl="lem-vrtenina-ukrivljenosti">parallel circle</a> that we see from the side as a point. After loading, the middle line of the <a data-del="element" class="xref kaz" href="sec-osnosimetricni-element.html#fig-oe-element" data-knowl="fig-oe-element">element</a> bends into a cubic curve made of <a class="xref auto" href="sec-element-nosilca.html#def-hermitove-funkcije" data-knowl="def-hermitove-funkcije">Hermite functions</a>, drawn with a strongly enlarged displacement. The displacement of a node is the <a data-del="w" class="xref kaz" href="sec-osnosimetricni-element.html#fig-oe-element" data-knowl="fig-oe-element">distance \(w_1\) or \(w_2\)</a> between the <a data-del="lega" class="xref kaz" href="sec-osnosimetricni-element.html#fig-oe-element" data-knowl="fig-oe-element">position before loading</a> and after it, since it is radial. The slope of the curve at a node is the <span class="nobr"><a data-del="zasuk" class="xref kaz" href="sec-osnosimetricni-element.html#fig-oe-element" data-knowl="fig-oe-element">rotation \(\varphi_1\) or \(\varphi_2\)</a>,</span> the tangent to the curve. The <a data-del="dolzina" class="xref kaz" href="sec-osnosimetricni-element.html#fig-oe-element" data-knowl="fig-oe-element">length \(h_{\mathrm{e}}\)</a> is the distance between the nodes along the axis. On the right is the <a data-del="obroc" class="xref kaz" href="sec-osnosimetricni-element.html#fig-oe-element" data-knowl="fig-oe-element">section by a plane</a> normal to the axis: a <a data-del="krog" class="xref kaz" href="sec-osnosimetricni-element.html#fig-oe-element" data-knowl="fig-oe-element">circle of radius \(R\)</a> and, after the displacement <span class="nobr">\(w\),</span> a <span class="nobr"><a data-del="razsirjen" class="xref kaz" href="sec-osnosimetricni-element.html#fig-oe-element" data-knowl="fig-oe-element">circle of radius \(R + w\)</a>.</span> That is why the hoop <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">strain</a> is \(w/R\) and why the foundation is elastic.</p>
+</div></details></div></div></div>
+<figure class="blk slika" id="fig-oe-element"><p><span class="svgfig" role="img" aria-label="Cylinder element with nodes, displacements and rotations, and the section with the ring"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='497.80pt' height='189.36pt' viewBox='-72.000004 -72 368.739377 140.267268'>
+<defs>
+<path id='c22-08-element-valja-g0-101' d='M1.321046-1.344956C1.715567-1.344956 2.169863-1.374844 2.480697-1.476463C3.000747-1.649813 3.024658-2.014446 3.024658-2.10411C3.024658-2.397011 2.737733-2.636115 2.229639-2.636115C1.494396-2.636115 .478207-2.110087 .478207-1.08792C.478207-.454296 .89066 .059776 1.637858 .059776C2.749689 .059776 3.186052-.532005 3.186052-.603736C3.186052-.657534 3.120299-.723288 3.072478-.723288C3.04259-.723288 3.036613-.71731 2.946949-.627646C2.588294-.221171 1.97858-.137484 1.649813-.137484C1.165629-.137484 .992279-.484184 .992279-.86675C.992279-.91457 .998257-1.111831 1.058032-1.344956H1.321046ZM1.111831-1.542217C1.309091-2.247572 1.894894-2.438854 2.229639-2.438854C2.510585-2.438854 2.749689-2.313325 2.749689-2.098132C2.749689-1.542217 1.751432-1.542217 1.111831-1.542217Z'/>
+<path id='c22-08-element-valja-g1-39' d='M2.456787 .080697C2.537484 .089664 2.600249 .09863 2.761644 .09863C4.285928 .09863 5.684682-1.282192 5.684682-2.698879C5.684682-3.443088 5.299128-3.963138 4.617684-3.963138C3.236862-3.963138 2.636115-1.927771 2.214695-.511083C1.273225-.681445 .71731-1.147696 .71731-1.811208C.71731-2.0533 .923537-3.030635 1.461519-3.640349C1.542217-3.721046 1.542217-3.738979 1.542217-3.765878C1.542217-3.774844 1.542217-3.864508 1.425654-3.864508C1.13873-3.864508 .457285-2.546451 .457285-1.712578C.457285-.735243 1.246326-.161395 2.044334 .017933C1.865006 .573848 1.524284 1.622914 1.524284 1.694645C1.524284 1.85604 1.667746 1.95467 1.802242 1.95467C1.820174 1.95467 2.107098 1.95467 2.178829 1.622914C2.27746 1.201494 2.37609 .564882 2.456787 .080697ZM2.564384-.466252C2.591283-.591781 2.645081-.896638 2.663014-1.022167C2.743711-1.43462 2.860274-2.107098 3.326526-2.698879C3.631382-3.0934 4.025903-3.407223 4.536986-3.407223C5.039103-3.407223 5.406725-3.066501 5.406725-2.510585C5.406725-1.506351 4.241096-.457285 2.842341-.457285C2.752677-.457285 2.654047-.457285 2.564384-.466252Z'/>
+<path id='c22-08-element-valja-g1-82' d='M3.416189-5.496389C3.469988-5.720548 3.496887-5.810212 3.658281-5.837111C3.738979-5.846077 4.034869-5.846077 4.223163-5.846077C4.931507-5.846077 5.917808-5.846077 5.917808-4.940473C5.917808-4.608717 5.783313-3.936239 5.272229-3.550685C5.057036-3.407223 4.608717-3.174097 3.882441-3.174097H2.833375L3.416189-5.496389ZM4.805978-3.039601C6.025405-3.353425 6.77858-4.034869 6.77858-4.770112C6.77858-5.550187 5.926775-6.124035 4.734247-6.124035H2.133998C1.972603-6.124035 1.865006-6.124035 1.865006-5.96264C1.865006-5.846077 1.945704-5.846077 2.133998-5.846077C2.169863-5.846077 2.331258-5.846077 2.47472-5.828144C2.627148-5.810212 2.689913-5.792279 2.689913-5.693649C2.689913-5.648817 2.680946-5.612951 2.654047-5.514321L1.443587-.681445C1.362889-.358655 1.344956-.277958 .672478-.277958C.502117-.277958 .403487-.277958 .403487-.116563C.403487-.017933 .475218 0 .537983 0C.681445 0 .950436-.008966 1.102864-.017933C1.291158-.026899 1.309091-.026899 1.65878-.026899C1.945704-.026899 1.963636-.026899 2.232628-.017933C2.411955-.008966 2.636115 0 2.806476 0C2.86924 0 2.985803 0 2.985803-.161395C2.985803-.277958 2.896139-.277958 2.707846-.277958C2.67198-.277958 2.510585-.277958 2.367123-.29589C2.169863-.32279 2.160897-.358655 2.160897-.439352C2.160897-.466252 2.160897-.484184 2.205729-.645579L2.779577-2.949938H3.882441C4.689415-2.949938 4.895641-2.483686 4.895641-2.142964C4.895641-2.080199 4.895641-2.017435 4.841843-1.820174C4.62665-.995268 4.62665-.91457 4.62665-.780075C4.62665 .026899 5.388792 .19726 5.846077 .19726C6.626152 .19726 6.948941-.708344 6.948941-.851806C6.948941-.91457 6.895143-.959402 6.832379-.959402C6.733748-.959402 6.724782-.91457 6.688917-.806974C6.536488-.340722 6.204732-.026899 5.872976-.026899C5.532254-.026899 5.514321-.29589 5.514321-.555915C5.514321-.780075 5.577086-1.300125 5.586052-1.362889C5.603985-1.506351 5.648817-1.865006 5.648817-1.999502C5.648817-2.510585 5.326027-2.860274 4.805978-3.039601Z'/>
+<path id='c22-08-element-valja-g1-104' d='M2.57335-5.917808C2.609215-6.043337 2.609215-6.06127 2.609215-6.097136C2.609215-6.177833 2.555417-6.222665 2.47472-6.222665C2.349191-6.222665 1.560149-6.150934 1.380822-6.133001C1.291158-6.124035 1.192528-6.115068 1.192528-5.96264C1.192528-5.846077 1.291158-5.846077 1.43462-5.846077C1.85604-5.846077 1.85604-5.783313 1.85604-5.702615C1.85604-5.66675 1.85604-5.648817 1.811208-5.487422L.529016-.331756C.493151-.206227 .493151-.188294 .493151-.161395C.493151-.017933 .609714 .09863 .771108 .09863C.923537 .09863 1.049066 .008966 1.111831-.116563C1.129763-.161395 1.210461-.484184 1.255293-.672478L1.461519-1.470486C1.488418-1.604981 1.578082-1.945704 1.604981-2.080199L1.712578-2.47472C1.75741-2.680946 2.268493-3.738979 3.236862-3.738979C3.721046-3.738979 3.721046-3.263761 3.721046-3.111333C3.721046-2.564384 3.299626-1.470486 3.200996-1.192528C3.0934-.91457 3.057534-.824907 3.057534-.654545C3.057534-.170361 3.425156 .09863 3.828643 .09863C4.689415 .09863 5.039103-1.183562 5.039103-1.282192C5.039103-1.327024 5.012204-1.389788 4.92254-1.389788C4.82391-1.389788 4.814944-1.344956 4.779078-1.228394C4.554919-.466252 4.178331-.125529 3.855542-.125529C3.792777-.125529 3.631382-.125529 3.631382-.412453C3.631382-.636613 3.721046-.869738 3.792777-1.066999C3.972105-1.524284 4.33076-2.47472 4.33076-2.976837C4.33076-3.774844 3.738979-3.963138 3.263761-3.963138C2.725778-3.963138 2.268493-3.71208 1.909838-3.272727L2.57335-5.917808Z'/>
+<path id='c22-08-element-valja-g1-119' d='M4.276961-3.066501C4.321793-3.245828 4.402491-3.568618 4.402491-3.604483C4.402491-3.721046 4.321793-3.864508 4.124533-3.864508C4.00797-3.864508 3.846575-3.792777 3.774844-3.622416C3.756912-3.568618 3.326526-1.838107 3.272727-1.604981C3.218929-1.389788 3.19203-1.246326 3.183064-1.031133C3.218929-.806974 3.084433-.609714 2.949938-.430386C2.752677-.188294 2.555417-.125529 2.367123-.125529C2.044334-.125529 1.63188-.260025 1.63188-.932503C1.63188-1.398755 1.865006-2.035367 2.142964-2.77061C2.187796-2.887173 2.25056-3.039601 2.25056-3.209963C2.25056-3.649315 1.918804-3.963138 1.479452-3.963138C.61868-3.963138 .260025-2.689913 .260025-2.582316C.260025-2.501619 .32279-2.47472 .385554-2.47472C.484184-2.47472 .493151-2.528518 .529016-2.645081C.71731-3.299626 1.075965-3.738979 1.452553-3.738979C1.63188-3.738979 1.667746-3.622416 1.667746-3.443088C1.667746-3.29066 1.63188-3.129265 1.551183-2.914072C1.111831-1.766376 1.022167-1.43462 1.022167-1.058032C1.022167-.035866 1.891905 .09863 2.340224 .09863C2.689913 .09863 3.021669-.044832 3.281694-.511083C3.550685 .017933 4.115567 .09863 4.447323 .09863C5.083935 .09863 5.469489-.367621 5.756413-.959402C6.007472-1.488418 6.357161-2.761644 6.357161-3.308593C6.357161-3.936239 6.025405-3.972105 5.944707-3.972105C5.720548-3.972105 5.487422-3.730012 5.487422-3.523786C5.487422-3.38929 5.56812-3.317559 5.630884-3.263761C5.872976-3.039601 5.953674-2.752677 5.953674-2.519552C5.953674-2.25056 5.729514-1.425654 5.460523-.905604C5.263263-.52005 4.958406-.125529 4.474222-.125529C3.801743-.125529 3.801743-.753176 3.801743-.91457C3.801743-1.156663 3.846575-1.344956 3.927273-1.65878L4.276961-3.066501Z'/>
+<path id='c22-08-element-valja-g1-120' d='M4.411457-3.622416C4.079701-3.559651 3.981071-3.272727 3.981071-3.138232C3.981071-2.96787 4.1066-2.815442 4.33076-2.815442C4.581818-2.815442 4.82391-3.030635 4.82391-3.344458C4.82391-3.756912 4.375592-3.963138 3.954172-3.963138C3.416189-3.963138 3.102366-3.48792 2.99477-3.299626C2.824408-3.738979 2.429888-3.963138 1.999502-3.963138C1.0401-3.963138 .52005-2.815442 .52005-2.582316C.52005-2.501619 .582814-2.47472 .645579-2.47472C.726276-2.47472 .753176-2.519552 .771108-2.57335C1.049066-3.461021 1.640847-3.738979 1.981569-3.738979C2.241594-3.738979 2.47472-3.568618 2.47472-3.147198C2.47472-2.824408 2.089166-1.389788 1.972603-.959402C1.900872-.681445 1.63188-.125529 1.13873-.125529C.959402-.125529 .771108-.188294 .681445-.242092C.923537-.286924 1.102864-.493151 1.102864-.726276C1.102864-.950436 .932503-1.049066 .762142-1.049066C.502117-1.049066 .268991-.824907 .268991-.52005C.268991-.080697 .753176 .09863 1.129763 .09863C1.649813 .09863 1.95467-.331756 2.089166-.573848C2.313325 .017933 2.842341 .09863 3.084433 .09863C4.052802 .09863 4.563885-1.066999 4.563885-1.282192C4.563885-1.327024 4.536986-1.389788 4.447323-1.389788C4.348692-1.389788 4.339726-1.353923 4.294894-1.219427C4.097634-.573848 3.577584-.125529 3.111333-.125529C2.851308-.125529 2.609215-.286924 2.609215-.71731C2.609215-.91457 2.734745-1.407721 2.815442-1.748443C2.851308-1.909838 3.0934-2.878207 3.111333-2.940971C3.218929-3.263761 3.48792-3.738979 3.945205-3.738979C4.1066-3.738979 4.276961-3.71208 4.411457-3.622416Z'/>
+<path id='c22-08-element-valja-g2-49' d='M2.145953-3.795766C2.145953-3.975093 2.122042-3.975093 1.942715-3.975093C1.548194-3.592528 .938481-3.592528 .723288-3.592528V-3.359402C.878705-3.359402 1.273225-3.359402 1.63188-3.526775V-.508095C1.63188-.310834 1.63188-.233126 1.016189-.233126H.759153V0C1.08792-.02391 1.554172-.02391 1.888917-.02391S2.689913-.02391 3.01868 0V-.233126H2.761644C2.145953-.233126 2.145953-.310834 2.145953-.508095V-3.795766Z'/>
+<path id='c22-08-element-valja-g2-50' d='M3.21594-1.117808H2.99477C2.982814-1.034122 2.923039-.639601 2.833375-.573848C2.791532-.537983 2.307347-.537983 2.223661-.537983H1.105853L1.870984-1.159651C2.074222-1.321046 2.606227-1.703611 2.791532-1.882939C2.970859-2.062267 3.21594-2.367123 3.21594-2.791532C3.21594-3.53873 2.540473-3.975093 1.739477-3.975093C.968369-3.975093 .430386-3.466999 .430386-2.905106C.430386-2.600249 .687422-2.564384 .753176-2.564384C.902615-2.564384 1.075965-2.67198 1.075965-2.887173C1.075965-3.01868 .998257-3.209963 .735243-3.209963C.872727-3.514819 1.23736-3.741968 1.649813-3.741968C2.27746-3.741968 2.612204-3.275716 2.612204-2.791532C2.612204-2.367123 2.331258-1.93076 1.912827-1.548194L.496139-.251059C.436364-.191283 .430386-.185305 .430386 0H3.030635L3.21594-1.117808Z'/>
+<path id='c22-08-element-valja-g3-49' d='M2.725778-5.729514C2.725778-5.953674 2.716812-5.971606 2.492653-5.971606C1.936737-5.397758 1.111831-5.397758 .833873-5.397758V-5.119801C1.004234-5.119801 1.551183-5.119801 2.035367-5.352927V-.71731C2.035367-.385554 2.008468-.277958 1.174595-.277958H.887671V0C1.210461-.026899 2.008468-.026899 2.37609-.026899S3.550685-.026899 3.873474 0V-.277958H3.58655C2.752677-.277958 2.725778-.385554 2.725778-.71731V-5.729514Z'/>
+<path id='c22-08-element-valja-g3-50' d='M4.142466-1.587049H3.891407C3.873474-1.470486 3.801743-.941469 3.685181-.798007C3.631382-.71731 3.012702-.71731 2.833375-.71731H1.23736L2.125031-1.560149C3.595517-2.833375 4.142466-3.308593 4.142466-4.223163C4.142466-5.254296 3.29066-5.971606 2.187796-5.971606C1.156663-5.971606 .457285-5.155666 .457285-4.339726C.457285-3.891407 .842839-3.846575 .923537-3.846575C1.120797-3.846575 1.389788-3.990037 1.389788-4.312827C1.389788-4.581818 1.201494-4.779078 .923537-4.779078C.878705-4.779078 .851806-4.779078 .81594-4.770112C1.031133-5.406725 1.604981-5.693649 2.089166-5.693649C3.003736-5.693649 3.317559-4.841843 3.317559-4.223163C3.317559-3.308593 2.627148-2.564384 2.196762-2.098132L.555915-.32279C.457285-.224159 .457285-.206227 .457285 0H3.891407L4.142466-1.587049Z'/>
+</defs>
+<g id='c22-08-element-valja-page1'>
+<g stroke-miterlimit='10' transform='translate(-58.024352,45.600437)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='osa'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,2.0,0.6,2.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.5'>
+<path d='M-8.5359 0H227.62195' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(231.25493,-1.93748)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.024352,45.600437)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-58.024352' y='45.600437' xlink:href='#c22-08-element-valja-g1-120'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='sredina'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M8.5359 73.9773H45.52455' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M187.78827 73.9773H216.24101' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='lega'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M45.52455 73.9773H187.78827' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='R'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 .33748V73.63982' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,0.0,6.14052)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,0.0,0.22499)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,67.83678)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,73.7523)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g transform='translate(-10.69508,33.91367)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.024352,45.600437)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-58.024352' y='45.600437' xlink:href='#c22-08-element-valja-g1-82'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='element'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.1'>
+<path d='M45.52455 88.20367L49.17145 90.18602L52.81834 92.12148L56.46524 94.0057L60.11214 95.83827L63.75905 97.61397L67.40594 99.33235L71.05284 100.98822L74.69974 102.58026L78.34663 104.10675L81.99353 105.5616L85.64043 106.94612L89.28732 108.25423L92.93422 109.48636L96.58112 110.6373L100.22801 111.70488L103.87491 112.68738L107.5218 113.58043L111.1687 114.38144L114.8156 115.08998L118.4625 115.70084L122.10939 116.21358L125.75629 116.62299L129.40318 116.92776L133.05008 117.12357L136.69698 117.20996L140.34387 117.18304L143.99078 117.0415L147.63768 116.77928L151.28458 116.39636L154.93147 115.8897L158.57837 115.25583L162.22527 114.49258L165.87216 113.59737L169.51906 112.56624L173.16595 111.39838L176.81285 110.0894L180.45975 108.63715L184.10664 107.03903L187.75354 105.29286' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='vozlisca'>
+<path d='M47.36317 88.20367C47.36317 89.21912 46.54 90.0423 45.52455 90.0423C44.50911 90.0423 43.68593 89.21912 43.68593 88.20367C43.68593 87.18823 44.50911 86.36505 45.52455 86.36505C46.54 86.36505 47.36317 87.18823 47.36317 88.20367ZM45.52455 88.20367' stroke='none'/>
+<g transform='translate(45.52455,88.20367)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.024352,45.600437)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M189.62689 105.2755C189.62689 106.29094 188.80371 107.11412 187.78827 107.11412S185.94965 106.29094 185.94965 105.2755S186.77283 103.43687 187.78827 103.43687S189.62689 104.26006 189.62689 105.2755ZM187.78827 105.2755' stroke='none'/>
+<g transform='translate(187.78827,105.2755)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.024352,45.600437)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(37.2666,91.83665)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.024352,45.600437)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-58.024352' y='45.600437' xlink:href='#c22-08-element-valja-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(191.42125,108.90848)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.024352,45.600437)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-58.024352' y='45.600437' xlink:href='#c22-08-element-valja-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M45.52455 88.20367V-8.5359' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M187.78827 105.2755V-8.5359' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='w'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M8.5359 74.31477V87.8662' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,8.5359,80.11781)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,8.5359,74.20229)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,8.5359,82.06316)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,8.5359,87.97868)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M8.5359 88.20367H45.52455' fill='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(-7.3157,79.65298)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.024352,45.600437)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-58.024352' y='45.600437' xlink:href='#c22-08-element-valja-g1-119'/>
+<use x='-51.419814' y='46.596686' xlink:href='#c22-08-element-valja-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M224.77693 74.31477V104.93802' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,224.77693,80.11781)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,224.77693,74.20229)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,224.77693,99.13498)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,224.77693,105.0505)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M224.77693 105.2755H187.78827' fill='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(229.83263,88.18889)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.024352,45.600437)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-58.024352' y='45.600437' xlink:href='#c22-08-element-valja-g1-119'/>
+<use x='-51.419814' y='46.596686' xlink:href='#c22-08-element-valja-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='zasuk'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.8'>
+<path d='M19.91727 74.1197L45.52455 88.20367' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(20.5043,68.31885)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.024352,45.600437)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-58.024352' y='45.600437' xlink:href='#c22-08-element-valja-g1-39'/>
+<use x='-52.006678' y='46.596686' xlink:href='#c22-08-element-valja-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.8'>
+<path d='M187.78827 105.2755L213.39557 92.47185' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(206.86986,83.54117)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.024352,45.600437)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-58.024352' y='45.600437' xlink:href='#c22-08-element-valja-g1-39'/>
+<use x='-52.006678' y='46.596686' xlink:href='#c22-08-element-valja-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='dolzina'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M45.86203-8.5359H187.45079' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,51.66507,-8.5359)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,45.74954,-8.5359)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(181.64775,-8.5359)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(187.56328,-8.5359)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g transform='translate(111.97449,-18.41888)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.024352,45.600437)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-58.024352' y='45.600437' xlink:href='#c22-08-element-valja-g1-104'/>
+<use x='-52.714427' y='46.596686' xlink:href='#c22-08-element-valja-g0-101'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='obroc'>
+<g class='del' data-del='krog'>
+<g stroke-width='0.9'>
+<path d='M335.74258 45.52458C335.74258 64.38159 320.45639 79.66779 301.59938 79.66779S267.45618 64.38159 267.45618 45.52458S282.74237 11.38138 301.59938 11.38138S335.74258 26.66757 335.74258 45.52458ZM301.59938 45.52458' fill='none'/>
+</g>
+<path d='M302.79938 45.52458C302.79938 46.18732 302.26212 46.72458 301.59938 46.72458C300.93665 46.72458 300.39938 46.18732 300.39938 45.52458C300.39938 44.86185 300.93665 44.32458 301.59938 44.32458C302.26212 44.32458 302.79938 44.86185 302.79938 45.52458ZM301.59938 45.52458' stroke='none'/>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M301.43065 45.81683L284.69673 74.80128' fill='none'/>
+<g transform='matrix(0.49998,-0.86601,0.86601,0.49998,298.52922,50.84235)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.49998,-0.86601,0.86601,0.49998,301.48688,45.71944)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-0.49998,0.86601,-0.86601,-0.49998,287.59816,69.77577)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-0.49998,0.86601,-0.86601,-0.49998,284.6405,74.89868)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g transform='translate(283.07997,56.00172)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.024352,45.600437)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-58.024352' y='45.600437' xlink:href='#c22-08-element-valja-g1-82'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='razsirjen'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.1'>
+<path d='M348.54622 45.52458C348.54622 71.45293 327.52773 92.47142 301.59938 92.47142C275.67104 92.47142 254.65254 71.45293 254.65254 45.52458C254.65254 19.59624 275.67104-1.42226 301.59938-1.42226C327.52773-1.42226 348.54622 19.59624 348.54622 45.52458ZM301.59938 45.52458' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M331.46059 62.7647L341.96439 68.82927' fill='none'/>
+<g transform='matrix(-0.86601,-0.5,0.5,-0.86601,336.4861,65.66621)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-0.86601,-0.5,0.5,-0.86601,331.36319,62.70847)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.86601,0.5,-0.5,0.86601,336.93887,65.92775)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.86601,0.5,-0.5,0.86601,342.06178,68.8855)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g transform='translate(345.88962,67.06052)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-58.024352,45.600437)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-58.024352' y='45.600437' xlink:href='#c22-08-element-valja-g1-119'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 22.26</span>: Axisymmetric cylinder element. Left: a meridian. The dash-dotted line is the axis, below, the middle line is at the distance \(R\) above it. The element between nodes \(1\) and \(2\) with length \(h_{\mathrm{e}}\) (orange) is a cubic curve of Hermite functions with displacements <span class="nobr">\(w_1\),</span> \(w_2\) and rotations <span class="nobr">\(\varphi_1\),</span> \(\varphi_2\) (blue tangents). Displacements and rotations are strongly enlarged, the ratio of \(R\) and \(h_{\mathrm{e}}\) is not to scale: for the tube of this section \(R = 50\) mm and \(h_{\mathrm{e}}\) is up to a few mm. Right: the section of the cylinder by a plane normal to the axis, a circle of radius \(R\) and, after the displacement \(w\) (orange), a circle of radius \(R + w\) whose circumference is longer by <span class="nobr">\(2\pi w\).</span></figcaption></figure>
+<p>Figure <a class="xref" href="sec-osnosimetricni-element.html#fig-oe-element" data-knowl="fig-oe-element">22.26</a> shows that a node is not a point but a ring: the displacement \(w_1\) moves the whole <a class="xref auto" href="sec-ukrivljenost-ploskve.html#lem-vrtenina-ukrivljenosti" data-knowl="lem-vrtenina-ukrivljenosti">parallel circle</a> by the same distance, so the <a data-del="razsirjen" class="xref kaz" href="sec-osnosimetricni-element.html#fig-oe-element" data-knowl="fig-oe-element">ring widens uniformly</a> and the hoop forces are the same everywhere. Everything else stays as in chapter <a class="xref" href="ch-mke-nosilci.html">12</a>, except that every radial displacement is now also a stretching of the ring.</p>
+
+<div class="blk lema" id="lem-togost-elementa-valja"><div class="blk-head"><span class="blk-label">Lemma 22.53</span> <span class="blk-title">Stiffness matrix of a cylinder element (togostna matrika elementa valja)</span></div><div class="blk-body"><p>Let \([x_{\mathrm{a}}, x_{\mathrm{b}}]\) be an axisymmetric cylinder element (definition <a class="xref" href="sec-osnosimetricni-element.html#def-element-valja" data-knowl="def-element-valja">22.52</a>). Then:</p>
+<ol>
+<li>The energy of the element is <span class="nobr">\(\Pi_{\mathrm{e}} = \tfrac12\,\vek d_{\mathrm{e}}^\T(\mat k_{\mathrm{b}} + \mat k_{\mathrm{f}})\,\vek d_{\mathrm{e}} - \vek d_{\mathrm{e}}^\T\vek f_{\mathrm{e}}\),</span> where \(\mat k_{\mathrm{b}}\) is the stiffness <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> of the <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beam</a> element of lemma <a class="xref" href="sec-element-nosilca.html#lem-togost-elementa-nosilca" data-knowl="lem-togost-elementa-nosilca">12.4</a> with \(EI\) replaced by <span class="nobr">\(D\),</span> \(\mat k_{\mathrm{f}}\) is the mass matrix of lemma <a class="xref" href="sec-masna-matrika-nosilca.html#lem-masa-elementa-nosilca" data-knowl="lem-masa-elementa-nosilca">12.43</a> with \(\rho A\) replaced by <span class="nobr">\(k\),</span> and
+<div class="eq" id="eq-oe-kf-fe">\[\mat k_{\mathrm{f}} = \frac{k\,h_{\mathrm{e}}}{420}\begin{pmatrix} 156 &amp; 22h_{\mathrm{e}} &amp; 54 &amp; -13h_{\mathrm{e}} \\ 22h_{\mathrm{e}} &amp; 4h_{\mathrm{e}}^2 &amp; 13h_{\mathrm{e}} &amp; -3h_{\mathrm{e}}^2 \\ 54 &amp; 13h_{\mathrm{e}} &amp; 156 &amp; -22h_{\mathrm{e}} \\ -13h_{\mathrm{e}} &amp; -3h_{\mathrm{e}}^2 &amp; -22h_{\mathrm{e}} &amp; 4h_{\mathrm{e}}^2 \end{pmatrix} , \qquad \vek f_{\mathrm{e}} = q\,h_{\mathrm{e}}\begin{pmatrix} 1/2 \\ h_{\mathrm{e}}/12 \\ 1/2 \\ -h_{\mathrm{e}}/12 \end{pmatrix} . \tag{22.54}\]</div></li>
+<li>The matrix \(\mat k_{\mathrm{e}} = \mat k_{\mathrm{b}} + \mat k_{\mathrm{f}}\) is symmetric and <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite</a>. Unlike the beam element, the cylinder needs no support against radial displacement as a <a class="xref auto" href="sec-deformacija-v-tocki.html#def-togo-telo" data-knowl="def-togo-telo">rigid body</a>.</li>
+<li>The uniform widening <span class="nobr">\(w = w_{\mathrm{p}} = q/k\),</span> that is <span class="nobr">\(\vek d_{\mathrm{e}} = (w_{\mathrm{p}}, 0, w_{\mathrm{p}}, 0)^\T\),</span> satisfies <span class="nobr">\(\mat k_{\mathrm{e}}\,\vek d_{\mathrm{e}} = \vek f_{\mathrm{e}}\).</span></li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that the energy of the element has this form, that the matrix is <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite</a> and that the uniform widening is a solution.</p>
+<ol>
+<li>By lemma <a class="xref" href="sec-osnosimetricni-element.html#lem-energija-osnosimetricne" data-knowl="lem-energija-osnosimetricne">22.51</a>, equation <a class="xref" href="sec-osnosimetricni-element.html#eq-oe-energija-w" data-knowl="eq-oe-energija-w">(22.53)</a>, the energy of the element is <span class="nobr">\(\int_{\mathrm{x}_\mathrm{a}}^{x_{\mathrm{b}}}[\tfrac12 D\,w_{\mathrm{h}}''^2 + \tfrac12 k\,w_{\mathrm{h}}^2 - q\,w_{\mathrm{h}}]\,\mathrm{d}x\).</span> With \(w_{\mathrm{h}} = \mat H_{\mathrm{e}}\vek d_{\mathrm{e}}\) and \(w_{\mathrm{h}}'' = \mat H_{\mathrm{e}}''\vek d_{\mathrm{e}}\) (the numbers equal their <a class="xref auto" href="sec-matrike.html#def-transponirana-matrika" data-knowl="def-transponirana-matrika">transposes</a>, lemma <a class="xref" href="sec-matrike.html#lem-transponiran-produkt" data-knowl="lem-transponiran-produkt">1.101</a>) this is <span class="nobr">\(\tfrac12\vek d_{\mathrm{e}}^\T\big(\int D\,(\mat H_{\mathrm{e}}'')^\T\mat H_{\mathrm{e}}''\,\mathrm{d}x + \int k\,\mat H_{\mathrm{e}}^\T\mat H_{\mathrm{e}}\,\mathrm{d}x\big)\vek d_{\mathrm{e}} - \big(\int q\,\mat H_{\mathrm{e}}\,\mathrm{d}x\big)\vek d_{\mathrm{e}}\).</span></li>
+<li>The first <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integral</a> is in lemma <a class="xref" href="sec-element-nosilca.html#lem-togost-elementa-nosilca" data-knowl="lem-togost-elementa-nosilca">12.4</a> (steps 2 to 5), with \(D\) in place of <span class="nobr">\(EI\),</span> so <span class="nobr">\(\mat k_{\mathrm{b}} = (D/h_{\mathrm{e}}^3)(\dots)\).</span> The second is in lemma <a class="xref" href="sec-masna-matrika-nosilca.html#lem-masa-elementa-nosilca" data-knowl="lem-masa-elementa-nosilca">12.43</a> (steps 2 to 4), with \(k\) in place of <span class="nobr">\(\rho A\),</span> and it is \(\mat k_{\mathrm{f}}\) of equation <a class="xref" href="sec-osnosimetricni-element.html#eq-oe-kf-fe" data-knowl="eq-oe-kf-fe">(22.54)</a>.</li>
+<li>The third: <span class="nobr">\(\int H_{\mathrm{i}}\,\mathrm{d}x = h_{\mathrm{e}}\int_0^1 H_{\mathrm{i}}\,\mathrm{d}\xi\).</span> For \(H_1 = 1 - 3\xi^2 + 2\xi^3\) this is <span class="nobr">\(h_{\mathrm{e}}(1 - 1 + \tfrac12) = h_{\mathrm{e}}/2\),</span> for \(H_2 = h_{\mathrm{e}}(\xi - 2\xi^2 + \xi^3)\) it is <span class="nobr">\(h_{\mathrm{e}}^2(\tfrac12 - \tfrac23 + \tfrac14) = h_{\mathrm{e}}^2/12\),</span> for \(H_3\) it is \(h_{\mathrm{e}}(1 - \tfrac12) = h_{\mathrm{e}}/2\) and for \(H_4 = h_{\mathrm{e}}(\xi^3 - \xi^2)\) it is <span class="nobr">\(h_{\mathrm{e}}^2(\tfrac14 - \tfrac13) = -h_{\mathrm{e}}^2/12\).</span> This is \(\vek f_{\mathrm{e}}\) of equation <a class="xref" href="sec-osnosimetricni-element.html#eq-oe-kf-fe" data-knowl="eq-oe-kf-fe">(22.54)</a>. This proves point 1.</li>
+<li>Symmetry: both <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> are symmetric by lemmas <a class="xref" href="sec-element-nosilca.html#lem-togost-elementa-nosilca" data-knowl="lem-togost-elementa-nosilca">12.4</a> and <a class="xref" href="sec-masna-matrika-nosilca.html#lem-masa-elementa-nosilca" data-knowl="lem-masa-elementa-nosilca">12.43</a>. For every <span class="nobr">\(\vek d_{\mathrm{e}}\),</span> \(\vek d_{\mathrm{e}}^\T\mat k_{\mathrm{b}}\vek d_{\mathrm{e}} = \int D\,w_{\mathrm{h}}''^2\,\mathrm{d}x \ge 0\) and <span class="nobr">\(\vek d_{\mathrm{e}}^\T\mat k_{\mathrm{f}}\vek d_{\mathrm{e}} = \int k\,w_{\mathrm{h}}^2\,\mathrm{d}x \ge 0\).</span> The sum is zero only if both are zero, that is if \(w_{\mathrm{h}}\) is a <a class="xref auto" href="sec-zveznost.html#def-polinom" data-knowl="def-polinom">polynomial</a> that is zero everywhere (as in step 5 of lemma <a class="xref" href="sec-masna-matrika-nosilca.html#lem-masa-elementa-nosilca" data-knowl="lem-masa-elementa-nosilca">12.43</a>), so <span class="nobr">\(\vek d_{\mathrm{e}} = \vek 0\).</span> This proves point 2.</li>
+<li>For \(\vek d_{\mathrm{e}} = (w_{\mathrm{p}}, 0, w_{\mathrm{p}}, 0)^\T\) we have \(\mat k_{\mathrm{b}}\vek d_{\mathrm{e}} = \vek 0\) (rigid translation: the first and third columns of the matrix of equation <a class="xref" href="sec-element-nosilca.html#eq-togost-elementa-nosilca" data-knowl="eq-togost-elementa-nosilca">(12.3)</a> add up to zero). The first row of \(\mat k_{\mathrm{f}}\vek d_{\mathrm{e}}\) is <span class="nobr">\(k h_{\mathrm{e}}(156 + 54)w_{\mathrm{p}}/420 = k\,h_{\mathrm{e}}\,w_{\mathrm{p}}/2 = q\,h_{\mathrm{e}}/2\),</span> the second is <span class="nobr">\(k h_{\mathrm{e}}(22h_{\mathrm{e}} + 13h_{\mathrm{e}})w_{\mathrm{p}}/420 = k\,h_{\mathrm{e}}^2\,w_{\mathrm{p}}/12 = q\,h_{\mathrm{e}}^2/12\),</span> the third \(k h_{\mathrm{e}}(54 + 156)w_{\mathrm{p}}/420 = q\,h_{\mathrm{e}}/2\) and the fourth <span class="nobr">\(k h_{\mathrm{e}}(-13h_{\mathrm{e}} - 22h_{\mathrm{e}})w_{\mathrm{p}}/420 = -q\,h_{\mathrm{e}}^2/12\).</span> So <span class="nobr">\(\mat k_{\mathrm{e}}\vek d_{\mathrm{e}} = \vek f_{\mathrm{e}}\).</span> This proves point 3.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> ONATE2 §9.9.3.1 (PDF pp. 597-598): the two-node Kirchhoff conical element has a cubic \(w\) of Hermite functions and a linear <span class="nobr">\(u\),</span> COOK (16.3-4b) (PDF p. 586) the same cubic <span class="nobr">\(w\).</span> The proof is not from the sources, it uses lemmas <a class="xref" href="sec-element-nosilca.html#lem-togost-elementa-nosilca" data-knowl="lem-togost-elementa-nosilca">12.4</a> and <a class="xref" href="sec-masna-matrika-nosilca.html#lem-masa-elementa-nosilca" data-knowl="lem-masa-elementa-nosilca">12.43</a>.</p></div></div>
+<p>The lemma says what is new: besides the bending stiffness of the beam element there is the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> of the foundation. Its unit is the same as that of <span class="nobr">\(\mat k_{\mathrm{b}}\):</span> \(12D/h_{\mathrm{e}}^3\) has the unit N mm/mm\(^3\) = N/mm\(^2\) and \(k\,h_{\mathrm{e}}\cdot 156/420\) has N/mm\(^3\cdot\) mm = N/mm<span class="nobr">\(^2\).</span> Point 2 has a physical reason: a displacement of the cylinder as a whole in the radial direction stretches all the rings, and so it does not have zero energy. The solution of the system \(\mat K\vek d = \vek f\) by theorem <a class="xref" href="sec-sestavljanje-nosilca.html#thm-sestavljanje-nosilca" data-knowl="thm-sestavljanje-nosilca">12.9</a> (the energy of the structure is the sum of the element energies, quadratic in the common unknowns, stationarity gives the system) exists for arbitrary supports. Point 3 is a test: the element represents exactly the state that the solution has away from the edges. So the elements away from the edge add almost no error of their own: what remains there is the error that comes from the edge and decreases with the distance. For the tube we test below with \(n = 8\) equal elements, the error of the nodal displacement at \(x = 12{,}5\) mm is \(7{,}5\cdot 10^{-3}\) of <span class="nobr">\(w_{\mathrm{p}}\),</span> and at \(x \ge 50\) mm at most <span class="nobr">\(5\cdot 10^{-5}\).</span></p>
+
+<h3 id="sec-oe-natancnost"><span class="h-num">22.8.3</span> Accuracy: how long may an element be (natančnost)</h3>
+<p>We test the element on the tube with the left end clamped <span class="nobr">(\(w = 0\)</span> and \(\varphi = 0\) at <span class="nobr">\(x = 0\))</span> and the right end free at \(x = L = 100\) mm. The right end is far from the edge: <span class="nobr">\(\mathrm{e}^{-\beta L} = 2{,}6\cdot 10^{-6}\),</span> so there we already know the solution. The exact solution (theorem <a class="xref" href="sec-upogib-valja.html#thm-robni-ucinek" data-knowl="thm-robni-ucinek">22.43</a>) has the moment at the clamp \(|M_0| = p(1 - \nu/2)/(2\beta^2) = 77{,}167\) N mm/mm. The moment of the element is \(M = -D\,w_{\mathrm{h}}''\) and it is a linear <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> on the element (step 1 of lemma <a class="xref" href="sec-element-nosilca.html#lem-togost-elementa-nosilca" data-knowl="lem-togost-elementa-nosilca">12.4</a>). The sign comes from step 2 of the proof of lemma <a class="xref" href="sec-osnosimetricni-element.html#lem-energija-osnosimetricne" data-knowl="lem-energija-osnosimetricne">22.51</a>, where \(z\) points outward. The section on bending of the cylinder chose the sign as for a <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beam</a>, <span class="nobr">\(M = D\,w''\),</span> so we compare absolute values. The values are computed in the script num-08.py (NumPy, SymPy). The exact solution for \(L = 100\) mm has zero moment and <a class="xref auto" href="sec-notranje-sile-nosilca.html#def-precna-sila" data-knowl="def-precna-sila">shear force</a> at the right end and agrees with the semi-infinite one at \(M_0\) to four digits.</p>
+<table>
+<thead>
+<tr>
+<th>number of elements \(n\)</th>
+<th>\(h_{\mathrm{e}}\) (mm)</th>
+<th>\(\beta h_{\mathrm{e}}\)</th>
+<th>\(\lvert M(0)\rvert\) (N mm/mm)</th>
+<th>error of \(M(0)\)</th>
+<th>largest error of \(w\) at the nodes relative to \(w_{\mathrm{p}}\)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>2</td>
+<td>50,00</td>
+<td>6,43</td>
+<td>9,686</td>
+<td>87,5 %</td>
+<td>\(1{,}36\cdot 10^{-1}\)</td>
+</tr>
+<tr>
+<td>4</td>
+<td>25,00</td>
+<td>3,21</td>
+<td>28,569</td>
+<td>63,0 %</td>
+<td>\(8{,}41\cdot 10^{-2}\)</td>
+</tr>
+<tr>
+<td>8</td>
+<td>12,50</td>
+<td>1,61</td>
+<td>53,972</td>
+<td>30,1 %</td>
+<td>\(7{,}54\cdot 10^{-3}\)</td>
+</tr>
+<tr>
+<td>16</td>
+<td>6,25</td>
+<td>0,80</td>
+<td>69,724</td>
+<td>9,64 %</td>
+<td>\(3{,}83\cdot 10^{-4}\)</td>
+</tr>
+<tr>
+<td>32</td>
+<td>3,13</td>
+<td>0,40</td>
+<td>75,154</td>
+<td>2,61 %</td>
+<td>\(2{,}45\cdot 10^{-5}\)</td>
+</tr>
+<tr>
+<td>64</td>
+<td>1,56</td>
+<td>0,20</td>
+<td>76,652</td>
+<td>0,67 %</td>
+<td>\(1{,}54\cdot 10^{-6}\)</td>
+</tr>
+<tr>
+<td>128</td>
+<td>0,78</td>
+<td>0,10</td>
+<td>77,037</td>
+<td>0,17 %</td>
+<td>\(9{,}65\cdot 10^{-8}\)</td>
+</tr>
+</tbody>
+</table>
+<p>Figure <a class="xref" href="sec-osnosimetricni-element.html#fig-oe-konvergenca" data-knowl="fig-oe-konvergenca">22.27</a> shows the same data. The <a data-del="osi,osi2" class="xref kaz" href="sec-osnosimetricni-element.html#fig-oe-konvergenca" data-knowl="fig-oe-konvergenca">horizontal axis</a> is \(\beta h_{\mathrm{e}}\) on a logarithmic scale in both parts, from \(0{,}1\) to <span class="nobr">\(10\),</span> with the coarse mesh on the right. On the <a data-del="razmerje" class="xref kaz" href="sec-osnosimetricni-element.html#fig-oe-konvergenca" data-knowl="fig-oe-konvergenca">left</a> is the ratio \(M/M_0\) of the moment of the element to the exact one, the <a data-del="ena" class="xref kaz" href="sec-osnosimetricni-element.html#fig-oe-konvergenca" data-knowl="fig-oe-konvergenca">dashed line</a> is 1. For a coarse mesh, <span class="nobr">\(\beta h_{\mathrm{e}} &gt; 4{,}3\),</span> the <a data-del="razmerje" class="xref kaz" href="sec-osnosimetricni-element.html#fig-oe-konvergenca" data-knowl="fig-oe-konvergenca">moment is less than a quarter of the true one</a>, at \(\beta h_{\mathrm{e}} \approx 1\) it is still 16 % less. On the <a data-del="napaka" class="xref kaz" href="sec-osnosimetricni-element.html#fig-oe-konvergenca" data-knowl="fig-oe-konvergenca">right</a> is the relative error \(\delta\) on a logarithmic scale, the <a data-del="meje" class="xref kaz" href="sec-osnosimetricni-element.html#fig-oe-konvergenca" data-knowl="fig-oe-konvergenca">dashed lines</a> are 5 % and 1 %, the <a data-del="naklon" class="xref kaz" href="sec-osnosimetricni-element.html#fig-oe-konvergenca" data-knowl="fig-oe-konvergenca">blue line</a> shows the slope that corresponds to <span class="nobr">\(\delta \propto h_{\mathrm{e}}^2\).</span></p>
+
+<figure class="blk slika" id="fig-oe-konvergenca"><p><span class="svgfig" role="img" aria-label="Moment at the clamp against element length, relative error on a logarithmic scale"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='599.21pt' height='216.26pt' viewBox='-72.000004 -72.000003 443.859039 160.19477'>
+<defs>
+<path id='c22-08-konvergenca-roba-g0-47' d='M4.483188-2.107098C4.590785-2.358157 5.227397-3.676214 6.393026-3.676214C6.410959-3.676214 6.518555-3.676214 6.644085-3.649315C6.644085-3.756912 6.644085-3.918306 6.617186-3.927273C6.58132-3.954172 6.437858-3.963138 6.330262-3.963138C5.415691-3.963138 4.707347-3.263761 4.259029-2.447821C3.945205-2.914072 3.783811-3.165131 3.478954-3.425156C2.99477-3.828643 2.528518-3.963138 2.125031-3.963138C1.129763-3.963138 .511083-2.976837 .511083-1.927771C.511083-.941469 1.075965 .09863 2.107098 .09863C3.021669 .09863 3.730012-.600747 4.178331-1.416687C4.492154-.950436 4.653549-.699377 4.958406-.439352C5.44259-.035866 5.908842 .09863 6.312329 .09863C6.419925 .09863 6.563387 .080697 6.644085 .062765V-.32279C6.58132-.304857 6.455791-.304857 6.428892-.304857C5.801245-.304857 5.352927-.806974 4.92254-1.43462L4.483188-2.107098ZM3.954172-1.75741C3.846575-1.506351 3.209963-.188294 2.044334-.188294C1.183562-.188294 .735243-1.093898 .735243-1.927771S1.219427-3.559651 2.008468-3.559651C2.636115-3.559651 3.084433-3.057534 3.514819-2.429888L3.954172-1.75741Z'/>
+<path id='c22-08-konvergenca-roba-g1-101' d='M1.321046-1.344956C1.715567-1.344956 2.169863-1.374844 2.480697-1.476463C3.000747-1.649813 3.024658-2.014446 3.024658-2.10411C3.024658-2.397011 2.737733-2.636115 2.229639-2.636115C1.494396-2.636115 .478207-2.110087 .478207-1.08792C.478207-.454296 .89066 .059776 1.637858 .059776C2.749689 .059776 3.186052-.532005 3.186052-.603736C3.186052-.657534 3.120299-.723288 3.072478-.723288C3.04259-.723288 3.036613-.71731 2.946949-.627646C2.588294-.221171 1.97858-.137484 1.649813-.137484C1.165629-.137484 .992279-.484184 .992279-.86675C.992279-.91457 .998257-1.111831 1.058032-1.344956H1.321046ZM1.111831-1.542217C1.309091-2.247572 1.894894-2.438854 2.229639-2.438854C2.510585-2.438854 2.749689-2.313325 2.749689-2.098132C2.749689-1.542217 1.751432-1.542217 1.111831-1.542217Z'/>
+<path id='c22-08-konvergenca-roba-g2-12' d='M5.254296-5.128767C5.254296-5.747447 4.82391-6.330262 3.873474-6.330262C3.649315-6.330262 3.461021-6.294396 3.209963-6.1599C2.411955-5.747447 1.936737-4.877709 1.685679-3.999004L.277958 1.640847C.268991 1.694645 .331756 1.739477 .394521 1.739477C.466252 1.739477 .511083 1.712578 .52005 1.694645L1.13873-.753176C1.353923-.19726 1.784309 .09863 2.37609 .09863C3.066501 .09863 3.730012-.206227 4.214197-.672478C4.62665-1.066999 4.886675-1.622914 4.886675-2.223661C4.886675-2.779577 4.644583-3.326526 4.23213-3.58655C4.671482-3.81071 5.254296-4.438356 5.254296-5.128767ZM3.58655-3.595517C3.443088-3.559651 3.29066-3.532752 3.138232-3.532752C3.003736-3.532752 2.86924-3.532752 2.743711-3.577584C2.851308-3.640349 3.021669-3.640349 3.138232-3.640349C3.29066-3.640349 3.443088-3.640349 3.58655-3.595517ZM4.716314-5.281196C4.716314-4.716314 4.384558-3.981071 3.918306-3.756912C3.694147-3.837609 3.469988-3.864508 3.209963-3.864508C2.743711-3.864508 2.47472-3.792777 2.47472-3.559651C2.47472-3.371357 2.680946-3.308593 3.102366-3.308593C3.416189-3.308593 3.622416-3.362391 3.900374-3.434122C4.187298-3.236862 4.285928-2.815442 4.285928-2.47472C4.285928-1.865006 4.097634-1.192528 3.685181-.744209C3.344458-.376588 2.887173-.134496 2.385056-.134496C1.712578-.134496 1.318057-.609714 1.318057-1.264259C1.318057-1.353923 1.318057-1.452553 1.344956-1.551183L1.95467-3.999004C2.160897-4.761146 2.842341-6.106102 3.882441-6.106102C4.312827-6.106102 4.716314-5.890909 4.716314-5.281196Z'/>
+<path id='c22-08-konvergenca-roba-g2-14' d='M2.402989-3.90934C1.380822-3.685181 .385554-2.609215 .385554-1.425654C.385554-.430386 1.084932 .107597 1.865006 .107597C2.905106 .107597 3.685181-1.255293 3.685181-2.528518C3.685181-3.353425 3.29066-3.837609 3.012702-4.178331C2.698879-4.563885 2.116065-5.272229 2.116065-5.675716C2.116065-5.828144 2.232628-6.070237 2.609215-6.070237C2.887173-6.070237 3.066501-5.96264 3.254795-5.837111C3.380324-5.76538 3.640349-5.603985 3.774844-5.603985C3.963138-5.603985 4.133499-5.774346 4.133499-5.971606S4.016936-6.195766 3.595517-6.28543C3.156164-6.38406 2.99477-6.38406 2.86924-6.38406C1.972603-6.38406 1.838107-5.747447 1.838107-5.460523C1.838107-5.012204 2.125031-4.402491 2.402989-3.90934ZM2.528518-3.694147C3.003736-2.860274 3.021669-2.456787 3.021669-2.160897C3.021669-1.479452 2.654047-.116563 1.85604-.116563C1.470486-.116563 .977335-.367621 .977335-1.174595C.977335-1.748443 1.291158-3.353425 2.528518-3.694147Z'/>
+<path id='c22-08-konvergenca-roba-g2-59' d='M1.63188-.143462C1.63188 .152428 1.63188 .887671 .968369 1.524284C.91457 1.578082 .91457 1.587049 .91457 1.622914C.91457 1.685679 .977335 1.730511 1.031133 1.730511C1.129763 1.730511 1.85604 1.031133 1.85604-.017933C1.85604-.573848 1.65878-.968369 1.273225-.968369C.968369-.968369 .789041-.735243 .789041-.484184S.968369 0 1.273225 0C1.407721 0 1.542217-.044832 1.63188-.143462Z'/>
+<path id='c22-08-konvergenca-roba-g2-61' d='M4.034869-6.366127C4.088667-6.491656 4.088667-6.509589 4.088667-6.527522C4.088667-6.644085 3.999004-6.724782 3.900374-6.724782C3.774844-6.724782 3.738979-6.653051 3.730012-6.635118L.564882 1.882939C.511083 2.008468 .511083 2.026401 .511083 2.044334C.511083 2.160897 .600747 2.241594 .699377 2.241594C.789041 2.241594 .860772 2.205729 .923537 2.026401L4.034869-6.366127Z'/>
+<path id='c22-08-konvergenca-roba-g2-77' d='M8.491158-5.433624C8.571856-5.76538 8.598755-5.846077 9.298132-5.846077C9.441594-5.846077 9.540224-5.846077 9.540224-6.007472C9.540224-6.124035 9.45056-6.124035 9.280199-6.124035H8.105604C7.881445-6.124035 7.845579-6.124035 7.737983-5.953674L4.42939-.842839L3.685181-5.890909C3.649315-6.124035 3.640349-6.124035 3.38929-6.124035H2.160897C1.999502-6.124035 1.891905-6.124035 1.891905-5.96264C1.891905-5.846077 1.981569-5.846077 2.160897-5.846077C2.196762-5.846077 2.358157-5.846077 2.501619-5.828144C2.67198-5.810212 2.716812-5.783313 2.716812-5.693649C2.716812-5.648817 2.707846-5.612951 2.680946-5.514321L1.542217-.950436C1.425654-.484184 1.174595-.304857 .582814-.277958C.555915-.277958 .430386-.268991 .430386-.116563C.430386-.09863 .430386 0 .555915 0C.663512 0 .887671-.008966 1.004234-.017933C1.147696-.026899 1.165629-.026899 1.452553-.026899C1.676712-.026899 1.694645-.026899 1.909838-.017933C2.0533-.017933 2.241594 0 2.37609 0C2.420922 0 2.537484 0 2.537484-.161395C2.537484-.268991 2.438854-.277958 2.358157-.277958C1.936737-.286924 1.775342-.42142 1.775342-.663512C1.775342-.726276 1.784309-.735243 1.811208-.860772L3.021669-5.738481H3.030635L3.846575-.233126C3.864508-.089664 3.882441 0 3.999004 0C4.1066 0 4.160399-.089664 4.214197-.170361L7.863512-5.801245H7.872478L6.590286-.681445C6.509589-.358655 6.491656-.277958 5.819178-.277958C5.657783-.277958 5.550187-.277958 5.550187-.116563C5.550187-.035866 5.612951 0 5.684682 0C5.792279 0 6.141968-.008966 6.249564-.017933C6.38406-.026899 6.608219-.026899 6.787547-.026899C6.814446-.026899 7.173101-.017933 7.361395-.017933C7.540722-.017933 7.737983 0 7.908344 0C7.962142 0 8.078705 0 8.078705-.161395C8.078705-.277958 7.989041-.277958 7.800747-.277958C7.764882-.277958 7.603487-.277958 7.460025-.29589C7.262765-.32279 7.253798-.358655 7.253798-.439352S7.271731-.591781 7.289664-.654545L8.491158-5.433624Z'/>
+<path id='c22-08-konvergenca-roba-g2-104' d='M2.57335-5.917808C2.609215-6.043337 2.609215-6.06127 2.609215-6.097136C2.609215-6.177833 2.555417-6.222665 2.47472-6.222665C2.349191-6.222665 1.560149-6.150934 1.380822-6.133001C1.291158-6.124035 1.192528-6.115068 1.192528-5.96264C1.192528-5.846077 1.291158-5.846077 1.43462-5.846077C1.85604-5.846077 1.85604-5.783313 1.85604-5.702615C1.85604-5.66675 1.85604-5.648817 1.811208-5.487422L.529016-.331756C.493151-.206227 .493151-.188294 .493151-.161395C.493151-.017933 .609714 .09863 .771108 .09863C.923537 .09863 1.049066 .008966 1.111831-.116563C1.129763-.161395 1.210461-.484184 1.255293-.672478L1.461519-1.470486C1.488418-1.604981 1.578082-1.945704 1.604981-2.080199L1.712578-2.47472C1.75741-2.680946 2.268493-3.738979 3.236862-3.738979C3.721046-3.738979 3.721046-3.263761 3.721046-3.111333C3.721046-2.564384 3.299626-1.470486 3.200996-1.192528C3.0934-.91457 3.057534-.824907 3.057534-.654545C3.057534-.170361 3.425156 .09863 3.828643 .09863C4.689415 .09863 5.039103-1.183562 5.039103-1.282192C5.039103-1.327024 5.012204-1.389788 4.92254-1.389788C4.82391-1.389788 4.814944-1.344956 4.779078-1.228394C4.554919-.466252 4.178331-.125529 3.855542-.125529C3.792777-.125529 3.631382-.125529 3.631382-.412453C3.631382-.636613 3.721046-.869738 3.792777-1.066999C3.972105-1.524284 4.33076-2.47472 4.33076-2.976837C4.33076-3.774844 3.738979-3.963138 3.263761-3.963138C2.725778-3.963138 2.268493-3.71208 1.909838-3.272727L2.57335-5.917808Z'/>
+<path id='c22-08-konvergenca-roba-g3-48' d='M3.287671-1.906849C3.287671-2.343213 3.287671-3.975093 1.823163-3.975093S.358655-2.343213 .358655-1.906849C.358655-1.476463 .358655 .125529 1.823163 .125529S3.287671-1.476463 3.287671-1.906849ZM1.823163-.065753C1.572105-.065753 1.165629-.185305 1.022167-.681445C.926526-1.028144 .926526-1.613948 .926526-1.984558C.926526-2.385056 .926526-2.84533 1.010212-3.16812C1.159651-3.706102 1.613948-3.783811 1.823163-3.783811C2.098132-3.783811 2.492653-3.652304 2.624159-3.198007C2.713823-2.881196 2.719801-2.444832 2.719801-1.984558C2.719801-1.601993 2.719801-.998257 2.618182-.663512C2.450809-.143462 2.020423-.065753 1.823163-.065753Z'/>
+<path id='c22-08-konvergenca-roba-g3-50' d='M3.21594-1.117808H2.99477C2.982814-1.034122 2.923039-.639601 2.833375-.573848C2.791532-.537983 2.307347-.537983 2.223661-.537983H1.105853L1.870984-1.159651C2.074222-1.321046 2.606227-1.703611 2.791532-1.882939C2.970859-2.062267 3.21594-2.367123 3.21594-2.791532C3.21594-3.53873 2.540473-3.975093 1.739477-3.975093C.968369-3.975093 .430386-3.466999 .430386-2.905106C.430386-2.600249 .687422-2.564384 .753176-2.564384C.902615-2.564384 1.075965-2.67198 1.075965-2.887173C1.075965-3.01868 .998257-3.209963 .735243-3.209963C.872727-3.514819 1.23736-3.741968 1.649813-3.741968C2.27746-3.741968 2.612204-3.275716 2.612204-2.791532C2.612204-2.367123 2.331258-1.93076 1.912827-1.548194L.496139-.251059C.436364-.191283 .430386-.185305 .430386 0H3.030635L3.21594-1.117808Z'/>
+<path id='c22-08-konvergenca-roba-g4-48' d='M4.241096-2.86924C4.241096-3.469988 4.214197-4.241096 3.900374-4.913574C3.505853-5.756413 2.824408-5.971606 2.304359-5.971606C1.766376-5.971606 1.084932-5.756413 .690411-4.895641C.403487-4.276961 .358655-3.550685 .358655-2.86924C.358655-2.286426 .376588-1.416687 .762142-.708344C1.183562 .053798 1.882939 .19726 2.295392 .19726C2.878207 .19726 3.541719-.053798 3.918306-.878705C4.187298-1.479452 4.241096-2.15193 4.241096-2.86924ZM2.304359-.026899C2.035367-.026899 1.389788-.152428 1.219427-1.165629C1.129763-1.694645 1.129763-2.465753 1.129763-2.976837C1.129763-3.58655 1.129763-4.294894 1.23736-4.788045C1.416687-5.586052 1.990535-5.747447 2.295392-5.747447C2.636115-5.747447 3.200996-5.56812 3.371357-4.734247C3.469988-4.241096 3.469988-3.541719 3.469988-2.976837C3.469988-2.420922 3.469988-1.667746 3.380324-1.13873C3.19203-.116563 2.528518-.026899 2.304359-.026899Z'/>
+<path id='c22-08-konvergenca-roba-g4-49' d='M2.725778-5.729514C2.725778-5.953674 2.716812-5.971606 2.492653-5.971606C1.936737-5.397758 1.111831-5.397758 .833873-5.397758V-5.119801C1.004234-5.119801 1.551183-5.119801 2.035367-5.352927V-.71731C2.035367-.385554 2.008468-.277958 1.174595-.277958H.887671V0C1.210461-.026899 2.008468-.026899 2.37609-.026899S3.550685-.026899 3.873474 0V-.277958H3.58655C2.752677-.277958 2.725778-.385554 2.725778-.71731V-5.729514Z'/>
+<path id='c22-08-konvergenca-roba-g4-53' d='M.932503-3.0934C.932503-2.932005 .932503-2.833375 1.058032-2.833375C1.129763-2.833375 1.156663-2.86924 1.210461-2.949938C1.479452-3.326526 1.909838-3.541719 2.37609-3.541719C3.335492-3.541719 3.335492-2.160897 3.335492-1.838107C3.335492-1.560149 3.335492-1.004234 3.084433-.600747C2.842341-.224159 2.465753-.053798 2.116065-.053798C1.587049-.053798 .986301-.385554 .771108-1.049066C.780075-1.049066 .833873-1.031133 .896638-1.031133C1.075965-1.031133 1.33599-1.147696 1.33599-1.470486C1.33599-1.748443 1.13873-1.909838 .896638-1.909838C.708344-1.909838 .457285-1.802242 .457285-1.443587C.457285-.627646 1.13873 .19726 2.133998 .19726C3.218929 .19726 4.142466-.681445 4.142466-1.793275C4.142466-2.878207 3.371357-3.765878 2.394022-3.765878C1.963636-3.765878 1.524284-3.622416 1.210461-3.299626V-5.066002C1.479452-4.985305 1.75741-4.940473 2.035367-4.940473C3.138232-4.940473 3.783811-5.738481 3.783811-5.855044C3.783811-5.935741 3.730012-5.971606 3.685181-5.971606C3.667248-5.971606 3.649315-5.971606 3.568618-5.926775C3.147198-5.756413 2.734745-5.684682 2.358157-5.684682C1.972603-5.684682 1.569116-5.756413 1.156663-5.926775C1.066999-5.971606 1.049066-5.971606 1.0401-5.971606C.932503-5.971606 .932503-5.881943 .932503-5.729514V-3.0934Z'/>
+</defs>
+<g id='c22-08-konvergenca-roba-page1'>
+<g stroke-miterlimit='10' transform='translate(-55.425121,71.465297)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='osi'>
+<path d='M0 0H174.90018' fill='none'/>
+<g transform='translate(172.42372,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(182.88535,-2.25)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.425121' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g2-12'/>
+<use x='-49.764096' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g2-104'/>
+<use x='-44.454171' y='72.461546' xlink:href='#c22-08-konvergenca-roba-g1-101'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 0V123.68515' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,121.2087)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-13.30406,133.92032)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.425121' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g2-77'/>
+<use x='-46.06581' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g2-61'/>
+<use x='-41.970085' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g2-77'/>
+<use x='-33.067405' y='72.461546' xlink:href='#c22-08-konvergenca-roba-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 2.27626V-2.27626' fill='none'/>
+<g transform='translate(-5.90968,-11.70923)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.425121' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g4-48'/>
+<use x='-50.81743' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g2-59'/>
+<use x='-48.257602' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M85.35823 2.27626V-2.27626' fill='none'/>
+<g transform='translate(83.04575,-11.70923)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.425121' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M170.71646 2.27626V-2.27626' fill='none'/>
+<g transform='translate(166.09149,-11.70923)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.425121' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g4-49'/>
+<use x='-50.81743' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g4-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M2.27626 0H-2.27626' fill='none'/>
+<g transform='translate(-10.53421,-2.9)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.425121' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g4-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M2.27626 113.81097H-2.27626' fill='none'/>
+<g transform='translate(-10.53421,110.91098)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.425121' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='ena'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 113.81097H170.71646' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='razmerje'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M0 113.6117L25.89209 113.04295L36.53322 112.47377L51.58492 110.85178L62.22604 108.63237L77.22087 102.82816L87.89064 95.6581L102.94191 79.61089L113.58347 64.47409L128.63474 42.13858L139.30452 28.22523L154.32756 14.28323' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M156.16618 14.28323C156.16618 15.29868 155.343 16.12186 154.32756 16.12186S152.48894 15.29868 152.48894 14.28323C152.48894 13.26779 153.31212 12.44461 154.32756 12.44461S156.16618 13.26779 156.16618 14.28323ZM154.32756 14.28323' stroke='none'/>
+</g>
+<g transform='translate(154.32756,14.28323)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M141.14314 28.22523C141.14314 29.24068 140.31996 30.06386 139.30452 30.06386S137.4659 29.24068 137.4659 28.22523C137.4659 27.2098 138.28908 26.38661 139.30452 26.38661S141.14314 27.2098 141.14314 28.22523ZM139.30452 28.22523' stroke='none'/>
+</g>
+<g transform='translate(139.30452,28.22523)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M130.47336 42.13858C130.47336 43.15402 129.65018 43.9772 128.63474 43.9772S126.79611 43.15402 126.79611 42.13858S127.6193 40.29996 128.63474 40.29996S130.47336 41.12314 130.47336 42.13858ZM128.63474 42.13858' stroke='none'/>
+</g>
+<g transform='translate(128.63474,42.13858)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M115.42209 64.47409C115.42209 65.48953 114.5989 66.31271 113.58347 66.31271C112.56802 66.31271 111.74484 65.48953 111.74484 64.47409S112.56802 62.63547 113.58347 62.63547C114.5989 62.63547 115.42209 63.45865 115.42209 64.47409ZM113.58347 64.47409' stroke='none'/>
+</g>
+<g transform='translate(113.58347,64.47409)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M104.78053 79.61089C104.78053 80.62633 103.95735 81.44951 102.94191 81.44951S101.10329 80.62633 101.10329 79.61089C101.10329 78.59544 101.92647 77.77226 102.94191 77.77226S104.78053 78.59544 104.78053 79.61089ZM102.94191 79.61089' stroke='none'/>
+</g>
+<g transform='translate(102.94191,79.61089)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M89.72926 95.6581C89.72926 96.67354 88.90608 97.49672 87.89064 97.49672S86.05202 96.67354 86.05202 95.6581C86.05202 94.64265 86.8752 93.81947 87.89064 93.81947S89.72926 94.64265 89.72926 95.6581ZM87.89064 95.6581' stroke='none'/>
+</g>
+<g transform='translate(87.89064,95.6581)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M79.0595 102.82816C79.0595 103.8436 78.23631 104.66678 77.22087 104.66678S75.38225 103.8436 75.38225 102.82816C75.38225 101.81271 76.20543 100.98953 77.22087 100.98953S79.0595 101.81271 79.0595 102.82816ZM77.22087 102.82816' stroke='none'/>
+</g>
+<g transform='translate(77.22087,102.82816)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M64.06467 108.63237C64.06467 109.64781 63.24149 110.471 62.22604 110.471C61.2106 110.471 60.38742 109.64781 60.38742 108.63237S61.2106 106.79375 62.22604 106.79375C63.24149 106.79375 64.06467 107.61693 64.06467 108.63237ZM62.22604 108.63237' stroke='none'/>
+</g>
+<g transform='translate(62.22604,108.63237)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M53.42354 110.85178C53.42354 111.86722 52.60036 112.6904 51.58492 112.6904C50.56947 112.6904 49.74629 111.86722 49.74629 110.85178C49.74629 109.83633 50.56947 109.01315 51.58492 109.01315C52.60036 109.01315 53.42354 109.83633 53.42354 110.85178ZM51.58492 110.85178' stroke='none'/>
+</g>
+<g transform='translate(51.58492,110.85178)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M38.37184 112.47377C38.37184 113.48921 37.54866 114.3124 36.53322 114.3124S34.6946 113.48921 34.6946 112.47377S35.51778 110.63515 36.53322 110.63515S38.37184 111.45833 38.37184 112.47377ZM36.53322 112.47377' stroke='none'/>
+</g>
+<g transform='translate(36.53322,112.47377)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M27.73071 113.04295C27.73071 114.0584 26.90753 114.88158 25.89209 114.88158S24.05347 114.0584 24.05347 113.04295C24.05347 112.02751 24.87665 111.20433 25.89209 111.20433S27.73071 112.02751 27.73071 113.04295ZM25.89209 113.04295' stroke='none'/>
+</g>
+<g transform='translate(25.89209,113.04295)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M1.83862 113.6117C1.83862 114.62714 1.01544 115.45032 0 115.45032S-1.83862 114.62714-1.83862 113.6117C-1.83862 112.59625-1.01544 111.77307 0 111.77307S1.83862 112.59625 1.83862 113.6117ZM0 113.6117' stroke='none'/>
+</g>
+<g transform='translate(0.0,113.6117)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='osi2'>
+<path d='M227.62204 0H402.52222' fill='none'/>
+<g transform='translate(400.04576,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(410.50739,-2.25)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.425121' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g2-12'/>
+<use x='-49.764096' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g2-104'/>
+<use x='-44.454171' y='72.461546' xlink:href='#c22-08-konvergenca-roba-g1-101'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M227.62204 0V123.68515' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,227.62204,121.2087)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(225.40106,131.67032)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.425121' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g2-14'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M227.62204 2.27626V-2.27626' fill='none'/>
+<g transform='translate(221.71236,-11.70923)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.425121' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g4-48'/>
+<use x='-50.81743' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g2-59'/>
+<use x='-48.257602' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M312.98027 2.27626V-2.27626' fill='none'/>
+<g transform='translate(310.66779,-11.70923)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.425121' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M398.3385 2.27626V-2.27626' fill='none'/>
+<g transform='translate(393.71353,-11.70923)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.425121' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g4-49'/>
+<use x='-50.81743' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g4-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M229.8983 0H225.34578' fill='none'/>
+<g transform='translate(200.6435,-2.025)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.425121' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g4-48'/>
+<use x='-50.81743' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g2-59'/>
+<use x='-48.257602' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g4-48'/>
+<use x='-43.649911' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g4-48'/>
+<use x='-39.042221' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M229.8983 39.83366H225.34578' fill='none'/>
+<g transform='translate(205.26846,37.80867)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.425121' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g4-48'/>
+<use x='-50.81743' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g2-59'/>
+<use x='-48.257602' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g4-48'/>
+<use x='-43.649911' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M229.8983 79.66776H225.34578' fill='none'/>
+<g transform='translate(209.89343,77.64276)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.425121' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g4-48'/>
+<use x='-50.81743' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g2-59'/>
+<use x='-48.257602' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M229.8983 119.50143H225.34578' fill='none'/>
+<g transform='translate(217.08783,116.60144)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.425121' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='meje'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M227.62204 67.68901H398.3385' fill='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(378.26118,73.07199)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.425121' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g4-48'/>
+<use x='-50.81743' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g2-59'/>
+<use x='-48.257602' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g4-48'/>
+<use x='-43.649911' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g4-53'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M227.62204 39.83366H398.3385' fill='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(378.26118,45.21664)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.425121' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g4-48'/>
+<use x='-50.81743' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g2-59'/>
+<use x='-48.257602' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g4-48'/>
+<use x='-43.649911' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='napaka'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M227.62204 9.19017L253.51413 32.91975L264.15526 42.70776L279.20695 56.42183L289.84808 66.01056L304.84291 79.04172L315.51268 87.74825L330.56395 98.7024L341.2055 105.04756L356.25677 111.50647L366.92656 114.57898L381.9496 117.16829' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M383.78822 117.16829C383.78822 118.18373 382.96504 119.00691 381.9496 119.00691S380.11098 118.18373 380.11098 117.16829S380.93416 115.32967 381.9496 115.32967S383.78822 116.15285 383.78822 117.16829ZM381.9496 117.16829' stroke='none'/>
+</g>
+<g transform='translate(381.9496,117.16829)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M368.76518 114.57898C368.76518 115.59442 367.942 116.4176 366.92656 116.4176S365.08794 115.59442 365.08794 114.57898S365.91112 112.74036 366.92656 112.74036S368.76518 113.56354 368.76518 114.57898ZM366.92656 114.57898' stroke='none'/>
+</g>
+<g transform='translate(366.92656,114.57898)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M358.0954 111.50647C358.0954 112.52191 357.27222 113.3451 356.25677 113.3451C355.24133 113.3451 354.41815 112.52191 354.41815 111.50647S355.24133 109.66785 356.25677 109.66785C357.27222 109.66785 358.0954 110.49103 358.0954 111.50647ZM356.25677 111.50647' stroke='none'/>
+</g>
+<g transform='translate(356.25677,111.50647)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M343.04413 105.04756C343.04413 106.063 342.22095 106.88618 341.2055 106.88618C340.19006 106.88618 339.36688 106.063 339.36688 105.04756S340.19006 103.20894 341.2055 103.20894C342.22095 103.20894 343.04413 104.03212 343.04413 105.04756ZM341.2055 105.04756' stroke='none'/>
+</g>
+<g transform='translate(341.2055,105.04756)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M332.40257 98.7024C332.40257 99.71783 331.57939 100.54102 330.56395 100.54102S328.72533 99.71783 328.72533 98.7024C328.72533 97.68695 329.54851 96.86377 330.56395 96.86377S332.40257 97.68695 332.40257 98.7024ZM330.56395 98.7024' stroke='none'/>
+</g>
+<g transform='translate(330.56395,98.7024)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M317.3513 87.74825C317.3513 88.76369 316.52812 89.58687 315.51268 89.58687S313.67406 88.76369 313.67406 87.74825C313.67406 86.7328 314.49724 85.90962 315.51268 85.90962S317.3513 86.7328 317.3513 87.74825ZM315.51268 87.74825' stroke='none'/>
+</g>
+<g transform='translate(315.51268,87.74825)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M306.68153 79.04172C306.68153 80.05716 305.85835 80.88034 304.84291 80.88034S303.00429 80.05716 303.00429 79.04172S303.82747 77.2031 304.84291 77.2031S306.68153 78.02628 306.68153 79.04172ZM304.84291 79.04172' stroke='none'/>
+</g>
+<g transform='translate(304.84291,79.04172)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M291.6867 66.01056C291.6867 67.026 290.86353 67.84918 289.84808 67.84918C288.83264 67.84918 288.00946 67.026 288.00946 66.01056S288.83264 64.17194 289.84808 64.17194C290.86353 64.17194 291.6867 64.99512 291.6867 66.01056ZM289.84808 66.01056' stroke='none'/>
+</g>
+<g transform='translate(289.84808,66.01056)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M281.04558 56.42183C281.04558 57.43727 280.2224 58.26045 279.20695 58.26045C278.19151 58.26045 277.36833 57.43727 277.36833 56.42183S278.19151 54.5832 279.20695 54.5832C280.2224 54.5832 281.04558 55.40639 281.04558 56.42183ZM279.20695 56.42183' stroke='none'/>
+</g>
+<g transform='translate(279.20695,56.42183)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M265.99388 42.70776C265.99388 43.7232 265.1707 44.54639 264.15526 44.54639S262.31664 43.7232 262.31664 42.70776S263.13982 40.86914 264.15526 40.86914S265.99388 41.69232 265.99388 42.70776ZM264.15526 42.70776' stroke='none'/>
+</g>
+<g transform='translate(264.15526,42.70776)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M255.35275 32.91975C255.35275 33.9352 254.52957 34.75838 253.51413 34.75838S251.6755 33.9352 251.6755 32.91975C251.6755 31.90431 252.49869 31.08113 253.51413 31.08113S255.35275 31.90431 255.35275 32.91975ZM253.51413 32.91975' stroke='none'/>
+</g>
+<g transform='translate(253.51413,32.91975)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M229.46066 9.19017C229.46066 10.20561 228.63748 11.0288 227.62204 11.0288S225.78342 10.20561 225.78342 9.19017S226.6066 7.35155 227.62204 7.35155S229.46066 8.17473 229.46066 9.19017ZM227.62204 9.19017' stroke='none'/>
+</g>
+<g transform='translate(227.62204,9.19017)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='naklon'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.8'>
+<path d='M242.64508 8.96268L319.7522 80.91943' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(323.38518,69.59651)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.425121,71.465297)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-55.425121' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g0-47'/>
+<use x='-45.697774' y='71.465297' xlink:href='#c22-08-konvergenca-roba-g2-104'/>
+<use x='-40.387849' y='67.656293' xlink:href='#c22-08-konvergenca-roba-g3-50'/>
+<use x='-40.387849' y='73.042755' xlink:href='#c22-08-konvergenca-roba-g1-101'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 22.27</span>: Moment at the clamp from \(n\) equal elements of the tube of this section, \(M_0 = 77{,}167\) N mm/mm is the exact moment. The abscissa is \(\beta h_{\mathrm{e}}\) on a logarithmic scale. Left: \(M/M_0\) (orange dots and line), dashed 1. Right: the relative error \(\delta = \lvert M - M_0\rvert/M_0\) on a logarithmic scale, dashed 5 % and 1 %, blue a line with the slope that corresponds to \(\delta \propto h_{\mathrm{e}}^2\) (its height is arbitrary).</figcaption></figure>
+<p>Three conclusions follow from the data. First: the error of \(M(0)\) falls by the factor 3,70, 3,91, 3,98 when the element is halved, so it is <span class="nobr"><a data-del="naklon" class="xref kaz" href="sec-osnosimetricni-element.html#fig-oe-konvergenca" data-knowl="fig-oe-konvergenca">proportional to \(h_{\mathrm{e}}^2\)</a>,</span> and the displacement at the nodes by 15,6, 15,9 and 15,95, so as <span class="nobr">\(h_{\mathrm{e}}^4\).</span> The reason: the field of the element is a cubic <a class="xref auto" href="sec-zveznost.html#def-polinom" data-knowl="def-polinom">polynomial</a>, which represents polynomials up to degree three exactly. By the sources the error of the field is proportional to \(h_{\mathrm{e}}^{p+1} = h_{\mathrm{e}}^4\) and the error of the second <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivative</a>, which is the moment, to \(h_{\mathrm{e}}^{p+1-2} = h_{\mathrm{e}}^2\) for \(p = 3\) (COOK §9.6, PDF pp. 327-328). We do not prove this, the proof is in the source. Second: for a coarse mesh the two ratios do not hold yet (1,39 and 2,10 for <span class="nobr">\(n = 2 \to 4 \to 8\)),</span> because an element with \(\beta h_{\mathrm{e}} &gt; 1\) does not resolve the edge: the edge disturbance \(\mathrm{e}^{-\beta x}(\cos\beta x + \sin\beta x)\) (theorem <a class="xref" href="sec-upogib-valja.html#thm-robni-ucinek" data-knowl="thm-robni-ucinek">22.43</a>) falls to \(\mathrm{e}^{-\pi} = 0{,}043\) in \(\pi/\beta = 24{,}4\) mm, so an element with \(h_{\mathrm{e}} = 25\) mm covers all of it with one cubic polynomial. Third: an <a data-del="meje" class="xref kaz" href="sec-osnosimetricni-element.html#fig-oe-konvergenca" data-knowl="fig-oe-konvergenca">error of 5 %</a> requires <span class="nobr">\(\beta h_{\mathrm{e}} \le 0{,}56\),</span> so \(h_{\mathrm{e}} \le 4{,}35\) mm <span class="nobr">\(= 0{,}435\sqrt{Rh}\),</span> and an error of 1 % requires <span class="nobr">\(\beta h_{\mathrm{e}} \le 0{,}24\),</span> so \(h_{\mathrm{e}} \le 1{,}89\) mm \(= 0{,}19\sqrt{Rh}\) <span class="nobr">(\(\sqrt{Rh} = 10\)</span> mm). Cook tests his element on a mesh with \(h_{\mathrm{e}} = 0{,}625\sqrt{Rh}\) (he writes \(t\) for the thickness), which he calls very coarse near the end (COOK PDF p. 588, figure 16.3-2). There the end is simply supported, the element also includes the shear deformation of the wall and the moment is read at the element centres, where the accuracy is good. At our clamped edge and for the moment at the edge itself, the same length gives \(\beta h_{\mathrm{e}} = 0{,}80\) and an error of 9,6 %.</p>
+<p>The edge is a local disturbance: its influence falls to \(\mathrm{e}^{-\pi} = 0{,}043\) at the distance \(\pi/\beta = 24{,}44\) mm (section on bending of the cylinder). A fine mesh is needed only there. With 12 elements of 2,00 mm in the first 24 mm and 3 elements of 25,33 mm in the remaining 76 mm (15 elements) we get an error of \(M(0)\) of 1,03 %, while a uniform mesh with the same element of 2,00 mm (50 elements) gives 1,09 %. The mesh is refined at the edge, where the solution is not smooth, and is coarse where \(w\) is almost <span class="nobr">\(w_{\mathrm{p}}\).</span></p>
+<p>Why does the theorem on accuracy at the nodes not help? Chapter <a class="xref" href="ch-mke-nosilci.html">12</a> showed that for a beam \(w\) and \(w'\) at the nodes are exact for every load (theorem <a class="xref" href="sec-tocnost-vozlisc.html#thm-tocnost-vozlisc-nosilca" data-knowl="thm-tocnost-vozlisc-nosilca">12.14</a>). Here the errors in the table are non-zero. The last column of the table says that at \(n = 8\) the error is \(7{,}5\cdot 10^{-3}\) of \(w_{\mathrm{p}}\) and not about <span class="nobr">\(10^{-14}\).</span> We test the difference on the same elements: for \(k = 0\) (a beam under uniform load, a cantilever with \(L = 100\) mm) the largest error of the nodal displacements and rotations is <span class="nobr">\(5\cdot 10^{-15}\),</span> \(9\cdot 10^{-15}\) and \(1\cdot 10^{-13}\) for \(n = 2, 4, 8\) relative to the largest displacement, which is rounding.</p>
+
+<div class="blk lema" id="lem-vozlisca-valja-ne-tocna"><div class="blk-head"><span class="blk-label">Lemma 22.54</span> <span class="blk-title">Nodal exactness fails for the cylinder element (izrek o točnosti v vozliščih ne velja za valj)</span></div><div class="blk-body"><p>Let <span class="nobr">\(k &gt; 0\),</span> let the cylinder be supported only at its ends, \(B(v, w) = \int (D\,v''w'' + k\,v\,w)\,\mathrm{d}x\) and let \(G_{\mathrm{P}}\) be the deflection under a unit force at a point \(P\) where no support prevents the displacement, with the same supports, so that \(B(G_{\mathrm{P}}, w) = w(x_{\mathrm{P}})\) for every admissible \(w\) (as in step 5 of theorem <a class="xref" href="sec-tocnost-vozlisc.html#thm-tocnost-vozlisc-nosilca" data-knowl="thm-tocnost-vozlisc-nosilca">12.14</a>). Then \(G_{\mathrm{P}}\) is not a cubic <a class="xref auto" href="sec-zveznost.html#def-polinom" data-knowl="def-polinom">polynomial</a> on any <a class="xref auto" href="sec-konvergenca-zaporedij.html#def-interval" data-knowl="def-interval">interval</a> that does not have \(P\) in its interior, so on no element when \(P\) is a node. Therefore \(G_{\mathrm{P}}\) does not lie in the family of finite elements and step 4 of the proof of theorem <a class="xref" href="sec-tocnost-vozlisc.html#thm-tocnost-vozlisc-nosilca" data-knowl="thm-tocnost-vozlisc-nosilca">12.14</a> does not hold.</p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that a cubic <a class="xref auto" href="sec-zveznost.html#def-polinom" data-knowl="def-polinom">polynomial</a> on an <a class="xref auto" href="sec-konvergenca-zaporedij.html#def-interval" data-knowl="def-interval">interval</a> without a force is not a solution, except zero, and that zero is excluded by the energy.</p>
+<ol>
+<li>Let \(I\) be an interval that does not have \(P\) in its interior. There is no force on it, so \(G_{\mathrm{P}}\) solves \(D\,G_{\mathrm{P}}'''' + k\,G_{\mathrm{P}} = 0\) (lemma <a class="xref" href="sec-osnosimetricni-element.html#lem-energija-osnosimetricne" data-knowl="lem-energija-osnosimetricne">22.51</a>, point 3, with <span class="nobr">\(q = 0\)).</span></li>
+<li>If \(G_{\mathrm{P}}\) is cubic on <span class="nobr">\(I\),</span> then <span class="nobr">\(G_{\mathrm{P}}'''' = 0\),</span> so \(k\,G_{\mathrm{P}} = 0\) and because <span class="nobr">\(k &gt; 0\),</span> \(G_{\mathrm{P}} = 0\) on <span class="nobr">\(I\).</span></li>
+<li>On the part of the axis between \(P\) and the end of the cylinder on which \(I\) lies there is neither a force nor a support, so there \(G_{\mathrm{P}}\) is a solution of a linear equation with constant coefficients. A solution that is zero on \(I\) together with its <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivatives</a> is, by <a class="xref auto" href="sec-betti-maxwell.html#lem-enolicnost-resitve" data-knowl="lem-enolicnost-resitve">uniqueness of the solution</a> of the <a class="xref auto" href="sec-navadne-diferencialne-enacbe.html#def-zacetni-problem" data-knowl="def-zacetni-problem">initial value problem</a>, zero on the whole part up to <span class="nobr">\(P\).</span> Since \(G_{\mathrm{P}}\) is continuous, <span class="nobr">\(G_{\mathrm{P}}(x_{\mathrm{P}}) = 0\).</span></li>
+<li>By step 5 of theorem <a class="xref" href="sec-tocnost-vozlisc.html#thm-tocnost-vozlisc-nosilca" data-knowl="thm-tocnost-vozlisc-nosilca">12.14</a> with <span class="nobr">\(w = G_{\mathrm{P}}\),</span> <span class="nobr">\(G_{\mathrm{P}}(x_{\mathrm{P}}) = B(G_{\mathrm{P}}, G_{\mathrm{P}}) = \int(D\,G_{\mathrm{P}}''^2 + k\,G_{\mathrm{P}}^2)\,\mathrm{d}x\).</span> This is positive because \(G_{\mathrm{P}}\) is not zero everywhere: otherwise \(B(G_{\mathrm{P}}, w) = 0\) for every admissible <span class="nobr">\(w\),</span> but no support prevents the displacement at <span class="nobr">\(P\),</span> so there is an admissible \(w\) with <span class="nobr">\(w(x_{\mathrm{P}}) = 1\).</span> A contradiction with step 3.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> The proof is not from the sources, it follows step 4 of theorem <a class="xref" href="sec-tocnost-vozlisc.html#thm-tocnost-vozlisc-nosilca" data-knowl="thm-tocnost-vozlisc-nosilca">12.14</a>. The non-zero errors in the table are a computation in the script num-08.py.</p></div></div>
+<p>The lemma says the reason is the term <span class="nobr">\(k\,w\):</span> because of it the deflection \(G_{\mathrm{P}}\) under a unit force is not piecewise cubic, so the orthogonality of the error to the family (step 3 of theorem <a class="xref" href="sec-tocnost-vozlisc.html#thm-tocnost-vozlisc-nosilca" data-knowl="thm-tocnost-vozlisc-nosilca">12.14</a>) no longer gives <span class="nobr">\(e(x_{\mathrm{P}}) = 0\).</span> At \(k = 0\) the theorem is valid again, which the errors of \(10^{-13}\) above show. The difference is therefore in the foundation, not in the element.</p>
+
+<h3 id="sec-oe-stozec"><span class="h-num">22.8.4</span> The conical element and the results (stožčasti element)</h3>
+<p>The closed formula for the cylinder is suitable where the wall is a cylinder. The other parts of the vessel, cone and sphere, are covered by the conical element: a piece of a cone with two nodes, which is in the sources the basic element for <a class="xref auto" href="sec-srednja-ploskev.html#def-lupina" data-knowl="def-lupina">shells</a> of revolution (COOK PDF pp. 584-585, ONATE2 §9.1, PDF p. 556). The meridian is a straight line for the element, and a curved shell is represented by a polygonal line. A node has three unknowns: the displacement \(u\) along the meridian, the normal displacement \(w\) and the rotation (COOK figure 16.3-1b, PDF p. 585). The <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">strains</a> are \(\varepsilon_{\mathrm{ms}} = u'\) and <span class="nobr">\(\varepsilon_{\mathrm{m}\theta} = (u\sin\alpha + w\cos\alpha)/r\),</span> where \(\alpha\) is the angle between the meridian and the axis (COOK (16.3-3), PDF p. 586, their symbol is <span class="nobr">\(\phi\),</span> our \(\varphi\) has another meaning in this chapter) and \(r\) is the radius of the <a class="xref auto" href="sec-ukrivljenost-ploskve.html#lem-vrtenina-ukrivljenosti" data-knowl="lem-vrtenina-ukrivljenosti">parallel circle</a>, which changes along the element. So \(1/r\) appears in the <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integrals</a> and the source recommends two-point Gauss integration (PDF p. 586). At \(\alpha = 0\) we get the cylinder of this section, at \(\alpha = \pi/2\) a circular <a class="xref auto" href="sec-kirchhoffova-plosca.html#def-plosca" data-knowl="def-plosca">plate</a> (PDF p. 587). The <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat k\) is \(6 \times 6\) in the local axes of the meridian, for assembly it is rotated into the common radial and axial axes: \(\mat T^\T\mat k\,\mat T\) (COOK PDF p. 586), which is the same step as for the <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">frame</a> in chapter <a class="xref" href="ch-mke-nosilci.html">12</a> (lemma <a class="xref" href="sec-ravninski-okvir-mke.html#lem-togost-elementa-okvirja" data-knowl="lem-togost-elementa-okvirja">12.18</a>). We do not derive the matrix <span class="nobr">\(\mat k\),</span> we quote it from the sources. This is a simplification: the full derivation with strains from (16.3-3) and integration by (16.3-5) is in COOK (PDF p. 586). For the cylinder of this section the axial unknown \(u\) is eliminated by lemma <a class="xref" href="sec-osnosimetricni-element.html#lem-energija-osnosimetricne" data-knowl="lem-energija-osnosimetricne">22.51</a>, because \(N_{\mathrm{x}} = N_0\) is known. For a cone this is not possible, because \(N_{\mathrm{x}}\) changes along the meridian.</p>
+<p>What remains is what a program prints. From \(\vek d_{\mathrm{e}}\) follow <span class="nobr">\(w_{\mathrm{h}}\),</span> <span class="nobr">\(w_{\mathrm{h}}'\),</span> \(w_{\mathrm{h}}''\) by the <a class="xref auto" href="sec-element-nosilca.html#def-hermitove-funkcije" data-knowl="def-hermitove-funkcije">Hermite functions</a>. The moment is <span class="nobr">\(M_{\mathrm{x}} = -D\,w_{\mathrm{h}}''\),</span> the hoop force \(N_\theta = Eh\,w_{\mathrm{h}}/R + \nu N_0\) (from \(N_\theta = C(\varepsilon_\theta + \nu\varepsilon_{\mathrm{x}})\) and \(\varepsilon_{\mathrm{x}} = N_0/C - \nu\varepsilon_\theta\) from step 5 of lemma <a class="xref" href="sec-osnosimetricni-element.html#lem-energija-osnosimetricne" data-knowl="lem-energija-osnosimetricne">22.51</a>). The stresses on the faces follow because the stress is linear through the thickness: \(\sigma_{\mathrm{x}}(z) = N_{\mathrm{x}}/h + 12M_{\mathrm{x}}\,z/h^3\) (the integral \(\int\sigma_{\mathrm{x}} z\,\mathrm{d}z = M_{\mathrm{x}}\) with \(\int z^2\,\mathrm{d}z = h^3/12\) and <span class="nobr">\(\int\sigma_{\mathrm{x}}\,\mathrm{d}z = N_{\mathrm{x}}\)).</span> On the outer face <span class="nobr">(\(z = h/2\)),</span> <span class="nobr">\(\sigma_{\mathrm{x}} = N_{\mathrm{x}}/h + 6M_{\mathrm{x}}/h^2\),</span> on the inner face <span class="nobr">\(N_{\mathrm{x}}/h - 6M_{\mathrm{x}}/h^2\).</span></p>
+<p>For the tube at the clamp: with the exact \(M_{\mathrm{x}} = -77{,}167\) N mm/mm, \(N_{\mathrm{x}}/h = 37{,}50\) MPa, \(6M_{\mathrm{x}}/h^2 = -115{,}75\) MPa, so the inner face is \(153{,}25\) MPa and the outer \(-78{,}25\) MPa. The mean hoop stress there is \(N_\theta/h = \nu N_0/h = 11{,}25\) MPa, because <span class="nobr">\(w = 0\).</span> On the outer face we add \(6M_\theta/h^2\) to it, on the inner face we subtract it, with \(M_\theta = \nu M_{\mathrm{x}}\) (theorem <a class="xref" href="sec-kinematika-lupine.html#thm-hooke-lupine" data-knowl="thm-hooke-lupine">22.28</a> with <span class="nobr">\(\kappa_\theta = 0\)).</span> The hoop stress is therefore \(45{,}97\) MPa on the inner and \(-23{,}47\) MPa on the outer face. With <span class="nobr">\(n = 16\),</span> \(M_{\mathrm{x}} = -69{,}724\) N mm/mm, so \(6M_{\mathrm{x}}/h^2 = -104{,}59\) MPa, the inner face is \(142{,}09\) MPa: 7,3 % below the true value, on the unsafe side. With \(n = 8\) it is \(118{,}46\) MPa, 22,7 % less. The moment is linear in the element and jumps at a node (only \(w\) and \(w'\) are continuous). The jump of the moment at the first node is \(17{,}74\) N mm/mm at <span class="nobr">\(n = 8\),</span> \(3{,}243\) at <span class="nobr">\(n = 16\),</span> \(0{,}336\) at \(n = 32\) and \(0{,}027\) at <span class="nobr">\(n = 64\).</span> The jump is here a measure of the error: at \(n = 16\) it is 4,7 % of the moment at the clamp, and when it falls under 1 % (from \(n = 26\) on), the error of \(M(0)\) is under 4 % (3,9 % at <span class="nobr">\(n = 26\)).</span> This is an observation for this example, not a theorem.</p>
+<p>The section showed three things. The energy of a cylinder strip is the energy of a <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beam</a> on a foundation (lemma <a class="xref" href="sec-osnosimetricni-element.html#lem-energija-osnosimetricne" data-knowl="lem-energija-osnosimetricne">22.51</a>), so the element is the beam of chapter <a class="xref" href="ch-mke-nosilci.html">12</a> with an added matrix of the foundation (lemma <a class="xref" href="sec-osnosimetricni-element.html#lem-togost-elementa-valja" data-knowl="lem-togost-elementa-valja">22.53</a>). The accuracy depends on <span class="nobr">\(\beta h_{\mathrm{e}}\),</span> not on the number of elements: the reason is that the edge is a local disturbance of length \(\pi/\beta\) (section on bending of the cylinder), and the element must be much shorter than <span class="nobr">\(1/\beta\).</span> And the <a class="xref auto" href="sec-tocnost-vozlisc.html#thm-tocnost-vozlisc-nosilca" data-knowl="thm-tocnost-vozlisc-nosilca">exactness at the nodes</a> of the chapter on beams does not hold (lemma <a class="xref" href="sec-osnosimetricni-element.html#lem-vozlisca-valja-ne-tocna" data-knowl="lem-vozlisca-valja-ne-tocna">22.54</a>). Chapter <a class="xref" href="ch-plosce.html">18</a> gives the elements for the plate, chapter <a class="xref" href="ch-mke-kontinuum.html">15</a> the plane elements, from which we assemble the <a class="xref auto forward" href="sec-ploscati-elementi.html#def-ploscati-element" data-knowl="def-ploscati-element" title="Defined later in the book">flat shell elements</a> in the next section.</p>
+
+</main>
+<footer><nav class="pager"><a href="sec-spoji-lupin.html" rel="prev">← 22.7</a><a href="index.html">Contents</a><a href="sec-ploscati-elementi.html" rel="next">22.9 →</a></nav></footer>
+</body>
+</html>

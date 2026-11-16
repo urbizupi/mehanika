@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-enacba-plosce"] = {"html": "<div class=\"eq\">\\[D\\,\\nabla^4 w = q , \\qquad \\nabla^4 w = \\frac{\\partial^4 w}{\\partial x^4} + 2\\,\\frac{\\partial^4 w}{\\partial x^2\\,\\partial y^2} + \\frac{\\partial^4 w}{\\partial y^4} . \\tag{18.17}\\]</div>", "href": "sec-ravnotezje-plosce.html#eq-enacba-plosce"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-zvitje-pravokotnik"] = {"html": "<div class=\"eq\">\\[\\psi(y, z) = y z - \\sum_{\\mathrm{n}\\ \\text{lih}}c_{\\mathrm{n}}\\sin(\\lambda_{\\mathrm{n}} y)\\,\\frac{\\sinh(\\lambda_{\\mathrm{n}} z)}{\\cosh(\\lambda_{\\mathrm{n}} b)} . \\tag{16.33}\\]</div>", "href": "sec-pravokotni-prerez.html#eq-zvitje-pravokotnik"};

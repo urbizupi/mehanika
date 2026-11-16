@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-navier-enakomerna"] = {"html": "<div class=\"eq\">\\[w(x, y) = \\frac{16\\,q_0}{\\pi^6 D}\\sum_{\\mathrm{m},\\mathrm{n}\\ \\text{odd}}\\frac{1}{mn\\big(m^2/a^2 + n^2/b^2\\big)^2}\\,s_{\\mathrm{mn}}(x, y) . \\tag{18.37}\\]</div>", "href": "sec-navierova-resitev.html#eq-navier-enakomerna"};

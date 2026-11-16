@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ravninski-val"] = {"html": "<div class=\"eq\">\\[\\vek u(\\vek x, t) = f(\\vek n\\cdot\\vek x - c\\,t)\\,\\vek e , \\qquad c &gt; 0 , \\tag{13.24}\\]</div>", "href": "sec-elastodinamika.html#eq-ravninski-val"};

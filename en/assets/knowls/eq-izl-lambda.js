@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-izl-lambda"] = {"html": "<div class=\"eq\">\\[\\vek\\lambda = (\\mat C\\,\\mat C^\\T)^{-1}\\,\\mat C\\,\\vek r . \\tag{19.8}\\]</div>", "href": "sec-izlocanje-vezi.html#eq-izl-lambda"};

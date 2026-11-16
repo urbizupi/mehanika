@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-km-jacobi"] = {"html": "<div class=\"eq\">\\[J(\\xi) = x'(\\xi) = L\\Big(\\frac12 + (1 - 2c)\\,\\xi\\Big) . \\tag{17.19}\\]</div>", "href": "sec-kakovost-mreze.html#eq-km-jacobi"};

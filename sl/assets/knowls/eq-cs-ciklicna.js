@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-cs-ciklicna"] = {"html": "<div class=\"eq\">\\[(\\mat K_0 + \\mat K_1 + \\mat K_1^\\T)\\,\\vek u = \\hat{\\vek f}_0 . \\tag{19.16}\\]</div>", "href": "sec-ciklicna-simetrija.html#eq-cs-ciklicna"};

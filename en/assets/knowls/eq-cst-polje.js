@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-cst-polje"] = {"html": "<div class=\"eq\">\\[u_{\\mathrm{x}}(x, y) = L_1\\,u_1 + L_2\\,u_2 + L_3\\,u_3 , \\qquad u_{\\mathrm{y}}(x, y) = L_1\\,v_1 + L_2\\,v_2 + L_3\\,v_3 . \\tag{15.17}\\]</div>", "href": "sec-mkk-ravninski-trikotnik.html#eq-cst-polje"};

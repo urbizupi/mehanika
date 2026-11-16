@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-razvoj-nacini-nosilca"] = {"html": "<div class=\"eq\">\\[\\varphi_{\\mathrm{n}}(x) = \\sin\\frac{n\\pi x}{L} , \\qquad \\omega_{\\mathrm{n}} = \\Big(\\frac{n\\pi}{L}\\Big)^2\\sqrt{\\frac{EI}{\\rho A}} \\qquad (n = 1, 2, \\dots) \\tag{13.50}\\]</div>", "href": "sec-razvoj-po-nacinih.html#eq-razvoj-nacini-nosilca"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mkk-izo-integral"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{Q}} f\\,\\mathrm{d}A = \\int_{\\mathrm{K}} f\\big(\\Phi(\\xi, \\eta)\\big)\\,J(\\xi, \\eta)\\,\\mathrm{d}A . \\tag{15.25}\\]</div>", "href": "sec-mkk-izoparametricni.html#eq-mkk-izo-integral"};

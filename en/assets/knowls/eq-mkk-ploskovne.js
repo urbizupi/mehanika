@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mkk-ploskovne"] = {"html": "<div class=\"eq\">\\[L_1(P) = \\frac{\\Delta(P, P_2, P_3)}{A} , \\qquad L_2(P) = \\frac{\\Delta(P_1, P, P_3)}{A} , \\qquad L_3(P) = \\frac{\\Delta(P_1, P_2, P)}{A} . \\tag{15.3}\\]</div>", "href": "sec-mkk-trikotnik.html#eq-mkk-ploskovne"};

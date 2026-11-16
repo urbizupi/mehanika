@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-raztezek-palice"] = {"html": "<div class=\"eq\">\\[\\varepsilon_{\\mathrm{e}}(\\vek v) = \\frac{\\vek n_{\\mathrm{e}} \\cdot (\\vek v_{\\mathrm{j}} - \\vek v_{\\mathrm{i}})}{L_{\\mathrm{e}}} \\tag{29.24}\\]</div>", "href": "sec-najmanjsa-podajnost.html#eq-raztezek-palice"};

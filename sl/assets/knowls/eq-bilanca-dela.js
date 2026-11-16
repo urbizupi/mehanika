@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-bilanca-dela"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{V}} \\rho c\\,T_{\\mathrm{t}}\\,\\mathrm{d}V = -\\int_{\\mathrm{S}} \\vek q\\cdot\\vek n\\,\\mathrm{d}A + \\int_{\\mathrm{V}} Q\\,\\mathrm{d}V . \\tag{14.5}\\]</div>", "href": "sec-enacba-prevajanja.html#eq-bilanca-dela"};

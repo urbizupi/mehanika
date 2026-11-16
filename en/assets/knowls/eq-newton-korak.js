@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-newton-korak"] = {"html": "<div class=\"eq\">\\[\\vek u_{\\mathrm{k}+1} = \\vek u_{\\mathrm{k}} - \\mat J(\\vek u_{\\mathrm{k}})^{-1}\\,\\vek r(\\vek u_{\\mathrm{k}}) , \\tag{25.46}\\]</div>", "href": "sec-lezaj-v-mke.html#eq-newton-korak"};

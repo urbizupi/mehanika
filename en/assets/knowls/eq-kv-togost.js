@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kv-togost"] = {"html": "<div class=\"eq\">\\[196\\,A_1 + 74\\,A_2 \\ge 10\\,000 \\qquad (A_1, A_2 \\text{ in mm}^2, \\text{ which with the moduli in GPa gives the force in kN}) . \\tag{29.13}\\]</div>", "href": "sec-konveksnost.html#eq-kv-togost"};

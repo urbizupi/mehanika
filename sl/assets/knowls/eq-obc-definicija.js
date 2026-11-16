@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-obc-definicija"] = {"html": "<div class=\"eq\">\\[\\frac{\\partial\\hat g}{\\partial A_{\\mathrm{e}}}(\\vek A) = \\lim_{\\mathrm{h}\\to 0}\\frac{\\hat g(\\vek A + h\\,\\vek e_{\\mathrm{e}}) - \\hat g(\\vek A)}{h} , \\tag{29.34}\\]</div>", "href": "sec-obcutljivost.html#eq-obc-definicija"};

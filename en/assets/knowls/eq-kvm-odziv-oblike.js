@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kvm-odziv-oblike"] = {"html": "<div class=\"eq\">\\[\\vek P = \\Omega^2\\sum_{\\mathrm{r}=1}^{n}\\frac{\\vek\\varphi_{\\mathrm{r}}^\\T\\vek u}{1 - \\Omega^2 s_{\\mathrm{r}}}\\,\\vek\\varphi_{\\mathrm{r}} . \\tag{24.35}\\]</div>", "href": "sec-kriticne-vec-mas.html#eq-kvm-odziv-oblike"};

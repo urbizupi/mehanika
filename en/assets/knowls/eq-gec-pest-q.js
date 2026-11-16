@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-gec-pest-q"] = {"html": "<div class=\"eq\">\\[\\vek b\\,\\ddot\\theta + \\mat M_{\\mathrm{dd}}\\ddot{\\vek q}_{\\mathrm{d}} + \\big(\\mat K_{\\mathrm{dd}} - \\dot\\theta^2\\,\\mat M_{\\mathrm{dd}}\\big)\\vek q_{\\mathrm{d}} = \\vek 0 . \\tag{28.33}\\]</div>", "href": "sec-gibalne-enacbe-clena.html#eq-gec-pest-q"};

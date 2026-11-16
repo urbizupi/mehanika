@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rot2-neuravnotezenost"] = {"html": "<div class=\"eq\">\\[\\vek U = m\\,\\overrightarrow{SG} , \\qquad U = m\\,a_{\\mathrm{u}} \\tag{24.6}\\]</div>", "href": "sec-neuravnotezenost-rotorja.html#eq-rot2-neuravnotezenost"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-resonanca-obhod"] = {"html": "<div class=\"eq\">\\[\\frac{m\\,v}{\\Lambda} = \\frac{c}{2L}\\left(1 - \\frac{v^2}{c^2}\\right) \\iff \\frac{2mL}{\\Lambda}\\,\\frac{v}{c} = 1 - \\frac{v^2}{c^2} , \\tag{26.57}\\]</div>", "href": "sec-jermenski-pogon.html#eq-resonanca-obhod"};

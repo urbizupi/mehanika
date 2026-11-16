@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-zp-razcep-zasuka"] = {"html": "<div class=\"eq\">\\[\\mat R - \\mat I = (\\cos\\theta - 1)\\,\\mat I + \\sin\\theta\\begin{bmatrix} 0 &amp; -1 \\\\ 1 &amp; 0 \\end{bmatrix} , \\tag{28.7}\\]</div>", "href": "sec-zakaj-podajni.html#eq-zp-razcep-zasuka"};

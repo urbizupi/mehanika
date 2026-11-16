@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-zp-lastna"] = {"html": "<div class=\"eq\">\\[\\omega_1 = 1{,}8751^2 \\cdot 8{,}682 = 30{,}53\\ \\text{rad/s} , \\qquad f_1 = \\frac{\\omega_1}{2\\pi} = 4{,}86\\ \\text{Hz} , \\qquad T_1 = \\frac{2\\pi}{\\omega_1} = 0{,}206\\ \\text{s} . \\tag{28.2}\\]</div>", "href": "sec-zakaj-podajni.html#eq-zp-lastna"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vv-vsote"] = {"html": "<div class=\"eq\">\\[S_{\\mathrm{n}} = \\sum_{\\mathrm{i}=1}^{N}\\mathrm{e}^{\\mathrm{i}n\\varphi_{\\mathrm{i}}} , \\qquad T_{\\mathrm{n}} = \\sum_{\\mathrm{i}=1}^{N} z_{\\mathrm{i}}\\,\\mathrm{e}^{\\mathrm{i}n\\varphi_{\\mathrm{i}}} . \\tag{23.36}\\]</div>", "href": "sec-vecvaljni-motorji.html#eq-vv-vsote"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-lu-sprememba-opisa"] = {"html": "<div class=\"eq\">\\[\\mat A_2 = \\mat J^\\T\\,\\mat A\\big(\\tau(\\tilde q_1, \\tilde q_2)\\big)\\,\\mat J . \\tag{22.4}\\]</div>", "href": "sec-srednja-ploskev.html#eq-lu-sprememba-opisa"};

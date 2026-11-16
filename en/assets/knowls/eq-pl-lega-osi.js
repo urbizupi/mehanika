@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pl-lega-osi"] = {"html": "<div class=\"eq\">\\[\\vek r(x, t) = \\vek o + \\mat R(\\theta)\\,\\Big(\\bar{\\vek r}_0 + \\mat\\Psi(x)\\,\\vek q_{\\mathrm{d}}\\Big) = \\vek o + \\mat R(\\theta)\\begin{bmatrix} x \\\\ v(x, t) \\end{bmatrix} , \\tag{28.10}\\]</div>", "href": "sec-plavajoci-sistem.html#eq-pl-lega-osi"};

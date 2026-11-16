@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ep-nmn"] = {"html": "<div class=\"eq\">\\[N_{\\mathrm{mn}} = \\pi^2 D\\,\\frac{(m^2/a^2 + n^2/b^2)^2}{m^2/a^2} = \\frac{\\pi^2 D}{b^2}\\Big(\\frac{m b}{a} + \\frac{n^2 a}{m b}\\Big)^2 , \\tag{18.57}\\]</div>", "href": "sec-energijske-metode-plosc.html#eq-ep-nmn"};

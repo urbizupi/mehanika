@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mmc-cs"] = {"html": "<div class=\"eq\">\\[\\vek b^\\T\\mat M_{\\mathrm{dd}}^{-1}\\,\\vek b \\ \\le\\ J_{\\mathrm{link}} , \\tag{28.23}\\]</div>", "href": "sec-masna-matrika-clena.html#eq-mmc-cs"};

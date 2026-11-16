@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-navier-lame-dinamika"] = {"html": "<div class=\"eq\">\\[\\mu\\,\\nabla^2\\vek u + (\\lambda + \\mu)\\,\\nabla(\\operatorname{div}\\vek u) + \\vek b = \\rho\\,\\vek u_{\\mathrm{tt}} . \\tag{13.22}\\]</div>", "href": "sec-elastodinamika.html#eq-navier-lame-dinamika"};

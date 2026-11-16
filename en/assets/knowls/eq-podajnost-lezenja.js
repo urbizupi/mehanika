@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-podajnost-lezenja"] = {"html": "<div class=\"eq\">\\[J_{\\mathrm{lez}}(t) = \\frac{\\varepsilon(t)}{\\sigma_0} , \\tag{20.17}\\]</div>", "href": "sec-viskoelasticni-modeli.html#eq-podajnost-lezenja"};

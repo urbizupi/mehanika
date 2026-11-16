@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kh-razpon"] = {"html": "<div class=\"eq\">\\[\\mathcal{E}_{\\mathrm{r}}(t) = \\tfrac12\\int_0^L\\Big(\\mu\\,\\big(w_{\\mathrm{t}} + v\\,w_{\\mathrm{x}}\\big)^2 + T\\,w_{\\mathrm{x}}^2\\Big)\\,\\mathrm{d}x = T_2 + T_1 + T_0 + V . \\tag{26.21}\\]</div>", "href": "sec-kriticna-hitrost.html#eq-kh-razpon"};

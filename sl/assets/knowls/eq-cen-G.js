@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-cen-G"] = {"html": "<div class=\"eq\">\\[\\mat G_{\\mathrm{kl}} = \\int_0^L \\rho A\\,\\frac{L^2 - x^2}{2}\\,\\psi_{\\mathrm{k}}'\\psi_{\\mathrm{l}}'\\,\\mathrm{d}x . \\tag{28.41}\\]</div>", "href": "sec-centrifugalna-ojacitev.html#eq-cen-G"};

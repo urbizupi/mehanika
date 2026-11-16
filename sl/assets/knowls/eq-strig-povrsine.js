@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-strig-povrsine"] = {"html": "<div class=\"eq\">\\[\\tan\\gamma = \\frac{R\\alpha h}{h} = R\\alpha , \\qquad \\gamma \\approx R\\alpha , \\tag{16.3}\\]</div>", "href": "sec-torzija-kroga.html#eq-strig-povrsine"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-up-Uc"] = {"html": "<div class=\"eq\">\\[U_{\\mathrm{c}} = -\\,\\frac{r_0}{\\alpha} = -\\,\\frac{r_0\\,U_{\\mathrm{t}}}{r_1 - r_0} . \\tag{24.50}\\]</div>", "href": "sec-uravnotezenje-podajnih.html#eq-up-Uc"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-podajnost-konveksna"] = {"html": "<div class=\"eq\">\\[C\\big(t\\vek A + (1 - t)\\vek B\\big) \\le t\\,C(\\vek A) + (1 - t)\\,C(\\vek B) \\qquad (\\vek A, \\vek B \\in \\mathcal P,\\ 0 \\le t \\le 1) . \\tag{29.28}\\]</div>", "href": "sec-najmanjsa-podajnost.html#eq-podajnost-konveksna"};

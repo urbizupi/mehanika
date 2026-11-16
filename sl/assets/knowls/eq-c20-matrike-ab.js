@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-c20-matrike-ab"] = {"html": "<div class=\"eq\">\\[\\mat A = \\begin{pmatrix} \\mat C &amp; \\mat M \\\\ \\mat M &amp; \\mat 0 \\end{pmatrix} , \\qquad \\mat B = \\begin{pmatrix} \\mat K &amp; \\mat 0 \\\\ \\mat 0 &amp; -\\mat M \\end{pmatrix} \\tag{20.38}\\]</div>", "href": "sec-zapis-prvega-reda.html#eq-c20-matrike-ab"};

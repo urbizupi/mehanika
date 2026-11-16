@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-razcep-stiri"] = {"html": "<div class=\"eq\">\\[\\vek f_{\\sigma\\tau} = \\tfrac14\\,(\\mat I + \\sigma\\mat P_{\\mathrm{x}})(\\mat I + \\tau\\mat P_{\\mathrm{y}})\\,\\vek f . \\tag{19.5}\\]</div>", "href": "sec-razcep-obremenitve.html#eq-razcep-stiri"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-em-gamma"] = {"html": "<div class=\"eq\">\\[\\Gamma_{\\mathrm{r}} = \\boldsymbol\\varphi_{\\mathrm{r}}^\\T\\,\\vek h . \\tag{21.12}\\]</div>", "href": "sec-efektivna-masa.html#eq-em-gamma"};

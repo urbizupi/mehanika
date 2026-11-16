@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mindlin-presezek"] = {"html": "<div class=\"eq\">\\[\\frac{w_{\\mathrm{M}}}{w_{\\mathrm{K}}} - 1 = 5{,}1815\\,\\left(\\frac{h}{a}\\right)^2 \\tag{18.78}\\]</div>", "href": "sec-povezave-plosce.html#eq-mindlin-presezek"};

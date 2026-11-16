@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-c20-moment-dusenega"] = {"html": "<div class=\"eq\">\\[M = EI\\,\\big(w_{\\mathrm{xx}} + \\tau_\\varepsilon\\,w_{\\mathrm{xxt}}\\big) \\tag{20.43}\\]</div>", "href": "sec-dusenje-zveznih.html#eq-c20-moment-dusenega"};

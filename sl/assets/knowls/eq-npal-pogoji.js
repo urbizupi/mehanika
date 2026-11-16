@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-npal-pogoji"] = {"html": "<div class=\"eq\">\\[T(0, t) = T(L, t) = 0 \\quad (t \\ge 0) , \\qquad T(x, 0) = h(x) \\quad (0 \\le x \\le L) . \\tag{14.25}\\]</div>", "href": "sec-nestacionarno-palica.html#eq-npal-pogoji"};

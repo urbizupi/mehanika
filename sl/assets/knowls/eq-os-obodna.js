@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-os-obodna"] = {"html": "<div class=\"eq\">\\[\\varepsilon_{\\theta\\theta} = \\frac{2\\pi(r + u_{\\mathrm{r}}) - 2\\pi r}{2\\pi r} = \\frac{u_{\\mathrm{r}}}{r} . \\tag{15.44}\\]</div>", "href": "sec-mkk-osnosimetricni.html#eq-os-obodna"};

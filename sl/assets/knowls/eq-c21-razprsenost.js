@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-c21-razprsenost"] = {"html": "<div class=\"eq\">\\[V_{\\mathrm{s}} = \\frac{\\sum_{\\mathrm{r}} c_{\\mathrm{sr}}^2(\\omega_{\\mathrm{r}} - \\mu_{\\mathrm{s}})^2}{\\tilde\\omega_{\\mathrm{s}}^2} \\in [0,\\,1] . \\tag{21.52}\\]</div>", "href": "sec-dusenje-skrajsanih.html#eq-c21-razprsenost"};

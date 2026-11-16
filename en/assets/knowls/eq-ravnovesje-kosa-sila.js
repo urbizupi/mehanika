@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ravnovesje-kosa-sila"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{a}}^b \\rho A\\,w_{\\mathrm{tt}}\\,\\mathrm{d}x = V(b) - V(a) + \\int_{\\mathrm{a}}^b q\\,\\mathrm{d}x , \\tag{13.34}\\]</div>", "href": "sec-hamilton-nosilec.html#eq-ravnovesje-kosa-sila"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nn-hiperbolicne"] = {"html": "<div class=\"eq\">\\[\\operatorname{sinh}t = \\tfrac12\\mathrm{e}^{-t}\\big(\\mathrm{e}^{2t} - 1\\big) &gt; 0 , \\qquad \\operatorname{cosh}t = 1 + \\tfrac12\\mathrm{e}^{-t}\\big(\\mathrm{e}^{t} - 1\\big)^2 &gt; 1 . \\tag{13.38}\\]</div>", "href": "sec-nacini-nosilca.html#eq-nn-hiperbolicne"};

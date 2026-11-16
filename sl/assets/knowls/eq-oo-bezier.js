@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-oo-bezier"] = {"html": "<div class=\"eq\">\\[\\vek r(u, \\alpha) = (1-u)^2\\,\\vek V_0 + 2u(1-u)\\,\\vek V_1 + u^2\\,\\vek V_2 , \\qquad 0 \\le u \\le 1 , \\tag{29.60}\\]</div>", "href": "sec-povezave-optimizacija.html#eq-oo-bezier"};

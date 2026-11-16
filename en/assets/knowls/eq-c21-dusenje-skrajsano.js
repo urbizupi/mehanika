@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-c21-dusenje-skrajsano"] = {"html": "<div class=\"eq\">\\[\\tilde{\\mat M}\\,\\ddot{\\vek a} + \\tilde{\\mat C}\\,\\dot{\\vek a} + \\tilde{\\mat K}\\,\\vek a = \\mat\\Psi^\\T\\vek Q(t) . \\tag{21.49}\\]</div>", "href": "sec-dusenje-skrajsanih.html#eq-c21-dusenje-skrajsano"};

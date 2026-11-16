@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pn-gibalna"] = {"html": "<div class=\"eq\">\\[\\rho A\\,w_{\\mathrm{tt}} + EI\\,w_{\\mathrm{xxxx}} + k\\,w = 0 \\quad \\text{na } (0, L) , \\tag{25.6}\\]</div>", "href": "sec-podlaga-nihanje-mke.html#eq-pn-gibalna"};

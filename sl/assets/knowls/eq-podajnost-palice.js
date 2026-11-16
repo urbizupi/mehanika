@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-podajnost-palice"] = {"html": "<div class=\"eq\">\\[C = \\int_0^L b(x)\\,u(x)\\,\\mathrm{d}x . \\tag{29.48}\\]</div>", "href": "sec-najtogja-palica.html#eq-podajnost-palice"};

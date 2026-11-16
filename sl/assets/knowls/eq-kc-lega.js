@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kc-lega"] = {"html": "<div class=\"eq\">\\[\\vek r = \\vek o + \\mat R(\\theta)\\,\\bar{\\vek p} , \\qquad \\bar{\\vek p} = \\bar{\\vek r}_0 + \\bar{\\vek u} = \\bar{\\vek r}_0 + \\mat\\Psi\\,\\vek q_{\\mathrm{d}} . \\tag{28.14}\\]</div>", "href": "sec-kinematika-clena.html#eq-kc-lega"};

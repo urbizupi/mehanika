@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-c20-ortogonalnost"] = {"html": "<div class=\"eq\">\\[\\vek w_{\\mathrm{j}}^{\\T}\\mat A\\,\\vek w_{\\mathrm{i}} = 0 , \\qquad \\vek w_{\\mathrm{j}}^{\\T}\\mat B\\,\\vek w_{\\mathrm{i}} = 0 , \\tag{20.41}\\]</div>", "href": "sec-zapis-prvega-reda.html#eq-c20-ortogonalnost"};

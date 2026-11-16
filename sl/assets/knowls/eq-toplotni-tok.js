@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-toplotni-tok"] = {"html": "<div class=\"eq\">\\[\\Phi_{\\mathrm{S}} = \\int_{\\mathrm{S}} \\vek q\\cdot\\vek n\\,\\mathrm{d}A , \\tag{14.2}\\]</div>", "href": "sec-fourierjev-zakon.html#eq-toplotni-tok"};

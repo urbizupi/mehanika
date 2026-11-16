@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-stribeck"] = {"html": "<div class=\"eq\">\\[\\lim_{\\mathrm{Z} \\to \\infty} \\frac{Z\\,Q_{\\max}}{F_{\\mathrm{r}}} = \\frac{1}{J_{\\mathrm{r}}(1/2)} = 4{,}370 , \\tag{25.35}\\]</div>", "href": "sec-obremenitev-lezaja.html#eq-stribeck"};

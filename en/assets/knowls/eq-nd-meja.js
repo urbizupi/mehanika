@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nd-meja"] = {"html": "<div class=\"eq\">\\[\\Omega_{\\mathrm{s}} = \\omega_{\\mathrm{n}}\\Big(1 + \\frac{c_{\\mathrm{e}}}{c_{\\mathrm{i}}}\\Big) . \\tag{24.45}\\]</div>", "href": "sec-notranje-dusenje.html#eq-nd-meja"};

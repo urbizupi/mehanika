@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ort-robni-clen"] = {"html": "<div class=\"eq\">\\[b(u, v) = -S\\,\\big[u'\\,v\\big]_0^L \\quad \\text{oziroma} \\quad b(u, v) = EI\\,\\big[u'''\\,v - u''\\,v'\\big]_0^L . \\tag{13.45}\\]</div>", "href": "sec-ortogonalnost-zveznih.html#eq-ort-robni-clen"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pp-md"] = {"html": "<div class=\"eq\">\\[\\vek u_{\\mathrm{N}}^{\\mathrm{MD}} = \\sum_{\\mathrm{r}=1}^{N}\\frac{\\boldsymbol\\varphi_{\\mathrm{r}}\\,(\\boldsymbol\\varphi_{\\mathrm{r}}^{\\T}\\vek F)}{\\lambda_{\\mathrm{r}} - \\Omega^2} . \\tag{21.3}\\]</div>", "href": "sec-popravek-pospeskov.html#eq-pp-md"};

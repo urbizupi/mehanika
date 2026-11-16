@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ocene-frekvenc"] = {"html": "<div class=\"eq\">\\[\\frac{\\omega_{\\mathrm{EB}}}{\\sqrt{1 + (1 + \\kappa)\\,\\varepsilon}} &lt; \\omega_{\\mathrm{T}} &lt; \\omega_{\\mathrm{R}} &lt; \\omega_{\\mathrm{EB}} . \\tag{13.73}\\]</div>", "href": "sec-vztrajnost-zasuka.html#eq-ocene-frekvenc"};

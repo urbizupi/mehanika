@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-relaksacijski-modul"] = {"html": "<div class=\"eq\">\\[E_{\\mathrm{rel}}(t) = \\frac{\\sigma(t)}{\\varepsilon_0} , \\tag{20.16}\\]</div>", "href": "sec-viskoelasticni-modeli.html#eq-relaksacijski-modul"};

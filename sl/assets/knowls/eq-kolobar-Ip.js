@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kolobar-Ip"] = {"html": "<div class=\"eq\">\\[I_{\\mathrm{p}} = \\frac{\\pi}{2}\\,\\big(R^4 - R_{\\mathrm{i}}^4\\big) . \\tag{16.6}\\]</div>", "href": "sec-torzija-kroga.html#eq-kolobar-Ip"};

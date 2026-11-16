@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-polovici"] = {"html": "<div class=\"eq\">\\[\\tfrac12\\,m_{\\mathrm{B}} a\\Omega^2\\,(\\cos\\theta, \\sin\\theta) + \\tfrac12\\,m_{\\mathrm{B}} a\\Omega^2\\,(\\cos\\theta, -\\sin\\theta) = m_{\\mathrm{B}} a\\Omega^2\\,(\\cos\\theta, 0) . \\tag{23.30}\\]</div>", "href": "sec-uravnotezenje-enovaljnega.html#eq-polovici"};

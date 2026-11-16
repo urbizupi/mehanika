@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pn-meja"] = {"html": "<div class=\"eq\">\\[\\sum_{\\mathrm{i}=1}^m P_{\\mathrm{i}}\\,v_{\\mathrm{h}}(x_{\\mathrm{i}}) \\le \\sum_{\\mathrm{i}=1}^m P_{\\mathrm{i}}\\,v(x_{\\mathrm{i}}) , \\tag{25.9}\\]</div>", "href": "sec-podlaga-nihanje-mke.html#eq-pn-meja"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dv-resitev"] = {"html": "<div class=\"eq\">\\[w(x, t) = F\\big(x - (c + v)t\\big) + G\\big(x + (c - v)t\\big) \\qquad \\text{for every } (x, t) \\in S . \\tag{26.8}\\]</div>", "href": "sec-dva-valova.html#eq-dv-resitev"};

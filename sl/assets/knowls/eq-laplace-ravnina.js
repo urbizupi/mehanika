@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-laplace-ravnina"] = {"html": "<div class=\"eq\">\\[\\nabla^2 T = \\frac{\\partial^2 T}{\\partial x^2} + \\frac{\\partial^2 T}{\\partial y^2} = 0 \\quad \\text{v notranjosti plošče} . \\tag{14.30}\\]</div>", "href": "sec-stacionarno-ravnina.html#eq-laplace-ravnina"};

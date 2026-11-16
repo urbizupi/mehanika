@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pt-polidiskretna"] = {"html": "<div class=\"eq\">\\[\\mat C\\,\\dot{\\vek T} + \\mat K\\,\\vek T = \\vek 0 , \\tag{14.59}\\]</div>", "href": "sec-prehodni-pojav-mke.html#eq-pt-polidiskretna"};

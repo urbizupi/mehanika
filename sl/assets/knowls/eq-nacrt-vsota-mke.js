@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nacrt-vsota-mke"] = {"html": "<div class=\"eq\">\\[\\sum_{\\mathrm{g}} w_{\\mathrm{g}}\\,\\sigma_{\\theta\\theta,\\mathrm{g}} = p_{\\mathrm{a}}\\,a , \\tag{17.45}\\]</div>", "href": "sec-nacrt-analize.html#eq-nacrt-vsota-mke"};

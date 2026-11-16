@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-tanki-napetost"] = {"html": "<div class=\"eq\">\\[1 - \\frac{1}{\\cosh\\dfrac{\\pi h}{2t}} \\le f &lt; 1 , \\tag{16.37}\\]</div>", "href": "sec-tanki-odprti-prerezi.html#eq-tanki-napetost"};

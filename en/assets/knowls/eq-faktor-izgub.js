@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-faktor-izgub"] = {"html": "<div class=\"eq\">\\[\\gamma = \\frac{W_{\\mathrm{izg}}}{2\\pi\\,U} , \\qquad U = \\tfrac12 k X^2 . \\tag{20.2}\\]</div>", "href": "sec-izgube-energije.html#eq-faktor-izgub"};

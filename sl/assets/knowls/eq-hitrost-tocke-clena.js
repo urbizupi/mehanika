@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-hitrost-tocke-clena"] = {"html": "<div class=\"eq\">\\[\\dot{\\vek x} = \\dot{\\vek o} + \\vek\\omega\\times(\\vek x - \\vek o) . \\tag{27.21}\\]</div>", "href": "sec-jacobijeva-matrika-robota.html#eq-hitrost-tocke-clena"};

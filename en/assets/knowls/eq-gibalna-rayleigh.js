@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-gibalna-rayleigh"] = {"html": "<div class=\"eq\">\\[\\rho A\\,w_{\\mathrm{tt}} - \\rho I\\,w_{\\mathrm{xxtt}} + EI\\,w_{\\mathrm{xxxx}} = 0 \\quad \\text{on } \\Omega , \\tag{13.67}\\]</div>", "href": "sec-vztrajnost-zasuka.html#eq-gibalna-rayleigh"};

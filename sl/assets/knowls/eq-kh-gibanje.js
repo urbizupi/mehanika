@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kh-gibanje"] = {"html": "<div class=\"eq\">\\[\\mu\\,\\big(w_{\\mathrm{tt}} + 2v\\,w_{\\mathrm{xt}} + v^2\\,w_{\\mathrm{xx}}\\big) = T\\,w_{\\mathrm{xx}} \\tag{26.16}\\]</div>", "href": "sec-kriticna-hitrost.html#eq-kh-gibanje"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-normalna-ukrivljenost"] = {"html": "<div class=\"eq\">\\[\\vek c''(0)\\cdot\\vek n = \\mathrm{II}(\\vek v, \\vek v) = b_{11}v_1^2 + 2\\,b_{12}v_1v_2 + b_{22}v_2^2 . \\tag{22.11}\\]</div>", "href": "sec-ukrivljenost-ploskve.html#eq-normalna-ukrivljenost"};

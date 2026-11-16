@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-razcep-fs"] = {"html": "<div class=\"eq\">\\[\\vek f_{\\mathrm{s}} = \\tfrac12\\,(\\vek f + \\mat P\\vek f) , \\qquad \\vek f_{\\mathrm{a}} = \\tfrac12\\,(\\vek f - \\mat P\\vek f) \\tag{19.4}\\]</div>", "href": "sec-razcep-obremenitve.html#eq-razcep-fs"};

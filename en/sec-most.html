@@ -19,14 +19,14 @@
 <header class="top"><a class="home" href="index.html">Mechanics</a><nav class="pager"><a href="sec-prostorsko-palicje.html" rel="prev">← 7.6</a><a href="index.html">Contents</a><a href="sec-redke-matrike.html" rel="next">7.8 →</a></nav>
 <span class="tools"><a class="lang" href="../sl/sec-most.html" hreflang="sl">Slovenščina</a><button type="button" class="theme-toggle" title="Light or dark theme" aria-label="Light or dark theme"></button><button type="button" data-details="open">Expand all</button><button type="button" data-details="close">Collapse all</button><button type="button" class="fig-side-toggle" aria-pressed="false">Figures alongside</button></span></header>
 <main>
-<p class="updated">Last updated 5 November 2026, 9:28</p>
+<p class="updated">Last updated 16 November 2026, 10:52</p>
 <p class="crumb"><a href="ch-mke-palice.html"><span class="h-num">Chapter 7</span> Basics of FEM for bars and trusses</a></p>
 <h2 id="sec-most"><span class="h-num">7.7</span> A larger truss: a bridge (večje paličje: most)</h2>
 <p>With 12 joints and 21 bars nobody writes the equations by hand any more, there are 24 unknowns. What does the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> of such a <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">truss</a> look like, and how do we know that the computed numbers are right? A program can run without an error and the model can still be wrong. So besides the results the section shows how we check the computation by hand and by energy, and a model in which the check of the reactions succeeds although the model is wrong.</p>
 
 <h3 id="sec-model-mostu"><span class="h-num">7.7.1</span> The bridge model (model mostu)</h3>
-<p>Take a steel bridge (figure <a class="xref" href="sec-most.html#fig-mos-most" data-knowl="fig-mos-most">7.26</a>) with six bays of \(3\) m, so a span of \(18\) m, and a height of \(3\) m. The joints of the bottom chord (spodnji pas) are \(b_{\mathrm{i}} = (3i, 0)\) m for \(i = 0, \dots, 6\) and the joints of the top chord (zgornji pas) are \(t_{\mathrm{i}} = (3i, 3)\) m for <span class="nobr">\(i = 1, \dots, 5\).</span> The bars are: six bars of the bottom chord <span class="nobr">\(b_{\mathrm{i}}b_{\mathrm{i}+1}\),</span> four bars of the top chord <span class="nobr">\(t_{\mathrm{i}}t_{\mathrm{i}+1}\),</span> five verticals (navpičnice) <span class="nobr">\(b_{\mathrm{i}}t_{\mathrm{i}}\),</span> two inclined end posts (poševna stebra) \(b_0t_1\) and \(b_6t_5\) and four diagonals (diagonale) <span class="nobr">\(t_1b_2\),</span> <span class="nobr">\(t_2b_3\),</span> <span class="nobr">\(t_5b_4\),</span> <span class="nobr">\(t_4b_3\),</span> which descend towards the middle. There are \(21\) bars in all, each with cross-section \(A = 10\ \text{cm}^2\) and \(E = 196\) GPa. The cross-section is ten times larger than for the bracket in section <a class="xref" href="sec-delo-sil-na-palici.html#sec-palicje-konzola">4.1.4</a>, so that the largest stress, as we shall see \(45\) MPa, is well below the <a class="xref auto" href="sec-napetost-v-palici.html#def-meja-tecenja" data-knowl="def-meja-tecenja">yield stress</a> \(220\) MPa.</p>
-<p>The bridge rests on a fixed pin support at <span class="nobr">\(b_0\),</span> which prevents both displacements, and on a roller support at <span class="nobr">\(b_6\),</span> which prevents only the vertical displacement \(u_{\mathrm{y}}\) and allows the horizontal one (chapter <a class="xref" href="ch-nosilci.html">5</a>). The joints are pins, as definition <a class="xref" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">4.4</a> requires, which also requires that forces act only at the joints. The deck is therefore carried by cross-<a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beams</a> (prečni nosilci) resting on the bottom joints, which pass to them its weight and the weight of traffic: at each of the joints \(b_1, \dots, b_5\) acts \(10\) kN downwards, \(50\) kN in all. The third assumption of the definition of a truss, that the weight of the bars is negligible, is poor for a bridge. The bars have a total length of \(15 \cdot 3\ \text{m} + 6 \cdot 4{,}243\ \text{m} = 70{,}46\) m (five verticals and ten chord bars of \(3\) m, six inclined bars of \(\sqrt{18}\) m), and their weight is \(70{,}46\ \text{m} \cdot 10^{-3}\ \text{m}^2 \cdot 7800\ \text{kg/m}^3 \cdot 9{,}81\ \text{m/s}^2 = 5{,}39\) kN, which is \(10{,}8\ \%\) of the load. This is not a small error. If we split the weight of each bar between its ends (still pins), the forces in the chords and inclined bars grow by about \(10\ \%\) and the sag in the middle grows from \(7{,}31\) mm to \(8{,}03\) mm (computed in NumPy). The model without the weight of the bars is therefore an example for learning the method and for comparison, not a design of a bridge.</p>
+<p>Take a steel bridge (figure <a class="xref" href="sec-most.html#fig-mos-most" data-knowl="fig-mos-most">7.26</a>) with six bays of \(3\) m, so a span of \(18\) m, and a height of \(3\) m. <a data-del="b0,b1,b2,b3,b4,b5,b6" class="xref kaz" href="sec-most.html#fig-mos-most" data-knowl="fig-mos-most">The joints of the bottom chord</a> (spodnji pas) are \(b_{\mathrm{i}} = (3i, 0)\) m for \(i = 0, \dots, 6\) and <a data-del="t1,t2,t3,t4,t5" class="xref kaz" href="sec-most.html#fig-mos-most" data-knowl="fig-mos-most">the joints of the top chord</a> (zgornji pas) are \(t_{\mathrm{i}} = (3i, 3)\) m for <span class="nobr">\(i = 1, \dots, 5\).</span> The bars are: <a data-del="spodnji" class="xref kaz" href="sec-most.html#fig-mos-most" data-knowl="fig-mos-most">six bars of the bottom chord</a> <span class="nobr">\(b_{\mathrm{i}}b_{\mathrm{i}+1}\),</span> <a data-del="zgornji" class="xref kaz" href="sec-most.html#fig-mos-most" data-knowl="fig-mos-most">four bars of the top chord</a> <span class="nobr">\(t_{\mathrm{i}}t_{\mathrm{i}+1}\),</span> <a data-del="navpicnice,brezsile" class="xref kaz" href="sec-most.html#fig-mos-most" data-knowl="fig-mos-most">five verticals</a> (navpičnice) <span class="nobr">\(b_{\mathrm{i}}t_{\mathrm{i}}\),</span> <a data-del="stebra" class="xref kaz" href="sec-most.html#fig-mos-most" data-knowl="fig-mos-most">two inclined end posts</a> (poševna stebra) \(b_0t_1\) and \(b_6t_5\) and <a data-del="diagonale" class="xref kaz" href="sec-most.html#fig-mos-most" data-knowl="fig-mos-most">four diagonals</a> (diagonale) <span class="nobr">\(t_1b_2\),</span> <span class="nobr">\(t_2b_3\),</span> <span class="nobr">\(t_5b_4\),</span> <span class="nobr">\(t_4b_3\),</span> which descend towards the middle. There are \(21\) bars in all, each with cross-section \(A = 10\ \text{cm}^2\) and \(E = 196\) GPa. The cross-section is ten times larger than for the bracket in section <a class="xref" href="sec-delo-sil-na-palici.html#sec-palicje-konzola">4.1.4</a>, so that the largest stress, as we shall see \(45\) MPa, is well below the <a class="xref auto" href="sec-napetost-v-palici.html#def-meja-tecenja" data-knowl="def-meja-tecenja">yield stress</a> \(220\) MPa.</p>
+<p>The bridge rests on a <span class="nobr"><a data-del="podporab0" class="xref kaz" href="sec-most.html#fig-mos-most" data-knowl="fig-mos-most">fixed pin support at \(b_0\)</a>,</span> which prevents both displacements, and on a <span class="nobr"><a data-del="podporab6" class="xref kaz" href="sec-most.html#fig-mos-most" data-knowl="fig-mos-most">roller support at \(b_6\)</a>,</span> which prevents only the vertical displacement \(u_{\mathrm{y}}\) and allows the horizontal one (chapter <a class="xref" href="ch-nosilci.html">5</a>). The joints are pins, as definition <a class="xref" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">4.4</a> requires, which also requires that forces act only at the joints. The deck is therefore carried by cross-<a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beams</a> (prečni nosilci) resting on the bottom joints, which pass to them its weight and the weight of traffic: at each of the joints \(b_1, \dots, b_5\) <a data-del="bremena" class="xref kaz" href="sec-most.html#fig-mos-most" data-knowl="fig-mos-most">acts \(10\) kN downwards</a>, \(50\) kN in all. The third assumption of the definition of a truss, that the weight of the bars is negligible, is poor for a bridge. The bars have a total length of \(15 \cdot 3\ \text{m} + 6 \cdot 4{,}243\ \text{m} = 70{,}46\) m (five verticals and ten chord bars of \(3\) m, six inclined bars of \(\sqrt{18}\) m), and their weight is \(70{,}46\ \text{m} \cdot 10^{-3}\ \text{m}^2 \cdot 7800\ \text{kg/m}^3 \cdot 9{,}81\ \text{m/s}^2 = 5{,}39\) kN, which is \(10{,}8\ \%\) of the load. This is not a small error. If we split the weight of each bar between its ends (still pins), the forces in the chords and inclined bars grow by about \(10\ \%\) and the sag in the middle grows from \(7{,}31\) mm to \(8{,}03\) mm (computed in NumPy). The model without the weight of the bars is therefore an example for learning the method and for comparison, not a design of a bridge.</p>
 <p>There are \(24\) unknowns, three are prescribed <span class="nobr">(\(u_{\mathrm{x}}\)</span> and \(u_{\mathrm{y}}\) at <span class="nobr">\(b_0\),</span> \(u_{\mathrm{y}}\) at <span class="nobr">\(b_6\)),</span> and \(21\) are free. The number of bars and reactions is \(21 + 3 = 24 = 2 \cdot 12\) (the count from section <a class="xref" href="sec-virtualne-sile.html#sec-staticno-nedoloceno-palicje">4.7.5</a>), so the truss is statically determinate if there is no mechanism. The count does not exclude a mechanism (section <a class="xref" href="sec-palicje-ravnina-mke.html#sec-mehanizmi">7.5.3</a>), so after the computation we check the pivots: all \(21\) are positive, the smallest is \(10{,}9 \cdot 10^6\) N/m, and the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat K_{\mathrm{ff}}\) is <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite</a>. We number the joints along the span, <span class="nobr">\(b_0 = 1\),</span> <span class="nobr">\(b_1 = 2\),</span> <span class="nobr">\(t_1 = 3\),</span> <span class="nobr">\(b_2 = 4\),</span> \(t_2 = 5\) and so on up to <span class="nobr">\(b_6 = 12\),</span> so that neighbouring joints have close numbers and the nonzero entries of the matrix lie close to the diagonal. The unknowns of joint \(i\) are \(2i - 1\) and <span class="nobr">\(2i\),</span> first the displacement \(u_{\mathrm{i}}\) in the direction <span class="nobr">\(x\),</span> then \(v_{\mathrm{i}}\) in the direction <span class="nobr">\(y\),</span> as in section <a class="xref" href="sec-palicje-ravnina-mke.html#sec-palicje-konzola-mke">7.5.2</a>. Below we also write the components of the displacement of a node as \(u_{\mathrm{x}}\) and <span class="nobr">\(u_{\mathrm{y}}\),</span> as in definition <a class="xref" href="sec-prostorsko-palicje.html#def-prostorsko-palicje" data-knowl="def-prostorsko-palicje">7.34</a>. The connectivity table (definition <a class="xref" href="sec-sestavljanje.html#def-tabela-povezav" data-knowl="def-tabela-povezav">7.10</a>) is in the table of results below: each row has the numbers of the first and second joint of the bar, the <a class="xref auto" href="sec-vektorji.html#def-enotski-vektor" data-knowl="def-enotski-vektor">unit vector</a> points from the first towards the second.</p>
 
 <h3 id="sec-rezultati-mostu"><span class="h-num">7.7.2</span> Results (rezultati)</h3>
@@ -192,7 +192,7 @@
 </tr>
 </tbody>
 </table>
-<p>The bottom chord is in tension and the top chord in compression, as in a <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beam</a> bent downwards by the loads. The forces are symmetric, for example \(N_{\mathrm{b}_0\mathrm{b}_1} = N_{\mathrm{b}_5\mathrm{b}_6}\) and \(N_{\mathrm{t}_1\mathrm{b}_2} = N_{\mathrm{t}_5\mathrm{b}_4}\) (we show why in the next subsection). The largest stress is \(45\ \text{kN}/10\ \text{cm}^2 = 45\) MPa in the compressed bars \(t_2t_3\) and <span class="nobr">\(t_3t_4\),</span> which is \(20{,}5\ \%\) of the <a class="xref auto" href="sec-napetost-v-palici.html#def-meja-tecenja" data-knowl="def-meja-tecenja">yield stress</a>. The displacement of the middle is \(7{,}305\) mm downwards at \(b_3\) and the same at \(t_3\) (figure <a class="xref" href="sec-most.html#fig-mos-oblika" data-knowl="fig-mos-oblika">7.27</a>).</p>
+<p><a data-del="spodnji" class="xref kaz" href="sec-most.html#fig-mos-most" data-knowl="fig-mos-most">The bottom chord</a> is in tension and <a data-del="zgornji" class="xref kaz" href="sec-most.html#fig-mos-most" data-knowl="fig-mos-most">the top chord</a> in compression, as in a <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beam</a> bent downwards by the loads. The forces are symmetric, for example \(N_{\mathrm{b}_0\mathrm{b}_1} = N_{\mathrm{b}_5\mathrm{b}_6}\) and \(N_{\mathrm{t}_1\mathrm{b}_2} = N_{\mathrm{t}_5\mathrm{b}_4}\) (we show why in the next subsection). The largest stress is \(45\ \text{kN}/10\ \text{cm}^2 = 45\) MPa in the <span class="nobr"><a data-del="zgornji" class="xref kaz" href="sec-most.html#fig-mos-most" data-knowl="fig-mos-most">compressed bars \(t_2t_3\) and \(t_3t_4\)</a>,</span> which is \(20{,}5\ \%\) of the <a class="xref auto" href="sec-napetost-v-palici.html#def-meja-tecenja" data-knowl="def-meja-tecenja">yield stress</a>. The displacement of the middle is <a data-del="deformiran" class="xref kaz" href="sec-most.html#fig-mos-oblika" data-knowl="fig-mos-oblika">\(7{,}305\) mm downwards</a> at \(b_3\) and the same at <span class="nobr">\(t_3\),</span> relative to the <a data-del="nedeformiran" class="xref kaz" href="sec-most.html#fig-mos-oblika" data-knowl="fig-mos-oblika">original position of the bridge</a>, which the two <a data-del="podpore" class="xref kaz" href="sec-most.html#fig-mos-oblika" data-knowl="fig-mos-oblika">supports</a> hold in place (figure <a class="xref" href="sec-most.html#fig-mos-oblika" data-knowl="fig-mos-oblika">7.27</a>).</p>
 
 <figure class="blk slika" id="fig-mos-most"><p><span class="svgfig" role="img" aria-label="Bridge truss with joint names, loads and axial forces in the bars"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='453.61pt' height='122.47pt' viewBox='-72.000004 -72.00001 336.007751 90.718406'>
 <defs>
@@ -222,6 +222,7 @@
 <g stroke-width='0.6'>
 <g stroke-linecap='round'>
 <g stroke-linejoin='round'>
+<g class='del' data-del='spodnji'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='2.0'>
 <path d='M0 0H51.21547' fill='none'/>
@@ -336,6 +337,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='zgornji'>
 <g fill='#f00' stroke='#f00'>
 <g stroke-width='2.0'>
 <path d='M51.21547 51.21547H102.43094' fill='none'/>
@@ -416,6 +419,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='navpicnice'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='2.0'>
 <path d='M51.21547 0V51.21547' fill='none'/>
@@ -454,6 +459,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='brezsile'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='2.0'>
@@ -474,6 +481,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='navpicnice'>
 <g fill='#f00' stroke='#f00'>
 <g stroke-width='2.0'>
 <path d='M204.86188 0V51.21547' fill='none'/>
@@ -512,6 +521,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='stebra'>
 <g fill='#f00' stroke='#f00'>
 <g stroke-width='2.0'>
 <path d='M0 0L51.21547 51.21547' fill='none'/>
@@ -560,6 +571,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='diagonale'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='2.0'>
 <path d='M51.21547 51.21547L102.43094 0' fill='none'/>
@@ -650,6 +663,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='podporab0'>
 <path d='M0 0L-8.5359-15.36453H8.5359Z' fill='none'/>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-width='0.45'>
@@ -691,6 +706,8 @@
 <path d='M11.95023-15.36453L15.36453-11.95023' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='podporab6'>
 <path d='M307.29282 0L298.7569-13.6575H315.82872Z' fill='none'/>
 <g fill='#fff'>
 <g fill='#fff'>
@@ -756,6 +773,8 @@
 <path d='M319.24303-18.7791L322.65733-15.36479' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='bremena'>
 <g stroke-width='0.9'>
 <path d='M51.21547-3.4143V-17.9698' fill='none'/>
 <g transform='matrix(0.0,-1.0,1.0,0.0,51.21547,-15.36478)'>
@@ -816,6 +835,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='rez'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.45'>
@@ -823,6 +844,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='b0'>
 <g fill='#fff'>
 <g fill='#fff'>
 <path d='M1.83862 0C1.83862 1.01544 1.01544 1.83862 0 1.83862S-1.83862 1.01544-1.83862 0S-1.01544-1.83862 0-1.83862S1.83862-1.01544 1.83862 0ZM0 0'/>
@@ -833,6 +856,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='b1'>
 <g fill='#fff'>
 <g fill='#fff'>
 <path d='M53.0541 0C53.0541 1.01544 52.23091 1.83862 51.21547 1.83862S49.37685 1.01544 49.37685 0S50.20003-1.83862 51.21547-1.83862S53.0541-1.01544 53.0541 0ZM51.21547 0'/>
@@ -845,6 +870,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='b2'>
 <g fill='#fff'>
 <g fill='#fff'>
 <path d='M104.26956 0C104.26956 1.01544 103.44638 1.83862 102.43094 1.83862S100.59232 1.01544 100.59232 0S101.4155-1.83862 102.43094-1.83862S104.26956-1.01544 104.26956 0ZM102.43094 0'/>
@@ -857,6 +884,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='b3'>
 <g fill='#fff'>
 <g fill='#fff'>
 <path d='M155.48503 0C155.48503 1.01544 154.66185 1.83862 153.64641 1.83862S151.80779 1.01544 151.80779 0S152.63097-1.83862 153.64641-1.83862S155.48503-1.01544 155.48503 0ZM153.64641 0'/>
@@ -869,6 +898,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='b4'>
 <g fill='#fff'>
 <g fill='#fff'>
 <path d='M206.7005 0C206.7005 1.01544 205.87732 1.83862 204.86188 1.83862S203.02325 1.01544 203.02325 0S203.84644-1.83862 204.86188-1.83862S206.7005-1.01544 206.7005 0ZM204.86188 0'/>
@@ -881,6 +912,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='b5'>
 <g fill='#fff'>
 <g fill='#fff'>
 <path d='M257.91597 0C257.91597 1.01544 257.09279 1.83862 256.07735 1.83862C255.0619 1.83862 254.23872 1.01544 254.23872 0S255.0619-1.83862 256.07735-1.83862C257.09279-1.83862 257.91597-1.01544 257.91597 0ZM256.07735 0'/>
@@ -893,6 +926,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='b6'>
 <g fill='#fff'>
 <g fill='#fff'>
 <path d='M309.13144 0C309.13144 1.01544 308.30826 1.83862 307.29282 1.83862C306.27737 1.83862 305.4542 1.01544 305.4542 0S306.27737-1.83862 307.29282-1.83862C308.30826-1.83862 309.13144-1.01544 309.13144 0ZM307.29282 0'/>
@@ -905,6 +940,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='t1'>
 <g fill='#fff'>
 <g fill='#fff'>
 <path d='M53.0541 51.21547C53.0541 52.23091 52.23091 53.0541 51.21547 53.0541S49.37685 52.23091 49.37685 51.21547S50.20003 49.37685 51.21547 49.37685S53.0541 50.20003 53.0541 51.21547ZM51.21547 51.21547'/>
@@ -917,6 +954,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='t2'>
 <g fill='#fff'>
 <g fill='#fff'>
 <path d='M104.26956 51.21547C104.26956 52.23091 103.44638 53.0541 102.43094 53.0541S100.59232 52.23091 100.59232 51.21547S101.4155 49.37685 102.43094 49.37685S104.26956 50.20003 104.26956 51.21547ZM102.43094 51.21547'/>
@@ -929,6 +968,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='t3'>
 <g fill='#fff'>
 <g fill='#fff'>
 <path d='M155.48503 51.21547C155.48503 52.23091 154.66185 53.0541 153.64641 53.0541S151.80779 52.23091 151.80779 51.21547S152.63097 49.37685 153.64641 49.37685S155.48503 50.20003 155.48503 51.21547ZM153.64641 51.21547'/>
@@ -941,6 +982,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='t4'>
 <g fill='#fff'>
 <g fill='#fff'>
 <path d='M206.7005 51.21547C206.7005 52.23091 205.87732 53.0541 204.86188 53.0541S203.02325 52.23091 203.02325 51.21547S203.84644 49.37685 204.86188 49.37685S206.7005 50.20003 206.7005 51.21547ZM204.86188 51.21547'/>
@@ -953,6 +996,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='t5'>
 <g fill='#fff'>
 <g fill='#fff'>
 <path d='M257.91597 51.21547C257.91597 52.23091 257.09279 53.0541 256.07735 53.0541C255.0619 53.0541 254.23872 52.23091 254.23872 51.21547S255.0619 49.37685 256.07735 49.37685C257.09279 49.37685 257.91597 50.20003 257.91597 51.21547ZM256.07735 51.21547'/>
@@ -965,6 +1010,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='b0'>
 <g transform='translate(-11.05247,4.63298)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.668296,-7.017812)scale(-1,-1)'>
 <g fill='#000'>
@@ -975,6 +1022,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='b1'>
 <g transform='translate(39.163,-9.49406)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.668296,-7.017812)scale(-1,-1)'>
 <g fill='#000'>
@@ -985,6 +1034,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='b2'>
 <g transform='translate(90.37846,-9.49406)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.668296,-7.017812)scale(-1,-1)'>
 <g fill='#000'>
@@ -995,6 +1046,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='b3'>
 <g transform='translate(141.59393,-9.49406)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.668296,-7.017812)scale(-1,-1)'>
 <g fill='#000'>
@@ -1005,6 +1058,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='b4'>
 <g transform='translate(192.8094,-9.49406)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.668296,-7.017812)scale(-1,-1)'>
 <g fill='#000'>
@@ -1015,6 +1070,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='b5'>
 <g transform='translate(244.02487,-9.49406)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.668296,-7.017812)scale(-1,-1)'>
 <g fill='#000'>
@@ -1025,6 +1082,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='b6'>
 <g transform='translate(310.9258,4.63298)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.668296,-7.017812)scale(-1,-1)'>
 <g fill='#000'>
@@ -1035,6 +1094,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='t1'>
 <g transform='translate(47.75363,55.84845)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.668296,-7.017812)scale(-1,-1)'>
 <g fill='#000'>
@@ -1045,6 +1106,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='t2'>
 <g transform='translate(98.9691,55.84845)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.668296,-7.017812)scale(-1,-1)'>
 <g fill='#000'>
@@ -1055,6 +1118,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='t3'>
 <g transform='translate(150.18457,55.84845)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.668296,-7.017812)scale(-1,-1)'>
 <g fill='#000'>
@@ -1065,6 +1130,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='t4'>
 <g transform='translate(201.40004,55.84845)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.668296,-7.017812)scale(-1,-1)'>
 <g fill='#000'>
@@ -1075,12 +1142,15 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='t5'>
 <g transform='translate(252.61551,55.84845)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.668296,-7.017812)scale(-1,-1)'>
 <g fill='#000'>
 <g stroke='none'>
 <use x='-57.668296' y='-7.017812' xlink:href='#mos-most-g1-116'/>
 <use x='-54.658725' y='-6.021548' xlink:href='#mos-most-g3-53'/>
+</g>
 </g>
 </g>
 </g>
@@ -1102,6 +1172,7 @@
 <g stroke-width='0.6'>
 <g stroke-linecap='round'>
 <g stroke-linejoin='round'>
+<g class='del' data-del='nedeformiran'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-width='1.2'>
 <path d='M0 0H51.21547' fill='none'/>
@@ -1207,6 +1278,8 @@
 <path d='M204.86188 51.21547L153.64641 0' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='deformiran'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='1.4'>
 <path d='M0 0L51.86931-6.68196' fill='none'/>
@@ -1312,6 +1385,8 @@
 <path d='M206.03801 40.2895L155.99893-12.47095' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='podpore'>
 <path d='M0 0L-8.5359-15.36453H8.5359Z' fill='none'/>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-width='0.45'>
@@ -1425,17 +1500,18 @@
 </g>
 </g>
 </g>
+</g>
 </svg></span></p>
 <figcaption><span class="blk-label">Figure 7.27</span>: The deformed shape of the bridge (blue), drawn with magnification <span class="nobr">\(100\),</span> over the grey undeformed bridge. The sag of the middle is \(7{,}305\) mm, in the figure \(0{,}73\) m. The magnification is chosen so that it can be seen, at true size the difference is smaller than the thickness of the line. The horizontal displacements grow from \(0\) at \(b_0\) to \(2{,}755\) mm at \(b_6\) (section <a class="xref" href="sec-most.html#sec-simetrija-mostu">7.7.3</a>).</figcaption></figure>
-<p>The vertical \(b_3t_3\) carries nothing. Why? At the joint \(t_3\) three bars meet, both bars of the top chord, \(t_2t_3\) and <span class="nobr">\(t_3t_4\),</span> which are horizontal, and the vertical. Without a load at \(t_3\) the equilibrium of the joint in the direction \(y\) contains only the force of the vertical, because the horizontal bars have no component <span class="nobr">\(y\),</span> so <span class="nobr">\(N_{\mathrm{b}_3\mathrm{t}_3} = 0\).</span> The bar is not superfluous all the same. If we removed it, \(t_3\) would be a joint with two horizontal bars on one line and without a load, the row of the unknown \(u_{\mathrm{y}}\) of the joint \(t_3\) in \(\mat K\) would be all zeros and the matrix would be singular (section <a class="xref" href="sec-palicje-ravnina-mke.html#sec-mehanizmi">7.5.3</a>). The vertical holds this joint.</p>
-<p><strong>Check by hand, with a section.</strong> We check the computation with the equilibrium of a part of the bridge (chapter <a class="xref" href="ch-napetost.html">2</a>, equations <a class="xref" href="sec-sila-v-palici.html#eq-ravnovesje-sil" data-knowl="eq-ravnovesje-sil">(2.2)</a> and <a class="xref" href="sec-simetrija-napetosti.html#eq-ravnovesje-momentov" data-knowl="eq-ravnovesje-momentov">(2.35)</a>), not with matrices. We cut the bridge at \(x = 7{,}5\) m (figure <a class="xref" href="sec-most.html#fig-mos-most" data-knowl="fig-mos-most">7.26</a>), where only the chord bars \(t_2t_3\) and \(b_2b_3\) and the diagonal \(t_2b_3\) are cut. On the left part act the reaction \(25\) kN at <span class="nobr">\(b_0\),</span> the loads \(10\) kN at \(b_1\) and \(b_2\) and the forces of the three cut bars. A bar with <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> \(N\) acts on the left part with a pull towards the right part (for tension).</p>
+<p><a data-del="brezsile" class="xref kaz" href="sec-most.html#fig-mos-most" data-knowl="fig-mos-most">The vertical \(b_3t_3\)</a> carries nothing. Why? At <a data-del="t3" class="xref kaz" href="sec-most.html#fig-mos-most" data-knowl="fig-mos-most">the joint \(t_3\)</a> three bars meet, <a data-del="zgornji" class="xref kaz" href="sec-most.html#fig-mos-most" data-knowl="fig-mos-most">both bars of the top chord</a>, \(t_2t_3\) and <span class="nobr">\(t_3t_4\),</span> which are horizontal, and the vertical. Without a load at \(t_3\) the equilibrium of the joint in the direction \(y\) contains only the force of the vertical, because the horizontal bars have no component <span class="nobr">\(y\),</span> so <span class="nobr">\(N_{\mathrm{b}_3\mathrm{t}_3} = 0\).</span> The bar is not superfluous all the same. If we removed it, \(t_3\) would be a joint with two horizontal bars on one line and without a load, the row of the unknown \(u_{\mathrm{y}}\) of the joint \(t_3\) in \(\mat K\) would be all zeros and the matrix would be singular (section <a class="xref" href="sec-palicje-ravnina-mke.html#sec-mehanizmi">7.5.3</a>). The vertical holds this joint.</p>
+<p><strong>Check by hand, with a section.</strong> We check the computation with the equilibrium of a part of the bridge (chapter <a class="xref" href="ch-napetost.html">2</a>, equations <a class="xref" href="sec-sila-v-palici.html#eq-ravnovesje-sil" data-knowl="eq-ravnovesje-sil">(2.2)</a> and <a class="xref" href="sec-simetrija-napetosti.html#eq-ravnovesje-momentov" data-knowl="eq-ravnovesje-momentov">(2.35)</a>), not with matrices. We cut the bridge at <a data-del="rez" class="xref kaz" href="sec-most.html#fig-mos-most" data-knowl="fig-mos-most">\(x = 7{,}5\) m</a> (figure <a class="xref" href="sec-most.html#fig-mos-most" data-knowl="fig-mos-most">7.26</a>), where only the chord bars <a data-del="zgornji" class="xref kaz" href="sec-most.html#fig-mos-most" data-knowl="fig-mos-most">\(t_2t_3\)</a> and <a data-del="spodnji" class="xref kaz" href="sec-most.html#fig-mos-most" data-knowl="fig-mos-most">\(b_2b_3\)</a> and <a data-del="diagonale" class="xref kaz" href="sec-most.html#fig-mos-most" data-knowl="fig-mos-most">the diagonal \(t_2b_3\)</a> are cut. On the left part act <span class="nobr"><a data-del="podporab0" class="xref kaz" href="sec-most.html#fig-mos-most" data-knowl="fig-mos-most">the reaction \(25\) kN at \(b_0\)</a>,</span> <a data-del="bremena" class="xref kaz" href="sec-most.html#fig-mos-most" data-knowl="fig-mos-most">the loads \(10\) kN at \(b_1\) and \(b_2\)</a> and the forces of the three cut bars. A bar with <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial force</a> \(N\) acts on the left part with a pull towards the right part (for tension).</p>
 <ol>
 <li>Moments about \(b_3 = (9, 0)\) m: the diagonal and the bottom chord pass through \(b_3\) and have no moment. The reaction \(25\) kN upwards at <span class="nobr">\(b_0\),</span> \(9\) m to the left, gives the moment \(-225\) kN m, the loads downwards at \(b_1\) and \(b_2\) <span class="nobr">(\(6\)</span> m and \(3\) m to the left) give \(+60 + 30 = 90\) kN m. The top chord acts at the point \(x = 7{,}5\) m, \(y = 3\) m with the force \((N_{\mathrm{t}_2\mathrm{t}_3}, 0)\) and the moment \(-3\,N_{\mathrm{t}_2\mathrm{t}_3}\) (arm \(3\) m). The sum is zero: <span class="nobr">\(-225 + 90 - 3\,N_{\mathrm{t}_2\mathrm{t}_3} = 0\),</span> so \(N_{\mathrm{t}_2\mathrm{t}_3} = -45\) kN.</li>
 <li>Moments about \(t_2 = (6, 3)\) m: the top chord and the diagonal pass through <span class="nobr">\(t_2\).</span> The reaction gives \(-150\) kN m (horizontal arm \(6\) m), the load at \(b_1\) gives \(+30\) kN m, the load at \(b_2\) <span class="nobr">(\(x = 6\)</span> m) has zero moment. The bottom chord acts at the point \(x = 7{,}5\) m, \(y = 0\) with the force \((N_{\mathrm{b}_2\mathrm{b}_3}, 0)\) and the moment <span class="nobr">\(+3\,N_{\mathrm{b}_2\mathrm{b}_3}\).</span> The sum \(-150 + 30 + 3\,N_{\mathrm{b}_2\mathrm{b}_3} = 0\) gives \(N_{\mathrm{b}_2\mathrm{b}_3} = 40\) kN.</li>
 <li>Vertical forces on the left part: <span class="nobr">\(25 - 10 - 10 - N_{\mathrm{t}_2\mathrm{b}_3}\cdot\tfrac{3}{\sqrt{18}} = 0\),</span> because the diagonal from \(t_2\) to \(b_3\) points downwards with the vertical share <span class="nobr">\(3/\sqrt{18}\).</span> It follows that \(N_{\mathrm{t}_2\mathrm{b}_3} = 5\sqrt{2} = 7{,}071\) kN.</li>
 </ol>
 <p>All three forces agree with the table: \(-45\) (bar 8), \(40\) (bar 3), \(7{,}071\) (bar 19). The second check is by energy. By Clapeyron's theorem (theorem <a class="xref" href="sec-potencialna-energija.html#thm-clapeyron" data-knowl="thm-clapeyron">4.86</a>) \(U = \tfrac12\,\vek d^\T\vek f = \tfrac12 \cdot 10\ \text{kN} \cdot (3{,}914 + 6{,}324 + 7{,}305 + 6{,}324 + 3{,}914)\ \text{mm} = 138{,}90\) J, and the sum over the bars by equation <a class="xref" href="sec-delo-sil-na-palici.html#eq-energija-palicja" data-knowl="eq-energija-palicja">(4.5)</a>, <span class="nobr">\(\sum N^2 L/(2EA)\),</span> is also \(138{,}90\) J.</p>
-<p>What does the matrix look like? The unknowns are in the order <span class="nobr">\(u_{\mathrm{b}_1}, v_{\mathrm{b}_1}, u_{\mathrm{t}_1}, v_{\mathrm{t}_1}, \dots, u_{\mathrm{b}_6}\).</span> The entry \(K_{\mathrm{ij}}\) is nonzero only if the unknowns \(i\) and \(j\) belong to joints connected by a bar or to the same joint (corollary <a class="xref" href="sec-sestavljanje.html#cor-matrika-konstrukcije" data-knowl="cor-matrika-konstrukcije">7.14</a>). Of the \(441\) entries of the matrix <span class="nobr">\(\mat K_{\mathrm{ff}}\),</span> \(93\) are nonzero (of the \(576\) entries of <span class="nobr">\(\mat K\),</span> <span class="nobr">\(114\)),</span> all close to the diagonal (figure <a class="xref" href="sec-most.html#fig-mos-vzorec" data-knowl="fig-mos-vzorec">7.28</a>). The \(3 \times 3\) matrix of the space bracket is full, while the matrix of the bridge is about four fifths empty, and how fast we can solve it depends on this (this is the subject of a later section on sparse matrices).</p>
+<p>What does the matrix look like? The unknowns are in the order <span class="nobr">\(u_{\mathrm{b}_1}, v_{\mathrm{b}_1}, u_{\mathrm{t}_1}, v_{\mathrm{t}_1}, \dots, u_{\mathrm{b}_6}\).</span> The entry \(K_{\mathrm{ij}}\) is nonzero only if the unknowns \(i\) and \(j\) belong to joints connected by a bar or to the same joint (corollary <a class="xref" href="sec-sestavljanje.html#cor-matrika-konstrukcije" data-knowl="cor-matrika-konstrukcije">7.14</a>). Of the <span class="nobr"><a data-del="okvir" class="xref kaz" href="sec-most.html#fig-mos-vzorec" data-knowl="fig-mos-vzorec">\(441\) entries of the matrix \(\mat K_{\mathrm{ff}}\)</a>,</span> <a data-del="elementi" class="xref kaz" href="sec-most.html#fig-mos-vzorec" data-knowl="fig-mos-vzorec">\(93\) are nonzero</a> (of the \(576\) entries of <span class="nobr">\(\mat K\),</span> <span class="nobr">\(114\)),</span> <a data-del="pas" class="xref kaz" href="sec-most.html#fig-mos-vzorec" data-knowl="fig-mos-vzorec">all close to the diagonal</a> (figure <a class="xref" href="sec-most.html#fig-mos-vzorec" data-knowl="fig-mos-vzorec">7.28</a>). The grid lines separate <a data-del="mreza" class="xref kaz" href="sec-most.html#fig-mos-vzorec" data-knowl="fig-mos-vzorec">\(2 \times 2\) blocks of the joints</a>, along the edge are the <span class="nobr"><a data-del="b1,b2,b3,b4,b5,b6,t1,t2,t3,t4,t5" class="xref kaz" href="sec-most.html#fig-mos-vzorec" data-knowl="fig-mos-vzorec">labels of the joints \(b_1, \dots, b_6\) and \(t_1, \dots, t_5\)</a>.</span> The \(3 \times 3\) matrix of the space bracket is full, while the matrix of the bridge is about four fifths empty, and how fast we can solve it depends on this (this is the subject of a later section on sparse matrices).</p>
 
 <figure class="blk slika" id="fig-mos-vzorec"><p><span class="svgfig" role="img" aria-label="Pattern of nonzero entries of the bridge matrix"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='202.17pt' height='199.03pt' viewBox='-72.000004 -72.000009 149.757469 147.428593'>
 <defs>
@@ -1455,6 +1531,7 @@
 <g stroke-width='0.6'>
 <g stroke-linecap='round'>
 <g stroke-linejoin='round'>
+<g class='del' data-del='elementi'>
 <g fill='#00f' stroke='#00f'>
 <path d='M.71114-5.5485V-.71114H5.5485V-5.5485ZM5.5485-.71114' stroke='none'/>
 </g>
@@ -1734,6 +1811,8 @@
 <g fill='#00f' stroke='#00f'>
 <path d='M125.90347-130.74039V-125.90347H130.74039V-130.74039ZM130.74039-125.90347' stroke='none'/>
 </g>
+</g>
+<g class='del' data-del='mreza'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-width='0.3'>
 <path d='M0 0V-131.45152' fill='none'/>
@@ -1854,9 +1933,13 @@
 <path d='M0-131.45152H131.45152' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='okvir'>
 <g stroke-width='0.8'>
 <path d='M0 0V-131.45152H131.45152V0ZM131.45152-131.45152' fill='none'/>
 </g>
+</g>
+<g class='del' data-del='pas'>
 <g fill='#f00' stroke='#f00'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.8'>
@@ -1871,6 +1954,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='b1'>
 <g transform='translate(2.54988,5.20215)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.101254,-58.653843)scale(-1,-1)'>
 <g fill='#000'>
@@ -1891,6 +1976,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='t1'>
 <g transform='translate(15.31706,5.20215)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.101254,-58.653843)scale(-1,-1)'>
 <g fill='#000'>
@@ -1911,6 +1998,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='b2'>
 <g transform='translate(27.58844,5.20215)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.101254,-58.653843)scale(-1,-1)'>
 <g fill='#000'>
@@ -1931,6 +2020,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='t2'>
 <g transform='translate(40.3552,5.20215)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.101254,-58.653843)scale(-1,-1)'>
 <g fill='#000'>
@@ -1951,6 +2042,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='b3'>
 <g transform='translate(52.62656,5.20215)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.101254,-58.653843)scale(-1,-1)'>
 <g fill='#000'>
@@ -1971,6 +2064,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='t3'>
 <g transform='translate(65.39374,5.20215)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.101254,-58.653843)scale(-1,-1)'>
 <g fill='#000'>
@@ -1991,6 +2086,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='b4'>
 <g transform='translate(77.66512,5.20215)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.101254,-58.653843)scale(-1,-1)'>
 <g fill='#000'>
@@ -2011,6 +2108,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='t4'>
 <g transform='translate(90.4323,5.20215)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.101254,-58.653843)scale(-1,-1)'>
 <g fill='#000'>
@@ -2031,6 +2130,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='b5'>
 <g transform='translate(102.70366,5.20215)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.101254,-58.653843)scale(-1,-1)'>
 <g fill='#000'>
@@ -2051,6 +2152,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='t5'>
 <g transform='translate(115.47041,5.20215)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.101254,-58.653843)scale(-1,-1)'>
 <g fill='#000'>
@@ -2071,6 +2174,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='b6'>
 <g transform='translate(124.61197,5.20215)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.101254,-58.653843)scale(-1,-1)'>
 <g fill='#000'>
@@ -2098,12 +2203,13 @@
 </g>
 </g>
 </g>
+</g>
 </svg></span></p>
 <figcaption><span class="blk-label">Figure 7.28</span>: Nonzero entries of the matrix \(\mat K_{\mathrm{ff}}\) of the bridge, of size <span class="nobr">\(21 \times 21\),</span> for the numbering of the joints along the span <span class="nobr">(\(b_0, b_1, t_1, b_2, t_2, \dots\)).</span> Each coloured square is one nonzero entry, \(93\) of \(441\) in all. All lie between the orange dashed lines, that is at most \(7\) rows and columns from the diagonal. The grid lines separate the joints <span class="nobr">(\(2 \times 2\)</span> blocks).</figcaption></figure>
 <h3 id="sec-simetrija-mostu"><span class="h-num">7.7.3</span> Symmetry and the half model (simetrija in polovični model)</h3>
-<p>The bridge is symmetric about the vertical \(x = 9\) m: geometry and loads. The supports are not: the fixed one is on the left, the roller on the right. May we compute with one half only? COOK §2.11 (PDF p. 69) says that when the structure, the supports and the material are symmetric, symmetric loads give symmetric results, and that one half with suitable boundary conditions suffices. In the bridge the supports are not symmetric, so we first prove what holds. Let \(\bar i\) denote the joint to which the reflection in \(x = 9\) m maps the joint \(i\) <span class="nobr">(\(b_{\mathrm{i}}\)</span> becomes \(b_{6-\mathrm{i}}\) and \(t_{\mathrm{i}}\) becomes <span class="nobr">\(t_{6-\mathrm{i}}\)),</span> and let \(c\) be the displacement \(u_{\mathrm{x}}\) at <span class="nobr">\(b_6\).</span></p>
+<p>The bridge is symmetric about the vertical \(x = 9\) m: geometry and loads. The supports are not: the fixed one is on the left, the roller on the right. May we compute with one half only? COOK §2.11 (PDF p. 69) says that when the structure, the supports and the material are symmetric, <a class="xref auto forward" href="sec-zrcalna-simetrija.html#def-simetricen-problem" data-knowl="def-simetricen-problem" title="Defined later in the book">symmetric loads</a> give symmetric results, and that one half with suitable boundary conditions suffices. In the bridge the supports are not symmetric, so we first prove what holds. Let \(\bar i\) denote the joint to which the <a class="xref auto forward" href="sec-zrcalna-simetrija.html#def-zrcaljenje" data-knowl="def-zrcaljenje" title="Defined later in the book">reflection</a> in \(x = 9\) m maps the joint \(i\) <span class="nobr">(\(b_{\mathrm{i}}\)</span> becomes \(b_{6-\mathrm{i}}\) and \(t_{\mathrm{i}}\) becomes <span class="nobr">\(t_{6-\mathrm{i}}\)),</span> and let \(c\) be the displacement \(u_{\mathrm{x}}\) at <span class="nobr">\(b_6\).</span></p>
 
-<div class="blk lema" id="lem-simetrija-mostu"><div class="blk-head"><span class="blk-label">Lemma 7.38</span> <span class="blk-title">Symmetry of the bridge solution (simetrija rešitve mostu)</span></div><div class="blk-body"><p>For the solution \(\vek d\) of the bridge problem with supports at \(b_0\) (both displacements prescribed) and \(b_6\) (only \(u_{\mathrm{y}}\) prescribed) and with vertical symmetric loads:</p>
+<div class="blk lema" id="lem-simetrija-mostu"><div class="blk-head"><span class="blk-label">Lemma 7.38</span> <span class="blk-title">Symmetry of the bridge solution (simetrija rešitve mostu)</span></div><div class="blk-body"><p>For the solution \(\vek d\) of the bridge problem with supports at \(b_0\) (both displacements prescribed) and \(b_6\) (only \(u_{\mathrm{y}}\) prescribed) and with vertical <a class="xref auto forward" href="sec-zrcalna-simetrija.html#def-simetricen-problem" data-knowl="def-simetricen-problem" title="Defined later in the book">symmetric loads</a>:</p>
 <ol>
 <li>the horizontal reaction at \(b_0\) is zero,</li>
 <li>\(u_{\mathrm{y}}(\bar i) = u_{\mathrm{y}}(i)\) and \(u_{\mathrm{x}}(i) + u_{\mathrm{x}}(\bar i) = c\) for every joint <span class="nobr">\(i\),</span></li>
@@ -2113,7 +2219,7 @@
 <div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that the mirror image of the solution, shifted by a rigid displacement, solves the same system, and use uniqueness. We write the unknowns of all joints into a column <span class="nobr">\(\vek d\),</span> so that <span class="nobr">\(\mat K\,\vek d = \vek f + \vek r\),</span> where \(\vek r\) is the column of reactions, nonzero only at the prescribed unknowns (theorem <a class="xref" href="sec-robni-pogoji-mke.html#thm-reduciran-sistem" data-knowl="thm-reduciran-sistem">7.18</a>).</p>
 <ol>
 <li>The sum of the horizontal components of the loads and reactions is zero by lemma <a class="xref" href="sec-palicje-ravnina-mke.html#lem-ravnovesje-reakcij-ravnina" data-knowl="lem-ravnovesje-reakcij-ravnina">7.30</a>. The loads are vertical and there is only one horizontal reaction, at \(b_0\) (the unknown \(u_{\mathrm{x}}\) at \(b_6\) is free, so the reaction there is zero), so this one is zero. This is point 1.</li>
-<li>Let \(\mat P\) be the reflection matrix: \((\mat P\vek d)\) has at joint \(i\) the components <span class="nobr">\(\big({-u_{\mathrm{x}}(\bar i)},\ u_{\mathrm{y}}(\bar i)\big)\).</span> The mirror bar has the same stiffness \(EA/L\) and a <a class="xref auto" href="sec-vektorji.html#def-enotski-vektor" data-knowl="def-enotski-vektor">unit vector</a> with the component \(x\) reversed, so its elongation under \(\mat P\vek d\) equals the elongation of the original bar under <span class="nobr">\(\vek d\).</span> The mirror image of a bar is again a bar of the bridge, so the energy \(\vek d^\T\mat K\vek d = \sum_{\mathrm{e}} \tfrac{EA}{L}(\text{elongation})^2\) does not change under <span class="nobr">\(\vek d \to \mat P\vek d\),</span> \((\mat P\vek d)^\T\mat K\,(\mat P\vek d) = \vek d^\T\mat K\vek d\) for every <span class="nobr">\(\vek d\).</span> The <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> \(\mat P^\T\mat K\mat P\) and \(\mat K\) are symmetric and have the same quadratic form. So they are equal: for \(\vek d = \vek e_{\mathrm{i}}\) the diagonal entries agree, for \(\vek d = \vek e_{\mathrm{i}} + \vek e_{\mathrm{j}}\) the form is <span class="nobr">\(A_{\mathrm{ii}} + 2A_{\mathrm{ij}} + A_{\mathrm{jj}}\),</span> so the off-diagonal entries agree too. Hence \(\mat P\,\mat K\,\mat P = \mat K\) <span class="nobr">(\(\mat P^\T = \mat P\))</span> and, since <span class="nobr">\(\mat P^2 = \mat I\),</span> <span class="nobr">\(\mat K\,\mat P = \mat P\,\mat K\).</span> The loads are symmetric, <span class="nobr">\(\mat P\vek f = \vek f\).</span></li>
+<li>Let \(\mat P\) be the <a class="xref auto forward" href="sec-zrcalna-simetrija.html#def-zrcaljenje" data-knowl="def-zrcaljenje" title="Defined later in the book">reflection</a> matrix: \((\mat P\vek d)\) has at joint \(i\) the components <span class="nobr">\(\big({-u_{\mathrm{x}}(\bar i)},\ u_{\mathrm{y}}(\bar i)\big)\).</span> The mirror bar has the same stiffness \(EA/L\) and a <a class="xref auto" href="sec-vektorji.html#def-enotski-vektor" data-knowl="def-enotski-vektor">unit vector</a> with the component \(x\) reversed, so its elongation under \(\mat P\vek d\) equals the elongation of the original bar under <span class="nobr">\(\vek d\).</span> The mirror image of a bar is again a bar of the bridge, so the energy \(\vek d^\T\mat K\vek d = \sum_{\mathrm{e}} \tfrac{EA}{L}(\text{elongation})^2\) does not change under <span class="nobr">\(\vek d \to \mat P\vek d\),</span> \((\mat P\vek d)^\T\mat K\,(\mat P\vek d) = \vek d^\T\mat K\vek d\) for every <span class="nobr">\(\vek d\).</span> The <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> \(\mat P^\T\mat K\mat P\) and \(\mat K\) are symmetric and have the same quadratic form. So they are equal: for \(\vek d = \vek e_{\mathrm{i}}\) the diagonal entries agree, for \(\vek d = \vek e_{\mathrm{i}} + \vek e_{\mathrm{j}}\) the form is <span class="nobr">\(A_{\mathrm{ii}} + 2A_{\mathrm{ij}} + A_{\mathrm{jj}}\),</span> so the off-diagonal entries agree too. Hence \(\mat P\,\mat K\,\mat P = \mat K\) <span class="nobr">(\(\mat P^\T = \mat P\))</span> and, since <span class="nobr">\(\mat P^2 = \mat I\),</span> <span class="nobr">\(\mat K\,\mat P = \mat P\,\mat K\).</span> The loads are symmetric, <span class="nobr">\(\mat P\vek f = \vek f\).</span></li>
 <li>Therefore <span class="nobr">\(\mat K\,(\mat P\vek d) = \mat P\,\mat K\,\vek d = \vek f + \mat P\vek r\).</span> The column \(\mat P\vek r\) is nonzero only at \(u_{\mathrm{y}}\) at \(b_0\) and <span class="nobr">\(b_6\),</span> because \(r_{\mathrm{x}}(b_0) = 0\) by point 1 (otherwise it would be nonzero at \(u_{\mathrm{x}}\) at <span class="nobr">\(b_6\),</span> which is a free unknown).</li>
 <li>Let \(\vek s\) be the column in which \(u_{\mathrm{x}} = 1\) at all joints and everything else is zero. This displacement changes no elongation (the elongation \(\vek n\cdot(\vek u_{\mathrm{j}} - \vek u_{\mathrm{i}}) = 0\) for equal displacements of the ends), so \(\vek s^\T\mat K\vek s = 0\) and by lemma <a class="xref" href="sec-robni-pogoji-mke.html#lem-jedro-semidefinitne" data-knowl="lem-jedro-semidefinitne">7.16</a> <span class="nobr">\(\mat K\vek s = \vek 0\).</span> Hence \(\vek d^{**} = \mat P\vek d + c\,\vek s\) is also a solution of the rows of the free unknowns. The support conditions are satisfied: \(u_{\mathrm{x}}(b_0)\) is \(-u_{\mathrm{x}}(b_6) + c = 0\) and <span class="nobr">\(u_{\mathrm{y}}(b_0) = u_{\mathrm{y}}(b_6) = 0\).</span></li>
 <li>The rows of the free unknowns give for both columns, \(\vek d\) and <span class="nobr">\(\vek d^{**}\),</span> the same reduced system <span class="nobr">\(\mat K_{\mathrm{ff}}\,\vek d_{\mathrm{f}} = \vek f_{\mathrm{f}}\),</span> since the prescribed values of both are zero. The matrix \(\mat K_{\mathrm{ff}}\) is <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite</a> (all pivots are positive, section <a class="xref" href="sec-most.html#sec-rezultati-mostu">7.7.2</a>), so the system has exactly one solution (theorem <a class="xref" href="sec-skalarni-produkt-funkcij.html#thm-sistem-pozitivno-definitna" data-knowl="thm-sistem-pozitivno-definitna">6.29</a>) and <span class="nobr">\(\vek d^{**} = \vek d\).</span> The components give point 2.</li>
@@ -2123,20 +2229,20 @@
 <p class="vir"><span class="vir-label">Source:</span> COOK §2.11 (PDF p. 69). The proof is not from the source.</p></div></div>
 <p>From the lemma: \(c = 2{,}755\) mm, so \(u_{\mathrm{x}}(b_3) = c/2 = 1{,}378\) mm, and for example \(u_{\mathrm{x}}(b_1) + u_{\mathrm{x}}(b_5) = 0{,}383 + 2{,}372 = 2{,}755\) mm. The displacements are thus symmetric up to the rigid displacement <span class="nobr">\(c\).</span> What does this mean for the half model? It is as if we subtracted \(c/2\) from all displacements: the displacements \(\tilde u_{\mathrm{x}} = u_{\mathrm{x}} - c/2\) are antisymmetric in the mirror, <span class="nobr">\(\tilde u_{\mathrm{x}}(\bar i) = -\tilde u_{\mathrm{x}}(i)\),</span> and on the <a class="xref auto" href="sec-geometrija-prereza.html#lem-simetrija-tezisce" data-knowl="lem-simetrija-tezisce">axis of symmetry</a> <span class="nobr">(\(b_3\),</span> <span class="nobr">\(t_3\))</span> they are zero.</p>
 
-<div class="blk lema" id="lem-polovicni-model"><div class="blk-head"><span class="blk-label">Lemma 7.39</span> <span class="blk-title">Half model of the bridge (polovični model mostu)</span></div><div class="blk-body"><p>Let the model \(H\) have the joints <span class="nobr">\(b_0, b_1, b_2, b_3, t_1, t_2, t_3\),</span> the bars of the left half, where the bar \(b_3t_3\) has half the cross-section <span class="nobr">\(A/2\),</span> the loads \(10\) kN at \(b_1\) and \(b_2\) and \(5\) kN at <span class="nobr">\(b_3\),</span> and the prescribed unknowns <span class="nobr">\(u_{\mathrm{y}}(b_0) = 0\),</span> \(u_{\mathrm{x}}(b_3) = 0\) and <span class="nobr">\(u_{\mathrm{x}}(t_3) = 0\).</span> It has \(11\) unknowns. Its solution has in all bars the same <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial forces</a> as the full model (the bar \(b_3t_3\) half the force of the full bar, here zero), the same \(u_{\mathrm{y}}\) and the displacements <span class="nobr">\(u_{\mathrm{x}} - c/2\).</span></p>
+<div class="blk lema" id="lem-polovicni-model"><div class="blk-head"><span class="blk-label">Lemma 7.39</span> <span class="blk-title">Half model of the bridge (polovični model mostu)</span></div><div class="blk-body"><p>Let the <a data-del="modelH" class="xref kaz" href="sec-most.html#fig-mos-polovica" data-knowl="fig-mos-polovica">model \(H\)</a> have the <span class="nobr"><a data-del="vozliscaH" class="xref kaz" href="sec-most.html#fig-mos-polovica" data-knowl="fig-mos-polovica">joints \(b_0, b_1, b_2, b_3, t_1, t_2, t_3\)</a>,</span> the bars of the left half, where the <a data-del="brezsileH" class="xref kaz" href="sec-most.html#fig-mos-polovica" data-knowl="fig-mos-polovica">bar \(b_3t_3\)</a> has half the cross-section <span class="nobr">\(A/2\),</span> the <a data-del="bremenaH" class="xref kaz" href="sec-most.html#fig-mos-polovica" data-knowl="fig-mos-polovica">loads \(10\) kN at \(b_1\) and \(b_2\) and \(5\) kN at \(b_3\)</a>, and the prescribed unknowns <span class="nobr">\(u_{\mathrm{y}}(b_0) = 0\),</span> \(u_{\mathrm{x}}(b_3) = 0\) and <span class="nobr">\(u_{\mathrm{x}}(t_3) = 0\).</span> It has \(11\) unknowns. Its solution has in all bars the same <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial forces</a> as the full model (the bar \(b_3t_3\) half the force of the full bar, here zero), the same \(u_{\mathrm{y}}\) and the displacements <span class="nobr">\(u_{\mathrm{x}} - c/2\).</span></p>
 
 <div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that the displacements \(\tilde{\vek d}\) of the full model, reduced by <span class="nobr">\(c/2\),</span> satisfy the equations of the model <span class="nobr">\(H\),</span> and use uniqueness.</p>
 <ol>
 <li>Let <span class="nobr">\(\tilde{\vek d} = \vek d - \tfrac c2\,\vek s\).</span> Since <span class="nobr">\(\mat K\vek s = \vek 0\),</span> we have <span class="nobr">\(\mat K\tilde{\vek d} = \vek f + \vek r\).</span> By point 2 of lemma <a class="xref" href="sec-most.html#lem-simetrija-mostu" data-knowl="lem-simetrija-mostu">7.38</a>, \(\tilde u_{\mathrm{x}}(b_3) = \tilde u_{\mathrm{x}}(t_3) = 0\) and <span class="nobr">\(\tilde u_{\mathrm{y}}(b_0) = 0\),</span> so \(\tilde{\vek d}\) satisfies the prescribed conditions of the model <span class="nobr">\(H\).</span></li>
 <li>The rows of the unknowns at the joints \(b_0, b_1, b_2, t_1, t_2\) contain only bars of the left half (every bar that meets these joints is in the model <span class="nobr">\(H\)),</span> the same load, and on the right-hand side at \(u_{\mathrm{x}}(b_0)\) there is the reaction <span class="nobr">\(r_{\mathrm{x}}(b_0) = 0\).</span> These rows are therefore the same as the rows of the model <span class="nobr">\(H\).</span></li>
-<li>The row \(u_{\mathrm{y}}\) of the joint \(b_3\) has contributions of the bars <span class="nobr">\(b_2b_3\),</span> \(t_2b_3\) (left), <span class="nobr">\(b_3b_4\),</span> \(t_4b_3\) (right) and <span class="nobr">\(b_3t_3\).</span> The contribution of a bar to this row is the \(y\)-component of its force on the joint, <span class="nobr">\(\pm N\,n_{\mathrm{y}}\).</span> By point 3 of the lemma the mirror bar has the same force \(N\) and the same component \(n_{\mathrm{y}}\) (reflection in the vertical does not change the component <span class="nobr">\(y\)),</span> so the contribution is equal. The row is thus equal to \(2 \times\) (contribution of the left bars) \(+\) the contribution of \(b_3t_3\) with the full cross-section \(= f_{\mathrm{y}}(b_3) = -10\) kN. Halved, this is the row of the model <span class="nobr">\(H\):</span> (contribution of the left bars) \(+\) the contribution of \(b_3t_3\) with the cross-section \(A/2\) \(= -5\) kN. The same holds for \(u_{\mathrm{y}}\) at \(t_3\) (the load there is zero).</li>
+<li>The row \(u_{\mathrm{y}}\) of the joint \(b_3\) has contributions of the bars <span class="nobr">\(b_2b_3\),</span> \(t_2b_3\) (left), <span class="nobr">\(b_3b_4\),</span> \(t_4b_3\) (right) and <span class="nobr">\(b_3t_3\).</span> The contribution of a bar to this row is the \(y\)-component of its force on the joint, <span class="nobr">\(\pm N\,n_{\mathrm{y}}\).</span> By point 3 of the lemma the mirror bar has the same force \(N\) and the same component \(n_{\mathrm{y}}\) (<a class="xref auto forward" href="sec-zrcalna-simetrija.html#def-zrcaljenje" data-knowl="def-zrcaljenje" title="Defined later in the book">reflection</a> in the vertical does not change the component <span class="nobr">\(y\)),</span> so the contribution is equal. The row is thus equal to \(2 \times\) (contribution of the left bars) \(+\) the contribution of \(b_3t_3\) with the full cross-section \(= f_{\mathrm{y}}(b_3) = -10\) kN. Halved, this is the row of the model <span class="nobr">\(H\):</span> (contribution of the left bars) \(+\) the contribution of \(b_3t_3\) with the cross-section \(A/2\) \(= -5\) kN. The same holds for \(u_{\mathrm{y}}\) at \(t_3\) (the load there is zero).</li>
 <li>The rows \(u_{\mathrm{x}}\) at \(b_3\) and \(t_3\) in the model \(H\) are not equations, because these unknowns are prescribed, and their values are reactions.</li>
 <li>So \(\tilde{\vek d}\) satisfies all equations of the model <span class="nobr">\(H\).</span> The <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> of the model \(H\) is <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">positive definite</a> (all \(11\) pivots are positive, the smallest is \(2{,}14 \cdot 10^6\) N/m, computed in NumPy), so the system has exactly one solution (theorem <a class="xref" href="sec-skalarni-produkt-funkcij.html#thm-sistem-pozitivno-definitna" data-knowl="thm-sistem-pozitivno-definitna">6.29</a>), and this is <span class="nobr">\(\tilde{\vek d}\).</span> The <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial forces</a> and \(u_{\mathrm{y}}\) of the full model are therefore equal in <span class="nobr">\(H\).</span></li>
 </ol>
 </div></details></div>
 <p class="vir"><span class="vir-label">Source:</span> COOK §2.11 (PDF p. 69): &quot;Load on this octant is Px/2, because the original load Px is bisected by the symmetry plane&quot; and &quot;only half its stiffness is retained in the portion analyzed&quot;. The proof is not from the source.</p></div></div>
-<p>The support at \(b_0\) is thus a roller in the half model, not a fixed support. The model \(H\) gives \(11\) unknowns instead of <span class="nobr">\(21\),</span> all <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial forces</a> of the full model, the displacement of the middle \(7{,}305\) mm and the reactions on the cut \(+45\) kN at \(b_3\) and \(-45\) kN at <span class="nobr">\(t_3\).</span> These are the horizontal forces with which the other half acts on this half. At \(b_3\) this is the force of the bottom chord \(40\) kN and the horizontal component of the diagonal <span class="nobr">\(t_4b_3\),</span> \(7{,}071 \cdot \cos 45^\circ = 5\) kN, and at \(t_3\) the force of the top chord \(-45\) kN. Together they form a <a class="xref auto" href="sec-model-nosilca.html#def-dvojica-sil" data-knowl="def-dvojica-sil">couple</a> with the moment \(45 \cdot 3 = 135\) kN m, which is the <a class="xref auto" href="sec-notranje-sile-nosilca.html#def-upogibni-moment" data-knowl="def-upogibni-moment">bending moment</a> of the bridge in the middle, \(25 \cdot 9 - 10\,(6 + 3) = 135\) kN m.</p>
-<p>What happens if at \(b_0\) instead of the roller support we prescribe also <span class="nobr">\(u_{\mathrm{x}}(b_0) = 0\),</span> because the bridge is in reality fixed on this side? We compute with the model <span class="nobr">\(H^*\):</span> the same as <span class="nobr">\(H\),</span> only with a fixed support at \(b_0\) (figure <a class="xref" href="sec-most.html#fig-mos-polovica" data-knowl="fig-mos-polovica">7.29</a>). The solution has \(10\) free unknowns. The axial force of the bar \(b_0b_1\) is \(-5\) kN instead of \(25\) kN, of the bar \(b_1b_2\) \(-5\) kN instead of \(25\) kN and of the bar \(b_2b_3\) \(10\) kN instead of \(40\) kN, and the sag of the middle is \(5{,}469\) mm instead of \(7{,}305\) mm. The reaction at \(b_0\) is \((30, 25)\) kN, at \(b_3\) the horizontal one is \(15\) kN and at \(t_3\) the horizontal one is \(-45\) kN. We check the equilibrium of the reactions: <span class="nobr">\(\sum F_{\mathrm{x}} = 30 + 15 - 45 = 0\),</span> \(\sum F_{\mathrm{y}} = 25 - 10 - 10 - 5 = 0\) and the moment about \(b_0\) is <span class="nobr">\(-(10 \cdot 3 + 10 \cdot 6 + 5 \cdot 9) + 45 \cdot 3 = -135 + 135 = 0\).</span> The check of the reactions succeeds, but the model is wrong.</p>
+<p>The <a data-del="podporaH" class="xref kaz" href="sec-most.html#fig-mos-polovica" data-knowl="fig-mos-polovica">support at \(b_0\)</a> is thus a roller in the half model, not a fixed support. The <a data-del="modelH" class="xref kaz" href="sec-most.html#fig-mos-polovica" data-knowl="fig-mos-polovica">model \(H\)</a> gives \(11\) unknowns instead of <span class="nobr">\(21\),</span> all <a class="xref auto" href="sec-sila-v-palici.html#def-osna-sila" data-knowl="def-osna-sila">axial forces</a> of the full model, the displacement of the middle \(7{,}305\) mm and the reactions on the cut <a data-del="rb3H" class="xref kaz" href="sec-most.html#fig-mos-polovica" data-knowl="fig-mos-polovica">\(+45\) kN at \(b_3\)</a> and <span class="nobr"><a data-del="rt3H" class="xref kaz" href="sec-most.html#fig-mos-polovica" data-knowl="fig-mos-polovica">\(-45\) kN at \(t_3\)</a>.</span> These are the horizontal forces with which the other half acts on this half. At \(b_3\) this is the force of the <a data-del="spodnjiH" class="xref kaz" href="sec-most.html#fig-mos-polovica" data-knowl="fig-mos-polovica">bottom chord</a> \(40\) kN and the horizontal component of the <span class="nobr"><a data-del="diagonaleH" class="xref kaz" href="sec-most.html#fig-mos-polovica" data-knowl="fig-mos-polovica">diagonal \(t_4b_3\)</a>,</span> \(7{,}071 \cdot \cos 45^\circ = 5\) kN, and at \(t_3\) the force of the <a data-del="zgornjiH" class="xref kaz" href="sec-most.html#fig-mos-polovica" data-knowl="fig-mos-polovica">top chord</a> \(-45\) kN. Together they form a <a class="xref auto" href="sec-model-nosilca.html#def-dvojica-sil" data-knowl="def-dvojica-sil">couple</a> with the moment \(45 \cdot 3 = 135\) kN m, which is the <a class="xref auto" href="sec-notranje-sile-nosilca.html#def-upogibni-moment" data-knowl="def-upogibni-moment">bending moment</a> of the bridge in the middle, \(25 \cdot 9 - 10\,(6 + 3) = 135\) kN m.</p>
+<p>What happens if at \(b_0\) instead of the roller support we prescribe also <span class="nobr">\(u_{\mathrm{x}}(b_0) = 0\),</span> because the bridge is in reality fixed on this side? We compute with the <span class="nobr"><a data-del="modelZ" class="xref kaz" href="sec-most.html#fig-mos-polovica" data-knowl="fig-mos-polovica">model \(H^*\)</a>:</span> the same as <span class="nobr">\(H\),</span> only with a <a data-del="podporaZ" class="xref kaz" href="sec-most.html#fig-mos-polovica" data-knowl="fig-mos-polovica">fixed support at \(b_0\)</a> (figure <a class="xref" href="sec-most.html#fig-mos-polovica" data-knowl="fig-mos-polovica">7.29</a>). The solution has \(10\) free unknowns. <a data-del="spodnjiH,spodnjiZ" class="xref kaz" href="sec-most.html#fig-mos-polovica" data-knowl="fig-mos-polovica">The axial force of the bar \(b_0b_1\) is \(-5\) kN instead of \(25\) kN, of the bar \(b_1b_2\) \(-5\) kN instead of \(25\) kN and of the bar \(b_2b_3\) \(10\) kN instead of \(40\) kN</a>, and the sag of the middle is \(5{,}469\) mm instead of \(7{,}305\) mm. <a data-del="rb0Z" class="xref kaz" href="sec-most.html#fig-mos-polovica" data-knowl="fig-mos-polovica">The reaction at \(b_0\) is \((30, 25)\) kN</a>, at \(b_3\) <a data-del="rb3Z" class="xref kaz" href="sec-most.html#fig-mos-polovica" data-knowl="fig-mos-polovica">the horizontal one is \(15\) kN</a> and at \(t_3\) <a data-del="rt3Z" class="xref kaz" href="sec-most.html#fig-mos-polovica" data-knowl="fig-mos-polovica">the horizontal one is \(-45\) kN</a>. We check the equilibrium of the reactions: <span class="nobr">\(\sum F_{\mathrm{x}} = 30 + 15 - 45 = 0\),</span> \(\sum F_{\mathrm{y}} = 25 - 10 - 10 - 5 = 0\) and the moment about \(b_0\) is <span class="nobr">\(-(10 \cdot 3 + 10 \cdot 6 + 5 \cdot 9) + 45 \cdot 3 = -135 + 135 = 0\).</span> The check of the reactions succeeds, but the model is wrong. In the figure both models have the same <a data-del="vozliscaH,vozliscaZ" class="xref kaz" href="sec-most.html#fig-mos-polovica" data-knowl="fig-mos-polovica">joints</a>, <a data-del="navpicniceH,navpicniceZ" class="xref kaz" href="sec-most.html#fig-mos-polovica" data-knowl="fig-mos-polovica">verticals</a>, <a data-del="diagonaleH,diagonaleZ" class="xref kaz" href="sec-most.html#fig-mos-polovica" data-knowl="fig-mos-polovica">diagonals</a>, <a data-del="zgornjiH,zgornjiZ" class="xref kaz" href="sec-most.html#fig-mos-polovica" data-knowl="fig-mos-polovica">top chord</a> and <a data-del="bremenaH,bremenaZ" class="xref kaz" href="sec-most.html#fig-mos-polovica" data-knowl="fig-mos-polovica">loads</a>, the <a data-del="brezsileH,brezsileZ" class="xref kaz" href="sec-most.html#fig-mos-polovica" data-knowl="fig-mos-polovica">bar \(b_3t_3\)</a> lies on the axis of symmetry in both, and they differ in the support and in the axial forces of the bottom chord.</p>
 
 <figure class="blk slika" id="fig-mos-polovica"><p><span class="svgfig" role="img" aria-label="Correct and wrong half model of the bridge with axial forces in the bottom chord and reactions"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='502.13pt' height='122.61pt' viewBox='-72.000004 -72.000008 371.945156 90.820772'>
 <defs>
@@ -2161,6 +2267,7 @@
 <g stroke-width='0.6'>
 <g stroke-linecap='round'>
 <g stroke-linejoin='round'>
+<g class='del' data-del='spodnjiH'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='2.0'>
 <path d='M0 0H42.6791' fill='none'/>
@@ -2218,6 +2325,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='zgornjiH'>
 <g fill='#f00' stroke='#f00'>
 <g stroke-width='2.0'>
 <path d='M42.6791 42.6791H85.35818' fill='none'/>
@@ -2228,6 +2337,8 @@
 <path d='M85.35818 42.6791H128.03728' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='navpicniceH'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='2.0'>
 <path d='M42.6791 0V42.6791' fill='none'/>
@@ -2238,6 +2349,8 @@
 <path d='M85.35818 0V42.6791' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='brezsileH'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='2.0'>
@@ -2245,6 +2358,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='diagonaleH'>
 <g fill='#f00' stroke='#f00'>
 <g stroke-width='2.0'>
 <path d='M0 0L42.6791 42.6791' fill='none'/>
@@ -2260,6 +2375,8 @@
 <path d='M85.35818 42.6791L128.03728 0' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='vozliscaH'>
 <g fill='#fff'>
 <g fill='#fff'>
 <path d='M1.83862 0C1.83862 1.01544 1.01544 1.83862 0 1.83862S-1.83862 1.01544-1.83862 0S-1.01544-1.83862 0-1.83862S1.83862-1.01544 1.83862 0ZM0 0'/>
@@ -2342,6 +2459,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='bremenaH'>
 <g stroke-width='0.9'>
 <path d='M42.6791-3.55658V-15.69319' fill='none'/>
 <g transform='matrix(0.0,-1.0,1.0,0.0,42.6791,-13.08817)'>
@@ -2401,6 +2520,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='podporaH'>
 <path d='M0 0L-7.11317-11.38113H7.11317Z' fill='none'/>
 <g fill='#fff'>
 <g fill='#fff'>
@@ -2466,6 +2587,8 @@
 <path d='M9.9584-15.64908L12.80362-12.80386' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='rb3H'>
 <g stroke-width='0.9'>
 <path d='M130.17114 0H155.1116' fill='none'/>
 <g transform='translate(152.50658,0.0)'>
@@ -2486,6 +2609,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='rt3H'>
 <g stroke-width='0.9'>
 <path d='M159.33522 42.6791H134.39476' fill='none'/>
 <g transform='matrix(-1.0,0.0,0.0,-1.0,136.99979,42.6791)'>
@@ -2506,6 +2631,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='vozliscaH'>
 <g transform='translate(-3.63298,46.31207)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.668296,-1.469952)scale(-1,-1)'>
 <g fill='#000'>
@@ -2550,6 +2677,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='modelH'>
 <g transform='translate(59.45615,60.60197)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.668296,-1.469952)scale(-1,-1)'>
 <g fill='#000'>
@@ -2559,6 +2688,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='spodnjiZ'>
 <g fill='#f00' stroke='#f00'>
 <g stroke-width='2.0'>
 <path d='M199.16928 0H241.84837' fill='none'/>
@@ -2616,6 +2747,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='zgornjiZ'>
 <g fill='#f00' stroke='#f00'>
 <g stroke-width='2.0'>
 <path d='M241.84837 42.6791H284.52747' fill='none'/>
@@ -2626,6 +2759,8 @@
 <path d='M284.52747 42.6791H327.20656' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='navpicniceZ'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='2.0'>
 <path d='M241.84837 0V42.6791' fill='none'/>
@@ -2636,6 +2771,8 @@
 <path d='M284.52747 0V42.6791' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='brezsileZ'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='2.0'>
@@ -2643,6 +2780,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='diagonaleZ'>
 <g fill='#f00' stroke='#f00'>
 <g stroke-width='2.0'>
 <path d='M199.16928 0L241.84837 42.6791' fill='none'/>
@@ -2658,6 +2797,8 @@
 <path d='M284.52747 42.6791L327.20656 0' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='vozliscaZ'>
 <g fill='#fff'>
 <g fill='#fff'>
 <path d='M201.0079 0C201.0079 1.01544 200.18472 1.83862 199.16928 1.83862S197.33066 1.01544 197.33066 0S198.15384-1.83862 199.16928-1.83862S201.0079-1.01544 201.0079 0ZM199.16928 0'/>
@@ -2742,6 +2883,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='bremenaZ'>
 <g stroke-width='0.9'>
 <path d='M241.84837-3.55658V-15.69319' fill='none'/>
 <g transform='matrix(0.0,-1.0,1.0,0.0,241.84837,-13.08817)'>
@@ -2801,6 +2944,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='podporaZ'>
 <path d='M199.16928 0L192.0561-12.80363H206.28246Z' fill='none'/>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-width='0.45'>
@@ -2842,6 +2987,8 @@
 <path d='M209.12769-12.80363L211.9729-9.95842' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='rb0Z'>
 <g stroke-width='0.9'>
 <path d='M167.87134 0H192.8118' fill='none'/>
 <g transform='translate(190.20677,0.0)'>
@@ -2862,6 +3009,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='rb3Z'>
 <g stroke-width='0.9'>
 <path d='M329.34042 0H354.28088' fill='none'/>
 <g transform='translate(351.67586,0.0)'>
@@ -2882,6 +3031,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='rt3Z'>
 <g stroke-width='0.9'>
 <path d='M358.5045 42.6791H333.56404' fill='none'/>
 <g transform='matrix(-1.0,0.0,0.0,-1.0,336.16907,42.6791)'>
@@ -2902,6 +3053,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='vozliscaZ'>
 <g transform='translate(195.5363,46.31207)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.668296,-1.469952)scale(-1,-1)'>
 <g fill='#000'>
@@ -2946,12 +3099,15 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='modelZ'>
 <g transform='translate(256.32681,60.5757)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.668296,-1.469952)scale(-1,-1)'>
 <g fill='#000'>
 <g stroke='none'>
 <use x='-57.668296' y='-1.469952' xlink:href='#mos-polovica-g1-72'/>
 <use x='-48.577406' y='-5.085315' xlink:href='#mos-polovica-g0-3'/>
+</g>
 </g>
 </g>
 </g>

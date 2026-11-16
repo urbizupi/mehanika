@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rebro-toplota"] = {"html": "<div class=\"eq\">\\[\\Phi_0 = -k\\,A\\,T'(0) = k\\,A\\,\\theta_0\\,m\\,\\frac{\\sinh m L}{\\cosh m L} , \\tag{14.21}\\]</div>", "href": "sec-stacionarno-1d.html#eq-rebro-toplota"};

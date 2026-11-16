@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-n-kj"] = {"html": "<div class=\"eq\">\\[n_{\\mathrm{kj}} = \\sum_{\\mathrm{i}=1}^{n}\\Big[\\frac{\\partial m_{\\mathrm{ij}}}{\\partial q_{\\mathrm{k}}} - \\frac{\\partial m_{\\mathrm{ki}}}{\\partial q_{\\mathrm{j}}}\\Big]\\dot q_{\\mathrm{i}} . \\tag{27.43}\\]</div>", "href": "sec-lastnosti-gibalnih-enacb.html#eq-n-kj"};

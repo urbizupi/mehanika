@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-c20-prvi-red"] = {"html": "<div class=\"eq\">\\[\\mat A\\,\\dot{\\vek z} + \\mat B\\,\\vek z = \\vek F(t) , \\qquad \\vek F = \\begin{pmatrix} \\vek Q \\\\ \\vek 0 \\end{pmatrix} \\tag{20.39}\\]</div>", "href": "sec-zapis-prvega-reda.html#eq-c20-prvi-red"};

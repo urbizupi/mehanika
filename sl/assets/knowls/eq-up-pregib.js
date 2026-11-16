@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-up-pregib"] = {"html": "<div class=\"eq\">\\[H = N_\\varphi\\sin\\alpha = \\frac{pR\\tan\\alpha}{2} , \\tag{22.40}\\]</div>", "href": "sec-uporabe-membranske.html#eq-up-pregib"};

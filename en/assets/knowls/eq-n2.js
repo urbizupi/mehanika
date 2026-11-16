@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-n2"] = {"html": "<div class=\"eq\">\\[4\\varphi_1 - \\varphi_2 = 200 , \\qquad -\\varphi_1 + 4\\varphi_2 - \\varphi_3 = 200 , \\qquad -\\varphi_2 + 4\\varphi_3 = 200 . \\tag{16.59}\\]</div>", "href": "sec-meje-mke-torzije.html#eq-n2"};

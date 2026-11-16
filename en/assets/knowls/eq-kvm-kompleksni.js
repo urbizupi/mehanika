@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kvm-kompleksni"] = {"html": "<div class=\"eq\">\\[\\mat M\\ddot{\\vek p} - \\mathrm{i}\\,\\Omega\\,\\mat G_{\\mathrm{p}}\\,\\dot{\\vek p} + \\mat K\\vek p = \\vek f_{\\mathrm{v}} + \\mathrm{i}\\,\\vek f_{\\mathrm{w}} . \\tag{24.34}\\]</div>", "href": "sec-kriticne-vec-mas.html#eq-kvm-kompleksni"};

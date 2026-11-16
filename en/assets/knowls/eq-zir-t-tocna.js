@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-zir-t-tocna"] = {"html": "<div class=\"eq\">\\[T = \\tfrac12 m\\,(\\dot v^2 + \\dot w^2) + \\tfrac12 J_{\\mathrm{p}}\\,(\\Omega - \\dot\\beta\\sin\\alpha)^2 + \\tfrac12 J_{\\mathrm{t}}\\,(\\dot\\alpha^2 + \\dot\\beta^2\\cos^2\\alpha) . \\tag{24.15}\\]</div>", "href": "sec-ziroskopski-moment.html#eq-zir-t-tocna"};

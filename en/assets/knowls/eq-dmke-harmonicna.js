@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dmke-harmonicna"] = {"html": "<div class=\"eq\">\\[\\big(-\\Omega^2\\mat M + \\mat K' + \\mathrm{i}\\,\\mat K''\\big)\\,\\vek x = \\vek Q_0 , \\tag{20.35}\\]</div>", "href": "sec-dusenje-mke.html#eq-dmke-harmonicna"};

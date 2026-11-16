@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-npal-vrsta"] = {"html": "<div class=\"eq\">\\[T(x, t) = \\sum_{\\mathrm{n}=1}^{\\infty}h_{\\mathrm{n}}\\sin\\frac{n\\pi x}{L}\\,\\mathrm{e}^{-\\kappa n^2\\pi^2 t/L^2} \\tag{14.27}\\]</div>", "href": "sec-nestacionarno-palica.html#eq-npal-vrsta"};

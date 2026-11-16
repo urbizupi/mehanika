@@ -1,0 +1,1544 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>15.5 Isoparametric elements: the quadrilateral and the eight-node element · Chapter 15</title>
+<script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/style.css">
+<noscript><style>#loadbar { display: none; }</style></noscript>
+<script src="assets/config.js"></script>
+<script src="assets/load.js"></script>
+<script defer src="assets/interaktivno.js"></script>
+<script defer src="assets/book.js"></script>
+<script defer src="assets/predavanje.js"></script>
+<script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<div id="loadbar" aria-hidden="true"></div>
+<header class="top"><a class="home" href="index.html">Mechanics</a><nav class="pager"><a href="sec-mkk-ravninski-trikotnik.html" rel="prev">← 15.4</a><a href="index.html">Contents</a><a href="sec-mkk-gauss.html" rel="next">15.6 →</a></nav>
+<span class="tools"><a class="lang" href="../sl/sec-mkk-izoparametricni.html" hreflang="sl">Slovenščina</a><button type="button" class="theme-toggle" title="Light or dark theme" aria-label="Light or dark theme"></button><button type="button" data-details="open">Expand all</button><button type="button" data-details="close">Collapse all</button><button type="button" class="fig-side-toggle" aria-pressed="false">Figures alongside</button></span></header>
+<main>
+<p class="updated">Last updated 16 November 2026, 10:52</p>
+<p class="crumb"><a href="ch-mke-kontinuum.html"><span class="h-num">Chapter 15</span> Continuum finite elements</a></p>
+<h2 id="sec-mkk-izoparametricni"><span class="h-num">15.5</span> Isoparametric elements: the quadrilateral and the eight-node element</h2>
+<p>The triangle of section <a class="xref" href="sec-mkk-ravninski-trikotnik.html">15.4</a> has two weaknesses. Its <a class="xref auto" href="sec-pomik-v-prostoru.html#def-polje-pomikov" data-knowl="def-polje-pomikov">displacement field</a> is linear, so the strain in it is constant and the triangle cannot bend (the last subsection of that section). And its sides are straight, so a curved boundary is replaced by a polygonal line. The remedy is already known in one dimension from chapter <a class="xref" href="ch-mke-palice.html">7</a>: the quadratic bar element has three nodes, and the map between the reference <a class="xref auto" href="sec-konvergenca-zaporedij.html#def-interval" data-knowl="def-interval">interval</a> \([-1, 1]\) and the actual element (equation <a class="xref" href="sec-kvadratni-element.html#eq-kve-preslikava" data-knowl="eq-kve-preslikava">(7.28)</a>) uses the same variable \(\xi\) as the shape <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a>. In the plane we do the same with two <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">coordinates</a>: a reference square is mapped onto a quadrilateral by the same functions with which we interpolate the displacements. Such an element is called isoparametric.</p>
+<p>With the triangle the shape functions were already functions of the point <span class="nobr">\((x, y)\),</span> so nothing had to be mapped. With an <a class="xref auto forward" href="sec-mkk-izoparametricni.html#def-izoparametricni-element" data-knowl="def-izoparametricni-element" title="Defined later in the book">isoparametric element</a> three questions arise. When is the map good, that is one to one and with a Jacobian <a class="xref auto" href="sec-determinanta.html#def-determinanta" data-knowl="def-determinanta">determinant</a> that is nowhere zero or negative, so that we may use theorem <a class="xref" href="sec-zamenjava-spremenljivk.html#thm-zamenjava-spremenljivk" data-knowl="thm-zamenjava-spremenljivk">4.59</a>? How do we get the strain if we know the shape functions as functions of the coordinates \(\xi\) and <span class="nobr">\(\eta\),</span> not of \(x\) and <span class="nobr">\(y\)?</span> And does the field of the element stay continuous across shared sides, as the Ritz theorems of section <a class="xref" href="sec-mkk-telo-iz-elementov.html">15.2</a> require, and does it contain the <a class="xref auto forward" href="sec-mkk-izoparametricni.html#lem-linearna-polja-izoparametricni" data-knowl="lem-linearna-polja-izoparametricni" title="Defined later in the book">linear fields</a> that the <a class="xref auto forward" href="sec-mkk-zaplata.html#thm-preizkus-z-zaplato" data-knowl="thm-preizkus-z-zaplato" title="Defined later in the book">patch test</a> of section <a class="xref" href="sec-mkk-zaplata.html">15.7</a> requires? The idealizations are as before: the material is <a class="xref auto" href="sec-natezni-preizkus.html#def-linearno-elasticen" data-knowl="def-linearno-elasticen">linear elastic</a>, the <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">strains</a> are small and the material is <a class="xref auto" href="sec-natezni-preizkus.html#def-izotropen-material" data-knowl="def-izotropen-material">isotropic</a> (steel, \(E = 196\) GPa, <span class="nobr">\(\nu = 0{,}3\)),</span> but this section computes only geometry and shape functions, the material enters in the following ones.</p>
+
+<h3 id="sec-kvadrat-in-stiri-oblikovne-funkcije"><span class="h-num">15.5.1</span> The square and four shape functions</h3>
+<p>The reference element is the square \(K = [-1, 1]^2\) in the plane with natural <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">coordinates</a> (naravni koordinati) \(\xi\) and <span class="nobr">\(\eta\).</span> <a data-del="q4" class="xref kaz" href="sec-mkk-izoparametricni.html#fig-mkk-oblikovne-q" data-knowl="fig-mkk-oblikovne-q">Its four nodes</a> are numbered counterclockwise from the lower left: <span class="nobr">\(1 = (-1, -1)\),</span> <span class="nobr">\(2 = (1, -1)\),</span> <span class="nobr">\(3 = (1, 1)\),</span> <span class="nobr">\(4 = (-1, 1)\),</span> and we write the coordinates of node \(i\) as <span class="nobr">\((\xi_{\mathrm{i}}, \eta_{\mathrm{i}})\).</span></p>
+
+<figure class="blk slika" id="fig-mkk-oblikovne-q"><p><span class="svgfig" role="img" aria-label="The reference square with four and with eight nodes"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='376.29pt' height='160.98pt' viewBox='-72.000004 -72 278.735263 119.244115'>
+<defs>
+<path id='c15-05-oblikovne-g0-78' d='M7.531756-5.758406C7.631382-6.156912 7.81071-6.465753 8.607721-6.495641C8.657534-6.495641 8.777086-6.505604 8.777086-6.694894C8.777086-6.704857 8.777086-6.804483 8.647572-6.804483C8.318804-6.804483 7.970112-6.774595 7.641345-6.774595C7.302615-6.774595 6.953923-6.804483 6.625156-6.804483C6.56538-6.804483 6.445828-6.804483 6.445828-6.60523C6.445828-6.495641 6.545455-6.495641 6.625156-6.495641C7.193026-6.485679 7.302615-6.276463 7.302615-6.057285C7.302615-6.027397 7.28269-5.877958 7.272727-5.84807L6.156912-1.414695L3.955168-6.615193C3.875467-6.794521 3.865504-6.804483 3.636364-6.804483H2.30137C2.102117-6.804483 2.012453-6.804483 2.012453-6.60523C2.012453-6.495641 2.102117-6.495641 2.291407-6.495641C2.34122-6.495641 2.968867-6.495641 2.968867-6.405978L1.633873-1.05604C1.534247-.657534 1.364882-.33873 .557908-.308842C.498132-.308842 .388543-.298879 .388543-.109589C.388543-.039851 .438356 0 .518057 0C.836862 0 1.185554-.029888 1.514321-.029888C1.853051-.029888 2.211706 0 2.540473 0C2.590286 0 2.719801 0 2.719801-.199253C2.719801-.298879 2.630137-.308842 2.520548-.308842C1.942715-.328767 1.863014-.547945 1.863014-.747198C1.863014-.816936 1.872976-.86675 1.902864-.976339L3.217933-6.236613C3.257783-6.176837 3.257783-6.156912 3.307597-6.057285L5.788294-.18929C5.858032-.019925 5.88792 0 5.977584 0C6.087173 0 6.087173-.029888 6.136986-.209215L7.531756-5.758406Z'/>
+<path id='c15-05-oblikovne-g1-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c15-05-oblikovne-g1-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='c15-05-oblikovne-g1-51' d='M2.889166-3.506849C3.706102-3.775841 4.283935-4.473225 4.283935-5.260274C4.283935-6.07721 3.407223-6.635118 2.450809-6.635118C1.444583-6.635118 .687422-6.03736 .687422-5.280199C.687422-4.951432 .9066-4.762142 1.195517-4.762142C1.504359-4.762142 1.703611-4.98132 1.703611-5.270237C1.703611-5.768369 1.235367-5.768369 1.085928-5.768369C1.39477-6.256538 2.052304-6.386052 2.410959-6.386052C2.819427-6.386052 3.367372-6.166874 3.367372-5.270237C3.367372-5.150685 3.347447-4.572852 3.088418-4.134496C2.789539-3.656289 2.450809-3.626401 2.201743-3.616438C2.122042-3.606476 1.882939-3.58655 1.8132-3.58655C1.733499-3.576588 1.663761-3.566625 1.663761-3.466999C1.663761-3.35741 1.733499-3.35741 1.902864-3.35741H2.34122C3.158157-3.35741 3.526775-2.67995 3.526775-1.703611C3.526775-.348692 2.839352-.059776 2.400996-.059776C1.972603-.059776 1.225405-.229141 .876712-.816936C1.225405-.767123 1.534247-.986301 1.534247-1.364882C1.534247-1.723537 1.265255-1.92279 .976339-1.92279C.737235-1.92279 .418431-1.783313 .418431-1.344956C.418431-.438356 1.344956 .219178 2.430884 .219178C3.646326 .219178 4.552927-.687422 4.552927-1.703611C4.552927-2.520548 3.92528-3.297634 2.889166-3.506849Z'/>
+<path id='c15-05-oblikovne-g1-52' d='M2.929016-1.643836V-.777086C2.929016-.418431 2.909091-.308842 2.171856-.308842H1.96264V0C2.371108-.029888 2.889166-.029888 3.307597-.029888S4.254047-.029888 4.662516 0V-.308842H4.4533C3.716065-.308842 3.696139-.418431 3.696139-.777086V-1.643836H4.692403V-1.952677H3.696139V-6.485679C3.696139-6.684932 3.696139-6.744707 3.536737-6.744707C3.447073-6.744707 3.417186-6.744707 3.337484-6.625156L.278954-1.952677V-1.643836H2.929016ZM2.988792-1.952677H.557908L2.988792-5.668742V-1.952677Z'/>
+<path id='c15-05-oblikovne-g1-53' d='M4.473225-2.002491C4.473225-3.188045 3.656289-4.184309 2.580324-4.184309C2.102117-4.184309 1.673724-4.024907 1.315068-3.676214V-5.618929C1.514321-5.559153 1.843088-5.489415 2.161893-5.489415C3.387298-5.489415 4.084682-6.396015 4.084682-6.525529C4.084682-6.585305 4.054795-6.635118 3.985056-6.635118C3.975093-6.635118 3.955168-6.635118 3.905355-6.60523C3.706102-6.515567 3.217933-6.316314 2.550436-6.316314C2.15193-6.316314 1.693649-6.386052 1.225405-6.595268C1.145704-6.625156 1.125778-6.625156 1.105853-6.625156C1.006227-6.625156 1.006227-6.545455 1.006227-6.386052V-3.437111C1.006227-3.257783 1.006227-3.178082 1.145704-3.178082C1.215442-3.178082 1.235367-3.20797 1.275218-3.267746C1.384807-3.427148 1.753425-3.965131 2.560399-3.965131C3.078456-3.965131 3.327522-3.506849 3.407223-3.327522C3.566625-2.958904 3.58655-2.570361 3.58655-2.072229C3.58655-1.723537 3.58655-1.125778 3.347447-.707347C3.108344-.318804 2.739726-.059776 2.281445-.059776C1.554172-.059776 .986301-.587796 .816936-1.175592C.846824-1.165629 .876712-1.155666 .986301-1.155666C1.315068-1.155666 1.484433-1.404732 1.484433-1.643836S1.315068-2.132005 .986301-2.132005C.846824-2.132005 .498132-2.062267 .498132-1.603985C.498132-.747198 1.185554 .219178 2.30137 .219178C3.457036 .219178 4.473225-.737235 4.473225-2.002491Z'/>
+<path id='c15-05-oblikovne-g1-54' d='M1.315068-3.267746V-3.506849C1.315068-6.027397 2.550436-6.386052 3.058531-6.386052C3.297634-6.386052 3.716065-6.326276 3.935243-5.987547C3.785803-5.987547 3.387298-5.987547 3.387298-5.539228C3.387298-5.230386 3.626401-5.080946 3.845579-5.080946C4.004981-5.080946 4.303861-5.17061 4.303861-5.559153C4.303861-6.156912 3.865504-6.635118 3.038605-6.635118C1.763387-6.635118 .418431-5.349938 .418431-3.148194C.418431-.488169 1.574097 .219178 2.500623 .219178C3.606476 .219178 4.552927-.71731 4.552927-2.032379C4.552927-3.297634 3.666252-4.254047 2.560399-4.254047C1.882939-4.254047 1.514321-3.745953 1.315068-3.267746ZM2.500623-.059776C1.872976-.059776 1.574097-.657534 1.514321-.806974C1.334994-1.275218 1.334994-2.072229 1.334994-2.251557C1.334994-3.028643 1.653798-4.024907 2.550436-4.024907C2.709838-4.024907 3.16812-4.024907 3.476961-3.407223C3.656289-3.038605 3.656289-2.530511 3.656289-2.042341C3.656289-1.564134 3.656289-1.066002 3.486924-.707347C3.188045-.109589 2.729763-.059776 2.500623-.059776Z'/>
+<path id='c15-05-oblikovne-g1-55' d='M4.742217-6.067248C4.83188-6.1868 4.83188-6.206725 4.83188-6.41594H2.410959C1.195517-6.41594 1.175592-6.545455 1.135741-6.734745H.886675L.557908-4.682441H.806974C.836862-4.841843 .926526-5.469489 1.05604-5.589041C1.125778-5.648817 1.902864-5.648817 2.032379-5.648817H4.094645C3.985056-5.489415 3.198007-4.403487 2.978829-4.07472C2.082192-2.729763 1.753425-1.344956 1.753425-.328767C1.753425-.229141 1.753425 .219178 2.211706 .219178S2.669988-.229141 2.669988-.328767V-.836862C2.669988-1.384807 2.699875-1.932752 2.779577-2.470735C2.819427-2.699875 2.958904-3.556663 3.39726-4.174346L4.742217-6.067248Z'/>
+<path id='c15-05-oblikovne-g1-56' d='M1.62391-4.552927C1.165629-4.851806 1.125778-5.190535 1.125778-5.3599C1.125778-5.967621 1.77335-6.386052 2.480697-6.386052C3.20797-6.386052 3.845579-5.867995 3.845579-5.150685C3.845579-4.582814 3.457036-4.104608 2.859278-3.755915L1.62391-4.552927ZM3.078456-3.606476C3.795766-3.975093 4.283935-4.493151 4.283935-5.150685C4.283935-6.067248 3.39726-6.635118 2.49066-6.635118C1.494396-6.635118 .687422-5.897883 .687422-4.971357C.687422-4.79203 .707347-4.343711 1.125778-3.875467C1.235367-3.755915 1.603985-3.506849 1.853051-3.337484C1.275218-3.048568 .418431-2.49066 .418431-1.504359C.418431-.448319 1.43462 .219178 2.480697 .219178C3.606476 .219178 4.552927-.607721 4.552927-1.673724C4.552927-2.032379 4.443337-2.480697 4.064757-2.899128C3.875467-3.108344 3.716065-3.20797 3.078456-3.606476ZM2.082192-3.188045L3.307597-2.410959C3.58655-2.221669 4.054795-1.92279 4.054795-1.315068C4.054795-.577833 3.307597-.059776 2.49066-.059776C1.633873-.059776 .916563-.67746 .916563-1.504359C.916563-2.082192 1.235367-2.719801 2.082192-3.188045Z'/>
+<path id='c15-05-oblikovne-g2-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+</defs>
+<g id='c15-05-oblikovne-page1'>
+<g stroke-miterlimit='10' transform='translate(-14.724249,-12.377945)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='q4'>
+<g stroke-width='1.0'>
+<path d='M-45.52458-45.52458V45.52458H45.52458V-45.52458ZM45.52458 45.52458' fill='none'/>
+</g>
+<path d='M-43.68596-45.52458C-43.68596-44.50914-44.50914-43.68596-45.52458-43.68596S-47.3632-44.50914-47.3632-45.52458S-46.54002-47.3632-45.52458-47.3632S-43.68596-46.54002-43.68596-45.52458ZM-45.52458-45.52458' stroke='none'/>
+<g transform='translate(-45.52458,-45.52458)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.724249,-12.377945)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M47.3632-45.52458C47.3632-44.50914 46.54002-43.68596 45.52458-43.68596S43.68596-44.50914 43.68596-45.52458S44.50914-47.3632 45.52458-47.3632S47.3632-46.54002 47.3632-45.52458ZM45.52458-45.52458' stroke='none'/>
+<g transform='translate(45.52458,-45.52458)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.724249,-12.377945)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M47.3632 45.52458C47.3632 46.54002 46.54002 47.3632 45.52458 47.3632S43.68596 46.54002 43.68596 45.52458S44.50914 43.68596 45.52458 43.68596S47.3632 44.50914 47.3632 45.52458ZM45.52458 45.52458' stroke='none'/>
+<g transform='translate(45.52458,45.52458)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.724249,-12.377945)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M-43.68596 45.52458C-43.68596 46.54002-44.50914 47.3632-45.52458 47.3632S-47.3632 46.54002-47.3632 45.52458S-46.54002 43.68596-45.52458 43.68596S-43.68596 44.50914-43.68596 45.52458ZM-45.52458 45.52458' stroke='none'/>
+<g transform='translate(-45.52458,45.52458)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.724249,-12.377945)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(-54.15756,-55.60199)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.724249,-12.377945)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-14.724249' y='-12.377945' xlink:href='#c15-05-oblikovne-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(49.15756,-55.60199)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.724249,-12.377945)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-14.724249' y='-12.377945' xlink:href='#c15-05-oblikovne-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(49.15756,49.15756)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.724249,-12.377945)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-14.724249' y='-12.377945' xlink:href='#c15-05-oblikovne-g1-51'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-54.15756,49.15756)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.724249,-12.377945)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-14.724249' y='-12.377945' xlink:href='#c15-05-oblikovne-g1-52'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='nivoji'>
+<g fill='#00f' stroke='#00f'>
+<path d='M-45.52458 36.4191L-42.69943 36.12804L-39.8743 35.81892L-37.04915 35.48619L-34.22401 35.13123L-31.39886 34.74916L-28.57373 34.33932L-25.74858 33.89336L-22.92345 33.41473L-20.0983 32.89584L-17.27316 32.32275L-14.44801 31.70313L-11.62288 31.01611L-8.79773 30.2645L-5.9726 29.42259L-3.14745 28.49384L-.32231 27.44214L2.50282 26.25568L5.32796 24.90042L8.1531 23.34163L10.97824 21.52719L13.80338 19.38837L16.62852 16.83275L19.45366 13.7235L22.27881 9.85638L25.10394 4.92645L27.9291-1.59491L30.75423-10.60313L33.57938-23.88206L36.40451-45.38286' fill='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M-45.52458 18.20955L-43.3274 17.53574L-41.13022 16.8258L-38.93304 16.07906L-36.73586 15.29202L-34.53868 14.4633L-32.3415 13.58456L-30.14433 12.66069L-27.94714 11.67706L-25.74997 10.63438L-23.5528 9.51947L-21.35562 8.33997L-19.15843 7.07918L-16.96126 5.72252L-14.76408 4.27487L-12.56691 2.7133L-10.36972 1.02876L-8.17255-.78772L-5.97537-2.76817L-3.7782-4.91672L-1.58101-7.2702L.61615-9.8536L2.81332-12.70027L5.0105-15.85886L7.20769-19.3835L9.40486-23.32843L11.60204-27.79224L13.79921-32.86874L15.9964-38.7052L18.19357-45.47525' fill='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M-45.52458 0L-43.95535-.79675L-42.38614-1.6206L-40.81693-2.48128L-39.24771-3.36905L-37.6785-4.28807L-36.10928-5.24876L-34.54007-6.24629L-32.97086-7.27924L-31.40164-8.35802L-29.83243-9.47849L-28.26321-10.64828L-26.694-11.86809L-25.12479-13.14278L-23.55557-14.4765L-21.98636-15.86996L-20.41714-17.33151L-18.84793-18.8653L-17.27872-20.47688L-15.7095-22.16557L-14.14029-23.94597L-12.57108-25.82152L-11.00186-27.80197L-9.43265-29.89565L-7.86343-32.1088L-6.29422-34.46228L-4.725-36.96162L-3.15579-39.62006L-1.58658-42.4563L-.01736-45.4836' fill='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M-45.52458-18.20955L-44.58333-18.87433L-43.64207-19.553L-42.70082-20.24487L-41.75957-20.9548L-40.81831-21.68349L-39.87708-22.42538L-38.93582-23.1763L-37.99457-23.955L-37.05331-24.74274L-36.11206-25.55756L-35.17082-26.38141L-34.22957-27.23305L-33.28831-28.10205L-32.34706-28.99469L-31.4058-29.90536L-30.46457-30.83829L-29.52332-31.79898L-28.58206-32.77774L-27.64081-33.78847L-26.69955-34.82141L-25.75832-35.87798L-24.81706-36.97066L-23.87581-38.08557L-22.93456-39.2373L-21.9933-40.41681L-21.05205-41.63661L-20.11081-42.88422L-19.16956-44.17279L-18.2283-45.49261' fill='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M-45.52458-36.4191L-45.21059-36.70183L-44.8966-36.98386L-44.58263-37.27074L-44.26865-37.5625L-43.95467-37.85356L-43.64069-38.14948L-43.3267-38.44122L-43.01273-38.74132L-42.69875-39.0421L-42.38475-39.3422L-42.07077-39.64714L-41.75679-39.95209L-41.44281-40.2619L-41.12883-40.57588L-40.81485-40.88986L-40.50087-41.20454L-40.18689-41.51852L-39.87291-41.83737L-39.55891-42.16455L-39.24493-42.48827L-38.93095-42.81613L-38.61697-43.14331L-38.303-43.47606L-37.98901-43.81296L-37.67503-44.145L-37.36105-44.49094L-37.04707-44.82784L-36.73308-45.17378L-36.4191-45.52458' fill='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(28.67163,22.37198)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.724249,-12.377945)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-14.724249' y='-12.377945' xlink:href='#c15-05-oblikovne-g0-78'/>
+<use x='-6.719541' y='-10.883564' xlink:href='#c15-05-oblikovne-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='q8'>
+<g stroke-width='1.0'>
+<path d='M118.36418-45.52458V45.52458H209.41335V-45.52458ZM209.41335 45.52458' fill='none'/>
+</g>
+<g class='del' data-del='oglisca8'>
+<path d='M120.2028-45.52458C120.2028-44.50914 119.37962-43.68596 118.36418-43.68596S116.52556-44.50914 116.52556-45.52458S117.34874-47.3632 118.36418-47.3632S120.2028-46.54002 120.2028-45.52458ZM118.36418-45.52458' stroke='none'/>
+<g transform='translate(118.36418,-45.52458)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.724249,-12.377945)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M211.25197-45.52458C211.25197-44.50914 210.42879-43.68596 209.41335-43.68596C208.3979-43.68596 207.57472-44.50914 207.57472-45.52458S208.3979-47.3632 209.41335-47.3632C210.42879-47.3632 211.25197-46.54002 211.25197-45.52458ZM209.41335-45.52458' stroke='none'/>
+<g transform='translate(209.41335,-45.52458)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.724249,-12.377945)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M211.25197 45.52458C211.25197 46.54002 210.42879 47.3632 209.41335 47.3632C208.3979 47.3632 207.57472 46.54002 207.57472 45.52458S208.3979 43.68596 209.41335 43.68596C210.42879 43.68596 211.25197 44.50914 211.25197 45.52458ZM209.41335 45.52458' stroke='none'/>
+<g transform='translate(209.41335,45.52458)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.724249,-12.377945)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M120.2028 45.52458C120.2028 46.54002 119.37962 47.3632 118.36418 47.3632S116.52556 46.54002 116.52556 45.52458S117.34874 43.68596 118.36418 43.68596S120.2028 44.50914 120.2028 45.52458ZM118.36418 45.52458' stroke='none'/>
+<g transform='translate(118.36418,45.52458)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.724249,-12.377945)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(109.7312,-55.60199)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.724249,-12.377945)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-14.724249' y='-12.377945' xlink:href='#c15-05-oblikovne-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(213.04633,-55.60199)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.724249,-12.377945)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-14.724249' y='-12.377945' xlink:href='#c15-05-oblikovne-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(213.04633,49.15756)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.724249,-12.377945)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-14.724249' y='-12.377945' xlink:href='#c15-05-oblikovne-g1-51'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(109.7312,49.15756)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.724249,-12.377945)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-14.724249' y='-12.377945' xlink:href='#c15-05-oblikovne-g1-52'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='razpol'>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M166.1517-45.52458C166.1517-44.27478 165.13857-43.26164 163.88876-43.26164C162.63896-43.26164 161.62582-44.27478 161.62582-45.52458S162.63896-47.78752 163.88876-47.78752C165.13857-47.78752 166.1517-46.77438 166.1517-45.52458ZM163.88876-45.52458'/>
+</g>
+<g transform='translate(163.88876,-45.52458)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.724249,-12.377945)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M211.67628 0C211.67628 1.2498 210.66315 2.26294 209.41335 2.26294C208.16354 2.26294 207.1504 1.2498 207.1504 0S208.16354-2.26294 209.41335-2.26294C210.66315-2.26294 211.67628-1.2498 211.67628 0ZM209.41335 0'/>
+</g>
+<g transform='translate(209.41335,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.724249,-12.377945)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M166.1517 45.52458C166.1517 46.77438 165.13857 47.78752 163.88876 47.78752C162.63896 47.78752 161.62582 46.77438 161.62582 45.52458S162.63896 43.26164 163.88876 43.26164C165.13857 43.26164 166.1517 44.27478 166.1517 45.52458ZM163.88876 45.52458'/>
+</g>
+<g transform='translate(163.88876,45.52458)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.724249,-12.377945)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M120.62712 0C120.62712 1.2498 119.61398 2.26294 118.36418 2.26294S116.10124 1.2498 116.10124 0S117.11438-2.26294 118.36418-2.26294S120.62712-1.2498 120.62712 0ZM118.36418 0'/>
+</g>
+<g transform='translate(118.36418,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.724249,-12.377945)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(161.38876,-56.51266)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.724249,-12.377945)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-14.724249' y='-12.377945' xlink:href='#c15-05-oblikovne-g1-53'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(213.957,-3.22221)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.724249,-12.377945)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-14.724249' y='-12.377945' xlink:href='#c15-05-oblikovne-g1-54'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(161.38876,50.06824)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.724249,-12.377945)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-14.724249' y='-12.377945' xlink:href='#c15-05-oblikovne-g1-55'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(108.82053,-3.22221)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-14.724249,-12.377945)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-14.724249' y='-12.377945' xlink:href='#c15-05-oblikovne-g1-56'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 15.19</span>: Left: the reference square \([-1, 1]^2\) with the four nodes of the element Q4 and the level lines of the function \(N_1\) at the values <span class="nobr">\(0{,}1\),</span> <span class="nobr">\(0{,}3\),</span> <span class="nobr">\(0{,}5\),</span> \(0{,}7\) and \(0{,}9\) (hyperbolas). Right: the eight nodes of the element Q8, nodes \(5\) to \(8\) are at the midpoints of the sides. Scale: 1,6 cm per unit of \(\xi\) or <span class="nobr">\(\eta\).</span></figcaption></figure>
+<p>We draw the <a data-del="q4" class="xref kaz" href="sec-mkk-izoparametricni.html#fig-mkk-oblikovne-q" data-knowl="fig-mkk-oblikovne-q">square</a> with side <span class="nobr">\(2\),</span> so that its sides are always \(\xi = \pm 1\) and <span class="nobr">\(\eta = \pm 1\),</span> whatever the shape of the actual element. Each node has one function that equals \(1\) in it and \(0\) in the other nodes. For node \(1\) this is a product of two linear <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a>, equal to \(1\) at \(\xi = \eta = -1\) and zero on the sides \(\xi = 1\) and <span class="nobr">\(\eta = 1\).</span> <a data-del="nivoji" class="xref kaz" href="sec-mkk-izoparametricni.html#fig-mkk-oblikovne-q" data-knowl="fig-mkk-oblikovne-q">The level lines of this function</a> are hyperbolas, since the product \((1 - \xi)(1 - \eta)\) at a constant value is a hyperbola, and the value falls from \(1\) at node \(1\) to \(0\) on both opposite sides. In general, for node \(i\) the following definition holds.</p>
+
+<div class="blk definicija" id="def-oblikovne-q4"><div class="blk-head"><span class="blk-label">Definition 15.28</span> <span class="blk-title">Shape functions of the four-node element (oblikovne funkcije štirikotnika)</span></div><div class="blk-body"><p>The shape <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> of the element with four nodes on the square <span class="nobr">\(K\),</span> called Q4 (quadrilateral, four nodes), are</p>
+<div class="eq" id="eq-mkk-q4-oblikovne">\[N_{\mathrm{i}}(\xi, \eta) = \tfrac14\,(1 + \xi_{\mathrm{i}}\,\xi)\,(1 + \eta_{\mathrm{i}}\,\eta) , \qquad i = 1, 2, 3, 4 . \tag{15.22}\]</div>
+
+<p class="vir"><span class="vir-label">Source:</span> COOK, section 6.2, PDF p. 220: shape functions of equation (6.2-3), each equal to \(1\) in its own node and \(0\) in the others. ONATE1, chapter 6, PDF p. 211. The name Q4 is used the same way there and in COOK.</p></div></div>
+<div class="blk lema" id="lem-oblikovne-q4"><div class="blk-head"><span class="blk-label">Lemma 15.29</span> <span class="blk-title">Properties of the four-node shape functions (lastnosti oblikovnih funkcij štirikotnika)</span></div><div class="blk-body"><p>For the <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> <a class="xref" href="sec-mkk-izoparametricni.html#eq-mkk-q4-oblikovne" data-knowl="eq-mkk-q4-oblikovne">(15.22)</a>:</p>
+<ol>
+<li>\(N_{\mathrm{i}}(\xi_{\mathrm{j}}, \eta_{\mathrm{j}}) = \delta_{\mathrm{ij}}\) for <span class="nobr">\(i, j = 1, \dots, 4\).</span></li>
+<li><span class="nobr">\(\sum_{\mathrm{i}} N_{\mathrm{i}} = 1\),</span> \(\sum_{\mathrm{i}} \xi_{\mathrm{i}}\,N_{\mathrm{i}} = \xi\) and <span class="nobr">\(\sum_{\mathrm{i}} \eta_{\mathrm{i}}\,N_{\mathrm{i}} = \eta\).</span></li>
+<li>On the side <span class="nobr">\(\eta = -1\),</span> \(N_3 = N_4 = 0\) and <span class="nobr">\(N_1 = (1 - \xi)/2\),</span> <span class="nobr">\(N_2 = (1 + \xi)/2\).</span> The same holds for the other three sides: on each side only the functions of its two nodes are different from zero, and both are linear along the side.</li>
+<li>\(N_{\mathrm{i}} \ge 0\) everywhere on <span class="nobr">\(K\).</span></li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show four claims. The first by substitution, the second by splitting the sum over the nodes into a product of two sums, the third and fourth by writing the <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> out.</p>
+<ol>
+<li>Let <span class="nobr">\(i \ne j\).</span> Then \(\xi_{\mathrm{i}} \ne \xi_{\mathrm{j}}\) or <span class="nobr">\(\eta_{\mathrm{i}} \ne \eta_{\mathrm{j}}\),</span> and each coordinate is <span class="nobr">\(\pm 1\),</span> so \(\xi_{\mathrm{i}}\xi_{\mathrm{j}} = -1\) or \(\eta_{\mathrm{i}}\eta_{\mathrm{j}} = -1\) and one factor \(1 + \xi_{\mathrm{i}}\xi_{\mathrm{j}}\) or \(1 + \eta_{\mathrm{i}}\eta_{\mathrm{j}}\) is zero. For \(i = j\) each factor is \(1 + 1 = 2\) and <span class="nobr">\(N_{\mathrm{i}} = \tfrac14 \cdot 2 \cdot 2 = 1\).</span></li>
+<li>The four nodes have all four combinations <span class="nobr">\((\xi_{\mathrm{i}}, \eta_{\mathrm{i}}) \in \{\pm 1\}^2\),</span> each exactly once. Hence <span class="nobr">\(\sum_{\mathrm{i}} N_{\mathrm{i}} = \tfrac14 \big(\sum_{\mathrm{a} = \pm 1}(1 + a\xi)\big)\big(\sum_{\mathrm{b} = \pm 1}(1 + b\eta)\big) = \tfrac14 \cdot 2 \cdot 2 = 1\).</span></li>
+<li>Similarly <span class="nobr">\(\sum_{\mathrm{i}} \xi_{\mathrm{i}}\,N_{\mathrm{i}} = \tfrac14 \big(\sum_{\mathrm{a} = \pm 1} a\,(1 + a\xi)\big)\big(\sum_{\mathrm{b} = \pm 1}(1 + b\eta)\big) = \tfrac14 \cdot 2\xi \cdot 2 = \xi\),</span> because <span class="nobr">\((1 + \xi) - (1 - \xi) = 2\xi\).</span> For \(\eta\) the computation is the same.</li>
+<li>At \(\eta = -1\) every function with \(\eta_{\mathrm{i}} = +1\) has the factor <span class="nobr">\(1 + \eta_{\mathrm{i}}\eta = 0\),</span> these are \(N_3\) and <span class="nobr">\(N_4\).</span> The remaining two have the factor <span class="nobr">\(1 + \eta_{\mathrm{i}}\eta = 2\),</span> so \(N_1 = \tfrac14 (1 - \xi) \cdot 2 = (1 - \xi)/2\) and <span class="nobr">\(N_2 = (1 + \xi)/2\).</span> The sides <span class="nobr">\(\xi = 1\),</span> <span class="nobr">\(\eta = 1\),</span> \(\xi = -1\) are the same after exchanging the roles.</li>
+<li>On <span class="nobr">\(K\),</span> \(|\xi| \le 1\) and <span class="nobr">\(|\eta| \le 1\),</span> so both factors \(1 + \xi_{\mathrm{i}}\xi \ge 0\) and <span class="nobr">\(1 + \eta_{\mathrm{i}}\eta \ge 0\),</span> and the product is not negative.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> COOK, section 6.2, PDF p. 220: the check that each function is \(1\) in its own node and \(0\) in the others. Points 2 to 4 and the proof are ours.</p></div></div>
+<h3 id="sec-isti-funkciji-za-lego-in"><span class="h-num">15.5.2</span> The same functions for position and for field</h3>
+<p>Now we say what <a class="xref auto forward" href="sec-mkk-izoparametricni.html#def-izoparametricni-element" data-knowl="def-izoparametricni-element" title="Defined later in the book">isoparametric</a> means. The element has nodes at positions \(\vek p_{\mathrm{i}} = (x_{\mathrm{i}}, y_{\mathrm{i}})\) and displacements <span class="nobr">\(\vek u_{\mathrm{i}} = (u_{\mathrm{i}}, v_{\mathrm{i}})\).</span> We use the <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> \(N_{\mathrm{i}}\) twice, once for the position of a point of the element, once for its displacement.</p>
+
+<div class="blk definicija" id="def-izoparametricni-element"><div class="blk-head"><span class="blk-label">Definition 15.30</span> <span class="blk-title">Isoparametric element (izoparametrični element)</span></div><div class="blk-body"><p>Let \(K\) be the reference region, in the plane the square <span class="nobr">\([-1, 1]^2\),</span> in space the cube \([-1, 1]^3\) (section <a class="xref" href="sec-mkk-prostor.html">15.10</a>), and let \(N_1, \dots, N_{\mathrm{m}}\) be shape <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> with \(N_{\mathrm{i}}(\vek\xi_{\mathrm{j}}) = \delta_{\mathrm{ij}}\) in the nodes \(\vek\xi_{\mathrm{j}}\) of \(K\) and <span class="nobr">\(\sum_{\mathrm{i}} N_{\mathrm{i}} = 1\).</span> The isoparametric element with nodes \(\vek p_1, \dots, \vek p_{\mathrm{m}}\) is the set of points \(\Phi(K)\) with the geometric map</p>
+<div class="eq" id="eq-mkk-izo-preslikava">\[\Phi(\xi, \eta) = \sum_{\mathrm{i}=1}^{m} N_{\mathrm{i}}(\xi, \eta)\,\vek p_{\mathrm{i}} , \tag{15.23}\]</div>
+<p>with the <a class="xref auto" href="sec-pomik-v-prostoru.html#def-polje-pomikov" data-knowl="def-polje-pomikov">displacement field</a> that has the value</p>
+<div class="eq" id="eq-mkk-izo-polje">\[\vek u_{\mathrm{h}}\big(\Phi(\xi, \eta)\big) = \sum_{\mathrm{i}=1}^{m} N_{\mathrm{i}}(\xi, \eta)\,\vek u_{\mathrm{i}} \tag{15.24}\]</div>
+<p>at the point <span class="nobr">\(\Phi(\xi, \eta)\),</span> where \(\vek u_{\mathrm{i}}\) are the nodal displacements. For \(m = 4\) and the functions of definition <a class="xref" href="sec-mkk-izoparametricni.html#def-oblikovne-q4" data-knowl="def-oblikovne-q4">15.28</a> this is the quadrilateral Q4.</p>
+
+<p class="vir"><span class="vir-label">Source:</span> COOK, section 6.2, PDF p. 220: the same shape functions interpolate coordinates and displacements of a point of the element from the values at the nodes. COOK, section 6.1, PDF p. 217: an element in which the number of nodes for the position equals the number for the field is isoparametric, otherwise subparametric or superparametric.</p></div></div>
+<p>History tells why this recipe arose and how it got its name. The isoparametric formulation began with four-node plane elements introduced by Taig in 1958, and publication outside company reports began with Irons in 1966. Irons developed elements with curved sides and is credited with the name &quot;isoparametric&quot; (COOK, PDF p. 217, ONATE1, PDF p. 212). The reason for curved sides is the same as ours: with triangles with straight sides a curved boundary is replaced by a polygonal line, while with an element with a curved side the boundary can follow the shape of the <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">body</a>.</p>
+<p>Let us see on a concrete quadrilateral what the map does. Let the nodes be (in mm) <span class="nobr">\(\vek p_1 = (0, 0)\),</span> <span class="nobr">\(\vek p_2 = (40, 0)\),</span> \(\vek p_3 = (36, 30)\) and <span class="nobr">\(\vek p_4 = (4, 24)\),</span> the area of this image will be \(972\) mm². By equation <a class="xref" href="sec-mkk-izoparametricni.html#eq-mkk-q4-oblikovne" data-knowl="eq-mkk-q4-oblikovne">(15.22)</a> the point \((\xi, \eta) = (\tfrac12, -\tfrac12)\) has the values \(N_1, \dots, N_4\) equal to <span class="nobr">\(0{,}1875\),</span> <span class="nobr">\(0{,}5625\),</span> \(0{,}1875\) and <span class="nobr">\(0{,}0625\),</span> with sum \(1\) (lemma <a class="xref" href="sec-mkk-izoparametricni.html#lem-oblikovne-q4" data-knowl="lem-oblikovne-q4">15.29</a>, point 2), and goes to \(x = 0{,}5625 \cdot 40 + 0{,}1875 \cdot 36 + 0{,}0625 \cdot 4 = 29{,}5\) mm and \(y = 0{,}1875 \cdot 30 + 0{,}0625 \cdot 24 = 7{,}125\) mm (num-05.out, part D). The centre \((0, 0)\) goes to \((20; 13{,}5)\) mm, which is not the <a class="xref auto" href="sec-geometrija-prereza.html#def-tezisce" data-knowl="def-tezisce">centroid</a> of the quadrilateral, since that lies at \((20{,}74; 13{,}06)\) mm.</p>
+
+<figure class="blk slika" id="fig-mkk-preslikava"><p><span class="svgfig" role="img" aria-label="The map of a square onto a quadrilateral with the Jacobian determinant"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='474.31pt' height='169.75pt' viewBox='-72.000004 -71.999997 351.343412 125.739377'>
+<defs>
+<path id='c15-05-preslikava-g0-17' d='M4.861768-2.759651C4.911582-2.938979 4.941469-3.068493 4.941469-3.337484C4.941469-3.985056 4.542964-4.403487 3.795766-4.403487C3.008717-4.403487 2.49066-3.88543 2.251557-3.536737C2.201743-4.104608 1.783313-4.403487 1.334994-4.403487C.876712-4.403487 .687422-4.014944 .597758-3.835616C.418431-3.496887 .288917-2.899128 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.779577 .577833-2.998755C.747198-3.706102 .946451-4.184309 1.305106-4.184309C1.474471-4.184309 1.613948-4.104608 1.613948-3.726027C1.613948-3.516812 1.58406-3.407223 1.454545-2.889166L.876712-.587796C.846824-.438356 .787049-.209215 .787049-.159402C.787049 .019925 .926526 .109589 1.075965 .109589C1.195517 .109589 1.374844 .029888 1.444583-.169365C1.454545-.18929 1.574097-.657534 1.633873-.9066L1.853051-1.803238C1.912827-2.022416 1.972603-2.241594 2.022416-2.470735C2.042341-2.530511 2.122042-2.859278 2.132005-2.919054C2.161893-3.008717 2.470735-3.566625 2.809465-3.835616C3.028643-3.995019 3.337484-4.184309 3.765878-4.184309S4.303861-3.845579 4.303861-3.486924C4.303861-3.437111 4.303861-3.257783 4.204234-2.859278L3.068493 1.723537C3.038605 1.843088 3.038605 1.863014 3.038605 1.882939C3.038605 2.032379 3.148194 2.15193 3.317559 2.15193C3.626401 2.15193 3.696139 1.863014 3.726027 1.753425L4.861768-2.759651Z'/>
+<path id='c15-05-preslikava-g0-24' d='M1.534247-3.048568C.448319-2.331258 .229141-1.39477 .229141-1.036115C.229141-.557908 .498132-.278954 .518057-.249066C.836862 .079701 .926526 .119552 1.673724 .398506L2.879203 .86675C3.028643 .936488 3.227895 1.006227 3.227895 1.295143C3.227895 1.524284 3.048568 1.823163 2.739726 1.823163C2.30137 1.823163 1.972603 1.58406 1.863014 1.504359C1.803238 1.464508 1.793275 1.454545 1.753425 1.454545C1.673724 1.454545 1.653798 1.524284 1.653798 1.564134C1.653798 1.683686 2.181818 2.042341 2.739726 2.042341C3.35741 2.042341 3.775841 1.464508 3.775841 .976339C3.775841 .498132 3.407223 .318804 3.297634 .268991C3.158157 .219178 2.819427 .089664 2.689913 .039851C2.49066-.039851 2.291407-.119552 2.082192-.18929L1.484433-.428394C1.036115-.607721 .737235-.896638 .737235-1.315068C.737235-1.723537 1.125778-2.590286 1.96264-3.008717C2.331258-2.879203 2.630137-2.879203 2.839352-2.879203C3.138232-2.879203 3.765878-2.879203 3.765878-3.188045C3.765878-3.437111 3.337484-3.457036 2.948941-3.457036C2.769614-3.457036 2.480697-3.457036 2.11208-3.337484C1.853051-3.596513 1.8132-3.92528 1.8132-4.11457C1.8132-4.672478 2.171856-5.439601 2.919054-5.808219C3.098381-5.589041 3.327522-5.589041 3.556663-5.589041C3.805729-5.589041 4.443337-5.589041 4.443337-5.897883C4.443337-6.156912 4.004981-6.166874 3.616438-6.166874C3.486924-6.166874 3.247821-6.166874 2.988792-6.117061C2.958904-6.206725 2.938979-6.276463 2.938979-6.445828C2.938979-6.585305 2.988792-6.794521 2.988792-6.814446C2.988792-6.894147 2.938979-6.94396 2.86924-6.94396C2.689913-6.94396 2.689913-6.485679 2.689913-6.455791C2.689913-6.256538 2.749689-6.107098 2.759651-6.067248C1.693649-5.768369 1.016189-4.971357 1.016189-4.204234C1.016189-3.835616 1.195517-3.417186 1.663761-3.148194L1.534247-3.048568ZM3.148194-5.897883C3.307597-5.947696 3.516812-5.947696 3.626401-5.947696C3.965131-5.947696 4.004981-5.937733 4.184309-5.88792C4.104608-5.858032 4.004981-5.808219 3.566625-5.808219C3.377335-5.808219 3.257783-5.808219 3.148194-5.897883ZM2.371108-3.178082C2.600249-3.237858 2.819427-3.237858 2.938979-3.237858C3.287671-3.237858 3.327522-3.227895 3.506849-3.178082C3.427148-3.138232 3.327522-3.098381 2.86924-3.098381C2.6401-3.098381 2.550436-3.098381 2.371108-3.178082Z'/>
+<path id='c15-05-preslikava-g0-74' d='M5.389788-6.07721C5.469489-6.405978 5.489415-6.495641 6.03736-6.495641C6.196762-6.495641 6.306351-6.495641 6.306351-6.684932C6.306351-6.774595 6.246575-6.804483 6.166874-6.804483C5.917808-6.804483 5.310087-6.774595 5.061021-6.774595C4.732254-6.774595 3.92528-6.804483 3.596513-6.804483C3.506849-6.804483 3.387298-6.804483 3.387298-6.60523C3.387298-6.495641 3.466999-6.495641 3.726027-6.495641C3.955168-6.495641 4.054795-6.495641 4.303861-6.475716C4.542964-6.445828 4.612702-6.41594 4.612702-6.276463C4.612702-6.216687 4.592777-6.146949 4.572852-6.067248L3.427148-1.494396C3.188045-.52802 2.510585 0 1.992528 0C1.733499 0 1.205479-.099626 1.046077-.617684C1.075965-.607721 1.145704-.607721 1.165629-.607721C1.554172-.607721 1.8132-.946451 1.8132-1.24533C1.8132-1.564134 1.544209-1.663761 1.374844-1.663761C1.195517-1.663761 .707347-1.544209 .707347-.86675C.707347-.249066 1.235367 .219178 2.022416 .219178C2.938979 .219178 3.975093-.438356 4.224159-1.424658L5.389788-6.07721Z'/>
+<path id='c15-05-preslikava-g1-8' d='M3.975093-1.344956C5.519303-1.464508 6.625156-2.391034 6.625156-3.39726C6.625156-4.433375 5.489415-5.339975 3.975093-5.459527V-6.017435C3.975093-6.356164 3.975093-6.495641 4.921544-6.495641H5.250311V-6.804483C4.891656-6.774595 3.975093-6.774595 3.566625-6.774595S2.231631-6.774595 1.872976-6.804483V-6.495641H2.201743C3.148194-6.495641 3.148194-6.366127 3.148194-6.017435V-5.459527C1.62391-5.310087 .557908-4.393524 .557908-3.407223C.557908-2.381071 1.663761-1.494396 3.148194-1.344956V-.787049C3.148194-.448319 3.148194-.308842 2.201743-.308842H1.872976V0C2.231631-.029888 3.148194-.029888 3.556663-.029888S4.891656-.029888 5.250311 0V-.308842H4.921544C3.975093-.308842 3.975093-.438356 3.975093-.787049V-1.344956ZM3.148194-1.574097C1.733499-1.763387 1.554172-2.779577 1.554172-3.39726C1.554172-3.915318 1.653798-5.031133 3.148194-5.230386V-1.574097ZM3.975093-5.240349C5.349938-5.080946 5.628892-4.164384 5.628892-3.407223C5.628892-2.809465 5.479452-1.743462 3.975093-1.564134V-5.240349Z'/>
+<path id='c15-05-preslikava-g1-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='c15-05-preslikava-g1-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c15-05-preslikava-g1-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='c15-05-preslikava-g1-51' d='M2.889166-3.506849C3.706102-3.775841 4.283935-4.473225 4.283935-5.260274C4.283935-6.07721 3.407223-6.635118 2.450809-6.635118C1.444583-6.635118 .687422-6.03736 .687422-5.280199C.687422-4.951432 .9066-4.762142 1.195517-4.762142C1.504359-4.762142 1.703611-4.98132 1.703611-5.270237C1.703611-5.768369 1.235367-5.768369 1.085928-5.768369C1.39477-6.256538 2.052304-6.386052 2.410959-6.386052C2.819427-6.386052 3.367372-6.166874 3.367372-5.270237C3.367372-5.150685 3.347447-4.572852 3.088418-4.134496C2.789539-3.656289 2.450809-3.626401 2.201743-3.616438C2.122042-3.606476 1.882939-3.58655 1.8132-3.58655C1.733499-3.576588 1.663761-3.566625 1.663761-3.466999C1.663761-3.35741 1.733499-3.35741 1.902864-3.35741H2.34122C3.158157-3.35741 3.526775-2.67995 3.526775-1.703611C3.526775-.348692 2.839352-.059776 2.400996-.059776C1.972603-.059776 1.225405-.229141 .876712-.816936C1.225405-.767123 1.534247-.986301 1.534247-1.364882C1.534247-1.723537 1.265255-1.92279 .976339-1.92279C.737235-1.92279 .418431-1.783313 .418431-1.344956C.418431-.438356 1.344956 .219178 2.430884 .219178C3.646326 .219178 4.552927-.687422 4.552927-1.703611C4.552927-2.520548 3.92528-3.297634 2.889166-3.506849Z'/>
+<path id='c15-05-preslikava-g1-52' d='M2.929016-1.643836V-.777086C2.929016-.418431 2.909091-.308842 2.171856-.308842H1.96264V0C2.371108-.029888 2.889166-.029888 3.307597-.029888S4.254047-.029888 4.662516 0V-.308842H4.4533C3.716065-.308842 3.696139-.418431 3.696139-.777086V-1.643836H4.692403V-1.952677H3.696139V-6.485679C3.696139-6.684932 3.696139-6.744707 3.536737-6.744707C3.447073-6.744707 3.417186-6.744707 3.337484-6.625156L.278954-1.952677V-1.643836H2.929016ZM2.988792-1.952677H.557908L2.988792-5.668742V-1.952677Z'/>
+<path id='c15-05-preslikava-g1-54' d='M1.315068-3.267746V-3.506849C1.315068-6.027397 2.550436-6.386052 3.058531-6.386052C3.297634-6.386052 3.716065-6.326276 3.935243-5.987547C3.785803-5.987547 3.387298-5.987547 3.387298-5.539228C3.387298-5.230386 3.626401-5.080946 3.845579-5.080946C4.004981-5.080946 4.303861-5.17061 4.303861-5.559153C4.303861-6.156912 3.865504-6.635118 3.038605-6.635118C1.763387-6.635118 .418431-5.349938 .418431-3.148194C.418431-.488169 1.574097 .219178 2.500623 .219178C3.606476 .219178 4.552927-.71731 4.552927-2.032379C4.552927-3.297634 3.666252-4.254047 2.560399-4.254047C1.882939-4.254047 1.514321-3.745953 1.315068-3.267746ZM2.500623-.059776C1.872976-.059776 1.574097-.657534 1.514321-.806974C1.334994-1.275218 1.334994-2.072229 1.334994-2.251557C1.334994-3.028643 1.653798-4.024907 2.550436-4.024907C2.709838-4.024907 3.16812-4.024907 3.476961-3.407223C3.656289-3.038605 3.656289-2.530511 3.656289-2.042341C3.656289-1.564134 3.656289-1.066002 3.486924-.707347C3.188045-.109589 2.729763-.059776 2.500623-.059776Z'/>
+<path id='c15-05-preslikava-g1-56' d='M1.62391-4.552927C1.165629-4.851806 1.125778-5.190535 1.125778-5.3599C1.125778-5.967621 1.77335-6.386052 2.480697-6.386052C3.20797-6.386052 3.845579-5.867995 3.845579-5.150685C3.845579-4.582814 3.457036-4.104608 2.859278-3.755915L1.62391-4.552927ZM3.078456-3.606476C3.795766-3.975093 4.283935-4.493151 4.283935-5.150685C4.283935-6.067248 3.39726-6.635118 2.49066-6.635118C1.494396-6.635118 .687422-5.897883 .687422-4.971357C.687422-4.79203 .707347-4.343711 1.125778-3.875467C1.235367-3.755915 1.603985-3.506849 1.853051-3.337484C1.275218-3.048568 .418431-2.49066 .418431-1.504359C.418431-.448319 1.43462 .219178 2.480697 .219178C3.606476 .219178 4.552927-.607721 4.552927-1.673724C4.552927-2.032379 4.443337-2.480697 4.064757-2.899128C3.875467-3.108344 3.716065-3.20797 3.078456-3.606476ZM2.082192-3.188045L3.307597-2.410959C3.58655-2.221669 4.054795-1.92279 4.054795-1.315068C4.054795-.577833 3.307597-.059776 2.49066-.059776C1.633873-.059776 .916563-.67746 .916563-1.504359C.916563-2.082192 1.235367-2.719801 2.082192-3.188045Z'/>
+<path id='c15-05-preslikava-g1-61' d='M6.844334-3.257783C6.993773-3.257783 7.183064-3.257783 7.183064-3.457036S6.993773-3.656289 6.854296-3.656289H.886675C.747198-3.656289 .557908-3.656289 .557908-3.457036S.747198-3.257783 .896638-3.257783H6.844334ZM6.854296-1.325031C6.993773-1.325031 7.183064-1.325031 7.183064-1.524284S6.993773-1.723537 6.844334-1.723537H.896638C.747198-1.723537 .557908-1.723537 .557908-1.524284S.747198-1.325031 .886675-1.325031H6.854296Z'/>
+</defs>
+<g id='c15-05-preslikava-page1'>
+<g stroke-miterlimit='10' transform='translate(-17.559092,-2.140563)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='kvadrat'>
+<g stroke-width='1.0'>
+<path d='M-42.67911-42.67911V42.67911H42.67911V-42.67911ZM42.67911 42.67911' fill='none'/>
+</g>
+<g class='del' data-del='osi'>
+<path d='M-54.06003 0H52.5533' fill='none'/>
+<g transform='translate(50.07684,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(60.53847,-2.5)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-preslikava-g0-24'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-54.06003V52.5533' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,50.07684)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-2.66203,62.4829)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-preslikava-g0-17'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='kxi'>
+<g fill='#00f' stroke='#00f'>
+<path d='M-21.33955-42.67911V42.67911' fill='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M0-42.67911V42.67911' fill='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M21.33955-42.67911V42.67911' fill='none'/>
+</g>
+</g>
+<g class='del' data-del='keta'>
+<g fill='#f00' stroke='#f00'>
+<path d='M-42.67911-21.33955H42.67911' fill='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M-42.67911 0H42.67911' fill='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M-42.67911 21.33955H42.67911' fill='none'/>
+</g>
+</g>
+<path d='M-40.84048-42.67911C-40.84048-41.66367-41.66367-40.84048-42.67911-40.84048S-44.51773-41.66367-44.51773-42.67911S-43.69455-44.51773-42.67911-44.51773S-40.84048-43.69455-40.84048-42.67911ZM-42.67911-42.67911' stroke='none'/>
+<g transform='translate(-42.67911,-42.67911)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M44.51773-42.67911C44.51773-41.66367 43.69455-40.84048 42.67911-40.84048S40.84048-41.66367 40.84048-42.67911S41.66367-44.51773 42.67911-44.51773S44.51773-43.69455 44.51773-42.67911ZM42.67911-42.67911' stroke='none'/>
+<g transform='translate(42.67911,-42.67911)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M44.51773 42.67911C44.51773 43.69455 43.69455 44.51773 42.67911 44.51773S40.84048 43.69455 40.84048 42.67911S41.66367 40.84048 42.67911 40.84048S44.51773 41.66367 44.51773 42.67911ZM42.67911 42.67911' stroke='none'/>
+<g transform='translate(42.67911,42.67911)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M-40.84048 42.67911C-40.84048 43.69455-41.66367 44.51773-42.67911 44.51773S-44.51773 43.69455-44.51773 42.67911S-43.69455 40.84048-42.67911 40.84048S-40.84048 41.66367-40.84048 42.67911ZM-42.67911 42.67911' stroke='none'/>
+<g transform='translate(-42.67911,42.67911)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(-51.31209,-52.75652)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-preslikava-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(46.31209,-52.75652)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-preslikava-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(46.31209,46.31209)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-preslikava-g1-51'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-51.31209,46.31209)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-preslikava-g1-52'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='Phi'>
+<g stroke-width='0.9'>
+<path d='M73.9773 5.69046H109.58736' fill='none'/>
+<g transform='translate(106.98233,5.69046)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(90.28302,9.47343)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-preslikava-g1-8'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='mreza'>
+<g fill='#00f' stroke='#00f'>
+<path d='M167.871-38.41138L173.56146 34.14276' fill='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M142.26326-21.34L250.38377-17.07182' fill='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M196.32375-38.41138V38.41093' fill='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M145.10872-4.26817L247.53833 4.26773' fill='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M224.77649-38.41138L219.08559 42.67868' fill='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M147.95372 12.8032L244.69331 25.60728' fill='none'/>
+</g>
+</g>
+<g class='del' data-del='lik'>
+<g stroke-width='1.0'>
+<path d='M139.41826-38.41138H253.22923L241.8483 46.94685L150.79918 29.87503Z' fill='none'/>
+</g>
+<path d='M141.25688-38.41138C141.25688-37.39594 140.4337-36.57275 139.41826-36.57275S137.57964-37.39594 137.57964-38.41138S138.40282-40.25 139.41826-40.25S141.25688-39.42682 141.25688-38.41138ZM139.41826-38.41138' stroke='none'/>
+<g transform='translate(139.41826,-38.41138)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M255.06786-38.41138C255.06786-37.39594 254.24467-36.57275 253.22923-36.57275S251.39061-37.39594 251.39061-38.41138S252.21379-40.25 253.22923-40.25S255.06786-39.42682 255.06786-38.41138ZM253.22923-38.41138' stroke='none'/>
+<g transform='translate(253.22923,-38.41138)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M243.68692 46.94685C243.68692 47.9623 242.86374 48.78548 241.8483 48.78548S240.00967 47.9623 240.00967 46.94685C240.00967 45.93141 240.83286 45.10823 241.8483 45.10823S243.68692 45.93141 243.68692 46.94685ZM241.8483 46.94685' stroke='none'/>
+<g transform='translate(241.8483,46.94685)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M152.6378 29.87503C152.6378 30.89047 151.81462 31.71365 150.79918 31.71365S148.96056 30.89047 148.96056 29.87503S149.78374 28.0364 150.79918 28.0364S152.6378 28.85959 152.6378 29.87503ZM150.79918 29.87503' stroke='none'/>
+<g transform='translate(150.79918,29.87503)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(130.78528,-48.48878)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-preslikava-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(256.86221,-48.48878)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-preslikava-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(245.48128,50.57983)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-preslikava-g1-51'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(142.1662,33.50801)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-preslikava-g1-52'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='J'>
+<g transform='translate(150.38315,-51.72311)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-preslikava-g0-74'/>
+<use x='-11.076456' y='-2.140563' xlink:href='#c15-05-preslikava-g1-61'/>
+<use x='-3.327712' y='-2.140563' xlink:href='#c15-05-preslikava-g1-50'/>
+<use x='1.653627' y='-2.140563' xlink:href='#c15-05-preslikava-g1-52'/>
+<use x='6.634966' y='-2.140563' xlink:href='#c15-05-preslikava-g1-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(212.97954,-51.72311)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-preslikava-g0-74'/>
+<use x='-11.076456' y='-2.140563' xlink:href='#c15-05-preslikava-g1-61'/>
+<use x='-3.327712' y='-2.140563' xlink:href='#c15-05-preslikava-g1-51'/>
+<use x='1.653627' y='-2.140563' xlink:href='#c15-05-preslikava-g1-48'/>
+<use x='6.634966' y='-2.140563' xlink:href='#c15-05-preslikava-g1-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(210.1341,53.99402)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-preslikava-g0-74'/>
+<use x='-11.076456' y='-2.140563' xlink:href='#c15-05-preslikava-g1-61'/>
+<use x='-3.327712' y='-2.140563' xlink:href='#c15-05-preslikava-g1-50'/>
+<use x='1.653627' y='-2.140563' xlink:href='#c15-05-preslikava-g1-52'/>
+<use x='6.634966' y='-2.140563' xlink:href='#c15-05-preslikava-g1-54'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(147.53813,39.76764)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-preslikava-g0-74'/>
+<use x='-11.076456' y='-2.140563' xlink:href='#c15-05-preslikava-g1-61'/>
+<use x='-3.327712' y='-2.140563' xlink:href='#c15-05-preslikava-g1-49'/>
+<use x='1.653627' y='-2.140563' xlink:href='#c15-05-preslikava-g1-56'/>
+<use x='6.634966' y='-2.140563' xlink:href='#c15-05-preslikava-g1-54'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M196.32375 0H261.76514' fill='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(265.39812,-3.41666)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-preslikava-g0-74'/>
+<use x='-11.076456' y='-2.140563' xlink:href='#c15-05-preslikava-g1-61'/>
+<use x='-3.327712' y='-2.140563' xlink:href='#c15-05-preslikava-g1-50'/>
+<use x='1.653627' y='-2.140563' xlink:href='#c15-05-preslikava-g1-52'/>
+<use x='6.634966' y='-2.140563' xlink:href='#c15-05-preslikava-g1-51'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='sredisce'>
+<path d='M198.58669 0C198.58669 1.2498 197.57355 2.26294 196.32375 2.26294C195.07394 2.26294 194.0608 1.2498 194.0608 0S195.07394-2.26294 196.32375-2.26294C197.57355-2.26294 198.58669-1.2498 198.58669 0ZM196.32375 0' stroke='none'/>
+<g transform='translate(196.32375,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 15.20</span>: The map of the square \([-1, 1]^2\) onto the quadrilateral with nodes <span class="nobr">\((0, 0)\),</span> <span class="nobr">\((40, 0)\),</span> <span class="nobr">\((36, 30)\),</span> \((4, 24)\) mm. Left: the square with the axes <span class="nobr">\(\xi\),</span> \(\eta\) and the lines \(\xi = \) constant (blue) and \(\eta = \) constant (orange) at the values <span class="nobr">\(-\tfrac12\),</span> <span class="nobr">\(0\),</span> \(\tfrac12\) (scale 1,5 cm per unit). Right: the image with the lines, which went over into segments (scale 0,1 cm per mm), with the Jacobian determinant at the corners and at the centre, in mm².</figcaption></figure>
+<p>First the <a data-del="kvadrat" class="xref kaz" href="sec-mkk-izoparametricni.html#fig-mkk-preslikava" data-knowl="fig-mkk-preslikava">square</a> on the left with four numbered nodes, the axes <a data-del="osi" class="xref kaz" href="sec-mkk-izoparametricni.html#fig-mkk-preslikava" data-knowl="fig-mkk-preslikava">\(\xi\) and \(\eta\)</a> and six lines, <a data-del="kxi" class="xref kaz" href="sec-mkk-izoparametricni.html#fig-mkk-preslikava" data-knowl="fig-mkk-preslikava">blue</a> at constant \(\xi\) and <a data-del="keta" class="xref kaz" href="sec-mkk-izoparametricni.html#fig-mkk-preslikava" data-knowl="fig-mkk-preslikava">orange</a> at constant <span class="nobr">\(\eta\).</span> <a data-del="Phi" class="xref kaz" href="sec-mkk-izoparametricni.html#fig-mkk-preslikava" data-knowl="fig-mkk-preslikava">The arrow \(\Phi\)</a> carries it to the right into the <a data-del="lik" class="xref kaz" href="sec-mkk-izoparametricni.html#fig-mkk-preslikava" data-knowl="fig-mkk-preslikava">quadrilateral</a> with the same node labels. <a data-del="mreza" class="xref kaz" href="sec-mkk-izoparametricni.html#fig-mkk-preslikava" data-knowl="fig-mkk-preslikava">The lines of the square</a> went over into segments, which are no longer perpendicular and no longer equally spaced. Why segments, the next lemma says. <a data-del="sredisce" class="xref kaz" href="sec-mkk-izoparametricni.html#fig-mkk-preslikava" data-knowl="fig-mkk-preslikava">The centre of the square</a> fell on \((20; 13{,}5)\) mm, and the numbers <a data-del="J" class="xref kaz" href="sec-mkk-izoparametricni.html#fig-mkk-preslikava" data-knowl="fig-mkk-preslikava">at the corners and at the centre</a> are values of the Jacobian <a class="xref auto" href="sec-determinanta.html#def-determinanta" data-knowl="def-determinanta">determinant</a>, which we define right away.</p>
+<p>The <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> of <a class="xref auto" href="sec-parcialni-odvodi.html#def-parcialni-odvod" data-knowl="def-parcialni-odvod">partial derivatives</a> of the map, \(\mat F = \begin{bmatrix} x_\xi &amp; x_\eta \\ y_\xi &amp; y_\eta \end{bmatrix}\) (a subscript means a <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivative</a>, this is the matrix \(\mat F_\Phi\) of chapter <a class="xref" href="ch-energijski-principi.html">4</a>), and its determinant \(J = \det\mat F\) are called the <a class="xref auto" href="sec-zamenjava-spremenljivk.html#def-preslikava" data-knowl="def-preslikava">Jacobian matrix</a> and the Jacobian determinant (Jacobijeva matrika in Jacobijeva determinanta). For the bar this was the factor \(\mathrm{d}x/\mathrm{d}\xi = h/2\) of equation <a class="xref" href="sec-kvadratni-element.html#eq-kve-preslikava" data-knowl="eq-kve-preslikava">(7.28)</a>, in the plane it is a \(2 \times 2\) determinant. For the <a class="xref auto" href="sec-simetrija-napetosti.html#def-vektorski-produkt" data-knowl="def-vektorski-produkt">cross product</a> of two plane <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vectors</a> we write <span class="nobr">\(\vek u \times \vek v = u_{\mathrm{x}} v_{\mathrm{y}} - u_{\mathrm{y}} v_{\mathrm{x}}\),</span> so <span class="nobr">\(J = \Phi_\xi \times \Phi_\eta\).</span></p>
+
+<div class="blk lema" id="lem-jacobijeva-q4"><div class="blk-head"><span class="blk-label">Lemma 15.31</span> <span class="blk-title">Map and Jacobian determinant of the four-node element (preslikava in Jacobijeva determinanta štirikotnika)</span></div><div class="blk-body"><p>Let \(\Phi\) be the map <a class="xref" href="sec-mkk-izoparametricni.html#eq-mkk-izo-preslikava" data-knowl="eq-mkk-izo-preslikava">(15.23)</a> of a quadrilateral Q4 with nodes \(\vek p_1, \dots, \vek p_4\) and \(\vek e_{\mathrm{i}} = \vek p_{\mathrm{i}+1} - \vek p_{\mathrm{i}}\) the side <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vectors</a> (indices cyclic, <span class="nobr">\(\vek p_5 = \vek p_1\)).</span> Let</p>
+<div class="eq">\[\vek a = \tfrac14(\vek p_1 + \vek p_2 + \vek p_3 + \vek p_4) , \quad \vek b = \tfrac14(-\vek p_1 + \vek p_2 + \vek p_3 - \vek p_4) , \quad \vek c = \tfrac14(-\vek p_1 - \vek p_2 + \vek p_3 + \vek p_4) , \quad \vek d = \tfrac14(\vek p_1 - \vek p_2 + \vek p_3 - \vek p_4) .\]</div>
+<p>Then:</p>
+<ol>
+<li><span class="nobr">\(\Phi(\xi, \eta) = \vek a + \vek b\,\xi + \vek c\,\eta + \vek d\,\xi\eta\).</span> At constant \(\eta\) the <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> \(\xi \mapsto \Phi(\xi, \eta)\) is affine, at constant \(\xi\) the function \(\eta \mapsto \Phi(\xi, \eta)\) is affine. The sides of the square go over into the segments <span class="nobr">\(\vek p_1\vek p_2\),</span> <span class="nobr">\(\vek p_2\vek p_3\),</span> <span class="nobr">\(\vek p_3\vek p_4\),</span> <span class="nobr">\(\vek p_4\vek p_1\).</span></li>
+<li><span class="nobr">\(J(\xi, \eta) = \vek b\times\vek c + (\vek b\times\vek d)\,\xi + (\vek d\times\vek c)\,\eta\),</span> so \(J\) is an affine function of \(\xi\) and <span class="nobr">\(\eta\).</span></li>
+<li>The value at corner \(i\) is <span class="nobr">\(J_{\mathrm{i}} = \tfrac14\,\vek e_{\mathrm{i}-1}\times\vek e_{\mathrm{i}}\),</span> and <span class="nobr">\(J(0, 0) = \tfrac14 (J_1 + J_2 + J_3 + J_4)\).</span></li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show three points. The first by collecting terms, the second by differentiating, the third by computing at the four corners.</p>
+<ol>
+<li>In equation <a class="xref" href="sec-mkk-izoparametricni.html#eq-mkk-izo-preslikava" data-knowl="eq-mkk-izo-preslikava">(15.23)</a> we insert \(N_{\mathrm{i}}\) from equation <a class="xref" href="sec-mkk-izoparametricni.html#eq-mkk-q4-oblikovne" data-knowl="eq-mkk-q4-oblikovne">(15.22)</a> and collect the terms in <span class="nobr">\(1\),</span> <span class="nobr">\(\xi\),</span> \(\eta\) and <span class="nobr">\(\xi\eta\).</span> The coefficient of \(1\) is <span class="nobr">\(\tfrac14\sum_{\mathrm{i}} \vek p_{\mathrm{i}} = \vek a\),</span> of \(\xi\) it is <span class="nobr">\(\tfrac14\sum_{\mathrm{i}} \xi_{\mathrm{i}}\vek p_{\mathrm{i}} = \vek b\),</span> of \(\eta\) it is \(\tfrac14\sum_{\mathrm{i}} \eta_{\mathrm{i}}\vek p_{\mathrm{i}} = \vek c\) and of \(\xi\eta\) it is <span class="nobr">\(\tfrac14\sum_{\mathrm{i}} \xi_{\mathrm{i}}\eta_{\mathrm{i}}\vek p_{\mathrm{i}} = \vek d\),</span> because <span class="nobr">\(\xi_{\mathrm{i}}\eta_{\mathrm{i}} = 1, -1, 1, -1\).</span></li>
+<li>At constant <span class="nobr">\(\eta\),</span> <span class="nobr">\(\Phi = (\vek a + \vek c\eta) + (\vek b + \vek d\eta)\,\xi\),</span> an affine <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> of <span class="nobr">\(\xi\),</span> and the same at constant <span class="nobr">\(\xi\).</span> At \(\eta = -1\) this is a segment that by lemma <a class="xref" href="sec-mkk-izoparametricni.html#lem-oblikovne-q4" data-knowl="lem-oblikovne-q4">15.29</a>, point 1, has the values \(\vek p_1\) and \(\vek p_2\) at <span class="nobr">\(\xi = \mp 1\).</span> The other three sides are the same.</li>
+<li>The <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivatives</a> are \(\Phi_\xi = \vek b + \vek d\eta\) and <span class="nobr">\(\Phi_\eta = \vek c + \vek d\xi\),</span> so <span class="nobr">\(J = (\vek b + \vek d\eta)\times(\vek c + \vek d\xi) = \vek b\times\vek c + \xi\,\vek b\times\vek d + \eta\,\vek d\times\vek c + \xi\eta\,\vek d\times\vek d\),</span> and <span class="nobr">\(\vek d\times\vek d = 0\).</span></li>
+<li>Corners. The computations of step 1 give <span class="nobr">\(\vek b - \vek d = \tfrac12\vek e_1\),</span> <span class="nobr">\(\vek b + \vek d = -\tfrac12\vek e_3\),</span> \(\vek c - \vek d = -\tfrac12\vek e_4\) and <span class="nobr">\(\vek c + \vek d = \tfrac12\vek e_2\).</span> At \((-1, -1)\) we have \(\Phi_\xi = \vek b - \vek d\) and <span class="nobr">\(\Phi_\eta = \vek c - \vek d\),</span> so <span class="nobr">\(J_1 = \tfrac12\vek e_1\times(-\tfrac12\vek e_4) = \tfrac14\vek e_4\times\vek e_1\).</span> At <span class="nobr">\((1, -1)\),</span> <span class="nobr">\(J_2 = \tfrac12\vek e_1\times\tfrac12\vek e_2\),</span> at <span class="nobr">\((1, 1)\),</span> <span class="nobr">\(J_3 = (-\tfrac12\vek e_3)\times\tfrac12\vek e_2 = \tfrac14\vek e_2\times\vek e_3\),</span> and at <span class="nobr">\((-1, 1)\),</span> <span class="nobr">\(J_4 = (-\tfrac12\vek e_3)\times(-\tfrac12\vek e_4) = \tfrac14\vek e_3\times\vek e_4\).</span></li>
+<li>For an affine function \(J = j_0 + j_1\xi + j_2\eta\) we have <span class="nobr">\(\sum_{\mathrm{i}} J_{\mathrm{i}} = 4 j_0 + j_1\sum_{\mathrm{i}}\xi_{\mathrm{i}} + j_2\sum_{\mathrm{i}}\eta_{\mathrm{i}} = 4j_0 = 4J(0, 0)\),</span> because <span class="nobr">\(\sum_{\mathrm{i}}\xi_{\mathrm{i}} = \sum_{\mathrm{i}}\eta_{\mathrm{i}} = 0\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> COOK, section 6.2, PDF p. 221: \(J\) is the determinant of the Jacobian matrix, for a rectangle and a parallelogram it is constant, <span class="nobr">\(J = A/4\).</span> The proof, the affinity of \(J\) and the values at the corners are ours.</p></div></div>
+<p>For our quadrilateral \(\vek a = (20; 13{,}5)\) mm, \(\vek b = (18; 1{,}5)\) mm, \(\vek c = (0; 13{,}5)\) mm and \(\vek d = (-2; 1{,}5)\) mm, so <span class="nobr">\(\vek b\times\vek c = 243\),</span> \(\vek b\times\vek d = 30\) and \(\vek d\times\vek c = -27\) mm². Hence \(J = 243 + 30\,\xi - 27\,\eta\) mm², at the corners <span class="nobr">\(240\),</span> <span class="nobr">\(300\),</span> \(246\) and \(186\) mm² and at the centre \(243\) mm², as figure <a class="xref" href="sec-mkk-izoparametricni.html#fig-mkk-preslikava" data-knowl="fig-mkk-preslikava">15.20</a> shows (num-05.out, part B). The mean of the four corner values is indeed <span class="nobr">\(243\).</span> For a \(40 \times 30\) mm rectangle \(J = 300\) mm² everywhere, one quarter of the area \(1200\) mm², in agreement with the statement in COOK.</p>
+
+<h3 id="sec-kdaj-je-stirikotnik-ukrivljen-kvader"><span class="h-num">15.5.3</span> When a quadrilateral is a curved box</h3>
+<p>Theorem <a class="xref" href="sec-zamenjava-spremenljivk.html#thm-zamenjava-spremenljivk" data-knowl="thm-zamenjava-spremenljivk">4.59</a> requires the map to be injective on an open set around \(K\) and to have a nonzero Jacobian <a class="xref auto" href="sec-determinanta.html#def-determinanta" data-knowl="def-determinanta">determinant</a>, and definition <a class="xref" href="sec-zamenjava-spremenljivk.html#def-ukrivljen-kvader" data-knowl="def-ukrivljen-kvader">4.65</a> further requires it to be positive. For a quadrilateral this is simple, because \(J\) is an affine <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a>.</p>
+
+<div class="blk izrek" id="thm-izoparametricni-ukrivljen-kvader"><div class="blk-head"><span class="blk-label">Theorem 15.32</span> <span class="blk-title">A quadrilateral with positive determinant at the corners is a curved box (štirikotnik s pozitivno determinanto v ogliščih je ukrivljen kvader)</span></div><div class="blk-body"><p>Let \(\Phi\) be the map of a quadrilateral Q4 and let \(J_{\mathrm{i}} &gt; 0\) at all four corners <span class="nobr">(\(i = 1, \dots, 4\),</span> lemma <a class="xref" href="sec-mkk-izoparametricni.html#lem-jacobijeva-q4" data-knowl="lem-jacobijeva-q4">15.31</a>). Then:</p>
+<ol>
+<li>\(J &gt; 0\) on the closed square \(K\) and on the open square \(K_\varepsilon = (-1 - \varepsilon, 1 + \varepsilon)^2\) for \(\varepsilon &gt; 0\) small enough.</li>
+<li>The map \(\Phi\) is injective on <span class="nobr">\(K_\varepsilon\).</span></li>
+<li>The map \(\Phi\) satisfies conditions 1 to 3 of definition <a class="xref" href="sec-zamenjava-spremenljivk.html#def-ukrivljen-kvader" data-knowl="def-ukrivljen-kvader">4.65</a>, written for the plane. The set \(Q = \Phi(K)\) is therefore a curved box in the plane, and for every <a class="xref auto" href="sec-zveznost.html#def-zveznost" data-knowl="def-zveznost">continuous function</a> \(f\) on \(Q\)
+<div class="eq" id="eq-mkk-izo-integral">\[\int_{\mathrm{Q}} f\,\mathrm{d}A = \int_{\mathrm{K}} f\big(\Phi(\xi, \eta)\big)\,J(\xi, \eta)\,\mathrm{d}A . \tag{15.25}\]</div></li>
+<li>The area of the quadrilateral is <span class="nobr">\(A = 4J(0, 0) = J_1 + J_2 + J_3 + J_4\).</span></li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show four claims. The positivity of \(J\) follows from \(J\) being a weighted sum of the corner values with nonnegative weights. Injectivity follows from the difference of the images of two points being the <a class="xref auto" href="sec-zamenjava-spremenljivk.html#def-preslikava" data-knowl="def-preslikava">Jacobian matrix</a> at the midpoint times the difference of the points. Then we apply the change of variables theorem.</p>
+<ol>
+<li>The <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> \(J\) is affine (lemma <a class="xref" href="sec-mkk-izoparametricni.html#lem-jacobijeva-q4" data-knowl="lem-jacobijeva-q4">15.31</a>, point 2), so by lemma <a class="xref" href="sec-mkk-izoparametricni.html#lem-oblikovne-q4" data-knowl="lem-oblikovne-q4">15.29</a>, point 2, <span class="nobr">\(J = \sum_{\mathrm{i}} J_{\mathrm{i}}\,N_{\mathrm{i}}\).</span> For affine \(J = j_0 + j_1\xi + j_2\eta\) the sum has the value <span class="nobr">\(\sum_{\mathrm{i}} J_{\mathrm{i}} N_{\mathrm{i}} = j_0\sum_{\mathrm{i}} N_{\mathrm{i}} + j_1\sum_{\mathrm{i}}\xi_{\mathrm{i}} N_{\mathrm{i}} + j_2\sum_{\mathrm{i}}\eta_{\mathrm{i}} N_{\mathrm{i}}\),</span> which is <span class="nobr">\(j_0 + j_1\xi + j_2\eta\).</span></li>
+<li>By point 4 of lemma <a class="xref" href="sec-mkk-izoparametricni.html#lem-oblikovne-q4" data-knowl="lem-oblikovne-q4">15.29</a> the \(N_{\mathrm{i}} \ge 0\) and their sum is <span class="nobr">\(1\),</span> so \(J \ge \min_{\mathrm{i}} J_{\mathrm{i}} &gt; 0\) on <span class="nobr">\(K\).</span></li>
+<li>Values on the open square. An affine function \(j_0 + j_1\xi + j_2\eta\) reaches its smallest value on a square at one of the corners, because each of the terms \(j_1\xi\) and \(j_2\eta\) reaches its smallest value at an end of its <a class="xref auto" href="sec-konvergenca-zaporedij.html#def-interval" data-knowl="def-interval">interval</a>. The corners of the square \(K_\varepsilon\) are \((1 + \varepsilon)(\xi_{\mathrm{i}}, \eta_{\mathrm{i}})\) and <span class="nobr">\(J\big((1 + \varepsilon)(\xi_{\mathrm{i}}, \eta_{\mathrm{i}})\big) = J(0, 0) + (1 + \varepsilon)\,(J_{\mathrm{i}} - J(0, 0)) = J_{\mathrm{i}} + \varepsilon\,(J_{\mathrm{i}} - J(0, 0))\).</span> At \(\varepsilon = 0\) this equals \(J_{\mathrm{i}} &gt; 0\) and it is continuous in <span class="nobr">\(\varepsilon\),</span> so for small enough \(\varepsilon\) it is positive at all four corners and \(J &gt; 0\) on the whole <span class="nobr">\(K_\varepsilon\).</span></li>
+<li>Let \(P = (\xi_{\mathrm{P}}, \eta_{\mathrm{P}})\) and \(Q' = (\xi_{\mathrm{Q}'}, \eta_{\mathrm{Q}'})\) be points of \(K_\varepsilon\) and <span class="nobr">\(\vek\delta = Q' - P\).</span> By lemma <a class="xref" href="sec-mkk-izoparametricni.html#lem-jacobijeva-q4" data-knowl="lem-jacobijeva-q4">15.31</a>, point 1, <span class="nobr">\(\Phi(Q') - \Phi(P) = \vek b\,\delta_\xi + \vek c\,\delta_\eta + \vek d\,(\xi_{\mathrm{Q}'}\eta_{\mathrm{Q}'} - \xi_{\mathrm{P}}\eta_{\mathrm{P}})\).</span> We have \(\xi_{\mathrm{Q}'}\eta_{\mathrm{Q}'} - \xi_{\mathrm{P}}\eta_{\mathrm{P}} = \tfrac12\big[(\xi_{\mathrm{P}} + \xi_{\mathrm{Q}'})(\eta_{\mathrm{Q}'} - \eta_{\mathrm{P}}) + (\xi_{\mathrm{Q}'} - \xi_{\mathrm{P}})(\eta_{\mathrm{P}} + \eta_{\mathrm{Q}'})\big] = \xi_{\mathrm{M}}\,\delta_\eta + \eta_{\mathrm{M}}\,\delta_\xi\) with the midpoint \(M = (\xi_{\mathrm{M}}, \eta_{\mathrm{M}})\) of the segment <span class="nobr">\(PQ'\).</span> So <span class="nobr">\(\Phi(Q') - \Phi(P) = (\vek b + \vek d\,\eta_{\mathrm{M}})\,\delta_\xi + (\vek c + \vek d\,\xi_{\mathrm{M}})\,\delta_\eta = \mat F(M)\,\vek\delta\).</span></li>
+<li>The square \(K_\varepsilon\) is convex, so \(M \in K_\varepsilon\) and \(\det\mat F(M) = J(M) &gt; 0\) by step 3. A <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> with nonzero <a class="xref auto" href="sec-determinanta.html#def-determinanta" data-knowl="def-determinanta">determinant</a> is <a class="xref auto" href="sec-matrike.html#def-inverzna-matrika" data-knowl="def-inverzna-matrika">invertible</a> (lemma <a class="xref" href="sec-determinanta.html#lem-lastnosti-determinante" data-knowl="lem-lastnosti-determinante">2.51</a>), so for \(\vek\delta \ne \vek 0\) also \(\mat F(M)\,\vek\delta \ne \vek 0\) and <span class="nobr">\(\Phi(Q') \ne \Phi(P)\).</span> This is point 2.</li>
+<li>The components of \(\Phi\) are <a class="xref auto" href="sec-zveznost.html#def-polinom" data-knowl="def-polinom">polynomials</a>, so they have continuous <a class="xref auto" href="sec-parcialni-odvodi.html#def-parcialni-odvod" data-knowl="def-parcialni-odvod">partial derivatives</a> of all orders on the whole plane, \(\Phi\) is injective and \(J &gt; 0\) on <span class="nobr">\(K_\varepsilon\).</span> These are conditions 1 to 3 of definition <a class="xref" href="sec-zamenjava-spremenljivk.html#def-ukrivljen-kvader" data-knowl="def-ukrivljen-kvader">4.65</a>. The square \(K\) is a <a class="xref auto" href="sec-integral-po-telesu.html#def-mnozica-s-prostornino" data-knowl="def-mnozica-s-prostornino">set with area</a>, so equation <a class="xref" href="sec-mkk-izoparametricni.html#eq-mkk-izo-integral" data-knowl="eq-mkk-izo-integral">(15.25)</a> holds by theorem <a class="xref" href="sec-zamenjava-spremenljivk.html#thm-zamenjava-spremenljivk" data-knowl="thm-zamenjava-spremenljivk">4.59</a> (in the plane), with <span class="nobr">\(|J| = J\).</span></li>
+<li>Area. For \(f = 1\) equation <a class="xref" href="sec-mkk-izoparametricni.html#eq-mkk-izo-integral" data-knowl="eq-mkk-izo-integral">(15.25)</a> gives <span class="nobr">\(A = \int_{\mathrm{K}} J\,\mathrm{d}A\).</span> The <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integral</a> of an affine function over the square is <span class="nobr">\(4j_0\),</span> since \(\int_{\mathrm{K}} \xi\,\mathrm{d}A = \int_{\mathrm{K}} \eta\,\mathrm{d}A = 0\) by theorem <a class="xref" href="sec-integral-po-telesu.html#thm-fubini" data-knowl="thm-fubini">4.9</a>, and \(4j_0 = 4J(0, 0) = \sum_{\mathrm{i}} J_{\mathrm{i}}\) by step 5 of lemma <a class="xref" href="sec-mkk-izoparametricni.html#lem-jacobijeva-q4" data-knowl="lem-jacobijeva-q4">15.31</a>.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> COOK, section 6.2, PDF pp. 221 and 222: \(J\) is the factor that multiplies \(\mathrm{d}\xi\,\mathrm{d}\eta\) into the area element, nodes must be numbered counterclockwise so that \(J\) is not negative. ONATE1, section 6.1, PDF p. 211: the Jacobian determinant must have a constant sign over the element, for the linear quadrilateral this is satisfied if no internal angle is equal to or larger than \(180^\circ\) (the source states the condition without proof). The proof is ours.</p></div></div>
+<p>The condition \(J_{\mathrm{i}} &gt; 0\) has a geometric meaning. By point 3 of lemma <a class="xref" href="sec-mkk-izoparametricni.html#lem-jacobijeva-q4" data-knowl="lem-jacobijeva-q4">15.31</a>, <span class="nobr">\(J_{\mathrm{i}} = \tfrac14|\vek e_{\mathrm{i}-1}||\vek e_{\mathrm{i}}|\sin\theta_{\mathrm{i}}\),</span> where \(\theta_{\mathrm{i}}\) is the angle by which the <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vector</a> \(\vek e_{\mathrm{i}-1}\) turns counterclockwise into <span class="nobr">\(\vek e_{\mathrm{i}}\),</span> that is the exterior angle at corner <span class="nobr">\(i\).</span> A positive \(J_{\mathrm{i}}\) means that the boundary turns left at corner <span class="nobr">\(i\),</span> the interior angle is smaller than <span class="nobr">\(180^\circ\).</span> The condition of theorem <a class="xref" href="sec-mkk-izoparametricni.html#thm-izoparametricni-ukrivljen-kvader" data-knowl="thm-izoparametricni-ukrivljen-kvader">15.32</a> therefore means four turns to the left, that is a convex quadrilateral with nodes numbered counterclockwise (ONATE1, PDF p. 211, states the same condition for the interior angles). The example in the map of figure <a class="xref" href="sec-mkk-izoparametricni.html#fig-mkk-preslikava" data-knowl="fig-mkk-preslikava">15.20</a> has all four \(J_{\mathrm{i}} &gt; 0\) and is convex.</p>
+<p>What happens if the condition is not met? Take a quadrilateral with nodes <span class="nobr">\((0, 0)\),</span> <span class="nobr">\((40, 0)\),</span> \((14, 8)\) and \((4, 24)\) mm, which differs from the previous one only in node <span class="nobr">\(3\),</span> pulled inward. The polygon with these four vertices is an ordinary, nonconvex quadrilateral, and whoever draws it sees nothing wrong.</p>
+
+<div class="blk lema" id="lem-zlozen-stirikotnik"><div class="blk-head"><span class="blk-label">Lemma 15.33</span> <span class="blk-title">A folded quadrilateral (zložen štirikotnik)</span></div><div class="blk-body"><p>Let \(\Phi\) be the map of a quadrilateral Q4 with nodes <span class="nobr">\((0, 0)\),</span> <span class="nobr">\((40, 0)\),</span> \((14, 8)\) and \((4, 24)\) mm. Then:</p>
+<ol>
+<li>\(J = 78 - 80\,\xi - 82\,\eta\) mm², at the corners <span class="nobr">\(J_1 = 240\),</span> <span class="nobr">\(J_2 = 80\),</span> \(J_3 = -84\) and \(J_4 = 76\) mm².</li>
+<li>\(J = 0\) on the segment \(80\,\xi + 82\,\eta = 78\) from the point \((-0{,}05; 1)\) to <span class="nobr">\((1; -1/41)\),</span> \(J &lt; 0\) above it.</li>
+<li>The points \(P = (0{,}6; 0{,}6)\) and \(Q = (0{,}36; 15/41)\) of the square have the same image \(\Phi(P) = \Phi(Q) = (16; 8{,}96)\) mm, and <span class="nobr">\(J(P) = -19{,}2\),</span> \(J(Q) = +19{,}2\) mm². So \(\Phi\) is not injective on <span class="nobr">\(K\).</span></li>
+<li>The midpoint \(M = (0{,}48; 19{,}8/41)\) of the segment \(PQ\) lies on the segment of point 2, so \(J(M) = 0\) and \(\mat F(M)\) is singular.</li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show four claims by computation with lemma <a class="xref" href="sec-mkk-izoparametricni.html#lem-jacobijeva-q4" data-knowl="lem-jacobijeva-q4">15.31</a> and equation <a class="xref" href="sec-mkk-izoparametricni.html#eq-mkk-izo-preslikava" data-knowl="eq-mkk-izo-preslikava">(15.23)</a>.</p>
+<ol>
+<li>The <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vectors</a> are <span class="nobr">\(\vek b = (-0 + 40 + 14 - 4,\ 0 + 0 + 8 - 24)/4 = (12{,}5; -4)\),</span> \(\vek c = (0 - 40 + 14 + 4,\ 0 - 0 + 8 + 24)/4 = (-5{,}5; 8)\) and <span class="nobr">\(\vek d = (0 - 40 + 14 - 4,\ 0 - 0 + 8 - 24)/4 = (-7{,}5; -4)\).</span> So <span class="nobr">\(\vek b\times\vek c = 12{,}5\cdot 8 - (-4)(-5{,}5) = 78\),</span> \(\vek b\times\vek d = 12{,}5\cdot(-4) - (-4)(-7{,}5) = -80\) and <span class="nobr">\(\vek d\times\vek c = (-7{,}5)\cdot 8 - (-4)(-5{,}5) = -82\).</span> The values at the corners follow from \(J_{\mathrm{i}} = \tfrac14\vek e_{\mathrm{i}-1}\times\vek e_{\mathrm{i}}\) or by inserting \((\pm 1, \pm 1)\) into <span class="nobr">\(J\).</span> At node <span class="nobr">\(3\),</span> \(\vek e_2 = (-26, 8)\) and <span class="nobr">\(\vek e_3 = (-10, 16)\),</span> so <span class="nobr">\(J_3 = \tfrac14\,(-26\cdot 16 - 8\cdot(-10)) = -84\).</span></li>
+<li>The equation \(J = 0\) is a line. At \(\eta = 1\) it gives <span class="nobr">\(\xi = -4/80 = -0{,}05\),</span> at \(\xi = 1\) it gives <span class="nobr">\(\eta = -2/82 = -1/41\).</span> Both points are on the boundary of <span class="nobr">\(K\).</span> Since \(J\) is affine, it has one sign on one side of the line and the opposite on the other, and it is negative on the side where corner \(3\) lies, with <span class="nobr">\(J_3 = -84 &lt; 0\).</span></li>
+<li>At \(P = (0{,}6; 0{,}6)\) the \(N_1, \dots, N_4\) are <span class="nobr">\(0{,}04\),</span> <span class="nobr">\(0{,}16\),</span> <span class="nobr">\(0{,}64\),</span> \(0{,}16\) and <span class="nobr">\(\Phi(P) = (0{,}16\cdot 40 + 0{,}64\cdot 14 + 0{,}16\cdot 4,\ 0{,}64\cdot 8 + 0{,}16\cdot 24) = (16; 8{,}96)\).</span> At \(Q = (0{,}36; 15/41)\) the \(N_{\mathrm{i}} = (4{,}16;\ 8{,}84;\ 19{,}04;\ 8{,}96)/41\) with sum \(1\) and <span class="nobr">\(\Phi(Q) = \big((8{,}84\cdot 40 + 19{,}04\cdot 14 + 8{,}96\cdot 4)/41,\ (19{,}04\cdot 8 + 8{,}96\cdot 24)/41\big) = (656/41;\ 367{,}36/41) = (16; 8{,}96)\).</span> Further \(J(P) = 78 - 48 - 49{,}2 = -19{,}2\) and <span class="nobr">\(J(Q) = 78 - 28{,}8 - 30 = 19{,}2\).</span></li>
+<li>By step 4 of the proof of theorem <a class="xref" href="sec-mkk-izoparametricni.html#thm-izoparametricni-ukrivljen-kvader" data-knowl="thm-izoparametricni-ukrivljen-kvader">15.32</a>, \(\Phi(Q) - \Phi(P) = \mat F(M)\,(Q - P)\) for the midpoint \(M\) and <span class="nobr">\(Q - P \ne \vek 0\).</span> The left side is zero, so \(\mat F(M)\) is singular and <span class="nobr">\(J(M) = 0\).</span> Directly: <span class="nobr">\(J(M) = 78 - 80\cdot 0{,}48 - 82\cdot 19{,}8/41 = 78 - 38{,}4 - 39{,}6 = 0\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> COOK, section 6.2, PDF p. 222: if the numbering does not run counterclockwise, \(J\) becomes negative over part or all of the element. COOK, section 6.11, PDF p. 250, figure 6.11-2: in badly distorted elements a Gauss point lies outside the element and \(J\) is negative there, an acceptable element must not have a negative \(J\) at any Gauss point. The example and the computations are ours (num-05.out, parts B and G).</p></div></div>
+<figure class="blk slika" id="fig-mkk-zlozen"><p><span class="svgfig" role="img" aria-label="The folded map of a square onto a quadrilateral with node 3 pulled inward"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='445.48pt' height='169.75pt' viewBox='-72.000004 -71.999997 329.9841 125.739377'>
+<defs>
+<path id='c15-05-zlozen-g0-0' d='M6.56538-2.291407C6.734745-2.291407 6.914072-2.291407 6.914072-2.49066S6.734745-2.689913 6.56538-2.689913H1.175592C1.006227-2.689913 .826899-2.689913 .826899-2.49066S1.006227-2.291407 1.175592-2.291407H6.56538Z'/>
+<path id='c15-05-zlozen-g1-17' d='M4.861768-2.759651C4.911582-2.938979 4.941469-3.068493 4.941469-3.337484C4.941469-3.985056 4.542964-4.403487 3.795766-4.403487C3.008717-4.403487 2.49066-3.88543 2.251557-3.536737C2.201743-4.104608 1.783313-4.403487 1.334994-4.403487C.876712-4.403487 .687422-4.014944 .597758-3.835616C.418431-3.496887 .288917-2.899128 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.779577 .577833-2.998755C.747198-3.706102 .946451-4.184309 1.305106-4.184309C1.474471-4.184309 1.613948-4.104608 1.613948-3.726027C1.613948-3.516812 1.58406-3.407223 1.454545-2.889166L.876712-.587796C.846824-.438356 .787049-.209215 .787049-.159402C.787049 .019925 .926526 .109589 1.075965 .109589C1.195517 .109589 1.374844 .029888 1.444583-.169365C1.454545-.18929 1.574097-.657534 1.633873-.9066L1.853051-1.803238C1.912827-2.022416 1.972603-2.241594 2.022416-2.470735C2.042341-2.530511 2.122042-2.859278 2.132005-2.919054C2.161893-3.008717 2.470735-3.566625 2.809465-3.835616C3.028643-3.995019 3.337484-4.184309 3.765878-4.184309S4.303861-3.845579 4.303861-3.486924C4.303861-3.437111 4.303861-3.257783 4.204234-2.859278L3.068493 1.723537C3.038605 1.843088 3.038605 1.863014 3.038605 1.882939C3.038605 2.032379 3.148194 2.15193 3.317559 2.15193C3.626401 2.15193 3.696139 1.863014 3.726027 1.753425L4.861768-2.759651Z'/>
+<path id='c15-05-zlozen-g1-24' d='M1.534247-3.048568C.448319-2.331258 .229141-1.39477 .229141-1.036115C.229141-.557908 .498132-.278954 .518057-.249066C.836862 .079701 .926526 .119552 1.673724 .398506L2.879203 .86675C3.028643 .936488 3.227895 1.006227 3.227895 1.295143C3.227895 1.524284 3.048568 1.823163 2.739726 1.823163C2.30137 1.823163 1.972603 1.58406 1.863014 1.504359C1.803238 1.464508 1.793275 1.454545 1.753425 1.454545C1.673724 1.454545 1.653798 1.524284 1.653798 1.564134C1.653798 1.683686 2.181818 2.042341 2.739726 2.042341C3.35741 2.042341 3.775841 1.464508 3.775841 .976339C3.775841 .498132 3.407223 .318804 3.297634 .268991C3.158157 .219178 2.819427 .089664 2.689913 .039851C2.49066-.039851 2.291407-.119552 2.082192-.18929L1.484433-.428394C1.036115-.607721 .737235-.896638 .737235-1.315068C.737235-1.723537 1.125778-2.590286 1.96264-3.008717C2.331258-2.879203 2.630137-2.879203 2.839352-2.879203C3.138232-2.879203 3.765878-2.879203 3.765878-3.188045C3.765878-3.437111 3.337484-3.457036 2.948941-3.457036C2.769614-3.457036 2.480697-3.457036 2.11208-3.337484C1.853051-3.596513 1.8132-3.92528 1.8132-4.11457C1.8132-4.672478 2.171856-5.439601 2.919054-5.808219C3.098381-5.589041 3.327522-5.589041 3.556663-5.589041C3.805729-5.589041 4.443337-5.589041 4.443337-5.897883C4.443337-6.156912 4.004981-6.166874 3.616438-6.166874C3.486924-6.166874 3.247821-6.166874 2.988792-6.117061C2.958904-6.206725 2.938979-6.276463 2.938979-6.445828C2.938979-6.585305 2.988792-6.794521 2.988792-6.814446C2.988792-6.894147 2.938979-6.94396 2.86924-6.94396C2.689913-6.94396 2.689913-6.485679 2.689913-6.455791C2.689913-6.256538 2.749689-6.107098 2.759651-6.067248C1.693649-5.768369 1.016189-4.971357 1.016189-4.204234C1.016189-3.835616 1.195517-3.417186 1.663761-3.148194L1.534247-3.048568ZM3.148194-5.897883C3.307597-5.947696 3.516812-5.947696 3.626401-5.947696C3.965131-5.947696 4.004981-5.937733 4.184309-5.88792C4.104608-5.858032 4.004981-5.808219 3.566625-5.808219C3.377335-5.808219 3.257783-5.808219 3.148194-5.897883ZM2.371108-3.178082C2.600249-3.237858 2.819427-3.237858 2.938979-3.237858C3.287671-3.237858 3.327522-3.227895 3.506849-3.178082C3.427148-3.138232 3.327522-3.098381 2.86924-3.098381C2.6401-3.098381 2.550436-3.098381 2.371108-3.178082Z'/>
+<path id='c15-05-zlozen-g1-60' d='M6.724782-4.961395C6.844334-5.021171 6.914072-5.070984 6.914072-5.180573S6.824408-5.379826 6.714819-5.379826C6.684932-5.379826 6.665006-5.379826 6.535492-5.310087L1.016189-2.709838C.9066-2.660025 .826899-2.610212 .826899-2.49066S.9066-2.321295 1.016189-2.271482L6.535492 .328767C6.665006 .398506 6.684932 .398506 6.714819 .398506C6.824408 .398506 6.914072 .308842 6.914072 .199253S6.844334 .039851 6.724782-.019925L1.494396-2.49066L6.724782-4.961395Z'/>
+<path id='c15-05-zlozen-g1-74' d='M5.389788-6.07721C5.469489-6.405978 5.489415-6.495641 6.03736-6.495641C6.196762-6.495641 6.306351-6.495641 6.306351-6.684932C6.306351-6.774595 6.246575-6.804483 6.166874-6.804483C5.917808-6.804483 5.310087-6.774595 5.061021-6.774595C4.732254-6.774595 3.92528-6.804483 3.596513-6.804483C3.506849-6.804483 3.387298-6.804483 3.387298-6.60523C3.387298-6.495641 3.466999-6.495641 3.726027-6.495641C3.955168-6.495641 4.054795-6.495641 4.303861-6.475716C4.542964-6.445828 4.612702-6.41594 4.612702-6.276463C4.612702-6.216687 4.592777-6.146949 4.572852-6.067248L3.427148-1.494396C3.188045-.52802 2.510585 0 1.992528 0C1.733499 0 1.205479-.099626 1.046077-.617684C1.075965-.607721 1.145704-.607721 1.165629-.607721C1.554172-.607721 1.8132-.946451 1.8132-1.24533C1.8132-1.564134 1.544209-1.663761 1.374844-1.663761C1.195517-1.663761 .707347-1.544209 .707347-.86675C.707347-.249066 1.235367 .219178 2.022416 .219178C2.938979 .219178 3.975093-.438356 4.224159-1.424658L5.389788-6.07721Z'/>
+<path id='c15-05-zlozen-g1-80' d='M3.01868-3.148194H4.712329C6.127024-3.148194 7.511831-4.184309 7.511831-5.300125C7.511831-6.067248 6.854296-6.804483 5.549191-6.804483H2.321295C2.132005-6.804483 2.022416-6.804483 2.022416-6.615193C2.022416-6.495641 2.11208-6.495641 2.311333-6.495641C2.440847-6.495641 2.620174-6.485679 2.739726-6.475716C2.899128-6.455791 2.958904-6.425903 2.958904-6.316314C2.958904-6.276463 2.948941-6.246575 2.919054-6.127024L1.58406-.777086C1.484433-.388543 1.464508-.308842 .67746-.308842C.508095-.308842 .398506-.308842 .398506-.119552C.398506 0 .518057 0 .547945 0C.826899 0 1.534247-.029888 1.8132-.029888C2.022416-.029888 2.241594-.019925 2.450809-.019925C2.669988-.019925 2.889166 0 3.098381 0C3.16812 0 3.297634 0 3.297634-.199253C3.297634-.308842 3.20797-.308842 3.01868-.308842C2.650062-.308842 2.371108-.308842 2.371108-.488169C2.371108-.547945 2.391034-.597758 2.400996-.657534L3.01868-3.148194ZM3.73599-6.117061C3.825654-6.465753 3.845579-6.495641 4.273973-6.495641H5.230386C6.057285-6.495641 6.585305-6.22665 6.585305-5.539228C6.585305-5.150685 6.386052-4.293898 5.997509-3.935243C5.499377-3.486924 4.901619-3.407223 4.463263-3.407223H3.058531L3.73599-6.117061Z'/>
+<path id='c15-05-zlozen-g1-81' d='M4.363636-.059776C5.907846-.647572 7.372354-2.420922 7.372354-4.343711C7.372354-5.947696 6.316314-7.023661 4.83188-7.023661C2.67995-7.023661 .488169-4.762142 .488169-2.440847C.488169-.787049 1.603985 .219178 3.038605 .219178C3.287671 .219178 3.626401 .179328 4.014944 .069738C3.975093 .687422 3.975093 .707347 3.975093 .836862C3.975093 1.155666 3.975093 1.932752 4.801993 1.932752C5.987547 1.932752 6.465753 .109589 6.465753 0C6.465753-.069738 6.396015-.099626 6.356164-.099626C6.276463-.099626 6.256538-.049813 6.236613 .009963C5.997509 .71731 5.419676 .966376 5.070984 .966376C4.612702 .966376 4.463263 .697385 4.363636-.059776ZM2.480697-.139477C1.703611-.448319 1.364882-1.225405 1.364882-2.122042C1.364882-2.809465 1.62391-4.224159 2.381071-5.300125C3.108344-6.316314 4.044832-6.774595 4.772105-6.774595C5.768369-6.774595 6.495641-5.997509 6.495641-4.662516C6.495641-3.666252 5.987547-1.334994 4.313823-.398506C4.26401-.747198 4.164384-1.474471 3.437111-1.474471C2.909091-1.474471 2.420922-.976339 2.420922-.458281C2.420922-.259029 2.480697-.14944 2.480697-.139477ZM3.098381-.029888C2.958904-.029888 2.6401-.029888 2.6401-.458281C2.6401-.856787 3.01868-1.255293 3.437111-1.255293S4.044832-1.016189 4.044832-.408468C4.044832-.259029 4.034869-.249066 3.935243-.209215C3.676214-.099626 3.377335-.029888 3.098381-.029888Z'/>
+<path id='c15-05-zlozen-g2-8' d='M3.975093-1.344956C5.519303-1.464508 6.625156-2.391034 6.625156-3.39726C6.625156-4.433375 5.489415-5.339975 3.975093-5.459527V-6.017435C3.975093-6.356164 3.975093-6.495641 4.921544-6.495641H5.250311V-6.804483C4.891656-6.774595 3.975093-6.774595 3.566625-6.774595S2.231631-6.774595 1.872976-6.804483V-6.495641H2.201743C3.148194-6.495641 3.148194-6.366127 3.148194-6.017435V-5.459527C1.62391-5.310087 .557908-4.393524 .557908-3.407223C.557908-2.381071 1.663761-1.494396 3.148194-1.344956V-.787049C3.148194-.448319 3.148194-.308842 2.201743-.308842H1.872976V0C2.231631-.029888 3.148194-.029888 3.556663-.029888S4.891656-.029888 5.250311 0V-.308842H4.921544C3.975093-.308842 3.975093-.438356 3.975093-.787049V-1.344956ZM3.148194-1.574097C1.733499-1.763387 1.554172-2.779577 1.554172-3.39726C1.554172-3.915318 1.653798-5.031133 3.148194-5.230386V-1.574097ZM3.975093-5.240349C5.349938-5.080946 5.628892-4.164384 5.628892-3.407223C5.628892-2.809465 5.479452-1.743462 3.975093-1.564134V-5.240349Z'/>
+<path id='c15-05-zlozen-g2-40' d='M3.297634 2.391034C3.297634 2.361146 3.297634 2.34122 3.128269 2.171856C1.882939 .916563 1.564134-.966376 1.564134-2.49066C1.564134-4.224159 1.942715-5.957659 3.16812-7.202989C3.297634-7.32254 3.297634-7.342466 3.297634-7.372354C3.297634-7.442092 3.257783-7.47198 3.198007-7.47198C3.098381-7.47198 2.201743-6.794521 1.613948-5.529265C1.105853-4.433375 .986301-3.327522 .986301-2.49066C.986301-1.713574 1.09589-.508095 1.643836 .617684C2.241594 1.843088 3.098381 2.49066 3.198007 2.49066C3.257783 2.49066 3.297634 2.460772 3.297634 2.391034Z'/>
+<path id='c15-05-zlozen-g2-41' d='M2.879203-2.49066C2.879203-3.267746 2.769614-4.473225 2.221669-5.599004C1.62391-6.824408 .767123-7.47198 .667497-7.47198C.607721-7.47198 .56787-7.43213 .56787-7.372354C.56787-7.342466 .56787-7.32254 .757161-7.143213C1.733499-6.156912 2.30137-4.572852 2.30137-2.49066C2.30137-.787049 1.932752 .966376 .697385 2.221669C.56787 2.34122 .56787 2.361146 .56787 2.391034C.56787 2.450809 .607721 2.49066 .667497 2.49066C.767123 2.49066 1.663761 1.8132 2.251557 .547945C2.759651-.547945 2.879203-1.653798 2.879203-2.49066Z'/>
+<path id='c15-05-zlozen-g2-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='c15-05-zlozen-g2-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c15-05-zlozen-g2-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='c15-05-zlozen-g2-51' d='M2.889166-3.506849C3.706102-3.775841 4.283935-4.473225 4.283935-5.260274C4.283935-6.07721 3.407223-6.635118 2.450809-6.635118C1.444583-6.635118 .687422-6.03736 .687422-5.280199C.687422-4.951432 .9066-4.762142 1.195517-4.762142C1.504359-4.762142 1.703611-4.98132 1.703611-5.270237C1.703611-5.768369 1.235367-5.768369 1.085928-5.768369C1.39477-6.256538 2.052304-6.386052 2.410959-6.386052C2.819427-6.386052 3.367372-6.166874 3.367372-5.270237C3.367372-5.150685 3.347447-4.572852 3.088418-4.134496C2.789539-3.656289 2.450809-3.626401 2.201743-3.616438C2.122042-3.606476 1.882939-3.58655 1.8132-3.58655C1.733499-3.576588 1.663761-3.566625 1.663761-3.466999C1.663761-3.35741 1.733499-3.35741 1.902864-3.35741H2.34122C3.158157-3.35741 3.526775-2.67995 3.526775-1.703611C3.526775-.348692 2.839352-.059776 2.400996-.059776C1.972603-.059776 1.225405-.229141 .876712-.816936C1.225405-.767123 1.534247-.986301 1.534247-1.364882C1.534247-1.723537 1.265255-1.92279 .976339-1.92279C.737235-1.92279 .418431-1.783313 .418431-1.344956C.418431-.438356 1.344956 .219178 2.430884 .219178C3.646326 .219178 4.552927-.687422 4.552927-1.703611C4.552927-2.520548 3.92528-3.297634 2.889166-3.506849Z'/>
+<path id='c15-05-zlozen-g2-52' d='M2.929016-1.643836V-.777086C2.929016-.418431 2.909091-.308842 2.171856-.308842H1.96264V0C2.371108-.029888 2.889166-.029888 3.307597-.029888S4.254047-.029888 4.662516 0V-.308842H4.4533C3.716065-.308842 3.696139-.418431 3.696139-.777086V-1.643836H4.692403V-1.952677H3.696139V-6.485679C3.696139-6.684932 3.696139-6.744707 3.536737-6.744707C3.447073-6.744707 3.417186-6.744707 3.337484-6.625156L.278954-1.952677V-1.643836H2.929016ZM2.988792-1.952677H.557908L2.988792-5.668742V-1.952677Z'/>
+<path id='c15-05-zlozen-g2-54' d='M1.315068-3.267746V-3.506849C1.315068-6.027397 2.550436-6.386052 3.058531-6.386052C3.297634-6.386052 3.716065-6.326276 3.935243-5.987547C3.785803-5.987547 3.387298-5.987547 3.387298-5.539228C3.387298-5.230386 3.626401-5.080946 3.845579-5.080946C4.004981-5.080946 4.303861-5.17061 4.303861-5.559153C4.303861-6.156912 3.865504-6.635118 3.038605-6.635118C1.763387-6.635118 .418431-5.349938 .418431-3.148194C.418431-.488169 1.574097 .219178 2.500623 .219178C3.606476 .219178 4.552927-.71731 4.552927-2.032379C4.552927-3.297634 3.666252-4.254047 2.560399-4.254047C1.882939-4.254047 1.514321-3.745953 1.315068-3.267746ZM2.500623-.059776C1.872976-.059776 1.574097-.657534 1.514321-.806974C1.334994-1.275218 1.334994-2.072229 1.334994-2.251557C1.334994-3.028643 1.653798-4.024907 2.550436-4.024907C2.709838-4.024907 3.16812-4.024907 3.476961-3.407223C3.656289-3.038605 3.656289-2.530511 3.656289-2.042341C3.656289-1.564134 3.656289-1.066002 3.486924-.707347C3.188045-.109589 2.729763-.059776 2.500623-.059776Z'/>
+<path id='c15-05-zlozen-g2-55' d='M4.742217-6.067248C4.83188-6.1868 4.83188-6.206725 4.83188-6.41594H2.410959C1.195517-6.41594 1.175592-6.545455 1.135741-6.734745H.886675L.557908-4.682441H.806974C.836862-4.841843 .926526-5.469489 1.05604-5.589041C1.125778-5.648817 1.902864-5.648817 2.032379-5.648817H4.094645C3.985056-5.489415 3.198007-4.403487 2.978829-4.07472C2.082192-2.729763 1.753425-1.344956 1.753425-.328767C1.753425-.229141 1.753425 .219178 2.211706 .219178S2.669988-.229141 2.669988-.328767V-.836862C2.669988-1.384807 2.699875-1.932752 2.779577-2.470735C2.819427-2.699875 2.958904-3.556663 3.39726-4.174346L4.742217-6.067248Z'/>
+<path id='c15-05-zlozen-g2-56' d='M1.62391-4.552927C1.165629-4.851806 1.125778-5.190535 1.125778-5.3599C1.125778-5.967621 1.77335-6.386052 2.480697-6.386052C3.20797-6.386052 3.845579-5.867995 3.845579-5.150685C3.845579-4.582814 3.457036-4.104608 2.859278-3.755915L1.62391-4.552927ZM3.078456-3.606476C3.795766-3.975093 4.283935-4.493151 4.283935-5.150685C4.283935-6.067248 3.39726-6.635118 2.49066-6.635118C1.494396-6.635118 .687422-5.897883 .687422-4.971357C.687422-4.79203 .707347-4.343711 1.125778-3.875467C1.235367-3.755915 1.603985-3.506849 1.853051-3.337484C1.275218-3.048568 .418431-2.49066 .418431-1.504359C.418431-.448319 1.43462 .219178 2.480697 .219178C3.606476 .219178 4.552927-.607721 4.552927-1.673724C4.552927-2.032379 4.443337-2.480697 4.064757-2.899128C3.875467-3.108344 3.716065-3.20797 3.078456-3.606476ZM2.082192-3.188045L3.307597-2.410959C3.58655-2.221669 4.054795-1.92279 4.054795-1.315068C4.054795-.577833 3.307597-.059776 2.49066-.059776C1.633873-.059776 .916563-.67746 .916563-1.504359C.916563-2.082192 1.235367-2.719801 2.082192-3.188045Z'/>
+<path id='c15-05-zlozen-g2-61' d='M6.844334-3.257783C6.993773-3.257783 7.183064-3.257783 7.183064-3.457036S6.993773-3.656289 6.854296-3.656289H.886675C.747198-3.656289 .557908-3.656289 .557908-3.457036S.747198-3.257783 .896638-3.257783H6.844334ZM6.854296-1.325031C6.993773-1.325031 7.183064-1.325031 7.183064-1.524284S6.993773-1.723537 6.844334-1.723537H.896638C.747198-1.723537 .557908-1.723537 .557908-1.524284S.747198-1.325031 .886675-1.325031H6.854296Z'/>
+</defs>
+<g id='c15-05-zlozen-page1'>
+<g stroke-miterlimit='10' transform='translate(-17.559092,-2.140563)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='kvadrat'>
+<g stroke-width='1.0'>
+<path d='M-42.67911-42.67911V42.67911H42.67911V-42.67911ZM42.67911 42.67911' fill='none'/>
+</g>
+<path d='M-54.06003 0H52.5533' fill='none'/>
+<g transform='translate(50.07684,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(60.53847,-2.5)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-zlozen-g1-24'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-54.06003V52.5533' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,50.07684)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-2.66203,62.4829)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-zlozen-g1-17'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M-40.84048-42.67911C-40.84048-41.66367-41.66367-40.84048-42.67911-40.84048S-44.51773-41.66367-44.51773-42.67911S-43.69455-44.51773-42.67911-44.51773S-40.84048-43.69455-40.84048-42.67911ZM-42.67911-42.67911' stroke='none'/>
+<g transform='translate(-42.67911,-42.67911)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M44.51773-42.67911C44.51773-41.66367 43.69455-40.84048 42.67911-40.84048S40.84048-41.66367 40.84048-42.67911S41.66367-44.51773 42.67911-44.51773S44.51773-43.69455 44.51773-42.67911ZM42.67911-42.67911' stroke='none'/>
+<g transform='translate(42.67911,-42.67911)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M44.51773 42.67911C44.51773 43.69455 43.69455 44.51773 42.67911 44.51773S40.84048 43.69455 40.84048 42.67911S41.66367 40.84048 42.67911 40.84048S44.51773 41.66367 44.51773 42.67911ZM42.67911 42.67911' stroke='none'/>
+<g transform='translate(42.67911,42.67911)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M-40.84048 42.67911C-40.84048 43.69455-41.66367 44.51773-42.67911 44.51773S-44.51773 43.69455-44.51773 42.67911S-43.69455 40.84048-42.67911 40.84048S-40.84048 41.66367-40.84048 42.67911ZM-42.67911 42.67911' stroke='none'/>
+<g transform='translate(-42.67911,42.67911)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(-51.31209,-52.75652)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-zlozen-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(46.31209,-52.75652)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-zlozen-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(46.31209,46.31209)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-zlozen-g2-51'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-51.31209,46.31209)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-zlozen-g2-52'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='negativen'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-opacity='0.25'>
+<g fill-opacity='0.25'>
+<path d='M-2.13387 42.67911L42.67911-1.04153V42.67911Z' stroke='none'/>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M-2.13387 42.67911L42.67911-1.04153' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(49.15753,18.11838)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-zlozen-g1-74'/>
+<use x='-11.076456' y='-2.140563' xlink:href='#c15-05-zlozen-g1-60'/>
+<use x='-3.327712' y='-2.140563' xlink:href='#c15-05-zlozen-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='tocki'>
+<path d='M27.4459 25.60728C27.4459 26.62273 26.62273 27.4459 25.60728 27.4459C24.59184 27.4459 23.76866 26.62273 23.76866 25.60728C23.76866 24.59184 24.59184 23.76866 25.60728 23.76866C26.62273 23.76866 27.4459 24.59184 27.4459 25.60728ZM25.60728 25.60728' stroke='none'/>
+<g transform='translate(25.60728,25.60728)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(14.16528,29.24026)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-zlozen-g1-80'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M17.20291 15.62044C17.20291 16.63588 16.37973 17.45906 15.36429 17.45906S13.52567 16.63588 13.52567 15.62044S14.34885 13.78181 15.36429 13.78181S17.20291 14.605 17.20291 15.62044ZM15.36429 15.62044' stroke='none'/>
+<g transform='translate(15.36429,15.62044)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(18.99727,5.15414)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-zlozen-g1-81'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='Phi'>
+<g stroke-width='0.9'>
+<path d='M73.9773 5.69046H109.58736' fill='none'/>
+<g transform='translate(106.98233,5.69046)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(90.28302,9.47343)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-zlozen-g2-8'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='lik'>
+<g stroke-width='1.0'>
+<path d='M139.41826-28.45274H264.61052L183.23555-3.41429L151.93748 46.66261Z' fill='none'/>
+</g>
+<path d='M141.25688-28.45274C141.25688-27.4373 140.4337-26.61412 139.41826-26.61412S137.57964-27.4373 137.57964-28.45274C137.57964-29.46819 138.40282-30.29137 139.41826-30.29137S141.25688-29.46819 141.25688-28.45274ZM139.41826-28.45274' stroke='none'/>
+<g transform='translate(139.41826,-28.45274)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M266.44914-28.45274C266.44914-27.4373 265.62596-26.61412 264.61052-26.61412S262.7719-27.4373 262.7719-28.45274C262.7719-29.46819 263.59508-30.29137 264.61052-30.29137S266.44914-29.46819 266.44914-28.45274ZM264.61052-28.45274' stroke='none'/>
+<g transform='translate(264.61052,-28.45274)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M185.07417-3.41429C185.07417-2.39885 184.25099-1.57567 183.23555-1.57567S181.39693-2.39885 181.39693-3.41429S182.22011-5.25291 183.23555-5.25291S185.07417-4.42973 185.07417-3.41429ZM183.23555-3.41429' stroke='none'/>
+<g transform='translate(183.23555,-3.41429)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M153.77611 46.66261C153.77611 47.67805 152.95293 48.50124 151.93748 48.50124C150.92204 48.50124 150.09886 47.67805 150.09886 46.66261S150.92204 44.82399 151.93748 44.82399C152.95293 44.82399 153.77611 45.64717 153.77611 46.66261ZM151.93748 46.66261' stroke='none'/>
+<g transform='translate(151.93748,46.66261)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(130.78528,-38.53015)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-zlozen-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(268.2435,-38.53015)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-zlozen-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(186.86853,0.21869)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-zlozen-g2-51'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(143.3045,50.2956)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-zlozen-g2-52'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='zgib'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-opacity='0.25'>
+<g fill-opacity='0.25'>
+<path d='M183.23555-3.41429L166.80406 22.87605L170.34386 17.75258L174.38759 12.89827L178.93521 8.31306L183.98982 3.99707L189.54836-.04662L195.61078-3.8243L202.18024-7.33281L209.25363-10.56902L216.83087-13.53923L224.91518-16.24026Z' stroke='none'/>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M166.80406 22.87605L170.34386 17.75258L174.38759 12.89827L178.93521 8.31306L183.98982 3.99707L189.54836-.04662L195.61078-3.8243L202.18024-7.33281L209.25363-10.56902L216.83087-13.53923L224.91518-16.24026' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='slika'>
+<path d='M191.7581-.40967C191.7581 .84013 190.74496 1.85327 189.49516 1.85327S187.23222 .84013 187.23222-.40967S188.24536-2.6726 189.49516-2.6726S191.7581-1.65947 191.7581-.40967ZM189.49516-.40967' stroke='none'/>
+<g transform='translate(189.49516,-0.40967)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M189.49516-.40967L214.53362 40.403' fill='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(218.1666,46.53598)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-zlozen-g2-8'/>
+<use x='-10.363832' y='-2.140563' xlink:href='#c15-05-zlozen-g2-40'/>
+<use x='-6.489458' y='-2.140563' xlink:href='#c15-05-zlozen-g1-80'/>
+<use x='1.290403' y='-2.140563' xlink:href='#c15-05-zlozen-g2-41'/>
+<use x='5.164777' y='-2.140563' xlink:href='#c15-05-zlozen-g2-61'/>
+<use x='12.913521' y='-2.140563' xlink:href='#c15-05-zlozen-g2-8'/>
+<use x='20.108781' y='-2.140563' xlink:href='#c15-05-zlozen-g2-40'/>
+<use x='23.983155' y='-2.140563' xlink:href='#c15-05-zlozen-g1-81'/>
+<use x='31.85917' y='-2.140563' xlink:href='#c15-05-zlozen-g2-41'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='J'>
+<g transform='translate(152.94412,-42.04884)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-zlozen-g1-74'/>
+<use x='-11.076456' y='-2.140563' xlink:href='#c15-05-zlozen-g2-61'/>
+<use x='-3.327712' y='-2.140563' xlink:href='#c15-05-zlozen-g2-50'/>
+<use x='1.653627' y='-2.140563' xlink:href='#c15-05-zlozen-g2-52'/>
+<use x='6.634966' y='-2.140563' xlink:href='#c15-05-zlozen-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(227.42969,-42.04884)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-zlozen-g1-74'/>
+<use x='-11.076456' y='-2.140563' xlink:href='#c15-05-zlozen-g2-61'/>
+<use x='-3.327712' y='-2.140563' xlink:href='#c15-05-zlozen-g2-56'/>
+<use x='1.653627' y='-2.140563' xlink:href='#c15-05-zlozen-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(202.51756,4.54002)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-zlozen-g1-74'/>
+<use x='-11.076456' y='-2.140563' xlink:href='#c15-05-zlozen-g2-61'/>
+<use x='-3.327712' y='-2.140563' xlink:href='#c15-05-zlozen-g0-0'/>
+<use x='4.421032' y='-2.140563' xlink:href='#c15-05-zlozen-g2-56'/>
+<use x='9.402371' y='-2.140563' xlink:href='#c15-05-zlozen-g2-52'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(155.44414,54.9903)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-17.559092,-2.140563)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-17.559092' y='-2.140563' xlink:href='#c15-05-zlozen-g1-74'/>
+<use x='-11.076456' y='-2.140563' xlink:href='#c15-05-zlozen-g2-61'/>
+<use x='-3.327712' y='-2.140563' xlink:href='#c15-05-zlozen-g2-55'/>
+<use x='1.653627' y='-2.140563' xlink:href='#c15-05-zlozen-g2-54'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 15.21</span>: The folded map of the square onto the quadrilateral with nodes <span class="nobr">\((0, 0)\),</span> <span class="nobr">\((40, 0)\),</span> <span class="nobr">\((14, 8)\),</span> \((4, 24)\) mm. Left: the square (scale 1,5 cm per unit), in orange the triangle where <span class="nobr">\(J &lt; 0\),</span> the points \(P = (0{,}6; 0{,}6)\) and <span class="nobr">\(Q = (0{,}36; 0{,}366)\).</span> Right: the image (scale 0,11 cm per mm), in orange the image of the line \(J = 0\) and the region it bounds, and the point <span class="nobr">\(\Phi(P) = \Phi(Q)\).</span> The numbers at the corners are \(J_{\mathrm{i}}\) in mm².</figcaption></figure>
+<p>Let us look at the figure. The <a data-del="kvadrat" class="xref kaz" href="sec-mkk-izoparametricni.html#fig-mkk-zlozen" data-knowl="fig-mkk-zlozen">square</a> with nodes \(1\) to \(4\) is the same as before. The line \(J = 0\) <a data-del="negativen" class="xref kaz" href="sec-mkk-izoparametricni.html#fig-mkk-zlozen" data-knowl="fig-mkk-zlozen">cuts a triangle out of the square</a> at corner <span class="nobr">\(3\),</span> with corners <span class="nobr">\((-0{,}05; 1)\),</span> \((1; -1/41)\) and <span class="nobr">\((1; 1)\),</span> in which <span class="nobr">\(J &lt; 0\).</span> In the square are <span class="nobr"><a data-del="tocki" class="xref kaz" href="sec-mkk-izoparametricni.html#fig-mkk-zlozen" data-knowl="fig-mkk-zlozen">the points \(P\) and \(Q\)</a>,</span> \(P\) in this triangle and \(Q\) outside it. <a data-del="Phi" class="xref kaz" href="sec-mkk-izoparametricni.html#fig-mkk-zlozen" data-knowl="fig-mkk-zlozen">The arrow \(\Phi\)</a> leads to the <a data-del="lik" class="xref kaz" href="sec-mkk-izoparametricni.html#fig-mkk-zlozen" data-knowl="fig-mkk-zlozen">quadrilateral</a> on the right, which has node \(3\) pulled inward. <a data-del="zgib" class="xref kaz" href="sec-mkk-izoparametricni.html#fig-mkk-zlozen" data-knowl="fig-mkk-zlozen">The image of the line \(J = 0\)</a> is a curve that runs from \((8{,}75; 16{,}4)\) to \((27{,}3; 3{,}9)\) mm, and the region between it and node \(3\) is the image of the triangle with <span class="nobr">\(J &lt; 0\).</span> Both \(P\) and \(Q\) have <a data-del="slika" class="xref kaz" href="sec-mkk-izoparametricni.html#fig-mkk-zlozen" data-knowl="fig-mkk-zlozen">the same image</a> \((16; 8{,}96)\) mm: the map is folded there, like the crease of a sheet of paper. The numbers <a data-del="J" class="xref kaz" href="sec-mkk-izoparametricni.html#fig-mkk-zlozen" data-knowl="fig-mkk-zlozen">at the corners</a> are \(J_{\mathrm{i}}\) in mm², the third is negative.</p>
+<p>The fault arises already at one corner, although the quadrilateral looks ordinary. The <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integral</a> \(\int_{\mathrm{K}} J\,\mathrm{d}A\) is \(312\) mm², the area of the polygon, but \(\int_{\mathrm{K}} |J|\,\mathrm{d}A = 342{,}12\) mm² (num-05.out, part B). For a <a class="xref auto" href="sec-mkk-izoparametricni.html#lem-zlozen-stirikotnik" data-knowl="lem-zlozen-stirikotnik">folded map</a> theorem <a class="xref" href="sec-zamenjava-spremenljivk.html#thm-zamenjava-spremenljivk" data-knowl="thm-zamenjava-spremenljivk">4.59</a> does not hold, because it is not injective, and \(\int|J|\) is not the area of the image. At the four points <span class="nobr">\((\pm 1/\sqrt3, \pm 1/\sqrt3)\),</span> where the \(2 \times 2\) rule of section <a class="xref" href="sec-mkk-gauss.html">15.6</a> will evaluate the integrand of the element <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a>, \(J\) is <span class="nobr">\(171{,}5\),</span> <span class="nobr">\(79{,}2\),</span> \(-15{,}5\) and \(76{,}9\) mm², so negative in one of them. That point would contribute to the integral with a negative weight <span class="nobr">\(J\).</span></p>
+
+<h3 id="sec-deformacija-iz-inverza-jacobijeve-matrike"><span class="h-num">15.5.4</span> The strain from the inverse of the Jacobian matrix</h3>
+<p>The <a class="xref auto" href="sec-pomik-v-prostoru.html#def-polje-pomikov" data-knowl="def-polje-pomikov">displacement field</a> of the element <a class="xref" href="sec-mkk-izoparametricni.html#eq-mkk-izo-polje" data-knowl="eq-mkk-izo-polje">(15.24)</a> is a <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> of <span class="nobr">\((\xi, \eta)\),</span> but we need the <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">strains</a> as <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivatives</a> with respect to \(x\) and <span class="nobr">\(y\).</span> For the bar \(\mathrm{d}/\mathrm{d}x = (2/h)\,\mathrm{d}/\mathrm{d}\xi\) was enough, because the ratio is constant. In the plane a <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> appears.</p>
+
+<div class="blk lema" id="lem-gradient-izoparametricni"><div class="blk-head"><span class="blk-label">Lemma 15.34</span> <span class="blk-title">Derivatives of the shape functions with respect to x and y (odvodi oblikovnih funkcij po x in y)</span></div><div class="blk-body"><p>Let an <a class="xref auto" href="sec-mkk-izoparametricni.html#def-izoparametricni-element" data-knowl="def-izoparametricni-element">isoparametric element</a> have \(J &gt; 0\) at the point \((\xi, \eta)\) and let \(g(\xi, \eta)\) be a smooth <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> with \(g = f\circ\Phi\) for some function \(f(x, y)\) on the element. Then</p>
+<div class="eq" id="eq-mkk-izo-gradient">\[\begin{pmatrix} f_{\mathrm{x}} \\ f_{\mathrm{y}} \end{pmatrix} = \mat F^{-\T}\begin{pmatrix} g_\xi \\ g_\eta \end{pmatrix} , \qquad \mat F^{-1} = \frac{1}{J}\begin{bmatrix} y_\eta &amp; -x_\eta \\ -y_\xi &amp; x_\xi \end{bmatrix} . \tag{15.26}\]</div>
+<p>In particular \(\partial N_{\mathrm{i}}/\partial x = (y_\eta N_{\mathrm{i},\xi} - y_\xi N_{\mathrm{i},\eta})/J\) and <span class="nobr">\(\partial N_{\mathrm{i}}/\partial y = (-x_\eta N_{\mathrm{i},\xi} + x_\xi N_{\mathrm{i},\eta})/J\),</span> and for the <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">strain</a> \(\vek\varepsilon = (\varepsilon_{\mathrm{xx}}, \varepsilon_{\mathrm{yy}}, \gamma_{\mathrm{xy}})^\T = \mat B\,\vek d_{\mathrm{e}}\) with \(\vek d_{\mathrm{e}} = (u_1, v_1, \dots, u_4, v_4)^\T\) the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat B\) of size \(3 \times 8\) has in columns \(2i - 1\) and \(2i\) the block</p>
+<div class="eq" id="eq-mkk-izo-b">\[\mat B_{\mathrm{i}} = \begin{bmatrix} \partial N_{\mathrm{i}}/\partial x &amp; 0 \\ 0 &amp; \partial N_{\mathrm{i}}/\partial y \\ \partial N_{\mathrm{i}}/\partial y &amp; \partial N_{\mathrm{i}}/\partial x \end{bmatrix} . \tag{15.27}\]</div>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show the relation between the <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivatives</a>, its inverse and the form of the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> <span class="nobr">\(\mat B\).</span></p>
+<ol>
+<li>By the chain rule (lemma <a class="xref" href="sec-zamenjava-spremenljivk.html#lem-verizno-pravilo" data-knowl="lem-verizno-pravilo">4.43</a>), \(g_\xi = f_{\mathrm{x}}\,x_\xi + f_{\mathrm{y}}\,y_\xi\) and <span class="nobr">\(g_\eta = f_{\mathrm{x}}\,x_\eta + f_{\mathrm{y}}\,y_\eta\),</span> so <span class="nobr">\((g_\xi, g_\eta)^\T = \mat F^\T\,(f_{\mathrm{x}}, f_{\mathrm{y}})^\T\).</span> The derivatives \(f_{\mathrm{x}}, f_{\mathrm{y}}\) exist, because by theorem <a class="xref" href="sec-zamenjava-spremenljivk.html#thm-inverzna-preslikava" data-knowl="thm-inverzna-preslikava">4.51</a> \(\Phi\) is smoothly <a class="xref auto" href="sec-matrike.html#def-inverzna-matrika" data-knowl="def-inverzna-matrika">invertible</a> <span class="nobr">(\(J \ne 0\)).</span></li>
+<li>The matrix \(\mat F^\T\) has <a class="xref auto" href="sec-determinanta.html#def-determinanta" data-knowl="def-determinanta">determinant</a> <span class="nobr">\(J \ne 0\),</span> so it is invertible, and the inverse of a \(2 \times 2\) matrix is the adjugate matrix divided by the determinant. This gives the equations for \(\partial N_{\mathrm{i}}/\partial x\) and \(\partial N_{\mathrm{i}}/\partial y\) with <span class="nobr">\(g = N_{\mathrm{i}}\).</span></li>
+<li>The <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">strains</a> of the field \(\vek u_{\mathrm{h}} = \sum_{\mathrm{i}} N_{\mathrm{i}}\,\vek u_{\mathrm{i}}\) are <span class="nobr">\(\varepsilon_{\mathrm{xx}} = \partial u_{\mathrm{h}}/\partial x = \sum_{\mathrm{i}} (\partial N_{\mathrm{i}}/\partial x)\,u_{\mathrm{i}}\),</span> \(\varepsilon_{\mathrm{yy}} = \sum_{\mathrm{i}} (\partial N_{\mathrm{i}}/\partial y)\,v_{\mathrm{i}}\) and <span class="nobr">\(\gamma_{\mathrm{xy}} = \partial u_{\mathrm{h}}/\partial y + \partial v_{\mathrm{h}}/\partial x = \sum_{\mathrm{i}} (\partial N_{\mathrm{i}}/\partial y\,u_{\mathrm{i}} + \partial N_{\mathrm{i}}/\partial x\,v_{\mathrm{i}})\).</span> These are the rows of the product \(\mat B\,\vek d_{\mathrm{e}}\) with the blocks <span class="nobr">\(\mat B_{\mathrm{i}}\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> COOK, section 6.2, PDF pp. 220 to 222: the derivation of the derivatives with respect to \(x\) and \(y\) with the Jacobian matrix, equations (6.2-4) to (6.2-11), and the matrix \(\mat B\) as a product of three matrices. The proof is ours.</p></div></div>
+<p>Let us try it on the quadrilateral with nodes <span class="nobr">\((0, 0)\),</span> <span class="nobr">\((40, 0)\),</span> <span class="nobr">\((36, 30)\),</span> \((4, 24)\) mm. At the centre \(\mat F = \begin{bmatrix} 18 &amp; 0 \\ 1{,}5 &amp; 13{,}5 \end{bmatrix}\) mm and \(J = 243\) mm². The derivatives of \(N_{\mathrm{i}}\) with respect to \(\xi\) and \(\eta\) are \((-\tfrac14, -\tfrac14)\) for <span class="nobr">\(N_1\),</span> \((\tfrac14, -\tfrac14)\) for <span class="nobr">\(N_2\),</span> \((\tfrac14, \tfrac14)\) for \(N_3\) and \((-\tfrac14, \tfrac14)\) for <span class="nobr">\(N_4\),</span> and by equation <a class="xref" href="sec-mkk-izoparametricni.html#eq-mkk-izo-gradient" data-knowl="eq-mkk-izo-gradient">(15.26)</a> \(\partial N_{\mathrm{i}}/\partial x = (-0{,}012346;\ 0{,}015432;\ 0{,}012346;\ -0{,}015432)\) and \(\partial N_{\mathrm{i}}/\partial y = (-0{,}018519;\ -0{,}018519;\ 0{,}018519;\ 0{,}018519)\) per mm (num-05.out, part D). The first value is <span class="nobr">\((13{,}5\cdot(-\tfrac14) - 1{,}5\cdot(-\tfrac14))/243 = -3/243\).</span> The denominator \(J\) is in every entry of <span class="nobr">\(\mat B\).</span> For the triangle \(\mat B\) of equation <a class="xref" href="sec-mkk-ravninski-trikotnik.html#eq-cst-b" data-knowl="eq-cst-b">(15.19)</a> was a constant matrix, here it depends on the point \((\xi, \eta)\) and is a ratio of <a class="xref auto" href="sec-zveznost.html#def-polinom" data-knowl="def-polinom">polynomials</a>, which will matter in section <a class="xref" href="sec-mkk-gauss.html">15.6</a>. On notation: \(\mat B\) is the same matrix as for the triangle (the matrix that gives the strain from the column of nodal displacements), only dependent on the point. The row \(\vek b_{\mathrm{e}}\) of chapter <a class="xref" href="ch-mke-palice.html">7</a> is its one-dimensional form. The <a class="xref auto" href="sec-determinanta.html#def-determinanta" data-knowl="def-determinanta">determinant</a> \(J\) here is the \(J_\Phi\) of chapter <a class="xref" href="ch-energijski-principi.html">4</a>.</p>
+<p>The field \(\vek u_{\mathrm{h}}\) in the element is a polynomial in \(\xi\) and <span class="nobr">\(\eta\).</span> In the <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">coordinates</a> \(x\) and \(y\) it is a polynomial for all nodal displacements if the map is affine, because then \(\xi\) and \(\eta\) are affine functions of \(x\) and <span class="nobr">\(y\).</span> For a rectangle <span class="nobr">\(x = x_{\mathrm{c}} + a\,\xi\),</span> \(y = y_{\mathrm{c}} + b\,\eta\) the field is bilinear in \(x\) and <span class="nobr">\(y\):</span> it contains <span class="nobr">\(1\),</span> <span class="nobr">\(x\),</span> \(y\) and <span class="nobr">\(xy\),</span> but not \(x^2\) or <span class="nobr">\(y^2\).</span> For a general quadrilateral we get \(\xi\) and \(\eta\) from \(x\) and \(y\) by solving a quadratic equation, so they contain a square root and the field is in general not a polynomial in \(x\) and <span class="nobr">\(y\).</span> For our quadrilateral, for example, \(\xi = x/40 + y/30 - 5 + \sqrt{9x^2 + 24xy + 16y^2 + 2880x - 4800y + 230\,400}/120\) <span class="nobr">(\(x\)</span> and \(y\) in mm, SymPy, it gives \(-1\) at node \(1\) and \(1\) at node <span class="nobr">\(2\)).</span> Because the field on a rectangle lacks the terms \(x^2\) and <span class="nobr">\(y^2\),</span> Q4 does not describe bending exactly (section <a class="xref" href="sec-mkk-zaplata.html">15.7</a>).</p>
+
+<h3 id="sec-linearna-polja-in-skladnost-na"><span class="h-num">15.5.5</span> Linear fields and compatibility on shared sides</h3>
+<p>An <a class="xref auto" href="sec-mkk-izoparametricni.html#def-izoparametricni-element" data-knowl="def-izoparametricni-element">isoparametric element</a> must meet two conditions that the Ritz theory of section <a class="xref" href="sec-mkk-telo-iz-elementov.html">15.2</a> demands. The field must be continuous across a shared side with another element (so that it lies in the space \(X\) of piecewise smooth fields, definition <a class="xref" href="sec-mkk-telo-iz-elementov.html#def-odsekoma-gladko-polje" data-knowl="def-odsekoma-gladko-polje">15.13</a>), and it must contain the <a class="xref auto forward" href="sec-mkk-izoparametricni.html#lem-linearna-polja-izoparametricni" data-knowl="lem-linearna-polja-izoparametricni" title="Defined later in the book">linear fields</a>, so that on any mesh the exact solution with constant <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">strain</a> is in the family.</p>
+
+<div class="blk lema" id="lem-linearna-polja-izoparametricni"><div class="blk-head"><span class="blk-label">Lemma 15.35</span> <span class="blk-title">Linear fields belong to the isoparametric family (linearna polja so v družini izoparametričnih elementov)</span></div><div class="blk-body"><p>Let an isoparametric element (definition <a class="xref" href="sec-mkk-izoparametricni.html#def-izoparametricni-element" data-knowl="def-izoparametricni-element">15.30</a>) have nodal positions <span class="nobr">\(\vek p_{\mathrm{i}}\),</span> and let \(\vek a_0 \in \mathbb{R}^2\) be a column and \(\mat G\) a \(2 \times 2\) <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> of constants. If the nodal displacements are <span class="nobr">\(\vek u_{\mathrm{i}} = \vek a_0 + \mat G\,\vek p_{\mathrm{i}}\),</span> the field of the element at every point of the element is</p>
+<div class="eq" id="eq-mkk-izo-linearno">\[\vek u_{\mathrm{h}}(\vek x) = \vek a_0 + \mat G\,\vek x . \tag{15.28}\]</div>
+<p>The <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">strain</a> \(\vek\varepsilon = \tfrac12(\mat G + \mat G^\T)\) is then constant everywhere on the element and equal to the strain of this linear field.</p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show equation <a class="xref" href="sec-mkk-izoparametricni.html#eq-mkk-izo-linearno" data-knowl="eq-mkk-izo-linearno">(15.28)</a> and the <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">strain</a>.</p>
+<ol>
+<li>By equation <a class="xref" href="sec-mkk-izoparametricni.html#eq-mkk-izo-polje" data-knowl="eq-mkk-izo-polje">(15.24)</a>, at the point \(\vek x = \Phi(\xi, \eta)\) the value is <span class="nobr">\(\vek u_{\mathrm{h}} = \sum_{\mathrm{i}} N_{\mathrm{i}}\,(\vek a_0 + \mat G\,\vek p_{\mathrm{i}}) = \vek a_0\sum_{\mathrm{i}} N_{\mathrm{i}} + \mat G\sum_{\mathrm{i}} N_{\mathrm{i}}\,\vek p_{\mathrm{i}}\).</span></li>
+<li>By definition \(\sum_{\mathrm{i}} N_{\mathrm{i}} = 1\) and by equation <a class="xref" href="sec-mkk-izoparametricni.html#eq-mkk-izo-preslikava" data-knowl="eq-mkk-izo-preslikava">(15.23)</a> <span class="nobr">\(\sum_{\mathrm{i}} N_{\mathrm{i}}\,\vek p_{\mathrm{i}} = \vek x\).</span> So <span class="nobr">\(\vek u_{\mathrm{h}}(\vek x) = \vek a_0 + \mat G\,\vek x\).</span></li>
+<li>The <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivatives</a> of this field are <span class="nobr">\(\partial u/\partial x = G_{11}\),</span> <span class="nobr">\(\partial u/\partial y = G_{12}\),</span> <span class="nobr">\(\partial v/\partial x = G_{21}\),</span> <span class="nobr">\(\partial v/\partial y = G_{22}\),</span> which gives the strain <span class="nobr">\((G_{11}, G_{22}, G_{12} + G_{21})\),</span> where the third component is <span class="nobr">\(\gamma_{\mathrm{xy}}\).</span> This is the strain of the linear field, whatever the shape of the element.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> COOK, section 6.12, PDF p. 252: an isoparametric element contains a complete linear polynomial, which is necessary for convergence. The same source explains that this fails for a superparametric element (more functions for the position than for the field) and that such an element shows strain under a rigid rotation. The proof is ours.</p></div></div>
+<p>Let us check on our quadrilateral with the field <span class="nobr">\(u = 10^{-3}(x + y/2)\),</span> <span class="nobr">\(v = 10^{-3}(x/2 + y)\).</span> The nodal displacements are \(u_{\mathrm{i}} = (0;\ 0{,}04;\ 0{,}051;\ 0{,}016)\) mm and \(v_{\mathrm{i}} = (0;\ 0{,}02;\ 0{,}048;\ 0{,}026)\) mm, and \(\mat B\,\vek d_{\mathrm{e}}\) gives at the points <span class="nobr">\((0, 0)\),</span> <span class="nobr">\((-1, -1)\),</span> \((1, 1)\) and \((0{,}5; -0{,}7)\) everywhere \(\varepsilon_{\mathrm{xx}} = \varepsilon_{\mathrm{yy}} = \gamma_{\mathrm{xy}} = 10^{-3}\) to the tenth place (num-05.out, part D). For the triangle this is lemma <a class="xref" href="sec-mkk-trikotnik.html#lem-konstanten-gradient" data-knowl="lem-konstanten-gradient">15.8</a>. Here the same holds for a distorted quadrilateral because the element uses the same <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> for position and for field: it is a matter of choice, not a general property of interpolation.</p>
+
+<div class="blk lema" id="lem-zveznost-izoparametricni"><div class="blk-head"><span class="blk-label">Lemma 15.36</span> <span class="blk-title">Compatibility of isoparametric elements along a shared side (skladnost izoparametričnih elementov na stiku)</span></div><div class="blk-body"><p>Let two <a class="xref auto" href="sec-mkk-izoparametricni.html#def-oblikovne-q4" data-knowl="def-oblikovne-q4">elements Q4</a> have a shared side with nodes \(\vek p_{\mathrm{a}}\) and \(\vek p_{\mathrm{b}}\) and displacements \(\vek u_{\mathrm{a}}\) and \(\vek u_{\mathrm{b}}\) at these nodes. Then their sides coincide as sets of points and the <a class="xref auto" href="sec-pomik-v-prostoru.html#def-polje-pomikov" data-knowl="def-polje-pomikov">displacement fields</a> have the same value at every point of this side.</p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that the side and the field on it do not depend on the element.</p>
+<ol>
+<li>By lemma <a class="xref" href="sec-mkk-izoparametricni.html#lem-oblikovne-q4" data-knowl="lem-oblikovne-q4">15.29</a>, point 3, on the side \(\eta = -1\) of the first element \(N_3 = N_4 = 0\) and <span class="nobr">\(N_1 = (1 - \xi)/2\),</span> <span class="nobr">\(N_2 = (1 + \xi)/2\).</span> With a numbering in which the shared side is exactly this one, the position is therefore \(\vek x = \tfrac{1 - \xi}{2}\vek p_{\mathrm{a}} + \tfrac{1 + \xi}{2}\vek p_{\mathrm{b}}\) and the displacement <span class="nobr">\(\vek u_{\mathrm{h}} = \tfrac{1 - \xi}{2}\vek u_{\mathrm{a}} + \tfrac{1 + \xi}{2}\vek u_{\mathrm{b}}\).</span> The side is the segment from \(\vek p_{\mathrm{a}}\) to \(\vek p_{\mathrm{b}}\) and the field on it is an affine <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> of the position along the segment.</li>
+<li>For another side or another element with the same side the computation is the same, with the roles of the nodes possibly exchanged, which means the replacement <span class="nobr">\(\xi \to -\xi\).</span> The segment and the affine field between the values \(\vek u_{\mathrm{a}}\) and \(\vek u_{\mathrm{b}}\) remain the same.</li>
+<li>The points of the segment are therefore the same in both elements and the values of the fields are equal at each, because an affine function on a segment is determined by the values at its ends.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> The lemma is not from a source. COOK, section 6.13, PDF pp. 252 to 253, states the requirement of compatibility for convergence, not a proof for Q4.</p></div></div>
+<p>By lemma <a class="xref" href="sec-mkk-izoparametricni.html#lem-zveznost-izoparametricni" data-knowl="lem-zveznost-izoparametricni">15.36</a> the field on a mesh of quadrilaterals is continuous across the shared sides, and by theorem <a class="xref" href="sec-mkk-izoparametricni.html#thm-izoparametricni-ukrivljen-kvader" data-knowl="thm-izoparametricni-ukrivljen-kvader">15.32</a> the <a class="xref auto" href="sec-zamenjava-spremenljivk.html#thm-zamenjava-spremenljivk" data-knowl="thm-zamenjava-spremenljivk">change of variables theorem</a> holds on every element, so also the sum of the energies over the elements and the theorems on piecewise smooth fields of section <a class="xref" href="sec-mkk-telo-iz-elementov.html">15.2</a>. This answers the third question of the introduction.</p>
+
+<h3 id="sec-prevodnostna-matrika-stirikotnika"><span class="h-num">15.5.6</span> The conductivity matrix of the quadrilateral</h3>
+<p>Section <a class="xref" href="sec-mkk-toplota-ravnina.html">15.3</a> used for the Q4 mesh a row of the <a class="xref auto" href="sec-mke-toplote.html#lem-prevodnostna-matrika-elementa" data-knowl="lem-prevodnostna-matrika-elementa">conductivity matrix</a> without derivation. Now we have all the ingredients. For a scalar field (temperature) the <a class="xref auto" href="sec-mkk-izoparametricni.html#def-oblikovne-q4" data-knowl="def-oblikovne-q4">element Q4</a> replaces the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat B\) of equation <a class="xref" href="sec-mkk-izoparametricni.html#eq-mkk-izo-b" data-knowl="eq-mkk-izo-b">(15.27)</a> by a gradient row, and the element matrix is as for the triangle (lemma <a class="xref" href="sec-mkk-toplota-ravnina.html#lem-prevodnostna-matrika-trikotnika" data-knowl="lem-prevodnostna-matrika-trikotnika">15.17</a>) the <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integral</a> <span class="nobr">\((\mat k_{\mathrm{e}})_{\mathrm{ij}} = \int k\,\nabla N_{\mathrm{i}}\cdot\nabla N_{\mathrm{j}}\,t\,\mathrm{d}A\).</span></p>
+
+<div class="blk lema" id="lem-prevodnost-q4-kvadrat"><div class="blk-head"><span class="blk-label">Lemma 15.37</span> <span class="blk-title">The conductivity matrix of the four-node element on a square (prevodnostna matrika štirikotnika na kvadratu)</span></div><div class="blk-body"><p>Let the <a class="xref auto" href="sec-mkk-izoparametricni.html#def-oblikovne-q4" data-knowl="def-oblikovne-q4">element Q4</a> be a square with side <span class="nobr">\(h\),</span> conductivity \(k\) and thickness <span class="nobr">\(t\),</span> everything constant, with the nodes at the corners. Then</p>
+<div class="eq" id="eq-mkk-q4-prevodnost">\[\mat k_{\mathrm{e}} = \frac{k\,t}{6}\begin{bmatrix} 4 &amp; -1 &amp; -2 &amp; -1 \\ -1 &amp; 4 &amp; -1 &amp; -2 \\ -2 &amp; -1 &amp; 4 &amp; -1 \\ -1 &amp; -2 &amp; -1 &amp; 4 \end{bmatrix} , \tag{15.29}\]</div>
+<p>independent of <span class="nobr">\(h\).</span> For a mesh of congruent squares with side \(h\) the row of the assembled <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> at an interior node \(I\) is <span class="nobr">\(\tfrac{k\,t}{3}\big(8\,T_{\mathrm{I}} - \sum_{\mathrm{J}} T_{\mathrm{J}}\big)\),</span> where the sum runs over the eight neighbouring nodes.</p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show the element <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> and the row after assembly.</p>
+<ol>
+<li>For \(x = x_0 + h\,(1 + \xi)/2\) and \(y = y_0 + h\,(1 + \eta)/2\) we have \(\mat F = (h/2)\,\mat I\) and <span class="nobr">\(J = h^2/4\).</span> By equation <a class="xref" href="sec-mkk-izoparametricni.html#eq-mkk-izo-gradient" data-knowl="eq-mkk-izo-gradient">(15.26)</a>, \(\partial N_{\mathrm{i}}/\partial x = \tfrac{2}{h}\,\partial N_{\mathrm{i}}/\partial\xi = \tfrac{\xi_{\mathrm{i}}}{2h}\,(1 + \eta_{\mathrm{i}}\eta)\) and <span class="nobr">\(\partial N_{\mathrm{i}}/\partial y = \tfrac{\eta_{\mathrm{i}}}{2h}\,(1 + \xi_{\mathrm{i}}\xi)\).</span></li>
+<li>The entry is <span class="nobr">\((\mat k_{\mathrm{e}})_{\mathrm{ij}} = k\,t\,\tfrac{h^2}{4}\cdot\tfrac{1}{4h^2}\int_{\mathrm{K}} \big[\xi_{\mathrm{i}}\xi_{\mathrm{j}}(1 + \eta_{\mathrm{i}}\eta)(1 + \eta_{\mathrm{j}}\eta) + \eta_{\mathrm{i}}\eta_{\mathrm{j}}(1 + \xi_{\mathrm{i}}\xi)(1 + \xi_{\mathrm{j}}\xi)\big]\mathrm{d}A\).</span> With \(\int_{-1}^{1}(1 + \eta_{\mathrm{i}}\eta)(1 + \eta_{\mathrm{j}}\eta)\,\mathrm{d}\eta = 2 + \tfrac23\eta_{\mathrm{i}}\eta_{\mathrm{j}}\) (terms with \(\eta\) to the first power have <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integral</a> zero) and theorem <a class="xref" href="sec-integral-po-telesu.html#thm-fubini" data-knowl="thm-fubini">4.9</a> the integral of the first term is <span class="nobr">\(\xi_{\mathrm{i}}\xi_{\mathrm{j}}\cdot 2\,(2 + \tfrac23\eta_{\mathrm{i}}\eta_{\mathrm{j}})\),</span> of the second <span class="nobr">\(\eta_{\mathrm{i}}\eta_{\mathrm{j}}\cdot 2\,(2 + \tfrac23\xi_{\mathrm{i}}\xi_{\mathrm{j}})\).</span> Together <span class="nobr">\((\mat k_{\mathrm{e}})_{\mathrm{ij}} = \tfrac{k\,t}{16}\,\big[4(\xi_{\mathrm{i}}\xi_{\mathrm{j}} + \eta_{\mathrm{i}}\eta_{\mathrm{j}}) + \tfrac83\,\xi_{\mathrm{i}}\xi_{\mathrm{j}}\eta_{\mathrm{i}}\eta_{\mathrm{j}}\big]\),</span> independent of <span class="nobr">\(h\).</span></li>
+<li>For <span class="nobr">\(i = j\),</span> \(\xi_{\mathrm{i}}\xi_{\mathrm{j}} = \eta_{\mathrm{i}}\eta_{\mathrm{j}} = 1\) and the entry is <span class="nobr">\(\tfrac{k\,t}{16}(8 + \tfrac83) = \tfrac23\,k\,t\).</span> For adjacent nodes (they differ in one coordinate) \(\xi_{\mathrm{i}}\xi_{\mathrm{j}} + \eta_{\mathrm{i}}\eta_{\mathrm{j}} = 0\) and <span class="nobr">\(\xi_{\mathrm{i}}\xi_{\mathrm{j}}\eta_{\mathrm{i}}\eta_{\mathrm{j}} = -1\),</span> so <span class="nobr">\(-\tfrac{k\,t}{6}\).</span> For opposite nodes the sum is \(-2\) and the product <span class="nobr">\(1\),</span> so <span class="nobr">\(\tfrac{k\,t}{16}(-8 + \tfrac83) = -\tfrac13\,k\,t\).</span> This is the matrix <a class="xref" href="sec-mkk-izoparametricni.html#eq-mkk-q4-prevodnost" data-knowl="eq-mkk-q4-prevodnost">(15.29)</a>.</li>
+<li>An interior node belongs to four elements. By theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a> the diagonal entry is the sum <span class="nobr">\(4\cdot\tfrac23\,k\,t = \tfrac83\,k\,t\).</span> Each of the four nodes along an edge shares two elements with <span class="nobr">\(I\),</span> the entry is <span class="nobr">\(2\cdot(-\tfrac16)\,k\,t = -\tfrac13\,k\,t\).</span> Each of the four diagonal neighbours shares one element, the entry is \(-\tfrac13\,k\,t\) (opposite node). So the row is \(\tfrac{k\,t}{3}\,(8\,T_{\mathrm{I}} - \sum_{\mathrm{J}} T_{\mathrm{J}})\) with eight neighbours, the sum of the coefficients is \(0\) as for every <a class="xref auto" href="sec-mke-toplote.html#lem-prevodnostna-matrika-elementa" data-knowl="lem-prevodnostna-matrika-elementa">conductivity matrix</a>.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> COOK, section 6.2, PDF p. 222: the element for a scalar field is obtained from the structural one by renaming and compacting the matrices. The computations are ours (SymPy, num-05.out, part H).</p></div></div>
+<p>The row in the lemma is exactly the one of section <a class="xref" href="sec-mkk-toplota-ravnina.html">15.3</a>, derived now. A Q4 mesh differs from a <a class="xref auto" href="sec-mkk-trikotnik.html#def-mreza-trikotnikov" data-knowl="def-mreza-trikotnikov">mesh of triangles</a> on the same squares. If we cut every square by a diagonal in the same direction, the two neighbours on the diagonal have coefficient zero, because the angles opposite the diagonal are right angles and their cotangent is zero (lemma <a class="xref" href="sec-mkk-toplota-ravnina.html#lem-prevodnostna-matrika-trikotnika" data-knowl="lem-prevodnostna-matrika-trikotnika">15.17</a>, point 5), and each of the four neighbours along an edge has coefficient \(-k\,t\) (two angles of \(45^\circ\) with cotangents <span class="nobr">\(1\),</span> <span class="nobr">\(-\tfrac12\,k\,t\cdot(1 + 1)\)),</span> and the row is <span class="nobr">\(k\,t\,(4\,T_{\mathrm{I}} - \sum T_{\mathrm{J}})\).</span> For Q4 all eight neighbours have a nonzero coefficient <span class="nobr">\(-\tfrac13\,k\,t\).</span></p>
+
+<h3 id="sec-osemvozliscni-element"><span class="h-num">15.5.7</span> The eight-node element</h3>
+<p>The linear side of the quadrilateral is replaced by a quadratic one: each side gets one more node and the element has eight nodes, this is the <a class="xref auto forward" href="sec-mkk-izoparametricni.html#def-q8" data-knowl="def-q8" title="Defined later in the book">element Q8</a>. As in the quadratic bar element each side has three nodes, and we arrange the <a data-del="q8" class="xref kaz" href="sec-mkk-izoparametricni.html#fig-mkk-oblikovne-q" data-knowl="fig-mkk-oblikovne-q">eight nodes</a> in the square so that the <a data-del="oglisca8" class="xref kaz" href="sec-mkk-izoparametricni.html#fig-mkk-oblikovne-q" data-knowl="fig-mkk-oblikovne-q">corners</a> \(1\) to \(4\) are as before and the <a data-del="razpol" class="xref kaz" href="sec-mkk-izoparametricni.html#fig-mkk-oblikovne-q" data-knowl="fig-mkk-oblikovne-q">midpoints of the sides</a> \(5\) to \(8\) are on the axes \(\xi\) and <span class="nobr">\(\eta\).</span></p>
+
+<div class="blk definicija" id="def-q8"><div class="blk-head"><span class="blk-label">Definition 15.38</span> <span class="blk-title">The eight-node element (osemvozliščni element)</span></div><div class="blk-body"><p>On the square \(K\) the nodes \((\xi_{\mathrm{i}}, \eta_{\mathrm{i}})\) are the corners \(1\) to \(4\) as for Q4 and the midpoints <span class="nobr">\(5 = (0, -1)\),</span> <span class="nobr">\(6 = (1, 0)\),</span> <span class="nobr">\(7 = (0, 1)\),</span> <span class="nobr">\(8 = (-1, 0)\).</span> The shape <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> of the element Q8 are</p>
+<div class="eq">\[N_{\mathrm{i}} = \tfrac14(1 + \xi_{\mathrm{i}}\xi)(1 + \eta_{\mathrm{i}}\eta)(\xi_{\mathrm{i}}\xi + \eta_{\mathrm{i}}\eta - 1) \quad (i = 1, \dots, 4) ,\]</div>
+<div class="eq" id="eq-mkk-q8-oblikovne">\[N_5 = \tfrac12(1 - \xi^2)(1 - \eta) , \; N_6 = \tfrac12(1 + \xi)(1 - \eta^2) , \; N_7 = \tfrac12(1 - \xi^2)(1 + \eta) , \; N_8 = \tfrac12(1 - \xi)(1 - \eta^2) . \tag{15.30}\]</div>
+<p>The isoparametric element Q8 is the element of definition <a class="xref" href="sec-mkk-izoparametricni.html#def-izoparametricni-element" data-knowl="def-izoparametricni-element">15.30</a> with <span class="nobr">\(m = 8\).</span></p>
+
+<p class="vir"><span class="vir-label">Source:</span> COOK, section 6.4, PDF pp. 227 and 228: the eight-node plane element, shape functions of equation (6.4-1) and their derivation by interpolation. COOK (PDF p. 229) calls this family &quot;serendipity&quot;, the name is used in this book only here as a remark.</p></div></div>
+<div class="blk lema" id="lem-oblikovne-q8"><div class="blk-head"><span class="blk-label">Lemma 15.39</span> <span class="blk-title">Properties of the Q8 shape functions (lastnosti oblikovnih funkcij elementa Q8)</span></div><div class="blk-body"><p>For the <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> <a class="xref" href="sec-mkk-izoparametricni.html#eq-mkk-q8-oblikovne" data-knowl="eq-mkk-q8-oblikovne">(15.30)</a>, \(N_{\mathrm{i}}(\xi_{\mathrm{j}}, \eta_{\mathrm{j}}) = \delta_{\mathrm{ij}}\) and <span class="nobr">\(\sum_{\mathrm{i}} N_{\mathrm{i}} = 1\).</span> On the side <span class="nobr">\(\eta = -1\),</span> \(N_3 = N_4 = N_6 = N_7 = N_8 = 0\) and <span class="nobr">\(N_1 = \xi(\xi - 1)/2\),</span> <span class="nobr">\(N_5 = 1 - \xi^2\),</span> <span class="nobr">\(N_2 = \xi(\xi + 1)/2\),</span> so the same functions as for the quadratic bar element.</p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show three claims. The first by looking at where each <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> vanishes, the second by expanding a product, the third by inserting <span class="nobr">\(\eta = -1\).</span></p>
+<ol>
+<li>The function \(N_5\) vanishes where \(\xi = \pm 1\) (nodes \(1\) to <span class="nobr">\(4\),</span> <span class="nobr">\(6\),</span> <span class="nobr">\(8\))</span> or \(\eta = 1\) (node <span class="nobr">\(7\)),</span> and at \((0, -1)\) it has the value <span class="nobr">\(\tfrac12\cdot 1\cdot 2 = 1\).</span> Similarly for <span class="nobr">\(N_6\),</span> <span class="nobr">\(N_7\),</span> <span class="nobr">\(N_8\).</span> The function \(N_1 = \tfrac14(1 - \xi)(1 - \eta)(-\xi - \eta - 1)\) vanishes at \(\xi = 1\) (nodes <span class="nobr">\(2\),</span> <span class="nobr">\(3\),</span> <span class="nobr">\(6\))</span> and \(\eta = 1\) (nodes <span class="nobr">\(3\),</span> <span class="nobr">\(4\),</span> <span class="nobr">\(7\)),</span> at \((0, -1)\) and \((-1, 0)\) the third factor is zero, and at \((-1, -1)\) it is <span class="nobr">\(\tfrac14\cdot 2\cdot 2\cdot 1 = 1\).</span> For <span class="nobr">\(N_2\),</span> <span class="nobr">\(N_3\),</span> \(N_4\) the computation is the same with the roles exchanged.</li>
+<li>The sum. For \(a = \xi_{\mathrm{i}}\xi\) and <span class="nobr">\(b = \eta_{\mathrm{i}}\eta\),</span> <span class="nobr">\((1 + a)(1 + b)(a + b - 1) = a^2 + b^2 - 1 + ab + a^2 b + a b^2\).</span> In the sum over the four corners the terms with odd powers of \(\xi_{\mathrm{i}}\) or \(\eta_{\mathrm{i}}\) <span class="nobr">(\(ab\),</span> <span class="nobr">\(a^2b\),</span> <span class="nobr">\(ab^2\))</span> vanish, because \(\sum_{\mathrm{i}}\xi_{\mathrm{i}} = \sum_{\mathrm{i}}\eta_{\mathrm{i}} = 0\) and all sign combinations occur once. What remains is <span class="nobr">\(\sum_{\mathrm{i}\le 4} N_{\mathrm{i}} = \xi^2 + \eta^2 - 1\).</span></li>
+<li>Midpoints: \(N_5 + N_7 = \tfrac12(1 - \xi^2)\big[(1 - \eta) + (1 + \eta)\big] = 1 - \xi^2\) and <span class="nobr">\(N_6 + N_8 = 1 - \eta^2\).</span> Together <span class="nobr">\(\xi^2 + \eta^2 - 1 + 1 - \xi^2 + 1 - \eta^2 = 1\).</span></li>
+<li>At \(\eta = -1\) we insert: <span class="nobr">\(N_5 = 1 - \xi^2\),</span> <span class="nobr">\(N_7 = 0\),</span> \(N_6 = N_8 = 0\) (factor <span class="nobr">\(1 - \eta^2 = 0\)),</span> \(N_3 = N_4 = 0\) (factor <span class="nobr">\(1 + \eta = 0\)),</span> \(N_1 = \tfrac14(1 - \xi)\cdot 2\cdot(-\xi) = \xi(\xi - 1)/2\) and <span class="nobr">\(N_2 = \xi(\xi + 1)/2\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> The lemma is not from a source. The functions along a side are ONATE1, equation (3.11), PDF p. 103, as chapter <a class="xref" href="ch-mke-palice.html">7</a> cites them.</p></div></div>
+<p>For Q8 lemmas <a class="xref" href="sec-mkk-izoparametricni.html#lem-linearna-polja-izoparametricni" data-knowl="lem-linearna-polja-izoparametricni">15.35</a> and <a class="xref" href="sec-mkk-izoparametricni.html#lem-zveznost-izoparametricni" data-knowl="lem-zveznost-izoparametricni">15.36</a> also hold (with the same proof, three nodes on a side instead of two), but the condition of theorem <a class="xref" href="sec-mkk-izoparametricni.html#thm-izoparametricni-ukrivljen-kvader" data-knowl="thm-izoparametricni-ukrivljen-kvader">15.32</a> does not carry over to Q8. For Q4 the \(J\) is affine, for Q8 it is not: for the element with corners <span class="nobr">\((0, 0)\),</span> <span class="nobr">\((40, 0)\),</span> <span class="nobr">\((36, 30)\),</span> \((4, 24)\) mm and midpoints <span class="nobr">\((20, -6)\),</span> <span class="nobr">\((38, 15)\),</span> <span class="nobr">\((20, 27)\),</span> \((2, 12)\) mm, \(J = 297 + 30\,\xi - 33\,\eta - 42\,\xi^2 - 6\,\xi^2\eta\) mm² (SymPy, num-05.out, part I). A check at the corners is therefore not enough. We check the values of \(J\) on a \(201 \times 201\) grid of points (smallest value \(186\) mm², num-05.out, part E) or, like COOK, at the points where we will integrate (section <a class="xref" href="sec-mkk-gauss.html">15.6</a>). Such a check is no proof that \(J &gt; 0\) everywhere, so theorem <a class="xref" href="sec-mkk-izoparametricni.html#thm-izoparametricni-ukrivljen-kvader" data-knowl="thm-izoparametricni-ukrivljen-kvader">15.32</a> is not proved for Q8.</p>
+<p>One thing we can prove, and it is close to a shortcut that is often used with Q8: pushing the <a class="xref auto forward" href="sec-mkk-izoparametricni.html#lem-q8-rob" data-knowl="lem-q8-rob" title="Defined later in the book">midside node</a> of a side toward the corner.</p>
+
+<div class="blk lema" id="lem-q8-rob"><div class="blk-head"><span class="blk-label">Lemma 15.40</span> <span class="blk-title">A side of the Q8 element and the position of the midside node (stranica elementa Q8 in lega srednjega vozlišča)</span></div><div class="blk-body"><p>Let a side of the <a class="xref auto" href="sec-mkk-izoparametricni.html#def-q8" data-knowl="def-q8">element Q8</a> have nodes <span class="nobr">\(\vek p_{\mathrm{a}}\),</span> <span class="nobr">\(\vek p_{\mathrm{m}}\),</span> \(\vek p_{\mathrm{b}}\) (corner, midside node, corner), let \(\vek e = \vek p_{\mathrm{b}} - \vek p_{\mathrm{a}}\) and \(\vek p_{\mathrm{m}} = \tfrac12(\vek p_{\mathrm{a}} + \vek p_{\mathrm{b}}) + s\,\tfrac12\vek e\) for a number <span class="nobr">\(s\),</span> so \(\tfrac{1 + s}{2}\) is the fraction of the length from \(\vek p_{\mathrm{a}}\) to \(\vek p_{\mathrm{m}}\) along <span class="nobr">\(\vek e\).</span> The points of the side are <span class="nobr">\(\vek x(\tau) = \tfrac12(\vek p_{\mathrm{a}} + \vek p_{\mathrm{b}}) + \tfrac12\vek e\,\big[\tau + s\,(1 - \tau^2)\big]\),</span> <span class="nobr">\(\tau \in [-1, 1]\).</span> Then:</p>
+<ol>
+<li>The tangent is <span class="nobr">\(\vek x'(\tau) = \tfrac12\vek e\,(1 - 2s\tau)\).</span></li>
+<li>If <span class="nobr">\(|s| &lt; \tfrac12\),</span> then \(1 - 2s\tau &gt; 0\) on \([-1, 1]\) and the tangent does not vanish. At <span class="nobr">\(s = \mp\tfrac12\),</span> <span class="nobr">\(\vek x'(\mp 1) = \vek 0\),</span> the tangent vanishes at one corner. For \(|s| &gt; \tfrac12\) the tangent changes direction at the point <span class="nobr">\(\tau = 1/(2s) \in (-1, 1)\).</span></li>
+<li>For \(s = -0{,}6\) the points \(\tau = -1\) and \(\tau = -\tfrac23\) have the same position.</li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show three claims. The first by differentiating, the second by the sign of a factor, the third by solving a quadratic equation.</p>
+<ol>
+<li>By lemma <a class="xref" href="sec-mkk-izoparametricni.html#lem-oblikovne-q8" data-knowl="lem-oblikovne-q8">15.39</a>, on the side <span class="nobr">\(\vek x = \vek p_{\mathrm{a}}\,\tfrac{\tau(\tau - 1)}{2} + \vek p_{\mathrm{m}}\,(1 - \tau^2) + \vek p_{\mathrm{b}}\,\tfrac{\tau(\tau + 1)}{2}\).</span> We insert \(\vek p_{\mathrm{m}}\) and collect: <span class="nobr">\(\tfrac12(\vek p_{\mathrm{a}} + \vek p_{\mathrm{b}}) + \tfrac12\vek e\,\tau + \tfrac12 s\,\vek e\,(1 - \tau^2)\),</span> which is the form in the statement. The <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivative</a> with respect to \(\tau\) is <span class="nobr">\(\tfrac12\vek e\,(1 - 2s\tau)\).</span></li>
+<li>The factor \(1 - 2s\tau\) is affine in <span class="nobr">\(\tau\),</span> so it is positive on \([-1, 1]\) exactly when it is positive at both ends, that is \(1 - 2s &gt; 0\) and <span class="nobr">\(1 + 2s &gt; 0\),</span> so <span class="nobr">\(|s| &lt; \tfrac12\).</span> At \(s = -\tfrac12\) the factor at \(\tau = -1\) equals <span class="nobr">\(1 + 2s = 0\),</span> at \(s = \tfrac12\) at \(\tau = 1\) it equals <span class="nobr">\(1 - 2s = 0\).</span> For \(|s| &gt; \tfrac12\) the factor has the zero \(\tau = 1/(2s)\) inside \((-1, 1)\) and changes sign there, and with it the direction of the tangent.</li>
+<li>For \(s = -0{,}6\) the coordinate along \(\vek e\) is <span class="nobr">\(\tfrac12[\tau - 0{,}6\,(1 - \tau^2)]\).</span> The value at \(\tau = -1\) is <span class="nobr">\(-\tfrac12\),</span> so equal to that at <span class="nobr">\(\vek p_{\mathrm{a}}\).</span> The equation \(\tau - 0{,}6\,(1 - \tau^2) = -1\) gives \(0{,}6\,\tau^2 + \tau + 0{,}4 = 0\) with solutions <span class="nobr">\(\tau = (-1 \pm 0{,}2)/1{,}2\),</span> so \(-1\) and <span class="nobr">\(-\tfrac23\).</span> The smallest value of the coordinate is at \(\tau = -\tfrac56\) and it is \(-\tfrac{61}{120}\) of the length <span class="nobr">\(|\vek e|\),</span> so the side went \(\tfrac1{60}\) of half the length beyond the corner.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> ONATE1, section 6.1, PDF p. 211: for a quadratic element the side nodes must lie within the &quot;middle third&quot; of the distance between adjacent corners (the source states the condition for positive \(J\) without proof). COOK, section 6.11, PDF p. 250, figure 6.11-2b: node \(7\) moved to corner \(3\) gives a negative \(J\) at a Gauss point. Our condition <span class="nobr">\(|s| &lt; \tfrac12\),</span> a fraction between \(\tfrac14\) and <span class="nobr">\(\tfrac34\),</span> is necessary for a tangent without a zero on the side and is weaker than the &quot;middle third&quot; condition, which corresponds to <span class="nobr">\(|s| &lt; \tfrac13\).</span></p></div></div>
+<p>Let us look at the figure for a side with ends \(x = \mp 1\) (the unit is half the side) and the midside node at <span class="nobr">\(s\).</span> The <a data-del="osi" class="xref kaz" href="sec-mkk-izoparametricni.html#fig-mkk-q8-rob" data-knowl="fig-mkk-q8-rob">axes</a> are \(\tau\) horizontally and the coordinate \(x\) along the side vertically, the dashed verticals and horizontals are the ends <span class="nobr">\(\mp 1\).</span> The <a data-del="enakomerno" class="xref kaz" href="sec-mkk-izoparametricni.html#fig-mkk-q8-rob" data-knowl="fig-mkk-q8-rob">straight line</a> at \(s = 0\) is the uniform map, the midside node is in the middle. At <a data-del="cetrtina" class="xref kaz" href="sec-mkk-izoparametricni.html#fig-mkk-q8-rob" data-knowl="fig-mkk-q8-rob">\(s = -0{,}5\)</a> the midside node is at a quarter of the distance from \(\vek p_{\mathrm{a}}\) and the curve has a horizontal tangent at <span class="nobr">\(\tau = -1\):</span> the coordinate does not change there. At <a data-del="preval" class="xref kaz" href="sec-mkk-izoparametricni.html#fig-mkk-q8-rob" data-knowl="fig-mkk-q8-rob">\(s = -0{,}6\)</a> the curve goes below the value at the end and then returns, so that the points \(\tau = -1\) and \(\tau = -\tfrac23\) land in the same place: the side folds back onto itself.</p>
+
+<figure class="blk slika" id="fig-mkk-q8-rob"><p><span class="svgfig" role="img" aria-label="A side of the element Q8 at three positions of the midside node"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='263.02pt' height='263.92pt' viewBox='-72.000004 -72.000006 194.833116 195.498192'>
+<defs>
+<path id='c15-05-q8-rob-g0-0' d='M6.56538-2.291407C6.734745-2.291407 6.914072-2.291407 6.914072-2.49066S6.734745-2.689913 6.56538-2.689913H1.175592C1.006227-2.689913 .826899-2.689913 .826899-2.49066S1.006227-2.291407 1.175592-2.291407H6.56538Z'/>
+<path id='c15-05-q8-rob-g1-28' d='M2.929016-3.716065H4.60274C4.732254-3.716065 5.090909-3.716065 5.090909-4.054795C5.090909-4.293898 4.881694-4.293898 4.692403-4.293898H1.902864C1.703611-4.293898 1.315068-4.293898 .876712-3.825654C.547945-3.466999 .268991-2.988792 .268991-2.929016C.268991-2.919054 .268991-2.82939 .388543-2.82939C.468244-2.82939 .488169-2.86924 .547945-2.948941C1.036115-3.716065 1.603985-3.716065 1.8132-3.716065H2.6401L1.663761-.518057C1.62391-.398506 1.564134-.18929 1.564134-.14944C1.564134-.039851 1.633873 .119552 1.853051 .119552C2.181818 .119552 2.231631-.159402 2.261519-.308842L2.929016-3.716065Z'/>
+<path id='c15-05-q8-rob-g1-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='c15-05-q8-rob-g1-115' d='M3.895392-3.726027C3.616438-3.716065 3.417186-3.496887 3.417186-3.277709C3.417186-3.138232 3.506849-2.988792 3.726027-2.988792S4.184309-3.158157 4.184309-3.5467C4.184309-3.995019 3.755915-4.403487 2.998755-4.403487C1.683686-4.403487 1.315068-3.387298 1.315068-2.948941C1.315068-2.171856 2.052304-2.022416 2.34122-1.96264C2.859278-1.863014 3.377335-1.753425 3.377335-1.205479C3.377335-.946451 3.148194-.109589 1.952677-.109589C1.8132-.109589 1.046077-.109589 .816936-.637609C1.195517-.587796 1.444583-.886675 1.444583-1.165629C1.444583-1.39477 1.285181-1.514321 1.075965-1.514321C.816936-1.514321 .518057-1.305106 .518057-.856787C.518057-.288917 1.085928 .109589 1.942715 .109589C3.556663 .109589 3.945205-1.09589 3.945205-1.544209C3.945205-1.902864 3.755915-2.15193 3.636364-2.271482C3.367372-2.550436 3.078456-2.600249 2.6401-2.689913C2.281445-2.769614 1.882939-2.839352 1.882939-3.287671C1.882939-3.576588 2.122042-4.184309 2.998755-4.184309C3.247821-4.184309 3.745953-4.11457 3.895392-3.726027Z'/>
+<path id='c15-05-q8-rob-g1-120' d='M3.327522-3.008717C3.387298-3.267746 3.616438-4.184309 4.313823-4.184309C4.363636-4.184309 4.60274-4.184309 4.811955-4.054795C4.533001-4.004981 4.333748-3.755915 4.333748-3.516812C4.333748-3.35741 4.443337-3.16812 4.712329-3.16812C4.931507-3.16812 5.250311-3.347447 5.250311-3.745953C5.250311-4.26401 4.662516-4.403487 4.323786-4.403487C3.745953-4.403487 3.39726-3.875467 3.277709-3.646326C3.028643-4.303861 2.49066-4.403487 2.201743-4.403487C1.165629-4.403487 .597758-3.118306 .597758-2.86924C.597758-2.769614 .697385-2.769614 .71731-2.769614C.797011-2.769614 .826899-2.789539 .846824-2.879203C1.185554-3.935243 1.843088-4.184309 2.181818-4.184309C2.371108-4.184309 2.719801-4.094645 2.719801-3.516812C2.719801-3.20797 2.550436-2.540473 2.181818-1.145704C2.022416-.52802 1.673724-.109589 1.235367-.109589C1.175592-.109589 .946451-.109589 .737235-.239103C.986301-.288917 1.205479-.498132 1.205479-.777086C1.205479-1.046077 .986301-1.125778 .836862-1.125778C.537983-1.125778 .288917-.86675 .288917-.547945C.288917-.089664 .787049 .109589 1.225405 .109589C1.882939 .109589 2.241594-.587796 2.271482-.647572C2.391034-.278954 2.749689 .109589 3.347447 .109589C4.373599 .109589 4.941469-1.175592 4.941469-1.424658C4.941469-1.524284 4.851806-1.524284 4.821918-1.524284C4.732254-1.524284 4.712329-1.484433 4.692403-1.414695C4.363636-.348692 3.686177-.109589 3.367372-.109589C2.978829-.109589 2.819427-.428394 2.819427-.767123C2.819427-.986301 2.879203-1.205479 2.988792-1.643836L3.327522-3.008717Z'/>
+<path id='c15-05-q8-rob-g2-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='c15-05-q8-rob-g2-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c15-05-q8-rob-g2-53' d='M4.473225-2.002491C4.473225-3.188045 3.656289-4.184309 2.580324-4.184309C2.102117-4.184309 1.673724-4.024907 1.315068-3.676214V-5.618929C1.514321-5.559153 1.843088-5.489415 2.161893-5.489415C3.387298-5.489415 4.084682-6.396015 4.084682-6.525529C4.084682-6.585305 4.054795-6.635118 3.985056-6.635118C3.975093-6.635118 3.955168-6.635118 3.905355-6.60523C3.706102-6.515567 3.217933-6.316314 2.550436-6.316314C2.15193-6.316314 1.693649-6.386052 1.225405-6.595268C1.145704-6.625156 1.125778-6.625156 1.105853-6.625156C1.006227-6.625156 1.006227-6.545455 1.006227-6.386052V-3.437111C1.006227-3.257783 1.006227-3.178082 1.145704-3.178082C1.215442-3.178082 1.235367-3.20797 1.275218-3.267746C1.384807-3.427148 1.753425-3.965131 2.560399-3.965131C3.078456-3.965131 3.327522-3.506849 3.407223-3.327522C3.566625-2.958904 3.58655-2.570361 3.58655-2.072229C3.58655-1.723537 3.58655-1.125778 3.347447-.707347C3.108344-.318804 2.739726-.059776 2.281445-.059776C1.554172-.059776 .986301-.587796 .816936-1.175592C.846824-1.165629 .876712-1.155666 .986301-1.155666C1.315068-1.155666 1.484433-1.404732 1.484433-1.643836S1.315068-2.132005 .986301-2.132005C.846824-2.132005 .498132-2.062267 .498132-1.603985C.498132-.747198 1.185554 .219178 2.30137 .219178C3.457036 .219178 4.473225-.737235 4.473225-2.002491Z'/>
+<path id='c15-05-q8-rob-g2-54' d='M1.315068-3.267746V-3.506849C1.315068-6.027397 2.550436-6.386052 3.058531-6.386052C3.297634-6.386052 3.716065-6.326276 3.935243-5.987547C3.785803-5.987547 3.387298-5.987547 3.387298-5.539228C3.387298-5.230386 3.626401-5.080946 3.845579-5.080946C4.004981-5.080946 4.303861-5.17061 4.303861-5.559153C4.303861-6.156912 3.865504-6.635118 3.038605-6.635118C1.763387-6.635118 .418431-5.349938 .418431-3.148194C.418431-.488169 1.574097 .219178 2.500623 .219178C3.606476 .219178 4.552927-.71731 4.552927-2.032379C4.552927-3.297634 3.666252-4.254047 2.560399-4.254047C1.882939-4.254047 1.514321-3.745953 1.315068-3.267746ZM2.500623-.059776C1.872976-.059776 1.574097-.657534 1.514321-.806974C1.334994-1.275218 1.334994-2.072229 1.334994-2.251557C1.334994-3.028643 1.653798-4.024907 2.550436-4.024907C2.709838-4.024907 3.16812-4.024907 3.476961-3.407223C3.656289-3.038605 3.656289-2.530511 3.656289-2.042341C3.656289-1.564134 3.656289-1.066002 3.486924-.707347C3.188045-.109589 2.729763-.059776 2.500623-.059776Z'/>
+<path id='c15-05-q8-rob-g2-61' d='M6.844334-3.257783C6.993773-3.257783 7.183064-3.257783 7.183064-3.457036S6.993773-3.656289 6.854296-3.656289H.886675C.747198-3.656289 .557908-3.656289 .557908-3.457036S.747198-3.257783 .896638-3.257783H6.844334ZM6.854296-1.325031C6.993773-1.325031 7.183064-1.325031 7.183064-1.524284S6.993773-1.723537 6.844334-1.723537H.896638C.747198-1.723537 .557908-1.723537 .557908-1.524284S.747198-1.325031 .886675-1.325031H6.854296Z'/>
+</defs>
+<g id='c15-05-q8-rob-page1'>
+<g stroke-miterlimit='10' transform='translate(19.386027,27.670299)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='osi'>
+<path d='M-78.24495 0H80.15274' fill='none'/>
+<g transform='translate(77.67628,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(88.13791,-2.15277)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(19.386027,27.670299)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='19.386027' y='27.670299' xlink:href='#c15-05-q8-rob-g1-28'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0-85.35805V84.42038' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,81.94392)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-2.85764,92.40555)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(19.386027,27.670299)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='19.386027' y='27.670299' xlink:href='#c15-05-q8-rob-g1-120'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M-62.59596-81.94351V75.1155' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M62.59596-81.94351V75.1155' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M-71.98497-68.28644H71.98497' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M-71.98497 68.28644H71.98497' fill='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(-68.98486,-92.02094)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(19.386027,27.670299)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='19.386027' y='27.670299' xlink:href='#c15-05-q8-rob-g0-0'/>
+<use x='27.134775' y='27.670299' xlink:href='#c15-05-q8-rob-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(60.09596,-92.02092)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(19.386027,27.670299)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='19.386027' y='27.670299' xlink:href='#c15-05-q8-rob-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-88.39575,-71.092)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(19.386027,27.670299)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='19.386027' y='27.670299' xlink:href='#c15-05-q8-rob-g0-0'/>
+<use x='27.134775' y='27.670299' xlink:href='#c15-05-q8-rob-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-80.61795,65.06422)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(19.386027,27.670299)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='19.386027' y='27.670299' xlink:href='#c15-05-q8-rob-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='enakomerno'>
+<g stroke-width='1.0'>
+<path d='M-62.59596-68.28644L62.59596 68.28644' fill='none'/>
+</g>
+<path d='M1.83862 0C1.83862 1.01544 1.01544 1.83862 0 1.83862S-1.83862 1.01544-1.83862 0S-1.01544-1.83862 0-1.83862S1.83862-1.01544 1.83862 0ZM0 0' stroke='none'/>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(19.386027,27.670299)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+<g transform='translate(67.48112,60.28366)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(19.386027,27.670299)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='19.386027' y='27.670299' xlink:href='#c15-05-q8-rob-g1-115'/>
+<use x='24.056015' y='27.670299' xlink:href='#c15-05-q8-rob-g2-61'/>
+<use x='31.804759' y='27.670299' xlink:href='#c15-05-q8-rob-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='cetrtina'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.0'>
+<path d='M-62.59596-68.28644C-62.59596-68.28644-60.27724-68.24669-59.38669-68.19682C-58.49614-68.14696-57.06798-68.02655-56.17743-67.92696C-55.28688-67.82736-53.8587-67.62825-52.96815-67.47891S-50.64944-67.04982-49.7589-66.8506C-48.86835-66.65138-47.44017-66.29216-46.54962-66.04308C-45.65907-65.79399-44.23091-65.35425-43.34036-65.05528C-42.44981-64.75632-41.02164-64.23697-40.13109-63.88828C-39.24054-63.53958-37.81238-62.94048-36.92183-62.54205C-36.03128-62.14363-34.60312-61.46478-33.71257-61.01662C-32.82202-60.56845-31.39384-59.81-30.5033-59.31195C-29.61275-58.8139-28.18459-57.97495-27.29404-57.42703C-26.40349-56.87912-24.97531-55.96056-24.08476-55.3629S-21.76605-53.76706-20.8755-53.11954S-18.55678-51.39333-17.66623-50.69592C-16.77568-49.99852-15.34752-48.84021-14.45697-48.09308S-12.13826-46.10791-11.24771-45.31104C-10.35716-44.51416-8.92899-43.19649-8.03844-42.34975C-7.14789-41.503-5.71973-40.10484-4.82918-39.20822S-2.51045-36.83382-1.6199-35.88747S.69879-33.38373 1.58934-32.3875S3.90807-29.75322 4.79861-28.70726C5.68916-27.6613 7.11732-25.94455 8.00787-24.84885C8.89842-23.75314 10.32658-21.9559 11.21713-20.81018S13.53586-17.7867 14.4264-16.59125C15.31696-15.3958 16.74512-13.43933 17.63567-12.19415C18.52621-10.94897 19.95439-8.91183 20.84494-7.61678C21.73549-6.32172 23.16365-4.20499 24.0542-2.8602S26.37292 .68092 27.26347 2.07559S29.58218 5.7471 30.47273 7.19165S32.79146 10.99266 33.682 12.48694C34.57256 13.98122 36.00072 16.41743 36.89127 17.96144C37.78181 19.50545 39.20998 22.02127 40.10052 23.61516C40.99107 25.20905 42.41925 27.80537 43.3098 29.44914S45.62851 33.76884 46.51906 35.46234C47.4096 37.15584 48.83778 39.91153 49.72833 41.65475C50.61888 43.39798 52.04704 46.23329 52.93759 48.0264C53.82814 49.8195 55.25632 52.7353 56.14687 54.5783C57.03741 56.42128 58.46558 59.4167 59.35612 61.30942C60.24667 63.20213 62.56538 68.21974 62.56538 68.21974' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M1.83862-34.14322C1.83862-33.12778 1.01544-32.3046 0-32.3046S-1.83862-33.12778-1.83862-34.14322S-1.01544-35.98184 0-35.98184S1.83862-35.15866 1.83862-34.14322ZM0-34.14322' stroke='none'/>
+</g>
+<g transform='translate(0.0,-34.14322)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(19.386027,27.670299)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(67.48112,74.23047)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(19.386027,27.670299)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='19.386027' y='27.670299' xlink:href='#c15-05-q8-rob-g1-115'/>
+<use x='24.056015' y='27.670299' xlink:href='#c15-05-q8-rob-g2-61'/>
+<use x='31.804759' y='27.670299' xlink:href='#c15-05-q8-rob-g0-0'/>
+<use x='39.553502' y='27.670299' xlink:href='#c15-05-q8-rob-g2-48'/>
+<use x='44.534841' y='27.670299' xlink:href='#c15-05-q8-rob-g1-59'/>
+<use x='47.30225' y='27.670299' xlink:href='#c15-05-q8-rob-g2-53'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='preval'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M-62.59596-68.28644C-62.59596-68.28644-61.06326-68.59998-60.4746-68.70218C-59.88593-68.80438-58.9419-68.94691-58.35323-69.0231S-56.82054-69.20114-56.23187-69.2513C-55.6432-69.30145-54.69917-69.36067-54.1105-69.38466C-53.52184-69.40865-52.5778-69.42642-51.98914-69.42426C-51.40047-69.42209-50.45645-69.39737-49.86778-69.36903C-49.27911-69.3407-48.33508-69.27438-47.74641-69.22003C-47.15775-69.16568-46.21371-69.05762-45.62505-68.97725C-45.03638-68.89688-44.09236-68.74724-43.5037-68.6407C-42.91502-68.53416-41.971-68.34203-41.38232-68.20932C-40.79366-68.07661-39.84964-67.84305-39.26097-67.68417C-38.6723-67.5253-37.72827-67.24925-37.1396-67.06421S-35.6069-66.56152-35.01823-66.35045C-34.42957-66.13937-33.48555-65.78001-32.89688-65.54292S-31.36418-64.90489-30.77551-64.64163S-29.24281-63.93494-28.65414-63.64551C-28.06548-63.35608-27.12146-62.8712-26.53279-62.5556S-25.00009-61.71263-24.41142-61.37088S-22.87872-60.46002-22.29005-60.09239C-21.70139-59.72476-20.75737-59.11496-20.1687-58.72116S-18.636-57.6742-18.04733-57.25407C-17.45866-56.83395-16.51465-56.13934-15.92598-55.6932C-15.33731-55.24707-14.39328-54.51073-13.80461-54.03856S-12.27191-52.78847-11.68324-52.29013C-11.09457-51.7918-10.15056-50.97137-9.56189-50.44688C-8.97322-49.9224-8.02919-49.0604-7.44052-48.50987C-6.85185-47.95935-5.90782-47.05577-5.31915-46.47908S-3.78647-44.95631-3.1978-44.35345C-2.60913-43.7506-1.66508-42.76294-1.07643-42.13406C-.48778-41.50519 .45625-40.47594 1.0449-39.82089C1.63356-39.16585 2.5776-38.09412 3.16628-37.4129C3.75494-36.73169 4.69897-35.61838 5.28764-34.91115S6.82033-33.049 7.409-32.3156S8.9417-30.38481 9.53036-29.62524C10.11903-28.86568 11.06306-27.6267 11.65173-26.8411S13.18442-24.77493 13.77309-23.96318S15.30579-21.82823 15.89445-20.99045C16.48312-20.15266 17.42715-18.78893 18.01582-17.92497C18.60449-17.06102 19.54851-15.65376 20.13718-14.76364S21.66988-12.4257 22.25854-11.50957C22.84721-10.59343 23.79123-9.103 24.3799-8.16069S25.9126-5.6865 26.50127-4.71802S28.03397-2.17519 28.62263-1.18054C29.2113-.1859 30.15532 1.43004 30.74399 2.4507S32.27669 5.12904 32.86536 6.17574C33.45403 7.22243 34.39806 8.92169 34.98672 9.99455C35.5754 11.06741 36.51941 12.80902 37.10808 13.90819C37.69675 15.00735 38.64078 16.79146 39.22945 17.91664S40.76215 20.86676 41.35081 22.01782C41.93948 23.16888 42.8835 25.0354 43.47217 26.21278C44.06084 27.39017 45.00487 29.30006 45.59354 30.50362C46.1822 31.70717 47.12622 33.65761 47.71489 34.88718C48.30356 36.11674 49.24759 38.10982 49.83626 39.36555C50.42493 40.62129 51.36896 42.6558 51.95763 43.93771S53.49031 47.29662 54.07898 48.60469C54.66765 49.91277 55.61168 52.0315 56.20035 53.36545S57.73305 56.85881 58.32172 58.21893C58.91039 59.57906 59.8544 61.78186 60.44307 63.16829S62.56444 68.21141 62.56444 68.21141' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M1.83862-40.97227C1.83862-39.95683 1.01544-39.13365 0-39.13365S-1.83862-39.95683-1.83862-40.97227C-1.83862-41.98772-1.01544-42.8109 0-42.8109S1.83862-41.98772 1.83862-40.97227ZM0-40.97227' stroke='none'/>
+</g>
+<g transform='translate(0.0,-40.97227)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(19.386027,27.670299)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(67.48112,35.30774)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(19.386027,27.670299)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='19.386027' y='27.670299' xlink:href='#c15-05-q8-rob-g1-115'/>
+<use x='24.056015' y='27.670299' xlink:href='#c15-05-q8-rob-g2-61'/>
+<use x='31.804759' y='27.670299' xlink:href='#c15-05-q8-rob-g0-0'/>
+<use x='39.553502' y='27.670299' xlink:href='#c15-05-q8-rob-g2-48'/>
+<use x='44.534841' y='27.670299' xlink:href='#c15-05-q8-rob-g1-59'/>
+<use x='47.30225' y='27.670299' xlink:href='#c15-05-q8-rob-g2-54'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 15.22</span>: A side of the element Q8 with ends at \(x = \mp 1\) (half the length is the unit) and the midside node at <span class="nobr">\(x = s\):</span> the coordinate <span class="nobr">\(x(\tau) = \tau + s\,(1 - \tau^2)\).</span> Line: <span class="nobr">\(s = 0\).</span> Blue curve: <span class="nobr">\(s = -0{,}5\),</span> the slope at \(\tau = -1\) is zero. Orange curve: <span class="nobr">\(s = -0{,}6\),</span> the curve goes below \(x = -1\) and returns, the slope at \(\tau = -1\) is <span class="nobr">\(-0{,}2\).</span> Scale: 2,2 cm per unit of <span class="nobr">\(\tau\),</span> 2,4 cm per unit of <span class="nobr">\(x\).</span></figcaption></figure>
+<p>The same happens in the plane. For a \(40 \times 30\) mm rectangle whose lower midside node is at \(x_{\mathrm{m}}\) mm instead of at <span class="nobr">\(20\),</span> \(J(-1, -1) = 30\,(x_{\mathrm{m}} - 10)\) and \(J(1, -1) = 30\,(30 - x_{\mathrm{m}})\) mm². At \(x_{\mathrm{m}} = 20, 15, 10, 8\) mm, \(J(-1, -1) = 300, 150, 0, -60\) mm² and \(J(1, -1) = 300, 450, 600, 660\) mm² (num-05.out, part E). At <span class="nobr">\(x_{\mathrm{m}} = 10\),</span> that is at a quarter of the side length, \(J\) at the corner is zero. The reason: the left and right sides are vertical, so \(x_\eta = 0\) at both lower corners and <span class="nobr">\(J = x_\xi\,y_\eta\),</span> with \(y_\eta = 15\) mm and \(x_\xi = 20\,(1 - 2s\tau)\) by lemma <a class="xref" href="sec-mkk-izoparametricni.html#lem-q8-rob" data-knowl="lem-q8-rob">15.40</a> (with \(\vek e = (40, 0)\) mm and <span class="nobr">\(s = (x_{\mathrm{m}} - 20)/20\)).</span> At \(\tau = -1\) this is <span class="nobr">\(2x_{\mathrm{m}} - 20\),</span> at \(\tau = 1\) it is <span class="nobr">\(60 - 2x_{\mathrm{m}}\).</span></p>
+<p>The following sections continue with three facts of this section. The <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat B\) has \(J\) in the denominator, so the integrand of the stiffness matrix is a rational <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> and cannot be integrated as a <a class="xref auto" href="sec-zveznost.html#def-polinom" data-knowl="def-polinom">polynomial</a> (section <a class="xref" href="sec-mkk-gauss.html">15.6</a>). The field contains the linear fields and is compatible across the shared sides, so the element must pass the <a class="xref auto forward" href="sec-mkk-zaplata.html#thm-preizkus-z-zaplato" data-knowl="thm-preizkus-z-zaplato" title="Defined later in the book">patch test</a> (section <a class="xref" href="sec-mkk-zaplata.html">15.7</a>). In space the same recipe is repeated with the brick, the image of the cube (section <a class="xref" href="sec-mkk-prostor.html">15.10</a>), except that a check at the corners is not enough there.</p>
+
+</main>
+<footer><nav class="pager"><a href="sec-mkk-ravninski-trikotnik.html" rel="prev">← 15.4</a><a href="index.html">Contents</a><a href="sec-mkk-gauss.html" rel="next">15.6 →</a></nav></footer>
+</body>
+</html>

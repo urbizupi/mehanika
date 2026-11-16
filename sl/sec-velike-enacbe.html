@@ -1,0 +1,1072 @@
+<!doctype html>
+<html lang="sl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>17.6 Veliki sistemi enačb in številčna napaka (Large systems of equations and numerical error) · Poglavje 17</title>
+<script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/style.css">
+<noscript><style>#loadbar { display: none; }</style></noscript>
+<script src="assets/config.js"></script>
+<script src="assets/load.js"></script>
+<script defer src="assets/interaktivno.js"></script>
+<script defer src="assets/book.js"></script>
+<script defer src="assets/predavanje.js"></script>
+<script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<div id="loadbar" aria-hidden="true"></div>
+<header class="top"><a class="home" href="index.html">Mehanika</a><nav class="pager"><a href="sec-kakovost-mreze.html" rel="prev">← 17.5</a><a href="index.html">Kazalo</a><a href="sec-nelinearna-statika.html" rel="next">17.7 →</a></nav>
+<span class="tools"><a class="lang" href="../en/sec-velike-enacbe.html" hreflang="en">English</a><button type="button" class="theme-toggle" title="Svetla ali temna tema" aria-label="Svetla ali temna tema"></button><button type="button" data-details="open">Razpri vse</button><button type="button" data-details="close">Skrij vse</button><button type="button" class="fig-side-toggle" aria-pressed="false">Slike ob strani</button></span></header>
+<main>
+<p class="updated">Posodobljeno 16. 11. 2026 ob 10.52</p>
+<p class="crumb"><a href="ch-modeliranje.html"><span class="h-num">Poglavje 17</span> Modeliranje z MKE v praksi</a></p>
+<h2 id="sec-velike-enacbe"><span class="h-num">17.6</span> Veliki sistemi enačb in številčna napaka (Large systems of equations and numerical error)</h2>
+<p>Mreža je izbrana, elementi so dobri, ostane en sam račun: sistem <span class="nobr">\(\mat K\,\vek d = \vek f\),</span> katerega <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrika</a> ima tisoč ali milijon vrstic. Ta razdelek obravnava tretjo od treh napak iz definicije <a class="xref" href="sec-hierarhija-modelov.html#def-vrste-napak" data-knowl="def-vrste-napak">17.2</a>, številčno napako (numerical error). Računalnik hrani vsako število s približno \(16\) veljavnimi števkami (dvojna natančnost, kot v poglavju <a class="xref" href="ch-sibka-oblika.html">6</a>) in vsaka operacija zaokroži, relativno za okoli <span class="nobr">\(10^{-16}\).</span> Zmanjšanje modelne in diskretizacijske napake te napake ne zmanjša, lahko jo celo poveča. Gostejša mreža zmanjša diskretizacijsko napako (razdelek <a class="xref" href="sec-konvergenca-mreze.html">17.3</a>), a poveča red \(n\) sistema in s tem ceno računa. COOK (PDF str. 318, prebrano) pove, da lahko velika <a class="xref auto" href="sec-integral.html#def-delitev" data-knowl="def-delitev">zgostitev</a> mreže, namenjena zmanjšanju diskretizacijske napake, poveča številčno napako toliko, da rezultati postanejo manj natančni namesto bolj natančni. Tri vprašanja si zastavimo. Koliko stane en sistem in koliko vsak nadaljnji z isto matriko? Koliko števk izgubimo pri palici iz poglavja <a class="xref" href="ch-mke-palice.html">7</a>, ko mrežo gostimo? In kdaj veliko <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-stevilo-obcutljivosti" data-knowl="def-stevilo-obcutljivosti">število občutljivosti</a> res pokvari rešitev, kdaj pa ne?</p>
+
+<h3 id="sec-ve-razcep"><span class="h-num">17.6.1</span> Razcep enkrat, desne strani mnogokrat</h3>
+<p>Poglavje <a class="xref" href="ch-mke-palice.html">7</a> (razdelek <a class="xref" href="sec-redke-matrike.html">7.8</a>) je pokazalo, da pasovna matrika s <a class="xref auto" href="sec-redke-matrike.html#def-pasovna-matrika" data-knowl="def-pasovna-matrika">polovično širino pasu</a> \(b\) stane pri eliminaciji približno \(n b^2/2\) množenj namesto \(n^3/6\) (lema <a class="xref" href="sec-redke-matrike.html#lem-cena-eliminacije" data-knowl="lem-cena-eliminacije">7.44</a>) in da preštevilčenje neznank spremeni pas, ne pa rešitve (lema <a class="xref" href="sec-redke-matrike.html#lem-permutacija" data-knowl="lem-permutacija">7.46</a>). Tega ne ponavljamo, slika <a class="xref" href="sec-redke-matrike.html#fig-mrm-cena" data-knowl="fig-mrm-cena">7.32</a> kaže razliko. Vzemimo isti primer: mreža \(50 \times 100\) vozlišč z dvema neznankama na vozlišče, torej \(n = 10^4\) in <span class="nobr">\(b = 100\),</span> in cena razcepa \(n b^2/2 = 5 \cdot 10^7\) množenj. Tam ni odgovora na vprašanje, ki ga postavi praksa. Isto konstrukcijo obremenimo na več načinov (lastna teža, veter z leve, veter z desne) in pri računu nihanja po trapeznem pravilu (definicija <a class="xref" href="sec-casovno-korakanje.html#def-trapezno-pravilo" data-knowl="def-trapezno-pravilo">10.63</a>) rešujemo sistem v vsakem časovnem koraku, njegova <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrika</a> pa za dani časovni korak ni odvisna od koraka (poglavje <a class="xref" href="ch-nihanje-vec-ps.html">10</a>). Ali vsaka nova desna stran stane spet \(5 \cdot 10^7\) množenj?</p>
+
+<div class="blk lema" id="lem-resitev-pas"><div class="blk-head"><span class="blk-label">Lema 17.28</span> <span class="blk-title">Cena ene nadaljnje desne strani (cost of one further right-hand side)</span></div><div class="blk-body"><p>Naj bo \(\mat K\) simetrična <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">pozitivno definitna matrika</a> reda \(n\) s polovično širino pasu \(b\) (definicija <a class="xref" href="sec-redke-matrike.html#def-pasovna-matrika" data-knowl="def-pasovna-matrika">7.40</a>) in \(\mat K = \mat L\,\mat D\,\mat L^\T\) njen razcep iz leme <a class="xref" href="sec-redke-matrike.html#lem-faktorizacija" data-knowl="lem-faktorizacija">7.47</a>. Tedaj velja:</p>
+<ol>
+<li>\(L_{\mathrm{ij}} = 0\) za <span class="nobr">\(i - j &gt; b\).</span></li>
+<li>Za vsak stolpec \(\vek f\) s \(n\) elementi rešimo \(\mat K\,\vek d = \vek f\) z računom za naprej, deljenjem z diagonalo in računom za nazaj, in to stane največ \(2nb + n\) množenj in deljenj, če je razcep že izračunan.</li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da ima faktor \(\mat L\) pas in da je rešitev s tremi preprostimi prehodi. Označimo \(\vek y = \mat D\,\mat L^\T\vek d\) in <span class="nobr">\(\vek z = \mat L^\T\vek d\).</span></p>
+<ol>
+<li>Stolpec \(k\) <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrike</a> \(\mat L\) pod diagonalo je stolpec množiteljev \(\vek g/K_{11}^{(k)}\) \(k\)-tega koraka eliminacije (lema <a class="xref" href="sec-redke-matrike.html#lem-faktorizacija" data-knowl="lem-faktorizacija">7.47</a>). Po lemi <a class="xref" href="sec-redke-matrike.html#lem-pas-ostane" data-knowl="lem-pas-ostane">7.42</a> ima matrika \(\mat K^{(k)}\) <a class="xref auto" href="sec-redke-matrike.html#def-pasovna-matrika" data-knowl="def-pasovna-matrika">polovično širino pasu</a> največ <span class="nobr">\(b\),</span> zato je v njenem prvem stolpcu \(g_{\mathrm{i}} = 0\) za \(i &gt; b + 1\) (korak 3 dokaza leme <a class="xref" href="sec-redke-matrike.html#lem-pas-ostane" data-knowl="lem-pas-ostane">7.42</a>). V stolpcu \(k\) matrike \(\mat L\) je torej neničelnih le prvih \(b\) elementov pod diagonalo, kar je točka 1.</li>
+<li>Enačbo \(\mat L\,\mat D\,\mat L^\T\vek d = \vek f\) razdelimo v tri: <span class="nobr">\(\mat L\,\vek y = \vek f\),</span> \(\mat D\,\vek z = \vek y\) in <span class="nobr">\(\mat L^\T\vek d = \vek z\).</span></li>
+<li>Prva enačba ima spodnjo trikotno matriko z enicami na diagonali: <span class="nobr">\(y_{\mathrm{i}} = f_{\mathrm{i}} - \sum_{\mathrm{j} &lt; \mathrm{i}} L_{\mathrm{ij}}\,y_{\mathrm{j}}\).</span> Po koraku 1 ima vsota največ \(b\) členov, torej največ \(b\) množenj na vrstico in \(n b\) vseh, deljenj pa ni.</li>
+<li>Druga enačba je \(n\) deljenj, <span class="nobr">\(z_{\mathrm{i}} = y_{\mathrm{i}}/D_{\mathrm{ii}}\),</span> s pivoti \(D_{\mathrm{ii}} &gt; 0\) (izrek <a class="xref" href="sec-skalarni-produkt-funkcij.html#thm-sistem-pozitivno-definitna" data-knowl="thm-sistem-pozitivno-definitna">6.29</a>).</li>
+<li>Tretja ima zgornjo trikotno matriko z enicami: <span class="nobr">\(d_{\mathrm{i}} = z_{\mathrm{i}} - \sum_{\mathrm{j} &gt; \mathrm{i}} L_{\mathrm{ji}}\,d_{\mathrm{j}}\),</span> spet največ \(b\) členov na vrstico in \(n b\) množenj.</li>
+<li>Vsota korakov 3, 4 in 5 je največ <span class="nobr">\(2nb + n\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> Dokaz ni iz vira.</p></div></div>
+<p>Na primeru: \(n = 10^4\) in \(b = 100\) dasta \(2nb + n = 2{,}01 \cdot 10^6\) množenj za eno desno stran, razcep pa stane <span class="nobr">\(5 \cdot 10^7\).</span> Razmerje je <span class="nobr">\(24{,}9\),</span> v splošnem <span class="nobr">\((n b^2/2)/(2nb) = b/4\).</span> Razcep prevlada, dokler desnih strani ni približno <span class="nobr">\(b/4 = 25\).</span> Pri \(100\) desnih straneh stane ponavljanje razcepa \(5{,}2 \cdot 10^9\) množenj, razcep enkrat in \(100\) reševanj pa <span class="nobr">\(2{,}5 \cdot 10^8\),</span> to je \(20{,}7\)-krat manj, pri \(1000\) časovnih korakih \(25\)-krat manj <span class="nobr">(\(5{,}2 \cdot 10^{10}\)</span> proti <span class="nobr">\(2{,}06 \cdot 10^9\)).</span> Številke so v num-06.out. To je, kar poglavje <a class="xref" href="ch-nihanje-vec-ps.html">10</a> obljubi, ko pravi, da razcep naredimo enkrat in ga pri vsakem koraku le uporabimo.</p>
+<p>Ta prihranek ima mejo, ki jo vidimo na istem primeru. Pri eni sami desni strani razcep ne prihrani ničesar, razmerje je <span class="nobr">\(1{,}00\).</span> Prav tako se matrika spremeni, če spremenimo časovni korak <span class="nobr">\(\Delta t\),</span> ker ga vsebuje, in tedaj je treba razcep izračunati znova. Pri nelinearnem računu se, kot bomo videli v poznejših razdelkih tega poglavja, matrika spremeni v vsakem popravku, zato tam razcep ni zastonj. Lema <a class="xref" href="sec-velike-enacbe.html#lem-resitev-pas" data-knowl="lem-resitev-pas">17.28</a> torej velja za isto matriko in več desnih strani, ne za več matrik.</p>
+<p>Pasovna hramba ni edina. COOK (PDF str. 57-58, prebrano) hrani pri <a class="xref auto" href="sec-matrike.html#def-simetricna-matrika" data-knowl="def-simetricna-matrika">simetrični matriki</a> v enem polju vse člene od najvišjega neničelnega člena v stolpcu do diagonale (obris, skyline) in vse ničle med njima, ker neposredni reševalnik ničle pod obrisom pretvori v neničelne člene (zapolnitev, fill). Število shranjenih členov je profil matrike. Za isto mrežo da eno številčenje profil <span class="nobr">\(21\),</span> drugo <span class="nobr">\(39\),</span> programi pa preštevilčijo sami. Čelni postopek (frontal method) izmenjuje sestavljanje in reševanje, tako da je naenkrat v pomnilniku le tisti del matrike, ki ga čelo, ki potuje po konstrukciji, še potrebuje. Iterativni reševalniki ne tvorijo zapolnitve, a <a class="xref auto" href="sec-zaporedja.html#def-limita-zaporedja" data-knowl="def-limita-zaporedja">konvergirajo</a> počasneje, ko <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-stevilo-obcutljivosti" data-knowl="def-stevilo-obcutljivosti">število občutljivosti</a> narašča, in uporabljajo predpogojevanje (preconditioning). Teh postopkov knjiga ne obravnava, imenujemo jih le zato, ker program ponuja izbiro med njimi. <a class="xref auto forward" href="sec-velike-enacbe.html#lem-pogojenost-palice" data-knowl="lem-pogojenost-palice" title="Definirano kasneje v knjigi">Število občutljivosti palice</a> izračunamo zdaj. <!-- nofig: signpost --></p>
+
+<h3 id="sec-ve-pogojenost"><span class="h-num">17.6.2</span> Koliko števk izgubimo pri palici</h3>
+<p>Število občutljivosti \(\kappa(\mat K) = \lambda_{\max}/\lambda_{\min}\) (definicija <a class="xref" href="sec-skalarni-produkt-funkcij.html#def-stevilo-obcutljivosti" data-knowl="def-stevilo-obcutljivosti">6.31</a>) pove, za koliko se relativna napaka desne strani poveča v rešitvi, in poglavje <a class="xref" href="ch-sibka-oblika.html">6</a> je to ocenilo z <span class="nobr">\(|\delta\vek x|/|\vek x| \le \kappa\,|\delta\vek b|/|\vek b|\).</span> Pri <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-sotorna-funkcija" data-knowl="def-sotorna-funkcija">šotorskih funkcijah</a> na palici z <span class="nobr">\(n = 4\),</span> \(8\) in \(16\) enakimi elementi je dalo <span class="nobr">\(\kappa = 29\),</span> \(113\) in \(438\) (<a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrika</a> <a class="xref" href="sec-skalarni-produkt-funkcij.html#eq-msp-sotorji" data-knowl="eq-msp-sotorji">(6.15)</a>), to je približno <span class="nobr">\(1{,}7\,n^2\).</span> Zakaj kvadrat, in drži to še pri <span class="nobr">\(n = 1000\)?</span></p>
+<p>Vzemimo isto palico: stalen prerez <span class="nobr">\(EA\),</span> dolžina <span class="nobr">\(L\),</span> pri \(x = 0\) vpeta, pri \(x = L\) prosta, razdeljena na \(n\) enakih elementov dolžine <span class="nobr">\(h = L/n\).</span> Neznanke so pomiki vozlišč \(d_1, \dots, d_{\mathrm{n}}\) in togostna matrika je \(\mat K = (EA/h)\,\mat T_{\mathrm{n}}\) z matriko</p>
+<div class="eq" id="eq-ve-tn">\[\mat T_{\mathrm{n}} = \begin{bmatrix} 2 &amp; -1 &amp; &amp; &amp; \\ -1 &amp; 2 &amp; -1 &amp; &amp; \\ &amp; \ddots &amp; \ddots &amp; \ddots &amp; \\ &amp; &amp; -1 &amp; 2 &amp; -1 \\ &amp; &amp; &amp; -1 &amp; 1 \end{bmatrix} , \tag{17.21}\]</div>
+<p>v kateri so prazna mesta ničle. Število \(EA/h\) le pomnoži vse <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">lastne vrednosti</a>, zato je <span class="nobr">\(\kappa(\mat K) = \kappa(\mat T_{\mathrm{n}})\).</span> Poglejmo število občutljivosti matrike \(\mat T_{\mathrm{n}}\) na sliki <a class="xref" href="sec-velike-enacbe.html#fig-ve-pogojenost" data-knowl="fig-ve-pogojenost">17.19</a>, v logaritemskem merilu, in zraven obliki, ki ju matrika pri \(n = 10\) najbolj in najmanj pomika.</p>
+
+<figure class="blk slika" id="fig-ve-pogojenost"><p><span class="svgfig" role="img" aria-label="Število občutljivosti palice in njena najmehkejša ter najtršja oblika"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='554.85pt' height='230.37pt' viewBox='-72.000004 -72.000006 410.998804 170.641803'>
+<defs>
+<path id='c17-06-pogojenost-g0-118' d='M5.041096-3.745953C5.100872-3.88543 5.140722-3.955168 5.778331-3.955168V-4.423412C5.529265-4.403487 5.240349-4.393524 4.991283-4.393524S4.293898-4.41345 4.084682-4.423412V-3.955168C4.273973-3.955168 4.562889-3.92528 4.562889-3.845579C4.562889-3.835616 4.552927-3.815691 4.513076-3.726027L3.35741-1.235367L2.092154-3.955168H2.630137V-4.423412C2.30137-4.403487 1.404732-4.393524 1.39477-4.393524C1.115816-4.393524 .667497-4.41345 .259029-4.423412V-3.955168H.896638L2.6401-.209215C2.759651 .039851 2.889166 .039851 3.01868 .039851C3.188045 .039851 3.287671 .009963 3.387298-.199253L5.041096-3.745953Z'/>
+<path id='c17-06-pogojenost-g1-20' d='M.587796-.388543C.547945-.249066 .547945-.229141 .547945-.159402C.547945 .019925 .687422 .109589 .836862 .109589C1.135741 .109589 1.195517-.129514 1.275218-.448319C1.374844-.806974 1.315068-.617684 1.743462-2.291407C2.580324-2.261519 3.447073-2.092154 3.447073-1.444583C3.447073-1.374844 3.447073-1.325031 3.427148-1.225405C3.387298-1.066002 3.377335-.956413 3.377335-.876712C3.377335-.288917 3.775841 .109589 4.293898 .109589C4.612702 .109589 4.871731-.069738 5.070984-.408468C5.32005-.826899 5.439601-1.404732 5.439601-1.424658C5.439601-1.524284 5.349938-1.524284 5.32005-1.524284C5.220423-1.524284 5.210461-1.484433 5.180573-1.344956C4.991283-.657534 4.762142-.109589 4.313823-.109589C4.104608-.109589 3.995019-.239103 3.995019-.587796C3.995019-.737235 4.034869-.976339 4.07472-1.145704C4.094645-1.235367 4.124533-1.364882 4.124533-1.474471C4.124533-2.410959 2.749689-2.480697 2.191781-2.500623C2.520548-2.67995 2.839352-2.948941 3.108344-3.178082C3.566625-3.566625 3.855542-3.805729 4.254047-3.975093C4.234122-3.92528 4.204234-3.805729 4.204234-3.755915C4.204234-3.636364 4.273973-3.407223 4.582814-3.407223C4.901619-3.407223 5.120797-3.696139 5.120797-3.945205C5.120797-4.034869 5.080946-4.293898 4.722291-4.293898C4.11457-4.293898 3.526775-3.795766 3.088418-3.427148C2.410959-2.849315 2.171856-2.699875 1.8132-2.580324C1.843088-2.689913 1.96264-3.188045 2.012453-3.35741C2.072229-3.616438 2.191781-4.084682 2.191781-4.134496C2.191781-4.303861 2.072229-4.403487 1.902864-4.403487C1.872976-4.403487 1.594022-4.403487 1.504359-4.044832L.587796-.388543Z'/>
+<path id='c17-06-pogojenost-g1-110' d='M.876712-.587796C.846824-.438356 .787049-.209215 .787049-.159402C.787049 .019925 .926526 .109589 1.075965 .109589C1.195517 .109589 1.374844 .029888 1.444583-.169365C1.454545-.18929 1.574097-.657534 1.633873-.9066L1.853051-1.803238C1.912827-2.022416 1.972603-2.241594 2.022416-2.470735C2.062267-2.6401 2.141968-2.929016 2.15193-2.968867C2.30137-3.277709 2.82939-4.184309 3.775841-4.184309C4.224159-4.184309 4.313823-3.815691 4.313823-3.486924C4.313823-2.86924 3.825654-1.594022 3.666252-1.165629C3.576588-.936488 3.566625-.816936 3.566625-.707347C3.566625-.239103 3.915318 .109589 4.383562 .109589C5.32005 .109589 5.688667-1.344956 5.688667-1.424658C5.688667-1.524284 5.599004-1.524284 5.569116-1.524284C5.469489-1.524284 5.469489-1.494396 5.419676-1.344956C5.220423-.667497 4.891656-.109589 4.403487-.109589C4.234122-.109589 4.164384-.209215 4.164384-.438356C4.164384-.687422 4.254047-.926526 4.343711-1.145704C4.533001-1.673724 4.951432-2.769614 4.951432-3.337484C4.951432-4.004981 4.523039-4.403487 3.805729-4.403487C2.909091-4.403487 2.420922-3.765878 2.251557-3.536737C2.201743-4.094645 1.793275-4.403487 1.334994-4.403487S.687422-4.014944 .587796-3.835616C.428394-3.496887 .288917-2.909091 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.779577 .577833-2.998755C.747198-3.706102 .946451-4.184309 1.305106-4.184309C1.504359-4.184309 1.613948-4.054795 1.613948-3.726027C1.613948-3.516812 1.58406-3.407223 1.454545-2.889166L.876712-.587796Z'/>
+<path id='c17-06-pogojenost-g2-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='c17-06-pogojenost-g2-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c17-06-pogojenost-g2-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='c17-06-pogojenost-g3-40' d='M2.475716-5.230386C1.150685-4.29589 .801993-2.817435 .801993-1.750436C.801993-.767123 1.094894 .760149 2.475716 1.736488C2.531507 1.736488 2.615193 1.736488 2.615193 1.652802C2.615193 1.610959 2.594271 1.597011 2.545455 1.548194C1.617933 .711333 1.276214-.474222 1.276214-1.743462C1.276214-3.626401 1.994521-4.546949 2.566376-5.063014C2.594271-5.090909 2.615193-5.111831 2.615193-5.1467C2.615193-5.230386 2.531507-5.230386 2.475716-5.230386Z'/>
+<path id='c17-06-pogojenost-g3-41' d='M.627646-5.230386C.578829-5.230386 .495143-5.230386 .495143-5.1467C.495143-5.111831 .516065-5.090909 .557908-5.042092C1.157659-4.491158 1.827148-3.549689 1.827148-1.750436C1.827148-.292902 1.373848 .808966 .620672 1.492403C.502117 1.610959 .495143 1.617933 .495143 1.652802S.516065 1.736488 .585803 1.736488C.669489 1.736488 1.332005 1.276214 1.792279 .404483C2.099128-.174346 2.30137-.927522 2.30137-1.743462C2.30137-2.726775 2.008468-4.254047 .627646-5.230386Z'/>
+<path id='c17-06-pogojenost-g3-48' d='M3.598506-2.224658C3.598506-2.991781 3.507846-3.542715 3.187049-4.030884C2.970859-4.351681 2.538481-4.630635 1.980573-4.630635C.36264-4.630635 .36264-2.726775 .36264-2.224658S.36264 .139477 1.980573 .139477S3.598506-1.72254 3.598506-2.224658ZM1.980573-.055791C1.659776-.055791 1.234371-.244085 1.094894-.81594C.99726-1.227397 .99726-1.799253 .99726-2.315318C.99726-2.824408 .99726-3.354421 1.101868-3.737983C1.248319-4.288917 1.694645-4.435367 1.980573-4.435367C2.357161-4.435367 2.719801-4.20523 2.84533-3.800747C2.956912-3.424159 2.963885-2.922042 2.963885-2.315318C2.963885-1.799253 2.963885-1.283188 2.873225-.843836C2.733748-.209215 2.259527-.055791 1.980573-.055791Z'/>
+<path id='c17-06-pogojenost-g3-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='c17-06-pogojenost-g3-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+<path id='c17-06-pogojenost-g3-52' d='M3.689166-1.143711V-1.39477H2.915068V-4.505106C2.915068-4.651557 2.915068-4.700374 2.761644-4.700374C2.677958-4.700374 2.650062-4.700374 2.580324-4.60274L.27198-1.39477V-1.143711H2.322291V-.571856C2.322291-.334745 2.322291-.251059 1.75741-.251059H1.569116V0C1.917808-.013948 2.364134-.027895 2.615193-.027895C2.873225-.027895 3.319552-.013948 3.668244 0V-.251059H3.47995C2.915068-.251059 2.915068-.334745 2.915068-.571856V-1.143711H3.689166ZM2.371108-3.947198V-1.39477H.530012L2.371108-3.947198Z'/>
+<path id='c17-06-pogojenost-g3-54' d='M1.046077-2.280448C1.046077-2.852304 1.094894-3.368369 1.3599-3.793773C1.597011-4.170361 1.973599-4.428394 2.419925-4.428394C2.629141-4.428394 2.908095-4.372603 3.047572-4.184309C2.873225-4.170361 2.726775-4.051806 2.726775-3.849564C2.726775-3.675218 2.84533-3.521793 3.054545-3.521793S3.38929-3.66127 3.38929-3.863512C3.38929-4.267995 3.096389-4.630635 2.405978-4.630635C1.401743-4.630635 .376588-3.710087 .376588-2.21071C.376588-.404483 1.227397 .139477 1.994521 .139477C2.84533 .139477 3.584558-.509091 3.584558-1.422665C3.584558-2.308344 2.880199-2.963885 2.064259-2.963885C1.506351-2.963885 1.199502-2.594271 1.046077-2.280448ZM1.994521-.083686C1.645828-.083686 1.373848-.285928 1.227397-.592777C1.12279-.801993 1.066999-1.150685 1.066999-1.569116C1.066999-2.245579 1.471482-2.768618 2.02939-2.768618C2.350187-2.768618 2.566376-2.643088 2.740722-2.385056C2.908095-2.12005 2.915068-1.827148 2.915068-1.422665C2.915068-1.025156 2.915068-.732254 2.726775-.460274C2.559402-.216189 2.336239-.083686 1.994521-.083686Z'/>
+</defs>
+<g id='c17-06-pogojenost-page1'>
+<g stroke-miterlimit='10' transform='translate(-48.814018,73.648349)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='osi'>
+<path d='M-.11374 0H157.7146' fill='none'/>
+<g transform='translate(155.23814,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(165.69977,-2.15277)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.814018,73.648349)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-48.814018' y='73.648349' xlink:href='#c17-06-pogojenost-g1-110'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M-.11374 0V130.57085' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,-0.11374,128.09439)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-2.99452,138.55602)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.814018,73.648349)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-48.814018' y='73.648349' xlink:href='#c17-06-pogojenost-g1-20'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M32.4361 1.70709V-1.70709' fill='none'/>
+<g transform='translate(27.43608,-11.7845)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.814018,73.648349)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-48.814018' y='73.648349' xlink:href='#c17-06-pogojenost-g2-49'/>
+<use x='-43.832679' y='73.648349' xlink:href='#c17-06-pogojenost-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M86.49614 1.70709V-1.70709' fill='none'/>
+<g transform='translate(78.99612,-11.7845)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.814018,73.648349)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-48.814018' y='73.648349' xlink:href='#c17-06-pogojenost-g2-49'/>
+<use x='-43.832679' y='73.648349' xlink:href='#c17-06-pogojenost-g2-48'/>
+<use x='-38.85134' y='73.648349' xlink:href='#c17-06-pogojenost-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M140.55661 1.70709V-1.70709' fill='none'/>
+<g transform='translate(130.55658,-11.7845)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.814018,73.648349)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-48.814018' y='73.648349' xlink:href='#c17-06-pogojenost-g2-49'/>
+<use x='-43.832679' y='73.648349' xlink:href='#c17-06-pogojenost-g2-48'/>
+<use x='-38.85134' y='73.648349' xlink:href='#c17-06-pogojenost-g2-48'/>
+<use x='-33.870001' y='73.648349' xlink:href='#c17-06-pogojenost-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M1.59334 22.1931H-1.82083' fill='none'/>
+<g transform='translate(-19.93996,18.1231)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.814018,73.648349)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-48.814018' y='73.648349' xlink:href='#c17-06-pogojenost-g2-49'/>
+<use x='-43.832679' y='73.648349' xlink:href='#c17-06-pogojenost-g2-48'/>
+<use x='-38.85134' y='70.032985' xlink:href='#c17-06-pogojenost-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M1.59334 66.57932H-1.82083' fill='none'/>
+<g transform='translate(-19.93996,62.50931)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.814018,73.648349)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-48.814018' y='73.648349' xlink:href='#c17-06-pogojenost-g2-49'/>
+<use x='-43.832679' y='73.648349' xlink:href='#c17-06-pogojenost-g2-48'/>
+<use x='-38.85134' y='70.032985' xlink:href='#c17-06-pogojenost-g3-52'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M1.59334 110.96552H-1.82083' fill='none'/>
+<g transform='translate(-19.93996,106.89551)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.814018,73.648349)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-48.814018' y='73.648349' xlink:href='#c17-06-pogojenost-g2-49'/>
+<use x='-43.832679' y='73.648349' xlink:href='#c17-06-pogojenost-g2-48'/>
+<use x='-38.85134' y='70.032985' xlink:href='#c17-06-pogojenost-g3-54'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='premica'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M4.18263 3.64212L156.83133 128.97641' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='tocke'>
+<g fill='#00f' stroke='#00f'>
+<path d='M12.52592 10.35675C12.52592 11.24042 11.80959 11.95676 10.92592 11.95676S9.32591 11.24042 9.32591 10.35675S10.04225 8.75674 10.92592 8.75674S12.52592 9.47308 12.52592 10.35675ZM10.92592 10.35675' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M28.80064 23.41655C28.80064 24.30022 28.0843 25.01656 27.20064 25.01656C26.31697 25.01656 25.60063 24.30022 25.60063 23.41655S26.31697 21.81654 27.20064 21.81654C28.0843 21.81654 28.80064 22.53288 28.80064 23.41655ZM27.20064 23.41655' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M45.07579 36.41946C45.07579 37.30313 44.35945 38.01947 43.47578 38.01947C42.59212 38.01947 41.87578 37.30313 41.87578 36.41946C41.87578 35.5358 42.59212 34.81946 43.47578 34.81946C44.35945 34.81946 45.07579 35.5358 45.07579 36.41946ZM43.47578 36.41946' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M34.0361 27.59918C34.0361 28.48285 33.31976 29.19919 32.4361 29.19919C31.55243 29.19919 30.83609 28.48285 30.83609 27.59918C30.83609 26.71552 31.55243 25.99918 32.4361 25.99918C33.31976 25.99918 34.0361 26.71552 34.0361 27.59918ZM32.4361 27.59918' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M88.09615 71.33113C88.09615 72.2148 87.3798 72.93114 86.49614 72.93114C85.61247 72.93114 84.89613 72.2148 84.89613 71.33113S85.61247 69.73112 86.49614 69.73112C87.3798 69.73112 88.09615 70.44746 88.09615 71.33113ZM86.49614 71.33113' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M142.15662 115.6318C142.15662 116.51547 141.44028 117.23181 140.55661 117.23181S138.9566 116.51547 138.9566 115.6318C138.9566 114.74814 139.67294 114.0318 140.55661 114.0318S142.15662 114.74814 142.15662 115.6318ZM140.55661 115.6318' stroke='none'/>
+</g>
+</g>
+<g class='del' data-del='naklon'>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M86.49614 32.77734H140.55617V77.16354' fill='none'/>
+<g transform='translate(111.02615,22.69994)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.814018,73.648349)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-48.814018' y='73.648349' xlink:href='#c17-06-pogojenost-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(144.18915,51.74823)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.814018,73.648349)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-48.814018' y='73.648349' xlink:href='#c17-06-pogojenost-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='stena'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M210.55013-5.69046V91.04869' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M210.55013-5.69046L204.85966-11.38092' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M210.55013 1.42271L204.85966-4.26773' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M210.55013 8.5359L204.85966 2.84544' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M210.55013 15.6491L204.85966 9.95863' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M210.55013 22.76227L204.85966 17.07181' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M210.55013 29.87546L204.85966 24.185' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M210.55013 36.98865L204.85966 31.29819' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M210.55013 44.10184L204.85966 38.41138' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M210.55013 51.21501L204.85966 45.52455' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M210.55013 58.3282L204.85966 52.63774' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M210.55013 65.44139L204.85966 59.75093' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M210.55013 72.55458L204.85966 66.86412' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M210.55013 79.66776L204.85966 73.9773' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='prvi'>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M210.55013 56.90549H361.34975' fill='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.0'>
+<path d='M210.55013 56.90549L224.77649 60.51895L239.00287 64.04732L253.22923 67.40463L267.45561 70.53445L281.68198 73.35124L295.90836 75.82637L310.13472 77.84648L324.3611 79.4116L338.58746 80.49266L352.81384 81.03362' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M226.27649 60.51895C226.27649 61.34738 225.60492 62.01895 224.77649 62.01895S223.27649 61.34738 223.27649 60.51895S223.94806 59.01895 224.77649 59.01895S226.27649 59.69052 226.27649 60.51895ZM224.77649 60.51895' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M240.50287 64.04732C240.50287 64.87575 239.8313 65.54732 239.00287 65.54732S237.50287 64.87575 237.50287 64.04732S238.17444 62.54732 239.00287 62.54732S240.50287 63.21889 240.50287 64.04732ZM239.00287 64.04732' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M254.72923 67.40463C254.72923 68.23306 254.05766 68.90463 253.22923 68.90463S251.72923 68.23306 251.72923 67.40463S252.4008 65.90463 253.22923 65.90463S254.72923 66.5762 254.72923 67.40463ZM253.22923 67.40463' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M268.95561 70.53445C268.95561 71.36288 268.28404 72.03445 267.45561 72.03445S265.95561 71.36288 265.95561 70.53445S266.62718 69.03445 267.45561 69.03445S268.95561 69.70602 268.95561 70.53445ZM267.45561 70.53445' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M283.18198 73.35124C283.18198 74.17967 282.5104 74.85124 281.68198 74.85124C280.85355 74.85124 280.18198 74.17967 280.18198 73.35124S280.85355 71.85124 281.68198 71.85124C282.5104 71.85124 283.18198 72.52281 283.18198 73.35124ZM281.68198 73.35124' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M297.40836 75.82637C297.40836 76.6548 296.73679 77.32637 295.90836 77.32637S294.40836 76.6548 294.40836 75.82637S295.07993 74.32637 295.90836 74.32637S297.40836 74.99794 297.40836 75.82637ZM295.90836 75.82637' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M311.63472 77.84648C311.63472 78.67491 310.96315 79.34648 310.13472 79.34648S308.63472 78.67491 308.63472 77.84648S309.30629 76.34648 310.13472 76.34648S311.63472 77.01805 311.63472 77.84648ZM310.13472 77.84648' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M325.8611 79.4116C325.8611 80.24004 325.18953 80.9116 324.3611 80.9116S322.8611 80.24004 322.8611 79.4116C322.8611 78.58318 323.53267 77.9116 324.3611 77.9116S325.8611 78.58318 325.8611 79.4116ZM324.3611 79.4116' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M340.08746 80.49266C340.08746 81.32109 339.4159 81.99266 338.58746 81.99266C337.75903 81.99266 337.08746 81.32109 337.08746 80.49266S337.75903 78.99266 338.58746 78.99266C339.4159 78.99266 340.08746 79.66423 340.08746 80.49266ZM338.58746 80.49266' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<path d='M354.31384 81.03362C354.31384 81.86205 353.64227 82.53362 352.81384 82.53362S351.31384 81.86205 351.31384 81.03362C351.31384 80.20518 351.98541 79.53362 352.81384 79.53362S354.31384 80.20518 354.31384 81.03362ZM352.81384 81.03362' stroke='none'/>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(364.98273,52.46603)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.814018,73.648349)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-48.814018' y='73.648349' xlink:href='#c17-06-pogojenost-g0-118'/>
+<use x='-42.608149' y='70.032985' xlink:href='#c17-06-pogojenost-g3-40'/>
+<use x='-39.494805' y='70.032985' xlink:href='#c17-06-pogojenost-g3-49'/>
+<use x='-35.523565' y='70.032985' xlink:href='#c17-06-pogojenost-g3-41'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='zadnji'>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M210.55013 0H361.34975' fill='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M210.55013 0L224.77649 7.14183L239.00287-13.62897L253.22923 18.92088L267.45561-22.50612L281.68198 24.12813L295.90836-23.58717L310.13472 20.941L324.3611-16.44576L338.58746 10.49915L352.81384-3.61346' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M226.27649 7.14183C226.27649 7.97026 225.60492 8.64183 224.77649 8.64183S223.27649 7.97026 223.27649 7.14183S223.94806 5.64183 224.77649 5.64183S226.27649 6.3134 226.27649 7.14183ZM224.77649 7.14183' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M240.50287-13.62897C240.50287-12.80054 239.8313-12.12897 239.00287-12.12897S237.50287-12.80054 237.50287-13.62897S238.17444-15.12897 239.00287-15.12897S240.50287-14.4574 240.50287-13.62897ZM239.00287-13.62897' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M254.72923 18.92088C254.72923 19.74931 254.05766 20.42088 253.22923 20.42088S251.72923 19.74931 251.72923 18.92088S252.4008 17.42088 253.22923 17.42088S254.72923 18.09245 254.72923 18.92088ZM253.22923 18.92088' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M268.95561-22.50612C268.95561-21.67769 268.28404-21.00612 267.45561-21.00612S265.95561-21.67769 265.95561-22.50612S266.62718-24.00612 267.45561-24.00612S268.95561-23.33455 268.95561-22.50612ZM267.45561-22.50612' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M283.18198 24.12813C283.18198 24.95656 282.5104 25.62813 281.68198 25.62813C280.85355 25.62813 280.18198 24.95656 280.18198 24.12813S280.85355 22.62813 281.68198 22.62813C282.5104 22.62813 283.18198 23.2997 283.18198 24.12813ZM281.68198 24.12813' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M297.40836-23.58717C297.40836-22.75874 296.73679-22.08717 295.90836-22.08717S294.40836-22.75874 294.40836-23.58717S295.07993-25.08717 295.90836-25.08717S297.40836-24.4156 297.40836-23.58717ZM295.90836-23.58717' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M311.63472 20.941C311.63472 21.76942 310.96315 22.441 310.13472 22.441S308.63472 21.76942 308.63472 20.941C308.63472 20.11256 309.30629 19.441 310.13472 19.441S311.63472 20.11256 311.63472 20.941ZM310.13472 20.941' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M325.8611-16.44576C325.8611-15.61732 325.18953-14.94576 324.3611-14.94576S322.8611-15.61732 322.8611-16.44576C322.8611-17.27419 323.53267-17.94576 324.3611-17.94576S325.8611-17.27419 325.8611-16.44576ZM324.3611-16.44576' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M340.08746 10.49915C340.08746 11.32758 339.4159 11.99915 338.58746 11.99915C337.75903 11.99915 337.08746 11.32758 337.08746 10.49915S337.75903 8.99915 338.58746 8.99915C339.4159 8.99915 340.08746 9.67072 340.08746 10.49915ZM338.58746 10.49915' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M354.31384-3.61346C354.31384-2.78503 353.64227-2.11346 352.81384-2.11346S351.31384-2.78503 351.31384-3.61346C351.31384-4.4419 351.98541-5.11346 352.81384-5.11346S354.31384-4.4419 354.31384-3.61346ZM352.81384-3.61346' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(364.98273,-4.43945)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-48.814018,73.648349)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-48.814018' y='73.648349' xlink:href='#c17-06-pogojenost-g0-118'/>
+<use x='-42.608149' y='70.032985' xlink:href='#c17-06-pogojenost-g3-40'/>
+<use x='-39.494805' y='70.032985' xlink:href='#c17-06-pogojenost-g3-49'/>
+<use x='-35.523565' y='70.032985' xlink:href='#c17-06-pogojenost-g3-48'/>
+<use x='-31.552324' y='70.032985' xlink:href='#c17-06-pogojenost-g3-41'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 17.19</span>: Palica iz \(n\) enakih elementov, vpeta na levi, prosta na desni. Levo: število občutljivosti \(\kappa(\mat T_{\mathrm{n}})\) proti \(n\) v logaritemskem merilu. Modre točke so izračunane po natančni enačbi leme <a class="xref" href="sec-velike-enacbe.html#lem-pogojenost-palice" data-knowl="lem-pogojenost-palice">17.29</a> za <span class="nobr">\(n = 4\),</span> <span class="nobr">\(8\),</span> <span class="nobr">\(10\),</span> <span class="nobr">\(16\),</span> \(100\) in <span class="nobr">\(1000\),</span> črtkana premica je <span class="nobr">\((4n/\pi)^2\).</span> Trikotnik kaže naklon <span class="nobr">\(2\):</span> desetkrat več elementov, stokrat večje število občutljivosti. Desno: lastna vektorja matrike <span class="nobr">\(\mat T_{10}\),</span> modri z najmanjšo lastno vrednostjo \(0{,}0223\) (gladka krivulja) in oranžni z največjo \(3{,}9111\) (vsak element nasprotno od soseda). Siva premica je nepomaknjena lega palice, vozlišča so v enakih razmakih in odmiki so v poljubnem merilu.</figcaption></figure>
+<p>Najprej <a data-del="osi" class="xref kaz" href="sec-velike-enacbe.html#fig-ve-pogojenost" data-knowl="fig-ve-pogojenost">osi</a>: vodoravno je število elementov <span class="nobr">\(n\),</span> navpično število občutljivosti <span class="nobr">\(\kappa\),</span> oboje v logaritemskem merilu, ker nas zanima, kolikokrat naraste, ne za koliko. Na <a data-del="premica" class="xref kaz" href="sec-velike-enacbe.html#fig-ve-pogojenost" data-knowl="fig-ve-pogojenost">črtkani premici</a> leži \((4n/\pi)^2\) in <a data-del="naklon" class="xref kaz" href="sec-velike-enacbe.html#fig-ve-pogojenost" data-knowl="fig-ve-pogojenost">naklon</a> je <span class="nobr">\(2\),</span> kar pomeni, da se \(\kappa\) ob desetkrat več elementih poveča stokrat. <a data-del="tocke" class="xref kaz" href="sec-velike-enacbe.html#fig-ve-pogojenost" data-knowl="fig-ve-pogojenost">Točke</a> so natančne vrednosti matrike \(\mat T_{\mathrm{n}}\) in ležijo na premici. Zakaj naklon <span class="nobr">\(2\)?</span> Desno je levi rob <a data-del="stena" class="xref kaz" href="sec-velike-enacbe.html#fig-ve-pogojenost" data-knowl="fig-ve-pogojenost">stena</a>, v kateri je palica vpeta. Zgoraj je <a data-del="prvi" class="xref kaz" href="sec-velike-enacbe.html#fig-ve-pogojenost" data-knowl="fig-ve-pogojenost">najmehkejša oblika</a> matrike <span class="nobr">\(\mat T_{10}\),</span> gladka krivulja: razlike \(v_{\mathrm{k}} - v_{\mathrm{k}-1}\) med sosednjima pomikoma so majhne, zato je majhno razmerje \(\sum_{\mathrm{k}} (v_{\mathrm{k}} - v_{\mathrm{k}-1})^2/\sum_{\mathrm{k}} v_{\mathrm{k}}^2\) med raztezki elementov in pomiki, ki je lastna vrednost (pri \(\vek v^\T\mat T_{\mathrm{n}}\vek v = \sum_{\mathrm{k}} (v_{\mathrm{k}} - v_{\mathrm{k}-1})^2\) z <span class="nobr">\(v_0 = 0\)).</span> Spodaj je <a data-del="zadnji" class="xref kaz" href="sec-velike-enacbe.html#fig-ve-pogojenost" data-knowl="fig-ve-pogojenost">najtršja oblika</a>, v kateri sosednja vozlišča nihajo nasprotno in je raztezek vsakega elementa največji možen glede na pomike. Najmanjša lastna vrednost pada z <span class="nobr">\(n\),</span> največja ostane pod <span class="nobr">\(4\),</span> njuno razmerje pa je število občutljivosti. Poglejmo točno.</p>
+
+<div class="blk lema" id="lem-pogojenost-palice"><div class="blk-head"><span class="blk-label">Lema 17.29</span> <span class="blk-title">Število občutljivosti palice (condition number of the bar)</span></div><div class="blk-body"><p>Naj bo <span class="nobr">\(n \ge 1\),</span> \(\mat T_{\mathrm{n}}\) <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrika</a> <a class="xref" href="sec-velike-enacbe.html#eq-ve-tn" data-knowl="eq-ve-tn">(17.21)</a> reda \(n\) in <span class="nobr">\(\theta = \pi/\big(2(2n + 1)\big)\).</span> Tedaj velja:</p>
+<ol>
+<li>Matrika \(\mat T_{\mathrm{n}}\) ima lastne vrednosti \(\lambda_{\mathrm{j}} = 4\sin^2\!\big((2j - 1)\theta\big)\) za \(j = 1, \dots, n\) in <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">lastni vektor</a> \(\vek v^{(j)}\) z elementi <span class="nobr">\(v^{(j)}_{\mathrm{k}} = \sin\!\big((2j - 1)\,k\,\pi/(2n + 1)\big)\).</span></li>
+<li><a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-stevilo-obcutljivosti" data-knowl="def-stevilo-obcutljivosti">Število občutljivosti</a> je
+<div class="eq" id="eq-ve-kappa-palice">\[\kappa(\mat T_{\mathrm{n}}) = \frac{\sin^2\!\big((2n - 1)\theta\big)}{\sin^2\theta} = \frac{\cos^2\!\big(\pi/(2n + 1)\big)}{\sin^2\theta} . \tag{17.22}\]</div></li>
+<li>Za vsak \(n\) je
+<div class="eq" id="eq-ve-kappa-meje">\[\Big(\frac{2(2n + 1)}{\pi}\Big)^2 \cos^2\frac{\pi}{2n + 1} \le \kappa(\mat T_{\mathrm{n}}) \le \Big(\frac{2(2n + 1)}{\pi}\Big)^2 \frac{1}{(1 - \theta/2)^2} . \tag{17.23}\]</div></li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da našteti <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vektorji</a> rešijo <a class="xref auto" href="sec-lastni-problem.html#def-lastni-par" data-knowl="def-lastni-par">lastni problem</a>, da so to vse <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">lastne vrednosti</a> in da sledita enačba <a class="xref" href="sec-velike-enacbe.html#eq-ve-kappa-palice" data-knowl="eq-ve-kappa-palice">(17.22)</a> in ocena <a class="xref" href="sec-velike-enacbe.html#eq-ve-kappa-meje" data-knowl="eq-ve-kappa-meje">(17.23)</a>. Označimo <span class="nobr">\(\varphi = (2j - 1)\pi/(2n + 1)\),</span> tako da je <span class="nobr">\(v_{\mathrm{k}} = \sin k\varphi\),</span> in zapišimo še \(v_0 = 0\) ter <span class="nobr">\(v_{\mathrm{n}+1} = v_{\mathrm{n}}\).</span></p>
+<ol>
+<li>Vrstica \(k\) <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrike</a> \(\mat T_{\mathrm{n}}\) za \(1 \le k \le n - 1\) da \(-v_{\mathrm{k}-1} + 2v_{\mathrm{k}} - v_{\mathrm{k}+1}\) (pri \(k = 1\) je <span class="nobr">\(v_0 = 0\),</span> kar je vpetje). Vrstica \(n\) da <span class="nobr">\(-v_{\mathrm{n}-1} + v_{\mathrm{n}}\),</span> kar je ista oblika z \(v_{\mathrm{n}+1} = v_{\mathrm{n}}\) (prost konec: zadnji element nima desnega soseda).</li>
+<li>Po adicijskih izrekih (posledica <a class="xref" href="sec-sinus-kosinus.html#cor-adicijska-izreka" data-knowl="cor-adicijska-izreka">8.15</a>) je <span class="nobr">\(\sin(k - 1)\varphi + \sin(k + 1)\varphi = 2\sin k\varphi\,\cos\varphi\),</span> zato je <span class="nobr">\(-v_{\mathrm{k}-1} + 2v_{\mathrm{k}} - v_{\mathrm{k}+1} = (2 - 2\cos\varphi)\,v_{\mathrm{k}}\).</span> Ker je po istem izreku <span class="nobr">\(\cos\varphi = 1 - 2\sin^2(\varphi/2)\),</span> je <span class="nobr">\(2 - 2\cos\varphi = 4\sin^2(\varphi/2)\).</span></li>
+<li>Pogoj \(v_{\mathrm{n}+1} = v_{\mathrm{n}}\) velja, ker je po adicijskih izrekih \(\sin(n + 1)\varphi - \sin n\varphi = 2\cos\!\big((n + \tfrac12)\varphi\big)\sin\tfrac{\varphi}{2}\) in <span class="nobr">\((n + \tfrac12)\varphi = (2j - 1)\pi/2\),</span> kjer je kosinus nič.</li>
+<li>Vektor \(\vek v^{(j)}\) ni ničeln, ker je \(v_1 = \sin\varphi \ne 0\) pri <span class="nobr">\(0 &lt; \varphi &lt; \pi\).</span> Torej je \(4\sin^2(\varphi/2) = 4\sin^2\!\big((2j - 1)\theta\big)\) lastna vrednost. Kot \((2j - 1)\theta\) leži v <span class="nobr">\((0, \pi/2)\),</span> kjer je \(\sin^2\) strogo naraščajoč, zato je teh \(n\) vrednosti paroma različnih. Matrika reda \(n\) ima največ \(n\) lastnih vrednosti, torej so to vse. To je točka 1.</li>
+<li>Zaradi naraščanja je najmanjša lastna vrednost pri \(j = 1\) in največja pri <span class="nobr">\(j = n\),</span> njuno razmerje je prvi del enačbe <a class="xref" href="sec-velike-enacbe.html#eq-ve-kappa-palice" data-knowl="eq-ve-kappa-palice">(17.22)</a>. Ker je <span class="nobr">\((2n - 1)\theta = \tfrac{\pi}{2} - \tfrac{\pi}{2n + 1}\),</span> je \(\sin\!\big((2n - 1)\theta\big) = \cos\tfrac{\pi}{2n + 1}\) (adicijski izrek), kar je drugi del.</li>
+<li>Ocena: po izreku <a class="xref" href="sec-stabilnost-ravnovesja.html#thm-taylor" data-knowl="thm-taylor">8.60</a> za \(\sin\) z drugim <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">odvodom</a> je \(\sin\theta = \theta - \tfrac12\,\theta^2\sin\xi\) z <span class="nobr">\(0 &lt; \xi &lt; \theta\),</span> torej <span class="nobr">\(\theta - \theta^2/2 \le \sin\theta \le \theta\).</span> Z <a class="xref auto" href="sec-polnost.html#def-zgornja-meja" data-knowl="def-zgornja-meja">zgornjo mejo</a> dobimo spodnjo mejo v <a class="xref" href="sec-velike-enacbe.html#eq-ve-kappa-meje" data-knowl="eq-ve-kappa-meje">(17.23)</a>, saj je <span class="nobr">\(1/\theta^2 = (2(2n + 1)/\pi)^2\),</span> s spodnjo mejo zgornjo, saj je <span class="nobr">\(\cos^2 \le 1\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> Dokaz ni iz vira. Da število občutljivosti pri osno obremenjeni palici raste s kvadratom števila elementov, pove COOK (PDF str. 322, prebrano, eksponent <span class="nobr">\(2m/n = 2/1\)),</span> kar lema dokaže za to palico.</p></div></div>
+<p>Lema pove, kar slika kaže. Največja lastna vrednost je pod \(4\) in se ji približuje, najmanjša je <span class="nobr">\(4\sin^2\theta\),</span> približno <span class="nobr">\(\pi^2/(2n + 1)^2\),</span> torej pada kot <span class="nobr">\(1/n^2\).</span> Razmerje je zato okoli <span class="nobr">\((4n/\pi)^2\),</span> in naklon \(2\) je naklon te enačbe. Za <span class="nobr">\(n = 4\),</span> \(8\) in \(16\) lema da <span class="nobr">\(29{,}28\),</span> \(113{,}50\) in <span class="nobr">\(437{,}70\),</span> kar je ravno <span class="nobr">\(29\),</span> \(113\) in \(438\) iz poglavja <a class="xref" href="ch-sibka-oblika.html">6</a>. Pri večjih <span class="nobr">\(n\):</span></p>
+<table>
+<thead>
+<tr>
+<th>\(n\)</th>
+<th>\(\kappa(\mat T_{\mathrm{n}})\)</th>
+<th>spodnja meja <a class="xref" href="sec-velike-enacbe.html#eq-ve-kappa-meje" data-knowl="eq-ve-kappa-meje">(17.23)</a></th>
+<th><a class="xref auto" href="sec-polnost.html#def-zgornja-meja" data-knowl="def-zgornja-meja">zgornja meja</a></th>
+<th>\(\kappa/(4n/\pi)^2\)</th>
+<th>\(\log_{10}\kappa\)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>\(10\)</td>
+<td>\(175{,}09\)</td>
+<td>\(174{,}76\)</td>
+<td>\(192{,}89\)</td>
+<td>\(1{,}080\)</td>
+<td>\(2{,}2\)</td>
+</tr>
+<tr>
+<td>\(100\)</td>
+<td>\(16\,370{,}2\)</td>
+<td>\(16\,369{,}9\)</td>
+<td>\(16\,502{,}6\)</td>
+<td>\(1{,}010\)</td>
+<td>\(4{,}2\)</td>
+</tr>
+<tr>
+<td>\(1000\)</td>
+<td>\(1\,622\,757\)</td>
+<td>\(1\,622\,756\)</td>
+<td>\(1\,624\,035\)</td>
+<td>\(1{,}001\)</td>
+<td>\(6{,}2\)</td>
+</tr>
+</tbody>
+</table>
+<p>Zadnji stolpec je ocena izgubljenih števk. COOK (PDF str. 321, prebrano) pove, da je pri \(d\) števkah v računalniškem številu natančnih \(d_{\text{nat}} \ge d - \log_{10}\kappa\) števk in da znak \(\ge\) pomeni, da \(\log_{10}\kappa\) lahko precenjuje izgubo, kar bomo videli v naslednjem razdelku. Pri palici z \(1000\) elementi je to \(6{,}2\) od \(16\) števk, torej ostane vsaj <span class="nobr">\(16 - 6{,}2 = 9{,}8\),</span> skoraj deset zanesljivih. Pri palici gostitev mreže torej ne škodi. COOK (PDF str. 322) pa pove za <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">nosilec</a> eksponent <span class="nobr">\(2m/n = 4/1\):</span> \(\kappa\) raste s četrto potenco števila elementov, ob podvojitvi se poveča \(16\)-krat. To je \(\log_{10}16 = 1{,}2\) števke več pri vsaki podvojitvi, pri palici le \(\log_{10}4 = 0{,}6\) števke. Pri nosilcu torej gostitev mreže, ki zmanjša diskretizacijsko napako, hitro poveča številčno.</p>
+
+<h3 id="sec-ve-togo-mehko"><span class="h-num">17.6.3</span> Kdaj je veliko število občutljivosti škodljivo</h3>
+<p><a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-stevilo-obcutljivosti" data-knowl="def-stevilo-obcutljivosti">Število občutljivosti</a> je zgornja ocena, ne napoved. COOK (PDF str. 316, prebrano) pravi, da za <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matriko</a> ne moremo reči, da je slabo pogojena (ill-conditioned), dokler ne povemo, kaj z njo počnemo: matrika, ki je dobra za reševanje enačb, je lahko slaba za <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">lastne vrednosti</a> in obratno. Najpreprostejši primer, kjer se to vidi, sta dve vzmeti v verigi.</p>
+
+<figure class="blk slika" id="fig-ve-togo-mehko"><p><span class="svgfig" role="img" aria-label="Dve vzmeti v verigi in napaka pomika v odvisnosti od razmerja togosti"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='549.43pt' height='226.43pt' viewBox='-72.000004 -72.000005 406.983562 167.727392'>
+<defs>
+<path id='c17-06-togo-mehko-g0-0' d='M5.188543-1.57609C5.300125-1.57609 5.467497-1.57609 5.467497-1.743462C5.467497-1.917808 5.307098-1.917808 5.188543-1.917808H1.03213C.920548-1.917808 .753176-1.917808 .753176-1.750436C.753176-1.57609 .913574-1.57609 1.03213-1.57609H5.188543Z'/>
+<path id='c17-06-togo-mehko-g1-34' d='M1.404732-2.261519C1.733499-2.122042 2.022416-2.122042 2.261519-2.122042C2.520548-2.122042 3.068493-2.122042 3.068493-2.430884C3.068493-2.669988 2.719801-2.699875 2.34122-2.699875C2.132005-2.699875 1.783313-2.67995 1.414695-2.510585C1.185554-2.630137 1.016189-2.819427 1.016189-3.088418C1.016189-3.696139 1.992528-4.054795 2.889166-4.054795C3.048568-4.054795 3.407223-4.054795 3.805729-3.775841C3.915318-3.696139 3.935243-3.676214 4.004981-3.676214C4.134496-3.676214 4.273973-3.805729 4.273973-3.945205C4.273973-4.134496 3.666252-4.513076 2.988792-4.513076C1.843088-4.513076 .767123-3.845579 .767123-3.088418C.767123-2.660025 1.125778-2.410959 1.165629-2.381071C.577833-2.052304 .259029-1.494396 .259029-1.036115C.259029-.388543 .826899 .219178 1.882939 .219178C3.198007 .219178 3.755915-.657534 3.755915-.806974C3.755915-.86675 3.706102-.9066 3.646326-.9066C3.596513-.9066 3.566625-.86675 3.5467-.836862C3.407223-.607721 3.16812-.239103 1.972603-.239103C1.364882-.239103 .518057-.388543 .518057-1.09589C.518057-1.43462 .797011-1.96264 1.404732-2.261519ZM1.733499-2.391034C1.96264-2.470735 2.171856-2.480697 2.34122-2.480697C2.590286-2.480697 2.630137-2.470735 2.809465-2.420922C2.660025-2.351183 2.6401-2.34122 2.261519-2.34122C2.042341-2.34122 1.92279-2.34122 1.733499-2.391034Z'/>
+<path id='c17-06-togo-mehko-g1-70' d='M3.01868-3.237858H3.985056C4.732254-3.237858 4.811955-3.078456 4.811955-2.789539C4.811955-2.719801 4.811955-2.600249 4.742217-2.30137C4.722291-2.251557 4.712329-2.211706 4.712329-2.191781C4.712329-2.11208 4.772105-2.072229 4.83188-2.072229C4.931507-2.072229 4.931507-2.102117 4.98132-2.281445L5.529265-4.443337C5.559153-4.552927 5.559153-4.572852 5.559153-4.60274C5.559153-4.622665 5.539228-4.712329 5.439601-4.712329S5.330012-4.662516 5.290162-4.503113C5.080946-3.726027 4.851806-3.5467 4.004981-3.5467H3.098381L3.73599-6.07721C3.825654-6.425903 3.835616-6.465753 4.273973-6.465753H5.589041C6.814446-6.465753 7.043587-6.136986 7.043587-5.369863C7.043587-5.140722 7.043587-5.100872 7.013699-4.83188C6.993773-4.702366 6.993773-4.682441 6.993773-4.652553C6.993773-4.60274 7.023661-4.533001 7.113325-4.533001C7.222914-4.533001 7.232877-4.592777 7.252802-4.782067L7.452055-6.505604C7.481943-6.774595 7.43213-6.774595 7.183064-6.774595H2.30137C2.102117-6.774595 2.002491-6.774595 2.002491-6.575342C2.002491-6.465753 2.092154-6.465753 2.281445-6.465753C2.650062-6.465753 2.929016-6.465753 2.929016-6.286426C2.929016-6.246575 2.929016-6.22665 2.879203-6.047323L1.564134-.777086C1.464508-.388543 1.444583-.308842 .657534-.308842C.488169-.308842 .37858-.308842 .37858-.119552C.37858 0 .498132 0 .52802 0C.816936 0 1.554172-.029888 1.843088-.029888C2.171856-.029888 2.998755 0 3.327522 0C3.417186 0 3.536737 0 3.536737-.18929C3.536737-.268991 3.476961-.288917 3.476961-.298879C3.447073-.308842 3.427148-.308842 3.198007-.308842C2.978829-.308842 2.929016-.308842 2.67995-.328767C2.391034-.358655 2.361146-.398506 2.361146-.52802C2.361146-.547945 2.361146-.607721 2.400996-.757161L3.01868-3.237858Z'/>
+<path id='c17-06-togo-mehko-g1-107' d='M2.859278-6.804483C2.859278-6.814446 2.859278-6.914072 2.729763-6.914072C2.500623-6.914072 1.77335-6.834371 1.514321-6.814446C1.43462-6.804483 1.325031-6.794521 1.325031-6.615193C1.325031-6.495641 1.414695-6.495641 1.564134-6.495641C2.042341-6.495641 2.062267-6.425903 2.062267-6.326276L2.032379-6.127024L.587796-.388543C.547945-.249066 .547945-.229141 .547945-.169365C.547945 .059776 .747198 .109589 .836862 .109589C.966376 .109589 1.115816 .019925 1.175592-.099626C1.225405-.18929 1.673724-2.032379 1.733499-2.281445C2.072229-2.251557 2.889166-2.092154 2.889166-1.43462C2.889166-1.364882 2.889166-1.325031 2.859278-1.225405C2.839352-1.105853 2.819427-.986301 2.819427-.876712C2.819427-.288917 3.217933 .109589 3.73599 .109589C4.034869 .109589 4.303861-.049813 4.523039-.418431C4.772105-.856787 4.881694-1.404732 4.881694-1.424658C4.881694-1.524284 4.79203-1.524284 4.762142-1.524284C4.662516-1.524284 4.652553-1.484433 4.622665-1.344956C4.423412-.617684 4.194271-.109589 3.755915-.109589C3.566625-.109589 3.437111-.219178 3.437111-.577833C3.437111-.747198 3.476961-.976339 3.516812-1.135741C3.556663-1.305106 3.556663-1.344956 3.556663-1.444583C3.556663-2.092154 2.929016-2.381071 2.082192-2.49066C2.391034-2.669988 2.709838-2.988792 2.938979-3.227895C3.417186-3.755915 3.875467-4.184309 4.363636-4.184309C4.423412-4.184309 4.433375-4.184309 4.4533-4.174346C4.572852-4.154421 4.582814-4.154421 4.662516-4.094645C4.682441-4.084682 4.682441-4.07472 4.702366-4.054795C4.224159-4.024907 4.134496-3.636364 4.134496-3.516812C4.134496-3.35741 4.244085-3.16812 4.513076-3.16812C4.772105-3.16812 5.061021-3.387298 5.061021-3.775841C5.061021-4.07472 4.83188-4.403487 4.383562-4.403487C4.104608-4.403487 3.646326-4.323786 2.929016-3.526775C2.590286-3.148194 2.201743-2.749689 1.823163-2.600249L2.859278-6.804483Z'/>
+<path id='c17-06-togo-mehko-g1-115' d='M3.895392-3.726027C3.616438-3.716065 3.417186-3.496887 3.417186-3.277709C3.417186-3.138232 3.506849-2.988792 3.726027-2.988792S4.184309-3.158157 4.184309-3.5467C4.184309-3.995019 3.755915-4.403487 2.998755-4.403487C1.683686-4.403487 1.315068-3.387298 1.315068-2.948941C1.315068-2.171856 2.052304-2.022416 2.34122-1.96264C2.859278-1.863014 3.377335-1.753425 3.377335-1.205479C3.377335-.946451 3.148194-.109589 1.952677-.109589C1.8132-.109589 1.046077-.109589 .816936-.637609C1.195517-.587796 1.444583-.886675 1.444583-1.165629C1.444583-1.39477 1.285181-1.514321 1.075965-1.514321C.816936-1.514321 .518057-1.305106 .518057-.856787C.518057-.288917 1.085928 .109589 1.942715 .109589C3.556663 .109589 3.945205-1.09589 3.945205-1.544209C3.945205-1.902864 3.755915-2.15193 3.636364-2.271482C3.367372-2.550436 3.078456-2.600249 2.6401-2.689913C2.281445-2.769614 1.882939-2.839352 1.882939-3.287671C1.882939-3.576588 2.122042-4.184309 2.998755-4.184309C3.247821-4.184309 3.745953-4.11457 3.895392-3.726027Z'/>
+<path id='c17-06-togo-mehko-g1-117' d='M3.486924-.557908C3.596513-.14944 3.945205 .109589 4.373599 .109589C4.722291 .109589 4.951432-.119552 5.110834-.438356C5.280199-.797011 5.409714-1.404732 5.409714-1.424658C5.409714-1.524284 5.32005-1.524284 5.290162-1.524284C5.190535-1.524284 5.180573-1.484433 5.150685-1.344956C5.011208-.787049 4.821918-.109589 4.403487-.109589C4.194271-.109589 4.094645-.239103 4.094645-.56787C4.094645-.787049 4.214197-1.255293 4.293898-1.603985L4.572852-2.67995C4.60274-2.82939 4.702366-3.20797 4.742217-3.35741C4.79203-3.58655 4.891656-3.965131 4.891656-4.024907C4.891656-4.204234 4.752179-4.293898 4.60274-4.293898C4.552927-4.293898 4.293898-4.283935 4.214197-3.945205C4.024907-3.217933 3.58655-1.474471 3.466999-.946451C3.457036-.9066 3.058531-.109589 2.331258-.109589C1.8132-.109589 1.713574-.557908 1.713574-.926526C1.713574-1.484433 1.992528-2.271482 2.251557-2.958904C2.371108-3.257783 2.420922-3.39726 2.420922-3.58655C2.420922-4.034869 2.102117-4.403487 1.603985-4.403487C.657534-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.816936-3.815691 1.195517-4.184309 1.574097-4.184309C1.663761-4.184309 1.823163-4.174346 1.823163-3.855542C1.823163-3.616438 1.713574-3.327522 1.653798-3.178082C1.285181-2.191781 1.075965-1.574097 1.075965-1.085928C1.075965-.139477 1.763387 .109589 2.30137 .109589C2.958904 .109589 3.317559-.33873 3.486924-.557908Z'/>
+<path id='c17-06-togo-mehko-g2-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='c17-06-togo-mehko-g2-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c17-06-togo-mehko-g2-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='c17-06-togo-mehko-g3-48' d='M3.598506-2.224658C3.598506-2.991781 3.507846-3.542715 3.187049-4.030884C2.970859-4.351681 2.538481-4.630635 1.980573-4.630635C.36264-4.630635 .36264-2.726775 .36264-2.224658S.36264 .139477 1.980573 .139477S3.598506-1.72254 3.598506-2.224658ZM1.980573-.055791C1.659776-.055791 1.234371-.244085 1.094894-.81594C.99726-1.227397 .99726-1.799253 .99726-2.315318C.99726-2.824408 .99726-3.354421 1.101868-3.737983C1.248319-4.288917 1.694645-4.435367 1.980573-4.435367C2.357161-4.435367 2.719801-4.20523 2.84533-3.800747C2.956912-3.424159 2.963885-2.922042 2.963885-2.315318C2.963885-1.799253 2.963885-1.283188 2.873225-.843836C2.733748-.209215 2.259527-.055791 1.980573-.055791Z'/>
+<path id='c17-06-togo-mehko-g3-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='c17-06-togo-mehko-g3-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+<path id='c17-06-togo-mehko-g3-51' d='M1.903861-2.329265C2.447821-2.329265 2.838356-1.952677 2.838356-1.206476C2.838356-.341719 2.336239-.083686 1.931756-.083686C1.652802-.083686 1.039103-.160399 .746202-.571856C1.073973-.585803 1.150685-.81594 1.150685-.962391C1.150685-1.185554 .983313-1.345953 .767123-1.345953C.571856-1.345953 .376588-1.227397 .376588-.941469C.376588-.285928 1.101868 .139477 1.945704 .139477C2.915068 .139477 3.584558-.509091 3.584558-1.206476C3.584558-1.750436 3.138232-2.294396 2.371108-2.454795C3.103362-2.719801 3.368369-3.242839 3.368369-3.668244C3.368369-4.219178 2.733748-4.630635 1.959651-4.630635S.592777-4.254047 .592777-3.696139C.592777-3.459029 .746202-3.326526 .955417-3.326526C1.171606-3.326526 1.311083-3.486924 1.311083-3.682192C1.311083-3.884433 1.171606-4.030884 .955417-4.044832C1.199502-4.351681 1.680697-4.428394 1.93873-4.428394C2.252553-4.428394 2.691905-4.274969 2.691905-3.668244C2.691905-3.375342 2.594271-3.054545 2.412951-2.838356C2.182814-2.57335 1.987547-2.559402 1.638854-2.538481C1.464508-2.524533 1.45056-2.524533 1.415691-2.517559C1.401743-2.517559 1.345953-2.503611 1.345953-2.426899C1.345953-2.329265 1.408717-2.329265 1.527273-2.329265H1.903861Z'/>
+<path id='c17-06-togo-mehko-g3-52' d='M3.689166-1.143711V-1.39477H2.915068V-4.505106C2.915068-4.651557 2.915068-4.700374 2.761644-4.700374C2.677958-4.700374 2.650062-4.700374 2.580324-4.60274L.27198-1.39477V-1.143711H2.322291V-.571856C2.322291-.334745 2.322291-.251059 1.75741-.251059H1.569116V0C1.917808-.013948 2.364134-.027895 2.615193-.027895C2.873225-.027895 3.319552-.013948 3.668244 0V-.251059H3.47995C2.915068-.251059 2.915068-.334745 2.915068-.571856V-1.143711H3.689166ZM2.371108-3.947198V-1.39477H.530012L2.371108-3.947198Z'/>
+<path id='c17-06-togo-mehko-g3-53' d='M1.080946-3.891407C1.436613-3.800747 1.645828-3.800747 1.75741-3.800747C2.677958-3.800747 3.221918-4.428394 3.221918-4.533001C3.221918-4.609714 3.173101-4.630635 3.138232-4.630635C3.124284-4.630635 3.110336-4.630635 3.082441-4.609714C2.915068-4.546949 2.545455-4.407472 2.02939-4.407472C1.834122-4.407472 1.464508-4.42142 1.011208-4.595766C.941469-4.630635 .927522-4.630635 .920548-4.630635C.829888-4.630635 .829888-4.553923 .829888-4.442341V-2.385056C.829888-2.266501 .829888-2.182814 .941469-2.182814C1.004234-2.182814 1.011208-2.196762 1.080946-2.280448C1.380822-2.66401 1.806227-2.719801 2.050311-2.719801C2.468742-2.719801 2.657036-2.385056 2.691905-2.329265C2.817435-2.099128 2.859278-1.834122 2.859278-1.429639C2.859278-1.220423 2.859278-.808966 2.650062-.502117C2.475716-.251059 2.175841-.083686 1.834122-.083686C1.380822-.083686 .913574-.334745 .739228-.795019C1.004234-.774097 1.136737-.948443 1.136737-1.136737C1.136737-1.436613 .878705-1.492403 .788045-1.492403C.774097-1.492403 .439352-1.492403 .439352-1.115816C.439352-.488169 1.011208 .139477 1.84807 .139477C2.740722 .139477 3.521793-.523039 3.521793-1.401743C3.521793-2.189788 2.922042-2.915068 2.057285-2.915068C1.750436-2.915068 1.387796-2.838356 1.080946-2.57335V-3.891407Z'/>
+<path id='c17-06-togo-mehko-g3-54' d='M1.046077-2.280448C1.046077-2.852304 1.094894-3.368369 1.3599-3.793773C1.597011-4.170361 1.973599-4.428394 2.419925-4.428394C2.629141-4.428394 2.908095-4.372603 3.047572-4.184309C2.873225-4.170361 2.726775-4.051806 2.726775-3.849564C2.726775-3.675218 2.84533-3.521793 3.054545-3.521793S3.38929-3.66127 3.38929-3.863512C3.38929-4.267995 3.096389-4.630635 2.405978-4.630635C1.401743-4.630635 .376588-3.710087 .376588-2.21071C.376588-.404483 1.227397 .139477 1.994521 .139477C2.84533 .139477 3.584558-.509091 3.584558-1.422665C3.584558-2.308344 2.880199-2.963885 2.064259-2.963885C1.506351-2.963885 1.199502-2.594271 1.046077-2.280448ZM1.994521-.083686C1.645828-.083686 1.373848-.285928 1.227397-.592777C1.12279-.801993 1.066999-1.150685 1.066999-1.569116C1.066999-2.245579 1.471482-2.768618 2.02939-2.768618C2.350187-2.768618 2.566376-2.643088 2.740722-2.385056C2.908095-2.12005 2.915068-1.827148 2.915068-1.422665C2.915068-1.025156 2.915068-.732254 2.726775-.460274C2.559402-.216189 2.336239-.083686 1.994521-.083686Z'/>
+<path id='c17-06-togo-mehko-g3-56' d='M2.475716-2.517559C3.019676-2.782565 3.368369-3.110336 3.368369-3.591532C3.368369-4.267995 2.66401-4.630635 1.987547-4.630635C1.220423-4.630635 .592777-4.128518 .592777-3.466002C.592777-3.138232 .746202-2.901121 .871731-2.761644C.99726-2.615193 1.046077-2.587298 1.457534-2.343213C1.066999-2.175841 .376588-1.799253 .376588-1.066999C.376588-.292902 1.17858 .139477 1.973599 .139477C2.859278 .139477 3.584558-.425405 3.584558-1.17858C3.584558-1.638854 3.312578-2.02939 2.908095-2.266501C2.817435-2.322291 2.57335-2.461768 2.475716-2.517559ZM1.338979-3.180075C1.157659-3.284682 .962391-3.472976 .962391-3.731009C.962391-4.170361 1.471482-4.428394 1.973599-4.428394C2.517559-4.428394 2.998755-4.086675 2.998755-3.591532C2.998755-2.970859 2.273474-2.657036 2.259527-2.657036S2.231631-2.66401 2.182814-2.691905L1.338979-3.180075ZM1.680697-2.21071L2.636115-1.659776C2.817435-1.555168 3.166127-1.345953 3.166127-.934496C3.166127-.411457 2.587298-.083686 1.987547-.083686C1.345953-.083686 .795019-.495143 .795019-1.066999C.795019-1.583064 1.17858-1.980573 1.680697-2.21071Z'/>
+<path id='c17-06-togo-mehko-g3-57' d='M2.915068-2.078207C2.915068-.348692 2.057285-.083686 1.638854-.083686C1.48543-.083686 1.115816-.097634 .927522-.313823C1.21345-.341719 1.234371-.578829 1.234371-.641594C1.234371-.81594 1.115816-.969365 .9066-.969365S.571856-.829888 .571856-.627646C.571856-.153425 .969365 .139477 1.645828 .139477C2.643088 .139477 3.584558-.801993 3.584558-2.294396C3.584558-4.02391 2.817435-4.630635 2.001494-4.630635C1.771357-4.630635 1.290162-4.595766 .892653-4.20523C.655542-3.975093 .376588-3.703113 .376588-3.075467C.376588-2.189788 1.080946-1.534247 1.896887-1.534247C2.454795-1.534247 2.75467-1.903861 2.915068-2.217684V-2.078207ZM1.931756-1.729514C1.659776-1.729514 1.401743-1.820174 1.206476-2.140971C1.046077-2.399004 1.046077-2.691905 1.046077-3.075467C1.046077-3.47995 1.046077-3.758904 1.248319-4.037858C1.415691-4.281943 1.645828-4.428394 2.008468-4.428394C2.364134-4.428394 2.57335-4.20523 2.684932-4.02391C2.873225-3.731009 2.894147-3.242839 2.894147-2.998755C2.894147-2.092154 2.371108-1.729514 1.931756-1.729514Z'/>
+</defs>
+<g id='c17-06-togo-mehko-page1'>
+<g stroke-miterlimit='10' transform='translate(-66.106653,16.615046)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='stena'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0-14.22636V14.22636' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0-14.22636L-5.69046-19.91682' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0-8.5359L-5.69046-14.22636' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0-2.84544L-5.69046-8.5359' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 2.845L-5.69046-2.84544' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 8.53546L-5.69046 2.845' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='prej'>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M71.13185 17.07181V-48.36957' fill='none'/>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M128.03734 17.07181V-48.36957' fill='none'/>
+</g>
+</g>
+<g class='del' data-del='k1'>
+<path d='M0 0H7.58728L11.38092 6.25963L18.9682-6.25964L26.55548 6.25963L34.14276-6.25964L41.73004 6.25963L49.31732-6.25964L56.9046 6.25963L64.49188-6.25964L72.07916 6.25963L79.66644-6.25964L87.25372 6.25963L91.04736 0H91.04869' fill='none'/>
+<g transform='translate(40.67847,13.66887)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,16.615046)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-66.106653' y='16.615046' xlink:href='#c17-06-togo-mehko-g1-107'/>
+<use x='-60.920062' y='18.109427' xlink:href='#c17-06-togo-mehko-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='k2'>
+<g stroke-width='1.4'>
+<path d='M91.04869 0H96.14653L98.69545 1.9919L103.79329-1.99146L108.89113 1.9919L113.98897-1.99146L119.0868 1.9919L124.18465-1.99146L129.28249 1.9919L134.38033-1.99146L139.47816 1.9919L144.576-1.99146L149.67384 1.9919L152.22276 0H152.22235' fill='none'/>
+</g>
+<g transform='translate(117.5008,13.66887)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,16.615046)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-66.106653' y='16.615046' xlink:href='#c17-06-togo-mehko-g1-107'/>
+<use x='-60.920062' y='18.109427' xlink:href='#c17-06-togo-mehko-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='vozlisca'>
+<g fill='#f00' stroke='#f00'>
+<path d='M92.8487 0C92.8487 .99413 92.04282 1.8 91.04869 1.8C90.05457 1.8 89.24869 .99413 89.24869 0S90.05457-1.8 91.04869-1.8C92.04282-1.8 92.8487-.99413 92.8487 0ZM91.04869 0' stroke='none'/>
+<g transform='translate(95.68167,4.63298)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,16.615046)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-66.106653' y='16.615046' xlink:href='#c17-06-togo-mehko-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M154.02235 0C154.02235 .99413 153.21648 1.8 152.22235 1.8C151.22823 1.8 150.42235 .99413 150.42235 0S151.22823-1.8 152.22235-1.8C153.21648-1.8 154.02235-.99413 154.02235 0ZM152.22235 0' stroke='none'/>
+<g transform='translate(156.85533,4.63298)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,16.615046)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-66.106653' y='16.615046' xlink:href='#c17-06-togo-mehko-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='sila'>
+<g stroke-width='1.0'>
+<path d='M152.22235 0H180.76207' fill='none'/>
+<g transform='translate(178.11418,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.33095 0L1.67535 1.31036L2.89789 0L1.67535-1.31036Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(188.7758,-3.41666)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,16.615046)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-66.106653' y='16.615046' xlink:href='#c17-06-togo-mehko-g1-70'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='u1'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M71.46933-25.60728H90.71121' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,77.27237,-25.60728)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,71.35684,-25.60728)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(84.90817,-25.60728)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(90.8237,-25.60728)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(75.98492,-33.4708)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,16.615046)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-66.106653' y='16.615046' xlink:href='#c17-06-togo-mehko-g1-117'/>
+<use x='-60.403458' y='18.109427' xlink:href='#c17-06-togo-mehko-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='u2'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M128.37482-42.67911H151.88487' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,134.17786,-42.67911)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,128.26233,-42.67911)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(146.08183,-42.67911)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(151.99736,-42.67911)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(135.02449,-50.54262)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,16.615046)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-66.106653' y='16.615046' xlink:href='#c17-06-togo-mehko-g1-117'/>
+<use x='-60.403458' y='18.109427' xlink:href='#c17-06-togo-mehko-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='osi'>
+<path d='M233.31241-62.59595H386.58865' fill='none'/>
+<g transform='translate(384.1122,-62.59595)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(394.57382,-64.74872)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,16.615046)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-66.106653' y='16.615046' xlink:href='#c17-06-togo-mehko-g1-115'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M233.31241-62.59595V73.32367' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,233.31241,70.84721)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(230.98082,81.30884)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,16.615046)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-66.106653' y='16.615046' xlink:href='#c17-06-togo-mehko-g1-34'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M233.31241-60.88884V-64.30304' fill='none'/>
+<g transform='translate(226.06934,-76.07603)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,16.615046)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-66.106653' y='16.615046' xlink:href='#c17-06-togo-mehko-g2-49'/>
+<use x='-61.125314' y='16.615046' xlink:href='#c17-06-togo-mehko-g2-48'/>
+<use x='-56.143975' y='12.999683' xlink:href='#c17-06-togo-mehko-g3-51'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M269.16313-60.88884V-64.30304' fill='none'/>
+<g transform='translate(261.92006,-76.07603)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,16.615046)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-66.106653' y='16.615046' xlink:href='#c17-06-togo-mehko-g2-49'/>
+<use x='-61.125314' y='16.615046' xlink:href='#c17-06-togo-mehko-g2-48'/>
+<use x='-56.143975' y='12.999683' xlink:href='#c17-06-togo-mehko-g3-54'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M305.01344-60.88884V-64.30304' fill='none'/>
+<g transform='translate(297.77037,-76.07603)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,16.615046)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-66.106653' y='16.615046' xlink:href='#c17-06-togo-mehko-g2-49'/>
+<use x='-61.125314' y='16.615046' xlink:href='#c17-06-togo-mehko-g2-48'/>
+<use x='-56.143975' y='12.999683' xlink:href='#c17-06-togo-mehko-g3-57'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M340.86374-60.88884V-64.30304' fill='none'/>
+<g transform='translate(331.6276,-76.07603)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,16.615046)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-66.106653' y='16.615046' xlink:href='#c17-06-togo-mehko-g2-49'/>
+<use x='-61.125314' y='16.615046' xlink:href='#c17-06-togo-mehko-g2-48'/>
+<use x='-56.143975' y='12.999683' xlink:href='#c17-06-togo-mehko-g3-49'/>
+<use x='-52.172735' y='12.999683' xlink:href='#c17-06-togo-mehko-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M376.71448-60.88884V-64.30304' fill='none'/>
+<g transform='translate(367.47833,-76.07603)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,16.615046)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-66.106653' y='16.615046' xlink:href='#c17-06-togo-mehko-g2-49'/>
+<use x='-61.125314' y='16.615046' xlink:href='#c17-06-togo-mehko-g2-48'/>
+<use x='-56.143975' y='12.999683' xlink:href='#c17-06-togo-mehko-g3-49'/>
+<use x='-52.172735' y='12.999683' xlink:href='#c17-06-togo-mehko-g3-53'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M235.0195-54.34483H231.6053' fill='none'/>
+<g transform='translate(203.25003,-58.41484)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,16.615046)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-66.106653' y='16.615046' xlink:href='#c17-06-togo-mehko-g2-49'/>
+<use x='-61.125314' y='16.615046' xlink:href='#c17-06-togo-mehko-g2-48'/>
+<use x='-56.143975' y='12.999683' xlink:href='#c17-06-togo-mehko-g0-0'/>
+<use x='-49.917296' y='12.999683' xlink:href='#c17-06-togo-mehko-g3-49'/>
+<use x='-45.946055' y='12.999683' xlink:href='#c17-06-togo-mehko-g3-54'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M235.0195-21.33955H231.6053' fill='none'/>
+<g transform='translate(203.25003,-25.40956)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,16.615046)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-66.106653' y='16.615046' xlink:href='#c17-06-togo-mehko-g2-49'/>
+<use x='-61.125314' y='16.615046' xlink:href='#c17-06-togo-mehko-g2-48'/>
+<use x='-56.143975' y='12.999683' xlink:href='#c17-06-togo-mehko-g0-0'/>
+<use x='-49.917296' y='12.999683' xlink:href='#c17-06-togo-mehko-g3-49'/>
+<use x='-45.946055' y='12.999683' xlink:href='#c17-06-togo-mehko-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M235.0195 11.66573H231.6053' fill='none'/>
+<g transform='translate(207.23615,7.59572)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,16.615046)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-66.106653' y='16.615046' xlink:href='#c17-06-togo-mehko-g2-49'/>
+<use x='-61.125314' y='16.615046' xlink:href='#c17-06-togo-mehko-g2-48'/>
+<use x='-56.143975' y='12.999683' xlink:href='#c17-06-togo-mehko-g0-0'/>
+<use x='-49.917296' y='12.999683' xlink:href='#c17-06-togo-mehko-g3-56'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M235.0195 44.671H231.6053' fill='none'/>
+<g transform='translate(207.23615,40.601)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,16.615046)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-66.106653' y='16.615046' xlink:href='#c17-06-togo-mehko-g2-49'/>
+<use x='-61.125314' y='16.615046' xlink:href='#c17-06-togo-mehko-g2-48'/>
+<use x='-56.143975' y='12.999683' xlink:href='#c17-06-togo-mehko-g0-0'/>
+<use x='-49.917296' y='12.999683' xlink:href='#c17-06-togo-mehko-g3-52'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M235.0195 77.67586H231.6053' fill='none'/>
+<g transform='translate(213.48618,73.60585)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,16.615046)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-66.106653' y='16.615046' xlink:href='#c17-06-togo-mehko-g2-49'/>
+<use x='-61.125314' y='16.615046' xlink:href='#c17-06-togo-mehko-g2-48'/>
+<use x='-56.143975' y='12.999683' xlink:href='#c17-06-togo-mehko-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='meja'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M233.31241-24.61177L376.71448 74.40407' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='napaka'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M233.31241-31.5539L269.16313-13.62897L305.01344 20.57153L340.86374 45.38216L376.71448 70.70508' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M234.91241-31.5539C234.91241-30.67023 234.19608-29.95389 233.31241-29.95389S231.7124-30.67023 231.7124-31.5539C231.7124-32.43756 232.42874-33.1539 233.31241-33.1539S234.91241-32.43756 234.91241-31.5539ZM233.31241-31.5539' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M270.76314-13.62897C270.76314-12.7453 270.0468-12.02896 269.16313-12.02896S267.56313-12.7453 267.56313-13.62897C267.56313-14.51263 268.27946-15.22897 269.16313-15.22897S270.76314-14.51263 270.76314-13.62897ZM269.16313-13.62897' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M306.61345 20.57153C306.61345 21.4552 305.89711 22.17154 305.01344 22.17154C304.12978 22.17154 303.41344 21.4552 303.41344 20.57153C303.41344 19.68787 304.12978 18.97153 305.01344 18.97153C305.89711 18.97153 306.61345 19.68787 306.61345 20.57153ZM305.01344 20.57153' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M342.46375 45.38216C342.46375 46.26582 341.7474 46.98216 340.86374 46.98216C339.98007 46.98216 339.26373 46.26582 339.26373 45.38216C339.26373 44.49849 339.98007 43.78215 340.86374 43.78215C341.7474 43.78215 342.46375 44.49849 342.46375 45.38216ZM340.86374 45.38216' stroke='none'/>
+</g>
+<g fill='#f00' stroke='#f00'>
+<path d='M378.31448 70.70508C378.31448 71.58875 377.59814 72.30508 376.71448 72.30508C375.83081 72.30508 375.11447 71.58875 375.11447 70.70508S375.83081 69.10507 376.71448 69.10507C377.59814 69.10507 378.31448 69.82141 378.31448 70.70508ZM376.71448 70.70508' stroke='none'/>
+</g>
+</g>
+<g class='del' data-del='relativni'>
+<g fill='#00f' stroke='#00f'>
+<g fill='#fff'>
+<path d='M235.11241-54.34483C235.11241-53.35071 234.30653-52.54483 233.31241-52.54483C232.31828-52.54483 231.5124-53.35071 231.5124-54.34483C231.5124-55.33896 232.31828-56.14484 233.31241-56.14484C234.30653-56.14484 235.11241-55.33896 235.11241-54.34483ZM233.31241-54.34483'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#fff'>
+<path d='M270.96313-54.34483C270.96313-53.35071 270.15726-52.54483 269.16313-52.54483S267.36313-53.35071 267.36313-54.34483C267.36313-55.33896 268.169-56.14484 269.16313-56.14484S270.96313-55.33896 270.96313-54.34483ZM269.16313-54.34483'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#fff'>
+<path d='M306.81345-54.34483C306.81345-53.35071 306.00757-52.54483 305.01344-52.54483C304.01932-52.54483 303.21344-53.35071 303.21344-54.34483C303.21344-55.33896 304.01932-56.14484 305.01344-56.14484C306.00757-56.14484 306.81345-55.33896 306.81345-54.34483ZM305.01344-54.34483'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#fff'>
+<path d='M342.66374-54.34483C342.66374-53.35071 341.85786-52.54483 340.86374-52.54483C339.86961-52.54483 339.06374-53.35071 339.06374-54.34483C339.06374-55.33896 339.86961-56.14484 340.86374-56.14484C341.85786-56.14484 342.66374-55.33896 342.66374-54.34483ZM340.86374-54.34483'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#fff'>
+<path d='M378.51448-54.34483C378.51448-53.35071 377.7086-52.54483 376.71448-52.54483C375.72035-52.54483 374.91447-53.35071 374.91447-54.34483C374.91447-55.33896 375.72035-56.14484 376.71448-56.14484C377.7086-56.14484 378.51448-55.33896 378.51448-54.34483ZM376.71448-54.34483'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 17.20</span>: Dve vzmeti v verigi in napaka rezultata. Levo: mehka vzmet togosti \(k_1\) pri steni, toga vzmet togosti \(k_2\) na koncu in sila <span class="nobr">\(F\).</span> Sivi navpičnici sta legi vozlišč pred obremenitvijo, oranžni vozlišči sta po njej. Premika sta pretirana. Desno: relativna napaka \(\varepsilon\) pomika \(u_2\) proti razmerju togosti \(s = k_2/k_1\) v logaritemskem merilu, dvojna natančnost, \(k_1 = 1\) in <span class="nobr">\(F = 1\).</span> Oranžno je račun s pomikoma \(u_1\) in <span class="nobr">\(u_2\).</span> Črtkana premica je <span class="nobr">\(4s\cdot 10^{-16}\),</span> ocena števila občutljivosti pomnožena z zaokrožitvijo. Prazni modri krogi so račun s pomikoma \(u_1\) in <span class="nobr">\(u_2 - u_1\),</span> kjer je napaka pod <span class="nobr">\(10^{-16}\),</span> narisana na to črto.</figcaption></figure>
+<p>Postavimo model. Vzmet togosti \(k_1\) je pritrjena na <a data-del="stena" class="xref kaz" href="sec-velike-enacbe.html#fig-ve-togo-mehko" data-knowl="fig-ve-togo-mehko">steno</a>, na njenem drugem koncu je <a data-del="vozlisca" class="xref kaz" href="sec-velike-enacbe.html#fig-ve-togo-mehko" data-knowl="fig-ve-togo-mehko">vozlišče 1</a>, nato sledi vzmet togosti \(k_2\) in <a data-del="vozlisca" class="xref kaz" href="sec-velike-enacbe.html#fig-ve-togo-mehko" data-knowl="fig-ve-togo-mehko">vozlišče 2</a>, kjer vleče <a data-del="sila" class="xref kaz" href="sec-velike-enacbe.html#fig-ve-togo-mehko" data-knowl="fig-ve-togo-mehko">sila</a> <span class="nobr">\(F\).</span> Vzmeti sta linearni, brez mase in trenja, pomika pa so majhni, da ostane lega vozlišč na isti premici (idealizacija, ki jo uporablja tudi poglavje <a class="xref" href="ch-mke-palice.html">7</a>). Mehko vzmet <a data-del="k1" class="xref kaz" href="sec-velike-enacbe.html#fig-ve-togo-mehko" data-knowl="fig-ve-togo-mehko">\(k_1\)</a> narišemo kot dolg zavoj, togo vzmet <a data-del="k2" class="xref kaz" href="sec-velike-enacbe.html#fig-ve-togo-mehko" data-knowl="fig-ve-togo-mehko">\(k_2\)</a> kot kratek in debel zavoj, ker je to prav razlika, ki nas zanima. Pomik <a data-del="u1" class="xref kaz" href="sec-velike-enacbe.html#fig-ve-togo-mehko" data-knowl="fig-ve-togo-mehko">\(u_1\)</a> je razdalja med <a data-del="prej" class="xref kaz" href="sec-velike-enacbe.html#fig-ve-togo-mehko" data-knowl="fig-ve-togo-mehko">prvotno lego</a> vozlišča 1 in njegovo lego po obremenitvi, pomik <a data-del="u2" class="xref kaz" href="sec-velike-enacbe.html#fig-ve-togo-mehko" data-knowl="fig-ve-togo-mehko">\(u_2\)</a> enako za vozlišče 2.</p>
+<p>Pogoja ravnovesja zapišemo kot vedno, na prostih <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">telesih</a>. Na vozlišče 1 vleče leva vzmet nazaj s silo \(k_1 u_1\) in desna naprej s silo <span class="nobr">\(k_2(u_2 - u_1)\),</span> ker se desna vzmet raztegne za <span class="nobr">\(u_2 - u_1\).</span> Brez zunanje sile je <span class="nobr">\(k_1 u_1 = k_2(u_2 - u_1)\).</span> Na vozlišče 2 vleče sila \(F\) naprej in desna vzmet nazaj s silo <span class="nobr">\(k_2(u_2 - u_1)\),</span> torej je <span class="nobr">\(k_2(u_2 - u_1) = F\).</span> V matrični obliki</p>
+<div class="eq" id="eq-ve-vzmeti">\[\begin{bmatrix} k_1 + k_2 &amp; -k_2 \\ -k_2 &amp; k_2 \end{bmatrix}\begin{bmatrix} u_1 \\ u_2 \end{bmatrix} = \begin{bmatrix} 0 \\ F \end{bmatrix} . \tag{17.24}\]</div>
+<p>Rešitev je \(u_1 = F/k_1\) in <span class="nobr">\(u_2 = F/k_1 + F/k_2\),</span> kar preverimo z vstavljanjem v obe enačbi. Naj bo \(k_1 = 1\) in \(F = 1\) (pomika v enoti <span class="nobr">\(F/k_1\)),</span> \(s = k_2/k_1\) razmerje togosti in tako je pravi pomik <span class="nobr">\(u_2 = 1 + 1/s\).</span> Pri eliminaciji brez zamenjave vrstic je pivot \(k_1 + k_2\) in druga vrstica po prvem koraku ima koeficient <span class="nobr">\(k_2 - k_2^2/(k_1 + k_2) = k_1 k_2/(k_1 + k_2)\).</span> Podatek o \(k_1\) je v tej razliki skrit v zadnjih števkah števila <span class="nobr">\(k_2\):</span> pri \(s = 10^{15}\) in \(16\) števkah ostane od njega ena sama.</p>
+
+<div class="blk lema" id="lem-togo-mehko"><div class="blk-head"><span class="blk-label">Lema 17.30</span> <span class="blk-title">Toga vzmet na mehki (stiff spring on a soft one)</span></div><div class="blk-body"><p>Naj bosta <span class="nobr">\(k_1, k_2 &gt; 0\),</span> \(s = k_2/k_1\) in \(\mat K\) <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrika</a> enačbe <a class="xref" href="sec-velike-enacbe.html#eq-ve-vzmeti" data-knowl="eq-ve-vzmeti">(17.24)</a>. Tedaj velja:</p>
+<ol>
+<li><a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-stevilo-obcutljivosti" data-knowl="def-stevilo-obcutljivosti">Število občutljivosti</a> \(\kappa\) matrike \(\mat K\) je večja rešitev enačbe \(\kappa + 1/\kappa = 4s + 2 + 1/s\) in
+<div class="eq" id="eq-ve-togo-mehko">\[4s + 1 + \frac1s &lt; \kappa &lt; 4s + 2 + \frac1s . \tag{17.25}\]</div></li>
+<li>Za neznanki \(u_1\) in \(u_{\mathrm{r}} = u_2 - u_1\) je matrika sistema \(\mat K_{\mathrm{r}} = \mathrm{diag}(k_1, k_2)\) in desna stran <span class="nobr">\((F, F)^\T\),</span> torej je \(\kappa(\mat K_{\mathrm{r}}) = s\) in rešitev je <span class="nobr">\(u_1 = F/k_1\),</span> <span class="nobr">\(u_{\mathrm{r}} = F/k_2\),</span> vsaka z enim deljenjem.</li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo enačbo za \(\kappa\) in obliko druge <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrike</a>. Prva točka rabi sled in <a class="xref auto" href="sec-determinanta.html#def-determinanta" data-knowl="def-determinanta">determinanto</a>, druga energijo.</p>
+<ol>
+<li><a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">Lastni vrednosti</a> sta korena enačbe <span class="nobr">\(\lambda^2 - (k_1 + 2k_2)\lambda + k_1 k_2 = 0\),</span> saj je sled matrike \(\mat K\) enaka \(k_1 + 2k_2\) in determinanta <span class="nobr">\((k_1 + k_2)k_2 - k_2^2 = k_1 k_2\).</span> Diskriminanta \((k_1 + 2k_2)^2 - 4k_1 k_2 = k_1^2 + 4k_2^2\) je pozitivna, zato sta korena realna in različna. Njuna vsota \(k_1 + 2k_2\) in zmnožek \(k_1 k_2\) sta pozitivna, zato sta oba pozitivna. Večjo označimo z <span class="nobr">\(\lambda_{\max}\),</span> manjšo z <span class="nobr">\(\lambda_{\min}\).</span></li>
+<li>Iz \((\lambda_{\max} + \lambda_{\min})^2/(\lambda_{\max}\lambda_{\min}) = \kappa + 2 + 1/\kappa\) in koraka 1 je <span class="nobr">\(\kappa + 2 + 1/\kappa = (k_1 + 2k_2)^2/(k_1 k_2) = 4s + 4 + 1/s\).</span> S tem je <span class="nobr">\(\kappa + 1/\kappa = 4s + 2 + 1/s\).</span></li>
+<li>Ker sta lastni vrednosti različni, je \(\kappa &gt; 1\) in <span class="nobr">\(0 &lt; 1/\kappa &lt; 1\).</span> Iz koraka 2 sledi \(\kappa &lt; 4s + 2 + 1/s\) in <span class="nobr">\(\kappa &gt; 4s + 1 + 1/s\).</span></li>
+<li>Druga točka. Potencialna energija je \(\Pi = \tfrac12 k_1 u_1^2 + \tfrac12 k_2 u_{\mathrm{r}}^2 - F u_2\) in <span class="nobr">\(u_2 = u_1 + u_{\mathrm{r}}\).</span> Po stacionarnosti (posledica <a class="xref" href="sec-posplosene-sile.html#cor-stacionarna-energija" data-knowl="cor-stacionarna-energija">8.58</a>) sta enačbi \(\partial\Pi/\partial u_1 = k_1 u_1 - F = 0\) in <span class="nobr">\(\partial\Pi/\partial u_{\mathrm{r}} = k_2 u_{\mathrm{r}} - F = 0\),</span> kar je diagonalni sistem z matriko \(\mathrm{diag}(k_1, k_2)\) in desno stranjo <span class="nobr">\((F, F)^\T\).</span> Lastni vrednosti diagonalne matrike sta diagonalna elementa, razmerje <span class="nobr">\(k_2/k_1 = s\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> Dokaz ni iz vira. COOK (PDF str. 316-317, prebrano) isto dvovzmetno verigo uporabi za pojasnilo slabe pogojenosti, tam z \(k_1 \gg k_2\) in drugačnimi oznakami. Relativni prostostni stopnji (PDF str. 319-320) sta ista zamisel kot točka 2.</p></div></div>
+<p>Številke za \(k_1 = 1\) (num-06.out, v skladu s c17.out):</p>
+<table>
+<thead>
+<tr>
+<th>\(s\)</th>
+<th>\(\kappa\) (lema)</th>
+<th>napaka \(u_2\) z \((u_1, u_2)\)</th>
+<th>\(4s \cdot 10^{-16}\)</th>
+<th>napaka \(u_2\) z \((u_1, u_{\mathrm{r}})\)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>\(10^3\)</td>
+<td>\(4{,}002 \cdot 10^3\)</td>
+<td>\(5{,}8 \cdot 10^{-14}\)</td>
+<td>\(4 \cdot 10^{-13}\)</td>
+<td>pod \(10^{-16}\)</td>
+</tr>
+<tr>
+<td>\(10^6\)</td>
+<td>\(4{,}000 \cdot 10^6\)</td>
+<td>\(8{,}6 \cdot 10^{-12}\)</td>
+<td>\(4 \cdot 10^{-10}\)</td>
+<td>pod \(10^{-16}\)</td>
+</tr>
+<tr>
+<td>\(10^9\)</td>
+<td>\(4{,}000 \cdot 10^9\)</td>
+<td>\(1{,}2 \cdot 10^{-7}\)</td>
+<td>\(4 \cdot 10^{-7}\)</td>
+<td>pod \(10^{-16}\)</td>
+</tr>
+<tr>
+<td>\(10^{12}\)</td>
+<td>\(4{,}000 \cdot 10^{12}\)</td>
+<td>\(1{,}2 \cdot 10^{-4}\)</td>
+<td>\(4 \cdot 10^{-4}\)</td>
+<td>pod \(10^{-16}\)</td>
+</tr>
+<tr>
+<td>\(10^{15}\)</td>
+<td>\(4{,}000 \cdot 10^{15}\)</td>
+<td>\(1{,}4 \cdot 10^{-1}\)</td>
+<td>\(4 \cdot 10^{-1}\)</td>
+<td>pod \(10^{-16}\)</td>
+</tr>
+</tbody>
+</table>
+<p>Iste številke so na desni strani slike <a class="xref" href="sec-velike-enacbe.html#fig-ve-togo-mehko" data-knowl="fig-ve-togo-mehko">17.20</a>. Na <a data-del="osi" class="xref kaz" href="sec-velike-enacbe.html#fig-ve-togo-mehko" data-knowl="fig-ve-togo-mehko">oseh</a> sta razmerje togosti \(s\) vodoravno in relativna napaka \(\varepsilon\) pomika \(u_2\) navpično, obe v logaritemskem merilu, ker se obe spremenita za več velikostnih redov. Stolpec \(\kappa\) pove, da je <span class="nobr">\(\kappa \approx 4k_2/k_1\).</span> Pri \(s = 10^{15}\) da NumPy iz izračunanih lastnih vrednosti \(4{,}571 \cdot 10^{15}\) namesto \(4{,}000 \cdot 10^{15}\) iz leme (num-06.out). Najmanjša lastna vrednost je tam okoli <span class="nobr">\(0{,}5\),</span> členi matrike pa okoli <span class="nobr">\(10^{15}\),</span> zato jo zaokroževanje pokvari že pri izračunu lastnih vrednosti. Stolpec z napako pri neznankah \((u_1, u_2)\) je napaka pomika, izmerjena z računalnikom (s knjižnico NumPy), na sliki <a data-del="napaka" class="xref kaz" href="sec-velike-enacbe.html#fig-ve-togo-mehko" data-knowl="fig-ve-togo-mehko">oranžna črta</a>. Ostane pod oceno \(4s \cdot 10^{-16} \approx \kappa \cdot 10^{-16}\) iz stolpca za njim, na sliki <a data-del="meja" class="xref kaz" href="sec-velike-enacbe.html#fig-ve-togo-mehko" data-knowl="fig-ve-togo-mehko">črtkana premica</a>, in ji sledi: od \(s = 10^3\) do \(s = 10^{15}\) obe narasteta za okoli \(12\) velikostnih redov. Pri \(s = 10^{15}\) je napaka \(14\) % in rezultat ni uporaben, medtem ko isti sistem v drugih neznankah ostane natančen. Zadnji stolpec, na sliki <a data-del="relativni" class="xref kaz" href="sec-velike-enacbe.html#fig-ve-togo-mehko" data-knowl="fig-ve-togo-mehko">prazni modri krogi</a>, je primer, kjer veliko število občutljivosti ne pomeni izgube: matrika \(\mathrm{diag}(1, s)\) ima <span class="nobr">\(\kappa = s\),</span> četrtino števila matrike <span class="nobr">\(\mat K\),</span> a ne izgubi nobene števke, ker v njej ni odštevanja skoraj enakih števil. Število občutljivosti je zato zgornja ocena izgube, ne napoved.</p>
+<p>Še dva primera pokažeta, kaj veliko število občutljivosti pove in česa ne.</p>
+<ul>
+<li>Pomnožimo vso matriko s <span class="nobr">\(1000\),</span> na primer zaradi prehoda iz N/mm v N/m. Vse lastne vrednosti se pomnožijo s \(1000\) in razmerje je isto: pri \(\mat T_{10}\) je \(\kappa = 175{,}0866\) pred in po. Zamenjava enot v vseh enačbah hkrati torej slabe pogojenosti ne povzroči in je ne odpravi. Drugače je pri spremembi neznank, kot od \((u_1, u_2)\) k <span class="nobr">\((u_1, u_{\mathrm{r}})\).</span> COOK (PDF str. 320, prebrano) zato predlaga, naj \(\kappa\) računamo iz matrike, ki jo z diagonalno matriko pomnožimo tako, da ima enice na diagonali, ker je tedaj veliko le, kadar je matrika res skoraj singularna. Pri \(\mat K\) iz enačbe <a class="xref" href="sec-velike-enacbe.html#eq-ve-vzmeti" data-knowl="eq-ve-vzmeti">(17.24)</a> je to matrika \(\left[\begin{smallmatrix} 1 &amp; -r \\ -r &amp; 1 \end{smallmatrix}\right]\) z <span class="nobr">\(r = \sqrt{s/(1 + s)}\),</span> lastnima vrednostma \(1 \pm r\) in razmerjem <span class="nobr">\((1 + r)/(1 - r) \approx 4s\),</span> veliko kot prej. Pri \(\mathrm{diag}(1, s)\) da isti postopek <a class="xref auto" href="sec-matrike.html#def-enotska-matrika" data-knowl="def-enotska-matrika">enotsko matriko</a> in <span class="nobr">\(\kappa = 1\).</span></li>
+<li>Obremenimo vzmeti drugače: sila \(F\) vleče vozlišče 1 nazaj in vozlišče 2 naprej, torej <span class="nobr">\(\vek f = (-F, F)^\T\),</span> dve nasprotno enaki sili na koncih toge vzmeti, ki sta skupaj <a class="xref auto" href="sec-sila-v-palici.html#def-ravnovesje" data-knowl="def-ravnovesje">v ravnovesju</a>. Pri \(s = 10^{12}\) in \(10^{15}\) je izračunani raztezek \(u_2 - u_1\) enak \(10^{-12}\) oziroma \(10^{-15}\) (num-06.out), čeprav je matrika ista in \(\kappa\) prav tako veliko. COOK (PDF str. 317) pove, da se ob ravnovesni obremenitvi relativni pomik računa natančno, tudi če je togi pomik obremenjen z napako. Napaka je v pomiku celotne toge množice, ne v raztezku vzmeti.</li>
+</ul>
+<p>Kdaj torej pričakujemo težavo? Takrat, ko toga množica leži na mehki podpori in nas zanima pomik ali sila, ki jo mehka podpora določa (COOK, PDF str. 317, prebrano): podatek o mehki podpori je v zadnjih števkah <a class="xref auto forward" href="sec-masna-matrika-clena.html#cor-togi-clen" data-knowl="cor-togi-clen" title="Definirano kasneje v knjigi">togih členov</a>. Podoben pojav je v poglavju <a class="xref" href="ch-mke-nosilci.html">12</a>, kjer kazenska togost vezi povzroči rast \(\kappa\) najmanj kot <a class="xref auto" href="sec-kazenska-metoda.html#def-kazenska-metoda" data-knowl="def-kazenska-metoda">kazensko število</a> (lema <a class="xref" href="sec-kazenska-metoda.html#lem-kazen-pogojenost" data-knowl="lem-kazen-pogojenost">12.29</a>), in strižno zaklepanje, kjer to naredi sama togost elementa. Lema <a class="xref" href="sec-kazenska-metoda.html#lem-kazen-pogojenost" data-knowl="lem-kazen-pogojenost">12.29</a> tu ni uporabljena, ker bi morala biti matrika brez toge vzmeti pozitivno definitna, mehka vzmet pri steni pa nič ne drži za <span class="nobr">\(u_2\).</span> Sorodnost je torej v mehanizmu in ne v izreku. Zdravilo je isto kot tam. COOK (PDF str. 319-320, prebrano) ga imenuje: neznanke izberemo tako, da se veliko število ne pojavi izven diagonale, kot sta \(u_1\) in \(u_{\mathrm{r}}\) zgoraj, ali s krajevnimi osmi pri poševni podpori.</p>
+
+<h3 id="sec-ve-povzetek"><span class="h-num">17.6.4</span> Kaj smo pokazali</h3>
+<p>Ta razdelek je obravnaval le številčno napako, tretjo od treh, in ne zmanjša modelne ali diskretizacijske. Razcep se izračuna enkrat in vsaka nadaljnja desna stran stane \(2nb + n\) namesto \(n b^2/2\) (lema <a class="xref" href="sec-velike-enacbe.html#lem-resitev-pas" data-knowl="lem-resitev-pas">17.28</a>), a le za isto <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matriko</a>. Število občutljivosti palice raste kot \((4n/\pi)^2\) (lema <a class="xref" href="sec-velike-enacbe.html#lem-pogojenost-palice" data-knowl="lem-pogojenost-palice">17.29</a>), pri nosilcu po COOK kot <span class="nobr">\(n^4\),</span> zato gostitev mreže, ki zmanjša diskretizacijsko napako, poveča številčno. Veliko <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-stevilo-obcutljivosti" data-knowl="def-stevilo-obcutljivosti">število občutljivosti</a> je zgornja ocena izgube števk: toga vzmet na mehki jo ima in jo tudi izgubi (lema <a class="xref" href="sec-velike-enacbe.html#lem-togo-mehko" data-knowl="lem-togo-mehko">17.30</a>, <span class="nobr">\(\kappa \approx 4k_2/k_1\)),</span> isti sistem v relativnih neznankah ima število <span class="nobr">\(s\),</span> četrtino tega, in nobene izgube. Pri vsakem rezultatu se zato vprašamo trikrat: koliko je modelne napake, koliko diskretizacijske in koliko števk smo izgubili.</p>
+
+</main>
+<footer><nav class="pager"><a href="sec-kakovost-mreze.html" rel="prev">← 17.5</a><a href="index.html">Kazalo</a><a href="sec-nelinearna-statika.html" rel="next">17.7 →</a></nav></footer>
+</body>
+</html>

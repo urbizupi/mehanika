@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ekv-izguba"] = {"html": "<div class=\"eq\">\\[W_{\\mathrm{izg}} = -\\int_0^{T_{\\mathrm{p}}} f_{\\mathrm{D}}\\,\\dot q\\,\\mathrm{d}t . \\tag{20.4}\\]</div>", "href": "sec-ekvivalentno-viskozno.html#eq-ekv-izguba"};

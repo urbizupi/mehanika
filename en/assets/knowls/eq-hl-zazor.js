@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-hl-zazor"] = {"html": "<div class=\"eq\">\\[\\frac{x^2}{2R} \\leq g_0(x) \\leq \\frac{x^2}{2R}\\Big(1 + \\frac{x^2}{R_{\\min}^2}\\Big) , \\qquad \\frac{1}{R} = \\frac{1}{R_1} + \\frac{1}{R_2} , \\tag{25.14}\\]</div>", "href": "sec-hertz-linijski.html#eq-hl-zazor"};

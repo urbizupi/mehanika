@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-gib-teza-v"] = {"html": "<div class=\"eq\">\\[V(\\vek q) = g\\sum_{\\mathrm{k}=1}^{n} m_{\\mathrm{k}}\\,\\vek e\\cdot\\vek c_{\\mathrm{k}}(\\vek q) . \\tag{27.36}\\]</div>", "href": "sec-gibalne-enacbe-robota.html#eq-gib-teza-v"};

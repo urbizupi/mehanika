@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sing-hitrost-q1"] = {"html": "<div class=\"eq\">\\[\\dot q_1 = \\frac{0{,}1\\,\\cos(q_1+q_2)}{l_1\\sin q_2} \\ \\text{m/s} . \\tag{27.27}\\]</div>", "href": "sec-singularnosti-statika.html#eq-sing-hitrost-q1"};

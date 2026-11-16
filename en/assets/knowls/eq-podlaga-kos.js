@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-podlaga-kos"] = {"html": "<div class=\"eq\">\\[V(x_2) - V(x_1) = -\\int_{\\mathrm{x}_1}^{x_2}\\big(q(t) - k\\,v(t)\\big)\\,\\mathrm{d}t . \\tag{25.2}\\]</div>", "href": "sec-elasticna-podlaga.html#eq-podlaga-kos"};

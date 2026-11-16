@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-krog-I"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{K}} y\\,\\mathrm{d}A = \\int_{\\mathrm{K}} z\\,\\mathrm{d}A = 0 , \\qquad I_{\\mathrm{z}} = \\int_{\\mathrm{K}} y^2\\,\\mathrm{d}A = I_{\\mathrm{y}} = \\int_{\\mathrm{K}} z^2\\,\\mathrm{d}A = \\frac{\\pi R^4}{4} , \\tag{16.4}\\]</div>", "href": "sec-torzija-kroga.html#eq-krog-I"};

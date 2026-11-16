@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mkg-sibka"] = {"html": "<div class=\"eq\">\\[\\mu\\int_0^L \\psi\\,w_{\\mathrm{tt}}\\,\\mathrm{d}x + 2\\mu v\\int_0^L \\psi\\,w_{\\mathrm{xt}}\\,\\mathrm{d}x + (T - \\mu v^2)\\int_0^L \\psi'\\,w_{\\mathrm{x}}\\,\\mathrm{d}x = 0 . \\tag{26.52}\\]</div>", "href": "sec-mke-gibajoce-strune.html#eq-mkg-sibka"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ravnotezje-kosa-strune"] = {"html": "<div class=\"eq\">\\[\\int_{\\mathrm{a}}^b \\mu\\,w_{\\mathrm{tt}}(x, t)\\,\\mathrm{d}x = T\\,w_{\\mathrm{x}}(b, t) - T\\,w_{\\mathrm{x}}(a, t) . \\tag{13.1}\\]</div>", "href": "sec-valovna-enacba.html#eq-ravnotezje-kosa-strune"};

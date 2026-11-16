@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dm-pogojenost"] = {"html": "<div class=\"eq\">\\[\\kappa(\\mat M^0) \\ge \\frac{M_0}{\\mu_1} . \\tag{21.29}\\]</div>", "href": "sec-dodatna-masa.html#eq-dm-pogojenost"};

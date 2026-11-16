@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kv-modul"] = {"html": "<div class=\"eq\">\\[\\sigma(t) = \\mathrm{Re}\\big(E(1 + \\mathrm{i}\\Omega\\tau)\\,\\varepsilon_0\\mathrm{e}^{\\mathrm{i}\\Omega t}\\big) , \\tag{20.31}\\]</div>", "href": "sec-kompleksni-modul.html#eq-kv-modul"};

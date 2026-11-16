@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-eliptika-razmerje"] = {"html": "<div class=\"eq\">\\[\\frac{R_2}{R_1} = \\frac{K(e) - E(e)/(1 - e^2)}{E(e) - K(e)} , \\tag{25.26}\\]</div>", "href": "sec-hertz-tockovni.html#eq-eliptika-razmerje"};

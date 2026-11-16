@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-guyan-baza"] = {"html": "<div class=\"eq\">\\[\\mat\\Psi_{\\mathrm{G}} = \\begin{pmatrix} \\mat I \\\\ \\mat\\Psi_{\\mathrm{d}} \\end{pmatrix} = \\begin{pmatrix} \\mat I \\\\ -\\mat K_{\\mathrm{dd}}^{-1}\\mat K_{\\mathrm{da}} \\end{pmatrix} . \\tag{21.32}\\]</div>", "href": "sec-guyanova-redukcija.html#eq-guyan-baza"};

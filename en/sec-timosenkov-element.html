@@ -19,11 +19,11 @@
 <header class="top"><a class="home" href="index.html">Mechanics</a><nav class="pager"><a href="sec-kazenska-metoda.html" rel="prev">← 12.6</a><a href="index.html">Contents</a><a href="sec-strizno-zaklepanje.html" rel="next">12.8 →</a></nav>
 <span class="tools"><a class="lang" href="../sl/sec-timosenkov-element.html" hreflang="sl">Slovenščina</a><button type="button" class="theme-toggle" title="Light or dark theme" aria-label="Light or dark theme"></button><button type="button" data-details="open">Expand all</button><button type="button" data-details="close">Collapse all</button><button type="button" class="fig-side-toggle" aria-pressed="false">Figures alongside</button></span></header>
 <main>
-<p class="updated">Last updated 5 November 2026, 9:28</p>
+<p class="updated">Last updated 16 November 2026, 10:52</p>
 <p class="crumb"><a href="ch-mke-nosilci.html"><span class="h-num">Chapter 12</span> Beam and frame finite elements</a></p>
 <h2 id="sec-timosenkov-element"><span class="h-num">12.7</span> The Timoshenko beam element (element Timošenkovega nosilca)</h2>
 <p>In the Euler-Bernoulli element (section <a class="xref" href="sec-element-nosilca.html">12.1</a>) the rotation of the cross-section is the derivative of the deflection, <span class="nobr">\(\varphi = v'\).</span> The deflection must therefore have a continuous derivative at the joint of two elements, and straight lines no longer suffice, <a class="xref auto" href="sec-zveznost.html#def-polinom" data-knowl="def-polinom">polynomials</a> of degree three are needed. In the Timoshenko model it is different. Chapter <a class="xref" href="ch-nosilci.html">5</a> found for the Timoshenko <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beam</a> that the <a class="xref auto" href="sec-virtualni-pomiki-palice.html#def-virtualno-delo" data-knowl="def-virtualno-delo">virtual work</a> (equation <a class="xref" href="sec-timosenkov-nosilec.html#eq-timosenko-virtualno-delo" data-knowl="eq-timosenko-virtualno-delo">(5.79)</a>) contains only the first <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivatives</a> of the deflection \(v\) and of the section tilt <span class="nobr">\(\theta\),</span> so for both <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> <a class="xref auto" href="sec-zveznost.html#def-zveznost" data-knowl="def-zveznost">continuity</a> without a continuous derivative is enough (section <a class="xref" href="sec-timosenkov-nosilec.html#sec-timosenko-enacbe">5.13.3</a>). Let us therefore take the simplest element with two nodes, in which \(v\) and \(\theta\) are each a straight line, like the displacement of the bar (section <a class="xref" href="sec-element-palice.html">7.1</a>). Does such an element work?</p>
-<p>We test it on the cantilever of chapter <a class="xref" href="ch-nosilci.html">5</a>: a flat bar \(20 \times 40\) mm with \(E I = 20\,906{,}7\) N m² and \(k G A = 5{,}026 \cdot 10^7\) N, clamped at <span class="nobr">\(x = 0\),</span> with a force of \(500\) N downwards at the free end. We take two lengths of the same bar. At \(L = 1\) m the <a class="xref auto" href="sec-posevni-prerez.html#def-normalna-strizna-napetost" data-knowl="def-normalna-strizna-napetost">shear part</a> of the deflection is \(0{,}125\) % of the bending part by section <a class="xref" href="sec-timosenkov-nosilec.html#sec-timosenko-konzola">5.13.4</a>, at \(L = 80\) mm it is \(19{,}5\) %. The true tip deflection by Timoshenko is \(-7{,}9819\) mm at \(L = 1\) m and \(-0{,}004878\) mm at \(L = 80\) mm. The height of the cross-section, \(40\) mm, is written in words in this section, because \(h\) means the length of an element, as in chapter <a class="xref" href="ch-mke-palice.html">7</a>.</p>
+<p>We test it on the cantilever of chapter <a class="xref" href="ch-nosilci.html">5</a>: a flat bar \(20 \times 40\) mm with \(E I = 20\,906{,}7\) N m² and \(k G A = 5{,}026 \cdot 10^7\) N, clamped at <span class="nobr">\(x = 0\),</span> with a force of \(500\) N downwards at the free end. We take two lengths of the same bar. At \(L = 1\) m the <a class="xref auto forward" href="sec-hierarhija-modelov.html#lem-strig-konzole" data-knowl="lem-strig-konzole" title="Defined later in the book">shear part of the deflection</a> is \(0{,}125\) % of the bending part by section <a class="xref" href="sec-timosenkov-nosilec.html#sec-timosenko-konzola">5.13.4</a>, at \(L = 80\) mm it is \(19{,}5\) %. The true tip deflection by Timoshenko is \(-7{,}9819\) mm at \(L = 1\) m and \(-0{,}004878\) mm at \(L = 80\) mm. The height of the cross-section, \(40\) mm, is written in words in this section, because \(h\) means the length of an element, as in chapter <a class="xref" href="ch-mke-palice.html">7</a>.</p>
 <p>The path is as follows. First we show that the virtual work and the <a class="xref auto" href="sec-polnost.html#def-supremum" data-knowl="def-supremum">minimum</a> energy of the Timoshenko beam are really usable for fields with kinks, such as we assemble from straight lines. Then we build the element and its <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a>, assemble the beam, and prove that this is the <a class="xref auto" href="sec-ritzova-metoda.html#def-ritzova-metoda" data-knowl="def-ritzova-metoda">Ritz method</a>. Finally we test the element on both cantilevers.</p>
 
 <h3 id="sec-tme-pregibi"><span class="h-num">12.7.1</span> Virtual work and energy with kinks (virtualno delo in energija s pregibi)</h3>
@@ -75,7 +75,7 @@
 <p>The <a class="xref auto" href="sec-raztezek-palice.html#def-normalna-strizna" data-knowl="def-normalna-strizna">shear strain</a> of the element is \(\gamma_{\mathrm{h}} = v_{\mathrm{h}}' - \theta_{\mathrm{h}}\) and the curvature of the element is <span class="nobr">\(\kappa_{\mathrm{h}} = \theta_{\mathrm{h}}'\).</span></p>
 
 <p class="vir"><span class="vir-label">Source:</span> ONATE2 (2.10), (2.11) (PDF p. 74) and figure 2.4 (PDF p. 75): the deflection and the tilt are independent variables, each by \(C^0\) functions. COOK (13.4-1), figure 13.4-1 (PDF p. 509-510) has the same element with two nodes. The notation is ours.</p></div></div>
-<p>The shape <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> are \(\psi_1^e = (x_{\mathrm{b}} - x)/h\) and <span class="nobr">\(\psi_2^e = (x - x_{\mathrm{a}})/h\).</span> The difference from the Euler-Bernoulli element is therefore essential. There the rotation is the <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivative</a> of the deflection and four numbers determine one <a class="xref auto" href="sec-zveznost.html#def-polinom" data-knowl="def-polinom">polynomial</a> of degree three. Here \(v_{\mathrm{h}}\) and \(\theta_{\mathrm{h}}\) are independent fields, each determined by two numbers. Figure <a class="xref" href="sec-timosenkov-element.html#fig-tme-element" data-knowl="fig-tme-element">12.21</a> shows one such element with chosen, arbitrary numbers. The deflection \(v_{\mathrm{h}}\) is a straight line, its slope is constant. The cross-section at each point is rotated by <span class="nobr">\(\theta_{\mathrm{h}}\),</span> which grows linearly, so in general the cross-section is not perpendicular to the axis.</p>
+<p>The shape <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> are \(\psi_1^e = (x_{\mathrm{b}} - x)/h\) and <span class="nobr">\(\psi_2^e = (x - x_{\mathrm{a}})/h\).</span> The difference from the Euler-Bernoulli element is therefore essential. There the rotation is the <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivative</a> of the deflection and four numbers determine one <a class="xref auto" href="sec-zveznost.html#def-polinom" data-knowl="def-polinom">polynomial</a> of degree three. Here \(v_{\mathrm{h}}\) and \(\theta_{\mathrm{h}}\) are independent fields, each determined by two numbers. Figure <a class="xref" href="sec-timosenkov-element.html#fig-tme-element" data-knowl="fig-tme-element">12.21</a> shows one such element with chosen, arbitrary numbers. Above we draw the <a data-del="os" class="xref kaz" href="sec-timosenkov-element.html#fig-tme-element" data-knowl="fig-tme-element">original axis</a> of the element. <a data-del="vh" class="xref kaz" href="sec-timosenkov-element.html#fig-tme-element" data-knowl="fig-tme-element">The deflection \(v_{\mathrm{h}}\)</a> is a straight line between <a data-del="vozlisca" class="xref kaz" href="sec-timosenkov-element.html#fig-tme-element" data-knowl="fig-tme-element">nodes 1 and 2</a>, its slope is constant. Node 1 has <span class="nobr">\(v_1 = 0\),</span> node 2 is raised by <span class="nobr"><a data-del="v2" class="xref kaz" href="sec-timosenkov-element.html#fig-tme-element" data-knowl="fig-tme-element">the tip deflection \(v_2\)</a>.</span> <a data-del="prerez" class="xref kaz" href="sec-timosenkov-element.html#fig-tme-element" data-knowl="fig-tme-element">The cross-section</a> at each point is rotated by <span class="nobr">\(\theta_{\mathrm{h}}\),</span> which grows linearly, so in general the cross-section is not perpendicular to the axis. We draw three cross-sections, at both nodes and in the middle.</p>
 
 <figure class="blk slika" id="fig-tme-element"><p><span class="svgfig" role="img" aria-label="A Timoshenko beam element with linear fields of deflection and section tilt and a linear shear strain"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='326.52pt' height='334.35pt' viewBox='-72.000004 -72.000001 241.866849 247.663711'>
 <defs>
@@ -96,6 +96,7 @@
 <g stroke-width='0.6'>
 <g stroke-linecap='round'>
 <g stroke-linejoin='round'>
+<g class='del' data-del='os'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <g stroke-width='0.45'>
@@ -103,9 +104,13 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='vh'>
 <g stroke-width='1.6'>
 <path d='M0 0L170.71646 34.14276' fill='none'/>
 </g>
+</g>
+<g class='del' data-del='prerez'>
 <g fill='#f00' stroke='#f00'>
 <g stroke-width='1.0'>
 <path d='M1.27467-25.57039L-1.27467 25.57039' fill='none'/>
@@ -121,6 +126,8 @@
 <path d='M181.22386 10.78873L160.20905 57.4968' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='vozlisca'>
 <path d='M1.83862 0C1.83862 1.01544 1.01544 1.83862 0 1.83862S-1.83862 1.01544-1.83862 0S-1.01544-1.83862 0-1.83862S1.83862-1.01544 1.83862 0ZM0 0' stroke='none'/>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-45.542883,-14.219884)scale(-1,-1)'>
 <g fill='#000'>
@@ -153,6 +160,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='v2'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-width='0.45'>
 <path d='M199.1692 .33748V33.80528' fill='none'/>
@@ -200,6 +209,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='xos'>
 <path d='M0-176.407H191.97156' fill='none'/>
 <g transform='translate(189.4951,-176.407)'>
 <g stroke-dasharray='none' stroke-dashoffset='0.0'>
@@ -231,16 +242,29 @@
 </g>
 </g>
 </g>
+<g transform='translate(-2.31248,-187.26268)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-45.542883,-14.219884)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-45.542883' y='-14.219884' xlink:href='#tme-element-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(168.40398,-187.26268)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-45.542883,-14.219884)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-45.542883' y='-14.219884' xlink:href='#tme-element-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='theta'>
 <g fill='#f00' stroke='#f00'>
 <g stroke-width='1.3'>
 <path d='M0-165.0252L170.71646-73.97783' fill='none'/>
-</g>
-</g>
-<g fill='#00f' stroke='#00f'>
-<g stroke-width='1.3'>
-<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
-<path d='M0-130.88332H170.71646' fill='none'/>
-</g>
 </g>
 </g>
 <g fill='#f00' stroke='#f00'>
@@ -256,6 +280,15 @@
 </g>
 </g>
 </g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='naklon'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.3'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<path d='M0-130.88332H170.71646' fill='none'/>
 </g>
 </g>
 </g>
@@ -276,6 +309,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='gamma'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-width='0.45'>
 <path d='M-8.5359-164.68773V-131.2208' fill='none'/>
@@ -370,23 +405,6 @@
 </g>
 </g>
 </g>
-<g transform='translate(-2.31248,-187.26268)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-45.542883,-14.219884)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='-45.542883' y='-14.219884' xlink:href='#tme-element-g4-49'/>
-</g>
-</g>
-</g>
-</g>
-<g transform='translate(168.40398,-187.26268)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-45.542883,-14.219884)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='-45.542883' y='-14.219884' xlink:href='#tme-element-g4-50'/>
-</g>
-</g>
-</g>
 </g>
 </g>
 </g>
@@ -397,7 +415,7 @@
 </g>
 </svg></span></p>
 <figcaption><span class="blk-label">Figure 12.21</span>: A Timoshenko beam element of length \(h\) with the chosen numbers <span class="nobr">\(v_1 = 0\),</span> <span class="nobr">\(\theta_1 = 0{,}05\),</span> <span class="nobr">\(\theta_2 = 0{,}45\).</span> Above: the original axis (grey dashed), the deformed axis \(v_{\mathrm{h}}\) (thick <span class="ink-l">black</span><span class="ink-d">white</span>, a straight line) and three cross-sections (orange), at both nodes and in the middle, rotated by \(\theta_{\mathrm{h}}\) counterclockwise. The tip deflection \(v_2\) has its distance with end bars. Below: the section tilt \(\theta_{\mathrm{h}}\) (orange, a straight line) and the slope of the axis \(v_{\mathrm{h}}'\) (blue dashed, constant). The difference \(\gamma_{\mathrm{h}} = v_{\mathrm{h}}' - \theta_{\mathrm{h}}\) has the value \(0{,}15\) at node 1 and the value \(-0{,}25\) at node 2 (distances with end bars) and is linear. The slope of the axis is drawn exactly, all the numbers are arbitrary, the section rotations are much larger than in the true cantilever.</figcaption></figure>
-<p>The figure shows what we shall need. The slope \(v_{\mathrm{h}}'\) is constant on the element and the tilt \(\theta_{\mathrm{h}}\) is linear, so \(\gamma_{\mathrm{h}} = v_{\mathrm{h}}' - \theta_{\mathrm{h}}\) is linear and is zero along the whole length only if \(\theta_{\mathrm{h}}\) is constant, that is without bending. The curvature \(\kappa_{\mathrm{h}} = (\theta_2 - \theta_1)/h\) is constant. In bending the <a class="xref auto" href="sec-raztezek-palice.html#def-normalna-strizna" data-knowl="def-normalna-strizna">shear strain</a> on the element is therefore in general different from zero. What this costs we shall see in the test.</p>
+<p>The figure shows what we shall need. Below, above <a data-del="xos" class="xref kaz" href="sec-timosenkov-element.html#fig-tme-element" data-knowl="fig-tme-element">the axis \(x\)</a> between nodes 1 and 2, we draw the slope of the axis and the tilt of the section. <a data-del="naklon" class="xref kaz" href="sec-timosenkov-element.html#fig-tme-element" data-knowl="fig-tme-element">The slope \(v_{\mathrm{h}}'\)</a> is constant on the element and <a data-del="theta" class="xref kaz" href="sec-timosenkov-element.html#fig-tme-element" data-knowl="fig-tme-element">the tilt \(\theta_{\mathrm{h}}\)</a> is linear. So <span class="nobr"><a data-del="gamma" class="xref kaz" href="sec-timosenkov-element.html#fig-tme-element" data-knowl="fig-tme-element">the difference \(\gamma_{\mathrm{h}} = v_{\mathrm{h}}' - \theta_{\mathrm{h}}\)</a>,</span> the vertical distance between the two lines, is linear and is zero along the whole length only if \(\theta_{\mathrm{h}}\) is constant, that is without bending. The curvature \(\kappa_{\mathrm{h}} = (\theta_2 - \theta_1)/h\) is constant. In bending the <a class="xref auto" href="sec-raztezek-palice.html#def-normalna-strizna" data-knowl="def-normalna-strizna">shear strain</a> on the element is therefore in general different from zero. What this costs we shall see in the test.</p>
 <p>We write the energy of the element with a <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a>, as for the bar (lemma <a class="xref" href="sec-element-palice.html#lem-togost-elementa-palice" data-knowl="lem-togost-elementa-palice">7.5</a>). The first partial matrix comes from bending, the second from shear. The <a class="xref auto" href="sec-posevni-prerez.html#def-normalna-strizna-napetost" data-knowl="def-normalna-strizna-napetost">shear part</a> contains <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integrals</a> of products of shape functions. We can compute them exactly or with the Gauss rule (definition <a class="xref" href="sec-kvadratni-element.html#def-gaussovo-pravilo" data-knowl="def-gaussovo-pravilo">7.24</a>) with one or two points. The lemma says which rule gives what, because later in this chapter we shall see that it makes a difference.</p>
 
 <div class="blk lema" id="lem-togost-timosenko"><div class="blk-head"><span class="blk-label">Lemma 12.32</span> <span class="blk-title">Stiffness matrix of the Timoshenko element (togostna matrika Timošenkovega elementa)</span></div><div class="blk-body"><p>Let \([x_{\mathrm{a}}, x_{\mathrm{b}}]\) be a finite element of a Timoshenko beam of length \(h\) (definition <a class="xref" href="sec-timosenkov-element.html#def-element-timosenko" data-knowl="def-element-timosenko">12.31</a>) and let <span class="nobr">\(EI\),</span> \(kGA\) be constant on it. Let</p>
@@ -413,12 +431,12 @@ which differs from \(\mat k_{\mathrm{s}}\) in the entries with \(h^2/3\) and <sp
 
 <div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We have to show that the rows are the <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">derivatives</a> of the fields, that the energy is written in a quadratic form as for the bar, that the <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integrals</a> give the written <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a>, and that the Gauss rules give them or do not give them.</p>
 <ol>
-<li>The derivatives of the shape <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> are \(\psi_1^{e\prime} = -1/h\) and \(\psi_2^{e\prime} = 1/h\) (lemma <a class="xref" href="sec-srednja-vrednost.html#lem-pravila-odvajanja" data-knowl="lem-pravila-odvajanja">1.81</a>). By equation <a class="xref" href="sec-timosenkov-element.html#eq-tme-polje" data-knowl="eq-tme-polje">(12.35)</a> therefore \(\kappa_{\mathrm{h}} = \theta_{\mathrm{h}}' = (\theta_2 - \theta_1)/h = \mat b_{\mathrm{b}}\,\vek d_{\mathrm{e}}\) and <span class="nobr">\(\gamma_{\mathrm{h}} = v_{\mathrm{h}}' - \theta_{\mathrm{h}} = (v_2 - v_1)/h - \psi_1^e\theta_1 - \psi_2^e\theta_2 = \mat b_{\mathrm{s}}\,\vek d_{\mathrm{e}}\).</span></li>
+<li>The <a class="xref auto forward" href="sec-mkk-izoparametricni.html#lem-gradient-izoparametricni" data-knowl="lem-gradient-izoparametricni" title="Defined later in the book">derivatives of the shape functions</a> are \(\psi_1^{e\prime} = -1/h\) and \(\psi_2^{e\prime} = 1/h\) (lemma <a class="xref" href="sec-srednja-vrednost.html#lem-pravila-odvajanja" data-knowl="lem-pravila-odvajanja">1.81</a>). By equation <a class="xref" href="sec-timosenkov-element.html#eq-tme-polje" data-knowl="eq-tme-polje">(12.35)</a> therefore \(\kappa_{\mathrm{h}} = \theta_{\mathrm{h}}' = (\theta_2 - \theta_1)/h = \mat b_{\mathrm{b}}\,\vek d_{\mathrm{e}}\) and <span class="nobr">\(\gamma_{\mathrm{h}} = v_{\mathrm{h}}' - \theta_{\mathrm{h}} = (v_2 - v_1)/h - \psi_1^e\theta_1 - \psi_2^e\theta_2 = \mat b_{\mathrm{s}}\,\vek d_{\mathrm{e}}\).</span></li>
 <li>The number \(\kappa_{\mathrm{h}}\) equals its transpose, so \(\kappa_{\mathrm{h}}^2 = (\mat b_{\mathrm{b}}\vek d_{\mathrm{e}})^\T(\mat b_{\mathrm{b}}\vek d_{\mathrm{e}}) = \vek d_{\mathrm{e}}^\T\mat b_{\mathrm{b}}^\T\mat b_{\mathrm{b}}\vek d_{\mathrm{e}}\) (definition <a class="xref" href="sec-matrike.html#def-transponirana-matrika" data-knowl="def-transponirana-matrika">1.100</a>). The row \(\mat b_{\mathrm{b}}\) does not depend on <span class="nobr">\(x\),</span> so <span class="nobr">\(\int_{\mathrm{x}_\mathrm{a}}^{x_{\mathrm{b}}} EI\,\kappa_{\mathrm{h}}^2\,\mathrm{d}x = \vek d_{\mathrm{e}}^\T(EI\,h\,\mat b_{\mathrm{b}}^\T\mat b_{\mathrm{b}})\vek d_{\mathrm{e}}\),</span> which is the first term. The product \(\mat b_{\mathrm{b}}^\T\mat b_{\mathrm{b}} = \frac1{h^2}\begin{pmatrix} 0&amp;0&amp;0&amp;0\\0&amp;1&amp;0&amp;-1\\0&amp;0&amp;0&amp;0\\0&amp;-1&amp;0&amp;1\end{pmatrix}\) gives <span class="nobr">\(\mat k_{\mathrm{b}}\).</span></li>
 <li>In the same way \(\gamma_{\mathrm{h}}^2 = \vek d_{\mathrm{e}}^\T\mat b_{\mathrm{s}}^\T\mat b_{\mathrm{s}}\vek d_{\mathrm{e}}\) and <span class="nobr">\(\int kGA\,\gamma_{\mathrm{h}}^2\,\mathrm{d}x = \vek d_{\mathrm{e}}^\T\mat k_{\mathrm{s}}\vek d_{\mathrm{e}}\),</span> where the entry \((i, j)\) of the matrix \(\mat k_{\mathrm{s}}\) equals <span class="nobr">\(kGA \int (\mat b_{\mathrm{s}})_{\mathrm{i}}(\mat b_{\mathrm{s}})_{\mathrm{j}}\,\mathrm{d}x\).</span> With \(\xi = (x - x_{\mathrm{a}})/h\) we have <span class="nobr">\(\int_{\mathrm{x}_\mathrm{a}}^{x_{\mathrm{b}}}\psi_1^e\,\mathrm{d}x = \int_{\mathrm{x}_\mathrm{a}}^{x_{\mathrm{b}}}\psi_2^e\,\mathrm{d}x = \tfrac h2\),</span> \(\int (\psi_1^e)^2\,\mathrm{d}x = \int (\psi_2^e)^2\,\mathrm{d}x = h\int_0^1 (1 - \xi)^2\,\mathrm{d}\xi = \tfrac h3\) and <span class="nobr">\(\int \psi_1^e\psi_2^e\,\mathrm{d}x = h\int_0^1 \xi\,(1 - \xi)\,\mathrm{d}\xi = \tfrac h6\).</span></li>
 <li>The entries are therefore <span class="nobr">\((1,1)\):</span> <span class="nobr">\(\int h^{-2}\,\mathrm{d}x = 1/h\).</span> <span class="nobr">\((1,2)\):</span> <span class="nobr">\(\int(-\tfrac1h)(-\psi_1^e)\,\mathrm{d}x = \tfrac12\).</span> <span class="nobr">\((1,3)\):</span> <span class="nobr">\(-1/h\).</span> <span class="nobr">\((1,4)\):</span> <span class="nobr">\(\tfrac12\).</span> <span class="nobr">\((2,2)\):</span> <span class="nobr">\(h/3\).</span> <span class="nobr">\((2,3)\):</span> <span class="nobr">\(-\tfrac12\).</span> <span class="nobr">\((2,4)\):</span> <span class="nobr">\(\int\psi_1^e\psi_2^e\,\mathrm{d}x = h/6\).</span> <span class="nobr">\((3,3)\):</span> <span class="nobr">\(1/h\).</span> <span class="nobr">\((3,4)\):</span> <span class="nobr">\(-\tfrac12\).</span> <span class="nobr">\((4,4)\):</span> <span class="nobr">\(h/3\).</span> The matrix is symmetric. We multiply by \(kGA\) and factor out <span class="nobr">\(1/h\):</span> we obtain \(\mat k_{\mathrm{s}}\) of equation <a class="xref" href="sec-timosenkov-element.html#eq-tme-togost" data-knowl="eq-tme-togost">(12.37)</a>. This proves point 1.</li>
 <li>The Gauss rule is written on <span class="nobr">\([-1, 1]\).</span> With \(x = x_{\mathrm{a}} + h\,(1 + \xi)/2\) we have <span class="nobr">\(x'(\xi) = h/2\),</span> so by the substitution rule (equation <a class="xref" href="sec-kvadratni-element.html#eq-kve-preslikava" data-knowl="eq-kve-preslikava">(7.28)</a>) the integral over \(x\) equals \(\tfrac h2\) times the integral over <span class="nobr">\(\xi\),</span> and <span class="nobr">\(\psi_1^e = (1 - \xi)/2\),</span> \(\psi_2^e = (1 + \xi)/2\) are linear in <span class="nobr">\(\xi\).</span> The integrand of the matrix \(\mat k_{\mathrm{b}}\) is constant, of degree zero, and the rule with one point takes it exactly by lemma <a class="xref" href="sec-kvadratni-element.html#lem-gauss-tocnost" data-knowl="lem-gauss-tocnost">7.25</a> (degree <span class="nobr">\(0 \le 2q - 1 = 1\)).</span></li>
-<li>The entries of the integrand of the matrix \(\mat k_{\mathrm{s}}\) are products of two functions linear in <span class="nobr">\(\xi\),</span> so <a class="xref auto" href="sec-zveznost.html#def-polinom" data-knowl="def-polinom">polynomials</a> of degree at most two. The rule with two points is exact up to degree \(2q - 1 = 3\) (lemma <a class="xref" href="sec-kvadratni-element.html#lem-gauss-tocnost" data-knowl="lem-gauss-tocnost">7.25</a>), so it gives \(\mat k_{\mathrm{s}}\) exactly.</li>
+<li>The entries of the integrand of the matrix \(\mat k_{\mathrm{s}}\) are products of two <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> linear in <span class="nobr">\(\xi\),</span> so <a class="xref auto" href="sec-zveznost.html#def-polinom" data-knowl="def-polinom">polynomials</a> of degree at most two. The rule with two points is exact up to degree \(2q - 1 = 3\) (lemma <a class="xref" href="sec-kvadratni-element.html#lem-gauss-tocnost" data-knowl="lem-gauss-tocnost">7.25</a>), so it gives \(\mat k_{\mathrm{s}}\) exactly.</li>
 <li>With one point, \(\xi = 0\) with weight <span class="nobr">\(2\),</span> we have \(\psi_1^e = \psi_2^e = \tfrac12\) and the integral \(\int g\,\mathrm{d}x = \tfrac h2\int_{-1}^{1} g\,\mathrm{d}\xi\) is replaced by <span class="nobr">\(\tfrac h2\cdot 2\cdot g|_{\xi = 0} = h\,g|_{\xi = 0}\).</span> This is \(kGA\,h\,\mat b_{\mathrm{s}}^\T\mat b_{\mathrm{s}}\) at the middle of the element, which has the entries <span class="nobr">\((2,2)\),</span> <span class="nobr">\((2,4)\),</span> \((4,4)\) equal to \(\tfrac h4\) instead of <span class="nobr">\(\tfrac h3\),</span> <span class="nobr">\(\tfrac h6\),</span> <span class="nobr">\(\tfrac h3\).</span> The rule with one point does not give the integral <span class="nobr">\(\int_{-1}^{1}\xi^2\,\mathrm{d}\xi = \tfrac23\),</span> since its sum is zero (lemma <a class="xref" href="sec-kvadratni-element.html#lem-gauss-tocnost" data-knowl="lem-gauss-tocnost">7.25</a>), so the entries with \(\xi^2\) are not exact. So the matrix \(\mat k_{\mathrm{s}}^{(1)}\) is \(kGA\,h\) times the product of the column \(\mat b_{\mathrm{s}}^\T\) and the row <span class="nobr">\(\mat b_{\mathrm{s}}\),</span> both taken at the middle of the element.</li>
 </ol>
 </div></details></div>
@@ -460,7 +478,7 @@ which differs from \(\mat k_{\mathrm{s}}\) in the entries with \(h^2/3\) and <sp
 <p>Why is the deflection so small? Let us look at what the element should have done. The true tilt of the end section is \(-0{,}011958\) and the true deflection \(-7{,}982\) mm. If the element took them for \(\theta_2\) and <span class="nobr">\(v_2\),</span> it would have the slope of the axis \(v_{\mathrm{h}}' = v_2/h = -0{,}007982\) and \(\theta_{\mathrm{h}}\) would grow from zero to <span class="nobr">\(-0{,}011958\).</span> The <a class="xref auto" href="sec-raztezek-palice.html#def-normalna-strizna" data-knowl="def-normalna-strizna">shear strain</a> \(\gamma_{\mathrm{h}} = v_{\mathrm{h}}' - \theta_{\mathrm{h}}\) would be \(-0{,}007982\) at the start and \(+0{,}003976\) at the end. We know the true value from section <a class="xref" href="sec-timosenkov-nosilec.html#sec-timosenko-konzola">5.13.4</a>: <span class="nobr">\(\gamma = V/(kGA) = -9{,}95 \cdot 10^{-6}\),</span> between 400 and 800 times smaller. The shear energy \(\tfrac12\,kGA\int\gamma_{\mathrm{h}}^2\,\mathrm{d}x\) of such a field is \(\tfrac12\,kGA\,\tfrac h3\,(\gamma_{\mathrm{a}}^2 + \gamma_{\mathrm{a}}\gamma_{\mathrm{b}} + \gamma_{\mathrm{b}}^2) = 400{,}2\) J, while the work of the force \(500\) N on the deflection \(7{,}982\) mm is only \(\tfrac12 \cdot 500 \cdot 7{,}982 \cdot 10^{-3} = 2{,}0\) J. The element therefore does not choose such a field and bends much less. The shear term with the stiffness \(kGA\) penalizes every field that has a shear strain on the element, and a field with bending has it, because \(v_{\mathrm{h}}'\) is constant and \(\theta_{\mathrm{h}}\) is linear. This is similar to the penalty method, where a constraint is replaced by a spring of large stiffness (section <a class="xref" href="sec-kazenska-metoda.html">12.6</a>, definition <a class="xref" href="sec-kazenska-metoda.html#def-kazenska-metoda" data-knowl="def-kazenska-metoda">12.27</a>). The exact connection is shown only later in this chapter, here we only count numbers.</p>
 <p>How large is this effect with more elements? The answer is a closed formula, which we prove for our cantilever. For \(n\) equal elements of length \(h = L/n\) the quantities</p>
 <div class="eq" id="eq-tme-beta">\[\beta_{\mathrm{h}} = \frac{12\,EI}{kGA\,h^2} , \qquad r_{\mathrm{h}} = \frac{\beta_{\mathrm{h}}}{1 + \beta_{\mathrm{h}}} = \frac{1}{1 + kGA\,h^2/(12\,EI)} \tag{12.40}\]</div>
-<p>measure the ratio of the bending and shear compliance of the element (the bending compliance is proportional to <span class="nobr">\(h^3/EI\),</span> the shear one to <span class="nobr">\(h/kGA\),</span> their quotient is <span class="nobr">\(h^2 kGA/(12EI) = 1/\beta_{\mathrm{h}}\),</span> as in section <a class="xref" href="sec-timosenkov-nosilec.html#sec-timosenko-konzola">5.13.4</a>, which has the same ratio for the whole cantilever). When the element is short, \(\beta_{\mathrm{h}}\) is large and \(r_{\mathrm{h}}\) is close to one.</p>
+<p>measure the ratio of the bending and shear compliance of the element (the bending compliance is proportional to <span class="nobr">\(h^3/EI\),</span> the shear one to <span class="nobr">\(h/kGA\),</span> their quotient is <span class="nobr">\(h^2 kGA/(12EI) = 1/\beta_{\mathrm{h}}\).</span> Similarly, in section <a class="xref" href="sec-timosenkov-nosilec.html#sec-timosenko-konzola">5.13.4</a> the quotient of the bending and the <a class="xref auto forward" href="sec-hierarhija-modelov.html#lem-strig-konzole" data-knowl="lem-strig-konzole" title="Defined later in the book">shear part of the deflection</a> of the whole cantilever is <span class="nobr">\(kGA\,L^2/(3EI)\)).</span> When the element is short, \(\beta_{\mathrm{h}}\) is large and \(r_{\mathrm{h}}\) is close to one.</p>
 
 <div class="blk lema" id="lem-konzola-timosenko-elementi"><div class="blk-head"><span class="blk-label">Lemma 12.34</span> <span class="blk-title">Cantilever with Timoshenko elements and exact integration (konzola z Timošenkovimi elementi in točno integracijo)</span></div><div class="blk-body"><p>Let a cantilever with constant <span class="nobr">\(EI\),</span> \(kGA\) be clamped at <span class="nobr">\(x = 0\),</span> let a force \(P\) in the direction \(y\) (positive upwards) act at \(x = L\) and no other load. Let it have \(n\) equal elements of a Timoshenko <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beam</a> of length \(h = L/n\) and <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> from equation <a class="xref" href="sec-timosenkov-element.html#eq-tme-togost" data-knowl="eq-tme-togost">(12.37)</a> (exact integration), the solution \(u_{\mathrm{h}} = (v_{\mathrm{h}}, \theta_{\mathrm{h}})\) from theorem <a class="xref" href="sec-timosenkov-element.html#thm-sestavljanje-timosenko" data-knowl="thm-sestavljanje-timosenko">12.33</a>, and let \(x_{\mathrm{e}-1/2}\) be the middle of element <span class="nobr">\(e\).</span> Then:</p>
 <ol>
@@ -546,7 +564,7 @@ which differs from \(\mat k_{\mathrm{s}}\) in the entries with \(h^2/3\) and <sp
 </tr>
 </tbody>
 </table>
-<p>At \(L = 80\) mm the element works: one element already gives \(44\) %, two \(76\) %, sixteen \(99{,}5\) %. At \(L = 1\) m one element gives \(0{,}00497\) of the true deflection, that is \(0{,}0396\) mm instead of \(7{,}98\) mm, and only with \(16\) elements \(56\) %, with \(64\) elements \(95\) %. The same element, the same steel, the same bar: only the slenderness differs. Figure <a class="xref" href="sec-timosenkov-element.html#fig-tme-konvergenca" data-knowl="fig-tme-konvergenca">12.22</a> shows both rows of the table, the lines are \(r_{\mathrm{h}}\) from equation <a class="xref" href="sec-timosenkov-element.html#eq-tme-beta" data-knowl="eq-tme-beta">(12.40)</a>, the points the finite element solutions.</p>
+<p>At \(L = 80\) mm the element works: one element already gives \(44\) %, two \(76\) %, sixteen \(99{,}5\) %. At \(L = 1\) m one element gives \(0{,}00497\) of the true deflection, that is \(0{,}0396\) mm instead of \(7{,}98\) mm, and only with \(16\) elements \(56\) %, with \(64\) elements \(95\) %. The same element, the same steel, the same bar: only the slenderness differs. Figure <a class="xref" href="sec-timosenkov-element.html#fig-tme-konvergenca" data-knowl="fig-tme-konvergenca">12.22</a> shows both rows of the table. The horizontal axis carries <a data-del="n" class="xref kaz" href="sec-timosenkov-element.html#fig-tme-konvergenca" data-knowl="fig-tme-konvergenca">the number of elements \(n\)</a> on a logarithmic scale, the vertical one <a data-del="r" class="xref kaz" href="sec-timosenkov-element.html#fig-tme-konvergenca" data-knowl="fig-tme-konvergenca">the ratio \(r\)</a> of the finite element tip deflection to the true one. <a data-del="dolga" class="xref kaz" href="sec-timosenkov-element.html#fig-tme-konvergenca" data-knowl="fig-tme-konvergenca">Blue</a> is the cantilever \(L = 1\) m, \(25\) section heights long, <a data-del="kratka" class="xref kaz" href="sec-timosenkov-element.html#fig-tme-konvergenca" data-knowl="fig-tme-konvergenca">orange</a> the cantilever \(L = 80\) mm, \(2\) section heights long. <a data-del="rh" class="xref kaz" href="sec-timosenkov-element.html#fig-tme-konvergenca" data-knowl="fig-tme-konvergenca">The lines</a> are \(r_{\mathrm{h}}\) from equation <a class="xref" href="sec-timosenkov-element.html#eq-tme-beta" data-knowl="eq-tme-beta">(12.40)</a>, <a data-del="fe" class="xref kaz" href="sec-timosenkov-element.html#fig-tme-konvergenca" data-knowl="fig-tme-konvergenca">the points</a> the finite element solutions. Every point lies on its line, as the lemma states.</p>
 
 <figure class="blk slika" id="fig-tme-konvergenca"><p><span class="svgfig" role="img" aria-label="Ratio of the finite element tip deflection to the true deflection as a function of the number of elements, for two cantilever lengths"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='352.11pt' height='249.88pt' viewBox='-72.000004 -72.000002 260.820433 185.093738'>
 <defs>
@@ -569,6 +587,7 @@ which differs from \(\mat k_{\mathrm{s}}\) in the entries with \(h^2/3\) and <sp
 <g stroke-width='0.6'>
 <g stroke-linecap='round'>
 <g stroke-linejoin='round'>
+<g class='del' data-del='n'>
 <path d='M0 0H223.26976' fill='none'/>
 <g transform='translate(220.7933,0.0)'>
 <g stroke-dasharray='none' stroke-dashoffset='0.0'>
@@ -582,23 +601,6 @@ which differs from \(\mat k_{\mathrm{s}}\) in the entries with \(h^2/3\) and <sp
 <g fill='#000'>
 <g stroke='none'>
 <use x='-50.450049' y='97.540671' xlink:href='#tme-konvergenca-g0-110'/>
-</g>
-</g>
-</g>
-</g>
-<path d='M0 0V154.98334' fill='none'/>
-<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,152.50688)'>
-<g stroke-dasharray='none' stroke-dashoffset='0.0'>
- <g stroke-linejoin='miter'>
- <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
- </g>
- </g>
-</g>
-<g transform='translate(-2.21527,162.9685)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-50.450049,97.540671)scale(-1,-1)'>
-<g fill='#000'>
-<g stroke='none'>
-<use x='-50.450049' y='97.540671' xlink:href='#tme-konvergenca-g0-114'/>
 </g>
 </g>
 </g>
@@ -676,6 +678,25 @@ which differs from \(\mat k_{\mathrm{s}}\) in the entries with \(h^2/3\) and <sp
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='r'>
+<path d='M0 0V154.98334' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,152.50688)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-2.21527,162.9685)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-50.450049,97.540671)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-50.450049' y='97.540671' xlink:href='#tme-konvergenca-g0-114'/>
+</g>
+</g>
+</g>
+</g>
 <path d='M0 0H-2.84544' fill='none'/>
 <g transform='translate(-11.1034,-2.9)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-50.450049,97.540671)scale(-1,-1)'>
@@ -708,11 +729,16 @@ which differs from \(\mat k_{\mathrm{s}}\) in the entries with \(h^2/3\) and <sp
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='dolga'>
+<g class='del' data-del='rh'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='0.9'>
 <path d='M0 .71114L3.47105 .82532L6.97078 .93907L10.44228 1.08104L13.94199 1.22343L17.41306 1.42271L20.91278 1.622L24.38383 1.87772L27.88356 2.16252L31.35506 2.47554L34.85478 2.84544L38.32584 3.27222L41.7969 3.75586L45.29663 4.29639L48.76813 4.92244L52.26784 5.66223L55.7389 6.45891L59.23863 7.39755L62.70969 8.45038L66.20941 9.6456L69.68091 10.9828L73.18062 12.51927L76.65169 14.19771L80.12276 16.13274L83.62247 18.23839L87.09398 20.59975L90.59369 23.21727L94.06476 26.09137L97.56447 29.22075L101.03554 32.63538L104.53526 36.30573L108.00676 40.26044L111.47781 44.44307L114.97754 48.88187L118.44861 53.49129L121.94832 58.27133L125.41982 63.16512L128.91954 68.14444L132.39061 73.18062L135.89032 78.15952L139.36139 83.08195L142.8611 87.89064L146.33261 92.52829L149.80367 96.9953L153.30339 101.23482L156.77446 105.21819L160.27417 108.9454L163.74567 112.4169L167.24539 115.60359L170.71646 118.53413L174.21617 121.1803L177.68724 123.59854L181.18695 125.76106L184.65845 127.72432L188.12952 129.46007L191.62924 130.99654L195.1003 132.39061L198.60002 133.61404L202.07152 134.66687L205.57124 135.63417' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='fe'>
 <g fill='#00f' stroke='#00f'>
 <g fill='#00f' stroke='#00f'>
 <path d='M1.83862 .71114C1.83862 1.72658 1.01544 2.54976 0 2.54976S-1.83862 1.72658-1.83862 .71114S-1.01544-1.12749 0-1.12749S1.83862-.3043 1.83862 .71114ZM0 .71114' stroke='none'/>
@@ -797,11 +823,33 @@ which differs from \(\mat k_{\mathrm{s}}\) in the entries with \(h^2/3\) and <sp
 </g>
 </g>
 </g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(212.76082,126.56007)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-50.450049,97.540671)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-50.450049' y='97.540671' xlink:href='#tme-konvergenca-g1-50'/>
+<use x='-45.842358' y='97.540671' xlink:href='#tme-konvergenca-g1-53'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='kratka'>
+<g class='del' data-del='rh'>
 <g fill='#f00' stroke='#f00'>
 <g stroke-width='0.9'>
 <path d='M0 62.33978L3.47105 67.3191L6.97078 72.32707L10.44228 77.33461L13.94199 82.25706L17.41306 87.09398L20.91278 91.76027L24.38383 96.2555L27.88356 100.52367L31.35506 104.56392L34.85478 108.348L38.32584 111.84772L41.7969 115.0913L45.29663 118.05049L48.76813 120.75352L52.26784 123.20042L55.7389 125.41982L59.23863 127.38307L62.70969 129.17526L66.20941 130.74039L69.68091 132.1631L73.18062 133.41478L76.65169 134.49625L80.12276 135.49178L83.62247 136.34575L87.09398 137.08511L90.59369 137.73982L94.06476 138.30856L97.56447 138.82086L101.03554 139.27629L104.53526 139.6462L108.00676 139.98744L111.47781 140.30046L114.97754 140.55661L118.44861 140.75589L121.94832 140.95473L125.41982 141.1258L128.91954 141.26776L132.39061 141.41016L135.89032 141.52391L139.36139 141.60944L142.8611 141.69453L146.33261 141.78006L149.80367 141.83693L153.30339 141.89381L156.77446 141.95068L160.27417 141.97934L163.74567 142.03621L167.24539 142.06444L170.71646 142.0931H174.21617L177.68724 142.1213L181.18695 142.14996H184.65845L188.12952 142.17818H191.62924L195.1003 142.20683H198.60002H202.07152H205.57124' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='fe'>
 <g fill='#f00' stroke='#f00'>
 <g fill='#f00' stroke='#f00'>
 <path d='M1.83862 62.33978C1.83862 63.35522 1.01544 64.1784 0 64.1784S-1.83862 63.35522-1.83862 62.33978S-1.01544 60.50116 0 60.50116S1.83862 61.32434 1.83862 62.33978ZM0 62.33978' stroke='none'/>
@@ -886,21 +934,6 @@ which differs from \(\mat k_{\mathrm{s}}\) in the entries with \(h^2/3\) and <sp
 </g>
 </g>
 </g>
-<g fill='#00f' stroke='#00f'>
-<g fill='#00f' stroke='#00f'>
-</g>
-<g transform='translate(212.76082,126.56007)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-50.450049,97.540671)scale(-1,-1)'>
-<g fill='#00f'>
-<g stroke='none'>
-<g fill='#00f'>
-<use x='-50.450049' y='97.540671' xlink:href='#tme-konvergenca-g1-50'/>
-<use x='-45.842358' y='97.540671' xlink:href='#tme-konvergenca-g1-53'/>
-</g>
-</g>
-</g>
-</g>
-</g>
 </g>
 <g fill='#f00' stroke='#f00'>
 <g fill='#f00' stroke='#f00'>
@@ -911,6 +944,7 @@ which differs from \(\mat k_{\mathrm{s}}\) in the entries with \(h^2/3\) and <sp
 <g stroke='none'>
 <g fill='#f00'>
 <use x='-50.450049' y='97.540671' xlink:href='#tme-konvergenca-g1-50'/>
+</g>
 </g>
 </g>
 </g>
@@ -947,6 +981,7 @@ which differs from \(\mat k_{\mathrm{s}}\) in the entries with \(h^2/3\) and <sp
 <g stroke-width='0.6'>
 <g stroke-linecap='round'>
 <g stroke-linejoin='round'>
+<g class='del' data-del='vpetje'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-width='0.45'>
 <path d='M0-136.57324V11.38094' fill='none'/>
@@ -1057,14 +1092,20 @@ which differs from \(\mat k_{\mathrm{s}}\) in the entries with \(h^2/3\) and <sp
 <path d='M0 5.69048L-5.69046 .00002' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='prava'>
 <g stroke-width='1.1'>
 <path d='M0 0H1.42271L2.84544-.02864L4.26773-.05687L5.69046-.11374L7.11317-.17061L8.5359-.2275L9.95863-.31302L11.38092-.42677L12.80363-.54051L14.22636-.65427L15.6491-.79666L17.07181-.93907L18.4941-1.1097L19.91682-1.28032L21.33955-1.45094L22.76227-1.6502L24.185-1.87772L25.60728-2.07698L27.03001-2.33315L28.45274-2.56064L29.87546-2.81679L31.29819-3.10115L32.72047-3.35732L34.1432-3.67033L35.56592-3.95514L36.98865-4.26773L38.41138-4.6094L39.83366-4.92244L41.25638-5.26369L42.67911-5.63358L44.10184-6.00348L45.52455-6.37338L46.94684-6.77193L48.36957-7.17006L49.7923-7.5686L51.21501-7.99538L52.63774-8.42215L54.06003-8.87715L55.48276-9.33258L56.90549-9.78757L58.3282-10.243L59.75093-10.72664L61.17322-11.2103L62.59595-11.7226L64.01866-12.23447L65.44139-12.74677L66.86412-13.2873L68.2864-13.8278L69.70912-14.36876L71.13185-14.93752L72.55458-15.50668L73.9773-16.07587L75.39958-16.64503L76.82231-17.24243L78.24504-17.83983L79.66776-18.46588L81.09048-19.06328L82.51277-19.71754L83.9355-20.3436L85.35823-20.9983L86.78094-21.65257L88.20367-22.30684L89.62596-22.96155L91.04869-23.64404L92.4714-24.32697L93.89413-25.03854L95.31686-25.72147L96.73915-26.43262L98.16187-27.14375L99.5846-27.88356L101.00732-28.59514L102.43004-29.33493L103.85233-30.10295L105.27505-30.84276L106.69778-31.61078L108.1205-32.37923L109.54323-33.14725L110.96552-33.9157L112.38824-34.71237L113.81097-35.50905L115.23369-36.30573L116.65642-37.13062L118.0787-37.92729L119.50143-38.75261L120.92415-39.57794L122.34688-40.43149L123.7696-41.25638L125.1919-42.10992L126.61461-42.96349L128.03734-43.81703L129.46007-44.671L130.88278-45.55278L132.30507-46.43498L133.7278-47.28853L135.15053-48.19894L136.57324-49.08115L137.99597-49.96292L139.41826-50.87334L140.84099-51.7842L142.26372-52.69461L143.68643-53.60504L145.10916-54.54411L146.53145-55.45453L147.95418-56.39317L149.37689-57.33226L150.79962-58.27133L152.22235-59.20998L153.64464-60.1777L155.06735-61.11635L156.49008-62.08408L157.91281-63.05138L159.33553-64.01866L160.75781-64.98596L162.18054-65.95326L163.60327-66.92099L165.02599-67.9165L166.44872-68.88423L167.871-69.87975L169.29373-70.8757L170.71646-71.87164L172.13918-72.8676L173.5619-73.86311L174.98419-74.88773L176.40692-75.88367L177.82964-76.90784L179.25237-77.9038L180.6751-78.92796L182.09738-79.95213L183.5201-80.9763L184.94283-82.0009L186.36555-83.02507L187.78827-84.04924L189.21056-85.10207L190.63329-86.12624L192.05602-87.17906L193.47873-88.20367L194.90146-89.25606L196.32375-90.28067L197.74648-91.3335L199.1692-92.38588L200.59192-93.4387L202.01465-94.49153L203.43694-95.54436L204.85966-96.59718L206.28238-97.65001L207.70511-98.7024L209.12784-99.75522L210.55013-100.80804L211.97284-101.86087L213.39557-102.9137L214.8183-103.99474L216.24101-105.04756L217.6633-106.10039L219.08603-107.18143L220.50876-108.23425L221.93147-109.28708L223.3542-110.36812L224.77649-111.42094L226.19922-112.50198L227.62195-113.55481' fill='none'/>
 </g>
+</g>
+<g class='del' data-del='eb'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
 <path d='M0 0H1.42271L2.84544-.02864L4.26773-.05687L5.69046-.11374L7.11317-.17061L8.5359-.2275L9.95863-.31302L11.38092-.42677L12.80363-.54051L14.22636-.65427L15.6491-.79666L17.07181-.93907L18.4941-1.08104L19.91682-1.25209L21.33955-1.45094L22.76227-1.6502L24.185-1.84949L25.60728-2.07698L27.03001-2.30449L28.45274-2.56064L29.87546-2.78856L31.29819-3.07294L32.72047-3.35732L34.1432-3.64212L35.56592-3.92648L36.98865-4.23952L38.41138-4.58075L39.83366-4.89378L41.25638-5.26369L42.67911-5.60536L44.10184-5.97527L45.52455-6.34515L46.94684-6.74329L48.36957-7.14183L49.7923-7.53995L51.21501-7.96672L52.63774-8.3935L54.06003-8.84892L55.48276-9.2757L56.90549-9.75935L58.3282-10.21434L59.75093-10.69843L61.17322-11.18207L62.59595-11.69394L64.01866-12.20624L65.44139-12.71855L66.86412-13.23041L68.2864-13.77094L69.70912-14.34012L71.13185-14.88063L72.55458-15.44981L73.9773-16.01898L75.39958-16.61638L76.82231-17.18556L78.24504-17.81161L79.66776-18.40901L81.09048-19.03506L82.51277-19.66068L83.9355-20.28673L85.35823-20.941L86.78094-21.5957L88.20367-22.24997L89.62596-22.90424L91.04869-23.58717L92.4714-24.2701L93.89413-24.95302L95.31686-25.66417L96.73915-26.37575L98.16187-27.08688L99.5846-27.82669L101.00732-28.53827L102.43004-29.27806L103.85233-30.01743L105.27505-30.78589L106.69778-31.52568L108.1205-32.2937L109.54323-33.09038L110.96552-33.85883L112.38824-34.6555L113.81097-35.45218L115.23369-36.24884L116.65642-37.04552L118.0787-37.8704L119.50143-38.69574L120.92415-39.52107L122.34688-40.34596L123.7696-41.1713L125.1919-42.02484L126.61461-42.87839L128.03734-43.73193L129.46007-44.58548L130.88278-45.46768L132.30507-46.34944L133.7278-47.23164L135.15053-48.11342L136.57324-48.99562L137.99597-49.87782L139.41826-50.78824L140.84099-51.69867L142.26372-52.60909L143.68643-53.51952L145.10916-54.45859L146.53145-55.369L147.95418-56.30809L149.37689-57.24672L150.79962-58.1858L152.22235-59.12488L153.64464-60.06352L155.06735-61.03125L156.49008-61.9699L157.91281-62.93762L159.33553-63.90492L160.75781-64.87221L162.18054-65.83951L163.60327-66.83546L165.02599-67.80275L166.44872-68.7987L167.871-69.79466L169.29373-70.76195L170.71646-71.7579L172.13918-72.75385L173.5619-73.77802L174.98419-74.77397L176.40692-75.76949L177.82964-76.7941L179.25237-77.81827L180.6751-78.81421L182.09738-79.83838L183.5201-80.86255L184.94283-81.88716L186.36555-82.91133L187.78827-83.9355L189.21056-84.98833L190.63329-86.0125L192.05602-87.0371L193.47873-88.0895L194.90146-89.11409L196.32375-90.16692L197.74648-91.21931L199.1692-92.24391L200.59192-93.29674L202.01465-94.34912L203.43694-95.40195L204.85966-96.45477L206.28238-97.5076L207.70511-98.56042L209.12784-99.61325L210.55013-100.66563L211.97284-101.74712L213.39557-102.79994L214.8183-103.85233L216.24101-104.90515L217.6633-105.98663L219.08603-107.03903L220.50876-108.09186L221.93147-109.17332L223.3542-110.22572L224.77649-111.27855L226.19922-112.36002L227.62195-113.41241' fill='none'/>
 </g>
 </g>
+</g>
+<g class='del' data-del='n16'>
 <g fill='#00f' stroke='#00f'>
 <g stroke-width='0.9'>
 <path d='M0 0L14.22636-.36989L28.45274-1.45094L42.67911-3.15804L56.90549-5.49118L71.13185-8.36528L85.35823-11.77946L99.5846-15.6491L113.81097-19.91682L128.03734-24.58311L142.26372-29.56244L156.49008-34.82613L170.71646-40.31775L184.94283-46.00821L199.1692-51.84106L213.39557-57.7308L227.62195-63.70564' fill='none'/>
@@ -1263,6 +1304,24 @@ which differs from \(\mat k_{\mathrm{s}}\) in the entries with \(h^2/3\) and <sp
 </g>
 </g>
 <g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(235.52266,-66.60564)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,-56.446939)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-66.106653' y='-56.446939' xlink:href='#tme-zaklenjen-g2-49'/>
+<use x='-61.498963' y='-56.446939' xlink:href='#tme-zaklenjen-g2-54'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='n4'>
+<g fill='#00f' stroke='#00f'>
 <g stroke-width='0.9'>
 <path d='M0 0L56.90549-.71114L113.81097-2.61751L170.71646-5.32056L227.62195-8.3935' fill='none'/>
 </g>
@@ -1315,6 +1374,23 @@ which differs from \(\mat k_{\mathrm{s}}\) in the entries with \(h^2/3\) and <sp
 </g>
 </g>
 </g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(235.52266,-11.29349)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,-56.446939)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-66.106653' y='-56.446939' xlink:href='#tme-zaklenjen-g2-52'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='n1'>
 <g fill='#f00' stroke='#f00'>
 <g stroke-width='1.3'>
 <path d='M0 0L227.62195-.56917' fill='none'/>
@@ -1328,37 +1404,6 @@ which differs from \(\mat k_{\mathrm{s}}\) in the entries with \(h^2/3\) and <sp
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,-56.446939)scale(-1,-1)'>
 <g fill='#f00'>
 <g stroke='none'/>
-</g>
-</g>
-</g>
-</g>
-<g fill='#00f' stroke='#00f'>
-<g fill='#00f' stroke='#00f'>
-</g>
-<g transform='translate(235.52266,-66.60564)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,-56.446939)scale(-1,-1)'>
-<g fill='#00f'>
-<g stroke='none'>
-<g fill='#00f'>
-<use x='-66.106653' y='-56.446939' xlink:href='#tme-zaklenjen-g2-49'/>
-<use x='-61.498963' y='-56.446939' xlink:href='#tme-zaklenjen-g2-54'/>
-</g>
-</g>
-</g>
-</g>
-</g>
-</g>
-<g fill='#00f' stroke='#00f'>
-<g fill='#00f' stroke='#00f'>
-</g>
-<g transform='translate(235.52266,-11.29349)'>
-<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,-56.446939)scale(-1,-1)'>
-<g fill='#00f'>
-<g stroke='none'>
-<g fill='#00f'>
-<use x='-66.106653' y='-56.446939' xlink:href='#tme-zaklenjen-g2-52'/>
-</g>
-</g>
 </g>
 </g>
 </g>
@@ -1378,6 +1423,8 @@ which differs from \(\mat k_{\mathrm{s}}\) in the entries with \(h^2/3\) and <sp
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='prava'>
 <g transform='translate(235.52266,-115.4923)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,-56.446939)scale(-1,-1)'>
 <g fill='#000'>
@@ -1387,6 +1434,8 @@ which differs from \(\mat k_{\mathrm{s}}\) in the entries with \(h^2/3\) and <sp
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='xos'>
 <g transform='translate(-2.31248,6.47842)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,-56.446939)scale(-1,-1)'>
 <g fill='#000'>
@@ -1405,6 +1454,8 @@ which differs from \(\mat k_{\mathrm{s}}\) in the entries with \(h^2/3\) and <sp
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='vpetje'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-width='0.45'>
 <path d='M0-253.22931V-165.02563' fill='none'/>
@@ -1475,12 +1526,13 @@ which differs from \(\mat k_{\mathrm{s}}\) in the entries with \(h^2/3\) and <sp
 <path d='M0-167.87108L-5.69046-173.56154' fill='none'/>
 </g>
 </g>
-<clipPath id='tme-zaklenjen-pgfcp1'>
-<path d='M-1.42271-172.13927V-241.84839H244.69376V-172.13927ZM244.69376-241.84839'/> </clipPath>
-<g clip-path='url(#pgfcp1)'>
-<g stroke-width='1.1'>
-<path d='M0-176.407L1.42271-177.14679L2.84544-179.22379L4.26773-182.60976L5.69046-187.30426L7.11317-193.27953L8.5359-200.56334L9.95863-209.09926L11.38092-218.94371L12.80363-230.01204L14.22636-242.36026L15.6491-255.93236L17.07181-270.75612L18.4941-286.832L19.91682-304.10309L21.33955-322.56854L22.76227-342.25789L24.185-363.14244L25.60728-385.2218L27.03001-408.49596L28.45274-432.90846L29.87546-458.48753L31.29819-485.23318L32.72047-513.11674L34.1432-542.16689L35.56592-572.32672L36.98865-603.5967L38.41138-635.9755L39.83366-669.46443L41.25638-704.06306L42.67911-739.74275L44.10184-776.5039L45.52455-814.3461L46.94684-853.24069L48.36957-893.18854L49.7923-934.18878L51.21501-976.21362L52.63774-1019.29086L54.06003-1063.36449L55.48276-1108.46184L56.90549-1154.5838L58.3282-1201.67305L59.75093-1249.75826L61.17322-1298.83942L62.59595-1348.88744L64.01866-1399.90361L65.44139-1451.858L66.86412-1504.7519L68.2864-1558.61267L69.70912-1613.3843L71.13185-1669.09499L72.55458-1725.68744L73.9773-1783.21898L75.39958-1841.63228L76.82231-1900.9278L78.24504-1961.1055L79.66776-2022.16498L81.09048-2084.10666L82.51277-2146.87323L83.9355-2210.49377L85.35823-2274.96745L86.78094-2340.26645L88.20367-2406.3621L89.62596-2473.31175L91.04869-2541.02899L92.4714-2609.57199L93.89413-2678.88257L95.31686-2748.99026L96.73915-2819.86597L98.16187-2891.51013L99.5846-2963.89366L101.00732-3037.04564L102.43004-3110.93741L103.85233-3185.54077L105.27505-3260.8835L106.69778-3336.93779L108.1205-3413.67459L109.54323-3491.12296L110.96552-3569.28291L112.38824-3648.09712L113.81097-3727.59384L115.23369-3807.77391L116.65642-3888.5796L118.0787-3970.03955L119.50143-4052.15422L120.92415-4134.89493L122.34688-4218.26126L123.7696-4302.22542L125.1919-4386.81564L126.61461-4471.9746L128.03734-4557.7596L129.46007-4644.11377L130.88278-4731.0367L132.30507-4818.5288L133.7278-4906.56186L135.15053-4995.16365L136.57324-5084.27776L137.99597-5173.9606L139.41826-5264.12752L140.84099-5354.83496L142.26372-5446.05428L143.68643-5537.75725L145.10916-5629.97295L146.53145-5722.6432L147.95418-5815.79755L149.37689-5909.40732L150.79962-6003.5003L152.22235-6098.0205L153.64464-6192.96703L155.06735-6288.36942L156.49008-6384.19815L157.91281-6480.42543L159.33553-6577.07906L160.75781-6674.10301L162.18054-6771.55376L163.60327-6869.34573L165.02599-6967.53625L166.44872-7066.0967L167.871-7164.99837L169.29373-7264.26994L170.71646-7363.85455L172.13918-7463.7804L173.5619-7564.04793L174.98419-7664.62848L176.40692-7765.49341L177.82964-7866.67136L179.25237-7968.13411L180.6751-8069.8808L182.09738-8171.9123L183.5201-8274.19994L184.94283-8376.74374L186.36555-8479.54369L187.78827-8582.59935L189.21056-8685.8543L190.63329-8789.3654L192.05602-8893.07576L193.47873-8996.98499L194.90146-9101.0939L196.32375-9205.40125L197.74648-9309.90828L199.1692-9414.58595L200.59192-9519.40602L202.01465-9624.39671L203.43694-9729.52937L204.85966-9834.80444L206.28238-9940.22191L207.70511-10045.78178L209.12784-10151.42674L210.55013-10257.18546L211.97284-10363.05835L213.39557-10468.98769L214.8183-10575.0312L216.24101-10681.15982L217.6633-10787.31708L219.08603-10893.55945L220.50876-10999.85912L221.93147-11106.187L223.3542-11212.54355L224.77649-11318.9283L226.19922-11425.31306L227.62195-11531.72604' fill='none'/>
 </g>
+<g class='del' data-del='prava'>
+<g stroke-width='1.1'>
+<path d='M0-176.407L1.42271-177.14679L2.84544-179.22379L4.26773-182.60976L5.69046-187.30426L7.11317-193.27953L8.5359-200.56334L9.95863-209.09926L11.38092-218.94371L12.80363-230.01204L14.1695-241.84839' fill='none'/>
+</g>
+</g>
+<g class='del' data-del='n1'>
 <g fill='#f00' stroke='#f00'>
 <g stroke-width='1.3'>
 <path d='M0-176.407L227.62195-232.80017' fill='none'/>
@@ -1499,6 +1551,7 @@ which differs from \(\mat k_{\mathrm{s}}\) in the entries with \(h^2/3\) and <sp
 </g>
 </g>
 </g>
+<g class='del' data-del='konec'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-width='0.45'>
 <path d='M241.84831-176.74448V-232.46269' fill='none'/>
@@ -1549,6 +1602,8 @@ which differs from \(\mat k_{\mathrm{s}}\) in the entries with \(h^2/3\) and <sp
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='xos'>
 <g transform='translate(-2.31248,-169.92857)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,-56.446939)scale(-1,-1)'>
 <g fill='#000'>
@@ -1574,9 +1629,11 @@ which differs from \(\mat k_{\mathrm{s}}\) in the entries with \(h^2/3\) and <sp
 </g>
 </g>
 </g>
+</g>
 </svg></span></p>
-<figcaption><span class="blk-label">Figure 12.23</span>: Deflection of the cantilever \(L = 1\) m with a force of \(500\) N downwards at the end. Horizontally \(8\) cm per \(1\) m, vertically \(0{,}5\) cm per \(1\) mm (the vertical scale is \(62{,}5\) times larger than the horizontal one). Above: the true deflection by Timoshenko (<span class="ink-l">black</span><span class="ink-d">white</span>, tip \(7{,}982\) mm, the grey dashed line of the Euler-Bernoulli solution is almost the same curve) and finite element solutions with \(1\) element (orange, tip \(0{,}0396\) mm, practically on the axis), \(4\) elements (blue, \(0{,}590\) mm) and \(16\) elements (blue, \(4{,}478\) mm). The points are nodes. Below: the same solution with one element at a \(100\) times larger vertical scale <span class="nobr">(\(0{,}5\)</span> cm per \(0{,}01\) mm), the distance with end bars is \(0{,}0396\) mm. The true deflection leaves the picture already at \(x = 0{,}18\) m.</figcaption></figure>
-<p>This phenomenon already has a name in the book. Chapter <a class="xref" href="ch-nosilci.html">5</a> called it shear locking (strižno zaklepanje): the finite element solution is too stiff, because the shear term prevails (section <a class="xref" href="sec-timosenkov-nosilec.html#sec-izbira-teorije-nosilca">5.13.5</a>). Chapter <a class="xref" href="ch-sibka-oblika.html">6</a> met the same kind of phenomenon in the hanging bar as locking (zaklepanje): the family of fields does not allow the deformation that the <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">body</a> needs under this load (figure <a class="xref" href="sec-ritzova-metoda.html#fig-rit-zaklepanje" data-knowl="fig-rit-zaklepanje">6.17</a>). Here it is the deformation with bending and without shear strain, which the element with linear fields cannot produce. Why the phenomenon appears and how it is removed is explained in the next section of this chapter.</p>
+<figcaption><span class="blk-label">Figure 12.23</span>: Deflection of the cantilever \(L = 1\) m with a force of \(500\) N downwards at the end. Horizontally \(8\) cm per \(1\) m, vertically \(0{,}5\) cm per \(1\) mm (the vertical scale is \(62{,}5\) times larger than the horizontal one). Above: the true deflection by Timoshenko (<span class="ink-l">black</span><span class="ink-d">white</span>, tip \(7{,}982\) mm, the grey dashed line of the Euler-Bernoulli solution is almost the same curve) and finite element solutions with \(1\) element (orange, tip \(0{,}0396\) mm, practically on the axis), \(4\) elements (blue, \(0{,}590\) mm) and \(16\) elements (blue, \(4{,}478\) mm). The points are nodes. Below: the same solution with one element at a \(100\) times larger vertical scale <span class="nobr">(\(0{,}5\)</span> cm per \(0{,}01\) mm), the distance with end bars is \(0{,}0396\) mm. The true deflection leaves the lower picture already at \(x = 0{,}06\) m, where it reaches \(0{,}046\) mm.</figcaption></figure>
+<p>The cantilever is <a data-del="vpetje" class="xref kaz" href="sec-timosenkov-element.html#fig-tme-zaklenjen" data-knowl="fig-tme-zaklenjen">clamped at the left end</a>, and <a data-del="xos" class="xref kaz" href="sec-timosenkov-element.html#fig-tme-zaklenjen" data-knowl="fig-tme-zaklenjen">horizontally</a> \(x\) runs from \(0\) to \(1\) m. <a data-del="prava" class="xref kaz" href="sec-timosenkov-element.html#fig-tme-zaklenjen" data-knowl="fig-tme-zaklenjen">The true deflection \(v\)</a> drops by \(7{,}982\) mm at the tip and almost coincides with <a data-del="eb" class="xref kaz" href="sec-timosenkov-element.html#fig-tme-zaklenjen" data-knowl="fig-tme-zaklenjen">the Euler-Bernoulli deflection</a>. <a data-del="n16" class="xref kaz" href="sec-timosenkov-element.html#fig-tme-zaklenjen" data-knowl="fig-tme-zaklenjen">The solution with \(16\) elements</a> reaches \(4{,}478\) mm at the tip, <a data-del="n4" class="xref kaz" href="sec-timosenkov-element.html#fig-tme-zaklenjen" data-knowl="fig-tme-zaklenjen">the one with four</a> \(0{,}590\) mm, and <a data-del="n1" class="xref kaz" href="sec-timosenkov-element.html#fig-tme-zaklenjen" data-knowl="fig-tme-zaklenjen">the one with a single element</a> only \(0{,}0396\) mm, practically on the axis. Only the lower picture, at a \(100\) times larger vertical scale, shows that <a data-del="konec" class="xref kaz" href="sec-timosenkov-element.html#fig-tme-zaklenjen" data-knowl="fig-tme-zaklenjen">the end of the single element</a> really drops, by \(0{,}0396\) mm. <a data-del="prava" class="xref kaz" href="sec-timosenkov-element.html#fig-tme-zaklenjen" data-knowl="fig-tme-zaklenjen">The true deflection</a> leaves that picture already at \(x = 0{,}06\) m.</p>
+<p>This phenomenon already has a name in the book. Chapter <a class="xref" href="ch-nosilci.html">5</a> called it shear locking (strižno zaklepanje): the finite element solution is too stiff, because the shear term prevails (section <a class="xref" href="sec-timosenkov-nosilec.html#sec-izbira-teorije-nosilca">5.13.5</a>). Chapter <a class="xref" href="ch-sibka-oblika.html">6</a> met the same kind of phenomenon in the hanging bar as locking (zaklepanje): the family of fields does not allow the deformation that the <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">body</a> needs under this load (figure <a class="xref" href="sec-ritzova-metoda.html#fig-rit-zaklepanje" data-knowl="fig-rit-zaklepanje">6.17</a>). Here it is the deformation with bending and without shear strain, which the element with <a class="xref auto forward" href="sec-mkk-izoparametricni.html#lem-linearna-polja-izoparametricni" data-knowl="lem-linearna-polja-izoparametricni" title="Defined later in the book">linear fields</a> cannot produce. Why the phenomenon appears and how it is removed is explained in the next section of this chapter.</p>
 
 <h3 id="sec-tme-model"><span class="h-num">12.7.5</span> The choice of model (izbira modela)</h3>
 <p>The <a class="xref auto" href="sec-zaporedja.html#def-limita-zaporedja" data-knowl="def-limita-zaporedja">convergence</a> to the true solution is fast at \(L = 80\) mm, but which solution is the true one? Finite elements converge to the solution of the Timoshenko equations, \(-0{,}004878\) mm (for this cantilever lemma <a class="xref" href="sec-timosenkov-element.html#lem-konzola-timosenko-elementi" data-knowl="lem-konzola-timosenko-elementi">12.34</a> proves it). Plane elasticity from chapter <a class="xref" href="ch-robni-problem-elasticnosti.html">11</a> gives for the same cantilever a tip deflection that depends on how the clamp is idealized (derivation <a class="xref" href="sec-airyjeva-funkcija.html#der-konzola-pomiki" data-knowl="der-konzola-pomiki">11.42</a>): for (i) it is \(-0{,}004082\) mm, for (ii) \(-0{,}005077\) mm. The chapter has numbers only for \(L = 1\) m, so we computed these two with the formulas for \(v(L, 0)\) from derivation <a class="xref" href="sec-airyjeva-funkcija.html#der-konzola-pomiki" data-knowl="der-konzola-pomiki">11.42</a> at \(L = 80\) mm (the same bar, \(\nu = 0{,}3\) and \(c = 20\) mm, half the section height). The Timoshenko result lies between them. At \(L = 1\) m the same three results are <span class="nobr">\(-7{,}9719\),</span> \(-7{,}9844\) and \(-7{,}9819\) mm. In (i) the horizontal element of the axis at the middle of the clamp does not rotate, in (ii) the vertical element does not rotate. The differences between the models come from how the <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">body</a> is idealized and how it is clamped (Saint-Venant's principle, section <a class="xref" href="sec-saint-venantovo-nacelo.html">11.11</a>), not from the discretization. The choice of model is a question of modelling. Finite elements lead us to the true solution of the chosen model if we refine them enough: for this cantilever, since \(r_{\mathrm{h}}\) tends to one when \(h\) tends to zero. Here we saw what density is needed for slender <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beams</a>.</p>

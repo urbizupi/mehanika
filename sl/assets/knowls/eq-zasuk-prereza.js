@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-zasuk-prereza"] = {"html": "<div class=\"eq\">\\[u_{\\mathrm{y}} = -\\varphi(x)\\,z , \\qquad u_{\\mathrm{z}} = \\varphi(x)\\,y , \\qquad \\varphi(x) = \\alpha\\,x , \\tag{16.2}\\]</div>", "href": "sec-torzija-kroga.html#eq-zasuk-prereza"};

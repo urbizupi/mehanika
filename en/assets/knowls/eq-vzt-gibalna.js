@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vzt-gibalna"] = {"html": "<div class=\"eq\">\\[\\big(J_0 + J(\\theta)\\big)\\,\\ddot\\theta + \\tfrac12 J'(\\theta)\\,\\dot\\theta^2 = Q_{\\mathrm{g}}(\\theta) - T_{\\mathrm{L}} . \\tag{23.23}\\]</div>", "href": "sec-vztrajnik.html#eq-vzt-gibalna"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-cs-odsek"] = {"html": "<div class=\"eq\">\\[\\mat K_{\\mathrm{k}} = \\mat K_0 + w_{\\mathrm{k}}\\,\\mat K_1 + \\bar w_{\\mathrm{k}}\\,\\mat K_1^\\T , \\qquad w_{\\mathrm{k}} = \\mathrm{e}^{2\\pi\\mathrm{i}k/N} \\tag{19.17}\\]</div>", "href": "sec-ciklicna-simetrija.html#eq-cs-odsek"};

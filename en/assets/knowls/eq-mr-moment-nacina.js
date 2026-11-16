@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mr-moment-nacina"] = {"html": "<div class=\"eq\">\\[EI\\,\\varphi_{\\mathrm{r}}''(0) = \\omega_{\\mathrm{r}}'^2\\,b_{\\mathrm{r}} . \\tag{28.53}\\]</div>", "href": "sec-modalna-redukcija-clena.html#eq-mr-moment-nacina"};

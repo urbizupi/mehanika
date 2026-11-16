@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vv-v-primarna"] = {"html": "<div class=\"eq\">\\[\\vek F^{(1)} = m_{\\mathrm{B}} a\\Omega^2\\,\\big(2\\cos^2\\gamma\\cos\\alpha,\\; 2\\sin^2\\gamma\\sin\\alpha\\big) , \\tag{23.38}\\]</div>", "href": "sec-vecvaljni-motorji.html#eq-vv-v-primarna"};

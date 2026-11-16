@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-podajnost-max"] = {"html": "<div class=\"eq\">\\[2\\,\\vek F^\\T\\vek v - \\vek v^\\T\\mat K(\\vek A)\\,\\vek v = C(\\vek A) - (\\vek v - \\vek u)^\\T\\mat K(\\vek A)\\,(\\vek v - \\vek u) \\le C(\\vek A) , \\tag{29.27}\\]</div>", "href": "sec-najmanjsa-podajnost.html#eq-podajnost-max"};

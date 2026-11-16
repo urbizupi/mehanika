@@ -1,0 +1,1367 @@
+<!doctype html>
+<html lang="sl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>20.7 Dušenje v modelu končnih elementov · Poglavje 20</title>
+<script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/style.css">
+<noscript><style>#loadbar { display: none; }</style></noscript>
+<script src="assets/config.js"></script>
+<script src="assets/load.js"></script>
+<script defer src="assets/interaktivno.js"></script>
+<script defer src="assets/book.js"></script>
+<script defer src="assets/predavanje.js"></script>
+<script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<div id="loadbar" aria-hidden="true"></div>
+<header class="top"><a class="home" href="index.html">Mehanika</a><nav class="pager"><a href="sec-kompleksni-modul.html" rel="prev">← 20.6</a><a href="index.html">Kazalo</a><a href="sec-zapis-prvega-reda.html" rel="next">20.8 →</a></nav>
+<span class="tools"><a class="lang" href="../en/sec-dusenje-mke.html" hreflang="en">English</a><button type="button" class="theme-toggle" title="Svetla ali temna tema" aria-label="Svetla ali temna tema"></button><button type="button" data-details="open">Razpri vse</button><button type="button" data-details="close">Skrij vse</button><button type="button" class="fig-side-toggle" aria-pressed="false">Slike ob strani</button></span></header>
+<main>
+<p class="updated">Posodobljeno 16. 11. 2026 ob 10.52</p>
+<p class="crumb"><a href="ch-dusenje.html"><span class="h-num">Poglavje 20</span> Modeli dušenja</a></p>
+<h2 id="sec-dusenje-mke"><span class="h-num">20.7</span> Dušenje v modelu končnih elementov</h2>
+<!-- nofig: signpost -->
+<p>Poglavje <a class="xref" href="ch-nihanje-vec-ps.html">10</a> je <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matriko</a> dušenja \(\mat C\) vzelo kot dano: Rayleighovo dušenje (definicija <a class="xref" href="sec-dusenje-superpozicija.html#def-rayleighovo-dusenje" data-knowl="def-rayleighovo-dusenje">10.45</a>) ali modalno dušenje (definicija <a class="xref" href="sec-dusenje-superpozicija.html#def-modalno-dusenje" data-knowl="def-modalno-dusenje">10.47</a>), pri katerih izberemo razmernike načinov. Pri končnih elementih nastane drugo vprašanje: ali lahko \(\mat C\) sestavimo iz elementov, kot smo sestavili togostno matriko \(\mat K\) (izrek <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a>) in masno matriko \(\mat M\) (razdelek <a class="xref" href="sec-masna-matrika.html#sec-sestavljena-masa">10.7.3</a>)? Viri so previdni. CK (PDF str. 321) pravi, da bi se matrika dušenja v načelu dala izpeljati s postopki končnih elementov, a lastnosti materiala niso dovolj znane in večino dušenja povzročijo stiki in nekonstrukcijski deli, zato dušenje navadno določimo za celoten sistem. BATHE (PDF str. 813) pravi, da matrike \(\mat C\) praviloma ne moremo sestaviti iz matrik elementov, kot sestavimo matriki mase in togosti, in da jo vpeljemo, da približno zajame skupno izgubo energije.</p>
+<!-- nofig: signpost -->
+<p>Vseeno poznamo dva mehanizma, ki ju znamo zapisati za en element: material, ki se upira hitrosti raztezka (<a class="xref auto" href="sec-viskoelasticni-modeli.html#def-kelvin-voigtov-clen" data-knowl="def-kelvin-voigtov-clen">Kelvin-Voigtov člen</a>, razdelek <a class="xref" href="sec-viskoelasticni-modeli.html">20.4</a>), in <a class="xref auto" href="sec-model-ena-ps.html#def-viskozni-dusilnik" data-knowl="def-viskozni-dusilnik">dušilnik</a>, ki je vzdolž <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">telesa</a> pritrjen na mirujočo okolico, kot zrak ali olje (razdelek <a class="xref" href="sec-izgube-energije.html">20.1</a>). Vprašanja so tri. Kakšno matriko da vsak od njiju za en element? Kdaj je sestavljena matrika Rayleighovo dušenje, torej klasično, in kaj se zgodi, če ni? In kaj storimo z dušenjem, ki ga poznamo le za harmonično gibanje, histereznim (razdelek <a class="xref" href="sec-histerezno-dusenje.html">20.3</a>) in frekvenčno odvisnim materialom (razdelek <a class="xref" href="sec-kompleksni-modul.html">20.6</a>)? Vodi nas <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">okvir</a> A iz razdelka <a class="xref" href="sec-enacbe-vec-ps.html">10.1</a>: dva stropa z maso \(m = 500\) kg, togost vsake etaže \(k = 501\,760\) N/m, lastni frekvenci \(\omega_1 = 19{,}578\) in \(\omega_2 = 51{,}257\) 1/s, in <a class="xref auto" href="sec-spektralni-izrek.html#def-modalna-matrika" data-knowl="def-modalna-matrika">modalna matrika</a> \(\mat\Phi\) iz razdelka <a class="xref" href="sec-spektralni-izrek.html#sec-spi-zgledi">10.3.4</a> (v kg<span class="nobr">\(^{-1/2}\)).</span></p>
+
+<h3 id="sec-dmke-element"><span class="h-num">20.7.1</span> Matrika dušenja enega elementa</h3>
+<p>Vzemimo element palice z dvema vozliščema in dolžino \(h\) (definicija <a class="xref" href="sec-element-palice.html#def-koncni-element" data-knowl="def-koncni-element">7.1</a>), s stalnima \(EA\) in <span class="nobr">\(\rho A\),</span> in <a class="xref auto" href="sec-element-nosilca.html#def-element-nosilca" data-knowl="def-element-nosilca">element nosilca</a> (razdelek <a class="xref" href="sec-element-nosilca.html">12.1</a>). V obeh je polje na elementu \(u_{\mathrm{h}} = \mat\psi_{\mathrm{e}}\,\vek d_{\mathrm{e}}\) (pri nosilcu <span class="nobr">\(v_{\mathrm{h}} = \mat H_{\mathrm{e}}\,\vek d_{\mathrm{e}}\)),</span> kjer so vozliščni pomiki \(\vek d_{\mathrm{e}}(t)\) <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcije</a> časa in oblikovne funkcije funkcije kraja. Kako bi iz tega dobili silo dušenja na vozliščih?</p>
+
+<figure class="blk slika" id="fig-c20-dusilni-element"><p><span class="svgfig" role="img" aria-label="Element palice z vzmetjo in dušilnikom vzporedno in z zunanjimi dušilniki"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='368.58pt' height='300.38pt' viewBox='-72.000004 -72.000002 273.022665 222.505644'>
+<defs>
+<path id='c20-07-dusilni-element-g0-28' d='M2.929016-3.716065H4.60274C4.732254-3.716065 5.090909-3.716065 5.090909-4.054795C5.090909-4.293898 4.881694-4.293898 4.692403-4.293898H1.902864C1.703611-4.293898 1.315068-4.293898 .876712-3.825654C.547945-3.466999 .268991-2.988792 .268991-2.929016C.268991-2.919054 .268991-2.82939 .388543-2.82939C.468244-2.82939 .488169-2.86924 .547945-2.948941C1.036115-3.716065 1.603985-3.716065 1.8132-3.716065H2.6401L1.663761-.518057C1.62391-.398506 1.564134-.18929 1.564134-.14944C1.564134-.039851 1.633873 .119552 1.853051 .119552C2.181818 .119552 2.231631-.159402 2.261519-.308842L2.929016-3.716065Z'/>
+<path id='c20-07-dusilni-element-g0-70' d='M3.01868-3.237858H3.985056C4.732254-3.237858 4.811955-3.078456 4.811955-2.789539C4.811955-2.719801 4.811955-2.600249 4.742217-2.30137C4.722291-2.251557 4.712329-2.211706 4.712329-2.191781C4.712329-2.11208 4.772105-2.072229 4.83188-2.072229C4.931507-2.072229 4.931507-2.102117 4.98132-2.281445L5.529265-4.443337C5.559153-4.552927 5.559153-4.572852 5.559153-4.60274C5.559153-4.622665 5.539228-4.712329 5.439601-4.712329S5.330012-4.662516 5.290162-4.503113C5.080946-3.726027 4.851806-3.5467 4.004981-3.5467H3.098381L3.73599-6.07721C3.825654-6.425903 3.835616-6.465753 4.273973-6.465753H5.589041C6.814446-6.465753 7.043587-6.136986 7.043587-5.369863C7.043587-5.140722 7.043587-5.100872 7.013699-4.83188C6.993773-4.702366 6.993773-4.682441 6.993773-4.652553C6.993773-4.60274 7.023661-4.533001 7.113325-4.533001C7.222914-4.533001 7.232877-4.592777 7.252802-4.782067L7.452055-6.505604C7.481943-6.774595 7.43213-6.774595 7.183064-6.774595H2.30137C2.102117-6.774595 2.002491-6.774595 2.002491-6.575342C2.002491-6.465753 2.092154-6.465753 2.281445-6.465753C2.650062-6.465753 2.929016-6.465753 2.929016-6.286426C2.929016-6.246575 2.929016-6.22665 2.879203-6.047323L1.564134-.777086C1.464508-.388543 1.444583-.308842 .657534-.308842C.488169-.308842 .37858-.308842 .37858-.119552C.37858 0 .498132 0 .52802 0C.816936 0 1.554172-.029888 1.843088-.029888C2.171856-.029888 2.998755 0 3.327522 0C3.417186 0 3.536737 0 3.536737-.18929C3.536737-.268991 3.476961-.288917 3.476961-.298879C3.447073-.308842 3.427148-.308842 3.198007-.308842C2.978829-.308842 2.929016-.308842 2.67995-.328767C2.391034-.358655 2.361146-.398506 2.361146-.52802C2.361146-.547945 2.361146-.607721 2.400996-.757161L3.01868-3.237858Z'/>
+<path id='c20-07-dusilni-element-g0-99' d='M3.945205-3.785803C3.785803-3.785803 3.646326-3.785803 3.506849-3.646326C3.347447-3.496887 3.327522-3.327522 3.327522-3.257783C3.327522-3.01868 3.506849-2.909091 3.696139-2.909091C3.985056-2.909091 4.254047-3.148194 4.254047-3.5467C4.254047-4.034869 3.785803-4.403487 3.078456-4.403487C1.733499-4.403487 .408468-2.978829 .408468-1.574097C.408468-.67746 .986301 .109589 2.022416 .109589C3.447073 .109589 4.283935-.946451 4.283935-1.066002C4.283935-1.125778 4.224159-1.195517 4.164384-1.195517C4.11457-1.195517 4.094645-1.175592 4.034869-1.09589C3.247821-.109589 2.161893-.109589 2.042341-.109589C1.414695-.109589 1.145704-.597758 1.145704-1.195517C1.145704-1.603985 1.344956-2.570361 1.683686-3.188045C1.992528-3.755915 2.540473-4.184309 3.088418-4.184309C3.427148-4.184309 3.805729-4.054795 3.945205-3.785803Z'/>
+<path id='c20-07-dusilni-element-g0-100' d='M5.140722-6.804483C5.140722-6.814446 5.140722-6.914072 5.011208-6.914072C4.861768-6.914072 3.915318-6.824408 3.745953-6.804483C3.666252-6.794521 3.606476-6.744707 3.606476-6.615193C3.606476-6.495641 3.696139-6.495641 3.845579-6.495641C4.323786-6.495641 4.343711-6.425903 4.343711-6.326276L4.313823-6.127024L3.716065-3.765878C3.536737-4.134496 3.247821-4.403487 2.799502-4.403487C1.633873-4.403487 .398506-2.938979 .398506-1.484433C.398506-.547945 .946451 .109589 1.723537 .109589C1.92279 .109589 2.420922 .069738 3.01868-.637609C3.098381-.219178 3.447073 .109589 3.92528 .109589C4.273973 .109589 4.503113-.119552 4.662516-.438356C4.83188-.797011 4.961395-1.404732 4.961395-1.424658C4.961395-1.524284 4.871731-1.524284 4.841843-1.524284C4.742217-1.524284 4.732254-1.484433 4.702366-1.344956C4.533001-.697385 4.353674-.109589 3.945205-.109589C3.676214-.109589 3.646326-.368618 3.646326-.56787C3.646326-.806974 3.666252-.876712 3.706102-1.046077L5.140722-6.804483ZM3.068493-1.185554C3.01868-1.006227 3.01868-.986301 2.86924-.816936C2.430884-.268991 2.022416-.109589 1.743462-.109589C1.24533-.109589 1.105853-.657534 1.105853-1.046077C1.105853-1.544209 1.424658-2.769614 1.653798-3.227895C1.96264-3.815691 2.410959-4.184309 2.809465-4.184309C3.457036-4.184309 3.596513-3.367372 3.596513-3.307597S3.576588-3.188045 3.566625-3.138232L3.068493-1.185554Z'/>
+<path id='c20-07-dusilni-element-g0-107' d='M2.859278-6.804483C2.859278-6.814446 2.859278-6.914072 2.729763-6.914072C2.500623-6.914072 1.77335-6.834371 1.514321-6.814446C1.43462-6.804483 1.325031-6.794521 1.325031-6.615193C1.325031-6.495641 1.414695-6.495641 1.564134-6.495641C2.042341-6.495641 2.062267-6.425903 2.062267-6.326276L2.032379-6.127024L.587796-.388543C.547945-.249066 .547945-.229141 .547945-.169365C.547945 .059776 .747198 .109589 .836862 .109589C.966376 .109589 1.115816 .019925 1.175592-.099626C1.225405-.18929 1.673724-2.032379 1.733499-2.281445C2.072229-2.251557 2.889166-2.092154 2.889166-1.43462C2.889166-1.364882 2.889166-1.325031 2.859278-1.225405C2.839352-1.105853 2.819427-.986301 2.819427-.876712C2.819427-.288917 3.217933 .109589 3.73599 .109589C4.034869 .109589 4.303861-.049813 4.523039-.418431C4.772105-.856787 4.881694-1.404732 4.881694-1.424658C4.881694-1.524284 4.79203-1.524284 4.762142-1.524284C4.662516-1.524284 4.652553-1.484433 4.622665-1.344956C4.423412-.617684 4.194271-.109589 3.755915-.109589C3.566625-.109589 3.437111-.219178 3.437111-.577833C3.437111-.747198 3.476961-.976339 3.516812-1.135741C3.556663-1.305106 3.556663-1.344956 3.556663-1.444583C3.556663-2.092154 2.929016-2.381071 2.082192-2.49066C2.391034-2.669988 2.709838-2.988792 2.938979-3.227895C3.417186-3.755915 3.875467-4.184309 4.363636-4.184309C4.423412-4.184309 4.433375-4.184309 4.4533-4.174346C4.572852-4.154421 4.582814-4.154421 4.662516-4.094645C4.682441-4.084682 4.682441-4.07472 4.702366-4.054795C4.224159-4.024907 4.134496-3.636364 4.134496-3.516812C4.134496-3.35741 4.244085-3.16812 4.513076-3.16812C4.772105-3.16812 5.061021-3.387298 5.061021-3.775841C5.061021-4.07472 4.83188-4.403487 4.383562-4.403487C4.104608-4.403487 3.646326-4.323786 2.929016-3.526775C2.590286-3.148194 2.201743-2.749689 1.823163-2.600249L2.859278-6.804483Z'/>
+<path id='c20-07-dusilni-element-g1-34' d='M1.157659-1.555168C1.422665-1.45056 1.63188-1.45056 1.834122-1.45056C2.057285-1.45056 2.468742-1.45056 2.468742-1.708593C2.468742-1.896887 2.203736-1.924782 1.903861-1.924782C1.806227-1.924782 1.506351-1.924782 1.164633-1.785305C1.004234-1.862017 .899626-1.994521 .899626-2.147945C.899626-2.524533 1.57609-2.761644 2.280448-2.761644C2.39203-2.761644 2.691905-2.761644 3.005729-2.566376C3.047572-2.538481 3.089415-2.503611 3.145205-2.503611C3.242839-2.503611 3.368369-2.608219 3.368369-2.726775C3.368369-2.866252 3.138232-2.963885 3.005729-3.019676C2.705853-3.145205 2.461768-3.145205 2.357161-3.145205C1.506351-3.145205 .662516-2.698879 .662516-2.140971C.662516-1.855044 .927522-1.673724 .934496-1.66675C.676463-1.513325 .327771-1.206476 .327771-.767123C.327771-.258032 .829888 .139477 1.603985 .139477C2.66401 .139477 3.040598-.488169 3.040598-.599751C3.040598-.648568 2.998755-.690411 2.942964-.690411C2.901121-.690411 2.880199-.662516 2.859278-.63462C2.684932-.36264 2.454795-.244085 1.715567-.244085C1.54122-.244085 1.21345-.244085 .962391-.341719C.683437-.446326 .564882-.63462 .564882-.808966C.564882-.969365 .683437-1.311083 1.157659-1.555168ZM1.464508-1.673724C1.54122-1.694645 1.680697-1.729514 1.889913-1.729514C2.043337-1.729514 2.078207-1.72254 2.217684-1.694645C2.113076-1.652802 2.092154-1.645828 1.834122-1.645828C1.729514-1.645828 1.590037-1.645828 1.464508-1.673724Z'/>
+<path id='c20-07-dusilni-element-g1-101' d='M1.562142-1.590037C1.75741-1.590037 2.308344-1.603985 2.684932-1.736488C3.200996-1.917808 3.29863-2.252553 3.29863-2.461768C3.29863-2.84533 2.915068-3.075467 2.433873-3.075467C1.597011-3.075467 .467248-2.433873 .467248-1.241345C.467248-.536986 .9066 .069738 1.72254 .069738C2.901121 .069738 3.452055-.620672 3.452055-.718306C3.452055-.760149 3.38929-.836862 3.333499-.836862C3.291656-.836862 3.277709-.822914 3.221918-.767123C2.677958-.125529 1.862017-.125529 1.736488-.125529C1.318057-.125529 1.039103-.404483 1.039103-.969365C1.039103-1.066999 1.039103-1.206476 1.12279-1.590037H1.562142ZM1.17858-1.785305C1.464508-2.796513 2.238605-2.880199 2.433873-2.880199C2.740722-2.880199 2.998755-2.726775 2.998755-2.461768C2.998755-1.785305 1.820174-1.785305 1.520299-1.785305H1.17858Z'/>
+<path id='c20-07-dusilni-element-g1-122' d='M1.171606-.613699C1.352927-.795019 1.478456-.927522 2.071233-1.401743C2.217684-1.520299 2.740722-1.93873 2.942964-2.133998C3.368369-2.552428 3.633375-2.908095 3.633375-2.991781S3.542715-3.075467 3.514819-3.075467C3.452055-3.075467 3.431133-3.061519 3.396264-3.005729C3.180075-2.684932 3.033624-2.580324 2.866252-2.580324C2.782565-2.580324 2.677958-2.587298 2.468742-2.789539C2.231631-3.02665 2.078207-3.075467 1.917808-3.075467C1.3599-3.075467 .983313-2.468742 .983313-2.259527C.983313-2.196762 1.053051-2.175841 1.101868-2.175841C1.185554-2.175841 1.199502-2.196762 1.227397-2.273474C1.332005-2.517559 1.72254-2.531507 1.834122-2.531507C1.994521-2.531507 2.175841-2.489664 2.273474-2.468742C2.657036-2.385056 2.705853-2.385056 2.880199-2.385056C2.698879-2.196762 2.57335-2.071233 1.910834-1.54122C1.366874-1.108842 1.17858-.934496 1.046077-.795019C.627646-.383562 .425405-.076712 .425405-.013948C.425405 .069738 .516065 .069738 .54396 .069738C.613699 .069738 .627646 .055791 .662516 0C.850809-.265006 1.066999-.425405 1.30411-.425405C1.387796-.425405 1.492403-.418431 1.680697-.244085C1.896887-.034869 2.036364 .069738 2.259527 .069738C3.005729 .069738 3.472976-.774097 3.472976-1.011208C3.472976-1.094894 3.396264-1.101868 3.354421-1.101868C3.270735-1.101868 3.256787-1.066999 3.228892-.990286C3.096389-.641594 2.684932-.474222 2.343213-.474222C2.182814-.474222 2.008468-.509091 1.834122-.550934C1.513325-.620672 1.457534-.620672 1.332005-.620672C1.318057-.620672 1.21345-.620672 1.171606-.613699Z'/>
+<path id='c20-07-dusilni-element-g2-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='c20-07-dusilni-element-g2-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+</defs>
+<g id='c20-07-dusilni-element-page1'>
+<g stroke-miterlimit='10' transform='translate(-34.70123,-16.962346)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='sile'>
+<g stroke-width='0.9'>
+<path d='M0 0H-32.76503' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,-30.16,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-23.95267,5.28294)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-16.962346)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-34.70123' y='-16.962346' xlink:href='#c20-07-dusilni-element-g0-70'/>
+<use x='-28.294686' y='-15.467966' xlink:href='#c20-07-dusilni-element-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M199.1692 0H231.93423' fill='none'/>
+<g transform='translate(229.32921,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(212.20518,5.28294)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-16.962346)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-34.70123' y='-16.962346' xlink:href='#c20-07-dusilni-element-g0-70'/>
+<use x='-28.294686' y='-15.467966' xlink:href='#c20-07-dusilni-element-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='vozlisci'>
+<path d='M3.11157 0C3.11157 1.71849 1.71849 3.11157 0 3.11157S-3.11157 1.71849-3.11157 0S-1.71849-3.11157 0-3.11157S3.11157-1.71849 3.11157 0ZM0 0' stroke='none'/>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-16.962346)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+<path d='M202.28078 0C202.28078 1.71849 200.8877 3.11157 199.1692 3.11157C197.45071 3.11157 196.05763 1.71849 196.05763 0S197.45071-3.11157 199.1692-3.11157C200.8877-3.11157 202.28078-1.71849 202.28078 0ZM199.1692 0' stroke='none'/>
+<g transform='translate(199.1692,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-16.962346)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(-13.32396,-10.57742)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-16.962346)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-34.70123' y='-16.962346' xlink:href='#c20-07-dusilni-element-g0-100'/>
+<use x='-29.515798' y='-15.467966' xlink:href='#c20-07-dusilni-element-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(202.80219,-10.57742)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-16.962346)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-34.70123' y='-16.962346' xlink:href='#c20-07-dusilni-element-g0-100'/>
+<use x='-29.515798' y='-15.467966' xlink:href='#c20-07-dusilni-element-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='material'>
+<path d='M0 0H28.45274' fill='none'/>
+<path d='M170.71646 0H199.1692' fill='none'/>
+<path d='M28.45274-34.1432V34.1432' fill='none'/>
+<path d='M170.71646-34.1432V34.1432' fill='none'/>
+<g class='del' data-del='pruzina'>
+<path d='M28.45274 28.45274H45.52455L51.21501 38.41138L62.59595 18.4941L73.9773 38.41138L85.35823 18.4941L96.73915 38.41138L108.1205 18.4941L119.50143 38.41138L130.88278 18.4941L139.41826 28.45274H170.71646' fill='none'/>
+<g transform='translate(94.83452,44.96663)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-16.962346)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-34.70123' y='-16.962346' xlink:href='#c20-07-dusilni-element-g0-107'/>
+<use x='-29.514639' y='-15.467966' xlink:href='#c20-07-dusilni-element-g1-101'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='dusilnik'>
+<path d='M28.45274-28.45274H68.2864' fill='none'/>
+<path d='M68.2864-38.41138V-18.4941H122.34688V-38.41138ZM122.34688-18.4941' fill='none'/>
+<path d='M96.73915-35.56592V-21.33955' fill='none'/>
+<path d='M96.73915-28.45274H170.71646' fill='none'/>
+<g transform='translate(86.24196,-50.41109)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-16.962346)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-34.70123' y='-16.962346' xlink:href='#c20-07-dusilni-element-g0-28'/>
+<use x='-30.346015' y='-15.467966' xlink:href='#c20-07-dusilni-element-g1-34'/>
+<use x='-26.08386' y='-16.962346' xlink:href='#c20-07-dusilni-element-g0-107'/>
+<use x='-20.897269' y='-15.467966' xlink:href='#c20-07-dusilni-element-g1-101'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='palica'>
+<g stroke-width='1.1'>
+<path d='M0-113.81097H199.1692' fill='none'/>
+</g>
+<path d='M3.11157-113.81097C3.11157-112.09248 1.71849-110.6994 0-110.6994S-3.11157-112.09248-3.11157-113.81097S-1.71849-116.92255 0-116.92255S3.11157-115.52946 3.11157-113.81097ZM0-113.81097' stroke='none'/>
+<g transform='translate(0.0,-113.81097)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-16.962346)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M202.28078-113.81097C202.28078-112.09248 200.8877-110.6994 199.1692-110.6994C197.45071-110.6994 196.05763-112.09248 196.05763-113.81097S197.45071-116.92255 199.1692-116.92255C200.8877-116.92255 202.28078-115.52946 202.28078-113.81097ZM199.1692-113.81097' stroke='none'/>
+<g transform='translate(199.1692,-113.81097)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-16.962346)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='zunanji'>
+<path d='M49.7923-113.81097V-128.03734' fill='none'/>
+<path d='M42.67911-128.03734V-150.79962H56.90549V-128.03734ZM56.90549-150.79962' fill='none'/>
+<path d='M44.671-139.41826H54.91357' fill='none'/>
+<path d='M49.7923-150.79962V-162.18054' fill='none'/>
+<path d='M99.5846-113.81097V-128.03734' fill='none'/>
+<path d='M92.4714-128.03734V-150.79962H106.69778V-128.03734ZM106.69778-150.79962' fill='none'/>
+<path d='M94.4633-139.41826H104.70589' fill='none'/>
+<path d='M99.5846-150.79962V-162.18054' fill='none'/>
+<path d='M149.37689-113.81097V-128.03734' fill='none'/>
+<path d='M142.26372-128.03734V-150.79962H156.49008V-128.03734ZM156.49008-150.79962' fill='none'/>
+<path d='M144.25562-139.41826H154.49818' fill='none'/>
+<path d='M149.37689-150.79962V-162.18054' fill='none'/>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M14.22636-162.18054H199.16919' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M14.22636-162.18054L8.5359-167.871' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M21.33954-162.18054L15.64908-167.871' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M28.45273-162.18054L22.76227-167.871' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M35.56592-162.18054L29.87546-167.871' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M42.67911-162.18054L36.98865-167.871' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M49.79228-162.18054L44.10182-167.871' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M56.90547-162.18054L51.21501-167.871' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M64.01866-162.18054L58.3282-167.871' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M71.13185-162.18054L65.44139-167.871' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M78.24503-162.18054L72.55457-167.871' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M85.35822-162.18054L79.66776-167.871' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M92.4714-162.18054L86.78094-167.871' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M99.5846-162.18054L93.89413-167.871' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M106.69777-162.18054L101.00731-167.871' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M113.81096-162.18054L108.1205-167.871' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M120.92415-162.18054L115.23369-167.871' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M128.03734-162.18054L122.34688-167.871' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M135.15051-162.18054L129.46005-167.871' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M142.2637-162.18054L136.57324-167.871' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M149.37689-162.18054L143.68643-167.871' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M156.49008-162.18054L150.79962-167.871' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M163.60326-162.18054L157.9128-167.871' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M170.71645-162.18054L165.02599-167.871' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M177.82964-162.18054L172.13918-167.871' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M184.94283-162.18054L179.25237-167.871' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M192.056-162.18054L186.36554-167.871' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M199.16919-162.18054L193.47873-167.871' fill='none'/>
+</g>
+</g>
+<g transform='translate(180.0399,-140.82104)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-34.70123,-16.962346)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-34.70123' y='-16.962346' xlink:href='#c20-07-dusilni-element-g0-99'/>
+<use x='-30.389834' y='-15.467966' xlink:href='#c20-07-dusilni-element-g1-122'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 20.18</span>: Element palice, narisan dvakrat. Zgoraj: material Kelvin-Voigtovega člena, vzmet \(k_{\mathrm{e}}\) vzporedno z dušilnikom \(\tau_\varepsilon k_{\mathrm{e}}\) med vozliščema, in sili <span class="nobr">\(F_1\),</span> \(F_2\) okolice na vozlišči. Spodaj: isti element z zunanjimi dušilniki na mirujočo okolico, narisani so trije namesto zvezne porazdelitve \(c_{\mathrm{z}}\) na enoto dolžine.</figcaption></figure>
+<p>Narišemo element kot črto med dvema <a data-del="vozlisci" class="xref kaz" href="sec-dusenje-mke.html#fig-c20-dusilni-element" data-knowl="fig-c20-dusilni-element">vozliščema</a>, ki se premakneta za \(d_1\) in <span class="nobr">\(d_2\).</span> Na <a data-del="sile" class="xref kaz" href="sec-dusenje-mke.html#fig-c20-dusilni-element" data-knowl="fig-c20-dusilni-element">vozlišči</a> deluje okolica s silama \(F_1\) in <span class="nobr">\(F_2\).</span> Začneta v vozliščih in kažeta navzven, ker element raztegneta, če ju vlečemo (lema <a class="xref" href="sec-element-palice.html#lem-enacba-elementa" data-knowl="lem-enacba-elementa">7.9</a>). Prvi mehanizem je <a data-del="material" class="xref kaz" href="sec-dusenje-mke.html#fig-c20-dusilni-element" data-knowl="fig-c20-dusilni-element">material elementa</a>. Pri Kelvin-Voigtovem členu (definicija <a class="xref" href="sec-viskoelasticni-modeli.html#def-kelvin-voigtov-clen" data-knowl="def-kelvin-voigtov-clen">20.24</a>) je napetost vsota dveh delov, <span class="nobr">\(\sigma = E\varepsilon + \eta\dot\varepsilon = E\,(\varepsilon + \tau_\varepsilon\dot\varepsilon)\),</span> kjer je \(\varepsilon\) raztezek (strain), \(\eta\) viskoznost in \(\tau_\varepsilon = \eta/E\) čas zakasnitve v sekundah. Prvi del je <a data-del="pruzina" class="xref kaz" href="sec-dusenje-mke.html#fig-c20-dusilni-element" data-knowl="fig-c20-dusilni-element">vzmet</a>, kot v poglavju <a class="xref" href="ch-mke-palice.html">7</a>, drugi je <a data-del="dusilnik" class="xref kaz" href="sec-dusenje-mke.html#fig-c20-dusilni-element" data-knowl="fig-c20-dusilni-element">dušilnik</a> vzporedno z njo, ker se oba deformirata za isti raztezek in njuni napetosti se seštejeta. Drugi mehanizem je <a data-del="zunanji" class="xref kaz" href="sec-dusenje-mke.html#fig-c20-dusilni-element" data-knowl="fig-c20-dusilni-element">zunanji dušilnik</a>. Narišemo ga pod <a data-del="palica" class="xref kaz" href="sec-dusenje-mke.html#fig-c20-dusilni-element" data-knowl="fig-c20-dusilni-element">palico</a> in ga pritrdimo na mirujočo okolico, saj tak dušilnik (zrak, olje, definicija <a class="xref" href="sec-model-ena-ps.html#def-viskozni-dusilnik" data-knowl="def-viskozni-dusilnik">9.1</a>) deluje na vsak košček palice s silo \(-c_{\mathrm{z}}\,\dot u_{\mathrm{h}}\) na enoto dolžine. Konstanta \(c_{\mathrm{z}}\) ima enoto N s/m<span class="nobr">\(^2\).</span></p>
+<p>Zakaj sta <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matriki</a> obeh mehanizmov tako preprosti, pove naslednja lema. Za <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">nosilec</a> veljajo isti sklepi, ker v njem le zamenjamo energijo raztezka z energijo ukrivljenosti.</p>
+
+<div class="blk lema" id="lem-dusilna-matrika-elementa"><div class="blk-head"><span class="blk-label">Lema 20.39</span> <span class="blk-title">Matrika dušenja elementa (damping matrix of an element)</span></div><div class="blk-body"><p>Naj bo \([x_{\mathrm{a}}, x_{\mathrm{b}}]\) končni element palice (definicija <a class="xref" href="sec-element-palice.html#def-koncni-element" data-knowl="def-koncni-element">7.1</a>) ali nosilca (definicija <a class="xref" href="sec-element-nosilca.html#def-element-nosilca" data-knowl="def-element-nosilca">12.3</a>) s togostno <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matriko</a> \(\mat k_{\mathrm{e}}\) (lema <a class="xref" href="sec-element-palice.html#lem-togost-elementa-palice" data-knowl="lem-togost-elementa-palice">7.5</a>, lema <a class="xref" href="sec-element-nosilca.html#lem-togost-elementa-nosilca" data-knowl="lem-togost-elementa-nosilca">12.4</a>) in masno matriko \(\mat m_{\mathrm{e}}\) (lema <a class="xref" href="sec-masna-matrika.html#lem-masa-elementa-palice" data-knowl="lem-masa-elementa-palice">10.31</a>, lema <a class="xref" href="sec-masna-matrika-nosilca.html#lem-masa-elementa-nosilca" data-knowl="lem-masa-elementa-nosilca">12.43</a>) ter s stalnimi \(EA\) in \(\rho A\) (pri nosilcu \(EI\) in <span class="nobr">\(\rho A\)).</span> Naj bo \(\mat\psi_{\mathrm{e}}\) vrstica oblikovnih <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcij</a> (pri nosilcu <span class="nobr">\(\mat H_{\mathrm{e}}\)),</span> \(u_{\mathrm{h}} = \mat\psi_{\mathrm{e}}\,\vek d_{\mathrm{e}}\) polje na elementu in \(\dot{\vek d}_{\mathrm{e}}\) stolpec hitrosti vozlišč. Tedaj velja:</p>
+<ol>
+<li>Če je material Kelvin-Voigtov, \(\sigma = E\,(\varepsilon + \tau_\varepsilon\dot\varepsilon)\) s stalnim <span class="nobr">\(\tau_\varepsilon &gt; 0\),</span> je <a class="xref auto" href="sec-virtualni-pomiki-palice.html#def-virtualno-delo" data-knowl="def-virtualno-delo">virtualno delo</a> viskoznega <a class="xref auto" href="sec-energija-deformacije.html#def-delo-napetosti" data-knowl="def-delo-napetosti">dela napetosti</a> pri <a class="xref auto" href="sec-virtualni-pomiki-palice.html#def-virtualni-pomik" data-knowl="def-virtualni-pomik">virtualnem pomiku</a> \(\delta\vek d_{\mathrm{e}}\) enako \(-\delta\vek d_{\mathrm{e}}^\T\,\mat c_{\mathrm{e}}\,\dot{\vek d}_{\mathrm{e}}\) z
+<div class="eq" id="eq-dmke-material">\[\mat c_{\mathrm{e}} = \tau_\varepsilon\,\mat k_{\mathrm{e}} . \tag{20.32}\]</div></li>
+<li>Če na element deluje zunanji <a class="xref auto" href="sec-model-ena-ps.html#def-viskozni-dusilnik" data-knowl="def-viskozni-dusilnik">dušilnik</a> s silo \(-c_{\mathrm{z}}\,\dot u_{\mathrm{h}}\) na enoto dolžine, je virtualno delo te sile enako \(-\delta\vek d_{\mathrm{e}}^\T\,\mat c_{\mathrm{e}}\,\dot{\vek d}_{\mathrm{e}}\) z
+<div class="eq" id="eq-dmke-zunanji">\[\mat c_{\mathrm{e}} = c_{\mathrm{z}}\int_{\mathrm{x}_\mathrm{a}}^{x_{\mathrm{b}}}\mat\psi_{\mathrm{e}}^\T\mat\psi_{\mathrm{e}}\,\mathrm{d}x = \frac{c_{\mathrm{z}}}{\rho A}\,\mat m_{\mathrm{e}} . \tag{20.33}\]</div></li>
+<li>Obe matriki \(\mat c_{\mathrm{e}}\) sta simetrični in pozitivno semidefinitni (definicija <a class="xref" href="sec-robni-pogoji-mke.html#def-pozitivno-semidefinitna" data-knowl="def-pozitivno-semidefinitna">7.15</a>), pri \(\tau_\varepsilon &gt; 0\) in \(c_{\mathrm{z}} &gt; 0\) pa je \(\mat c_{\mathrm{e}}\) iz točke 2 celo pozitivno definitna, matrika iz točke 1 pa ima isto jedro kot <span class="nobr">\(\mat k_{\mathrm{e}}\).</span></li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da je <a class="xref auto" href="sec-virtualni-pomiki-palice.html#def-virtualno-delo" data-knowl="def-virtualno-delo">virtualno delo</a> viskozne sile v vsakem primeru bilinearna oblika v \(\delta\vek d_{\mathrm{e}}\) in \(\dot{\vek d}_{\mathrm{e}}\) z navedeno <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matriko</a>. Pri palici je kvadratna oblika togosti \(\vek d^\T\mat k_{\mathrm{e}}\,\vek d = \int_{\mathrm{x}_\mathrm{a}}^{x_{\mathrm{b}}} EA\,(u_{\mathrm{h}}')^2\,\mathrm{d}x\) za vsak stolpec \(\vek d\) (lema <a class="xref" href="sec-element-palice.html#lem-togost-elementa-palice" data-knowl="lem-togost-elementa-palice">7.5</a>, \(u_{\mathrm{h}}' = (d_2 - d_1)/h\) je stalen), pri nosilcu \(\int EI\,(v_{\mathrm{h}}'')^2\,\mathrm{d}x\) (lema <a class="xref" href="sec-element-nosilca.html#lem-togost-elementa-nosilca" data-knowl="lem-togost-elementa-nosilca">12.4</a>, korak 2 dokaza leme <a class="xref" href="sec-element-nosilca.html#lem-lastnosti-togosti-nosilca" data-knowl="lem-lastnosti-togosti-nosilca">12.5</a>).</p>
+<ol>
+<li>Raztezek polja je \(\varepsilon_{\mathrm{h}} = u_{\mathrm{h}}'\) (pri nosilcu je raztezek <a class="xref auto" href="sec-pomik-v-prostoru.html#def-vlakno" data-knowl="def-vlakno">vlakna</a> na razdalji \(y\) od osi \(\varepsilon = -y\,v_{\mathrm{h}}''\) in z \(I = \int y^2\,\mathrm{d}A\) je moment preseka <span class="nobr">\(EI\,(v_{\mathrm{h}}'' + \tau_\varepsilon\dot v_{\mathrm{h}}'')\),</span> upogibna energija pa \(\int EI\,(v_{\mathrm{h}}'')^2\,\mathrm{d}x\) namesto <span class="nobr">\(\int EA\,(u_{\mathrm{h}}')^2\,\mathrm{d}x\)).</span> Oblikovne <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcije</a> niso odvisne od časa, zato je <span class="nobr">\(\dot\varepsilon_{\mathrm{h}} = \dot u_{\mathrm{h}}' = \mat\psi_{\mathrm{e}}'\,\dot{\vek d}_{\mathrm{e}}\).</span> Viskozni del napetosti je <span class="nobr">\(\sigma_{\mathrm{v}} = E\tau_\varepsilon\dot\varepsilon_{\mathrm{h}}\).</span></li>
+<li>Virtualno <a class="xref auto" href="sec-energija-deformacije.html#def-delo-napetosti" data-knowl="def-delo-napetosti">delo napetosti</a> \(\sigma_{\mathrm{v}}\) pri virtualnem polju \(\delta u_{\mathrm{h}} = \mat\psi_{\mathrm{e}}\,\delta\vek d_{\mathrm{e}}\) je <span class="nobr">\(-\int_{\mathrm{x}_\mathrm{a}}^{x_{\mathrm{b}}} A\,\sigma_{\mathrm{v}}\,\delta u_{\mathrm{h}}'\,\mathrm{d}x = -\tau_\varepsilon\int_{\mathrm{x}_\mathrm{a}}^{x_{\mathrm{b}}} EA\,\dot u_{\mathrm{h}}'\,\delta u_{\mathrm{h}}'\,\mathrm{d}x\).</span> Predznak je minus, ker napetost deluje na element proti raztezanju.</li>
+<li><a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">Integral</a> \(\int EA\,u'w'\,\mathrm{d}x\) je simetrična bilinearna oblika polj \(u_{\mathrm{h}}\) in <span class="nobr">\(w_{\mathrm{h}}\),</span> njegova kvadratna oblika pa je \(\vek d^\T\mat k_{\mathrm{e}}\,\vek d\) (uvod dokaza). Simetrična bilinearna oblika je določena s svojo kvadratno obliko (identiteta polarizacije, <span class="nobr">\(4B(a, b) = Q(a + b) - Q(a - b)\)),</span> zato je integral enak <span class="nobr">\(\delta\vek d_{\mathrm{e}}^\T\mat k_{\mathrm{e}}\,\dot{\vek d}_{\mathrm{e}}\).</span> Vstavimo v korak 2 in dobimo točko 1.</li>
+<li>Sila \(-c_{\mathrm{z}}\,\dot u_{\mathrm{h}}\) na enoto dolžine opravi pri \(\delta u_{\mathrm{h}}\) delo <span class="nobr">\(-\int c_{\mathrm{z}}\,\dot u_{\mathrm{h}}\,\delta u_{\mathrm{h}}\,\mathrm{d}x\).</span> Ker je \(\dot u_{\mathrm{h}} = \mat\psi_{\mathrm{e}}\,\dot{\vek d}_{\mathrm{e}}\) in <span class="nobr">\(\delta u_{\mathrm{h}} = \mat\psi_{\mathrm{e}}\,\delta\vek d_{\mathrm{e}}\),</span> je delo <span class="nobr">\(-\delta\vek d_{\mathrm{e}}^\T\big(c_{\mathrm{z}}\int\mat\psi_{\mathrm{e}}^\T\mat\psi_{\mathrm{e}}\,\mathrm{d}x\big)\dot{\vek d}_{\mathrm{e}}\).</span></li>
+<li>Po korakih 1 do 3 dokaza leme <a class="xref" href="sec-masna-matrika.html#lem-masa-elementa-palice" data-knowl="lem-masa-elementa-palice">10.31</a> (pri nosilcu leme <a class="xref" href="sec-masna-matrika-nosilca.html#lem-masa-elementa-nosilca" data-knowl="lem-masa-elementa-nosilca">12.43</a>) je <span class="nobr">\(\int\mat\psi_{\mathrm{e}}^\T\,\rho A\,\mat\psi_{\mathrm{e}}\,\mathrm{d}x = \mat m_{\mathrm{e}}\),</span> torej je <span class="nobr">\(c_{\mathrm{z}}\int\mat\psi_{\mathrm{e}}^\T\mat\psi_{\mathrm{e}}\,\mathrm{d}x = (c_{\mathrm{z}}/\rho A)\,\mat m_{\mathrm{e}}\).</span> To je točka 2.</li>
+<li>Matriki sta večkratnika \(\mat k_{\mathrm{e}}\) in \(\mat m_{\mathrm{e}}\) s pozitivnima faktorjema. Po lemi <a class="xref" href="sec-element-palice.html#lem-lastnosti-togosti-elementa" data-knowl="lem-lastnosti-togosti-elementa">7.6</a> (pri nosilcu <a class="xref" href="sec-element-nosilca.html#lem-lastnosti-togosti-nosilca" data-knowl="lem-lastnosti-togosti-nosilca">12.5</a>) je \(\mat k_{\mathrm{e}}\) simetrična in <span class="nobr">\(\vek d^\T\mat k_{\mathrm{e}}\,\vek d \ge 0\),</span> po lemi <a class="xref" href="sec-masna-matrika.html#lem-masa-elementa-palice" data-knowl="lem-masa-elementa-palice">10.31</a> (<a class="xref" href="sec-masna-matrika-nosilca.html#lem-masa-elementa-nosilca" data-knowl="lem-masa-elementa-nosilca">12.43</a>) je \(\mat m_{\mathrm{e}}\) pozitivno definitna. Ker je <span class="nobr">\(\tau_\varepsilon &gt; 0\),</span> je \(\tau_\varepsilon\mat k_{\mathrm{e}}\,\vek d = \vek 0\) natanko tedaj, ko je <span class="nobr">\(\mat k_{\mathrm{e}}\,\vek d = \vek 0\),</span> zato imata \(\tau_\varepsilon\mat k_{\mathrm{e}}\) in \(\mat k_{\mathrm{e}}\) isto jedro.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> Dokaz ni iz virov. COOK (PDF str. 402) navaja, da viskozno dušenje dajejo okoliški plin ali tekočina ali viskozni dušilniki, dodani konstrukciji, CK (PDF str. 321) pa pravi, da bi se matrika dušenja dala izpeljati po postopkih za togost in maso. BATHE (PDF str. 813) matrike dušenja iz elementov praviloma ne sestavlja. Lema pokaže, kdaj je to mogoče.</p></div></div>
+<p>Lema je pokazala, da pri obeh mehanizmih lahko za dušenje elementa uporabimo že znane matrike: dušilnik v materialu vzame obliko togosti, zunanji dušilnik obliko mase. To je obljuba iz razdelka <a class="xref" href="sec-mke-nosilci-povezave.html">12.11</a>. Pri tem sta dve idealizaciji, ki ju moramo imenovati. Material se na raztezek odziva po Kelvin-Voigtovem zakonu, kar ne velja za polimere, ki jih razdelek <a class="xref" href="sec-viskoelasticni-modeli.html">20.4</a> opiše z več členi, in zunanji dušilnik je linearen in povsod enak. Matrika zunanjega dušilnika ni odvisna od togosti, le od mase elementa, zato je diagonalna, če maso elementa zberemo v vozliščih (razdelek <a class="xref" href="sec-masna-matrika.html#sec-zbrana-masa">10.7.2</a>).</p>
+
+<h3 id="sec-dmke-sestavljanje"><span class="h-num">20.7.2</span> Sestavljena matrika in kdaj je klasična</h3>
+<!-- nofig: algebra -->
+<p>Elemente sestavimo kot elemente togosti. <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">Matrika</a> elementa \(\mat c_{\mathrm{e}}\) je za gibanje po <a class="xref auto" href="sec-virtualni-pomiki-palice.html#def-virtualno-delo" data-knowl="def-virtualno-delo">virtualnem delu</a> enakovredna matriki \(\mat k_{\mathrm{e}}\) za premike, zato je sestavljanje isto.</p>
+
+<div class="blk izrek" id="thm-sestavljena-dusilna"><div class="blk-head"><span class="blk-label">Izrek 20.40</span> <span class="blk-title">Sestavljena matrika dušenja (assembled damping matrix)</span></div><div class="blk-body"><p>Naj ima konstrukcija \(n_{\mathrm{u}}\) neznank in \(n_{\mathrm{e}}\) elementov s tabelo povezav in izbirnimi <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrikami</a> \(\mat Z_{\mathrm{e}}\) (definiciji <a class="xref" href="sec-sestavljanje.html#def-tabela-povezav" data-knowl="def-tabela-povezav">7.10</a> in <a class="xref" href="sec-sestavljanje.html#def-izbirna-matrika" data-knowl="def-izbirna-matrika">7.11</a>). Element \(e\) naj ima po lemi <a class="xref" href="sec-dusenje-mke.html#lem-dusilna-matrika-elementa" data-knowl="lem-dusilna-matrika-elementa">20.39</a> matriko \(\mat c_{\mathrm{e}} = \tau_{\varepsilon \mathrm{e}}\,\mat k_{\mathrm{e}} + (c_{\mathrm{z},\mathrm{e}}/\rho_{\mathrm{e}} A_{\mathrm{e}})\,\mat m_{\mathrm{e}}\) s \(\tau_{\varepsilon \mathrm{e}} \ge 0\) in <span class="nobr">\(c_{\mathrm{z},\mathrm{e}} \ge 0\).</span> Tedaj velja:</p>
+<ol>
+<li>Matrika dušenja konstrukcije je <span class="nobr">\(\mat C = \sum_{\mathrm{e}} \mat Z_{\mathrm{e}}^\T\,\mat c_{\mathrm{e}}\,\mat Z_{\mathrm{e}}\),</span> simetrična in pozitivno semidefinitna (definicija <a class="xref" href="sec-robni-pogoji-mke.html#def-pozitivno-semidefinitna" data-knowl="def-pozitivno-semidefinitna">7.15</a>).</li>
+<li>Če imajo vsi elementi isti \(\tau_{\varepsilon \mathrm{e}} = \tau_\varepsilon\) in \(c_{\mathrm{z},\mathrm{e}} = a_0\,\rho_{\mathrm{e}} A_{\mathrm{e}}\) z istim <span class="nobr">\(a_0 \ge 0\),</span> je <span class="nobr">\(\mat C = a_0\,\mat M + \tau_\varepsilon\,\mat K\),</span> Rayleighovo dušenje (definicija <a class="xref" href="sec-dusenje-superpozicija.html#def-rayleighovo-dusenje" data-knowl="def-rayleighovo-dusenje">10.45</a>) z <span class="nobr">\(a_1 = \tau_\varepsilon\).</span> Pri pozitivno definitni \(\mat K\) je klasično in \(\zeta_{\mathrm{r}} = a_0/(2\omega_{\mathrm{r}}) + \tau_\varepsilon\,\omega_{\mathrm{r}}/2\) (lema <a class="xref" href="sec-dusenje-superpozicija.html#lem-rayleighovo-klasicno" data-knowl="lem-rayleighovo-klasicno">10.46</a>).</li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da se sile dušenja elementov seštejejo kot sile togosti, in da se <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrika</a> v drugi točki razcepi na \(\mat M\) in <span class="nobr">\(\mat K\).</span></p>
+<ol>
+<li>Sila, ki jo na neznanko \(I\) deluje dušenje elementa, je po lemi <a class="xref" href="sec-dusenje-mke.html#lem-dusilna-matrika-elementa" data-knowl="lem-dusilna-matrika-elementa">20.39</a> vrstica \(i\) matrike <span class="nobr">\(-\mat c_{\mathrm{e}}\,\dot{\vek d}_{\mathrm{e}}\),</span> kjer je <span class="nobr">\(g_{\mathrm{ei}} = I\).</span> Izbirna matrika \(\mat Z_{\mathrm{e}}\) je ista kot za pomike, \(\dot{\vek d}_{\mathrm{e}} = \mat Z_{\mathrm{e}}\,\dot{\vek d}\) (lema <a class="xref" href="sec-sestavljanje.html#lem-izbirna-matrika" data-knowl="lem-izbirna-matrika">7.12</a>), zato je po prvi točki izreka <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a> (ki uporabi le izbirne matrike in linearnost) celotna sila \(-\mat C\,\dot{\vek d}\) z matriko <span class="nobr">\(\mat C = \sum_{\mathrm{e}}\mat Z_{\mathrm{e}}^\T\mat c_{\mathrm{e}}\,\mat Z_{\mathrm{e}}\).</span></li>
+<li>Vsaka \(\mat c_{\mathrm{e}}\) je simetrična in \(\vek d_{\mathrm{e}}^\T\mat c_{\mathrm{e}}\,\vek d_{\mathrm{e}} \ge 0\) (točka 3 leme <a class="xref" href="sec-dusenje-mke.html#lem-dusilna-matrika-elementa" data-knowl="lem-dusilna-matrika-elementa">20.39</a>), zato po posledici <a class="xref" href="sec-sestavljanje.html#cor-matrika-konstrukcije" data-knowl="cor-matrika-konstrukcije">7.14</a> sledi simetrija in <a class="xref auto" href="sec-robni-pogoji-mke.html#def-pozitivno-semidefinitna" data-knowl="def-pozitivno-semidefinitna">pozitivna semidefinitnost matrike</a> <span class="nobr">\(\mat C\).</span></li>
+<li>Pri enakih \(\tau_\varepsilon\) in \(a_0\) je \(\mat c_{\mathrm{e}} = \tau_\varepsilon\,\mat k_{\mathrm{e}} + a_0\,\mat m_{\mathrm{e}}\) v vsakem elementu, torej je \(\mat C = \tau_\varepsilon\sum_{\mathrm{e}}\mat Z_{\mathrm{e}}^\T\mat k_{\mathrm{e}}\,\mat Z_{\mathrm{e}} + a_0\sum_{\mathrm{e}}\mat Z_{\mathrm{e}}^\T\mat m_{\mathrm{e}}\,\mat Z_{\mathrm{e}} = \tau_\varepsilon\,\mat K + a_0\,\mat M\) po izreku <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a> in razdelku <a class="xref" href="sec-masna-matrika.html#sec-sestavljena-masa">10.7.3</a>. Preostalo je ista trditev kot v lemi <a class="xref" href="sec-dusenje-superpozicija.html#lem-rayleighovo-klasicno" data-knowl="lem-rayleighovo-klasicno">10.46</a>.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> COOK (PDF str. 403-404) in CK (10.76) (PDF str. 321) navajata Rayleighovo dušenje kot linearno kombinacijo \(\mat M\) in <span class="nobr">\(\mat K\),</span> brez zveze z elementi. Zveza z dušilniki v materialu in ob telesu je naša, dokaz ni iz virov.</p></div></div>
+<p><a class="xref auto" href="sec-dusenje-superpozicija.html#def-rayleighovo-dusenje" data-knowl="def-rayleighovo-dusenje">Rayleighovo dušenje</a> ima zdaj fizikalni pomen: \(a_1\mat K\) je viskoznost materiala, ki je povsod ista, \(a_0\mat M\) pa so <a class="xref auto" href="sec-model-ena-ps.html#def-viskozni-dusilnik" data-knowl="def-viskozni-dusilnik">dušilniki</a>, ki vsako maso vežejo na mirujočo okolico, z isto konstanto \(a_0\) na enoto mase. CK (PDF str. 321) pri formuli za \(\zeta_{\mathrm{r}}\) (CK (10.78)) opazi, da masni člen s frekvenco pada, togostni pa raste, a ne pove, zakaj. Zdaj to vemo: masni del je zunanji dušilnik, ki je pri nizki frekvenci močnejši, togostni del pa je material, katerega viskozna napetost raste s hitrostjo <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">deformacije</a>.</p>
+
+<figure class="blk slika" id="fig-c20-okvir"><p><span class="svgfig" role="img" aria-label="Okvir A z dušilniki v materialu etaž in zunanjimi dušilniki na stropovih"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='540.01pt' height='177.07pt' viewBox='-72.000004 -72.000006 400.00537 131.165479'>
+<defs>
+<path id='c20-07-okvir-g0-28' d='M2.929016-3.716065H4.60274C4.732254-3.716065 5.090909-3.716065 5.090909-4.054795C5.090909-4.293898 4.881694-4.293898 4.692403-4.293898H1.902864C1.703611-4.293898 1.315068-4.293898 .876712-3.825654C.547945-3.466999 .268991-2.988792 .268991-2.929016C.268991-2.919054 .268991-2.82939 .388543-2.82939C.468244-2.82939 .488169-2.86924 .547945-2.948941C1.036115-3.716065 1.603985-3.716065 1.8132-3.716065H2.6401L1.663761-.518057C1.62391-.398506 1.564134-.18929 1.564134-.14944C1.564134-.039851 1.633873 .119552 1.853051 .119552C2.181818 .119552 2.231631-.159402 2.261519-.308842L2.929016-3.716065Z'/>
+<path id='c20-07-okvir-g0-97' d='M3.716065-3.765878C3.536737-4.134496 3.247821-4.403487 2.799502-4.403487C1.633873-4.403487 .398506-2.938979 .398506-1.484433C.398506-.547945 .946451 .109589 1.723537 .109589C1.92279 .109589 2.420922 .069738 3.01868-.637609C3.098381-.219178 3.447073 .109589 3.92528 .109589C4.273973 .109589 4.503113-.119552 4.662516-.438356C4.83188-.797011 4.961395-1.404732 4.961395-1.424658C4.961395-1.524284 4.871731-1.524284 4.841843-1.524284C4.742217-1.524284 4.732254-1.484433 4.702366-1.344956C4.533001-.697385 4.353674-.109589 3.945205-.109589C3.676214-.109589 3.646326-.368618 3.646326-.56787C3.646326-.787049 3.666252-.86675 3.775841-1.305106C3.88543-1.723537 3.905355-1.823163 3.995019-2.201743L4.353674-3.596513C4.423412-3.875467 4.423412-3.895392 4.423412-3.935243C4.423412-4.104608 4.303861-4.204234 4.134496-4.204234C3.895392-4.204234 3.745953-3.985056 3.716065-3.765878ZM3.068493-1.185554C3.01868-1.006227 3.01868-.986301 2.86924-.816936C2.430884-.268991 2.022416-.109589 1.743462-.109589C1.24533-.109589 1.105853-.657534 1.105853-1.046077C1.105853-1.544209 1.424658-2.769614 1.653798-3.227895C1.96264-3.815691 2.410959-4.184309 2.809465-4.184309C3.457036-4.184309 3.596513-3.367372 3.596513-3.307597S3.576588-3.188045 3.566625-3.138232L3.068493-1.185554Z'/>
+<path id='c20-07-okvir-g0-107' d='M2.859278-6.804483C2.859278-6.814446 2.859278-6.914072 2.729763-6.914072C2.500623-6.914072 1.77335-6.834371 1.514321-6.814446C1.43462-6.804483 1.325031-6.794521 1.325031-6.615193C1.325031-6.495641 1.414695-6.495641 1.564134-6.495641C2.042341-6.495641 2.062267-6.425903 2.062267-6.326276L2.032379-6.127024L.587796-.388543C.547945-.249066 .547945-.229141 .547945-.169365C.547945 .059776 .747198 .109589 .836862 .109589C.966376 .109589 1.115816 .019925 1.175592-.099626C1.225405-.18929 1.673724-2.032379 1.733499-2.281445C2.072229-2.251557 2.889166-2.092154 2.889166-1.43462C2.889166-1.364882 2.889166-1.325031 2.859278-1.225405C2.839352-1.105853 2.819427-.986301 2.819427-.876712C2.819427-.288917 3.217933 .109589 3.73599 .109589C4.034869 .109589 4.303861-.049813 4.523039-.418431C4.772105-.856787 4.881694-1.404732 4.881694-1.424658C4.881694-1.524284 4.79203-1.524284 4.762142-1.524284C4.662516-1.524284 4.652553-1.484433 4.622665-1.344956C4.423412-.617684 4.194271-.109589 3.755915-.109589C3.566625-.109589 3.437111-.219178 3.437111-.577833C3.437111-.747198 3.476961-.976339 3.516812-1.135741C3.556663-1.305106 3.556663-1.344956 3.556663-1.444583C3.556663-2.092154 2.929016-2.381071 2.082192-2.49066C2.391034-2.669988 2.709838-2.988792 2.938979-3.227895C3.417186-3.755915 3.875467-4.184309 4.363636-4.184309C4.423412-4.184309 4.433375-4.184309 4.4533-4.174346C4.572852-4.154421 4.582814-4.154421 4.662516-4.094645C4.682441-4.084682 4.682441-4.07472 4.702366-4.054795C4.224159-4.024907 4.134496-3.636364 4.134496-3.516812C4.134496-3.35741 4.244085-3.16812 4.513076-3.16812C4.772105-3.16812 5.061021-3.387298 5.061021-3.775841C5.061021-4.07472 4.83188-4.403487 4.383562-4.403487C4.104608-4.403487 3.646326-4.323786 2.929016-3.526775C2.590286-3.148194 2.201743-2.749689 1.823163-2.600249L2.859278-6.804483Z'/>
+<path id='c20-07-okvir-g0-109' d='M.876712-.587796C.846824-.438356 .787049-.209215 .787049-.159402C.787049 .019925 .926526 .109589 1.075965 .109589C1.195517 .109589 1.374844 .029888 1.444583-.169365C1.454545-.18929 1.574097-.657534 1.633873-.9066L1.853051-1.803238C1.912827-2.022416 1.972603-2.241594 2.022416-2.470735C2.062267-2.6401 2.141968-2.929016 2.15193-2.968867C2.30137-3.277709 2.82939-4.184309 3.775841-4.184309C4.224159-4.184309 4.313823-3.815691 4.313823-3.486924C4.313823-3.237858 4.244085-2.958904 4.164384-2.660025L3.88543-1.504359L3.686177-.747198C3.646326-.547945 3.556663-.209215 3.556663-.159402C3.556663 .019925 3.696139 .109589 3.845579 .109589C4.154421 .109589 4.214197-.139477 4.293898-.458281C4.433375-1.016189 4.801993-2.470735 4.891656-2.859278C4.921544-2.988792 5.449564-4.184309 6.535492-4.184309C6.963885-4.184309 7.073474-3.845579 7.073474-3.486924C7.073474-2.919054 6.655044-1.783313 6.455791-1.255293C6.366127-1.016189 6.326276-.9066 6.326276-.707347C6.326276-.239103 6.674969 .109589 7.143213 .109589C8.079701 .109589 8.448319-1.344956 8.448319-1.424658C8.448319-1.524284 8.358655-1.524284 8.328767-1.524284C8.229141-1.524284 8.229141-1.494396 8.179328-1.344956C8.029888-.816936 7.711083-.109589 7.163138-.109589C6.993773-.109589 6.924035-.209215 6.924035-.438356C6.924035-.687422 7.013699-.926526 7.103362-1.145704C7.292653-1.663761 7.711083-2.769614 7.711083-3.337484C7.711083-3.985056 7.312578-4.403487 6.56538-4.403487S5.310087-3.965131 4.941469-3.437111C4.931507-3.566625 4.901619-3.905355 4.622665-4.144458C4.373599-4.353674 4.054795-4.403487 3.805729-4.403487C2.909091-4.403487 2.420922-3.765878 2.251557-3.536737C2.201743-4.104608 1.783313-4.403487 1.334994-4.403487C.876712-4.403487 .687422-4.014944 .597758-3.835616C.418431-3.486924 .288917-2.899128 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.779577 .577833-2.998755C.747198-3.706102 .946451-4.184309 1.305106-4.184309C1.464508-4.184309 1.613948-4.104608 1.613948-3.726027C1.613948-3.516812 1.58406-3.407223 1.454545-2.889166L.876712-.587796Z'/>
+<path id='c20-07-okvir-g1-34' d='M1.157659-1.555168C1.422665-1.45056 1.63188-1.45056 1.834122-1.45056C2.057285-1.45056 2.468742-1.45056 2.468742-1.708593C2.468742-1.896887 2.203736-1.924782 1.903861-1.924782C1.806227-1.924782 1.506351-1.924782 1.164633-1.785305C1.004234-1.862017 .899626-1.994521 .899626-2.147945C.899626-2.524533 1.57609-2.761644 2.280448-2.761644C2.39203-2.761644 2.691905-2.761644 3.005729-2.566376C3.047572-2.538481 3.089415-2.503611 3.145205-2.503611C3.242839-2.503611 3.368369-2.608219 3.368369-2.726775C3.368369-2.866252 3.138232-2.963885 3.005729-3.019676C2.705853-3.145205 2.461768-3.145205 2.357161-3.145205C1.506351-3.145205 .662516-2.698879 .662516-2.140971C.662516-1.855044 .927522-1.673724 .934496-1.66675C.676463-1.513325 .327771-1.206476 .327771-.767123C.327771-.258032 .829888 .139477 1.603985 .139477C2.66401 .139477 3.040598-.488169 3.040598-.599751C3.040598-.648568 2.998755-.690411 2.942964-.690411C2.901121-.690411 2.880199-.662516 2.859278-.63462C2.684932-.36264 2.454795-.244085 1.715567-.244085C1.54122-.244085 1.21345-.244085 .962391-.341719C.683437-.446326 .564882-.63462 .564882-.808966C.564882-.969365 .683437-1.311083 1.157659-1.555168ZM1.464508-1.673724C1.54122-1.694645 1.680697-1.729514 1.889913-1.729514C2.043337-1.729514 2.078207-1.72254 2.217684-1.694645C2.113076-1.652802 2.092154-1.645828 1.834122-1.645828C1.729514-1.645828 1.590037-1.645828 1.464508-1.673724Z'/>
+<path id='c20-07-okvir-g2-48' d='M3.598506-2.224658C3.598506-2.991781 3.507846-3.542715 3.187049-4.030884C2.970859-4.351681 2.538481-4.630635 1.980573-4.630635C.36264-4.630635 .36264-2.726775 .36264-2.224658S.36264 .139477 1.980573 .139477S3.598506-1.72254 3.598506-2.224658ZM1.980573-.055791C1.659776-.055791 1.234371-.244085 1.094894-.81594C.99726-1.227397 .99726-1.799253 .99726-2.315318C.99726-2.824408 .99726-3.354421 1.101868-3.737983C1.248319-4.288917 1.694645-4.435367 1.980573-4.435367C2.357161-4.435367 2.719801-4.20523 2.84533-3.800747C2.956912-3.424159 2.963885-2.922042 2.963885-2.315318C2.963885-1.799253 2.963885-1.283188 2.873225-.843836C2.733748-.209215 2.259527-.055791 1.980573-.055791Z'/>
+</defs>
+<g id='c20-07-okvir-page1'>
+<g stroke-miterlimit='10' transform='translate(-54.768252,53.272123)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='okvir'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-11.38092 0H79.66777' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-11.38092 0L-17.07138-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-4.26775 0L-9.9582-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M2.84544 0L-2.84502-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M9.95863 0L4.26817-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M17.07182 0L11.38136-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M24.185 0L18.49454-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M31.29819 0L25.60773-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M38.41138 0L32.72092-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M45.52457 0L39.8341-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M52.63774 0L46.94728-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M59.75093 0L54.06047-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M66.86412 0L61.17366-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M73.97731 0L68.28685-5.69046' fill='none'/>
+</g>
+</g>
+<path d='M5.69046 0V51.21501' fill='none'/>
+<path d='M62.59595 0V51.21501' fill='none'/>
+<path d='M5.69046 51.21501V102.43004' fill='none'/>
+<path d='M62.59595 51.21501V102.43004' fill='none'/>
+<g stroke-width='1.6'>
+<path d='M0 51.21501H68.2864' fill='none'/>
+</g>
+<g stroke-width='1.6'>
+<path d='M0 102.43004H68.2864' fill='none'/>
+</g>
+<g transform='translate(76.18756,49.06224)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.768252,53.272123)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.768252' y='53.272123' xlink:href='#c20-07-okvir-g0-109'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(76.18756,100.27727)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.768252,53.272123)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.768252' y='53.272123' xlink:href='#c20-07-okvir-g0-109'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='etaza1'>
+<path d='M34.1432 0V14.22636' fill='none'/>
+<path d='M28.45274 14.22636V31.29819H39.83366V14.22636ZM39.83366 31.29819' fill='none'/>
+<path d='M29.87546 22.76227H38.41138' fill='none'/>
+<path d='M34.1432 31.29819V51.21501' fill='none'/>
+<g transform='translate(39.1989,5.81367)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.768252,53.272123)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.768252' y='53.272123' xlink:href='#c20-07-okvir-g0-28'/>
+<use x='-50.413036' y='54.766504' xlink:href='#c20-07-okvir-g1-34'/>
+<use x='-46.150882' y='53.272123' xlink:href='#c20-07-okvir-g0-107'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='etaza2'>
+<path d='M34.1432 51.21501V65.44139' fill='none'/>
+<path d='M28.45274 65.44139V82.51277H39.83366V65.44139ZM39.83366 82.51277' fill='none'/>
+<path d='M29.87546 73.9773H38.41138' fill='none'/>
+<path d='M34.1432 82.51277V102.43004' fill='none'/>
+<g transform='translate(39.1989,57.0287)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.768252,53.272123)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.768252' y='53.272123' xlink:href='#c20-07-okvir-g0-28'/>
+<use x='-50.413036' y='54.766504' xlink:href='#c20-07-okvir-g1-34'/>
+<use x='-46.150882' y='53.272123' xlink:href='#c20-07-okvir-g0-107'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='okvir'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M119.50186 0H210.55055' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M119.50186 0L113.8114-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M126.61504 0L120.92458-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M133.72823 0L128.03777-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M140.84142 0L135.15096-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M147.9546 0L142.26414-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M155.06778 0L149.37732-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M162.18097 0L156.49051-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M169.29416 0L163.6037-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M176.40735 0L170.71689-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M183.52052 0L177.83006-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M190.63371 0L184.94325-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M197.7469 0L192.05644-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M204.86009 0L199.16963-5.69046' fill='none'/>
+</g>
+</g>
+<path d='M136.57324 0V51.21501' fill='none'/>
+<path d='M193.47873 0V51.21501' fill='none'/>
+<path d='M136.57324 51.21501V102.43004' fill='none'/>
+<path d='M193.47873 51.21501V102.43004' fill='none'/>
+<g stroke-width='1.6'>
+<path d='M130.88278 51.21501H199.16919' fill='none'/>
+</g>
+<g stroke-width='1.6'>
+<path d='M130.88278 102.43004H199.16919' fill='none'/>
+</g>
+<g transform='translate(207.07034,49.06224)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.768252,53.272123)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.768252' y='53.272123' xlink:href='#c20-07-okvir-g0-109'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(207.07034,100.27727)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.768252,53.272123)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.768252' y='53.272123' xlink:href='#c20-07-okvir-g0-109'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='etaza1'>
+<path d='M165.02599 0V14.22636' fill='none'/>
+<path d='M159.33553 14.22636V31.29819H170.71645V14.22636ZM170.71645 31.29819' fill='none'/>
+<path d='M160.75824 22.76227H169.29416' fill='none'/>
+<path d='M165.02599 31.29819V51.21501' fill='none'/>
+<g transform='translate(170.08168,5.81367)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.768252,53.272123)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.768252' y='53.272123' xlink:href='#c20-07-okvir-g0-28'/>
+<use x='-50.413036' y='54.766504' xlink:href='#c20-07-okvir-g1-34'/>
+<use x='-46.150882' y='53.272123' xlink:href='#c20-07-okvir-g0-107'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='okvir'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M284.52744 0H375.57613' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M284.52744 0L278.83698-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M291.64061 0L285.95015-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M298.7538 0L293.06334-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M305.86699 0L300.17653-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M312.98018 0L307.28972-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M320.09335 0L314.4029-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M327.20654 0L321.51608-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M334.31973 0L328.62927-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M341.43292 0L335.74246-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M348.5461 0L342.85564-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M355.65929 0L349.96883-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M362.77248 0L357.08202-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M369.88567 0L364.1952-5.69046' fill='none'/>
+</g>
+</g>
+<path d='M301.59882 0V51.21501' fill='none'/>
+<path d='M358.5043 0V51.21501' fill='none'/>
+<path d='M301.59882 51.21501V102.43004' fill='none'/>
+<path d='M358.5043 51.21501V102.43004' fill='none'/>
+<g stroke-width='1.6'>
+<path d='M295.90836 51.21501H364.19476' fill='none'/>
+</g>
+<g stroke-width='1.6'>
+<path d='M295.90836 102.43004H364.19476' fill='none'/>
+</g>
+<g transform='translate(372.09592,49.06224)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.768252,53.272123)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.768252' y='53.272123' xlink:href='#c20-07-okvir-g0-109'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(372.09592,100.27727)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.768252,53.272123)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.768252' y='53.272123' xlink:href='#c20-07-okvir-g0-109'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='tla'>
+<g stroke-width='1.1'>
+<path d='M241.84833 28.45274V125.1919' fill='none'/>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M241.84833 28.45274L236.15787 22.76228' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M241.84833 39.83366L236.15787 34.1432' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M241.84833 51.21458L236.15787 45.52412' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M241.84833 62.5955L236.15787 56.90504' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M241.84833 73.97643L236.15787 68.28596' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M241.84833 85.35736L236.15787 79.6669' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M241.84833 96.73828L236.15787 91.04782' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M241.84833 108.1192L236.15787 102.42874' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M241.84833 119.50012L236.15787 113.80966' fill='none'/>
+</g>
+</g>
+<path d='M241.84833 51.21501H260.34244' fill='none'/>
+<path d='M260.34244 45.52455V56.90549H280.25926V45.52455ZM280.25926 56.90549' fill='none'/>
+<path d='M270.30107 46.94728V55.48276' fill='none'/>
+<path d='M270.30107 51.21501H295.90836' fill='none'/>
+<path d='M241.84833 102.43004H260.34244' fill='none'/>
+<path d='M260.34244 96.73958V108.1205H280.25926V96.73958ZM280.25926 108.1205' fill='none'/>
+<path d='M270.30107 98.16231V106.69778' fill='none'/>
+<path d='M270.30107 102.43004H295.90836' fill='none'/>
+<g transform='translate(261.025,63.46115)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.768252,53.272123)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.768252' y='53.272123' xlink:href='#c20-07-okvir-g0-97'/>
+<use x='-49.502098' y='54.766504' xlink:href='#c20-07-okvir-g2-48'/>
+<use x='-45.032728' y='53.272123' xlink:href='#c20-07-okvir-g0-109'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(261.025,114.67618)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-54.768252,53.272123)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-54.768252' y='53.272123' xlink:href='#c20-07-okvir-g0-97'/>
+<use x='-49.502098' y='54.766504' xlink:href='#c20-07-okvir-g2-48'/>
+<use x='-45.032728' y='53.272123' xlink:href='#c20-07-okvir-g0-109'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 20.19</span>: Okvir A v treh modelih dušenja. Levo: viskoznost materiala v obeh etažah, dušilnik \(\tau_\varepsilon k\) ob stebrih vsake etaže. Sredina: viskoznost le v spodnji etaži, kjer je dušilnik \(\tau_\varepsilon k\) med tlemi in stropom 1, kar je dušilnik iz razdelka <a class="xref" href="sec-dusenje-superpozicija.html#sec-dsp-neklasicno">10.9.3</a>. Desno: zunanji dušilniki <span class="nobr">\(a_0 m\),</span> ki vežejo vsak strop na mirujočo steno.</figcaption></figure>
+<p>Preizkusimo na <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">okvirju</a> A. Narišemo <a data-del="okvir" class="xref kaz" href="sec-dusenje-mke.html#fig-c20-okvir" data-knowl="fig-c20-okvir">okvir</a>, dva stropa z maso \(m\) nad tlemi, vsak na dveh stebrih. V levem okvirju ima <a data-del="etaza1" class="xref kaz" href="sec-dusenje-mke.html#fig-c20-okvir" data-knowl="fig-c20-okvir">spodnja etaža</a> dušilnik <span class="nobr">\(\tau_\varepsilon k\),</span> ki je vzporeden z njenima stebroma, in ima ga tudi <a data-del="etaza2" class="xref kaz" href="sec-dusenje-mke.html#fig-c20-okvir" data-knowl="fig-c20-okvir">zgornja etaža</a>. Izberemo \(\tau_\varepsilon = 2{,}8235\) ms, da je dušilnik spodnje etaže \(\tau_\varepsilon k = 1416{,}70\) N s/m isti kot v razdelku <a class="xref" href="sec-dusenje-superpozicija.html#sec-dsp-neklasicno">10.9.3</a>. To bomo potrebovali pri srednjem okvirju. Matrika je \(\mat C = \tau_\varepsilon\,\mat K\) in po izreku <a class="xref" href="sec-dusenje-mke.html#thm-sestavljena-dusilna" data-knowl="thm-sestavljena-dusilna">20.40</a> je klasična z \(\zeta_{\mathrm{r}} = \tau_\varepsilon\omega_{\mathrm{r}}/2 = 0{,}02764\) in <span class="nobr">\(0{,}07236\).</span> Matrika \(\mat\Phi^\T\mat C\,\mat\Phi\) je diagonalna \(\mathrm{diag}(1{,}0823,\ 7{,}4179)\) 1/s, kakor mora biti <span class="nobr">(\(2\zeta_{\mathrm{r}}\omega_{\mathrm{r}}\),</span> SymPy in NumPy v outlines/ch-dusenje/num-07.py). Višji način je dušen \(2{,}618\)-krat bolj, <span class="nobr">\(0{,}07236/0{,}02764 = \omega_2/\omega_1\),</span> ker je viskozna napetost sorazmerna s hitrostjo deformacije, ta pa je pri isti amplitudi sorazmerna s frekvenco.</p>
+<p>V desnem okvirju vežemo vsak strop na <a data-del="tla" class="xref kaz" href="sec-dusenje-mke.html#fig-c20-okvir" data-knowl="fig-c20-okvir">mirujočo steno</a> z dušilnikom \(a_0 m\) in dobimo <span class="nobr">\(\mat C = a_0\mat M\).</span> Pri \(a_0 = 0{,}56668\) 1/s, konstanti Rayleighovega dušenja okvirja A iz razdelka <a class="xref" href="sec-dusenje-superpozicija.html">10.9</a>, je \(\zeta_{\mathrm{r}} = a_0/(2\omega_{\mathrm{r}}) = 0{,}01447\) in <span class="nobr">\(0{,}00553\):</span> višji način je dušen manj, ravno obratno kot pri materialu. Če seštejemo oba mehanizma z \(\tau_\varepsilon = a_1 = 5{,}6469\cdot10^{-4}\) s, dobimo Rayleighovo dušenje iz razdelka <a class="xref" href="sec-dusenje-superpozicija.html">10.9</a> z \(\zeta_{\mathrm{r}} = 0{,}01447 + 0{,}00553 = 0{,}0200\) in \(0{,}00553 + 0{,}01447 = 0{,}0200\) pri obeh načinih. Rayleighovo dušenje okvirja A je s tem sestavljeno iz dveh mehanizmov, ki ju poznamo iz fizike.</p>
+<p>Zdaj hipoteza, ki jo izrek zahteva: <em>isti</em> \(\tau_\varepsilon\) v vseh elementih. Vzemimo srednji okvir slike <a class="xref" href="sec-dusenje-mke.html#fig-c20-okvir" data-knowl="fig-c20-okvir">20.19</a>, v katerem je viskozna le <a data-del="etaza1" class="xref kaz" href="sec-dusenje-mke.html#fig-c20-okvir" data-knowl="fig-c20-okvir">spodnja etaža</a>, zgornja pa nima dušilnika. Tedaj je \(\mat C = \tau_\varepsilon\,\mat K_1\) z \(\mat K_1 = k\begin{pmatrix}1&amp;0\\0&amp;0\end{pmatrix}\) (spodnja etaža je med tlemi in stropom 1, zato ima le eno neznanko). To je dušilnik \(c_{\mathrm{d}} = \tau_\varepsilon k = 1416{,}70\) N s/m pod stropom 1, torej okvir iz razdelka <a class="xref" href="sec-dusenje-superpozicija.html#sec-dsp-neklasicno">10.9.3</a>. Izračun potrdi \(\mat\Phi^\T\mat C\,\mat\Phi = \begin{pmatrix}0{,}7831 &amp; 1{,}2671\\ 1{,}2671 &amp; 2{,}0503\end{pmatrix}\) 1/s. Diagonala da razmernika \(0{,}0200\) in <span class="nobr">\(0{,}0200\),</span> nediagonalni člen pa je <span class="nobr">\(1{,}2671 = \sqrt{0{,}7831\cdot 2{,}0503}\):</span> načina sta vezana v največji možni meri, matrika je produkt stolpca in vrstice, \(c_{\mathrm{d}}\,\vek b\vek b^\T\) s <span class="nobr">\(\vek b = (\varphi_{11}, \varphi_{12})^\T\).</span> Pravi koreni so \(-0{,}39177\pm19{,}58141\,\mathrm{i}\) in \(-1{,}02493\pm51{,}2281\,\mathrm{i}\) 1/s z razmernikoma \(0{,}0200\) in <span class="nobr">\(0{,}0200\).</span> Klasična zamenjava z isto diagonalo je torej tu dobra (razdelek <a class="xref" href="sec-dusenje-superpozicija.html#sec-dsp-neklasicno">10.9.3</a> je izračunal razliko amplitud \(-0{,}029\,\%\) pri \(\omega_1\) in \(-1{,}5\,\%\) pri <span class="nobr">\(\omega_2\)),</span> a oblika gibanja je drugačna, saj je razmerje stropov kompleksno, <span class="nobr">\(u_2/u_1 = 1{,}61696 + 0{,}04000\,\mathrm{i}\).</span></p>
+<!-- nofig: signpost -->
+<p>Ta zgled ima dva pouka. Prvi: ista viskoznost materiala v <em>vsaki</em> etaži da <a class="xref auto" href="sec-dusenje-superpozicija.html#def-klasicno-dusenje" data-knowl="def-klasicno-dusenje">klasično dušenje</a>, viskoznost v eni sami etaži ne (srednji okvir). Pogoj izreka torej ni dekoracija. Drugi: razlika med pravimi koreni in klasično zamenjavo je pri lahkem dušenju majhna, a oblika gibanja se spremeni. Splošna teorija takih sistemov (<a class="xref auto forward" href="sec-zapis-prvega-reda.html#def-zapis-prvega-reda" data-knowl="def-zapis-prvega-reda" title="Definirano kasneje v knjigi">zapis prvega reda</a> in <a class="xref auto forward" href="sec-zapis-prvega-reda.html#def-kompleksni-nacin" data-knowl="def-kompleksni-nacin" title="Definirano kasneje v knjigi">kompleksni načini</a>) je v razdelku <a class="xref" href="sec-zapis-prvega-reda.html">20.8</a>.</p>
+<!-- nofig: algebra -->
+<p>Pogoj \(\tau_{\varepsilon \mathrm{e}} \ge 0\) in \(c_{\mathrm{z},\mathrm{e}} \ge 0\) iz izreka ima prav tako svoj pomen. Če se matrike dušenja ne gradi iz fizike, ampak iz dveh predpisanih razmernikov, lahko konstanta \(a_0\) dobi negativno vrednost. BATHE (PDF str. 814, zgled 9.9) predpiše \(\zeta_1 = 0{,}02\) pri \(\omega_1 = 2\) in \(\zeta_2 = 0{,}10\) pri \(\omega_2 = 3\) in dobi \(a_0 = -0{,}336\) in \(a_1 = 0{,}104\) (po obrazcu leme <a class="xref" href="sec-dusenje-superpozicija.html#lem-rayleighovo-klasicno" data-knowl="lem-rayleighovo-klasicno">10.46</a> isto). Matrika \(\mat C = a_0\mat M + a_1\mat K\) ni več pozitivno semidefinitna: način s \(\omega &lt; \sqrt{-a_0/a_1} = 1{,}797\) 1/s ima po lemi <a class="xref" href="sec-dusenje-superpozicija.html#lem-rayleighovo-klasicno" data-knowl="lem-rayleighovo-klasicno">10.46</a> <span class="nobr">\(\zeta = a_0/(2\omega) + a_1\omega/2 &lt; 0\),</span> na primer \(-0{,}034\) pri \(\omega = 1{,}5\) 1/s, in njegova amplituda bi ob nihanju rasla. Pri predpisanih dveh načinih se to ne pokaže, pri drugih pa se. Tak \(\mat C\) ne pripada nobenemu fizikalnemu dušilniku, ker bi moral imeti negativno <span class="nobr">\(c_{\mathrm{z}}\).</span></p>
+
+<h3 id="sec-dmke-togi"><span class="h-num">20.7.3</span> Togo gibanje in dušenje</h3>
+<p>Ima mehanizem \(a_0\mat M\) še kakšno posledico, ki jo formula za \(\zeta_{\mathrm{r}}\) skriva? V formuli je <span class="nobr">\(a_0/(2\omega_{\mathrm{r}})\),</span> ki pri \(\omega_{\mathrm{r}} \to 0\) raste čez vse meje. Pri konstrukciji, ki ni pritrjena (letalo, vozilo, vagona), ima \(\mat K\) ničelno <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">lastno vrednost</a> s <a class="xref auto" href="sec-togi-nacini.html#def-nicelni-nacin" data-knowl="def-nicelni-nacin">togim načinom</a> (izrek <a class="xref" href="sec-togi-nacini.html#thm-togi-nacini" data-knowl="thm-togi-nacini">10.23</a>), lema <a class="xref" href="sec-dusenje-superpozicija.html#lem-rayleighovo-klasicno" data-knowl="lem-rayleighovo-klasicno">10.46</a> pa zahteva pozitivno definitno <span class="nobr">\(\mat K\).</span> Kaj se zgodi s togim načinom?</p>
+
+<figure class="blk slika" id="fig-c20-vagona"><p><span class="svgfig" role="img" aria-label="Dva vagona z odbojnikom, sili dušenja in graf padajoče hitrosti"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='596.20pt' height='196.79pt' viewBox='-72.000004 -72 441.627557 145.773489'>
+<defs>
+<path id='c20-07-vagona-g0-61' d='M4.373599-7.0934C4.423412-7.222914 4.423412-7.262765 4.423412-7.272727C4.423412-7.382316 4.333748-7.47198 4.224159-7.47198C4.154421-7.47198 4.084682-7.442092 4.054795-7.382316L.597758 2.11208C.547945 2.241594 .547945 2.281445 .547945 2.291407C.547945 2.400996 .637609 2.49066 .747198 2.49066C.876712 2.49066 .9066 2.420922 .966376 2.251557L4.373599-7.0934Z'/>
+<path id='c20-07-vagona-g0-70' d='M3.01868-3.237858H3.985056C4.732254-3.237858 4.811955-3.078456 4.811955-2.789539C4.811955-2.719801 4.811955-2.600249 4.742217-2.30137C4.722291-2.251557 4.712329-2.211706 4.712329-2.191781C4.712329-2.11208 4.772105-2.072229 4.83188-2.072229C4.931507-2.072229 4.931507-2.102117 4.98132-2.281445L5.529265-4.443337C5.559153-4.552927 5.559153-4.572852 5.559153-4.60274C5.559153-4.622665 5.539228-4.712329 5.439601-4.712329S5.330012-4.662516 5.290162-4.503113C5.080946-3.726027 4.851806-3.5467 4.004981-3.5467H3.098381L3.73599-6.07721C3.825654-6.425903 3.835616-6.465753 4.273973-6.465753H5.589041C6.814446-6.465753 7.043587-6.136986 7.043587-5.369863C7.043587-5.140722 7.043587-5.100872 7.013699-4.83188C6.993773-4.702366 6.993773-4.682441 6.993773-4.652553C6.993773-4.60274 7.023661-4.533001 7.113325-4.533001C7.222914-4.533001 7.232877-4.592777 7.252802-4.782067L7.452055-6.505604C7.481943-6.774595 7.43213-6.774595 7.183064-6.774595H2.30137C2.102117-6.774595 2.002491-6.774595 2.002491-6.575342C2.002491-6.465753 2.092154-6.465753 2.281445-6.465753C2.650062-6.465753 2.929016-6.465753 2.929016-6.286426C2.929016-6.246575 2.929016-6.22665 2.879203-6.047323L1.564134-.777086C1.464508-.388543 1.444583-.308842 .657534-.308842C.488169-.308842 .37858-.308842 .37858-.119552C.37858 0 .498132 0 .52802 0C.816936 0 1.554172-.029888 1.843088-.029888C2.171856-.029888 2.998755 0 3.327522 0C3.417186 0 3.536737 0 3.536737-.18929C3.536737-.268991 3.476961-.288917 3.476961-.298879C3.447073-.308842 3.427148-.308842 3.198007-.308842C2.978829-.308842 2.929016-.308842 2.67995-.328767C2.391034-.358655 2.361146-.398506 2.361146-.52802C2.361146-.547945 2.361146-.607721 2.400996-.757161L3.01868-3.237858Z'/>
+<path id='c20-07-vagona-g0-97' d='M3.716065-3.765878C3.536737-4.134496 3.247821-4.403487 2.799502-4.403487C1.633873-4.403487 .398506-2.938979 .398506-1.484433C.398506-.547945 .946451 .109589 1.723537 .109589C1.92279 .109589 2.420922 .069738 3.01868-.637609C3.098381-.219178 3.447073 .109589 3.92528 .109589C4.273973 .109589 4.503113-.119552 4.662516-.438356C4.83188-.797011 4.961395-1.404732 4.961395-1.424658C4.961395-1.524284 4.871731-1.524284 4.841843-1.524284C4.742217-1.524284 4.732254-1.484433 4.702366-1.344956C4.533001-.697385 4.353674-.109589 3.945205-.109589C3.676214-.109589 3.646326-.368618 3.646326-.56787C3.646326-.787049 3.666252-.86675 3.775841-1.305106C3.88543-1.723537 3.905355-1.823163 3.995019-2.201743L4.353674-3.596513C4.423412-3.875467 4.423412-3.895392 4.423412-3.935243C4.423412-4.104608 4.303861-4.204234 4.134496-4.204234C3.895392-4.204234 3.745953-3.985056 3.716065-3.765878ZM3.068493-1.185554C3.01868-1.006227 3.01868-.986301 2.86924-.816936C2.430884-.268991 2.022416-.109589 1.743462-.109589C1.24533-.109589 1.105853-.657534 1.105853-1.046077C1.105853-1.544209 1.424658-2.769614 1.653798-3.227895C1.96264-3.815691 2.410959-4.184309 2.809465-4.184309C3.457036-4.184309 3.596513-3.367372 3.596513-3.307597S3.576588-3.188045 3.566625-3.138232L3.068493-1.185554Z'/>
+<path id='c20-07-vagona-g0-107' d='M2.859278-6.804483C2.859278-6.814446 2.859278-6.914072 2.729763-6.914072C2.500623-6.914072 1.77335-6.834371 1.514321-6.814446C1.43462-6.804483 1.325031-6.794521 1.325031-6.615193C1.325031-6.495641 1.414695-6.495641 1.564134-6.495641C2.042341-6.495641 2.062267-6.425903 2.062267-6.326276L2.032379-6.127024L.587796-.388543C.547945-.249066 .547945-.229141 .547945-.169365C.547945 .059776 .747198 .109589 .836862 .109589C.966376 .109589 1.115816 .019925 1.175592-.099626C1.225405-.18929 1.673724-2.032379 1.733499-2.281445C2.072229-2.251557 2.889166-2.092154 2.889166-1.43462C2.889166-1.364882 2.889166-1.325031 2.859278-1.225405C2.839352-1.105853 2.819427-.986301 2.819427-.876712C2.819427-.288917 3.217933 .109589 3.73599 .109589C4.034869 .109589 4.303861-.049813 4.523039-.418431C4.772105-.856787 4.881694-1.404732 4.881694-1.424658C4.881694-1.524284 4.79203-1.524284 4.762142-1.524284C4.662516-1.524284 4.652553-1.484433 4.622665-1.344956C4.423412-.617684 4.194271-.109589 3.755915-.109589C3.566625-.109589 3.437111-.219178 3.437111-.577833C3.437111-.747198 3.476961-.976339 3.516812-1.135741C3.556663-1.305106 3.556663-1.344956 3.556663-1.444583C3.556663-2.092154 2.929016-2.381071 2.082192-2.49066C2.391034-2.669988 2.709838-2.988792 2.938979-3.227895C3.417186-3.755915 3.875467-4.184309 4.363636-4.184309C4.423412-4.184309 4.433375-4.184309 4.4533-4.174346C4.572852-4.154421 4.582814-4.154421 4.662516-4.094645C4.682441-4.084682 4.682441-4.07472 4.702366-4.054795C4.224159-4.024907 4.134496-3.636364 4.134496-3.516812C4.134496-3.35741 4.244085-3.16812 4.513076-3.16812C4.772105-3.16812 5.061021-3.387298 5.061021-3.775841C5.061021-4.07472 4.83188-4.403487 4.383562-4.403487C4.104608-4.403487 3.646326-4.323786 2.929016-3.526775C2.590286-3.148194 2.201743-2.749689 1.823163-2.600249L2.859278-6.804483Z'/>
+<path id='c20-07-vagona-g0-109' d='M.876712-.587796C.846824-.438356 .787049-.209215 .787049-.159402C.787049 .019925 .926526 .109589 1.075965 .109589C1.195517 .109589 1.374844 .029888 1.444583-.169365C1.454545-.18929 1.574097-.657534 1.633873-.9066L1.853051-1.803238C1.912827-2.022416 1.972603-2.241594 2.022416-2.470735C2.062267-2.6401 2.141968-2.929016 2.15193-2.968867C2.30137-3.277709 2.82939-4.184309 3.775841-4.184309C4.224159-4.184309 4.313823-3.815691 4.313823-3.486924C4.313823-3.237858 4.244085-2.958904 4.164384-2.660025L3.88543-1.504359L3.686177-.747198C3.646326-.547945 3.556663-.209215 3.556663-.159402C3.556663 .019925 3.696139 .109589 3.845579 .109589C4.154421 .109589 4.214197-.139477 4.293898-.458281C4.433375-1.016189 4.801993-2.470735 4.891656-2.859278C4.921544-2.988792 5.449564-4.184309 6.535492-4.184309C6.963885-4.184309 7.073474-3.845579 7.073474-3.486924C7.073474-2.919054 6.655044-1.783313 6.455791-1.255293C6.366127-1.016189 6.326276-.9066 6.326276-.707347C6.326276-.239103 6.674969 .109589 7.143213 .109589C8.079701 .109589 8.448319-1.344956 8.448319-1.424658C8.448319-1.524284 8.358655-1.524284 8.328767-1.524284C8.229141-1.524284 8.229141-1.494396 8.179328-1.344956C8.029888-.816936 7.711083-.109589 7.163138-.109589C6.993773-.109589 6.924035-.209215 6.924035-.438356C6.924035-.687422 7.013699-.926526 7.103362-1.145704C7.292653-1.663761 7.711083-2.769614 7.711083-3.337484C7.711083-3.985056 7.312578-4.403487 6.56538-4.403487S5.310087-3.965131 4.941469-3.437111C4.931507-3.566625 4.901619-3.905355 4.622665-4.144458C4.373599-4.353674 4.054795-4.403487 3.805729-4.403487C2.909091-4.403487 2.420922-3.765878 2.251557-3.536737C2.201743-4.104608 1.783313-4.403487 1.334994-4.403487C.876712-4.403487 .687422-4.014944 .597758-3.835616C.418431-3.486924 .288917-2.899128 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.779577 .577833-2.998755C.747198-3.706102 .946451-4.184309 1.305106-4.184309C1.464508-4.184309 1.613948-4.104608 1.613948-3.726027C1.613948-3.516812 1.58406-3.407223 1.454545-2.889166L.876712-.587796Z'/>
+<path id='c20-07-vagona-g0-116' d='M2.052304-3.985056H2.988792C3.188045-3.985056 3.287671-3.985056 3.287671-4.184309C3.287671-4.293898 3.188045-4.293898 3.008717-4.293898H2.132005C2.49066-5.708593 2.540473-5.907846 2.540473-5.967621C2.540473-6.136986 2.420922-6.236613 2.251557-6.236613C2.221669-6.236613 1.942715-6.22665 1.853051-5.877958L1.464508-4.293898H.52802C.328767-4.293898 .229141-4.293898 .229141-4.104608C.229141-3.985056 .308842-3.985056 .508095-3.985056H1.384807C.667497-1.155666 .627646-.986301 .627646-.806974C.627646-.268991 1.006227 .109589 1.544209 .109589C2.560399 .109589 3.128269-1.344956 3.128269-1.424658C3.128269-1.524284 3.048568-1.524284 3.008717-1.524284C2.919054-1.524284 2.909091-1.494396 2.859278-1.384807C2.430884-.348692 1.902864-.109589 1.564134-.109589C1.354919-.109589 1.255293-.239103 1.255293-.56787C1.255293-.806974 1.275218-.876712 1.315068-1.046077L2.052304-3.985056Z'/>
+<path id='c20-07-vagona-g0-118' d='M4.662516-3.706102C4.662516-4.244085 4.403487-4.403487 4.224159-4.403487C3.975093-4.403487 3.73599-4.144458 3.73599-3.92528C3.73599-3.795766 3.785803-3.73599 3.895392-3.626401C4.104608-3.427148 4.234122-3.16812 4.234122-2.809465C4.234122-2.391034 3.626401-.109589 2.460772-.109589C1.952677-.109589 1.723537-.458281 1.723537-.976339C1.723537-1.534247 1.992528-2.261519 2.30137-3.088418C2.371108-3.257783 2.420922-3.39726 2.420922-3.58655C2.420922-4.034869 2.102117-4.403487 1.603985-4.403487C.667497-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.856787-3.955168 1.285181-4.184309 1.574097-4.184309C1.653798-4.184309 1.823163-4.184309 1.823163-3.865504C1.823163-3.616438 1.723537-3.347447 1.653798-3.16812C1.215442-2.012453 1.085928-1.554172 1.085928-1.125778C1.085928-.049813 1.96264 .109589 2.420922 .109589C4.094645 .109589 4.662516-3.188045 4.662516-3.706102Z'/>
+<path id='c20-07-vagona-g1-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c20-07-vagona-g1-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='c20-07-vagona-g1-108' d='M1.763387-6.914072L.328767-6.804483V-6.495641C1.026152-6.495641 1.105853-6.425903 1.105853-5.937733V-.757161C1.105853-.308842 .996264-.308842 .328767-.308842V0C.657534-.009963 1.185554-.029888 1.43462-.029888S2.171856-.009963 2.540473 0V-.308842C1.872976-.308842 1.763387-.308842 1.763387-.757161V-6.914072Z'/>
+<path id='c20-07-vagona-g1-110' d='M1.09589-3.427148V-.757161C1.09589-.308842 .986301-.308842 .318804-.308842V0C.667497-.009963 1.175592-.029888 1.444583-.029888C1.703611-.029888 2.221669-.009963 2.560399 0V-.308842C1.892902-.308842 1.783313-.308842 1.783313-.757161V-2.590286C1.783313-3.626401 2.49066-4.184309 3.128269-4.184309C3.755915-4.184309 3.865504-3.646326 3.865504-3.078456V-.757161C3.865504-.308842 3.755915-.308842 3.088418-.308842V0C3.437111-.009963 3.945205-.029888 4.214197-.029888C4.473225-.029888 4.991283-.009963 5.330012 0V-.308842C4.811955-.308842 4.562889-.308842 4.552927-.607721V-2.510585C4.552927-3.367372 4.552927-3.676214 4.244085-4.034869C4.104608-4.204234 3.775841-4.403487 3.198007-4.403487C2.470735-4.403487 2.002491-3.975093 1.723537-3.35741V-4.403487L.318804-4.293898V-3.985056C1.016189-3.985056 1.09589-3.915318 1.09589-3.427148Z'/>
+<path id='c20-07-vagona-g2-48' d='M3.598506-2.224658C3.598506-2.991781 3.507846-3.542715 3.187049-4.030884C2.970859-4.351681 2.538481-4.630635 1.980573-4.630635C.36264-4.630635 .36264-2.726775 .36264-2.224658S.36264 .139477 1.980573 .139477S3.598506-1.72254 3.598506-2.224658ZM1.980573-.055791C1.659776-.055791 1.234371-.244085 1.094894-.81594C.99726-1.227397 .99726-1.799253 .99726-2.315318C.99726-2.824408 .99726-3.354421 1.101868-3.737983C1.248319-4.288917 1.694645-4.435367 1.980573-4.435367C2.357161-4.435367 2.719801-4.20523 2.84533-3.800747C2.956912-3.424159 2.963885-2.922042 2.963885-2.315318C2.963885-1.799253 2.963885-1.283188 2.873225-.843836C2.733748-.209215 2.259527-.055791 1.980573-.055791Z'/>
+<path id='c20-07-vagona-g2-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='c20-07-vagona-g2-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+</defs>
+<g id='c20-07-vagona-page1'>
+<g stroke-miterlimit='10' transform='translate(-57.602639,46.949504)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='vagona'>
+<path d='M0 9.95863V38.41138H56.90549V9.95863ZM56.90549 38.41138' fill='none'/>
+<path d='M91.04869 9.95863V38.41138H176.40692V9.95863ZM176.40692 38.41138' fill='none'/>
+<path d='M15.64865 5.69046C15.64865 8.04749 13.73795 9.95819 11.38092 9.95819C9.0239 9.95819 7.11319 8.04749 7.11319 5.69046C7.11319 3.33344 9.0239 1.42273 11.38092 1.42273C13.73795 1.42273 15.64865 3.33344 15.64865 5.69046ZM11.38092 5.69046' fill='none'/>
+<path d='M49.79228 5.69046C49.79228 8.04749 47.88158 9.95819 45.52455 9.95819C43.16753 9.95819 41.25682 8.04749 41.25682 5.69046C41.25682 3.33344 43.16753 1.42273 45.52455 1.42273C47.88158 1.42273 49.79228 3.33344 49.79228 5.69046ZM45.52455 5.69046' fill='none'/>
+<path d='M106.69777 5.69046C106.69777 8.04749 104.78706 9.95819 102.43004 9.95819C100.07301 9.95819 98.16231 8.04749 98.16231 5.69046C98.16231 3.33344 100.07301 1.42273 102.43004 1.42273C104.78706 1.42273 106.69777 3.33344 106.69777 5.69046ZM102.43004 5.69046' fill='none'/>
+<path d='M169.29372 5.69046C169.29372 8.04749 167.38301 9.95819 165.02599 9.95819C162.66896 9.95819 160.75826 8.04749 160.75826 5.69046C160.75826 3.33344 162.66896 1.42273 165.02599 1.42273C167.38301 1.42273 169.29372 3.33344 169.29372 5.69046ZM165.02599 5.69046' fill='none'/>
+<path d='M56.90549 24.185H65.44139L68.2864 31.29819L73.9773 17.07181L79.66776 31.29819L85.35823 17.07181L88.20367 24.185H91.04869' fill='none'/>
+<g transform='translate(71.21687,36.35345)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.602639,46.949504)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.602639' y='46.949504' xlink:href='#c20-07-vagona-g0-107'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(21.81961,43.54433)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.602639,46.949504)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.602639' y='46.949504' xlink:href='#c20-07-vagona-g0-109'/>
+<use x='-48.855306' y='48.443885' xlink:href='#c20-07-vagona-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(127.09467,43.54433)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.602639,46.949504)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.602639' y='46.949504' xlink:href='#c20-07-vagona-g0-109'/>
+<use x='-48.855306' y='48.443885' xlink:href='#c20-07-vagona-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-14.22636 1.42271H190.63329' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='sile'>
+<path d='M30.29137 24.185C30.29137 25.20044 29.46819 26.02362 28.45274 26.02362C27.4373 26.02362 26.61412 25.20044 26.61412 24.185S27.4373 22.34637 28.45274 22.34637C29.46819 22.34637 30.29137 23.16956 30.29137 24.185ZM28.45274 24.185' stroke='none'/>
+<g transform='translate(28.45274,24.185)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.602639,46.949504)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M135.56642 24.185C135.56642 25.20044 134.74324 26.02362 133.7278 26.02362S131.88918 25.20044 131.88918 24.185S132.71236 22.34637 133.7278 22.34637S135.56642 23.16956 135.56642 24.185ZM133.7278 24.185' stroke='none'/>
+<g transform='translate(133.7278,24.185)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.602639,46.949504)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M28.45274 24.185H9.9141' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,12.51912,24.185)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M133.7278 24.185H103.80821' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,106.41324,24.185)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+<g transform='translate(11.61346,12.29597)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.602639,46.949504)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.602639' y='46.949504' xlink:href='#c20-07-vagona-g0-70'/>
+<use x='-51.196095' y='48.443885' xlink:href='#c20-07-vagona-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(111.19807,12.29597)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.602639,46.949504)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.602639' y='46.949504' xlink:href='#c20-07-vagona-g0-70'/>
+<use x='-51.196095' y='48.443885' xlink:href='#c20-07-vagona-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='osi'>
+<path d='M239.00287-8.5359H413.90305' fill='none'/>
+<g transform='translate(411.42659,-8.5359)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(421.88821,-11.6113)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.602639,46.949504)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.602639' y='46.949504' xlink:href='#c20-07-vagona-g0-116'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M239.00287-8.5359V98.07742' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,239.00287,95.60097)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(229.23318,108.56259)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.602639,46.949504)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.602639' y='46.949504' xlink:href='#c20-07-vagona-g0-118'/>
+<use x='-52.416069' y='46.949504' xlink:href='#c20-07-vagona-g0-61'/>
+<use x='-47.43473' y='46.949504' xlink:href='#c20-07-vagona-g0-118'/>
+<use x='-42.605598' y='48.443885' xlink:href='#c20-07-vagona-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M239.00287 88.20325H236.15742' fill='none'/>
+<g transform='translate(227.52444,84.98103)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.602639,46.949504)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.602639' y='46.949504' xlink:href='#c20-07-vagona-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M239.00287 39.83366H236.15742' fill='none'/>
+<g transform='translate(217.52441,37.33366)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.602639,46.949504)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.602639' y='46.949504' xlink:href='#c20-07-vagona-g1-49'/>
+<use x='-52.6213' y='46.949504' xlink:href='#c20-07-vagona-g0-61'/>
+<use x='-47.639961' y='46.949504' xlink:href='#c20-07-vagona-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='graf'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M239.00287 88.20325H398.3384' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.1'>
+<path d='M239.00287 88.20325L243.08781 82.75894L247.17278 77.60162L251.25818 72.74344L255.34312 68.15747L259.42809 63.822L263.51349 59.73877L267.59843 55.88783L271.6834 52.24918L275.7688 48.81415L279.85374 45.57275L283.9387 42.51544L288.02411 39.64177L292.10907 36.91225L296.19446 34.34813L300.27942 31.92902L304.36438 29.64537L308.44977 27.48718L312.53473 25.4562L316.61969 23.52986L320.70508 21.72162L324.79004 20.01799L328.875 18.40163L332.96039 16.88252L337.04535 15.45068L341.13031 14.09569L345.2157 12.80843L349.30066 11.60841L353.38605 10.46747L357.47101 9.39293L361.55597 8.38612L365.64136 7.42969L369.72632 6.52925L373.81128 5.67743L377.89667 4.87425L381.98163 4.12012L386.06659 3.4042L390.15198 2.72649L394.23694 2.08742L398.32234 1.48828' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='polovica'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M239.00287 39.83366H287.71411V-8.5359' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M289.69409 39.83366C289.69409 40.92719 288.80763 41.81364 287.71411 41.81364S285.73413 40.92719 285.73413 39.83366C285.73413 38.74014 286.62059 37.85368 287.71411 37.85368S289.69409 38.74014 289.69409 39.83366ZM287.71411 39.83366' stroke='none'/>
+</g>
+<g transform='translate(287.71411,39.83366)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.602639,46.949504)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(272.8281,-21.0916)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.602639,46.949504)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.602639' y='46.949504' xlink:href='#c20-07-vagona-g1-108'/>
+<use x='-54.835231' y='46.949504' xlink:href='#c20-07-vagona-g1-110'/>
+<use x='-47.640014' y='46.949504' xlink:href='#c20-07-vagona-g1-50'/>
+<use x='-42.658675' y='46.949504' xlink:href='#c20-07-vagona-g0-61'/>
+<use x='-37.677336' y='46.949504' xlink:href='#c20-07-vagona-g0-97'/>
+<use x='-32.411182' y='48.443885' xlink:href='#c20-07-vagona-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 20.20</span>: Vagona iz razdelka <a class="xref" href="sec-togi-nacini.html">10.5</a> <span class="nobr">(\(m_1 = 20\)</span> t, \(m_2 = 30\) t, odbojnik \(k = 2\cdot10^6\) N/m) z dušenjem <span class="nobr">\(a_0\mat M\),</span> \(a_0 = 0{,}56668\) 1/s. Levo: sila dušenja \(F_{\mathrm{i}} = -a_0 m_{\mathrm{i}}\dot q_{\mathrm{i}}\) na vsak vagon začne v njegovem težišču in kaže nazaj, dolžini puščic sta v razmerju mas <span class="nobr">\(2:3\).</span> Desno: hitrost \(v/v_0 = \mathrm{e}^{-a_0 t}\) vagonov, ki drsita skupaj s hitrostjo <span class="nobr">\(v_0\),</span> pade na polovico po \(\ln 2/a_0 = 1{,}223\) s. Črtkana vodoravnica kaže hitrost brez dušenja.</figcaption></figure>
+<p>Vzemimo dva <a data-del="vagona" class="xref kaz" href="sec-dusenje-mke.html#fig-c20-vagona" data-knowl="fig-c20-vagona">vagona</a> iz razdelka <a class="xref" href="sec-togi-nacini.html">10.5</a>, brez trenja na tirih, povezana z odbojnikom. Uporabimo dušenje <span class="nobr">\(a_0\mat M\),</span> ki vsak vagon veže na mirujočo okolico. Na vsak vagon tedaj deluje <a data-del="sile" class="xref kaz" href="sec-dusenje-mke.html#fig-c20-vagona" data-knowl="fig-c20-vagona">sila</a> <span class="nobr">\(F_{\mathrm{i}} = -a_0 m_{\mathrm{i}}\dot q_{\mathrm{i}}\),</span> ki začne v <a class="xref auto" href="sec-geometrija-prereza.html#def-tezisce" data-knowl="def-tezisce">težišču</a> in kaže nasprotno od hitrosti (lema <a class="xref" href="sec-model-ena-ps.html#lem-dusilnik-posplosena-sila" data-knowl="lem-dusilnik-posplosena-sila">9.2</a>). Odbojnik deluje na vagona z nasprotno enakima silama (tretji Newtonov zakon), zato se pri seštevanju gibalnih enačb izgubi: <span class="nobr">\(m_1\ddot q_1 + m_2\ddot q_2 = -a_0\,(m_1\dot q_1 + m_2\dot q_2)\).</span> Gibalna količina \(P = m_1\dot q_1 + m_2\dot q_2\) ustreza enačbi <span class="nobr">\(\dot P = -a_0 P\).</span> Če se vagona gibljeta skupaj s \(10\) m/s, je \(P = 5{,}0\cdot10^5\) kg m/s in po času \(\ln 2/a_0 = 1{,}223\) s je polovica. <a data-del="graf" class="xref kaz" href="sec-dusenje-mke.html#fig-c20-vagona" data-knowl="fig-c20-vagona">Graf</a> kaže razmerje \(v/v_0\) v odvisnosti od časa <span class="nobr">\(t\),</span> ki ju nanašamo na <a data-del="osi" class="xref kaz" href="sec-dusenje-mke.html#fig-c20-vagona" data-knowl="fig-c20-vagona">osi</a>. Polovica je točka na krivulji \(\mathrm{e}^{-a_0 t}\) na višini \(1/2\) (<a data-del="polovica" class="xref kaz" href="sec-dusenje-mke.html#fig-c20-vagona" data-knowl="fig-c20-vagona">polovica</a>), po \(1\) s je še \(0{,}5674\) začetne hitrosti. Hitrost nikoli ne pade točno na nič, pot vagonov pa se s časom približuje \(v_0/a_0 = 17{,}65\) m (po \(5\) s je \(16{,}6\) m). Na ravni progi brez trenja bi vagona potovala večno, zato to ni lastnost vagonov, ampak <a class="xref auto" href="sec-hierarhija-modelov.html#def-vrste-napak" data-knowl="def-vrste-napak">napaka modela</a>.</p>
+
+<div class="blk lema" id="lem-dusenje-togih-nacinov"><div class="blk-head"><span class="blk-label">Lema 20.41</span> <span class="blk-title">Dušenje togega gibanja (damping of rigid-body motion)</span></div><div class="blk-body"><p>Naj bo \(\vek s \ne \vek 0\) stolpec s \(\mat K\vek s = \vek 0\) (togi način, definicija <a class="xref" href="sec-togi-nacini.html#def-nicelni-nacin" data-knowl="def-nicelni-nacin">10.22</a>) konstrukcije z masno <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matriko</a> <span class="nobr">\(\mat M\),</span> pozitivno definitno, in naj ni zunanjih sil. Tedaj za gibanje \(\vek q = \vek s\,w(t)\) velja:</p>
+<ol>
+<li>Pri \(\mat C = a_0\mat M + a_1\mat K\) je <span class="nobr">\(\ddot w + a_0\,\dot w = 0\),</span> torej <span class="nobr">\(\dot w(t) = \dot w(0)\,\mathrm{e}^{-a_0 t}\),</span> in pri \(a_0 &gt; 0\) se pot \(w(t) - w(0)\) z \(t \to \infty\) približuje <span class="nobr">\(\dot w(0)/a_0\).</span></li>
+<li>Če je <span class="nobr">\(\mat C\vek s = \vek 0\),</span> na primer pri <a class="xref auto" href="sec-model-ena-ps.html#def-viskozni-dusilnik" data-knowl="def-viskozni-dusilnik">dušilnikih</a> med dvema točkama konstrukcije in pri <span class="nobr">\(\mat C = a_1\mat K\),</span> je <span class="nobr">\(\ddot w = 0\):</span> togo gibanje se ne duši.</li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da gibalna enačba pri takem \(\vek q\) preide v enačbo za <span class="nobr">\(w\),</span> in jo rešiti.</p>
+<ol>
+<li>Gibalna enačba \(\mat M\ddot{\vek q} + \mat C\dot{\vek q} + \mat K\vek q = \vek 0\) (izrek <a class="xref" href="sec-enacbe-vec-ps.html#thm-enacbe-vec-ps" data-knowl="thm-enacbe-vec-ps">10.2</a>) da pri \(\vek q = \vek s\,w\) enačbo <span class="nobr">\(\mat M\vek s\,\ddot w + \mat C\vek s\,\dot w + \mat K\vek s\,w = \vek 0\).</span> Zadnji člen je nič.</li>
+<li>Pri \(\mat C = a_0\mat M + a_1\mat K\) je <span class="nobr">\(\mat C\vek s = a_0\mat M\vek s\),</span> zato enačbo pomnožimo z leve z \(\vek s^\T\) in delimo s pozitivnim <span class="nobr">\(\vek s^\T\mat M\vek s\):</span> <span class="nobr">\(\ddot w + a_0\,\dot w = 0\).</span></li>
+<li>Za hitrost \(v = \dot w\) je to enačba prvega reda \(\dot v = -a_0\,v\) in po lemi <a class="xref" href="sec-linearne-enacbe.html#lem-prvi-red" data-knowl="lem-prvi-red">9.34</a> je <span class="nobr">\(v(t) = v(0)\,\mathrm{e}^{-a_0 t}\),</span> to je <span class="nobr">\(\dot w(t) = \dot w(0)\,\mathrm{e}^{-a_0 t}\).</span> Gibanje \(w(t) = w(0) + \dot w(0)\,(1 - \mathrm{e}^{-a_0 t})/a_0\) se z \(t \to \infty\) približuje <span class="nobr">\(w(0) + \dot w(0)/a_0\).</span></li>
+<li>Pri \(\mat C\vek s = \vek 0\) odpade še drugi člen koraka 1, ostane \(\mat M\vek s\,\ddot w = \vek 0\) in <span class="nobr">\(\ddot w = 0\).</span> <a class="xref auto" href="sec-model-ena-ps.html#def-viskozni-dusilnik" data-knowl="def-viskozni-dusilnik">Dušilnik</a> med točkama \(A\) in \(B\) da po lemi <a class="xref" href="sec-model-ena-ps.html#lem-dusilnik-posplosena-sila" data-knowl="lem-dusilnik-posplosena-sila">9.2</a> silo, sorazmerno z <span class="nobr">\(\dot\ell\),</span> to je s hitrostjo razdalje, razdalja pa se pri <a class="xref auto" href="sec-deformacija-v-tocki.html#def-togo-telo" data-knowl="def-togo-telo">togem premiku</a> ne spremeni.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> CK (PDF str. 334) pravi, da so pri dušenem sistemu s togimi načini potrebni posebni postopki, primeri z dušilniki med telesi so na PDF str. 338-339. COOK (PDF str. 404) pravi, da si lahko proporcionalno dušenje predstavljamo kot potopitev konstrukcije v nefizikalno tekočino, katere viskoznost postane neskončna pri togem gibanju <span class="nobr">(\(\omega = 0\)),</span> kar ustreza <span class="nobr">\(\zeta_{\mathrm{r}} = a_0/(2\omega_{\mathrm{r}})\to\infty\).</span> Dokaz in številke so naši (outlines/ch-dusenje/num-07.py).</p></div></div>
+<p>Lema je pokazala dvoje. Pri \(a_0 &gt; 0\) model \(a_0\mat M\) duši togo gibanje, kar pravi sistem nima. To je napaka zunanjega <a class="xref auto" href="sec-model-ena-ps.html#def-viskozni-dusilnik" data-knowl="def-viskozni-dusilnik">dušilnika</a> na mirujoči steni, ki je fizikalno ni, če konstrukcija prosto lebdi. Pri dušilnikih med deli konstrukcije in pri \(a_1\mat K\) togega gibanja ni mogoče dušiti. Zato je pri prostih konstrukcijah treba vzeti \(a_0 = 0\) ali dušilnike med deli. Pri vagonih z \(a_1\mat K\) in \(a_1 = 5{,}6469\cdot10^{-4}\) s so koreni \(-0{,}0471\pm12{,}9099\,\mathrm{i}\) in dvojna ničla: elastični način je dušen <span class="nobr">(\(\zeta = a_1\omega/2 = 0{,}00365\)),</span> togi pa ima dvojni koren nič, torej \(\vek q = \vek s\,(c_1 + c_2 t)\) (izrek <a class="xref" href="sec-togi-nacini.html#thm-togi-nacini" data-knowl="thm-togi-nacini">10.23</a>).</p>
+
+<h3 id="sec-dmke-histerezno"><span class="h-num">20.7.4</span> Histerezno dušenje v elementih</h3>
+<p>Doslej smo imeli v časovnem prostoru dva viskozna mehanizma. Histerezno dušenje (definicija <a class="xref" href="sec-histerezno-dusenje.html#def-histerezno-dusenje" data-knowl="def-histerezno-dusenje">20.12</a>) je zapisano le za harmonično gibanje, kjer je togost \(k\) nadomeščena s \(k\,(1 + \mathrm{i}\gamma)\) in \(\gamma\) je faktor izgub (definicija <a class="xref" href="sec-izgube-energije.html#def-faktor-izgub" data-knowl="def-faktor-izgub">20.3</a>). Kako ga vgradimo v konstrukcijo z več elementi? Vsak element ima lahko svoj material in svoj <span class="nobr">\(\gamma_{\mathrm{e}}\).</span> <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">Matriko</a>, ki jo dobimo, imenujemo kompleksna, ker je njen realni del togost, ki shranjuje energijo (storage), <a class="xref auto" href="sec-kompleksna-stevila.html#def-kompleksno-stevilo" data-knowl="def-kompleksno-stevilo">imaginarni del</a> pa izguba energije v ciklu (razdelek <a class="xref" href="sec-izgube-energije.html">20.1</a>), kot pri kompleksni togosti <span class="nobr">\(k\,(1 + \mathrm{i}\gamma)\).</span></p>
+
+<div class="blk definicija" id="def-kompleksna-togostna-matrika"><div class="blk-head"><span class="blk-label">Definicija 20.42</span> <span class="blk-title">Kompleksna togostna matrika (complex stiffness matrix)</span></div><div class="blk-body"><p>Naj ima konstrukcija elemente s togostnimi <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrikami</a> \(\mat k_{\mathrm{e}}\) (izrek <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a>) in faktorji izgub \(\gamma_{\mathrm{e}} \ge 0\) (definicija <a class="xref" href="sec-izgube-energije.html#def-faktor-izgub" data-knowl="def-faktor-izgub">20.3</a>). Kompleksna togostna matrika (complex stiffness matrix) konstrukcije je kompleksna matrika \(n_{\mathrm{u}} \times n_{\mathrm{u}}\)</p>
+<div class="eq" id="eq-dmke-kompleksna">\[\hat{\mat K} = \sum_{\mathrm{e}} \mat Z_{\mathrm{e}}^\T\,(1 + \mathrm{i}\gamma_{\mathrm{e}})\,\mat k_{\mathrm{e}}\,\mat Z_{\mathrm{e}} = \mat K' + \mathrm{i}\,\mat K'' , \qquad \mat K' = \mat K , \quad \mat K'' = \sum_{\mathrm{e}}\gamma_{\mathrm{e}}\,\mat Z_{\mathrm{e}}^\T\mat k_{\mathrm{e}}\,\mat Z_{\mathrm{e}} . \tag{20.34}\]</div>
+<p>Matriki \(\mat K'\) in \(\mat K''\) sta realni, simetrični in pozitivno semidefinitni (posledica <a class="xref" href="sec-sestavljanje.html#cor-matrika-konstrukcije" data-knowl="cor-matrika-konstrukcije">7.14</a>). Gibalna enačba pri harmonični sili \(\vek Q = \mathrm{Re}(\vek Q_0\,\mathrm{e}^{\mathrm{i}\Omega t})\) je</p>
+<div class="eq" id="eq-dmke-harmonicna">\[\big(-\Omega^2\mat M + \mat K' + \mathrm{i}\,\mat K''\big)\,\vek x = \vek Q_0 , \tag{20.35}\]</div>
+<p>kjer je \(\vek x\) stolpec kompleksnih amplitud, \(\vek q = \mathrm{Re}(\vek x\,\mathrm{e}^{\mathrm{i}\Omega t})\) (kot v enačbi <a class="xref" href="sec-dusenje-superpozicija.html#eq-dsp-harm" data-knowl="eq-dsp-harm">(10.63)</a>).</p>
+
+<p class="vir"><span class="vir-label">Vir:</span> GR (3.31)-(3.33) (PDF str. 180-181), kjer sta \(\mat K'\) in \(\mat K''\) imenovani »storage« in »loss« matrika. Oznake \(\mat K'\) in \(\mat K''\) so iz GR, kjer črtica ne pomeni odvoda. Za module material uporabljamo \(E_{\mathrm{shr}}\) in \(E_{\mathrm{izg}}\) (razdelek <a class="xref" href="sec-kompleksni-modul.html">20.6</a>), ker črtica v tej knjigi pomeni odvod.</p></div></div>
+<!-- nofig: algebra -->
+<p>Matrika \(\hat{\mat K}\) je kompleksna in simetrična, ne hermitska. Enačba <a class="xref" href="sec-dusenje-mke.html#eq-dmke-harmonicna" data-knowl="eq-dmke-harmonicna">(20.35)</a> ima isto obliko kot enačba <a class="xref" href="sec-dusenje-superpozicija.html#eq-dsp-harm" data-knowl="eq-dsp-harm">(10.63)</a>, z \(\mathrm{i}\,\mat K''\) namesto <span class="nobr">\(\mathrm{i}\Omega\,\mat C\):</span> pri frekvenci \(\Omega\) je viskozno dušenje s \(\mat C = \mat K''/\Omega\) enako histerezno za ta \(\Omega\) (razdelek <a class="xref" href="sec-ekvivalentno-viskozno.html">20.2</a>). Zato se spet pojavi vprašanje iz razdelka <a class="xref" href="sec-dusenje-superpozicija.html#sec-dsp-klasicno">10.9.1</a>: kdaj je razklopljeno?</p>
+
+<div class="blk lema" id="lem-en-material-klasicno"><div class="blk-head"><span class="blk-label">Lema 20.43</span> <span class="blk-title">En material: histerezno dušenje ima realne načine (one material: hysteretic damping has real modes)</span></div><div class="blk-body"><p>Naj bo \(\mat K\) pozitivno definitna, \(\mat\Phi\) modalna matrika para \((\mat K, \mat M)\) (definicija <a class="xref" href="sec-spektralni-izrek.html#def-modalna-matrika" data-knowl="def-modalna-matrika">10.15</a>) in \(\mat K'' = \gamma\,\mat K\) z istim \(\gamma \ge 0\) v vseh elementih. Tedaj velja:</p>
+<ol>
+<li><a class="xref auto" href="sec-lastni-problem.html#def-lastni-par" data-knowl="def-lastni-par">Lastni problem</a> \(\big(\mat K' + \mathrm{i}\mat K''\big)\vek u = \lambda\,\mat M\vek u\) ima natanko <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">lastne vrednosti</a> \(\hat\lambda_{\mathrm{r}} = (1 + \mathrm{i}\gamma)\,\lambda_{\mathrm{r}}\) z realnimi lastnimi stolpci \(\vek u = \boldsymbol\varphi_{\mathrm{r}}\) (načini nedušene konstrukcije), \(\mathrm{Im}\,\hat\lambda_{\mathrm{r}}/\mathrm{Re}\,\hat\lambda_{\mathrm{r}} = \gamma\) pri vsakem načinu.</li>
+<li>Pri \(\vek x = \mat\Phi\hat{\boldsymbol\eta}\) (definicija <a class="xref" href="sec-modalne-koordinate.html#def-modalne-koordinate" data-knowl="def-modalne-koordinate">10.19</a>) enačba <a class="xref" href="sec-dusenje-mke.html#eq-dmke-harmonicna" data-knowl="eq-dmke-harmonicna">(20.35)</a> razpade na \(n\) enačb <span class="nobr">\(\big((1 + \mathrm{i}\gamma)\,\omega_{\mathrm{r}}^2 - \Omega^2\big)\,\hat\eta_{\mathrm{r}} = \boldsymbol\varphi_{\mathrm{r}}^\T\vek Q_0\),</span> torej vsak način niha kot histerezni nihalnik razdelka <a class="xref" href="sec-histerezno-dusenje.html">20.3</a> z istim <a class="xref auto" href="sec-izgube-energije.html#def-faktor-izgub" data-knowl="def-faktor-izgub">faktorjem izgub</a> <span class="nobr">\(\gamma\).</span></li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da <a class="xref auto" href="sec-spektralni-izrek.html#def-modalna-matrika" data-knowl="def-modalna-matrika">modalna matrika</a> razkleni enačbo in da ni drugih <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">lastnih vrednosti</a>.</p>
+<ol>
+<li>Po lemi <a class="xref" href="sec-spektralni-izrek.html#lem-modalna-matrika" data-knowl="lem-modalna-matrika">10.16</a> je \(\mat\Phi^\T\mat M\mat\Phi = \mat I\) in <span class="nobr">\(\mat\Phi^\T\mat K\mat\Phi = \mathrm{diag}(\omega_{\mathrm{r}}^2)\).</span> <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">Matrika</a> \(\mat\Phi\) je realna, zato je <span class="nobr">\(\mat\Phi^\T\hat{\mat K}\,\mat\Phi = (1 + \mathrm{i}\gamma)\,\mathrm{diag}(\omega_{\mathrm{r}}^2)\).</span></li>
+<li>Enačbo <a class="xref" href="sec-dusenje-mke.html#eq-dmke-harmonicna" data-knowl="eq-dmke-harmonicna">(20.35)</a> z \(\vek x = \mat\Phi\hat{\boldsymbol\eta}\) pomnožimo z leve z \(\mat\Phi^\T\) in dobimo po koraku 1 <span class="nobr">\(\big((1 + \mathrm{i}\gamma)\,\mathrm{diag}(\omega_{\mathrm{r}}^2) - \Omega^2\mat I\big)\hat{\boldsymbol\eta} = \mat\Phi^\T\vek Q_0\).</span> To je točka 2, saj je matrika diagonalna.</li>
+<li>Iz \(\mat K\boldsymbol\varphi_{\mathrm{r}} = \lambda_{\mathrm{r}}\mat M\boldsymbol\varphi_{\mathrm{r}}\) sledi <span class="nobr">\((1 + \mathrm{i}\gamma)\,\mat K\boldsymbol\varphi_{\mathrm{r}} = (1 + \mathrm{i}\gamma)\lambda_{\mathrm{r}}\,\mat M\boldsymbol\varphi_{\mathrm{r}}\),</span> torej je \((\hat\lambda_{\mathrm{r}}, \boldsymbol\varphi_{\mathrm{r}})\) <a class="xref auto" href="sec-lastni-problem.html#def-lastni-par" data-knowl="def-lastni-par">lastni par</a>.</li>
+<li>Za poljubno število \(\mu\) je \(\det(\hat{\mat K} - \mu\mat M) = (1 + \mathrm{i}\gamma)^n\det\big(\mat K - \tfrac{\mu}{1 + \mathrm{i}\gamma}\mat M\big)\) (definicija <a class="xref" href="sec-determinanta.html#def-determinanta" data-knowl="def-determinanta">2.50</a>, iz vsake vrstice izpostavimo <span class="nobr">\(1 + \mathrm{i}\gamma\)).</span> Ta je nič natanko pri <span class="nobr">\(\mu/(1 + \mathrm{i}\gamma) = \lambda_{\mathrm{r}}\),</span> torej so edine lastne vrednosti \(\hat\lambda_{\mathrm{r}}\) in drugih ni.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> GR (3.39) (PDF str. 182) navaja \(\varepsilon_{\mathrm{r}} = \gamma/2\) pri \(\mat K'' = \gamma\mat K'\) (»the damping remains proportional«). Dokaz je naš.</p></div></div>
+<!-- nofig: signpost -->
+<p>Lema je pokazala, da en material z enim faktorjem izgub ne spremeni oblik načinov, ki ostanejo realni, in da vsak način izgublja isti delež energije. V <a class="xref auto" href="sec-harmonicno-vzbujanje.html#thm-resonanca" data-knowl="thm-resonanca">resonanci</a> je po izreku <a class="xref" href="sec-histerezno-dusenje.html#thm-histerezni-odziv" data-knowl="thm-histerezni-odziv">20.14</a> razmernik <span class="nobr">\(\zeta_{\mathrm{r}} = \gamma/2\).</span> Koliko zares velja to, ko materiali niso isti? Zgled je <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">okvir</a> A z <span class="nobr">\(\gamma = 0{,}04\).</span></p>
+
+<figure class="blk slika" id="fig-c20-modalni-izgubni"><p><span class="svgfig" role="img" aria-label="Dva stolpca faktorja izgub za prvi in drugi način okvirja, v dveh modelih"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='313.04pt' height='216.62pt' viewBox='-72.000004 -72.000005 231.879352 160.458949'>
+<defs>
+<path id='c20-07-modalni-izgubni-g0-13' d='M.408468-2.530511C.797011-3.676214 1.882939-3.686177 1.992528-3.686177C3.496887-3.686177 3.606476-1.942715 3.606476-1.155666C3.606476-.547945 3.556663-.37858 3.486924-.179328C3.267746 .547945 2.968867 1.703611 2.968867 1.96264C2.968867 2.072229 3.01868 2.141968 3.098381 2.141968C3.227895 2.141968 3.307597 1.92279 3.417186 1.544209C3.646326 .707347 3.745953 .139477 3.785803-.169365C3.805729-.298879 3.825654-.428394 3.865504-.557908C4.184309-1.544209 4.821918-3.028643 5.220423-3.815691C5.290162-3.935243 5.409714-4.154421 5.409714-4.194271C5.409714-4.293898 5.310087-4.293898 5.290162-4.293898C5.260274-4.293898 5.200498-4.293898 5.17061-4.224159C4.652553-3.277709 4.254047-2.281445 3.855542-1.275218C3.845579-1.58406 3.835616-2.34122 3.447073-3.307597C3.20797-3.915318 2.809465-4.403487 2.122042-4.403487C.876712-4.403487 .179328-2.889166 .179328-2.580324C.179328-2.480697 .268991-2.480697 .368618-2.480697L.408468-2.530511Z'/>
+<path id='c20-07-modalni-izgubni-g0-58' d='M1.912827-.52802C1.912827-.816936 1.673724-1.05604 1.384807-1.05604S.856787-.816936 .856787-.52802S1.09589 0 1.384807 0S1.912827-.239103 1.912827-.52802Z'/>
+<path id='c20-07-modalni-izgubni-g0-114' d='M.876712-.587796C.846824-.438356 .787049-.209215 .787049-.159402C.787049 .019925 .926526 .109589 1.075965 .109589C1.195517 .109589 1.374844 .029888 1.444583-.169365C1.464508-.209215 1.803238-1.564134 1.843088-1.743462C1.92279-2.072229 2.102117-2.769614 2.161893-3.038605C2.201743-3.16812 2.480697-3.636364 2.719801-3.855542C2.799502-3.92528 3.088418-4.184309 3.516812-4.184309C3.775841-4.184309 3.92528-4.064757 3.935243-4.064757C3.636364-4.014944 3.417186-3.775841 3.417186-3.516812C3.417186-3.35741 3.526775-3.16812 3.795766-3.16812S4.343711-3.39726 4.343711-3.755915C4.343711-4.104608 4.024907-4.403487 3.516812-4.403487C2.86924-4.403487 2.430884-3.915318 2.241594-3.636364C2.161893-4.084682 1.803238-4.403487 1.334994-4.403487C.876712-4.403487 .687422-4.014944 .597758-3.835616C.418431-3.496887 .288917-2.899128 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.779577 .577833-2.998755C.747198-3.706102 .946451-4.184309 1.305106-4.184309C1.474471-4.184309 1.613948-4.104608 1.613948-3.726027C1.613948-3.516812 1.58406-3.407223 1.454545-2.889166L.876712-.587796Z'/>
+<path id='c20-07-modalni-izgubni-g1-114' d='M1.638854-1.408717C1.645828-1.45056 1.806227-2.078207 1.820174-2.113076C1.834122-2.168867 2.036364-2.517559 2.259527-2.684932C2.336239-2.740722 2.524533-2.880199 2.824408-2.880199C2.894147-2.880199 3.068493-2.873225 3.20797-2.782565C2.984807-2.719801 2.901121-2.524533 2.901121-2.399004C2.901121-2.245579 3.019676-2.140971 3.180075-2.140971S3.57061-2.273474 3.57061-2.566376C3.57061-2.929016 3.187049-3.075467 2.831382-3.075467C2.468742-3.075467 2.154919-2.929016 1.84807-2.580324C1.72254-3.005729 1.297136-3.075467 1.129763-3.075467C.871731-3.075467 .697385-2.915068 .585803-2.719801C.425405-2.447821 .327771-2.043337 .327771-2.008468C.327771-1.917808 .425405-1.917808 .446326-1.917808C.54396-1.917808 .550934-1.93873 .599751-2.127024C.704359-2.552428 .836862-2.880199 1.108842-2.880199C1.290162-2.880199 1.338979-2.726775 1.338979-2.538481C1.338979-2.405978 1.276214-2.147945 1.227397-1.959651S1.108842-1.48543 1.073973-1.332005L.850809-.439352C.822914-.348692 .781071-.174346 .781071-.153425C.781071 0 .9066 .069738 1.018182 .069738C1.12279 .069738 1.262267 .006974 1.318057-.132503C1.332005-.174346 1.408717-.481196 1.45056-.655542L1.638854-1.408717Z'/>
+<path id='c20-07-modalni-izgubni-g2-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='c20-07-modalni-izgubni-g2-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c20-07-modalni-izgubni-g2-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='c20-07-modalni-izgubni-g2-51' d='M2.889166-3.506849C3.706102-3.775841 4.283935-4.473225 4.283935-5.260274C4.283935-6.07721 3.407223-6.635118 2.450809-6.635118C1.444583-6.635118 .687422-6.03736 .687422-5.280199C.687422-4.951432 .9066-4.762142 1.195517-4.762142C1.504359-4.762142 1.703611-4.98132 1.703611-5.270237C1.703611-5.768369 1.235367-5.768369 1.085928-5.768369C1.39477-6.256538 2.052304-6.386052 2.410959-6.386052C2.819427-6.386052 3.367372-6.166874 3.367372-5.270237C3.367372-5.150685 3.347447-4.572852 3.088418-4.134496C2.789539-3.656289 2.450809-3.626401 2.201743-3.616438C2.122042-3.606476 1.882939-3.58655 1.8132-3.58655C1.733499-3.576588 1.663761-3.566625 1.663761-3.466999C1.663761-3.35741 1.733499-3.35741 1.902864-3.35741H2.34122C3.158157-3.35741 3.526775-2.67995 3.526775-1.703611C3.526775-.348692 2.839352-.059776 2.400996-.059776C1.972603-.059776 1.225405-.229141 .876712-.816936C1.225405-.767123 1.534247-.986301 1.534247-1.364882C1.534247-1.723537 1.265255-1.92279 .976339-1.92279C.737235-1.92279 .418431-1.783313 .418431-1.344956C.418431-.438356 1.344956 .219178 2.430884 .219178C3.646326 .219178 4.552927-.687422 4.552927-1.703611C4.552927-2.520548 3.92528-3.297634 2.889166-3.506849Z'/>
+<path id='c20-07-modalni-izgubni-g2-52' d='M2.929016-1.643836V-.777086C2.929016-.418431 2.909091-.308842 2.171856-.308842H1.96264V0C2.371108-.029888 2.889166-.029888 3.307597-.029888S4.254047-.029888 4.662516 0V-.308842H4.4533C3.716065-.308842 3.696139-.418431 3.696139-.777086V-1.643836H4.692403V-1.952677H3.696139V-6.485679C3.696139-6.684932 3.696139-6.744707 3.536737-6.744707C3.447073-6.744707 3.417186-6.744707 3.337484-6.625156L.278954-1.952677V-1.643836H2.929016ZM2.988792-1.952677H.557908L2.988792-5.668742V-1.952677Z'/>
+</defs>
+<g id='c20-07-modalni-izgubni-page1'>
+<g stroke-miterlimit='10' transform='translate(-44.513844,60.221526)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='osi'>
+<path d='M0 0H200.50748' fill='none'/>
+<g transform='translate(198.03102,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<path d='M0 0V115.14925' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,112.67279)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-4.80278,125.07884)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.513844,60.221526)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-44.513844' y='60.221526' xlink:href='#c20-07-modalni-izgubni-g0-13'/>
+<use x='-39.355879' y='61.715907' xlink:href='#c20-07-modalni-izgubni-g1-114'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 22.76227H-2.84544' fill='none'/>
+<g transform='translate(-24.25626,19.54005)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.513844,60.221526)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-44.513844' y='60.221526' xlink:href='#c20-07-modalni-izgubni-g2-48'/>
+<use x='-39.532505' y='60.221526' xlink:href='#c20-07-modalni-izgubni-g0-58'/>
+<use x='-36.765096' y='60.221526' xlink:href='#c20-07-modalni-izgubni-g2-48'/>
+<use x='-31.783757' y='60.221526' xlink:href='#c20-07-modalni-izgubni-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 45.52455H-2.84544' fill='none'/>
+<g transform='translate(-24.25626,42.30234)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.513844,60.221526)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-44.513844' y='60.221526' xlink:href='#c20-07-modalni-izgubni-g2-48'/>
+<use x='-39.532505' y='60.221526' xlink:href='#c20-07-modalni-izgubni-g0-58'/>
+<use x='-36.765096' y='60.221526' xlink:href='#c20-07-modalni-izgubni-g2-48'/>
+<use x='-31.783757' y='60.221526' xlink:href='#c20-07-modalni-izgubni-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 68.2864H-2.84544' fill='none'/>
+<g transform='translate(-24.25626,65.0642)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.513844,60.221526)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-44.513844' y='60.221526' xlink:href='#c20-07-modalni-izgubni-g2-48'/>
+<use x='-39.532505' y='60.221526' xlink:href='#c20-07-modalni-izgubni-g0-58'/>
+<use x='-36.765096' y='60.221526' xlink:href='#c20-07-modalni-izgubni-g2-48'/>
+<use x='-31.783757' y='60.221526' xlink:href='#c20-07-modalni-izgubni-g2-51'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M0 91.04869H-2.84544' fill='none'/>
+<g transform='translate(-24.25626,87.82648)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.513844,60.221526)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-44.513844' y='60.221526' xlink:href='#c20-07-modalni-izgubni-g2-48'/>
+<use x='-39.532505' y='60.221526' xlink:href='#c20-07-modalni-izgubni-g0-58'/>
+<use x='-36.765096' y='60.221526' xlink:href='#c20-07-modalni-izgubni-g2-48'/>
+<use x='-31.783757' y='60.221526' xlink:href='#c20-07-modalni-izgubni-g2-52'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-8.63298,-3.22221)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.513844,60.221526)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-44.513844' y='60.221526' xlink:href='#c20-07-modalni-izgubni-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M68.2864 0V-2.84544' fill='none'/>
+<g transform='translate(65.7864,-12.92285)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.513844,60.221526)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-44.513844' y='60.221526' xlink:href='#c20-07-modalni-izgubni-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M167.871 0V-2.84544' fill='none'/>
+<g transform='translate(165.371,-12.92285)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.513844,60.221526)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-44.513844' y='60.221526' xlink:href='#c20-07-modalni-izgubni-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(101.45764,-25.01033)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-44.513844,60.221526)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-44.513844' y='60.221526' xlink:href='#c20-07-modalni-izgubni-g0-114'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='oba'>
+<g fill='#00f' stroke='#00f'>
+<g fill='#d9d9ff'>
+<path d='M19.91682 0V91.04869H48.36957V0ZM48.36957 91.04869'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#d9d9ff'>
+<path d='M119.50143 0V91.04869H147.95418V0ZM147.95418 91.04869'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='ena'>
+<g fill='#f00' stroke='#f00'>
+<g fill='#ffd9d9'>
+<path d='M54.06003 0V65.85123H82.51277V0ZM82.51277 65.85123'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#ffd9d9'>
+<path d='M153.64464 0V25.17487H182.09738V0ZM182.09738 25.17487'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='ocena'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='1.2'>
+<path d='M54.06003 65.87381H82.51277' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='1.2'>
+<path d='M153.64464 25.17487H182.09738' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 20.21</span>: Faktor izgub \(\gamma_{\mathrm{r}} = \mathrm{Im}\,\hat\lambda_{\mathrm{r}}/\mathrm{Re}\,\hat\lambda_{\mathrm{r}}\) obeh načinov okvirja A pri histerezni togosti <span class="nobr">\(\gamma = 0{,}04\).</span> Modri stolpci: v obeh etažah (oba načina <span class="nobr">\(0{,}04\)).</span> Oranžna stolpca: le v spodnji etaži <span class="nobr">(\(0{,}02893\)</span> in <span class="nobr">\(0{,}01106\)).</span> Sivi črtici: ocena \(\boldsymbol\varphi_{\mathrm{r}}^\T\mat K''\boldsymbol\varphi_{\mathrm{r}}/\lambda_{\mathrm{r}}\) <span class="nobr">(\(0{,}02894\)</span> in <span class="nobr">\(0{,}01106\)),</span> skoraj na vrhu stolpcev.</figcaption></figure>
+<p>Na <a data-del="osi" class="xref kaz" href="sec-dusenje-mke.html#fig-c20-modalni-izgubni" data-knowl="fig-c20-modalni-izgubni">vodoravno os</a> nanašamo številko načina <span class="nobr">\(r\),</span> na navpično njegov faktor izgub <span class="nobr">\(\gamma_{\mathrm{r}}\).</span> Prvi par <a data-del="oba" class="xref kaz" href="sec-dusenje-mke.html#fig-c20-modalni-izgubni" data-knowl="fig-c20-modalni-izgubni">stolpcev</a> je okvir z isto \(\gamma = 0{,}04\) v obeh etažah: <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">lastni vrednosti</a> sta \(383{,}311 + 15{,}332\,\mathrm{i}\) in \(2627{,}249 + 105{,}090\,\mathrm{i}\) in razmerji imaginarnega in realnega dela sta po točki 1 leme \(0{,}04\) in \(0{,}04\) (<a data-del="oba" class="xref kaz" href="sec-dusenje-mke.html#fig-c20-modalni-izgubni" data-knowl="fig-c20-modalni-izgubni">modra stolpca</a>). Drugi par je okvir, v katerem je \(\gamma = 0{,}04\) le v <a data-del="ena" class="xref kaz" href="sec-dusenje-mke.html#fig-c20-modalni-izgubni" data-knowl="fig-c20-modalni-izgubni">spodnji etaži</a>, kjer je na primer gumijast ležaj (zgornja etaža ima <span class="nobr">\(\gamma = 0\)).</span> Tedaj \(\mat K'' = 0{,}04\,\mat K_1 \ne \gamma\mat K\) in lastne vrednosti so \(383{,}454 + 11{,}093\,\mathrm{i}\) in \(2627{,}106 + 29{,}047\,\mathrm{i}\) z razmerjema \(0{,}02893\) in <span class="nobr">\(0{,}01106\),</span> torej drugačnima od \(\gamma\) in med seboj. Razlog je razdelitev <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">deformacijske</a> energije. Pri prvem načinu je raztezek etaž v razmerju <span class="nobr">\(1 : 0{,}618\),</span> torej je v spodnji etaži \(1/(1 + 0{,}618^2) = 72{,}4\,\%\) energije in <span class="nobr">\(0{,}04\cdot 0{,}724 = 0{,}0290\).</span> Pri drugem je razmerje \(1 : 1{,}618\) in v spodnji etaži je \(1/(1 + 1{,}618^2) = 27{,}6\,\%\) energije ter <span class="nobr">\(0{,}04\cdot0{,}276 = 0{,}0111\).</span> Lastna stolpca nista več realna, \(u_2/u_1 = 1{,}61789 + 0{,}02895\,\mathrm{i}\) in <span class="nobr">\(-0{,}61789 + 0{,}01105\,\mathrm{i}\),</span> kar je kompleksno razmerje kot v razdelku <a class="xref" href="sec-dusenje-superpozicija.html#sec-dsp-neklasicno">10.9.3</a>. Lema ne velja, ker manjka njen pogoj <span class="nobr">\(\mat K'' = \gamma\mat K\).</span></p>
+<p>Pri tem GR (PDF str. 181-182) predlaga oceno: če je dušenje lahko in so lastne frekvence razmaknjene, vzamemo samo diagonalne člene matrike <span class="nobr">\(\mat\Phi^\T\mat K''\,\mat\Phi\),</span> in vsak način dobi faktor izgub</p>
+<div class="eq" id="eq-dmke-ocena">\[\gamma_{\mathrm{r}} \approx \frac{\boldsymbol\varphi_{\mathrm{r}}^\T\mat K''\,\boldsymbol\varphi_{\mathrm{r}}}{\lambda_{\mathrm{r}}} , \qquad \zeta_{\mathrm{r}} \approx \frac{\gamma_{\mathrm{r}}}{2} . \tag{20.36}\]</div>
+<p>Za okvir A da ocena \(0{,}02894\) in \(0{,}01106\) (<a data-del="ocena" class="xref kaz" href="sec-dusenje-mke.html#fig-c20-modalni-izgubni" data-knowl="fig-c20-modalni-izgubni">sivi črtici</a>). Pri prvem načinu je to \(0{,}05\,\%\) nad pravo vrednostjo <span class="nobr">\(0{,}028930\),</span> pri drugem \(0{,}01\,\%\) pod pravo vrednostjo <span class="nobr">\(0{,}011057\),</span> kar se na štiri mesta ne vidi. Dušenje je tu lahko: \(\mat K''\) je največ \(4\,\%\) matrike <span class="nobr">\(\mat K\),</span> napaka ocene pa je reda kvadrata tega razmerja, <span class="nobr">\(0{,}04^2 = 0{,}16\,\%\),</span> kot pri vezavi načinov v razdelku <a class="xref" href="sec-dusenje-superpozicija.html#sec-dsp-neklasicno">10.9.3</a>, izmerjena pa <span class="nobr">\(0{,}05\,\%\).</span> To je ocena, ne izrek: popolna obravnava zahteva <a class="xref auto" href="sec-lastni-problem.html#def-lastni-par" data-knowl="def-lastni-par">lastni problem</a> kompleksne <a class="xref auto" href="sec-matrike.html#def-simetricna-matrika" data-knowl="def-simetricna-matrika">simetrične matrike</a>, ki ga razdelek <a class="xref" href="sec-zapis-prvega-reda.html">20.8</a> naredi za viskozno dušenje, in za histerezno ga GR le navede. Opozorilo: v GR so v enačbah (3.35), (3.37) in (3.38) natisnjeni \(\mat K'\) in ne \(\mat K''\) (PDF str. 181-182). To je tiskarska napaka, saj bi pri \(\mat K'' = \gamma\mat K'\) dala enačba (3.38) <span class="nobr">\(\varepsilon_{\mathrm{r}} = 1/2\),</span> enačba (3.39) pa pravi <span class="nobr">\(\gamma/2\).</span> Pravilna je enačba <a class="xref" href="sec-dusenje-mke.html#eq-dmke-ocena" data-knowl="eq-dmke-ocena">(20.36)</a> z matriko <span class="nobr">\(\mat K''\).</span></p>
+
+<h3 id="sec-dmke-frekvenca"><span class="h-num">20.7.5</span> Material, ki je odvisen od frekvence</h3>
+<!-- nofig: algebra -->
+<p>Faktor izgub realnega materiala ni stalen (razdelek <a class="xref" href="sec-kompleksni-modul.html">20.6</a>): pri <a class="xref auto" href="sec-viskoelasticni-modeli.html#def-standardni-trdnik" data-knowl="def-standardni-trdnik">standardnem trdniku</a> s \(\gamma(\Omega)\) iz izreka <a class="xref" href="sec-kompleksni-modul.html#thm-kompleksni-modul" data-knowl="thm-kompleksni-modul">20.33</a> je pri majhnih in velikih \(\Omega\tau\) majhen. Končni element z materialom, ki ima kompleksni modul \(\hat E(\Omega)\) (definicija <a class="xref" href="sec-kompleksni-modul.html#def-kompleksni-modul" data-knowl="def-kompleksni-modul">20.32</a>), dobi togostno <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matriko</a> <span class="nobr">\(\big(\hat E(\Omega)/E\big)\,\mat k_{\mathrm{e}}\),</span> če je \(\mat k_{\mathrm{e}}\) izračunana z modulom <span class="nobr">\(E\).</span> To je naš korak, ne rezultat iz vira: GR (3.32) (PDF str. 181) ima \(E'\) in \(E''\) kot konstanti, mi ju zamenjamo s <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcijama</a> frekvence. Noben vir v knjigi ne gradi frekvenčno odvisnega <a class="xref auto" href="sec-viskoelasticni-modeli.html#def-viskoelasticen-material" data-knowl="def-viskoelasticen-material">viskoelastičnega</a> dušenja v matrike elementov (outlines/ch-dusenje/outline.md, O4). <a class="xref auto" href="sec-sestavljanje.html#cor-matrika-konstrukcije" data-knowl="cor-matrika-konstrukcije">Matrika konstrukcije</a> je torej <span class="nobr">\(\hat{\mat K}(\Omega) = \sum_{\mathrm{e}}\mat Z_{\mathrm{e}}^\T\,\big(\hat E_{\mathrm{e}}(\Omega)/E_{\mathrm{e}}\big)\,\mat k_{\mathrm{e}}\,\mat Z_{\mathrm{e}}\).</span></p>
+<p>Preizkusimo na <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">okvirju</a> A, ki je v obeh etažah iz istega standardnega trdnika z \(E_0/E_\infty = 2\) (razdelek <a class="xref" href="sec-viskoelasticni-modeli.html">20.4</a>, izbran model, ne material), togost \(k\) pa izračunana z <span class="nobr">\(E_\infty\).</span> Kompleksni modul je tedaj \(\hat E/E_\infty = 1 + \mathrm{i}\Omega\tau/(1 + \mathrm{i}\Omega\tau) =: c(\Omega)\) (pri \(\Omega\tau = 1\) je <span class="nobr">\(1{,}5 + 0{,}5\,\mathrm{i}\),</span> kot v razdelku <a class="xref" href="sec-kompleksni-modul.html">20.6</a>), in <span class="nobr">\(\hat{\mat K} = c(\Omega)\,\mat K\).</span> Isti sklep kot v lemi <a class="xref" href="sec-dusenje-mke.html#lem-en-material-klasicno" data-knowl="lem-en-material-klasicno">20.43</a> velja za kompleksni skalar <span class="nobr">\(c\):</span> načini so realni, vsak način ima enačbo <span class="nobr">\(\big(c(\Omega)\,\omega_{\mathrm{r}}^2 - \Omega^2\big)\hat\eta_{\mathrm{r}} = \boldsymbol\varphi_{\mathrm{r}}^\T\vek Q_0\).</span> Amplituda je največja približno tam, kjer je <span class="nobr">\(\Omega^2 = \omega_{\mathrm{r}}^2\,\mathrm{Re}\,c(\Omega)\),</span> saj se \(c\) s frekvenco počasi spreminja. Vzemimo \(\tau = 10/\omega_1 = 0{,}5108\) s. Pri prvem načinu dobimo <a class="xref auto" href="sec-harmonicno-vzbujanje.html#thm-resonanca" data-knowl="thm-resonanca">resonanco</a> pri \(\Omega = 27{,}65\) 1/s <span class="nobr">(\(\Omega\tau = 14{,}1\))</span> in pri drugem pri \(72{,}48\) 1/s <span class="nobr">(\(\Omega\tau = 37{,}0\)),</span> <a class="xref auto" href="sec-izgube-energije.html#def-faktor-izgub" data-knowl="def-faktor-izgub">faktorja izgub</a> \(\gamma = 0{,}0353\) in <span class="nobr">\(0{,}0135\),</span> torej \(\zeta \approx 0{,}0177\) in <span class="nobr">\(0{,}0068\).</span> Dva pouka. Prvi: resonanca prvega načina se je premaknila navzgor za faktor \(1{,}412 = \sqrt{1{,}995}\) (drugega za <span class="nobr">\(1{,}414 = \sqrt{1{,}999}\)),</span> ker je material pri velikih \(\Omega\tau\) že skoraj pri svojem trenutnem modulu \(E_0 = 2E_\infty\) <span class="nobr">(\(\mathrm{Re}\,c = 1{,}995\)</span> in <span class="nobr">\(1{,}999\)).</span> Okvir je zato skoraj dvakrat bolj tog in njegove lastne frekvence so skoraj \(\sqrt 2\)-krat večje. Drugi pouk: načina nimata istega faktorja izgub, ker je \(\gamma(\Omega)\) funkcija frekvence. Model z enim \(\gamma\) bi predpisal isto vrednost. Dušenje je ob obeh resonancah lahko <span class="nobr">(\(\gamma &lt; 0{,}04\)),</span> zato je ocena \(\zeta \approx \gamma/2\) smiselna, a velja le za nihanje blizu vsake resonance.</p>
+
+<h3 id="sec-dmke-povzetek"><span class="h-num">20.7.6</span> Kaj smo dobili</h3>
+<!-- nofig: signpost -->
+<p><a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">Matrika</a> dušenja ima pri končnih elementih natančno določen izvor, kadar ga poznamo: material (Kelvin-Voigt) da <span class="nobr">\(\tau_\varepsilon\mat k_{\mathrm{e}}\),</span> zunanji <a class="xref auto" href="sec-model-ena-ps.html#def-viskozni-dusilnik" data-knowl="def-viskozni-dusilnik">dušilnik</a> \((c_{\mathrm{z}}/\rho A)\,\mat m_{\mathrm{e}}\) (lema <a class="xref" href="sec-dusenje-mke.html#lem-dusilna-matrika-elementa" data-knowl="lem-dusilna-matrika-elementa">20.39</a>), sestavljanje je isto kot pri togosti (izrek <a class="xref" href="sec-dusenje-mke.html#thm-sestavljena-dusilna" data-knowl="thm-sestavljena-dusilna">20.40</a>). Z istimi konstantami v vseh elementih je to <a class="xref auto" href="sec-dusenje-superpozicija.html#def-rayleighovo-dusenje" data-knowl="def-rayleighovo-dusenje">Rayleighovo dušenje</a> in klasično. Njegova konstanta \(a_0\) dobi pomen dušilnikov, ki vsako maso vežejo na mirujočo steno, \(a_1\) pa pomen viskoznosti materiala. Z različnimi konstantami ni klasično, kar smo videli na <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">okvirju</a> A. V frekvenčnem prostoru: en material z enim <a class="xref auto" href="sec-izgube-energije.html#def-faktor-izgub" data-knowl="def-faktor-izgub">faktorjem izgub</a> da realne načine z istim \(\gamma\) (lema <a class="xref" href="sec-dusenje-mke.html#lem-en-material-klasicno" data-knowl="lem-en-material-klasicno">20.43</a>), več materialov ne, in njihove faktorje ocenimo po enačbi <a class="xref" href="sec-dusenje-mke.html#eq-dmke-ocena" data-knowl="eq-dmke-ocena">(20.36)</a>. Pri prosti konstrukciji dušilniki \(a_0\mat M\) na mirujoči steni dušijo togo gibanje, ki ga pravi sistem nima, dušilniki med deli konstrukcije in \(a_1\mat K\) pa ga ne dušijo (lema <a class="xref" href="sec-dusenje-mke.html#lem-dusenje-togih-nacinov" data-knowl="lem-dusenje-togih-nacinov">20.41</a>). Do <a class="xref auto forward" href="sec-zapis-prvega-reda.html#def-zapis-prvega-reda" data-knowl="def-zapis-prvega-reda" title="Definirano kasneje v knjigi">zapisa prvega reda</a> in <a class="xref auto forward" href="sec-zapis-prvega-reda.html#def-kompleksni-nacin" data-knowl="def-kompleksni-nacin" title="Definirano kasneje v knjigi">kompleksnih načinov</a>, ki obravnavajo vse neklasične primere, pridemo v razdelku <a class="xref" href="sec-zapis-prvega-reda.html">20.8</a>.</p>
+
+</main>
+<footer><nav class="pager"><a href="sec-kompleksni-modul.html" rel="prev">← 20.6</a><a href="index.html">Kazalo</a><a href="sec-zapis-prvega-reda.html" rel="next">20.8 →</a></nav></footer>
+</body>
+</html>

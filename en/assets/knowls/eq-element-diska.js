@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-element-diska"] = {"html": "<div class=\"eq\">\\[\\mat M_{\\mathrm{d}} = \\begin{pmatrix} m &amp; 0 \\\\ 0 &amp; J_{\\mathrm{t}} \\end{pmatrix} , \\qquad \\mat G_{\\mathrm{d}} = \\begin{pmatrix} 0 &amp; 0 \\\\ 0 &amp; J_{\\mathrm{p}} \\end{pmatrix} , \\tag{24.28}\\]</div>", "href": "sec-mke-rotorja.html#eq-element-diska"};

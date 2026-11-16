@@ -1,0 +1,1669 @@
+<!doctype html>
+<html lang="sl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>21.5 Podstrukture in Craig-Bamptonova redukcija · Poglavje 21</title>
+<script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/style.css">
+<noscript><style>#loadbar { display: none; }</style></noscript>
+<script src="assets/config.js"></script>
+<script src="assets/load.js"></script>
+<script defer src="assets/interaktivno.js"></script>
+<script defer src="assets/book.js"></script>
+<script defer src="assets/predavanje.js"></script>
+<script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<div id="loadbar" aria-hidden="true"></div>
+<header class="top"><a class="home" href="index.html">Mehanika</a><nav class="pager"><a href="sec-guyanova-redukcija.html" rel="prev">← 21.4</a><a href="index.html">Kazalo</a><a href="sec-inverzna-iteracija.html" rel="next">21.6 →</a></nav>
+<span class="tools"><a class="lang" href="../en/sec-podstrukture.html" hreflang="en">English</a><button type="button" class="theme-toggle" title="Svetla ali temna tema" aria-label="Svetla ali temna tema"></button><button type="button" data-details="open">Razpri vse</button><button type="button" data-details="close">Skrij vse</button><button type="button" class="fig-side-toggle" aria-pressed="false">Slike ob strani</button></span></header>
+<main>
+<p class="updated">Posodobljeno 16. 11. 2026 ob 10.52</p>
+<p class="crumb"><a href="ch-modalna-redukcija.html"><span class="h-num">Poglavje 21</span> Modalna redukcija in reševanje lastnega problema</a></p>
+<h2 id="sec-podstrukture"><span class="h-num">21.5</span> Podstrukture in Craig-Bamptonova redukcija</h2>
+<p><a class="xref auto" href="sec-guyanova-redukcija.html#def-guyanova-baza" data-knowl="def-guyanova-baza">Guyanova redukcija</a> iz razdelka <a class="xref" href="sec-guyanova-redukcija.html">21.4</a> je obdržala nekaj koordinat, vse druge pa je nanje navezala s statiko. Ta statika je njena slabost: privezani del ima maso, njegovo lastno nihanje pa je v skrajšanem modelu izgubljeno (izrek <a class="xref" href="sec-guyanova-redukcija.html#thm-guyan" data-knowl="thm-guyan">21.19</a>). Kaj dodati, da to nihanje dobimo nazaj? In kako postopati, kadar je konstrukcija sestavljena iz delov, ki jih računajo različne skupine? Tak je trup letala iz sekcij ali most iz polj: vsak del ima svojo mrežo in svoje <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrike</a>, skupnih je le nekaj koordinat na stiku. Razdelek pokaže, kako vsak del skrajšamo posebej, tako da obdrži svoj stik in nekaj svojih načinov, in kako skrajšane dele sestavimo. Del konstrukcije, ki ima lastne matrike, imenujemo podstruktura (substructure) ali komponenta (component), saj je konstrukcija sama zase, le pod celotno konstrukcijo. Postopek je Ritzov približek (definicija <a class="xref" href="sec-ritz-lastne-vrednosti.html#def-ritzov-priblizek" data-knowl="def-ritzov-priblizek">10.41</a>) z novo izbiro stolpcev <span class="nobr">\(\mat\Psi\),</span> zato zanj velja <a class="xref auto" href="sec-polnost.html#def-zgornja-meja" data-knowl="def-zgornja-meja">zgornja meja</a> iz izreka <a class="xref" href="sec-ritz-lastne-vrednosti.html#thm-ritz-gornja-meja" data-knowl="thm-ritz-gornja-meja">10.42</a> kot za Guyanovo bazo. <!-- nofig: signpost --></p>
+
+<h3 id="sec-okvir-prerezan-pri-drugi-etazi"><span class="h-num">21.5.1</span> Okvir, prerezan pri drugi etaži</h3>
+<p>Poskusimo na najmanjšem primeru, kjer se vidi vse. <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">Okvir</a> s tremi etažami iz razdelka <a class="xref" href="sec-ritz-lastne-vrednosti.html">10.8</a> ima pomike stropov \(q_1, q_2, q_3\) (od spodaj navzgor), vsaka etaža ima togost <span class="nobr">\(k\),</span> vsak strop maso <span class="nobr">\(\bar m\).</span> <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">Lastne vrednosti</a> merimo v enoti \(k/\bar m\) in so <span class="nobr">\(0{,}198062\),</span> \(1{,}554958\) in <span class="nobr">\(3{,}246980\).</span> <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">Matriki</a> sta</p>
+<div class="eq">\[\mat K = k\begin{pmatrix} 2 &amp; -1 &amp; 0 \\ -1 &amp; 2 &amp; -1 \\ 0 &amp; -1 &amp; 1 \end{pmatrix} , \qquad \mat M = \bar m\begin{pmatrix} 1 &amp; 0 &amp; 0 \\ 0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{pmatrix} ,\]</div>
+<p>v nadaljevanju pa vzamemo <span class="nobr">\(k = \bar m = 1\).</span> Okvir razrežemo pri drugem stropu na spodnjo in zgornjo podstrukturo, kot kaže slika <a class="xref" href="sec-podstrukture.html#fig-podstrukture-okvir" data-knowl="fig-podstrukture-okvir">21.14</a>.</p>
+
+<figure class="blk slika" id="fig-podstrukture-okvir"><p><span class="svgfig" role="img" aria-label="Okvir s tremi stropi, vezni način in načina z vpetim robom"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='422.38pt' height='185.00pt' viewBox='-72.000004 -72 312.874012 137.035597'>
+<defs>
+<path id='c21-05-okvir-g0-32' d='M4.801993-6.655044C4.811955-6.694894 4.83188-6.75467 4.83188-6.804483C4.83188-6.90411 4.762142-6.914072 4.712329-6.914072C4.612702-6.914072 4.60274-6.894147 4.562889-6.714819L2.909091-.129514C2.15193-.219178 1.77335-.587796 1.77335-1.24533C1.77335-1.444583 1.77335-1.703611 2.311333-3.098381C2.351183-3.217933 2.420922-3.387298 2.420922-3.58655C2.420922-4.034869 2.102117-4.403487 1.603985-4.403487C.657534-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.836862-3.895392 1.235367-4.184309 1.574097-4.184309C1.653798-4.184309 1.823163-4.184309 1.823163-3.865504C1.823163-3.606476 1.723537-3.35741 1.594022-3.008717C1.115816-1.753425 1.115816-1.494396 1.115816-1.325031C1.115816-.37858 1.892902 .029888 2.849315 .089664C2.769614 .448319 2.769614 .468244 2.630137 .996264C2.600249 1.105853 2.400996 1.912827 2.400996 1.942715C2.400996 1.952677 2.400996 2.042341 2.520548 2.042341C2.540473 2.042341 2.590286 2.042341 2.610212 2.002491C2.6401 1.982565 2.699875 1.733499 2.729763 1.594022L3.108344 .109589C3.476961 .109589 4.353674 .109589 5.290162-.956413C5.69863-1.414695 5.907846-1.853051 6.017435-2.15193C6.107098-2.400996 6.326276-3.267746 6.326276-3.706102C6.326276-4.26401 6.057285-4.403487 5.88792-4.403487C5.638854-4.403487 5.389788-4.144458 5.389788-3.92528C5.389788-3.795766 5.449564-3.73599 5.539228-3.656289C5.648817-3.5467 5.897883-3.287671 5.897883-2.809465C5.897883-2.171856 5.379826-1.354919 5.031133-.996264C4.154421-.109589 3.516812-.109589 3.158157-.109589L4.801993-6.655044Z'/>
+<path id='c21-05-okvir-g0-39' d='M1.693649 1.693649C1.653798 1.823163 1.643836 1.843088 1.643836 1.892902C1.643836 2.11208 1.833126 2.171856 1.932752 2.171856C1.982565 2.171856 2.201743 2.141968 2.30137 1.912827C2.331258 1.833126 2.381071 1.504359 2.650062 .089664C2.739726 .099626 2.809465 .109589 2.978829 .109589C4.632628 .109589 6.166874-1.454545 6.166874-3.028643C6.166874-3.805729 5.778331-4.403487 5.031133-4.403487C3.58655-4.403487 2.988792-2.470735 2.391034-.52802C1.315068-.727273 .757161-1.285181 .757161-2.002491C.757161-2.281445 .986301-3.377335 1.58406-4.064757C1.663761-4.154421 1.663761-4.174346 1.663761-4.194271C1.663761-4.234122 1.643836-4.293898 1.544209-4.293898C1.265255-4.293898 .498132-2.849315 .498132-1.892902C.498132-.956413 1.155666-.229141 2.221669 .019925L1.693649 1.693649ZM3.068493-.468244C2.988792-.468244 2.968867-.468244 2.889166-.478207C2.769614-.478207 2.759651-.488169 2.759651-.518057C2.759651-.537983 2.929016-1.444583 2.958904-1.594022C3.267746-2.86924 4.044832-3.825654 4.931507-3.825654C5.618929-3.825654 5.88792-3.287671 5.88792-2.809465C5.88792-1.683686 4.60274-.468244 3.068493-.468244Z'/>
+<path id='c21-05-okvir-g0-61' d='M4.373599-7.0934C4.423412-7.222914 4.423412-7.262765 4.423412-7.272727C4.423412-7.382316 4.333748-7.47198 4.224159-7.47198C4.154421-7.47198 4.084682-7.442092 4.054795-7.382316L.597758 2.11208C.547945 2.241594 .547945 2.281445 .547945 2.291407C.547945 2.400996 .637609 2.49066 .747198 2.49066C.876712 2.49066 .9066 2.420922 .966376 2.251557L4.373599-7.0934Z'/>
+<path id='c21-05-okvir-g0-107' d='M2.859278-6.804483C2.859278-6.814446 2.859278-6.914072 2.729763-6.914072C2.500623-6.914072 1.77335-6.834371 1.514321-6.814446C1.43462-6.804483 1.325031-6.794521 1.325031-6.615193C1.325031-6.495641 1.414695-6.495641 1.564134-6.495641C2.042341-6.495641 2.062267-6.425903 2.062267-6.326276L2.032379-6.127024L.587796-.388543C.547945-.249066 .547945-.229141 .547945-.169365C.547945 .059776 .747198 .109589 .836862 .109589C.966376 .109589 1.115816 .019925 1.175592-.099626C1.225405-.18929 1.673724-2.032379 1.733499-2.281445C2.072229-2.251557 2.889166-2.092154 2.889166-1.43462C2.889166-1.364882 2.889166-1.325031 2.859278-1.225405C2.839352-1.105853 2.819427-.986301 2.819427-.876712C2.819427-.288917 3.217933 .109589 3.73599 .109589C4.034869 .109589 4.303861-.049813 4.523039-.418431C4.772105-.856787 4.881694-1.404732 4.881694-1.424658C4.881694-1.524284 4.79203-1.524284 4.762142-1.524284C4.662516-1.524284 4.652553-1.484433 4.622665-1.344956C4.423412-.617684 4.194271-.109589 3.755915-.109589C3.566625-.109589 3.437111-.219178 3.437111-.577833C3.437111-.747198 3.476961-.976339 3.516812-1.135741C3.556663-1.305106 3.556663-1.344956 3.556663-1.444583C3.556663-2.092154 2.929016-2.381071 2.082192-2.49066C2.391034-2.669988 2.709838-2.988792 2.938979-3.227895C3.417186-3.755915 3.875467-4.184309 4.363636-4.184309C4.423412-4.184309 4.433375-4.184309 4.4533-4.174346C4.572852-4.154421 4.582814-4.154421 4.662516-4.094645C4.682441-4.084682 4.682441-4.07472 4.702366-4.054795C4.224159-4.024907 4.134496-3.636364 4.134496-3.516812C4.134496-3.35741 4.244085-3.16812 4.513076-3.16812C4.772105-3.16812 5.061021-3.387298 5.061021-3.775841C5.061021-4.07472 4.83188-4.403487 4.383562-4.403487C4.104608-4.403487 3.646326-4.323786 2.929016-3.526775C2.590286-3.148194 2.201743-2.749689 1.823163-2.600249L2.859278-6.804483Z'/>
+<path id='c21-05-okvir-g0-113' d='M4.503113-4.293898C4.503113-4.333748 4.473225-4.393524 4.403487-4.393524C4.293898-4.393524 3.895392-3.995019 3.726027-3.706102C3.506849-4.244085 3.118306-4.403487 2.799502-4.403487C1.62391-4.403487 .398506-2.929016 .398506-1.484433C.398506-.508095 .986301 .109589 1.713574 .109589C2.141968 .109589 2.530511-.129514 2.889166-.488169C2.799502-.139477 2.470735 1.205479 2.440847 1.295143C2.361146 1.574097 2.281445 1.613948 1.723537 1.62391C1.594022 1.62391 1.494396 1.62391 1.494396 1.823163C1.494396 1.833126 1.494396 1.932752 1.62391 1.932752C1.942715 1.932752 2.291407 1.902864 2.620174 1.902864C2.958904 1.902864 3.317559 1.932752 3.646326 1.932752C3.696139 1.932752 3.825654 1.932752 3.825654 1.733499C3.825654 1.62391 3.726027 1.62391 3.566625 1.62391C3.088418 1.62391 3.088418 1.554172 3.088418 1.464508C3.088418 1.39477 3.108344 1.334994 3.128269 1.24533L4.503113-4.293898ZM1.743462-.109589C1.145704-.109589 1.105853-.876712 1.105853-1.046077C1.105853-1.524284 1.39477-2.610212 1.564134-3.028643C1.872976-3.765878 2.391034-4.184309 2.799502-4.184309C3.447073-4.184309 3.58655-3.377335 3.58655-3.307597C3.58655-3.247821 3.038605-1.066002 3.008717-1.026152C2.859278-.747198 2.30137-.109589 1.743462-.109589Z'/>
+<path id='c21-05-okvir-g1-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='c21-05-okvir-g1-97' d='M3.317559-.757161C3.35741-.358655 3.626401 .059776 4.094645 .059776C4.303861 .059776 4.911582-.079701 4.911582-.886675V-1.444583H4.662516V-.886675C4.662516-.308842 4.41345-.249066 4.303861-.249066C3.975093-.249066 3.935243-.697385 3.935243-.747198V-2.739726C3.935243-3.158157 3.935243-3.5467 3.576588-3.915318C3.188045-4.303861 2.689913-4.463263 2.211706-4.463263C1.39477-4.463263 .707347-3.995019 .707347-3.337484C.707347-3.038605 .9066-2.86924 1.165629-2.86924C1.444583-2.86924 1.62391-3.068493 1.62391-3.327522C1.62391-3.447073 1.574097-3.775841 1.115816-3.785803C1.384807-4.134496 1.872976-4.244085 2.191781-4.244085C2.67995-4.244085 3.247821-3.855542 3.247821-2.968867V-2.600249C2.739726-2.570361 2.042341-2.540473 1.414695-2.241594C.667497-1.902864 .418431-1.384807 .418431-.946451C.418431-.139477 1.384807 .109589 2.012453 .109589C2.669988 .109589 3.128269-.288917 3.317559-.757161ZM3.247821-2.391034V-1.39477C3.247821-.448319 2.530511-.109589 2.082192-.109589C1.594022-.109589 1.185554-.458281 1.185554-.956413C1.185554-1.504359 1.603985-2.331258 3.247821-2.391034Z'/>
+<path id='c21-05-okvir-g2-40' d='M2.475716-5.230386C1.150685-4.29589 .801993-2.817435 .801993-1.750436C.801993-.767123 1.094894 .760149 2.475716 1.736488C2.531507 1.736488 2.615193 1.736488 2.615193 1.652802C2.615193 1.610959 2.594271 1.597011 2.545455 1.548194C1.617933 .711333 1.276214-.474222 1.276214-1.743462C1.276214-3.626401 1.994521-4.546949 2.566376-5.063014C2.594271-5.090909 2.615193-5.111831 2.615193-5.1467C2.615193-5.230386 2.531507-5.230386 2.475716-5.230386Z'/>
+<path id='c21-05-okvir-g2-41' d='M.627646-5.230386C.578829-5.230386 .495143-5.230386 .495143-5.1467C.495143-5.111831 .516065-5.090909 .557908-5.042092C1.157659-4.491158 1.827148-3.549689 1.827148-1.750436C1.827148-.292902 1.373848 .808966 .620672 1.492403C.502117 1.610959 .495143 1.617933 .495143 1.652802S.516065 1.736488 .585803 1.736488C.669489 1.736488 1.332005 1.276214 1.792279 .404483C2.099128-.174346 2.30137-.927522 2.30137-1.743462C2.30137-2.726775 2.008468-4.254047 .627646-5.230386Z'/>
+<path id='c21-05-okvir-g2-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='c21-05-okvir-g2-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+<path id='c21-05-okvir-g2-51' d='M1.903861-2.329265C2.447821-2.329265 2.838356-1.952677 2.838356-1.206476C2.838356-.341719 2.336239-.083686 1.931756-.083686C1.652802-.083686 1.039103-.160399 .746202-.571856C1.073973-.585803 1.150685-.81594 1.150685-.962391C1.150685-1.185554 .983313-1.345953 .767123-1.345953C.571856-1.345953 .376588-1.227397 .376588-.941469C.376588-.285928 1.101868 .139477 1.945704 .139477C2.915068 .139477 3.584558-.509091 3.584558-1.206476C3.584558-1.750436 3.138232-2.294396 2.371108-2.454795C3.103362-2.719801 3.368369-3.242839 3.368369-3.668244C3.368369-4.219178 2.733748-4.630635 1.959651-4.630635S.592777-4.254047 .592777-3.696139C.592777-3.459029 .746202-3.326526 .955417-3.326526C1.171606-3.326526 1.311083-3.486924 1.311083-3.682192C1.311083-3.884433 1.171606-4.030884 .955417-4.044832C1.199502-4.351681 1.680697-4.428394 1.93873-4.428394C2.252553-4.428394 2.691905-4.274969 2.691905-3.668244C2.691905-3.375342 2.594271-3.054545 2.412951-2.838356C2.182814-2.57335 1.987547-2.559402 1.638854-2.538481C1.464508-2.524533 1.45056-2.524533 1.415691-2.517559C1.401743-2.517559 1.345953-2.503611 1.345953-2.426899C1.345953-2.329265 1.408717-2.329265 1.527273-2.329265H1.903861Z'/>
+<path id='c21-05-okvir-g2-99' d='M2.712827-2.782565C2.587298-2.726775 2.517559-2.615193 2.517559-2.475716C2.517559-2.287422 2.650062-2.147945 2.84533-2.147945C3.033624-2.147945 3.180075-2.266501 3.180075-2.489664C3.180075-3.110336 2.21071-3.110336 2.015442-3.110336C.969365-3.110336 .320797-2.308344 .320797-1.506351C.320797-.627646 1.066999 .069738 1.980573 .069738C3.019676 .069738 3.263761-.753176 3.263761-.836862S3.173101-.920548 3.145205-.920548C3.054545-.920548 3.047572-.899626 3.012702-.801993C2.859278-.369614 2.489664-.153425 2.064259-.153425C1.583064-.153425 .955417-.509091 .955417-1.513325C.955417-2.399004 1.387796-2.887173 2.036364-2.887173C2.127024-2.887173 2.461768-2.887173 2.712827-2.782565Z'/>
+</defs>
+<g id='c21-05-okvir-page1'>
+<g stroke-miterlimit='10' transform='translate(-19.292795,36.481192)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='rez'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M-39.83366 68.2864H244.69376' fill='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(251.17175,66.13364)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-19.292795,36.481192)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-19.292795' y='36.481192' xlink:href='#c21-05-okvir-g1-97'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='etaze'>
+<g transform='translate(-49.57188,32.96265)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-19.292795,36.481192)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-19.292795' y='36.481192' xlink:href='#c21-05-okvir-g0-113'/>
+<use x='-14.845333' y='37.975573' xlink:href='#c21-05-okvir-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-49.57188,67.10585)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-19.292795,36.481192)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-19.292795' y='36.481192' xlink:href='#c21-05-okvir-g0-113'/>
+<use x='-14.845333' y='37.975573' xlink:href='#c21-05-okvir-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-49.57188,101.24948)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-19.292795,36.481192)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-19.292795' y='36.481192' xlink:href='#c21-05-okvir-g0-113'/>
+<use x='-14.845333' y='37.975573' xlink:href='#c21-05-okvir-g2-51'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='vezni'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M8.5359 0H48.36957' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M8.5359 0L2.84544-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M15.64908 0L9.95862-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M22.76227 0L17.07181-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M29.87546 0L24.185-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M36.98865 0L31.29819-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M44.10182 0L38.41136-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M28.45274 34.1432' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M28.45274 68.2864' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M28.45274 102.43004' fill='none'/>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M28.45274 0L45.52455 34.1432' fill='none'/>
+</g>
+<g stroke-width='0.9'>
+<path d='M45.52455 34.1432L62.59595 68.2864' fill='none'/>
+</g>
+<g stroke-width='0.9'>
+<path d='M62.59595 68.2864V102.43004' fill='none'/>
+</g>
+<g stroke-width='1.6'>
+<path d='M32.72047 34.1432H58.3282' fill='none'/>
+</g>
+<g stroke-width='1.6'>
+<path d='M49.7923 68.2864H75.39958' fill='none'/>
+</g>
+<g stroke-width='1.6'>
+<path d='M49.7923 102.43004H75.39958' fill='none'/>
+</g>
+<g transform='translate(23.168,-22.41682)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-19.292795,36.481192)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-19.292795' y='36.481192' xlink:href='#c21-05-okvir-g0-32'/>
+<use x='-12.803211' y='37.975573' xlink:href='#c21-05-okvir-g2-99'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='sila'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M21.33955 68.2864H44.14595' fill='none'/>
+<g transform='translate(41.54092,68.2864)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(0.76297,65.7864)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-19.292795,36.481192)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-19.292795' y='36.481192' xlink:href='#c21-05-okvir-g0-107'/>
+<use x='-13.792575' y='36.481192' xlink:href='#c21-05-okvir-g0-61'/>
+<use x='-8.811236' y='36.481192' xlink:href='#c21-05-okvir-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='f1'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M108.1205 0H147.95416' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M108.1205 0L102.43004-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M115.23367 0L109.54321-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M122.34686 0L116.6564-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M129.46005 0L123.76959-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M136.57324 0L130.88278-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M143.68642 0L137.99596-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M128.03734 34.1432' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M128.03734 68.2864' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M128.03734 102.43004' fill='none'/>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M128.03734 0L162.18054 34.1432' fill='none'/>
+</g>
+<g stroke-width='0.9'>
+<path d='M162.18054 34.1432L128.03734 68.2864' fill='none'/>
+</g>
+<g stroke-width='0.9'>
+<path d='M128.03734 68.2864V102.43004' fill='none'/>
+</g>
+<g stroke-width='1.6'>
+<path d='M149.37689 34.1432H174.98419' fill='none'/>
+</g>
+<g stroke-width='1.6'>
+<path d='M115.23369 68.2864H140.84099' fill='none'/>
+</g>
+<g stroke-width='1.6'>
+<path d='M115.23369 102.43004H140.84099' fill='none'/>
+</g>
+<g transform='translate(119.39842,-23.38406)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-19.292795,36.481192)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-19.292795' y='36.481192' xlink:href='#c21-05-okvir-g0-39'/>
+<use x='-12.775563' y='32.865828' xlink:href='#c21-05-okvir-g2-40'/>
+<use x='-9.66222' y='32.865828' xlink:href='#c21-05-okvir-g2-49'/>
+<use x='-5.690979' y='32.865828' xlink:href='#c21-05-okvir-g2-41'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='f2'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M193.47873 0H233.3124' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M193.47873 0L187.78827-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M200.5919 0L194.90144-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M207.7051 0L202.01463-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M214.81828 0L209.12782-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M221.93147 0L216.24101-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M229.04465 0L223.35419-5.69046' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M213.39557 34.1432' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M213.39557 68.2864' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M213.39557 102.43004' fill='none'/>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M213.39557 0V34.1432' fill='none'/>
+</g>
+<g stroke-width='0.9'>
+<path d='M213.39557 34.1432V68.2864' fill='none'/>
+</g>
+<g stroke-width='0.9'>
+<path d='M213.39557 68.2864L247.53877 102.43004' fill='none'/>
+</g>
+<g stroke-width='1.6'>
+<path d='M200.59192 34.1432H226.19922' fill='none'/>
+</g>
+<g stroke-width='1.6'>
+<path d='M200.59192 68.2864H226.19922' fill='none'/>
+</g>
+<g stroke-width='1.6'>
+<path d='M234.73512 102.43004H260.34242' fill='none'/>
+</g>
+<g transform='translate(204.75665,-23.38406)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-19.292795,36.481192)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-19.292795' y='36.481192' xlink:href='#c21-05-okvir-g0-39'/>
+<use x='-12.775563' y='32.865828' xlink:href='#c21-05-okvir-g2-40'/>
+<use x='-9.66222' y='32.865828' xlink:href='#c21-05-okvir-g2-50'/>
+<use x='-5.690979' y='32.865828' xlink:href='#c21-05-okvir-g2-41'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 21.14</span>: Okvir s tremi stropi, razrezan pri drugem stropu. Tri gibanja, od katerih vsako ostane v svojih mejah: levo vezni način <span class="nobr">\(\vek\psi_{\mathrm{c}}\),</span> strop \(2\) je premaknjen za <span class="nobr">\(1\),</span> stropa \(1\) in \(3\) nimata nobene sile, in oranžna sila \(k/2\) drži strop <span class="nobr">\(2\),</span> sredina in desno načina z vpetim robom \(\vek\varphi^{(1)}\) in <span class="nobr">\(\vek\varphi^{(2)}\),</span> strop \(2\) miruje. Pomiki stropov so narisani v desno, \(1{,}2\) cm za enoto, stebri so ravne črte med stropi.</figcaption></figure>
+<p>Sliko zgradimo po delih. Najprej narišemo <a data-del="etaze" class="xref kaz" href="sec-podstrukture.html#fig-podstrukture-okvir" data-knowl="fig-podstrukture-okvir">tri strope</a> s pomiki <span class="nobr">\(q_1, q_2, q_3\),</span> ki jih vežejo stebri. Nato okvir <a data-del="rez" class="xref kaz" href="sec-podstrukture.html#fig-podstrukture-okvir" data-knowl="fig-podstrukture-okvir">prerežemo</a> pri stropu <span class="nobr">\(2\).</span> Koordinata \(q_2\) je skupna spodnji in zgornji podstrukturi in jo imenujemo robna koordinata (interface coordinate): leži na robu, kjer se podstrukturi stikata, in jo označimo z indeksom <span class="nobr">\(\mathrm{a}\).</span> Spodnja podstruktura \(1\) ima še notranjo koordinato <span class="nobr">\(q_1\),</span> zgornja podstruktura \(2\) pa notranjo koordinato <span class="nobr">\(q_3\).</span> Pri vsaki podstrukturi nas zanimata dve vrsti gibanja, in vsako se vpraša, kaj naj bo z robom.</p>
+<p>Prvo gibanje je <a data-del="vezni" class="xref kaz" href="sec-podstrukture.html#fig-podstrukture-okvir" data-knowl="fig-podstrukture-okvir">vezni način</a> <span class="nobr">\(\vek\psi_{\mathrm{c}}\):</span> rob premaknemo za \(q_2 = 1\) in notranjosti prepustimo, da se uravnovesi sama. Stropa \(1\) in \(3\) imata maso, vendar jima ne dodamo nobene sile, in ker gre za mirovanje, je po Newtonovem zakonu vsota sil na vsakem enaka nič. Na strop \(3\) deluje samo steber zgornje etaže (med stropoma \(2\) in <span class="nobr">\(3\))</span> s silo <span class="nobr">\(k(q_3 - q_2)\),</span> ki mora biti nič, zato je <span class="nobr">\(q_3 = q_2 = 1\).</span> Na strop \(1\) delujeta steber pod njim s silo \(k\,q_1\) in steber nad njim s silo <span class="nobr">\(k(q_1 - q_2)\),</span> in \(2k\,q_1 - k\,q_2 = 0\) da <span class="nobr">\(q_1 = \tfrac12\).</span> Stolpec pomikov je <span class="nobr">\(\vek\psi_{\mathrm{c}} = (\tfrac12,\ 1,\ 1)^\T\).</span> Silo, ki drži strop \(2\) na mestu, preberemo s stebrov: spodnji steber ga vleče nazaj s \(k(q_2 - q_1) = k/2\) in zgornji z <span class="nobr">\(k(q_2 - q_3) = 0\),</span> zato je potrebna sila <span class="nobr">\(k/2\),</span> narisana <a data-del="sila" class="xref kaz" href="sec-podstrukture.html#fig-podstrukture-okvir" data-knowl="fig-podstrukture-okvir">oranžno</a> na vodoravnici stropa <span class="nobr">\(2\).</span> Vse tri sile skupaj so <span class="nobr">\(\mat K\,\vek\psi_{\mathrm{c}} = (0,\ k/2,\ 0)^\T\):</span> samo na robu. Ime je po tem: vsi drugi robni pomiki so zadržani (vezani), tu je rob le ena koordinata, notranjost pa prosta.</p>
+<p>Drugo gibanje je lastno nihanje notranjosti pri mirujočem robu. Strop \(2\) držimo pri \(q_2 = 0\) in podstruktura \(1\) ima en sam strop, ki ga drži steber pod njim in steber nad njim, s skupno togostjo \(2k\) in maso <span class="nobr">\(\bar m\).</span> Njen lastni par (definicija <a class="xref" href="sec-lastni-problem.html#def-lastni-par" data-knowl="def-lastni-par">10.7</a>) je \(\lambda^{(1)} = 2\) in <span class="nobr"><a data-del="f1" class="xref kaz" href="sec-podstrukture.html#fig-podstrukture-okvir" data-knowl="fig-podstrukture-okvir">\(\vek\varphi^{(1)} = (1,\ 0,\ 0)^\T\)</a>.</span> Podstruktura \(2\) ima strop \(3\) na <a data-del="f2" class="xref kaz" href="sec-podstrukture.html#fig-podstrukture-okvir" data-knowl="fig-podstrukture-okvir">enem stebru</a>, \(\lambda^{(2)} = 1\) in <span class="nobr">\(\vek\varphi^{(2)} = (0,\ 0,\ 1)^\T\).</span> Ker rob pri tem držimo pri miru, kot bi bil vpet, tema načinoma pravimo <a class="xref auto forward" href="sec-podstrukture.html#def-nacin-z-vpetim-robom" data-knowl="def-nacin-z-vpetim-robom" title="Definirano kasneje v knjigi">načina z vpetim robom</a> (fixed-interface modes).</p>
+<p>Vsako gibanje okvirja je vsota teh treh. Iz \(\vek q = \vek\psi_{\mathrm{c}}\,q_2 + \eta_1\vek\varphi^{(1)} + \eta_2\vek\varphi^{(2)}\) dobimo \(q_1 = \tfrac12 q_2 + \eta_1\) in <span class="nobr">\(q_3 = q_2 + \eta_2\),</span> torej za vsak \(\vek q\) števila <span class="nobr">\(q_2\),</span> \(\eta_1 = q_1 - \tfrac12 q_2\) in <span class="nobr">\(\eta_2 = q_3 - q_2\).</span> Tri stolpce zložimo v matriko <span class="nobr">\(\mat\Psi\),</span> <a class="xref auto" href="sec-determinanta.html#def-determinanta" data-knowl="def-determinanta">determinanta</a> je <span class="nobr">\(-1\),</span> in \(\mat\Psi\) je <a class="xref auto" href="sec-matrike.html#def-inverzna-matrika" data-knowl="def-inverzna-matrika">obrnljiva</a>. Reducirani matriki \(\tilde{\mat K} = \mat\Psi^\T\mat K\mat\Psi\) in \(\tilde{\mat M} = \mat\Psi^\T\mat M\mat\Psi\) za <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinate</a> \((q_2, \eta_1, \eta_2)\) sta po računu v SymPyju</p>
+<div class="eq" id="eq-podstrukture-okvir-matrike">\[\tilde{\mat K} = \begin{pmatrix} \tfrac12 &amp; 0 &amp; 0 \\ 0 &amp; 2 &amp; 0 \\ 0 &amp; 0 &amp; 1 \end{pmatrix} , \qquad \tilde{\mat M} = \begin{pmatrix} \tfrac94 &amp; \tfrac12 &amp; 1 \\ \tfrac12 &amp; 1 &amp; 0 \\ 1 &amp; 0 &amp; 1 \end{pmatrix} . \tag{21.37}\]</div>
+<p>Vsak člen ima svoj pomen. Člen \(\tilde K_{11} = \tfrac12\) je prav sila \(k/2\) s slike, ki drži enoto pomika roba. Člena \(2\) in \(1\) na diagonali sta lastni vrednosti \(\lambda^{(1)}\) in <span class="nobr">\(\lambda^{(2)}\),</span> saj je <span class="nobr">\(\vek\varphi^{(j)\T}\mat K\vek\varphi^{(j)} = \lambda^{(j)}\,\vek\varphi^{(j)\T}\mat M\vek\varphi^{(j)} = \lambda^{(j)}\).</span> Člen \(\tilde M_{11} = \tfrac94\) je masa, ki se giblje z <a class="xref auto forward" href="sec-podstrukture.html#def-vezni-nacin" data-knowl="def-vezni-nacin" title="Definirano kasneje v knjigi">veznim načinom</a>: \(\bar m\,(\tfrac14 + 1 + 1)\) po kvadratih pomikov stropov. Člena \(\tilde M_{12} = \tfrac12\) in \(\tilde M_{13} = 1\) sta produkta \(\vek\psi_{\mathrm{c}}^\T\mat M\vek\varphi^{(1)} = \tfrac12\) in <span class="nobr">\(\vek\psi_{\mathrm{c}}^\T\mat M\vek\varphi^{(2)} = 1\).</span> Zakaj so v togostni matriki izven diagonale ničle, v masni pa ne? Energija \(\vek\psi_{\mathrm{c}}^\T\mat K\vek\varphi^{(j)}\) je <a class="xref auto" href="sec-delo-sil-na-palici.html#def-delo-sile" data-knowl="def-delo-sile">delo sil</a> \(\mat K\vek\psi_{\mathrm{c}} = (0,\ k/2,\ 0)^\T\) na pomikih načina <span class="nobr">\(\vek\varphi^{(j)}\).</span> Sila je samo pri stropu <span class="nobr">\(2\),</span> tam pa načina z vpetim robom mirujeta, zato je delo nič. Masni člen je produkt pomikov, in ti se ne izničijo.</p>
+<p>Preskusimo še, kaj dobimo z manj stolpci, ker je to ves smisel skrajšanja. Samo z \(\vek\psi_{\mathrm{c}}\) je <a class="xref auto" href="sec-navadne-diferencialne-enacbe.html#def-diferencialna-enacba" data-knowl="def-diferencialna-enacba">reducirana enačba</a> <span class="nobr">\(\tfrac12 = \tilde\lambda\cdot\tfrac94\),</span> <span class="nobr">\(\tilde\lambda = 2/9 = 0{,}222222\),</span> to je <a class="xref auto" href="sec-guyanova-redukcija.html#thm-guyan" data-knowl="thm-guyan">Guyanov približek</a> iz razdelka <a class="xref" href="sec-guyanova-redukcija.html">21.4</a> za rob <span class="nobr">\(q_2\),</span> \(12{,}20\) % nad pravo vrednostjo <span class="nobr">\(0{,}198062\).</span> Z dodanim načinom podstrukture \(2\) je reducirani par <span class="nobr">\(\tilde K = \mathrm{diag}(\tfrac12, 1)\),</span> \(\tilde M = \begin{pmatrix}9/4 &amp; 1\\ 1 &amp; 1\end{pmatrix}\) z vrednostma \(0{,}200000\) in <span class="nobr">\(2{,}0\),</span> prva je še samo \(0{,}98\) % nad pravo. Pri vseh treh stolpcih je \(\mat\Psi\) kvadratna in neodvisna, zato je \(\det(\tilde{\mat K} - \lambda\tilde{\mat M}) = -\lambda^3 + 5\lambda^2 - 6\lambda + 1\) (SymPy), prav enak <a class="xref auto" href="sec-zveznost.html#def-polinom" data-knowl="def-polinom">polinom</a> kot <span class="nobr">\(\det(\mat K - \lambda\mat M)\),</span> in <a class="xref auto" href="sec-ritz-lastne-vrednosti.html#def-ritzov-priblizek" data-knowl="def-ritzov-priblizek">Ritzove vrednosti</a> so natanko <span class="nobr">\(0{,}198062\),</span> <span class="nobr">\(1{,}554958\),</span> <span class="nobr">\(3{,}246980\).</span> Razlog, da je prva vrednost pri dveh stolpcih tako dobra, druga pa slaba <span class="nobr">(\(2{,}0\)</span> namesto <span class="nobr">\(1{,}554958\),</span> \(28{,}6\) % preveč): izpuščeni način podstrukture \(1\) ima <span class="nobr">\(\lambda^{(1)} = 2\),</span> ta pa je od prve lastne vrednosti \(0{,}198062\) desetkrat večji (razmerje <span class="nobr">\(0{,}099\)),</span> od druge pa le \(1{,}29\)-krat. Pri <a class="xref auto" href="sec-guyanova-redukcija.html#def-guyanova-baza" data-knowl="def-guyanova-baza">Guyanovem približku</a> je najnižja izpuščena vrednost \(\lambda^{(2)} = 1\) in razmerje za prvo <span class="nobr">\(0{,}198\),</span> napaka pa \(12\) %. Izpuščeni način pokvari tisto lastno vrednost, ki ni dovolj pod njim. Ta zaključek je isti kot pri dinamični kondenzaciji (izrek <a class="xref" href="sec-guyanova-redukcija.html#thm-dinamicna-kondenzacija" data-knowl="thm-dinamicna-kondenzacija">21.20</a>) in pri popravku pospeškov (izrek <a class="xref" href="sec-popravek-pospeskov.html#thm-popravek-pospeskov" data-knowl="thm-popravek-pospeskov">21.4</a>).</p>
+
+<h3 id="sec-splosna-razdelitev-robne-in-notranje"><span class="h-num">21.5.2</span> Splošna razdelitev: robne in notranje koordinate</h3>
+<p>Isto naredimo za konstrukcijo z mnogo <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinatami</a>. Naj bosta \(\mat K\) in \(\mat M\) simetrični <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-pozitivno-definitna" data-knowl="def-pozitivno-definitna">pozitivno definitni matriki</a> reda \(n\) (izrek <a class="xref" href="sec-spektralni-izrek.html#thm-spektralni-izrek" data-knowl="thm-spektralni-izrek">10.13</a>) in naj bo konstrukcija razrezana na \(J\) podstruktur. Koordinate, ki jih deli več podstruktur, so robne (interface) in jih označimo z <span class="nobr">\(\mathrm{a}\),</span> njihovo število je <span class="nobr">\(n_{\mathrm{a}}\),</span> to so aktivne koordinate, ki jih skrajšani model obdrži kot fizične (oznaka kot pri Guyanu, CK razdelek 14.6). Notranje koordinate podstrukture <span class="nobr">\(j\),</span> ki jih ne pozna nobena druga, označimo z \(\text{d}_{\mathrm{j}}\) (dependent, odvisne), njihovo število z <span class="nobr">\(n_{\mathrm{j}}\).</span> Bloke pišemo <span class="nobr">\(\mat K_{\mathrm{a}\mathrm{j}}\),</span> <span class="nobr">\(\mat K_{\mathrm{j}\mathrm{a}}\),</span> \(\mat K_{\mathrm{jj}}\) in tako naprej. Ker podstrukturi \(j\) in \(l \ne j\) nimata skupnih elementov, element ene ne seže v notranje koordinate druge: po izreku <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a> je \(\mat K = \sum_{\mathrm{e}}\mat Z_{\mathrm{e}}^\T\mat k_{\mathrm{e}}\mat Z_{\mathrm{e}}\) in člen vsakega elementa podstrukture \(j\) ima neničelne vrstice in stolpce samo v \(\mathrm{a}\) in <span class="nobr">\(\text{d}_{\mathrm{j}}\).</span> Zato je \(\mat K_{\mathrm{jl}} = \mat 0\) in \(\mat M_{\mathrm{jl}} = \mat 0\) za <span class="nobr">\(j \ne l\),</span> in pri dveh podstrukturah</p>
+<div class="eq" id="eq-podstrukture-razdelitev">\[\mat K = \begin{pmatrix} \mat K_{\mathrm{aa}} &amp; \mat K_{\mathrm{a}1} &amp; \mat K_{\mathrm{a}2} \\ \mat K_{1\mathrm{a}} &amp; \mat K_{11} &amp; \mat 0 \\ \mat K_{2\mathrm{a}} &amp; \mat 0 &amp; \mat K_{22} \end{pmatrix} , \tag{21.38}\]</div>
+<p>v <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">okvirju</a> je ta oblika prav \(\mat K\) z vrstnim redom <span class="nobr">\(q_2, q_1, q_3\).</span> <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">Matrika</a> \(\mat M\) ima isto obliko. Oznake \(\mathrm{a}\) in \(\text{d}\) so iz CK, kot pri Guyanu: črki \(t\) in \(r\) iz leme <a class="xref" href="sec-masna-matrika-nosilca.html#lem-masa-brez-vztrajnosti" data-knowl="lem-masa-brez-vztrajnosti">12.45</a> za pomike in zasuke sta poseben primer, kjer so \(\mathrm{a}\) pomiki, \(\text{d}\) pa zasuki. Pri nosilcih krepka \(\vek\varphi_{\mathrm{r}}\) pomeni <a class="xref auto" href="sec-majhna-nihanja.html#def-nacin-nihanja" data-knowl="def-nacin-nihanja">način nihanja</a>, zasuk vozlišča pa pišemo z besedo.</p>
+<p>Dve vrsti gibanja, ki smo ju v okvirju našli, zdaj imenujemo splošno. Blok \(\mat K_{\mathrm{jj}}\) je pozitivno definiten, ker je \(\vek z^\T\mat K\vek z &gt; 0\) za stolpec <span class="nobr">\(\vek z \ne \vek 0\),</span> ki je neničeln le v \(\text{d}_{\mathrm{j}}\) (kot v koraku 2 dokaza leme <a class="xref" href="sec-masna-matrika-nosilca.html#lem-masa-brez-vztrajnosti" data-knowl="lem-masa-brez-vztrajnosti">12.45</a>), in je po izreku <a class="xref" href="sec-skalarni-produkt-funkcij.html#thm-sistem-pozitivno-definitna" data-knowl="thm-sistem-pozitivno-definitna">6.29</a> <a class="xref auto" href="sec-matrike.html#def-inverzna-matrika" data-knowl="def-inverzna-matrika">obrnljiv</a>.</p>
+
+<div class="blk definicija" id="def-vezni-nacin"><div class="blk-head"><span class="blk-label">Definicija 21.21</span> <span class="blk-title">Vezni način (constraint mode)</span></div><div class="blk-body"><p>Naj bosta <span class="nobr">\(\mat K\),</span> \(\mat M\) in razdelitev kot v enačbi <a class="xref" href="sec-podstrukture.html#eq-podstrukture-razdelitev" data-knowl="eq-podstrukture-razdelitev">(21.38)</a>. <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">Matrika</a> \(\mat\Psi_{\mathrm{j}} = -\mat K_{\mathrm{jj}}^{-1}\mat K_{\mathrm{j}\mathrm{a}}\) ima \(n_{\mathrm{j}}\) vrstic in \(n_{\mathrm{a}}\) stolpcev, stolpec \(\mat\Psi_{\mathrm{j}}\) z indeksom \(s\) so pomiki notranjosti podstrukture <span class="nobr">\(j\),</span> ko je robna koordinata \(s\) premaknjena za <span class="nobr">\(1\),</span> vse druge robne <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinate</a> so \(0\) in na notranjosti ni sil. Vezni načini (constraint modes) so stolpci matrike \(n \times n_{\mathrm{a}}\)</p>
+<div class="eq" id="eq-vezni-nacini">\[\mat\Psi_{\mathrm{c}} = \begin{pmatrix} \mat I \\ \mat\Psi_1 \\ \vdots \\ \mat\Psi_{\mathrm{J}} \end{pmatrix} . \tag{21.39}\]</div>
+<p>Matrika \(\mat\Psi_{\mathrm{c}}\) je matrika Guyanove baze (definicija <a class="xref" href="sec-guyanova-redukcija.html#def-guyanova-baza" data-knowl="def-guyanova-baza">21.17</a>) za obdržane koordinate <span class="nobr">\(\mathrm{a}\),</span> to je robne.</p>
+
+<p class="vir"><span class="vir-label">Vir:</span> CK razdelek 17.2.2 (PDF str. 554-555, enačbi 17.12 in 17.13): vezni način je »static deformation of a structure when a unit displacement is applied to one coordinate of a specified set«, medtem ko so druge koordinate te množice zadržane in je preostanek brez sil. GR razdelek 6.9.2 (PDF str. 503, enačba 6.176): »the same reduction matrix as in the Guyan-Irons method, except that the remaining degrees of freedom are now interface ones«. Zapis po podstrukturah je naš.</p></div></div>
+<div class="blk definicija" id="def-nacin-z-vpetim-robom"><div class="blk-head"><span class="blk-label">Definicija 21.22</span> <span class="blk-title">Način z vpetim robom (fixed-interface mode)</span></div><div class="blk-body"><p>Naj bodo <span class="nobr">\(\mat K\),</span> \(\mat M\) in \(n_{\mathrm{j}}\) kot v definiciji <a class="xref" href="sec-podstrukture.html#def-vezni-nacin" data-knowl="def-vezni-nacin">21.21</a>. Par \((\mat K_{\mathrm{jj}}, \mat M_{\mathrm{jj}})\) reda \(n_{\mathrm{j}}\) je simetričen in pozitivno definiten (kot zgoraj za \(\mat K_{\mathrm{jj}}\) in enako za <span class="nobr">\(\mat M_{\mathrm{jj}}\)),</span> zato ima po izreku <a class="xref" href="sec-spektralni-izrek.html#thm-spektralni-izrek" data-knowl="thm-spektralni-izrek">10.13</a> <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">lastne vrednosti</a> \(\lambda^{(j)}_1 \le \lambda^{(j)}_2 \le \dots \le \lambda^{(j)}_{\mathrm{n}_\mathrm{j}}\) in \(\mat M_{\mathrm{jj}}\)-ortonormirane stolpce \(\vek\varphi^{(j)}_1, \dots, \vek\varphi^{(j)}_{\mathrm{n}_\mathrm{j}}\) z \(n_{\mathrm{j}}\) števili. Način z vpetim robom (fixed-interface mode) podstrukture \(j\) je <a class="xref auto" href="sec-lastni-problem.html#def-lastni-par" data-knowl="def-lastni-par">lastni par</a> <span class="nobr">\((\lambda^{(j)}_{\mathrm{s}}, \vek\varphi^{(j)}_{\mathrm{s}})\),</span> razširjen z ničlami na vse <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinate</a>: je lastni par podstrukture <span class="nobr">\(j\),</span> kjer so vse robne koordinate zadržane pri nič. Prvih \(k_{\mathrm{j}} \le n_{\mathrm{j}}\) stolpcev zložimo v <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matriko</a> \(\mat\Phi_{\mathrm{j}}\) z \(n_{\mathrm{j}}\) vrsticami in \(k_{\mathrm{j}}\) stolpci in vrednosti v <span class="nobr">\(\mat\Lambda_{\mathrm{j}} = \mathrm{diag}(\lambda^{(j)}_1, \dots, \lambda^{(j)}_{\mathrm{k}_\mathrm{j}})\),</span> tako da je \(\mat K_{\mathrm{jj}}\mat\Phi_{\mathrm{j}} = \mat M_{\mathrm{jj}}\mat\Phi_{\mathrm{j}}\mat\Lambda_{\mathrm{j}}\) in <span class="nobr">\(\mat\Phi_{\mathrm{j}}^\T\mat M_{\mathrm{jj}}\mat\Phi_{\mathrm{j}} = \mat I\).</span></p>
+
+<p class="vir"><span class="vir-label">Vir:</span> CK razdelek 17.2.1 (PDF str. 553, enačbe 17.7 do 17.9): »restraining all boundary DOFs and solving the following eigenproblem«, normiranje z <span class="nobr">\(\mat M_{\mathrm{ii}}\).</span> Poimenovanje in zapis po podstrukturah sta po virih, razširitev z ničlami je naša.</p></div></div>
+<p><a class="xref auto" href="sec-podstrukture.html#def-vezni-nacin" data-knowl="def-vezni-nacin">Vezni način</a> ima ime po tem, da so robne koordinate zadržane (vezane): ena je premaknjena, druge so vezane na nič. Način z vpetim robom ima ime po robu, ki ga vpnemo in tako izklopimo, da podstruktura niha sama. Oba skupaj pokrivata vse, kar podstruktura zmore: gibanje, pri katerem rob ni miren, razdelimo na vezni del, ki ima enak rob, in ostanek, ki ima rob miren in je zato kombinacija <a class="xref auto" href="sec-podstrukture.html#def-nacin-z-vpetim-robom" data-knowl="def-nacin-z-vpetim-robom">načinov z vpetim robom</a> (posledica <a class="xref" href="sec-spektralni-izrek.html#cor-razvoj-po-nacinih-n" data-knowl="cor-razvoj-po-nacinih-n">10.14</a> za par <span class="nobr">\((\mat K_{\mathrm{jj}}, \mat M_{\mathrm{jj}})\)).</span> Da tako dobimo res vsa gibanja, pove točka 4 izreka spodaj.</p>
+
+<h3 id="sec-craig-bamptonova-baza"><span class="h-num">21.5.3</span> Craig-Bamptonova baza</h3>
+<p>Kako sta se obe vrsti načinov znašli v isti metodi? Podstrukture s <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinatami</a> načinov so bile v rabi pred obliko, ki jo uporabljamo mi.</p>
+
+<div class="zgodovina"><p class="zgodovina-label">Iz zgodovine</p><p>V sredini šestdesetih let prejšnjega stoletja je Hurty objavil več poročil in člankov o spajanju podstruktur z <a class="xref auto" href="sec-podstrukture.html#def-nacin-z-vpetim-robom" data-knowl="def-nacin-z-vpetim-robom">načini z vpetim robom</a> (CK, PDF str. 550). Njegov članek iz leta 1965 je bil prvi celovit razvoj metode, usmerjene v končne elemente, ki je temeljila na <a class="xref auto" href="sec-podstrukture.html#def-vezni-nacin" data-knowl="def-vezni-nacin">veznih načinih</a> in načinih z vpetim robom, njegova metoda pa je zahtevala, da se robne koordinate ločijo na koordinate togega gibanja in odvečne koordinate (CK, PDF str. 575). Craig in Bampton sta leta 1968 metodo poenostavila tako, da sta vse robne koordinate obravnavala skupaj (CK, PDF str. 575 in seznam virov na str. 589). Poenostavitev se je obrestovala, ker so v tem primeru vse fizične robne koordinate neodvisne posplošene koordinate in je <a class="xref auto forward" href="sec-podstrukture.html#lem-sestavljanje-podstruktur" data-knowl="lem-sestavljanje-podstruktur" title="Definirano kasneje v knjigi">sestavljanje podstruktur</a> kar sestavljanje togostne <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrike</a> po elementih (CK, PDF str. 576). Metoda se je zaradi natančnosti, lahke izvedbe in učinkovite rabe računalnika razširila (CK, PDF str. 575).</p>
+</div>
+<p>V tem razdelku uporabljamo to poenostavljeno obliko Craiga in Bamptona. <a class="xref auto forward" href="sec-podstrukture.html#def-craig-bamptonova-baza" data-knowl="def-craig-bamptonova-baza" title="Definirano kasneje v knjigi">Craig-Bamptonova baza</a> zloži oba tipa stolpcev v eno matriko.</p>
+
+<div class="blk definicija" id="def-craig-bamptonova-baza"><div class="blk-head"><span class="blk-label">Definicija 21.23</span> <span class="blk-title">Craig-Bamptonova baza (Craig-Bampton basis)</span></div><div class="blk-body"><p>Naj bodo \(\mat\Psi_{\mathrm{c}}\) in \(\mat\Psi_{\mathrm{j}}\) iz definicije <a class="xref" href="sec-podstrukture.html#def-vezni-nacin" data-knowl="def-vezni-nacin">21.21</a> ter <span class="nobr">\(\mat\Phi_{\mathrm{j}}\),</span> \(k_{\mathrm{j}}\) iz definicije <a class="xref" href="sec-podstrukture.html#def-nacin-z-vpetim-robom" data-knowl="def-nacin-z-vpetim-robom">21.22</a>. Craig-Bamptonova baza (Craig-Bampton basis) je <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrika</a> z \(n\) vrsticami in \(n_{\mathrm{a}} + k_1 + \dots + k_{\mathrm{J}}\) stolpci</p>
+<div class="eq" id="eq-craig-bampton">\[\mat\Psi_{\mathrm{CB}} = \begin{pmatrix} \mat I &amp; \mat 0 &amp; \cdots &amp; \mat 0 \\ \mat\Psi_1 &amp; \mat\Phi_1 &amp; &amp; \mat 0 \\ \vdots &amp; &amp; \ddots &amp; \\ \mat\Psi_{\mathrm{J}} &amp; \mat 0 &amp; &amp; \mat\Phi_{\mathrm{J}} \end{pmatrix} , \qquad \vek q = \mat\Psi_{\mathrm{CB}}\begin{pmatrix} \vek q_{\mathrm{a}} \\ \vek\eta_1 \\ \vdots \\ \vek\eta_{\mathrm{J}} \end{pmatrix} . \tag{21.40}\]</div>
+<p><a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">Koordinate</a> skrajšanega modela so robne koordinate \(\vek q_{\mathrm{a}}\) in <a class="xref auto" href="sec-modalne-koordinate.html#def-modalne-koordinate" data-knowl="def-modalne-koordinate">modalne koordinate</a> podstruktur \(\vek\eta_{\mathrm{j}}\) (stolpec \(k_{\mathrm{j}}\) števil, koliko je v notranjosti podstrukture \(j\) vsakega načina z vpetim robom). Matriki \(\tilde{\mat K} = \mat\Psi_{\mathrm{CB}}^\T\mat K\,\mat\Psi_{\mathrm{CB}}\) in \(\tilde{\mat M} = \mat\Psi_{\mathrm{CB}}^\T\mat M\,\mat\Psi_{\mathrm{CB}}\) sta reducirana matrika. Pri \(k_{\mathrm{j}} = 0\) za vsak \(j\) je to <a class="xref auto" href="sec-guyanova-redukcija.html#def-guyanova-baza" data-knowl="def-guyanova-baza">Guyanova baza</a> za rob.</p>
+
+<p class="vir"><span class="vir-label">Vir:</span> CK razdelek 17.6.1 (PDF str. 575, enačbi 17.70 in 17.71), GR razdelek 6.9.2 (PDF str. 503, enačba 6.141 v besedilu). Zapis po podstrukturah in <span class="nobr">\(\mat\Lambda_{\mathrm{j}}\),</span> \(k_{\mathrm{j}}\) sta naša.</p></div></div>
+<p><a class="xref auto" href="sec-ritzova-metoda.html#def-ritzova-metoda" data-knowl="def-ritzova-metoda">Ritzova metoda</a> iz razdelka <a class="xref" href="sec-ritz-lastne-vrednosti.html">10.8</a> zahteva neodvisne stolpce. Ali jih Craig-Bamptonova baza ima, ali so tri vrste matrik v njej res tako prijazne, kot je kazal <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">okvir</a>, in kaj izgubimo, če načinov ne obdržimo vseh? Odgovori izrek.</p>
+
+<div class="blk izrek" id="thm-craig-bampton"><div class="blk-head"><span class="blk-label">Izrek 21.24</span> <span class="blk-title">Craig-Bamptonov približek (Craig-Bampton approximation)</span></div><div class="blk-body"><p>Naj bosta \(\mat K\) in \(\mat M\) simetrični pozitivno definitni z razdelitvijo <a class="xref" href="sec-podstrukture.html#eq-podstrukture-razdelitev" data-knowl="eq-podstrukture-razdelitev">(21.38)</a> <span class="nobr">(\(\mat K_{\mathrm{jl}} = \mat 0\),</span> \(\mat M_{\mathrm{jl}} = \mat 0\) za <span class="nobr">\(j \ne l\)),</span> \(\mat\Psi_{\mathrm{CB}}\) baza <a class="xref" href="sec-podstrukture.html#eq-craig-bampton" data-knowl="eq-craig-bampton">(21.40)</a> in \(\lambda_1 \le \dots \le \lambda_{\mathrm{n}}\) <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">lastne vrednosti</a> para <span class="nobr">\((\mat K, \mat M)\).</span> Naj bo <span class="nobr">\(m = n_{\mathrm{a}} + k_1 + \dots + k_{\mathrm{J}}\).</span> Tedaj velja:</p>
+<ol>
+<li>Stolpci \(\mat\Psi_{\mathrm{CB}}\) so neodvisni, zato je \(\tilde\lambda_{\mathrm{r}}\) Ritzov približek lastnih vrednosti (definicija <a class="xref" href="sec-ritz-lastne-vrednosti.html#def-ritzov-priblizek" data-knowl="def-ritzov-priblizek">10.41</a>) in \(\tilde\lambda_{\mathrm{r}} \ge \lambda_{\mathrm{r}}\) za <span class="nobr">\(r = 1, \dots, m\).</span></li>
+<li>Reducirani <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matriki</a> imata obliko
+<div class="eq" id="eq-cb-matrike">\[\tilde{\mat K} = \begin{pmatrix} \mat S &amp; \mat 0 \\ \mat 0 &amp; \mat\Lambda \end{pmatrix} , \qquad \tilde{\mat M} = \begin{pmatrix} \tilde{\mat M}_{\mathrm{aa}} &amp; \tilde{\mat M}_{\mathrm{a}\eta} \\ \tilde{\mat M}_{\eta\mathrm{a}} &amp; \mat I \end{pmatrix} , \tag{21.41}\]</div>
+kjer je <span class="nobr">\(\mat S = \mat K_{\mathrm{aa}} - \sum_{\mathrm{j}}\mat K_{\mathrm{a}\mathrm{j}}\mat K_{\mathrm{jj}}^{-1}\mat K_{\mathrm{j}\mathrm{a}}\),</span> <span class="nobr">\(\mat\Lambda = \mathrm{diag}(\mat\Lambda_1, \dots, \mat\Lambda_{\mathrm{J}})\),</span> \(\tilde{\mat M}_{\mathrm{aa}} = \mat M_{\mathrm{aa}} + \sum_{\mathrm{j}}(\mat M_{\mathrm{a}\mathrm{j}}\mat\Psi_{\mathrm{j}} + \mat\Psi_{\mathrm{j}}^\T\mat M_{\mathrm{j}\mathrm{a}} + \mat\Psi_{\mathrm{j}}^\T\mat M_{\mathrm{jj}}\mat\Psi_{\mathrm{j}})\) in \(\tilde{\mat M}_{\mathrm{a}\eta}\) ima po blokih <span class="nobr">\((\mat M_{\mathrm{a}\mathrm{j}} + \mat\Psi_{\mathrm{j}}^\T\mat M_{\mathrm{jj}})\mat\Phi_{\mathrm{j}}\).</span></li>
+<li>Naj bo \(\mat\Psi'_{\mathrm{CB}}\) baza z \(k'_{\mathrm{j}} \ge k_{\mathrm{j}}\) obdržanimi načini podstruktur (prvi \(k_{\mathrm{j}}\) stolpcev \(\mat\Phi'_{\mathrm{j}}\) je <span class="nobr">\(\mat\Phi_{\mathrm{j}}\)).</span> Tedaj je \(\tilde\lambda'_{\mathrm{r}} \le \tilde\lambda_{\mathrm{r}}\) za <span class="nobr">\(r = 1, \dots, m\).</span> Posebej pri \(k_{\mathrm{j}} = 0\) je \(\tilde\lambda_{\mathrm{r}}\) Guyanova vrednost za robne <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinate</a>, in vsaka Craig-Bamptonova vrednost je pod njo.</li>
+<li>Če je \(k_{\mathrm{j}} = n_{\mathrm{j}}\) za vsak <span class="nobr">\(j\),</span> je <span class="nobr">\(m = n\),</span> in \(\tilde\lambda_{\mathrm{r}} = \lambda_{\mathrm{r}}\) za vsak <span class="nobr">\(r\).</span></li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da so stolpci neodvisni (točka 1), da se bloki reduciranih <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrik</a> izračunajo po enačbi <a class="xref" href="sec-podstrukture.html#eq-cb-matrike" data-knowl="eq-cb-matrike">(21.41)</a> (točka 2), da je baza z več načini nadmnožica baze z manj načini (točka 3) in da je baza z vsemi načini kvadratna (točka 4). Točke 1, 3 in 4 uporabijo isti izrek <a class="xref" href="sec-ritz-lastne-vrednosti.html#thm-ritz-gornja-meja" data-knowl="thm-ritz-gornja-meja">10.42</a>.</p>
+<ol>
+<li>Naj bo <span class="nobr">\(\mat\Psi_{\mathrm{CB}}\,(\vek x, \vek y_1, \dots, \vek y_{\mathrm{J}}) = \vek 0\).</span> Prvi blok vrstic da \(\vek x = \vek 0\) (slika <a class="xref" href="sec-podstrukture.html#fig-podstrukture-okvir" data-knowl="fig-podstrukture-okvir">21.14</a>, rob miruje), blok \(j\) pa <span class="nobr">\(\mat\Phi_{\mathrm{j}}\vek y_{\mathrm{j}} = \vek 0\).</span> Pomnožimo z \(\mat\Phi_{\mathrm{j}}^\T\mat M_{\mathrm{jj}}\) in uporabimo \(\mat\Phi_{\mathrm{j}}^\T\mat M_{\mathrm{jj}}\mat\Phi_{\mathrm{j}} = \mat I\) (definicija <a class="xref" href="sec-podstrukture.html#def-nacin-z-vpetim-robom" data-knowl="def-nacin-z-vpetim-robom">21.22</a>), dobimo <span class="nobr">\(\vek y_{\mathrm{j}} = \vek 0\).</span> Stolpci so neodvisni (definicija <a class="xref" href="sec-skalarni-produkt-funkcij.html#def-linearna-neodvisnost" data-knowl="def-linearna-neodvisnost">6.22</a>), in izrek <a class="xref" href="sec-ritz-lastne-vrednosti.html#thm-ritz-gornja-meja" data-knowl="thm-ritz-gornja-meja">10.42</a>, točka 1, da <span class="nobr">\(\tilde\lambda_{\mathrm{r}} \ge \lambda_{\mathrm{r}}\).</span></li>
+<li>Blok \(j\) vrstic enačbe \(\mat K\mat\Psi_{\mathrm{c}}\) je <span class="nobr">\(\mat K_{\mathrm{j}\mathrm{a}} + \mat K_{\mathrm{jj}}\mat\Psi_{\mathrm{j}} = \mat 0\),</span> saj je \(\mat K_{\mathrm{jl}} = \mat 0\) za \(l \ne j\) in \(\mat\Psi_{\mathrm{j}} = -\mat K_{\mathrm{jj}}^{-1}\mat K_{\mathrm{j}\mathrm{a}}\) (definicija <a class="xref" href="sec-podstrukture.html#def-vezni-nacin" data-knowl="def-vezni-nacin">21.21</a>). Blok \(\mathrm a\) je <span class="nobr">\(\mat K_{\mathrm{aa}} + \sum_{\mathrm{j}}\mat K_{\mathrm{a} \mathrm{j}}\mat\Psi_{\mathrm{j}} = \mat S\).</span> Torej je \(\mat K\mat\Psi_{\mathrm{c}} = (\mat S, \mat 0, \dots, \mat 0)\) po blokih. <!-- nofig: algebra --></li>
+<li>Pomnožimo z leve s <span class="nobr">\(\mat\Psi_{\mathrm{c}}^\T\).</span> Prvi blok od \(\mat\Psi_{\mathrm{c}}\) je <span class="nobr">\(\mat I\),</span> zato je <span class="nobr">\(\mat\Psi_{\mathrm{c}}^\T\mat K\mat\Psi_{\mathrm{c}} = \mat S\).</span> Stolpce načinov podstrukture \(j\) v \(\mat\Psi_{\mathrm{CB}}\) označimo z \(\hat{\mat\Phi}_{\mathrm{j}} = (\mat 0, \dots, \mat\Phi_{\mathrm{j}}, \dots, \mat 0)\) po blokih vrstic: v bloku \(\mathrm a\) in v blokih drugih podstruktur so ničle. Blok \((\mathrm a, \eta_{\mathrm{j}})\) matrike \(\tilde{\mat K}\) je \(\mat\Psi_{\mathrm{c}}^\T\mat K\hat{\mat\Phi}_{\mathrm{j}} = (\mat K\mat\Psi_{\mathrm{c}})^\T\hat{\mat\Phi}_{\mathrm{j}}\) po lemi <a class="xref" href="sec-matrike.html#lem-transponiran-produkt" data-knowl="lem-transponiran-produkt">1.101</a> in <span class="nobr">\(\mat K^\T = \mat K\).</span> Po koraku 2 je \((\mat K\mat\Psi_{\mathrm{c}})^\T = (\mat S^\T, \mat 0, \dots, \mat 0)\) po blokih stolpcev, zato je produkt <span class="nobr">\(\mat S^\T\cdot\mat 0 + \mat 0\cdot\mat\Phi_{\mathrm{j}} = \mat 0\):</span> edini neničelni blok \(\mat S^\T\) zadene ničle \(\hat{\mat\Phi}_{\mathrm{j}}\) v bloku <span class="nobr">\(\mathrm a\).</span> Blok \((\eta_{\mathrm{j}}, \eta_{\mathrm{j}})\) je <span class="nobr">\(\mat\Phi_{\mathrm{j}}^\T\mat K_{\mathrm{jj}}\mat\Phi_{\mathrm{j}} = \mat\Phi_{\mathrm{j}}^\T\mat M_{\mathrm{jj}}\mat\Phi_{\mathrm{j}}\mat\Lambda_{\mathrm{j}} = \mat\Lambda_{\mathrm{j}}\),</span> blok \((\eta_{\mathrm{j}}, \eta_{\mathrm{l}})\) pa \(\mat\Phi_{\mathrm{j}}^\T\mat K_{\mathrm{jl}}\mat\Phi_{\mathrm{l}} = \mat 0\) za <span class="nobr">\(j \ne l\).</span> To je prvi del enačbe <a class="xref" href="sec-podstrukture.html#eq-cb-matrike" data-knowl="eq-cb-matrike">(21.41)</a>. <!-- nofig: algebra --></li>
+<li>Pri \(\tilde{\mat M}\) je \((\eta_{\mathrm{j}}, \eta_{\mathrm{j}})\) enak <span class="nobr">\(\mat\Phi_{\mathrm{j}}^\T\mat M_{\mathrm{jj}}\mat\Phi_{\mathrm{j}} = \mat I\),</span> \((\eta_{\mathrm{j}}, \eta_{\mathrm{l}})\) je \(\mat 0\) ker je <span class="nobr">\(\mat M_{\mathrm{jl}} = \mat 0\),</span> \((\mathrm a, \eta_{\mathrm{j}})\) pa je po pravilu za produkt matrik po blokih (definicija <a class="xref" href="sec-matrike.html#def-produkt-matrik" data-knowl="def-produkt-matrik">1.98</a>) <span class="nobr">\((\mat M_{\mathrm{a}\mathrm{j}} + \mat\Psi_{\mathrm{j}}^\T\mat M_{\mathrm{jj}})\mat\Phi_{\mathrm{j}}\),</span> in \((\mathrm a, \mathrm a)\) je vsota \(\mat M_{\mathrm{aa}}\) in treh členov iz izreka. Masni bloki zato niso nič, ker \(\mat M\mat\Psi_{\mathrm{c}}\) nima ničel v notranjosti. To je druga točka. <!-- nofig: algebra --></li>
+<li>Naj bo \(\mat T\) matrika, ki iz stolpcev baze \(\mat\Psi'_{\mathrm{CB}}\) izbere prvih \(k_{\mathrm{j}}\) načinov vsake podstrukture in vse vezne načine. Tedaj je <span class="nobr">\(\mat\Psi_{\mathrm{CB}} = \mat\Psi'_{\mathrm{CB}}\,\mat T\),</span> in \(\mat T\) ima neodvisne stolpce (so stolpci identitete). Reducirani matriki sta \(\tilde{\mat K} = \mat T^\T\tilde{\mat K}'\mat T\) in \(\tilde{\mat M} = \mat T^\T\tilde{\mat M}'\mat T\) po lemi <a class="xref" href="sec-matrike.html#lem-transponiran-produkt" data-knowl="lem-transponiran-produkt">1.101</a>. To je reducirani par \((\tilde{\mat K}', \tilde{\mat M}')\) z Ritzovo matriko <span class="nobr">\(\mat T\).</span> Par \((\tilde{\mat K}', \tilde{\mat M}')\) reda \(m' = n_{\mathrm{a}} + k'_1 + \dots + k'_{\mathrm{J}}\) je simetričen in pozitivno definiten, ker ima \(\mat\Psi'_{\mathrm{CB}}\) po koraku 1 neodvisne stolpce. Zato izrek <a class="xref" href="sec-ritz-lastne-vrednosti.html#thm-ritz-gornja-meja" data-knowl="thm-ritz-gornja-meja">10.42</a>, točka 1, za ta par da \(\tilde\lambda_{\mathrm{r}} \ge \tilde\lambda'_{\mathrm{r}}\) za <span class="nobr">\(r = 1, \dots, m\).</span> Pri \(k_{\mathrm{j}} = 0\) je <span class="nobr">\(\mat\Psi_{\mathrm{CB}} = \mat\Psi_{\mathrm{c}}\),</span> torej <a class="xref auto" href="sec-guyanova-redukcija.html#def-guyanova-baza" data-knowl="def-guyanova-baza">Guyanova baza</a>.</li>
+<li>Pri \(k_{\mathrm{j}} = n_{\mathrm{j}}\) za vsak \(j\) je <span class="nobr">\(m = n_{\mathrm{a}} + \sum_{\mathrm{j}} n_{\mathrm{j}} = n\).</span> Matrika \(\mat\Psi_{\mathrm{CB}}\) je kvadratna z neodvisnimi stolpci po koraku 1, zato izrek <a class="xref" href="sec-ritz-lastne-vrednosti.html#thm-ritz-gornja-meja" data-knowl="thm-ritz-gornja-meja">10.42</a>, točka 2, da <span class="nobr">\(\tilde\lambda_{\mathrm{r}} = \lambda_{\mathrm{r}}\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> CK razdelek 17.6 (PDF str. 575-576): oblika reduciranih matrik z ničlami med veznimi načini in načini z vpetim robom (ortogonalnost 17.14 na PDF str. 555) in mešani masni členi. GR razdelek 6.9.2 (PDF str. 503): baza z veznimi in notranjimi načini. Dokaz v korakih ni iz virov. Zgornja meja je iz izreka <a class="xref" href="sec-ritz-lastne-vrednosti.html#thm-ritz-gornja-meja" data-knowl="thm-ritz-gornja-meja">10.42</a>, ki ga tu ne dokazujemo znova.</p></div></div>
+<p>Dokaz je pokazal tri reči. Stolpci baze so neodvisni (korak 1), zato so njene vrednosti <a class="xref auto" href="sec-polnost.html#def-zgornja-meja" data-knowl="def-zgornja-meja">zgornje meje</a>. Njena togostna matrika razpade na robni in modalni del, ker sile veznih načinov delujejo samo na robu (koraka 2 in 3), kar smo videli na okvirju. In noben dodan način nobene vrednosti ne zviša (korak 5). Zakaj pa ne bi opustili veznih načinov, saj so načini z vpetim robom pravi načini podstruktur? Zato ker brez njih rob ne more iz mirovanja, kar pokaže konzola v zadnjem pododdelku tega razdelka.</p>
+
+<h3 id="sec-sestavljanje-podstruktur"><span class="h-num">21.5.4</span> Sestavljanje podstruktur</h3>
+<p>Podstrukture računajo različne skupine, zato mora biti vsako računanje samostojno. Naslednja lema pove, da so reducirani bloki vsota prispevkov podstruktur, od katerih vsak potrebuje samo svoj del konstrukcije.</p>
+
+<div class="blk lema" id="lem-sestavljanje-podstruktur"><div class="blk-head"><span class="blk-label">Lema 21.25</span> <span class="blk-title">Sestavljanje podstruktur (assembly of substructures)</span></div><div class="blk-body"><p>Naj bo \(\mat K = \sum_{\mathrm{j}}\mat K^{(j)}\) in <span class="nobr">\(\mat M = \sum_{\mathrm{j}}\mat M^{(j)}\),</span> kjer sta \(\mat K^{(j)}\) in \(\mat M^{(j)}\) togostna in masna <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrika</a> podstrukture \(j\) samega, napisani v oštevilčenju cele konstrukcije (vrstice in stolpci zunaj \(\mathrm a\) in \(\text{d}_{\mathrm{j}}\) so nič). Tedaj za baze iz definicije <a class="xref" href="sec-podstrukture.html#def-craig-bamptonova-baza" data-knowl="def-craig-bamptonova-baza">21.23</a> velja:</p>
+<ol>
+<li><span class="nobr">\(\mat K_{\mathrm{jj}} = \mat K^{(j)}_{\mathrm{jj}}\),</span> \(\mat K_{\mathrm{j}\mathrm{a}} = \mat K^{(j)}_{\mathrm{j}\mathrm{a}}\) in enako za <span class="nobr">\(\mat M\).</span> Zato <span class="nobr">\(\mat\Psi_{\mathrm{j}}\),</span> <span class="nobr">\(\mat\Phi_{\mathrm{j}}\),</span> \(\mat\Lambda_{\mathrm{j}}\) izračunamo iz matrik podstrukture \(j\) same.</li>
+<li>\(\mat S = \sum_{\mathrm{j}}\mat S^{(j)}\) z \(\mat S^{(j)} = \mat K^{(j)}_{\mathrm{aa}} - \mat K_{\mathrm{a}\mathrm{j}}\mat K_{\mathrm{jj}}^{-1}\mat K_{\mathrm{j}\mathrm{a}}\) in \(\tilde{\mat M}_{\mathrm{aa}} = \sum_{\mathrm{j}}\tilde{\mat M}^{(j)}_{\mathrm{aa}}\) z <span class="nobr">\(\tilde{\mat M}^{(j)}_{\mathrm{aa}} = \mat M^{(j)}_{\mathrm{aa}} + \mat M_{\mathrm{a}\mathrm{j}}\mat\Psi_{\mathrm{j}} + \mat\Psi_{\mathrm{j}}^\T\mat M_{\mathrm{j}\mathrm{a}} + \mat\Psi_{\mathrm{j}}^\T\mat M_{\mathrm{jj}}\mat\Psi_{\mathrm{j}}\).</span> Bloka \(\tilde{\mat M}_{\mathrm{a}\eta_\mathrm{j}}\) in \(\mat\Lambda_{\mathrm{j}}\) pripadata samo podstrukturi <span class="nobr">\(j\).</span></li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da vsak del izraza iz izreka <a class="xref" href="sec-podstrukture.html#thm-craig-bampton" data-knowl="thm-craig-bampton">21.24</a> vsebuje podatke ene podstrukture.</p>
+<ol>
+<li>Po izreku <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a> je \(\mat K\) vsota členov elementov <span class="nobr">\(\mat Z_{\mathrm{e}}^\T\mat k_{\mathrm{e}}\mat Z_{\mathrm{e}}\),</span> in element podstrukture \(j\) ima neničelne vrstice in stolpce samo v \(\mathrm a\) in \(\text{d}_{\mathrm{j}}\) (podstrukturi nimata skupnih notranjih koordinat). Če elemente razvrstimo po podstrukturah, je <span class="nobr">\(\mat K = \sum_{\mathrm{j}}\mat K^{(j)}\).</span> Blok \(\mat K_{\mathrm{jj}}\) prejme prispevek samo od podstrukture <span class="nobr">\(j\),</span> ker druge nimajo vrstic <span class="nobr">\(\text{d}_{\mathrm{j}}\),</span> in enako <span class="nobr">\(\mat K_{\mathrm{j}\mathrm{a}}\).</span> Prav tako za \(\mat M\) po enačbi <a class="xref" href="sec-masna-matrika-nosilca.html#eq-masa-nosilca" data-knowl="eq-masa-nosilca">(12.50)</a> ali lemi <a class="xref" href="sec-masna-matrika.html#lem-masa-palice-sestavljena" data-knowl="lem-masa-palice-sestavljena">10.34</a>. <!-- nofig: algebra --></li>
+<li>Robni blok je <span class="nobr">\(\mat K_{\mathrm{aa}} = \sum_{\mathrm{j}}\mat K^{(j)}_{\mathrm{aa}}\),</span> vsak vsebuje elemente, ki so v stiku z robom. Vstavljeno v \(\mat S\) iz izreka <a class="xref" href="sec-podstrukture.html#thm-craig-bampton" data-knowl="thm-craig-bampton">21.24</a>, točka 2, in ker so bloki <span class="nobr">\(\mat K_{\mathrm{a}\mathrm{j}}\),</span> \(\mat K_{\mathrm{jj}}\) iz koraka 1 prispevek podstrukture <span class="nobr">\(j\),</span> razpade \(\mat S\) po <span class="nobr">\(j\).</span> Enako \(\tilde{\mat M}_{\mathrm{aa}}\) ima člen \(\mat M_{\mathrm{aa}} = \sum_{\mathrm{j}}\mat M^{(j)}_{\mathrm{aa}}\) in tri člene s podstrukturo \(j\) samo. <!-- nofig: algebra --></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> CK razdelek 17.6.2 (PDF str. 576): »the component coupling matrix S is just the direct-stiffness assembly matrix«. Dokaz ni iz vira.</p></div></div>
+<p>Lema pove, kaj smo na koncu zgodovine omenili: sestavljanje je kar seštevanje na robnih koordinatah, tako kot pri končnih elementih (izrek <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a>), le da so zdaj &quot;elementi&quot; skrajšane podstrukture. Če spremenimo eno podstrukturo, se spremeni samo njen prispevek, druge pa ostanejo, kot so bile izračunane. Nikoli ne rešujemo sistema vseh koordinat naenkrat.</p>
+
+<h3 id="sec-konzola-prerezana-na-sredini"><span class="h-num">21.5.5</span> Konzola, prerezana na sredini</h3>
+<p>Preskusimo na konzoli iz poglavja <a class="xref" href="ch-mke-nosilci.html">12</a>: jeklo z \(\rho = 7800\) kg/m³, prerez \(20 \times 40\) mm, \(EI = 20\,906{,}7\) N m², \(\rho A = 6{,}24\) kg/m, \(L = 1\) m, \(\omega_0 = \sqrt{EI/(\rho A L^4)} = 57{,}883\) 1/s kot enota frekvence. Mrežo vzamemo iz \(16\) enakih elementov s konsistentno maso (lema <a class="xref" href="sec-masna-matrika-nosilca.html#lem-masa-elementa-nosilca" data-knowl="lem-masa-elementa-nosilca">12.43</a>) in vpetjem pri <span class="nobr">\(x = 0\),</span> kar da \(n = 32\) prostih koordinat (pomik in zasuk vozlišč \(1\) do <span class="nobr">\(16\)).</span> Za primerjavo so frekvence te mreže <span class="nobr">\(3{,}51602\),</span> <span class="nobr">\(22{,}0346\),</span> \(61{,}6997\) in <span class="nobr">\(120{,}920\ \omega_0\),</span> najnižje vrednosti pri neskončno finih elementih so <span class="nobr">\(3{,}51602\),</span> <span class="nobr">\(22{,}0345\),</span> \(61{,}6972\) in \(120{,}902\ \omega_0\) (CK, tabela 14.1, PDF str. 476), in razlika je napaka mreže, ne metode. Konzolo razrežemo na sredini, pri vozlišču \(8\) <span class="nobr">(\(x = 0{,}5\)</span> m), kot kaže slika <a class="xref" href="sec-podstrukture.html#fig-podstrukture-nosilec" data-knowl="fig-podstrukture-nosilec">21.15</a>.</p>
+
+<figure class="blk slika" id="fig-podstrukture-nosilec"><p><span class="svgfig" role="img" aria-label="Konzola, razrezana na sredini, vezni načini in prvi načini z vpetim robom"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='274.63pt' height='405.19pt' viewBox='-72.000004 -72.000011 203.433275 300.140274'>
+<defs>
+<path id='c21-05-podstrukture-g0-32' d='M4.801993-6.655044C4.811955-6.694894 4.83188-6.75467 4.83188-6.804483C4.83188-6.90411 4.762142-6.914072 4.712329-6.914072C4.612702-6.914072 4.60274-6.894147 4.562889-6.714819L2.909091-.129514C2.15193-.219178 1.77335-.587796 1.77335-1.24533C1.77335-1.444583 1.77335-1.703611 2.311333-3.098381C2.351183-3.217933 2.420922-3.387298 2.420922-3.58655C2.420922-4.034869 2.102117-4.403487 1.603985-4.403487C.657534-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.836862-3.895392 1.235367-4.184309 1.574097-4.184309C1.653798-4.184309 1.823163-4.184309 1.823163-3.865504C1.823163-3.606476 1.723537-3.35741 1.594022-3.008717C1.115816-1.753425 1.115816-1.494396 1.115816-1.325031C1.115816-.37858 1.892902 .029888 2.849315 .089664C2.769614 .448319 2.769614 .468244 2.630137 .996264C2.600249 1.105853 2.400996 1.912827 2.400996 1.942715C2.400996 1.952677 2.400996 2.042341 2.520548 2.042341C2.540473 2.042341 2.590286 2.042341 2.610212 2.002491C2.6401 1.982565 2.699875 1.733499 2.729763 1.594022L3.108344 .109589C3.476961 .109589 4.353674 .109589 5.290162-.956413C5.69863-1.414695 5.907846-1.853051 6.017435-2.15193C6.107098-2.400996 6.326276-3.267746 6.326276-3.706102C6.326276-4.26401 6.057285-4.403487 5.88792-4.403487C5.638854-4.403487 5.389788-4.144458 5.389788-3.92528C5.389788-3.795766 5.449564-3.73599 5.539228-3.656289C5.648817-3.5467 5.897883-3.287671 5.897883-2.809465C5.897883-2.171856 5.379826-1.354919 5.031133-.996264C4.154421-.109589 3.516812-.109589 3.158157-.109589L4.801993-6.655044Z'/>
+<path id='c21-05-podstrukture-g0-39' d='M1.693649 1.693649C1.653798 1.823163 1.643836 1.843088 1.643836 1.892902C1.643836 2.11208 1.833126 2.171856 1.932752 2.171856C1.982565 2.171856 2.201743 2.141968 2.30137 1.912827C2.331258 1.833126 2.381071 1.504359 2.650062 .089664C2.739726 .099626 2.809465 .109589 2.978829 .109589C4.632628 .109589 6.166874-1.454545 6.166874-3.028643C6.166874-3.805729 5.778331-4.403487 5.031133-4.403487C3.58655-4.403487 2.988792-2.470735 2.391034-.52802C1.315068-.727273 .757161-1.285181 .757161-2.002491C.757161-2.281445 .986301-3.377335 1.58406-4.064757C1.663761-4.154421 1.663761-4.174346 1.663761-4.194271C1.663761-4.234122 1.643836-4.293898 1.544209-4.293898C1.265255-4.293898 .498132-2.849315 .498132-1.892902C.498132-.956413 1.155666-.229141 2.221669 .019925L1.693649 1.693649ZM3.068493-.468244C2.988792-.468244 2.968867-.468244 2.889166-.478207C2.769614-.478207 2.759651-.488169 2.759651-.518057C2.759651-.537983 2.929016-1.444583 2.958904-1.594022C3.267746-2.86924 4.044832-3.825654 4.931507-3.825654C5.618929-3.825654 5.88792-3.287671 5.88792-2.809465C5.88792-1.683686 4.60274-.468244 3.068493-.468244Z'/>
+<path id='c21-05-podstrukture-g1-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c21-05-podstrukture-g1-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='c21-05-podstrukture-g1-97' d='M3.317559-.757161C3.35741-.358655 3.626401 .059776 4.094645 .059776C4.303861 .059776 4.911582-.079701 4.911582-.886675V-1.444583H4.662516V-.886675C4.662516-.308842 4.41345-.249066 4.303861-.249066C3.975093-.249066 3.935243-.697385 3.935243-.747198V-2.739726C3.935243-3.158157 3.935243-3.5467 3.576588-3.915318C3.188045-4.303861 2.689913-4.463263 2.211706-4.463263C1.39477-4.463263 .707347-3.995019 .707347-3.337484C.707347-3.038605 .9066-2.86924 1.165629-2.86924C1.444583-2.86924 1.62391-3.068493 1.62391-3.327522C1.62391-3.447073 1.574097-3.775841 1.115816-3.785803C1.384807-4.134496 1.872976-4.244085 2.191781-4.244085C2.67995-4.244085 3.247821-3.855542 3.247821-2.968867V-2.600249C2.739726-2.570361 2.042341-2.540473 1.414695-2.241594C.667497-1.902864 .418431-1.384807 .418431-.946451C.418431-.139477 1.384807 .109589 2.012453 .109589C2.669988 .109589 3.128269-.288917 3.317559-.757161ZM3.247821-2.391034V-1.39477C3.247821-.448319 2.530511-.109589 2.082192-.109589C1.594022-.109589 1.185554-.458281 1.185554-.956413C1.185554-1.504359 1.603985-2.331258 3.247821-2.391034Z'/>
+<path id='c21-05-podstrukture-g2-40' d='M2.475716-5.230386C1.150685-4.29589 .801993-2.817435 .801993-1.750436C.801993-.767123 1.094894 .760149 2.475716 1.736488C2.531507 1.736488 2.615193 1.736488 2.615193 1.652802C2.615193 1.610959 2.594271 1.597011 2.545455 1.548194C1.617933 .711333 1.276214-.474222 1.276214-1.743462C1.276214-3.626401 1.994521-4.546949 2.566376-5.063014C2.594271-5.090909 2.615193-5.111831 2.615193-5.1467C2.615193-5.230386 2.531507-5.230386 2.475716-5.230386Z'/>
+<path id='c21-05-podstrukture-g2-41' d='M.627646-5.230386C.578829-5.230386 .495143-5.230386 .495143-5.1467C.495143-5.111831 .516065-5.090909 .557908-5.042092C1.157659-4.491158 1.827148-3.549689 1.827148-1.750436C1.827148-.292902 1.373848 .808966 .620672 1.492403C.502117 1.610959 .495143 1.617933 .495143 1.652802S.516065 1.736488 .585803 1.736488C.669489 1.736488 1.332005 1.276214 1.792279 .404483C2.099128-.174346 2.30137-.927522 2.30137-1.743462C2.30137-2.726775 2.008468-4.254047 .627646-5.230386Z'/>
+<path id='c21-05-podstrukture-g2-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='c21-05-podstrukture-g2-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+<path id='c21-05-podstrukture-g2-99' d='M2.712827-2.782565C2.587298-2.726775 2.517559-2.615193 2.517559-2.475716C2.517559-2.287422 2.650062-2.147945 2.84533-2.147945C3.033624-2.147945 3.180075-2.266501 3.180075-2.489664C3.180075-3.110336 2.21071-3.110336 2.015442-3.110336C.969365-3.110336 .320797-2.308344 .320797-1.506351C.320797-.627646 1.066999 .069738 1.980573 .069738C3.019676 .069738 3.263761-.753176 3.263761-.836862S3.173101-.920548 3.145205-.920548C3.054545-.920548 3.047572-.899626 3.012702-.801993C2.859278-.369614 2.489664-.153425 2.064259-.153425C1.583064-.153425 .955417-.509091 .955417-1.513325C.955417-2.399004 1.387796-2.887173 2.036364-2.887173C2.127024-2.887173 2.461768-2.887173 2.712827-2.782565Z'/>
+</defs>
+<g id='c21-05-podstrukture-page1'>
+<g stroke-miterlimit='10' transform='translate(-39.342775,-52.713503)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='konstrukcija'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.4'>
+<path d='M0 0H85.35823' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.4'>
+<path d='M85.35823 0H170.71646' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0-9.95863V9.95819' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0-9.95863L-5.69046-15.6491' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0-2.84546L-5.69046-8.53592' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 4.26773L-5.69046-1.42273' fill='none'/>
+</g>
+</g>
+<path d='M87.19685 0C87.19685 1.01544 86.37367 1.83862 85.35823 1.83862S83.5196 1.01544 83.5196 0S84.34279-1.83862 85.35823-1.83862S87.19685-1.01544 87.19685 0ZM85.35823 0' stroke='none'/>
+<g transform='translate(85.35823,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.342775,-52.713503)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='podstruktura1'>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(40.17911,9.58142)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.342775,-52.713503)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-39.342775' y='-52.713503' xlink:href='#c21-05-podstrukture-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='podstruktura2'>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(125.53734,9.58142)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.342775,-52.713503)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-39.342775' y='-52.713503' xlink:href='#c21-05-podstrukture-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='vmesnik'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M85.35823-14.22636V-281.68198' fill='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(82.85823,10.65086)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.342775,-52.713503)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.342775' y='-52.713503' xlink:href='#c21-05-podstrukture-g1-97'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='vezni1'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0-51.21501H170.71646' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M0-51.21501C0-51.21501 .78497-51.2229 1.08104-51.21501C1.3771-51.20712 1.83774-51.17392 2.13387-51.15814S2.91928-51.12102 3.21535-51.10127C3.51141-51.08153 3.97166-51.03947 4.26773-51.01575C4.5638-50.99202 5.05309-50.95786 5.34921-50.9302C5.64534-50.90256 6.10597-50.85194 6.40204-50.81647C6.6981-50.78099 7.18701-50.71793 7.48308-50.6745C7.77914-50.63107 8.23984-50.55475 8.5359-50.50343C8.83197-50.45212 9.32088-50.35983 9.61694-50.3046C9.91301-50.24936 10.5237-50.13297 10.66977-50.10532S10.51979-50.13297 10.66977-50.10532S11.45474-49.96922 11.75081-49.90604C12.04688-49.84285 12.5075-49.72096 12.80363-49.64989C13.09976-49.57881 13.58905-49.46475 13.88512-49.39374C14.18118-49.32272 14.64543-49.21301 14.93752-49.13802C15.2296-49.06302 15.6942-48.93616 15.99033-48.85321C16.28645-48.77026 16.77177-48.62698 17.07181-48.54019C17.37184-48.4534 17.8568-48.31439 18.15286-48.2276C18.44893-48.14081 18.91354-48.00542 19.20569-47.91458C19.49783-47.82375 19.96243-47.67162 20.2585-47.57289C20.55457-47.47417 21.18956-47.25432 21.33955-47.203C21.48955-47.15169 21.18958-47.25034 21.33955-47.203C21.48953-47.15567 22.12453-46.9644 22.4206-46.86176C22.71666-46.75911 23.18127-46.56981 23.47342-46.4632C23.76556-46.35658 24.23018-46.19984 24.52625-46.09329C24.82231-45.98674 25.30725-45.80962 25.60728-45.69518C25.90732-45.58073 26.39264-45.3829 26.68877-45.2684S27.44553-44.98436 27.7416-44.86986C28.03766-44.75536 28.52657-44.5654 28.82263-44.44307C29.1187-44.32074 29.58331-44.11041 29.87546-43.98808C30.1676-43.86575 30.63222-43.6837 30.92828-43.56131C31.22435-43.43892 31.85934-43.16907 32.00932-43.10588C32.1593-43.0427 31.85933-43.16907 32.00932-43.10588C32.15932-43.0427 32.79431-42.77676 33.09038-42.65045C33.38644-42.52414 33.85106-42.32178 34.1432-42.19547C34.43535-42.06915 34.89996-41.87033 35.19603-41.74004C35.4921-41.60974 35.981-41.38661 36.27707-41.25638C36.57314-41.12614 37.03377-40.93161 37.3299-40.80139C37.62602-40.67117 38.11134-40.44803 38.41138-40.31775C38.71141-40.18747 39.19635-39.99261 39.49242-39.86232C39.78848-39.73203 40.2531-39.51286 40.54524-39.37866C40.83739-39.24446 41.302-39.02922 41.59807-38.89502C41.89413-38.76082 42.52913-38.47847 42.67911-38.41138C42.82909-38.34428 42.53304-38.47853 42.67911-38.41138C42.82518-38.34422 43.43587-38.06155 43.73193-37.92729C44.028-37.79303 44.5169-37.57784 44.81297-37.44363C45.10904-37.30943 45.56973-37.09021 45.8658-36.95999S46.6468-36.63524 46.94684-36.505C47.24687-36.37477 47.7322-36.15164 48.02832-36.02135C48.32445-35.89105 48.78508-35.6962 49.08115-35.56592C49.37721-35.43564 49.86612-35.21255 50.16219-35.08228C50.45825-34.952 50.91895-34.75316 51.21501-34.62685C51.51108-34.50053 52-34.29816 52.29607-34.17184C52.59213-34.04553 53.20282-33.77962 53.34889-33.71643S53.20282-33.77956 53.34889-33.71643S54.10565-33.38376 54.40172-33.26143C54.69778-33.1391 55.18669-32.95705 55.48276-32.83466C55.77882-32.71227 56.23952-32.50162 56.53558-32.37923C56.83165-32.25684 57.32056-32.06696 57.61662-31.95245C57.91269-31.83795 58.37332-31.6684 58.66945-31.5539C58.96558-31.43939 59.4509-31.24156 59.75093-31.12712S60.5359-30.83556 60.83197-30.729C61.12804-30.62245 61.58873-30.46571 61.8848-30.3591C62.18086-30.25249 62.66977-30.06319 62.96584-29.96056C63.2619-29.85793 63.87259-29.66664 64.01866-29.61931S63.87259-29.67062 64.01866-29.61931S64.77542-29.34807 65.07149-29.2494C65.36755-29.15074 65.85646-28.99893 66.15253-28.90816C66.4486-28.81738 66.90929-28.68199 67.20535-28.59514C67.50142-28.50829 67.98637-28.36897 68.2864-28.28212C68.58644-28.19527 69.07176-28.05197 69.36789-27.96909C69.66402-27.8862 70.12463-27.75972 70.4207-27.68472C70.71677-27.60973 71.20569-27.49963 71.50175-27.42856C71.79782-27.35748 72.25851-27.24348 72.55458-27.17241C72.85065-27.10133 73.33955-26.97945 73.63562-26.91626S74.54237-26.74463 74.68845-26.71698C74.83452-26.68933 74.54237-26.74457 74.68845-26.71698C74.83452-26.68939 75.4452-26.57338 75.74127-26.51814S76.52625-26.37018 76.82231-26.31886C77.11838-26.26755 77.57907-26.19167 77.87514-26.14824C78.1712-26.10481 78.66011-26.04138 78.95618-26.00584C79.25224-25.9703 79.71288-25.91974 80.009-25.89209C80.30513-25.86444 80.79045-25.83023 81.09048-25.80656C81.39052-25.7829 81.87546-25.74121 82.17152-25.72147C82.46759-25.70172 82.92828-25.68001 83.22435-25.66417S84.00934-25.61517 84.3054-25.60728C84.60147-25.5994 85.35823-25.60728 85.35823-25.60728' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M85.35823-25.60728C85.35823-25.60728 86.11497-25.60728 86.41104-25.60728C86.7071-25.60728 87.19206-25.60728 87.4921-25.60728C87.79213-25.60728 88.27751-25.60728 88.57358-25.60728C88.86964-25.60728 89.3299-25.60728 89.62596-25.60728C89.92203-25.60728 90.41132-25.60728 90.70744-25.60728C91.00357-25.60728 91.46819-25.60728 91.76027-25.60728S92.51659-25.60728 92.81265-25.60728C93.10872-25.60728 93.5941-25.60728 93.89413-25.60728C94.19417-25.60728 94.67911-25.60728 94.97517-25.60728C95.27124-25.60728 95.88193-25.60728 96.028-25.60728S95.88193-25.60728 96.028-25.60728S96.78476-25.60728 97.08083-25.60728C97.37689-25.60728 97.86183-25.60728 98.16187-25.60728C98.4619-25.60728 98.94728-25.60728 99.24335-25.60728C99.53941-25.60728 100.00366-25.60728 100.29575-25.60728C100.58783-25.60728 101.05243-25.60728 101.34856-25.60728C101.64468-25.60728 102.13397-25.60728 102.43004-25.60728C102.7261-25.60728 103.18637-25.60728 103.48244-25.60728C103.7785-25.60728 104.26389-25.60728 104.56392-25.60728S105.34889-25.60728 105.64496-25.60728C105.94102-25.60728 106.55171-25.60728 106.69778-25.60728C106.84386-25.60728 106.55171-25.60728 106.69778-25.60728C106.84386-25.60728 107.45454-25.60728 107.75061-25.60728S108.53162-25.60728 108.83165-25.60728S109.61707-25.60728 109.91313-25.60728C110.2092-25.60728 110.66945-25.60728 110.96552-25.60728C111.26158-25.60728 111.75087-25.60728 112.047-25.60728C112.34312-25.60728 112.80774-25.60728 113.09982-25.60728S113.85614-25.60728 114.1522-25.60728C114.44827-25.60728 114.93365-25.60728 115.23369-25.60728C115.53372-25.60728 116.01866-25.60728 116.31473-25.60728S117.22148-25.60728 117.36755-25.60728C117.51363-25.60728 117.22148-25.60728 117.36755-25.60728C117.51363-25.60728 118.12431-25.60728 118.42038-25.60728S119.2014-25.60728 119.50143-25.60728C119.80147-25.60728 120.28683-25.60728 120.5829-25.60728S121.34322-25.60728 121.6353-25.60728S122.392-25.60728 122.68813-25.60728C122.98425-25.60728 123.47354-25.60728 123.7696-25.60728C124.06567-25.60728 124.52592-25.60728 124.82199-25.60728S125.60344-25.60728 125.90347-25.60728S126.68845-25.60728 126.98451-25.60728C127.28058-25.60728 127.89127-25.60728 128.03734-25.60728S127.89127-25.60728 128.03734-25.60728S128.7941-25.60728 129.09016-25.60728C129.38623-25.60728 129.87117-25.60728 130.1712-25.60728C130.47124-25.60728 130.95662-25.60728 131.25269-25.60728C131.54875-25.60728 132.009-25.60728 132.30507-25.60728S133.09042-25.60728 133.38655-25.60728S134.1473-25.60728 134.43938-25.60728S135.19571-25.60728 135.49178-25.60728C135.78784-25.60728 136.27321-25.60728 136.57324-25.60728C136.87328-25.60728 137.35823-25.60728 137.6543-25.60728C137.95036-25.60728 138.56105-25.60728 138.70712-25.60728C138.8532-25.60728 138.56105-25.60728 138.70712-25.60728C138.8532-25.60728 139.46388-25.60728 139.75995-25.60728S140.54095-25.60728 140.84099-25.60728C141.14102-25.60728 141.6264-25.60728 141.92247-25.60728S142.68277-25.60728 142.97485-25.60728C143.26694-25.60728 143.73155-25.60728 144.02768-25.60728C144.3238-25.60728 144.8131-25.60728 145.10916-25.60728C145.40523-25.60728 145.86548-25.60728 146.16154-25.60728C146.45761-25.60728 146.943-25.60728 147.24303-25.60728S148.028-25.60728 148.32407-25.60728C148.62013-25.60728 149.23082-25.60728 149.37689-25.60728S149.23082-25.60728 149.37689-25.60728S150.13365-25.60728 150.42972-25.60728C150.72578-25.60728 151.21072-25.60728 151.51076-25.60728C151.81079-25.60728 152.29617-25.60728 152.59224-25.60728C152.8883-25.60728 153.34857-25.60728 153.64464-25.60728C153.9407-25.60728 154.43-25.60728 154.72612-25.60728C155.02225-25.60728 155.48685-25.60728 155.77893-25.60728S156.53526-25.60728 156.83133-25.60728S157.61278-25.60728 157.91281-25.60728S158.69778-25.60728 158.99385-25.60728S159.9006-25.60728 160.04668-25.60728C160.19275-25.60728 159.9006-25.60728 160.04668-25.60728C160.19275-25.60728 160.80344-25.60728 161.0995-25.60728C161.39557-25.60728 161.88051-25.60728 162.18054-25.60728C162.48058-25.60728 162.96596-25.60728 163.26202-25.60728C163.55809-25.60728 164.02232-25.60728 164.3144-25.60728C164.60649-25.60728 165.0711-25.60728 165.36723-25.60728S166.15265-25.60728 166.44872-25.60728C166.74478-25.60728 167.20503-25.60728 167.5011-25.60728C167.79716-25.60728 168.28255-25.60728 168.58258-25.60728S169.36757-25.60728 169.66364-25.60728C169.9597-25.60728 170.71646-25.60728 170.71646-25.60728' fill='none'/>
+</g>
+</g>
+<g transform='translate(-26.72449,-53.71501)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.342775,-52.713503)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.342775' y='-52.713503' xlink:href='#c21-05-podstrukture-g0-32'/>
+<use x='-32.853191' y='-51.219122' xlink:href='#c21-05-podstrukture-g2-99'/>
+<use x='-29.3109' y='-51.219122' xlink:href='#c21-05-podstrukture-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='vezni2'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0-113.81097H170.71646' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M0-113.81097C0-113.81097 .78497-113.807 1.08104-113.81097C1.3771-113.81494 1.83774-113.83565 2.13387-113.83961C2.43-113.84358 2.91928-113.83571 3.21535-113.83961C3.51141-113.84352 3.97166-113.85995 4.26773-113.86784S5.05309-113.88464 5.34921-113.8965C5.64534-113.90836 6.10597-113.94157 6.40204-113.95337C6.6981-113.96516 7.18701-113.96979 7.48308-113.98158C7.77914-113.99338 8.23984-114.02269 8.5359-114.03847C8.83197-114.05424 9.32088-114.07956 9.61694-114.09534C9.91301-114.11111 10.5237-114.14432 10.66977-114.1522C10.81584-114.1601 10.51979-114.14035 10.66977-114.1522C10.81975-114.16406 11.45474-114.218 11.75081-114.23775C12.04688-114.25749 12.5075-114.27487 12.80363-114.29462C13.09976-114.31436 13.58905-114.35648 13.88512-114.38014C14.18118-114.40381 14.64543-114.44157 14.93752-114.46524C15.2296-114.4889 15.6942-114.52704 15.99033-114.55077C16.28645-114.5745 16.77177-114.61263 17.07181-114.63629C17.37184-114.65996 17.8568-114.69772 18.15286-114.72139C18.44893-114.74506 18.91354-114.77927 19.20569-114.80692C19.49783-114.83456 19.96243-114.89302 20.2585-114.92067S21.18956-114.99434 21.33955-115.0062C21.48955-115.01805 21.18958-114.99042 21.33955-115.0062C21.48953-115.02197 22.12453-115.09236 22.4206-115.11995C22.71666-115.14754 23.18127-115.17744 23.47342-115.20503C23.76556-115.23262 24.23018-115.28717 24.52625-115.31879C24.82231-115.3504 25.30725-115.40532 25.60728-115.43297C25.90732-115.46062 26.39264-115.49048 26.68877-115.51807C26.9849-115.54565 27.44553-115.60025 27.7416-115.6318C28.03766-115.66336 28.52657-115.71394 28.82263-115.74556C29.1187-115.77718 29.58331-115.83209 29.87546-115.85974C30.1676-115.88739 30.63222-115.91725 30.92828-115.94484C31.22435-115.97243 31.85934-116.0428 32.00932-116.05858S31.85933-116.0428 32.00932-116.05858C32.15932-116.07436 32.79431-116.14468 33.09038-116.17233C33.38644-116.19998 33.85106-116.23021 34.1432-116.25786C34.43535-116.2855 34.89996-116.34396 35.19603-116.37161S35.981-116.42949 36.27707-116.45714S37.03377-116.54324 37.3299-116.57089C37.62602-116.59854 38.11134-116.63275 38.41138-116.65642C38.71141-116.68008 39.19635-116.71393 39.49242-116.74152C39.78848-116.7691 40.2531-116.82762 40.54524-116.85526C40.83739-116.88289 41.302-116.92104 41.59807-116.94078C41.89413-116.96053 42.52913-116.98978 42.67911-116.99767C42.82909-117.00555 42.53304-116.98581 42.67911-116.99767C42.82518-117.00952 43.43587-117.05952 43.73193-117.08319C44.028-117.10686 44.5169-117.1486 44.81297-117.16829C45.10904-117.18797 45.56973-117.20541 45.8658-117.22516C46.16187-117.2449 46.6468-117.29094 46.94684-117.31068C47.24687-117.33043 47.7322-117.3557 48.02832-117.36755C48.32445-117.37941 48.78508-117.38435 49.08115-117.39621C49.37721-117.40807 49.86612-117.43732 50.16219-117.4531C50.45825-117.46887 50.91895-117.49817 51.21501-117.50996C51.51108-117.52176 52-117.53029 52.29607-117.53818C52.59213-117.54607 53.20282-117.56287 53.34889-117.56683C53.49496-117.5708 53.20282-117.56293 53.34889-117.56683C53.49496-117.57074 54.10565-117.59116 54.40172-117.59506C54.69778-117.59897 55.18669-117.59506 55.48276-117.59506C55.77882-117.59506 56.23952-117.59506 56.53558-117.59506C56.83165-117.59506 57.32056-117.59506 57.61662-117.59506C57.91269-117.59506 58.37332-117.59897 58.66945-117.59506C58.96558-117.59116 59.4509-117.57472 59.75093-117.56683S60.5359-117.54607 60.83197-117.53818S61.58873-117.52176 61.8848-117.50996C62.18086-117.49817 62.66977-117.46495 62.96584-117.4531C63.2619-117.44124 63.87259-117.4284 64.01866-117.42444C64.16473-117.42047 63.87259-117.4363 64.01866-117.42444S64.77542-117.35864 65.07149-117.3389C65.36755-117.31915 65.85646-117.30171 66.15253-117.28203C66.4486-117.26234 66.90929-117.22452 67.20535-117.19693C67.50142-117.16934 67.98637-117.1148 68.2864-117.08319C68.58644-117.05157 69.07176-117.00063 69.36789-116.96901C69.66402-116.9374 70.12463-116.88681 70.4207-116.85526C70.71677-116.8237 71.20569-116.777 71.50175-116.74152C71.79782-116.70604 72.25851-116.64296 72.55458-116.59953S73.33955-116.47588 73.63562-116.42848C73.93169-116.38109 74.54237-116.28152 74.68845-116.25786C74.83452-116.23419 74.54237-116.28152 74.68845-116.25786C74.83452-116.23419 75.4452-116.13855 75.74127-116.08723C76.03734-116.03592 76.52625-115.94324 76.82231-115.88795C77.11838-115.83267 77.57907-115.7479 77.87514-115.68869C78.1712-115.62949 78.66011-115.52827 78.95618-115.46118C79.25224-115.39409 79.71288-115.27213 80.009-115.20503C80.30513-115.13794 80.79045-115.04855 81.09048-114.97754C81.39052-114.90652 81.87546-114.77213 82.17152-114.69316C82.46759-114.6142 82.92828-114.48732 83.22435-114.40836C83.52042-114.32939 84.00934-114.20686 84.3054-114.124C84.60147-114.04112 85.35823-113.81097 85.35823-113.81097' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M85.35823-113.81097C85.35823-113.81097 86.11497-113.5848 86.41104-113.49794C86.7071-113.41109 87.19206-113.2757 87.4921-113.18492C87.79213-113.09415 88.27751-112.93445 88.57358-112.84367C88.86964-112.7529 89.3299-112.6175 89.62596-112.53064C89.92203-112.44379 90.41132-112.30447 90.70744-112.21762C91.00357-112.13077 91.46819-111.99538 91.76027-111.9046C92.05235-111.81383 92.51659-111.65413 92.81265-111.56335C93.10872-111.47258 93.5941-111.33717 93.89413-111.25032C94.19417-111.16347 94.67911-111.02415 94.97517-110.9373C95.27124-110.85045 95.88193-110.6677 96.028-110.62427S95.88193-110.6716 96.028-110.62427C96.17407-110.57693 96.78476-110.37381 97.08083-110.28304C97.37689-110.19226 97.86183-110.05685 98.16187-109.97C98.4619-109.88315 98.94728-109.74384 99.24335-109.65698C99.53941-109.57013 100.00366-109.43478 100.29575-109.34395C100.58783-109.25311 101.05243-109.09305 101.34856-109.00227C101.64468-108.9115 102.13397-108.77647 102.43004-108.68968C102.7261-108.60289 103.18637-108.46352 103.48244-108.37666C103.7785-108.28981 104.26389-108.15446 104.56392-108.06363S105.34889-107.81279 105.64496-107.72195C105.94102-107.63112 106.55171-107.45235 106.69778-107.40892C106.84386-107.3655 106.55171-107.45229 106.69778-107.40892C106.84386-107.36555 107.45454-107.18312 107.75061-107.09633S108.53162-106.87415 108.83165-106.78331S109.61707-106.53247 109.91313-106.44164C110.2092-106.3508 110.66945-106.21545 110.96552-106.1286C111.26158-106.04175 111.75087-105.90244 112.047-105.81558C112.34312-105.72873 112.80774-105.59332 113.09982-105.50255C113.3919-105.41177 113.85614-105.25208 114.1522-105.1613C114.44827-105.07053 114.93365-104.93513 115.23369-104.84828C115.53372-104.76143 116.01866-104.62212 116.31473-104.53526C116.6108-104.44841 117.22148-104.26566 117.36755-104.22223C117.51363-104.1788 117.22148-104.26956 117.36755-104.22223C117.51363-104.1749 118.12431-103.97176 118.42038-103.88098S119.2014-103.65482 119.50143-103.56796C119.80147-103.48111 120.28683-103.34178 120.5829-103.25493S121.34322-103.03268 121.6353-102.94191S122.392-102.69144 122.68813-102.60066C122.98425-102.50989 123.47354-102.3745 123.7696-102.28764C124.06567-102.20079 124.52592-102.06146 124.82199-101.97461S125.60344-101.75237 125.90347-101.66159C126.2035-101.57082 126.68845-101.41112 126.98451-101.32034C127.28058-101.22957 127.89127-101.05075 128.03734-101.00732C128.18341-100.9639 127.89127-101.05075 128.03734-101.00732C128.18341-100.9639 128.7941-100.78114 129.09016-100.69429C129.38623-100.60744 129.87117-100.47205 130.1712-100.38127C130.47124-100.2905 130.95662-100.1308 131.25269-100.04002C131.54875-99.94925 132.009-99.81384 132.30507-99.72699S133.09042-99.50082 133.38655-99.41397S134.1473-99.19179 134.43938-99.10095C134.73146-99.01012 135.19571-98.85004 135.49178-98.75926C135.78784-98.66849 136.27321-98.53346 136.57324-98.44667C136.87328-98.35988 137.35823-98.2205 137.6543-98.13365C137.95036-98.0468 138.56105-97.86406 138.70712-97.82063C138.8532-97.7772 138.56105-97.86803 138.70712-97.82063C138.8532-97.77324 139.46388-97.56978 139.75995-97.47894S140.54095-97.25272 140.84099-97.16592C141.14102-97.07913 141.6264-96.94012 141.92247-96.85333S142.68277-96.63113 142.97485-96.5403C143.26694-96.44946 143.73155-96.28946 144.02768-96.19862C144.3238-96.10779 144.8131-95.97246 145.10916-95.8856C145.40523-95.79875 145.86548-95.65936 146.16154-95.57257C146.45761-95.48578 146.943-95.35075 147.24303-95.25998C147.54306-95.1692 148.028-95.00914 148.32407-94.9183C148.62013-94.82747 149.23082-94.6487 149.37689-94.60527S149.23082-94.6487 149.37689-94.60527S150.13365-94.3791 150.42972-94.29225C150.72578-94.2054 151.21072-94.07 151.51076-93.97923C151.81079-93.88846 152.29617-93.72876 152.59224-93.63799C152.8883-93.54721 153.34857-93.4118 153.64464-93.32495C153.9407-93.2381 154.43-93.09879 154.72612-93.01193C155.02225-92.92508 155.48685-92.78967 155.77893-92.6989C156.07101-92.60812 156.53526-92.44844 156.83133-92.35767C157.1274-92.26689 157.61278-92.13148 157.91281-92.04463S158.69778-91.81847 158.99385-91.73161C159.28992-91.64476 159.9006-91.462 160.04668-91.41858C160.19275-91.37515 159.9006-91.46591 160.04668-91.41858C160.19275-91.37125 160.80344-91.1681 161.0995-91.07733C161.39557-90.98656 161.88051-90.85117 162.18054-90.76431C162.48058-90.67746 162.96596-90.53815 163.26202-90.4513C163.55809-90.36444 164.02232-90.22903 164.3144-90.13826C164.60649-90.04749 165.0711-89.88779 165.36723-89.79701C165.66336-89.70624 166.15265-89.57085 166.44872-89.484C166.74478-89.39714 167.20503-89.25781 167.5011-89.17096C167.79716-89.0841 168.28255-88.94878 168.58258-88.85794S169.36757-88.60704 169.66364-88.51627C169.9597-88.42549 170.71646-88.20367 170.71646-88.20367' fill='none'/>
+</g>
+</g>
+<g transform='translate(-26.72449,-116.31097)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.342775,-52.713503)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.342775' y='-52.713503' xlink:href='#c21-05-podstrukture-g0-32'/>
+<use x='-32.853191' y='-51.219122' xlink:href='#c21-05-podstrukture-g2-99'/>
+<use x='-29.3109' y='-51.219122' xlink:href='#c21-05-podstrukture-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='fix1'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0-176.40692H170.71646' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M0-176.40692C0-176.40692 .78497-176.38159 1.08104-176.35004C1.3771-176.31848 1.83774-176.23862 2.13387-176.17941C2.43-176.12021 2.91928-176.00615 3.21535-175.92326C3.51141-175.84038 3.97166-175.69255 4.26773-175.58202C4.5638-175.47148 5.05309-175.26085 5.34921-175.12659C5.64534-174.99232 6.10597-174.76825 6.40204-174.61429C6.6981-174.46033 7.18701-174.19055 7.48308-174.01689C7.77914-173.84323 8.23984-173.55605 8.5359-173.36263C8.83197-173.1692 9.32088-172.83208 9.61694-172.62282C9.91301-172.41356 10.5237-171.96098 10.66977-171.85437S10.51979-171.96881 10.66977-171.85437S11.45474-171.26236 11.75081-171.02948S12.5075-170.42067 12.80363-170.17593C13.09976-169.9312 13.58905-169.51813 13.88512-169.2655C14.18118-169.01288 14.64543-168.61566 14.93752-168.35509C15.2296-168.09451 15.6942-167.65584 15.99033-167.38736C16.28645-167.11888 16.77177-166.68848 17.07181-166.42006C17.37184-166.15164 17.8568-165.72514 18.15286-165.45276C18.44893-165.18037 18.91354-164.73318 19.20569-164.45682C19.49783-164.18045 19.96243-163.73325 20.2585-163.46086C20.55457-163.18848 21.18956-162.62778 21.33955-162.49358C21.48955-162.35938 21.18958-162.62778 21.33955-162.49358C21.48953-162.35938 22.12453-161.7947 22.4206-161.52628C22.71666-161.25786 23.18127-160.81956 23.47342-160.55898C23.76556-160.29839 24.23018-159.9008 24.52625-159.64812C24.82231-159.39543 25.30725-158.98636 25.60728-158.7377C25.90732-158.48904 26.39264-158.09277 26.68877-157.85593C26.9849-157.61908 27.44553-157.25565 27.7416-157.03061C28.03766-156.80557 28.52657-156.45102 28.82263-156.23393C29.1187-156.01685 29.58331-155.67119 29.87546-155.46591C30.1676-155.26064 30.63222-154.94383 30.92828-154.75433C31.22435-154.56483 31.85934-154.19084 32.00932-154.10007S31.85933-154.18295 32.00932-154.10007C32.15932-154.01718 32.79431-153.66452 33.09038-153.50267C33.38644-153.34082 33.85106-153.07956 34.1432-152.93349C34.43535-152.78741 34.89996-152.57616 35.19603-152.44984C35.4921-152.32353 35.981-152.1336 36.27707-152.02307S37.03377-151.74791 37.3299-151.65317C37.62602-151.55843 38.11134-151.41515 38.41138-151.34015C38.71141-151.26515 39.19635-151.16794 39.49242-151.11264C39.78848-151.05734 40.2531-150.9811 40.54524-150.94159C40.83739-150.90208 41.302-150.84752 41.59807-150.82784C41.89413-150.80815 42.52913-150.80353 42.67911-150.79962C42.82909-150.79572 42.53304-150.79572 42.67911-150.79962C42.82518-150.80353 43.43587-150.80815 43.73193-150.82784C44.028-150.84752 44.5169-150.90208 44.81297-150.94159S45.56973-151.05734 45.8658-151.11264S46.6468-151.26515 46.94684-151.34015C47.24687-151.41515 47.7322-151.55843 48.02832-151.65317C48.32445-151.74791 48.78508-151.91254 49.08115-152.02307C49.37721-152.1336 49.86612-152.32353 50.16219-152.44984C50.45825-152.57616 50.91895-152.78741 51.21501-152.93349C51.51108-153.07956 52-153.34082 52.29607-153.50267C52.59213-153.66452 53.20282-154.01718 53.34889-154.10007C53.49496-154.18295 53.20282-154.0093 53.34889-154.10007S54.10565-154.56483 54.40172-154.75433C54.69778-154.94383 55.18669-155.26064 55.48276-155.46591C55.77882-155.67119 56.23952-156.01685 56.53558-156.23393C56.83165-156.45102 57.32056-156.80557 57.61662-157.03061C57.91269-157.25565 58.37332-157.61908 58.66945-157.85593C58.96558-158.09277 59.4509-158.48904 59.75093-158.7377S60.5359-159.39543 60.83197-159.64812C61.12804-159.9008 61.58873-160.29839 61.8848-160.55898C62.18086-160.81956 62.66977-161.25786 62.96584-161.52628C63.2619-161.7947 63.87259-162.35938 64.01866-162.49358S63.87259-162.35938 64.01866-162.49358S64.77542-163.18848 65.07149-163.46086C65.36755-163.73325 65.85646-164.18045 66.15253-164.45682C66.4486-164.73318 66.90929-165.18037 67.20535-165.45276C67.50142-165.72514 67.98637-166.15164 68.2864-166.42006C68.58644-166.68848 69.07176-167.11888 69.36789-167.38736S70.12463-168.09451 70.4207-168.35509C70.71677-168.61566 71.20569-169.01288 71.50175-169.2655C71.79782-169.51813 72.25851-169.9312 72.55458-170.17593C72.85065-170.42067 73.33955-170.7966 73.63562-171.02948S74.54237-171.73993 74.68845-171.85437C74.83452-171.96881 74.54237-171.74776 74.68845-171.85437C74.83452-171.96098 75.4452-172.41356 75.74127-172.62282S76.52625-173.1692 76.82231-173.36263C77.11838-173.55605 77.57907-173.84323 77.87514-174.01689C78.1712-174.19055 78.66011-174.46033 78.95618-174.61429C79.25224-174.76825 79.71288-174.99232 80.009-175.12659C80.30513-175.26085 80.79045-175.47148 81.09048-175.58202C81.39052-175.69255 81.87546-175.84038 82.17152-175.92326C82.46759-176.00615 82.92828-176.12021 83.22435-176.17941C83.52042-176.23862 84.00934-176.31848 84.3054-176.35004C84.60147-176.38159 85.35823-176.40692 85.35823-176.40692' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M85.35823-176.40692H170.71646' fill='none'/>
+</g>
+</g>
+<g transform='translate(-29.44672,-180.29584)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.342775,-52.713503)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.342775' y='-52.713503' xlink:href='#c21-05-podstrukture-g0-39'/>
+<use x='-32.825543' y='-57.888524' xlink:href='#c21-05-podstrukture-g2-40'/>
+<use x='-29.7122' y='-57.888524' xlink:href='#c21-05-podstrukture-g2-49'/>
+<use x='-25.74096' y='-57.888524' xlink:href='#c21-05-podstrukture-g2-41'/>
+<use x='-32.825543' y='-50.05687' xlink:href='#c21-05-podstrukture-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='fix2'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0-239.00287H170.71646' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M0-239.00287H85.35823' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M85.35823-239.00287C85.35823-239.00287 86.11497-238.9989 86.41104-239.00287C86.7071-239.00684 87.19206-239.02364 87.4921-239.03152C87.79213-239.03941 88.27751-239.04788 88.57358-239.05974C88.86964-239.0716 89.3299-239.10121 89.62596-239.11705C89.92203-239.13289 90.41132-239.15424 90.70744-239.17392C91.00357-239.1936 91.46819-239.23535 91.76027-239.25902C92.05235-239.28268 92.51659-239.32088 92.81265-239.34454C93.10872-239.36821 93.5941-239.402 93.89413-239.42964C94.19417-239.45729 94.67911-239.5122 94.97517-239.54382C95.27124-239.57544 95.88193-239.64178 96.028-239.65756S95.88193-239.63786 96.028-239.65756S96.78476-239.7601 97.08083-239.79955C97.37689-239.83899 97.86183-239.89851 98.16187-239.94194C98.4619-239.98537 98.94728-240.06517 99.24335-240.11256C99.53941-240.15996 100.00366-240.23622 100.29575-240.28362C100.58783-240.33101 101.05243-240.4069 101.34856-240.45424C101.64468-240.50157 102.13397-240.57355 102.43004-240.62486C102.7261-240.67618 103.18637-240.76494 103.48244-240.82414C103.7785-240.88335 104.26389-240.98851 104.56392-241.05164C104.86395-241.11476 105.34889-241.21594 105.64496-241.27913C105.94102-241.34232 106.55171-241.47545 106.69778-241.50706C106.84386-241.53868 106.55171-241.47551 106.69778-241.50706C106.84386-241.53862 107.45454-241.66747 107.75061-241.73456S108.53162-241.91963 108.83165-241.9907C109.13168-242.06178 109.61707-242.17586 109.91313-242.24687C110.2092-242.31789 110.66945-242.43156 110.96552-242.50258C111.26158-242.5736 111.75087-242.68369 112.047-242.75873C112.34312-242.83377 112.80774-242.96457 113.09982-243.04353C113.3919-243.1225 113.85614-243.24503 114.1522-243.32791C114.44827-243.4108 114.93365-243.55804 115.23369-243.64093C115.53372-243.72382 116.01866-243.84242 116.31473-243.92531S117.22148-244.1949 117.36755-244.23833C117.51363-244.28175 117.22148-244.191 117.36755-244.23833C117.51363-244.28566 118.12431-244.4888 118.42038-244.57957C118.71645-244.67035 119.2014-244.80177 119.50143-244.89261C119.80147-244.98344 120.28683-245.14345 120.5829-245.23428C120.87897-245.32512 121.34322-245.45653 121.6353-245.5473C121.92738-245.63808 122.392-245.78989 122.68813-245.88855C122.98425-245.98721 123.47354-246.15973 123.7696-246.25845C124.06567-246.35718 124.52592-246.50146 124.82199-246.60013C125.11806-246.69879 125.60344-246.86702 125.90347-246.9696C126.2035-247.07219 126.68845-247.23686 126.98451-247.3395C127.28058-247.44212 127.89127-247.65808 128.03734-247.7094C128.18341-247.76071 127.89127-247.65808 128.03734-247.7094C128.18341-247.76071 128.7941-247.97665 129.09016-248.0793C129.38623-248.18195 129.87117-248.34259 130.1712-248.4492C130.47124-248.55582 130.95662-248.74113 131.25269-248.84775C131.54875-248.95436 132.009-249.1111 132.30507-249.21765S133.09042-249.50523 133.38655-249.61577C133.68268-249.7263 134.1473-249.9038 134.43938-250.01433S135.19571-250.30191 135.49178-250.41245C135.78784-250.52298 136.27321-250.70045 136.57324-250.81099C136.87328-250.92152 137.35823-251.09468 137.6543-251.20912C137.95036-251.32356 138.56105-251.57669 138.70712-251.6359C138.8532-251.6951 138.56105-251.58061 138.70712-251.6359C138.8532-251.69118 139.46388-251.91994 139.75995-252.03444S140.54095-252.34677 140.84099-252.46121C141.14102-252.57565 141.6264-252.74489 141.92247-252.85933S142.68277-253.16763 142.97485-253.28612C143.26694-253.4046 143.73155-253.59483 144.02768-253.71332C144.3238-253.8318 144.8131-254.02167 145.10916-254.14009C145.40523-254.25851 145.86548-254.44844 146.16154-254.56686C146.45761-254.68529 146.943-254.87521 147.24303-254.99364C147.54306-255.11206 148.028-255.30199 148.32407-255.42041C148.62013-255.53883 149.23082-255.78798 149.37689-255.84718C149.52296-255.90639 149.23082-255.78798 149.37689-255.84718C149.52296-255.90639 150.13365-256.15553 150.42972-256.27396C150.72578-256.39238 151.21072-256.5784 151.51076-256.70073C151.81079-256.82306 152.29617-257.0334 152.59224-257.15573C152.8883-257.27806 153.34857-257.46408 153.64464-257.5825C153.9407-257.70093 154.43-257.88689 154.72612-258.00928C155.02225-258.13167 155.48685-258.34232 155.77893-258.4647C156.07101-258.5871 156.53526-258.77306 156.83133-258.89148S157.61278-259.19586 157.91281-259.31825S158.69778-259.65129 158.99385-259.77368S159.9006-260.14125 160.04668-260.20045C160.19275-260.25966 159.9006-260.13733 160.04668-260.20045C160.19275-260.26358 160.80344-260.53311 161.0995-260.65544C161.39557-260.77777 161.88051-260.95982 162.18054-261.08221C162.48058-261.2046 162.96596-261.41525 163.26202-261.53764C163.55809-261.66003 164.02232-261.84203 164.3144-261.96442C164.60649-262.0868 165.0711-262.29745 165.36723-262.41985C165.66336-262.54224 166.15265-262.72429 166.44872-262.84662C166.74478-262.96895 167.20503-263.17929 167.5011-263.30162C167.79716-263.42395 168.28255-263.606 168.58258-263.7284C168.88261-263.85078 169.36757-264.06143 169.66364-264.18382C169.9597-264.30621 170.71646-264.6106 170.71646-264.6106' fill='none'/>
+</g>
+</g>
+<g transform='translate(-29.44672,-242.89178)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-39.342775,-52.713503)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-39.342775' y='-52.713503' xlink:href='#c21-05-podstrukture-g0-39'/>
+<use x='-32.825543' y='-57.888524' xlink:href='#c21-05-podstrukture-g2-40'/>
+<use x='-29.7122' y='-57.888524' xlink:href='#c21-05-podstrukture-g2-50'/>
+<use x='-25.74096' y='-57.888524' xlink:href='#c21-05-podstrukture-g2-41'/>
+<use x='-32.825543' y='-50.05687' xlink:href='#c21-05-podstrukture-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 21.15</span>: Konzola z \(16\) elementi, razrezana pri vozlišču \(8\) na podstrukturi \(1\) (modro) in \(2\) (oranžno). Zgoraj: konstrukcija z vpetjem pri \(x = 0\) in robom a pri <span class="nobr">\(x = L/2\).</span> Pod njo štiri oblike, vsaka s svojim višinskim merilom, ki daje enako največjo višino. Prva in druga: vezni načini \(\vek\psi_{\mathrm{c}1}\) (enotski pomik roba) in \(\vek\psi_{\mathrm{c}2}\) (enotski zasuk roba), podstruktura \(2\) se premika togo. Tretja in četrta: prvi način z vpetim robom podstrukture \(1\) (vpeta na obeh koncih) in podstrukture \(2\) (vpeta pri robu, prosta na koncu). Oblike so izračunane s Hermitovimi funkcijami elementa.</figcaption></figure>
+<p>Sliko spet gradimo po delih. <a data-del="konstrukcija" class="xref kaz" href="sec-podstrukture.html#fig-podstrukture-nosilec" data-knowl="fig-podstrukture-nosilec">Konzolo</a> narišemo od vpetja pri \(x = 0\) do prostega konca, <a data-del="podstruktura1" class="xref kaz" href="sec-podstrukture.html#fig-podstrukture-nosilec" data-knowl="fig-podstrukture-nosilec">podstruktura \(1\)</a> je modra, <a data-del="podstruktura2" class="xref kaz" href="sec-podstrukture.html#fig-podstrukture-nosilec" data-knowl="fig-podstrukture-nosilec">podstruktura \(2\)</a> oranžna. Med njima je <a data-del="vmesnik" class="xref kaz" href="sec-podstrukture.html#fig-podstrukture-nosilec" data-knowl="fig-podstrukture-nosilec">rob</a> pri vozlišču \(8\) s <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinatama</a> pomik in zasuk vozlišča, torej <span class="nobr">\(n_{\mathrm{a}} = 2\).</span> Notranjih koordinat je \(n_1 = 14\) (vozlišča \(1\) do <span class="nobr">\(7\))</span> in \(n_2 = 16\) (vozlišča \(9\) do <span class="nobr">\(16\)).</span> Obe podstrukturi imata lastni <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matriki</a>. Prvi <a data-del="vezni1" class="xref kaz" href="sec-podstrukture.html#fig-podstrukture-nosilec" data-knowl="fig-podstrukture-nosilec">vezni način</a> je enotski pomik roba pri zasuku nič: podstruktura \(1\) se prilagodi s krivuljo, ki ima na robu ničelni naklon, podstruktura \(2\) pa se premakne kot <a class="xref auto" href="sec-deformacija-v-tocki.html#def-togo-telo" data-knowl="def-togo-telo">togo telo</a>. Drugi <a data-del="vezni2" class="xref kaz" href="sec-podstrukture.html#fig-podstrukture-nosilec" data-knowl="fig-podstrukture-nosilec">vezni način</a> je enotski zasuk roba: podstruktura \(1\) se skrivi, podstruktura \(2\) se zavrti kot tog drog. Zato je pri vozlišču \(9\) pomik \(0{,}0625 = h\) in pri vozlišču \(7\) pomik \(-0{,}0479\) za <span class="nobr">\(\vek\psi_{\mathrm{c}2}\),</span> pri \(\vek\psi_{\mathrm{c}1}\) pa je pomik vozlišča \(9\) enak \(1{,}0000\) in vozlišča \(7\) enak \(0{,}9570\) (NumPy).</p>
+<p>Zakaj se podstruktura \(2\) premika togo? Po definiciji <a class="xref auto" href="sec-podstrukture.html#def-vezni-nacin" data-knowl="def-vezni-nacin">vezni način</a> nima sil na notranjosti, podstruktura \(2\) pa je na robu vpeta in ima prosti konec, torej statično določena: edino, kar jo drži, je rob, zato se z njim premika, kot bi bila toga. Togo telo nima <a class="xref auto" href="sec-raztezek-palice.html#def-deformacija-palice" data-knowl="def-deformacija-palice">deformacijske</a> energije (izrek <a class="xref" href="sec-togi-nacini.html#thm-togi-nacini" data-knowl="thm-togi-nacini">10.23</a>), zato podstruktura \(2\) ne prispeva k togostni matriki, \(\mat S^{(2)} = \mat 0\) (NumPy: elementi pod <span class="nobr">\(10^{-11}\),</span> zaokrožitvena napaka). Vsa togost robnih koordinat je od podstrukture <span class="nobr">\(1\):</span> \(\mat S = \mat S^{(1)} = \begin{pmatrix} 96 &amp; -24 \\ -24 &amp; 8\end{pmatrix}\) v enotah <span class="nobr">\(EI = L = 1\).</span> To so ravno členi <span class="nobr">\(12EI/(L/2)^3 = 96\),</span> \(-6EI/(L/2)^2 = -24\) in \(4EI/(L/2) = 8\) iz leme <a class="xref" href="sec-element-nosilca.html#lem-togost-elementa-nosilca" data-knowl="lem-togost-elementa-nosilca">12.4</a> za en sam element dolžine <span class="nobr">\(L/2\),</span> kar ni naključje: v notranjosti podstrukture \(1\) ni obtežbe, zato je statična oblika kubična parabola, ki jo Hermitovi elementi natanko predstavijo (lema <a class="xref" href="sec-element-nosilca.html#lem-hermitove-funkcije" data-knowl="lem-hermitove-funkcije">12.2</a>), in je osem elementov isto kot en element.</p>
+<p>Načini z vpetim robom so \(\vek\varphi^{(1)}_1\) s <span class="nobr"><a data-del="fix1" class="xref kaz" href="sec-podstrukture.html#fig-podstrukture-nosilec" data-knowl="fig-podstrukture-nosilec">prvo obliko podstrukture \(1\)</a>,</span> vpete na obeh koncih (dolžina <span class="nobr">\(L/2\)),</span> in \(\vek\varphi^{(2)}_1\) s <span class="nobr"><a data-del="fix2" class="xref kaz" href="sec-podstrukture.html#fig-podstrukture-nosilec" data-knowl="fig-podstrukture-nosilec">prvo obliko podstrukture \(2\)</a>,</span> vpete pri robu in proste na koncu. Najnižje štiri frekvence <a class="xref auto" href="sec-podstrukture.html#def-nacin-z-vpetim-robom" data-knowl="def-nacin-z-vpetim-robom">načinov z vpetim robom</a> so <span class="nobr">\(89{,}5007\),</span> <span class="nobr">\(246{,}847\),</span> \(484{,}760\) in \(804{,}425\ \omega_0\) za podstrukturo \(1\) ter <span class="nobr">\(14{,}0641\),</span> <span class="nobr">\(88{,}1450\),</span> \(246{,}939\) in \(484{,}691\ \omega_0\) za podstrukturo \(2\) (NumPy). Podstruktura \(2\) je konzola dolžine \(L/2\) z osmimi elementi, torej konzola dolžine \(L\) z osmimi elementi, ki ji dolžino skrajšamo na polovico, prerez pa ostane isti. Frekvenca je sorazmerna z \(\sqrt{EI/(\rho A L^4)}\) (enota <span class="nobr">\(\omega_0\)),</span> zato polovična dolžina da \(2^2 = 4\)-krat višjo frekvenco: <span class="nobr">\(4 \cdot 3{,}51602 = 14{,}0641\ \omega_0\),</span> kjer je \(3{,}51602\ \omega_0\) prva frekvenca konzole dolžine \(L\) z osmimi elementi (na šest mest enaka kot pri šestnajstih). Podstruktura \(1\) je vpeta na obeh koncih, zato je bolj toga od konzole iste dolžine in ima višjo prvo frekvenco, <span class="nobr">\(89{,}5007\ \omega_0\).</span></p>
+<p>Reducirani matriki pri \(k = 1\) (po en način na podstrukturo, <span class="nobr">\(m = 4\))</span> imata togostne bloke med \(\vek q_{\mathrm{a}}\) in \(\vek\eta\) po enačbi <a class="xref" href="sec-podstrukture.html#eq-cb-matrike" data-knowl="eq-cb-matrike">(21.41)</a> ničelne, v praksi pod \(10^{-10}\) (NumPy, zaokrožitvena napaka), in \(\tilde{\mat M}_{\mathrm{a}\eta} = \begin{pmatrix} 0{,}2938 &amp; -0{,}5537 \\ -0{,}0316 &amp; -0{,}2011\end{pmatrix}\) v enotah \(\rho A = L = 1\) ni nič. Predznak stolpca je odvisen od smeri načina: <a data-del="fix1" class="xref kaz" href="sec-podstrukture.html#fig-podstrukture-nosilec" data-knowl="fig-podstrukture-nosilec">\(\vek\varphi^{(1)}_1\)</a> je na sliki usmerjen navzgor, <a data-del="fix2" class="xref kaz" href="sec-podstrukture.html#fig-podstrukture-nosilec" data-knowl="fig-podstrukture-nosilec">\(\vek\varphi^{(2)}_1\)</a> navzdol, zato je drugi stolpec negativen. To je isti vzorec kot pri <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">okvirju</a>: robni del in modalni del sta po togosti ločena, po masi sklopljena.</p>
+
+<h3 id="sec-koliko-nacinov-obdrzati"><span class="h-num">21.5.6</span> Koliko načinov obdržati</h3>
+<p>Tabela kaže napake najnižjih štirih frekvenc <a class="xref auto" href="sec-podstrukture.html#def-craig-bamptonova-baza" data-knowl="def-craig-bamptonova-baza">Craig-Bamptonove baze</a> glede na mrežo s \(16\) elementi, pri \(k\) <a class="xref auto" href="sec-podstrukture.html#def-nacin-z-vpetim-robom" data-knowl="def-nacin-z-vpetim-robom">načinih z vpetim robom</a> na podstrukturo (enako <span class="nobr">\(k_1 = k_2 = k\))</span> in \(m = 2 + 2k\) koordinatah.</p>
+<table>
+<thead>
+<tr>
+<th>\(k\)</th>
+<th>\(m\)</th>
+<th>napaka \(\omega_1\) (%)</th>
+<th>napaka \(\omega_2\) (%)</th>
+<th>napaka \(\omega_3\) (%)</th>
+<th>napaka \(\omega_4\) (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0 (Guyan)</td>
+<td>2</td>
+<td>2,61</td>
+<td>34,2</td>
+<td>–</td>
+<td>–</td>
+</tr>
+<tr>
+<td>1</td>
+<td>4</td>
+<td>0,0068</td>
+<td>0,64</td>
+<td>10,9</td>
+<td>51,9</td>
+</tr>
+<tr>
+<td>2</td>
+<td>6</td>
+<td>0,00028</td>
+<td>0,034</td>
+<td>0,057</td>
+<td>1,41</td>
+</tr>
+<tr>
+<td>3</td>
+<td>8</td>
+<td>0,00004</td>
+<td>0,0055</td>
+<td>0,0041</td>
+<td>0,179</td>
+</tr>
+<tr>
+<td>5</td>
+<td>12</td>
+<td>0,000003</td>
+<td>0,00047</td>
+<td>0,00014</td>
+<td>0,0143</td>
+</tr>
+</tbody>
+</table>
+<p>Tabela se bere po vrsticah: pri \(k = 0\) je baza Guyanova za rob, pri \(k = 3\) imamo \(8\) koordinat namesto \(32\) in štiri frekvence z napako pod \(0{,}18\) %. Slika <a class="xref" href="sec-podstrukture.html#fig-cb-konvergenca" data-knowl="fig-cb-konvergenca">21.16</a> kaže iste napake po stolpcih.</p>
+
+<figure class="blk slika" id="fig-cb-konvergenca"><p><span class="svgfig" role="img" aria-label="Napake frekvenc Craig-Bamptonovega približka glede na število načinov"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='336.56pt' height='225.09pt' viewBox='-72.000004 -72.000001 249.30396 166.730212'>
+<defs>
+<path id='c21-05-cb-konvergenca-g0-0' d='M5.188543-1.57609C5.300125-1.57609 5.467497-1.57609 5.467497-1.743462C5.467497-1.917808 5.307098-1.917808 5.188543-1.917808H1.03213C.920548-1.917808 .753176-1.917808 .753176-1.750436C.753176-1.57609 .913574-1.57609 1.03213-1.57609H5.188543Z'/>
+<path id='c21-05-cb-konvergenca-g1-33' d='M6.027397-3.706102C6.027397-4.154421 5.84807-4.403487 5.628892-4.403487C5.369863-4.403487 5.100872-4.164384 5.100872-3.935243C5.100872-3.835616 5.150685-3.726027 5.250311-3.636364C5.419676-3.486924 5.599004-3.217933 5.599004-2.799502C5.599004-2.400996 5.409714-1.833126 5.100872-1.374844C4.801993-.946451 4.433375-.607721 3.965131-.607721C3.39726-.607721 3.088418-.966376 2.998755-1.504359C3.108344-1.763387 3.337484-2.400996 3.337484-2.67995C3.337484-2.799502 3.287671-2.899128 3.158157-2.899128C3.078456-2.899128 2.968867-2.879203 2.889166-2.729763C2.779577-2.530511 2.660025-1.882939 2.660025-1.524284C2.331258-1.05604 1.932752-.607721 1.305106-.607721C.647572-.607721 .438356-1.195517 .438356-1.753425C.438356-2.998755 1.454545-4.044832 1.454545-4.174346C1.454545-4.283935 1.374844-4.363636 1.265255-4.363636C1.135741-4.363636 1.066002-4.234122 1.006227-4.144458C.498132-3.407223 .119552-2.221669 .119552-1.315068C.119552-.627646 .348692 .109589 1.165629 .109589C1.872976 .109589 2.34122-.388543 2.699875-.936488C2.789539-.358655 3.178082 .109589 3.795766 .109589C4.572852 .109589 5.051059-.498132 5.409714-1.24533C5.648817-1.733499 6.027397-3.088418 6.027397-3.706102Z'/>
+<path id='c21-05-cb-konvergenca-g2-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='c21-05-cb-konvergenca-g2-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c21-05-cb-konvergenca-g2-50' d='M1.265255-.767123L2.321295-1.793275C3.875467-3.16812 4.473225-3.706102 4.473225-4.702366C4.473225-5.838107 3.576588-6.635118 2.361146-6.635118C1.235367-6.635118 .498132-5.718555 .498132-4.83188C.498132-4.273973 .996264-4.273973 1.026152-4.273973C1.195517-4.273973 1.544209-4.393524 1.544209-4.801993C1.544209-5.061021 1.364882-5.32005 1.016189-5.32005C.936488-5.32005 .916563-5.32005 .886675-5.310087C1.115816-5.957659 1.653798-6.326276 2.231631-6.326276C3.138232-6.326276 3.566625-5.519303 3.566625-4.702366C3.566625-3.905355 3.068493-3.118306 2.520548-2.500623L.607721-.368618C.498132-.259029 .498132-.239103 .498132 0H4.194271L4.473225-1.733499H4.224159C4.174346-1.43462 4.104608-.996264 4.004981-.846824C3.935243-.767123 3.277709-.767123 3.058531-.767123H1.265255Z'/>
+<path id='c21-05-cb-konvergenca-g2-51' d='M2.889166-3.506849C3.706102-3.775841 4.283935-4.473225 4.283935-5.260274C4.283935-6.07721 3.407223-6.635118 2.450809-6.635118C1.444583-6.635118 .687422-6.03736 .687422-5.280199C.687422-4.951432 .9066-4.762142 1.195517-4.762142C1.504359-4.762142 1.703611-4.98132 1.703611-5.270237C1.703611-5.768369 1.235367-5.768369 1.085928-5.768369C1.39477-6.256538 2.052304-6.386052 2.410959-6.386052C2.819427-6.386052 3.367372-6.166874 3.367372-5.270237C3.367372-5.150685 3.347447-4.572852 3.088418-4.134496C2.789539-3.656289 2.450809-3.626401 2.201743-3.616438C2.122042-3.606476 1.882939-3.58655 1.8132-3.58655C1.733499-3.576588 1.663761-3.566625 1.663761-3.466999C1.663761-3.35741 1.733499-3.35741 1.902864-3.35741H2.34122C3.158157-3.35741 3.526775-2.67995 3.526775-1.703611C3.526775-.348692 2.839352-.059776 2.400996-.059776C1.972603-.059776 1.225405-.229141 .876712-.816936C1.225405-.767123 1.534247-.986301 1.534247-1.364882C1.534247-1.723537 1.265255-1.92279 .976339-1.92279C.737235-1.92279 .418431-1.783313 .418431-1.344956C.418431-.438356 1.344956 .219178 2.430884 .219178C3.646326 .219178 4.552927-.687422 4.552927-1.703611C4.552927-2.520548 3.92528-3.297634 2.889166-3.506849Z'/>
+<path id='c21-05-cb-konvergenca-g2-52' d='M2.929016-1.643836V-.777086C2.929016-.418431 2.909091-.308842 2.171856-.308842H1.96264V0C2.371108-.029888 2.889166-.029888 3.307597-.029888S4.254047-.029888 4.662516 0V-.308842H4.4533C3.716065-.308842 3.696139-.418431 3.696139-.777086V-1.643836H4.692403V-1.952677H3.696139V-6.485679C3.696139-6.684932 3.696139-6.744707 3.536737-6.744707C3.447073-6.744707 3.417186-6.744707 3.337484-6.625156L.278954-1.952677V-1.643836H2.929016ZM2.988792-1.952677H.557908L2.988792-5.668742V-1.952677Z'/>
+<path id='c21-05-cb-konvergenca-g2-53' d='M4.473225-2.002491C4.473225-3.188045 3.656289-4.184309 2.580324-4.184309C2.102117-4.184309 1.673724-4.024907 1.315068-3.676214V-5.618929C1.514321-5.559153 1.843088-5.489415 2.161893-5.489415C3.387298-5.489415 4.084682-6.396015 4.084682-6.525529C4.084682-6.585305 4.054795-6.635118 3.985056-6.635118C3.975093-6.635118 3.955168-6.635118 3.905355-6.60523C3.706102-6.515567 3.217933-6.316314 2.550436-6.316314C2.15193-6.316314 1.693649-6.386052 1.225405-6.595268C1.145704-6.625156 1.125778-6.625156 1.105853-6.625156C1.006227-6.625156 1.006227-6.545455 1.006227-6.386052V-3.437111C1.006227-3.257783 1.006227-3.178082 1.145704-3.178082C1.215442-3.178082 1.235367-3.20797 1.275218-3.267746C1.384807-3.427148 1.753425-3.965131 2.560399-3.965131C3.078456-3.965131 3.327522-3.506849 3.407223-3.327522C3.566625-2.958904 3.58655-2.570361 3.58655-2.072229C3.58655-1.723537 3.58655-1.125778 3.347447-.707347C3.108344-.318804 2.739726-.059776 2.281445-.059776C1.554172-.059776 .986301-.587796 .816936-1.175592C.846824-1.165629 .876712-1.155666 .986301-1.155666C1.315068-1.155666 1.484433-1.404732 1.484433-1.643836S1.315068-2.132005 .986301-2.132005C.846824-2.132005 .498132-2.062267 .498132-1.603985C.498132-.747198 1.185554 .219178 2.30137 .219178C3.457036 .219178 4.473225-.737235 4.473225-2.002491Z'/>
+<path id='c21-05-cb-konvergenca-g2-54' d='M1.315068-3.267746V-3.506849C1.315068-6.027397 2.550436-6.386052 3.058531-6.386052C3.297634-6.386052 3.716065-6.326276 3.935243-5.987547C3.785803-5.987547 3.387298-5.987547 3.387298-5.539228C3.387298-5.230386 3.626401-5.080946 3.845579-5.080946C4.004981-5.080946 4.303861-5.17061 4.303861-5.559153C4.303861-6.156912 3.865504-6.635118 3.038605-6.635118C1.763387-6.635118 .418431-5.349938 .418431-3.148194C.418431-.488169 1.574097 .219178 2.500623 .219178C3.606476 .219178 4.552927-.71731 4.552927-2.032379C4.552927-3.297634 3.666252-4.254047 2.560399-4.254047C1.882939-4.254047 1.514321-3.745953 1.315068-3.267746ZM2.500623-.059776C1.872976-.059776 1.574097-.657534 1.514321-.806974C1.334994-1.275218 1.334994-2.072229 1.334994-2.251557C1.334994-3.028643 1.653798-4.024907 2.550436-4.024907C2.709838-4.024907 3.16812-4.024907 3.476961-3.407223C3.656289-3.038605 3.656289-2.530511 3.656289-2.042341C3.656289-1.564134 3.656289-1.066002 3.486924-.707347C3.188045-.109589 2.729763-.059776 2.500623-.059776Z'/>
+<path id='c21-05-cb-konvergenca-g3-48' d='M3.598506-2.224658C3.598506-2.991781 3.507846-3.542715 3.187049-4.030884C2.970859-4.351681 2.538481-4.630635 1.980573-4.630635C.36264-4.630635 .36264-2.726775 .36264-2.224658S.36264 .139477 1.980573 .139477S3.598506-1.72254 3.598506-2.224658ZM1.980573-.055791C1.659776-.055791 1.234371-.244085 1.094894-.81594C.99726-1.227397 .99726-1.799253 .99726-2.315318C.99726-2.824408 .99726-3.354421 1.101868-3.737983C1.248319-4.288917 1.694645-4.435367 1.980573-4.435367C2.357161-4.435367 2.719801-4.20523 2.84533-3.800747C2.956912-3.424159 2.963885-2.922042 2.963885-2.315318C2.963885-1.799253 2.963885-1.283188 2.873225-.843836C2.733748-.209215 2.259527-.055791 1.980573-.055791Z'/>
+<path id='c21-05-cb-konvergenca-g3-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='c21-05-cb-konvergenca-g3-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+<path id='c21-05-cb-konvergenca-g3-51' d='M1.903861-2.329265C2.447821-2.329265 2.838356-1.952677 2.838356-1.206476C2.838356-.341719 2.336239-.083686 1.931756-.083686C1.652802-.083686 1.039103-.160399 .746202-.571856C1.073973-.585803 1.150685-.81594 1.150685-.962391C1.150685-1.185554 .983313-1.345953 .767123-1.345953C.571856-1.345953 .376588-1.227397 .376588-.941469C.376588-.285928 1.101868 .139477 1.945704 .139477C2.915068 .139477 3.584558-.509091 3.584558-1.206476C3.584558-1.750436 3.138232-2.294396 2.371108-2.454795C3.103362-2.719801 3.368369-3.242839 3.368369-3.668244C3.368369-4.219178 2.733748-4.630635 1.959651-4.630635S.592777-4.254047 .592777-3.696139C.592777-3.459029 .746202-3.326526 .955417-3.326526C1.171606-3.326526 1.311083-3.486924 1.311083-3.682192C1.311083-3.884433 1.171606-4.030884 .955417-4.044832C1.199502-4.351681 1.680697-4.428394 1.93873-4.428394C2.252553-4.428394 2.691905-4.274969 2.691905-3.668244C2.691905-3.375342 2.594271-3.054545 2.412951-2.838356C2.182814-2.57335 1.987547-2.559402 1.638854-2.538481C1.464508-2.524533 1.45056-2.524533 1.415691-2.517559C1.401743-2.517559 1.345953-2.503611 1.345953-2.426899C1.345953-2.329265 1.408717-2.329265 1.527273-2.329265H1.903861Z'/>
+<path id='c21-05-cb-konvergenca-g3-52' d='M3.689166-1.143711V-1.39477H2.915068V-4.505106C2.915068-4.651557 2.915068-4.700374 2.761644-4.700374C2.677958-4.700374 2.650062-4.700374 2.580324-4.60274L.27198-1.39477V-1.143711H2.322291V-.571856C2.322291-.334745 2.322291-.251059 1.75741-.251059H1.569116V0C1.917808-.013948 2.364134-.027895 2.615193-.027895C2.873225-.027895 3.319552-.013948 3.668244 0V-.251059H3.47995C2.915068-.251059 2.915068-.334745 2.915068-.571856V-1.143711H3.689166ZM2.371108-3.947198V-1.39477H.530012L2.371108-3.947198Z'/>
+</defs>
+<g id='c21-05-cb-konvergenca-page1'>
+<g stroke-miterlimit='10' transform='translate(-41.566553,78.535114)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='osi'>
+<path d='M0 0H203.35292' fill='none'/>
+<g transform='translate(200.87646,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<path d='M0 0V146.44743' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,143.97098)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M0 0V-2.84544' fill='none'/>
+</g>
+<g transform='translate(-2.5,-12.92285)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='78.535114' xlink:href='#c21-05-cb-konvergenca-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M33.20456 0V-2.84544' fill='none'/>
+</g>
+<g transform='translate(30.70456,-12.92285)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='78.535114' xlink:href='#c21-05-cb-konvergenca-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M66.38004 0V-2.84544' fill='none'/>
+</g>
+<g transform='translate(63.88004,-12.92285)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='78.535114' xlink:href='#c21-05-cb-konvergenca-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M99.5846 0V-2.84544' fill='none'/>
+</g>
+<g transform='translate(97.0846,-12.92285)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='78.535114' xlink:href='#c21-05-cb-konvergenca-g2-51'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M132.78915 0V-2.84544' fill='none'/>
+</g>
+<g transform='translate(130.28915,-12.92285)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='78.535114' xlink:href='#c21-05-cb-konvergenca-g2-52'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M165.96463 0V-2.84544' fill='none'/>
+</g>
+<g transform='translate(163.46463,-12.92285)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='78.535114' xlink:href='#c21-05-cb-konvergenca-g2-53'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M199.1692 0V-2.84544' fill='none'/>
+</g>
+<g transform='translate(196.6692,-12.92285)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='78.535114' xlink:href='#c21-05-cb-konvergenca-g2-54'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M0 0H-2.84544' fill='none'/>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M0 20.31538H-2.84544' fill='none'/>
+</g>
+<g transform='translate(-27.2146,16.24538)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='78.535114' xlink:href='#c21-05-cb-konvergenca-g2-49'/>
+<use x='-36.585214' y='78.535114' xlink:href='#c21-05-cb-konvergenca-g2-48'/>
+<use x='-31.603875' y='74.91975' xlink:href='#c21-05-cb-konvergenca-g0-0'/>
+<use x='-25.377195' y='74.91975' xlink:href='#c21-05-cb-konvergenca-g3-52'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M0 40.65898H-2.84544' fill='none'/>
+</g>
+<g transform='translate(-27.2146,36.58897)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='78.535114' xlink:href='#c21-05-cb-konvergenca-g2-49'/>
+<use x='-36.585214' y='78.535114' xlink:href='#c21-05-cb-konvergenca-g2-48'/>
+<use x='-31.603875' y='74.91975' xlink:href='#c21-05-cb-konvergenca-g0-0'/>
+<use x='-25.377195' y='74.91975' xlink:href='#c21-05-cb-konvergenca-g3-51'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M0 60.97438H-2.84544' fill='none'/>
+</g>
+<g transform='translate(-27.2146,56.90437)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='78.535114' xlink:href='#c21-05-cb-konvergenca-g2-49'/>
+<use x='-36.585214' y='78.535114' xlink:href='#c21-05-cb-konvergenca-g2-48'/>
+<use x='-31.603875' y='74.91975' xlink:href='#c21-05-cb-konvergenca-g0-0'/>
+<use x='-25.377195' y='74.91975' xlink:href='#c21-05-cb-konvergenca-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M0 81.28932H-2.84544' fill='none'/>
+</g>
+<g transform='translate(-27.2146,77.21931)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='78.535114' xlink:href='#c21-05-cb-konvergenca-g2-49'/>
+<use x='-36.585214' y='78.535114' xlink:href='#c21-05-cb-konvergenca-g2-48'/>
+<use x='-31.603875' y='74.91975' xlink:href='#c21-05-cb-konvergenca-g0-0'/>
+<use x='-25.377195' y='74.91975' xlink:href='#c21-05-cb-konvergenca-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M0 101.60472H-2.84544' fill='none'/>
+</g>
+<g transform='translate(-20.96457,97.53471)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='78.535114' xlink:href='#c21-05-cb-konvergenca-g2-49'/>
+<use x='-36.585214' y='78.535114' xlink:href='#c21-05-cb-konvergenca-g2-48'/>
+<use x='-31.603875' y='74.91975' xlink:href='#c21-05-cb-konvergenca-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M0 121.94832H-2.84544' fill='none'/>
+</g>
+<g transform='translate(-20.96457,117.87831)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='78.535114' xlink:href='#c21-05-cb-konvergenca-g2-49'/>
+<use x='-36.585214' y='78.535114' xlink:href='#c21-05-cb-konvergenca-g2-48'/>
+<use x='-31.603875' y='74.91975' xlink:href='#c21-05-cb-konvergenca-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M0 142.26372H-2.84544' fill='none'/>
+</g>
+<g transform='translate(-20.96457,138.19371)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='78.535114' xlink:href='#c21-05-cb-konvergenca-g2-49'/>
+<use x='-36.585214' y='78.535114' xlink:href='#c21-05-cb-konvergenca-g2-48'/>
+<use x='-31.603875' y='74.91975' xlink:href='#c21-05-cb-konvergenca-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='mejaenak'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 101.60472H199.1692' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='nacin1'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M0 110.08376L33.20456 57.50287L66.38004 29.36316L99.5846 12.20624L132.78915 0H165.96463H199.1692' fill='none'/>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M1.83862 110.08376C1.83862 111.0992 1.01544 111.92238 0 111.92238S-1.83862 111.0992-1.83862 110.08376C-1.83862 109.06831-1.01544 108.24513 0 108.24513S1.83862 109.06831 1.83862 110.08376ZM0 110.08376' stroke='none'/>
+</g>
+<g transform='translate(0.0,110.08376)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M35.04318 57.50287C35.04318 58.51831 34.22 59.34149 33.20456 59.34149S31.36594 58.51831 31.36594 57.50287S32.18912 55.66425 33.20456 55.66425S35.04318 56.48743 35.04318 57.50287ZM33.20456 57.50287' stroke='none'/>
+</g>
+<g transform='translate(33.20456,57.50287)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M68.21866 29.36316C68.21866 30.3786 67.39548 31.20178 66.38004 31.20178S64.54141 30.3786 64.54141 29.36316S65.3646 27.52454 66.38004 27.52454S68.21866 28.34772 68.21866 29.36316ZM66.38004 29.36316' stroke='none'/>
+</g>
+<g transform='translate(66.38004,29.36316)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+<path d='M101.42322 12.20624C101.42322 13.22168 100.60004 14.04486 99.5846 14.04486C98.56915 14.04486 97.74597 13.22168 97.74597 12.20624S98.56915 10.36761 99.5846 10.36761C100.60004 10.36761 101.42322 11.1908 101.42322 12.20624ZM99.5846 12.20624' stroke='none'/>
+</g>
+<g transform='translate(99.5846,12.20624)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#00f' stroke='#00f'>
+<g fill='#fff'>
+<g fill='#00f' stroke='#00f'>
+<path d='M135.0521 0C135.0521 1.2498 134.03896 2.26294 132.78915 2.26294C131.53935 2.26294 130.52621 1.2498 130.52621 0S131.53935-2.26294 132.78915-2.26294C134.03896-2.26294 135.0521-1.2498 135.0521 0ZM132.78915 0'/>
+</g>
+</g>
+<g transform='translate(132.78915,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#00f' stroke='#00f'>
+<g fill='#fff'>
+<g fill='#00f' stroke='#00f'>
+<path d='M168.22757 0C168.22757 1.2498 167.21443 2.26294 165.96463 2.26294S163.70169 1.2498 163.70169 0S164.71483-2.26294 165.96463-2.26294S168.22757-1.2498 168.22757 0ZM165.96463 0'/>
+</g>
+</g>
+<g transform='translate(165.96463,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#00f' stroke='#00f'>
+<g fill='#fff'>
+<g fill='#00f' stroke='#00f'>
+<path d='M201.43214 0C201.43214 1.2498 200.419 2.26294 199.1692 2.26294S196.90627 1.2498 196.90627 0S197.9194-2.26294 199.1692-2.26294S201.43214-1.2498 201.43214 0ZM199.1692 0'/>
+</g>
+</g>
+<g transform='translate(199.1692,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(205.64763,-1.40279)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-41.566553' y='78.535114' xlink:href='#c21-05-cb-konvergenca-g1-33'/>
+<use x='-35.365261' y='80.029494' xlink:href='#c21-05-cb-konvergenca-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='nacin2'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M0 132.78915L33.20456 97.62135L66.38004 71.67238L99.5846 55.7389L132.78915 43.84569L165.96463 34.02945L199.1692 25.20917' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M1.83862 132.78915C1.83862 133.8046 1.01544 134.62778 0 134.62778S-1.83862 133.8046-1.83862 132.78915C-1.83862 131.77371-1.01544 130.95053 0 130.95053S1.83862 131.77371 1.83862 132.78915ZM0 132.78915' stroke='none'/>
+</g>
+<g transform='translate(0.0,132.78915)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M35.04318 97.62135C35.04318 98.6368 34.22 99.45998 33.20456 99.45998S31.36594 98.6368 31.36594 97.62135C31.36594 96.60591 32.18912 95.78273 33.20456 95.78273S35.04318 96.60591 35.04318 97.62135ZM33.20456 97.62135' stroke='none'/>
+</g>
+<g transform='translate(33.20456,97.62135)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M68.21866 71.67238C68.21866 72.68782 67.39548 73.511 66.38004 73.511S64.54141 72.68782 64.54141 71.67238S65.3646 69.83376 66.38004 69.83376S68.21866 70.65694 68.21866 71.67238ZM66.38004 71.67238' stroke='none'/>
+</g>
+<g transform='translate(66.38004,71.67238)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M101.42322 55.7389C101.42322 56.75435 100.60004 57.57753 99.5846 57.57753C98.56915 57.57753 97.74597 56.75435 97.74597 55.7389C97.74597 54.72346 98.56915 53.90028 99.5846 53.90028C100.60004 53.90028 101.42322 54.72346 101.42322 55.7389ZM99.5846 55.7389' stroke='none'/>
+</g>
+<g transform='translate(99.5846,55.7389)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M134.62778 43.84569C134.62778 44.86113 133.8046 45.68431 132.78915 45.68431C131.77371 45.68431 130.95053 44.86113 130.95053 43.84569S131.77371 42.00706 132.78915 42.00706C133.8046 42.00706 134.62778 42.83025 134.62778 43.84569ZM132.78915 43.84569' stroke='none'/>
+</g>
+<g transform='translate(132.78915,43.84569)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M167.80325 34.02945C167.80325 35.04489 166.98007 35.86807 165.96463 35.86807S164.126 35.04489 164.126 34.02945C164.126 33.014 164.94919 32.19083 165.96463 32.19083S167.80325 33.014 167.80325 34.02945ZM165.96463 34.02945' stroke='none'/>
+</g>
+<g transform='translate(165.96463,34.02945)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M201.00783 25.20917C201.00783 26.22461 200.18465 27.04779 199.1692 27.04779C198.15376 27.04779 197.33058 26.22461 197.33058 25.20917S198.15376 23.37054 199.1692 23.37054C200.18465 23.37054 201.00783 24.19373 201.00783 25.20917ZM199.1692 25.20917' stroke='none'/>
+</g>
+<g transform='translate(199.1692,25.20917)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(205.64763,23.80638)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-41.566553' y='78.535114' xlink:href='#c21-05-cb-konvergenca-g1-33'/>
+<use x='-35.365261' y='80.029494' xlink:href='#c21-05-cb-konvergenca-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='nacin3'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.9'>
+<path d='M33.20456 122.68813L66.38004 76.25314L99.5846 53.14961L132.78915 36.41946L165.96463 23.04665L199.1692 11.43779' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M35.04318 122.68813C35.04318 123.70357 34.22 124.52675 33.20456 124.52675S31.36594 123.70357 31.36594 122.68813C31.36594 121.67268 32.18912 120.8495 33.20456 120.8495S35.04318 121.67268 35.04318 122.68813ZM33.20456 122.68813' stroke='none'/>
+</g>
+<g transform='translate(33.20456,122.68813)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M68.21866 76.25314C68.21866 77.26859 67.39548 78.09177 66.38004 78.09177S64.54141 77.26859 64.54141 76.25314C64.54141 75.2377 65.3646 74.41452 66.38004 74.41452S68.21866 75.2377 68.21866 76.25314ZM66.38004 76.25314' stroke='none'/>
+</g>
+<g transform='translate(66.38004,76.25314)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M101.42322 53.14961C101.42322 54.16505 100.60004 54.98824 99.5846 54.98824C98.56915 54.98824 97.74597 54.16505 97.74597 53.14961S98.56915 51.31099 99.5846 51.31099C100.60004 51.31099 101.42322 52.13417 101.42322 53.14961ZM99.5846 53.14961' stroke='none'/>
+</g>
+<g transform='translate(99.5846,53.14961)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M134.62778 36.41946C134.62778 37.4349 133.8046 38.25809 132.78915 38.25809C131.77371 38.25809 130.95053 37.4349 130.95053 36.41946S131.77371 34.58084 132.78915 34.58084C133.8046 34.58084 134.62778 35.40402 134.62778 36.41946ZM132.78915 36.41946' stroke='none'/>
+</g>
+<g transform='translate(132.78915,36.41946)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M167.80325 23.04665C167.80325 24.06209 166.98007 24.88527 165.96463 24.88527S164.126 24.06209 164.126 23.04665C164.126 22.0312 164.94919 21.20802 165.96463 21.20802S167.80325 22.0312 167.80325 23.04665ZM165.96463 23.04665' stroke='none'/>
+</g>
+<g transform='translate(165.96463,23.04665)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+<path d='M201.00783 11.43779C201.00783 12.45323 200.18465 13.27641 199.1692 13.27641C198.15376 13.27641 197.33058 12.45323 197.33058 11.43779S198.15376 9.59917 199.1692 9.59917C200.18465 9.59917 201.00783 10.42235 201.00783 11.43779ZM199.1692 11.43779' stroke='none'/>
+</g>
+<g transform='translate(199.1692,11.43779)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(205.64763,18.5709)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-41.566553' y='78.535114' xlink:href='#c21-05-cb-konvergenca-g1-33'/>
+<use x='-35.365261' y='80.029494' xlink:href='#c21-05-cb-konvergenca-g3-51'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='nacin4'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.9'>
+<path d='M33.20456 136.4595L66.38004 104.67766L99.5846 86.43927L132.78915 74.11926L165.96463 64.16107L199.1692 55.25526' fill='none'/>
+</g>
+</g>
+<g fill='#000' stroke='#000'>
+<g fill='#000' stroke='#000'>
+<path d='M35.04318 136.4595C35.04318 137.47495 34.22 138.29813 33.20456 138.29813S31.36594 137.47495 31.36594 136.4595C31.36594 135.44406 32.18912 134.62088 33.20456 134.62088S35.04318 135.44406 35.04318 136.4595ZM33.20456 136.4595' stroke='none'/>
+</g>
+<g transform='translate(33.20456,136.4595)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#000' stroke='#000'>
+<g fill='#000' stroke='#000'>
+<path d='M68.21866 104.67766C68.21866 105.6931 67.39548 106.51628 66.38004 106.51628S64.54141 105.6931 64.54141 104.67766S65.3646 102.83904 66.38004 102.83904S68.21866 103.66222 68.21866 104.67766ZM66.38004 104.67766' stroke='none'/>
+</g>
+<g transform='translate(66.38004,104.67766)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#000' stroke='#000'>
+<g fill='#000' stroke='#000'>
+<path d='M101.42322 86.43927C101.42322 87.45471 100.60004 88.2779 99.5846 88.2779C98.56915 88.2779 97.74597 87.45471 97.74597 86.43927S98.56915 84.60065 99.5846 84.60065C100.60004 84.60065 101.42322 85.42383 101.42322 86.43927ZM99.5846 86.43927' stroke='none'/>
+</g>
+<g transform='translate(99.5846,86.43927)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#000' stroke='#000'>
+<g fill='#000' stroke='#000'>
+<path d='M134.62778 74.11926C134.62778 75.1347 133.8046 75.95789 132.78915 75.95789C131.77371 75.95789 130.95053 75.1347 130.95053 74.11926S131.77371 72.28064 132.78915 72.28064C133.8046 72.28064 134.62778 73.10382 134.62778 74.11926ZM132.78915 74.11926' stroke='none'/>
+</g>
+<g transform='translate(132.78915,74.11926)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#000' stroke='#000'>
+<g fill='#000' stroke='#000'>
+<path d='M167.80325 64.16107C167.80325 65.17651 166.98007 65.9997 165.96463 65.9997S164.126 65.17651 164.126 64.16107S164.94919 62.32245 165.96463 62.32245S167.80325 63.14563 167.80325 64.16107ZM165.96463 64.16107' stroke='none'/>
+</g>
+<g transform='translate(165.96463,64.16107)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#000' stroke='#000'>
+<g fill='#000' stroke='#000'>
+<path d='M201.00783 55.25526C201.00783 56.2707 200.18465 57.09389 199.1692 57.09389C198.15376 57.09389 197.33058 56.2707 197.33058 55.25526S198.15376 53.41664 199.1692 53.41664C200.18465 53.41664 201.00783 54.23982 201.00783 55.25526ZM199.1692 55.25526' stroke='none'/>
+</g>
+<g transform='translate(199.1692,55.25526)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#000' stroke='#000'>
+<g fill='#000' stroke='#000'>
+</g>
+<g transform='translate(205.64763,53.85248)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-41.566553,78.535114)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-41.566553' y='78.535114' xlink:href='#c21-05-cb-konvergenca-g1-33'/>
+<use x='-35.365261' y='80.029494' xlink:href='#c21-05-cb-konvergenca-g3-52'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 21.16</span>: Napake najnižjih štirih frekvenc Craig-Bamptonovega približka konzole v odstotkih, logaritemska os, glede na število \(k\) načinov z vpetim robom na podstrukturo. Krivulje so označene z \(\omega_{\mathrm{r}}\) ob desnem koncu: modra <span class="nobr">\(\omega_1\),</span> oranžna <span class="nobr">\(\omega_2\),</span> siva <span class="nobr">\(\omega_3\),</span> <span class="ink-l">črna</span><span class="ink-d">bela</span> <span class="nobr">\(\omega_4\).</span> Črtkano: napaka \(1\) %. Točke z napako pod \(10^{-5}\) % so na spodnji črti. Pri \(k = 0\) sta le dve koordinati in dve frekvenci.</figcaption></figure>
+<p>Sliko gradimo od osi. Na <a data-del="osi" class="xref kaz" href="sec-podstrukture.html#fig-cb-konvergenca" data-knowl="fig-cb-konvergenca">vodoravni osi</a> je število \(k\) obdržanih načinov na podstrukturo, na <a data-del="osi" class="xref kaz" href="sec-podstrukture.html#fig-cb-konvergenca" data-knowl="fig-cb-konvergenca">navpični</a> napaka v odstotkih na logaritemski skali, da se pokažejo vrednosti vseh velikosti. <a data-del="mejaenak" class="xref kaz" href="sec-podstrukture.html#fig-cb-konvergenca" data-knowl="fig-cb-konvergenca">Črtkana črta</a> je napaka \(1\) %. Vsaka od štirih krivulj, <span class="nobr"><a data-del="nacin1" class="xref kaz" href="sec-podstrukture.html#fig-cb-konvergenca" data-knowl="fig-cb-konvergenca">\(\omega_1\)</a>,</span> <span class="nobr"><a data-del="nacin2" class="xref kaz" href="sec-podstrukture.html#fig-cb-konvergenca" data-knowl="fig-cb-konvergenca">\(\omega_2\)</a>,</span> <a data-del="nacin3" class="xref kaz" href="sec-podstrukture.html#fig-cb-konvergenca" data-knowl="fig-cb-konvergenca">\(\omega_3\)</a> in <span class="nobr"><a data-del="nacin4" class="xref kaz" href="sec-podstrukture.html#fig-cb-konvergenca" data-knowl="fig-cb-konvergenca">\(\omega_4\)</a>,</span> z \(k\) pada, kar je točka 3 izreka <a class="xref" href="sec-podstrukture.html#thm-craig-bampton" data-knowl="thm-craig-bampton">21.24</a>, in vse so nad ničlo, kar je točka 1. Padanje je najhitrejše na začetku: pri <a data-del="nacin1" class="xref kaz" href="sec-podstrukture.html#fig-cb-konvergenca" data-knowl="fig-cb-konvergenca">\(\omega_1\)</a> prvi dodani način na podstrukturo zmanjša napako za faktor <span class="nobr">\(386\),</span> drugi za <span class="nobr">\(24\),</span> tretji za \(7\) (NumPy), in višje frekvence potrebujejo za isto napako več načinov. Vzorec razložimo z izpuščenim načinom: <a class="xref auto" href="sec-ritz-lastne-vrednosti.html#def-ritzov-priblizek" data-knowl="def-ritzov-priblizek">Ritzov približek</a> mora podstrukturi dati tudi tiste premike, ki jih izpuščeni načini opravijo. Pri nizki frekvenci jih opravijo statično, in <a class="xref auto" href="sec-podstrukture.html#def-vezni-nacin" data-knowl="def-vezni-nacin">vezni načini</a> jih že vsebujejo (kot pri popravku pospeškov v razdelku <a class="xref" href="sec-popravek-pospeskov.html">21.1</a>), pri frekvenci blizu izpuščenega načina pa ne. Zato primerjamo frekvenco \(\omega_{\mathrm{r}}\) z najnižjo izpuščeno frekvenco načina z vpetim robom <span class="nobr">\(\omega_{\mathrm{d}}\):</span></p>
+<table>
+<thead>
+<tr>
+<th>\(k\)</th>
+<th>\(\omega_{\mathrm{d}}\) <span class="nobr">(\(\omega_0\))</span></th>
+<th>\(r\)</th>
+<th>\(\omega_{\mathrm{r}}/\omega_{\mathrm{d}}\)</th>
+<th>napaka (%)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>88,145</td>
+<td>2</td>
+<td>0,25</td>
+<td>0,64</td>
+</tr>
+<tr>
+<td>1</td>
+<td>88,145</td>
+<td>3</td>
+<td>0,70</td>
+<td>10,9</td>
+</tr>
+<tr>
+<td>2</td>
+<td>246,939</td>
+<td>3</td>
+<td>0,25</td>
+<td>0,057</td>
+</tr>
+<tr>
+<td>2</td>
+<td>246,939</td>
+<td>4</td>
+<td>0,49</td>
+<td>1,41</td>
+</tr>
+<tr>
+<td>2</td>
+<td>246,939</td>
+<td>5</td>
+<td>0,81</td>
+<td>12,0</td>
+</tr>
+<tr>
+<td>3</td>
+<td>484,691</td>
+<td>4</td>
+<td>0,249</td>
+<td>0,179</td>
+</tr>
+<tr>
+<td>3</td>
+<td>484,691</td>
+<td>5</td>
+<td>0,413</td>
+<td>0,184</td>
+</tr>
+</tbody>
+</table>
+<p>Pri razmerju \(\omega_{\mathrm{r}}/\omega_{\mathrm{d}} \le 0{,}25\) je napaka pod \(0{,}7\) %, pri \(0{,}5\) je \(1{,}4\) %, pri \(0{,}7\) in več preko \(10\) %. Pravilo ni izrek in napaka je odvisna tudi od podstrukture, vendar tabela daje merilo: za \(r\)-ti način naj bo najnižja izpuščena frekvenca vsaj dvakrat do štirikrat višja (primer: \(r = 3\) pri <span class="nobr">\(k = 2\),</span> kjer je razmerje \(0{,}25\) in napaka \(0{,}057\) %).</p>
+
+<h3 id="sec-kar-ne-deluje-samo-nacini"><span class="h-num">21.5.7</span> Kar ne deluje: samo načini z vpetim robom</h3>
+<p>Izrek <a class="xref" href="sec-podstrukture.html#thm-craig-bampton" data-knowl="thm-craig-bampton">21.24</a> govori o bazi z vsemi <a class="xref auto" href="sec-podstrukture.html#def-vezni-nacin" data-knowl="def-vezni-nacin">veznimi načini</a>. Kaj če jih izpustimo in obdržimo samo <a class="xref auto" href="sec-podstrukture.html#def-nacin-z-vpetim-robom" data-knowl="def-nacin-z-vpetim-robom">načine z vpetim robom</a>, saj so to pravi načini podstruktur? Poskusimo na konzoli z \(k = 3\) in \(k = 5\) (po \(6\) in \(10\) koordinat).</p>
+
+<figure class="blk slika" id="fig-cb-brez-veznih"><p><span class="svgfig" role="img" aria-label="Brez veznih načinov: oblika iz samih načinov z vpetim robom in pravi prvi način"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='276.62pt' height='107.18pt' viewBox='-72.000004 -72.000005 204.9013 79.390306'>
+<defs>
+<path id='c21-05-brez-veznih-g0-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c21-05-brez-veznih-g0-97' d='M3.317559-.757161C3.35741-.358655 3.626401 .059776 4.094645 .059776C4.303861 .059776 4.911582-.079701 4.911582-.886675V-1.444583H4.662516V-.886675C4.662516-.308842 4.41345-.249066 4.303861-.249066C3.975093-.249066 3.935243-.697385 3.935243-.747198V-2.739726C3.935243-3.158157 3.935243-3.5467 3.576588-3.915318C3.188045-4.303861 2.689913-4.463263 2.211706-4.463263C1.39477-4.463263 .707347-3.995019 .707347-3.337484C.707347-3.038605 .9066-2.86924 1.165629-2.86924C1.444583-2.86924 1.62391-3.068493 1.62391-3.327522C1.62391-3.447073 1.574097-3.775841 1.115816-3.785803C1.384807-4.134496 1.872976-4.244085 2.191781-4.244085C2.67995-4.244085 3.247821-3.855542 3.247821-2.968867V-2.600249C2.739726-2.570361 2.042341-2.540473 1.414695-2.241594C.667497-1.902864 .418431-1.384807 .418431-.946451C.418431-.139477 1.384807 .109589 2.012453 .109589C2.669988 .109589 3.128269-.288917 3.317559-.757161ZM3.247821-2.391034V-1.39477C3.247821-.448319 2.530511-.109589 2.082192-.109589C1.594022-.109589 1.185554-.458281 1.185554-.956413C1.185554-1.504359 1.603985-2.331258 3.247821-2.391034Z'/>
+</defs>
+<g id='c21-05-brez-veznih-page1'>
+<g stroke-miterlimit='10' transform='translate(-66.106653,-20.752181)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='vpetje'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0-9.95863V9.95819' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0-9.95863L-5.69046-15.6491' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0-2.84546L-5.69046-8.53592' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 4.26773L-5.69046-1.42273' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='os'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 0H170.71646' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='polni'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.9'>
+<path d='M0 0C0 0 .78497 0 1.08104 0C1.3771 0 1.83774-.00397 2.13387 0S2.91928 .02075 3.21535 .02864C3.51141 .03653 3.97166 .05296 4.26773 .05687S5.05309 .0529 5.34921 .05687C5.64534 .06084 6.10597 .07367 6.40204 .08553C6.6981 .09738 7.18701 .1306 7.48308 .1424C7.77914 .15419 8.23984 .15881 8.5359 .17061C8.83197 .1824 9.32088 .21564 9.61694 .2275C9.91301 .23935 10.5237 .25218 10.66977 .25615S10.51979 .24826 10.66977 .25615S11.45474 .29724 11.75081 .31302S12.5075 .35014 12.80363 .36989C13.09976 .38963 13.58905 .43567 13.88512 .45541C14.18118 .47516 14.64543 .49261 14.93752 .5123C15.2296 .53198 15.6942 .5777 15.99033 .59738C16.28645 .61707 16.77177 .63452 17.07181 .65427C17.37184 .67401 17.8568 .71214 18.15286 .73979C18.44893 .76744 18.91354 .8259 19.20569 .85355C19.49783 .8812 19.96243 .9154 20.2585 .93907S21.18956 1.01237 21.33955 1.02417C21.48955 1.03596 21.18958 1.00839 21.33955 1.02417C21.48953 1.03995 22.12453 1.1063 22.4206 1.13791C22.71666 1.16953 23.18127 1.22047 23.47342 1.25209C23.76556 1.2837 24.23018 1.33429 24.52625 1.36584C24.82231 1.3974 25.30725 1.44803 25.60728 1.47958C25.90732 1.51114 26.39264 1.56178 26.68877 1.59334S27.44553 1.67155 27.7416 1.70709C28.03766 1.74263 28.52657 1.81395 28.82263 1.84949C29.1187 1.88503 29.58331 1.9277 29.87546 1.96324C30.1676 1.99878 30.63222 2.0662 30.92828 2.10564C31.22435 2.14508 31.85934 2.22792 32.00932 2.2476C32.1593 2.26729 31.85933 2.22786 32.00932 2.2476C32.15932 2.26735 32.79431 2.35051 33.09038 2.39001C33.38644 2.42952 33.85106 2.48898 34.1432 2.53241C34.43535 2.57584 34.89996 2.6596 35.19603 2.70303S35.981 2.80202 36.27707 2.84544C36.57314 2.88887 37.03377 2.96873 37.3299 3.01607C37.62602 3.0634 38.11134 3.13936 38.41138 3.18669C38.71141 3.23402 39.19635 3.30998 39.49242 3.35732C39.78848 3.40465 40.2531 3.48053 40.54524 3.52792C40.83739 3.57532 41.302 3.6516 41.59807 3.69899C41.89413 3.74638 42.52913 3.84595 42.67911 3.86961C42.82909 3.89328 42.53304 3.84196 42.67911 3.86961S43.43587 4.01758 43.73193 4.0689C44.028 4.12021 44.5169 4.1882 44.81297 4.23952C45.10904 4.29083 45.56973 4.38354 45.8658 4.43878S46.6468 4.5824 46.94684 4.63763C47.24687 4.69287 47.7322 4.78163 48.02832 4.83691C48.32445 4.8922 48.78508 4.9809 49.08115 5.03618C49.37721 5.09146 49.86612 5.18022 50.16219 5.23546C50.45825 5.2907 50.91895 5.37906 51.21501 5.4343C51.51108 5.48953 52 5.57437 52.29607 5.63358C52.59213 5.69278 53.20282 5.82953 53.34889 5.86108C53.49496 5.89264 53.20282 5.82947 53.34889 5.86108C53.49496 5.8927 54.10565 6.0298 54.40172 6.089C54.69778 6.14821 55.18669 6.22865 55.48276 6.28786C55.77882 6.34706 56.23952 6.45259 56.53558 6.51578C56.83165 6.57896 57.32056 6.68016 57.61662 6.74329C57.91269 6.80641 58.37332 6.9076 58.66945 6.97078C58.96558 7.03397 59.4509 7.13551 59.75093 7.1987S60.5359 7.35912 60.83197 7.42621S61.58873 7.61526 61.8848 7.68236C62.18086 7.74945 62.66977 7.84276 62.96584 7.90985C63.2619 7.97694 63.87259 8.13046 64.01866 8.166S63.87259 8.13445 64.01866 8.166C64.16473 8.19756 64.77542 8.3264 65.07149 8.3935C65.36755 8.46059 65.85646 8.57858 66.15253 8.64966C66.4486 8.72073 66.90929 8.83473 67.20535 8.9058C67.50142 8.97688 67.98637 9.09094 68.2864 9.16196C68.58644 9.23297 69.07176 9.34665 69.36789 9.41766C69.66402 9.48868 70.12463 9.60275 70.4207 9.67383C70.71677 9.7449 71.20569 9.8589 71.50175 9.92998C71.79782 10.00105 72.25851 10.11115 72.55458 10.18613S73.33955 10.39551 73.63562 10.47049S74.54237 10.6911 74.68845 10.72664C74.83452 10.76218 74.54237 10.6872 74.68845 10.72664C74.83452 10.76608 75.4452 10.93602 75.74127 11.01102C76.03734 11.08601 76.52625 11.19212 76.82231 11.26717C77.11838 11.34221 77.57907 11.47697 77.87514 11.55197C78.1712 11.62697 78.66011 11.7327 78.95618 11.8077C79.25224 11.88269 79.71288 12.01353 80.009 12.0925C80.30513 12.17146 80.79045 12.2979 81.09048 12.37686C81.39052 12.45583 81.87546 12.5827 82.17152 12.66167C82.46759 12.74063 82.92828 12.86714 83.22435 12.94604C83.52042 13.02495 84.00934 13.15144 84.3054 13.23041C84.60147 13.30937 85.21216 13.47571 85.35823 13.51521C85.5043 13.55472 85.21216 13.47185 85.35823 13.51521C85.5043 13.55858 86.11497 13.74492 86.41104 13.8278C86.7071 13.91069 87.19206 14.03365 87.4921 14.11261C87.79213 14.19157 88.27751 14.3141 88.57358 14.39699C88.86964 14.47987 89.3299 14.62712 89.62596 14.71C89.92203 14.7929 90.41132 14.9115 90.70744 14.99438C91.00357 15.07727 91.46819 15.22446 91.76027 15.3074C92.05235 15.39035 92.51659 15.50926 92.81265 15.59221C93.10872 15.67516 93.5941 15.82236 93.89413 15.90524C94.19417 15.98813 94.67911 16.10672 94.97517 16.1896C95.27124 16.27249 95.88193 16.45921 96.028 16.50264S95.88193 16.45921 96.028 16.50264S96.78476 16.7288 97.08083 16.81566C97.37689 16.90251 97.86183 17.04184 98.16187 17.1287C98.4619 17.21555 98.94728 17.35492 99.24335 17.44171C99.53941 17.5285 100.00366 17.66751 100.29575 17.7543C100.58783 17.8411 101.05243 17.98047 101.34856 18.06732C101.64468 18.15417 102.13397 18.2935 102.43004 18.38036C102.7261 18.46721 103.18637 18.60652 103.48244 18.69337C103.7785 18.78023 104.26389 18.91956 104.56392 19.00641S105.34889 19.23257 105.64496 19.31943C105.94102 19.40628 106.55171 19.58904 106.69778 19.63246C106.84386 19.67589 106.55171 19.58904 106.69778 19.63246C106.84386 19.67589 107.45454 19.8547 107.75061 19.94548C108.04668 20.03625 108.53162 20.19595 108.83165 20.28673C109.13168 20.3775 109.61707 20.5129 109.91313 20.59975C110.2092 20.6866 110.66945 20.822 110.96552 20.91278C111.26158 21.00356 111.75087 21.16325 112.047 21.25403C112.34312 21.3448 112.80774 21.47621 113.09982 21.56705C113.3919 21.65788 113.85614 21.81789 114.1522 21.90872C114.44827 21.99956 114.93365 22.13098 115.23369 22.22176C115.53372 22.31253 116.01866 22.47223 116.31473 22.563C116.6108 22.65378 117.22148 22.8326 117.36755 22.87602C117.51363 22.91945 117.22148 22.82869 117.36755 22.87602C117.51363 22.92336 118.12431 23.1265 118.42038 23.21727S119.2014 23.43945 119.50143 23.53029C119.80147 23.62112 120.28683 23.78114 120.5829 23.87198C120.87897 23.96281 121.34322 24.09422 121.6353 24.185C121.92738 24.27577 122.392 24.43156 122.68813 24.52625C122.98425 24.62093 123.47354 24.77275 123.7696 24.8675C124.06567 24.96223 124.52592 25.11833 124.82199 25.20917C125.11806 25.3 125.60344 25.43141 125.90347 25.52219C126.2035 25.61296 126.68845 25.76869 126.98451 25.86343C127.28058 25.95818 127.89127 26.15773 128.03734 26.20512C128.18341 26.25252 127.89127 26.15779 128.03734 26.20512C128.18341 26.25246 128.7941 26.4556 129.09016 26.54637C129.38623 26.63715 129.87117 26.76862 130.1712 26.85939C130.47124 26.95016 130.95662 27.1059 131.25269 27.20064C131.54875 27.29538 132.009 27.44757 132.30507 27.54231S133.09042 27.78882 133.38655 27.88356S134.1473 28.1305 134.43938 28.22523C134.73146 28.31998 135.19571 28.47174 135.49178 28.56648C135.78784 28.66122 136.27321 28.81342 136.57324 28.90816C136.87328 29.0029 137.35823 29.15472 137.6543 29.2494C137.95036 29.34409 138.56105 29.54332 138.70712 29.59065C138.8532 29.63799 138.56105 29.54723 138.70712 29.59065C138.8532 29.63408 139.46388 29.81285 139.75995 29.90369C140.05602 29.99452 140.54095 30.15062 140.84099 30.24536C141.14102 30.3401 141.6264 30.49187 141.92247 30.58661S142.68277 30.83354 142.97485 30.92828C143.26694 31.02303 143.73155 31.17485 144.02768 31.26953C144.3238 31.36421 144.8131 31.51604 145.10916 31.61078C145.40523 31.70552 145.86548 31.85771 146.16154 31.95245C146.45761 32.0472 146.943 32.19896 147.24303 32.2937S148.028 32.54063 148.32407 32.63538C148.62013 32.73012 149.23082 32.92929 149.37689 32.97662C149.52296 33.02396 149.23082 32.92923 149.37689 32.97662C149.52296 33.02402 150.13365 33.22356 150.42972 33.3183C150.72578 33.41304 151.21072 33.5648 151.51076 33.65955C151.81079 33.75429 152.29617 33.9065 152.59224 34.00124C152.8883 34.09598 153.34857 34.24779 153.64464 34.34247C153.9407 34.43715 154.43 34.58897 154.72612 34.68372C155.02225 34.77846 155.48685 34.93066 155.77893 35.0254C156.07101 35.12015 156.53526 35.2719 156.83133 35.36664S157.61278 35.6096 157.91281 35.70833C158.21284 35.80705 158.69778 35.97955 158.99385 36.07822C159.28992 36.17688 159.9006 36.37213 160.04668 36.41946C160.19275 36.4668 159.9006 36.37207 160.04668 36.41946C160.19275 36.46686 160.80344 36.66641 161.0995 36.76115C161.39557 36.8559 161.88051 37.00772 162.18054 37.1024C162.48058 37.19708 162.96596 37.34889 163.26202 37.44363C163.55809 37.53838 164.02232 37.69058 164.3144 37.78532C164.60649 37.88007 165.0711 38.03183 165.36723 38.12657S166.15265 38.3735 166.44872 38.46825C166.74478 38.56299 167.20503 38.71475 167.5011 38.8095C167.79716 38.90424 168.28255 39.05643 168.58258 39.15117S169.36757 39.39774 169.66364 39.49242C169.9597 39.5871 170.71646 39.83366 170.71646 39.83366' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='brezveznih'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M0 0C0 0 .78497 0 1.08104 0C1.3771 0 1.83774 0 2.13387 0S2.91928 0 3.21535 0C3.51141 0 3.97166 0 4.26773 0S5.05309 0 5.34921 0C5.64534 0 6.10597 0 6.40204 0C6.6981 0 7.18701 0 7.48308 0C7.77914 0 8.23984 0 8.5359 0C8.83197 0 9.32088 0 9.61694 0C9.91301 0 10.5237 0 10.66977 0S10.51979 0 10.66977 0S11.45474 0 11.75081 0S12.5075 0 12.80363 0S13.58905 0 13.88512 0C14.18118 0 14.64543 0 14.93752 0C15.2296 0 15.6942 0 15.99033 0C16.28645 0 16.77177 0 17.07181 0C17.37184 0 17.8568 0 18.15286 0C18.44893 0 18.91354 0 19.20569 0C19.49783 0 19.96243 0 20.2585 0S21.18956 0 21.33955 0C21.48955 0 21.18958 0 21.33955 0C21.48953 0 22.12453 0 22.4206 0C22.71666 0 23.18127 0 23.47342 0C23.76556 0 24.23018 0 24.52625 0C24.82231 0 25.30725 0 25.60728 0C25.90732 0 26.39264 0 26.68877 0S27.44553 0 27.7416 0C28.03766 0 28.52657 0 28.82263 0C29.1187 0 29.58331 0 29.87546 0C30.1676 0 30.63222 0 30.92828 0C31.22435 0 31.85934 0 32.00932 0S31.85933 0 32.00932 0C32.15932 0 32.79431 0 33.09038 0C33.38644 0 33.85106 0 34.1432 0C34.43535 0 34.89996 0 35.19603 0S35.981 0 36.27707 0S37.03377 0 37.3299 0C37.62602 0 38.11134 0 38.41138 0C38.71141 0 39.19635 0 39.49242 0C39.78848 0 40.2531 0 40.54524 0C40.83739 0 41.302 0 41.59807 0C41.89413 0 42.52913 0 42.67911 0S42.53304 0 42.67911 0S43.43587 0 43.73193 0C44.028 0 44.5169 0 44.81297 0S45.56973 0 45.8658 0S46.6468 0 46.94684 0C47.24687 0 47.7322 0 48.02832 0C48.32445 0 48.78508 0 49.08115 0C49.37721 0 49.86612 0 50.16219 0C50.45825 0 50.91895 0 51.21501 0C51.51108 0 52 0 52.29607 0C52.59213 0 53.20282 0 53.34889 0S53.20282 0 53.34889 0S54.10565 0 54.40172 0C54.69778 0 55.18669 0 55.48276 0C55.77882 0 56.23952 0 56.53558 0C56.83165 0 57.32056 0 57.61662 0C57.91269 0 58.37332 0 58.66945 0S59.4509 0 59.75093 0S60.5359 0 60.83197 0S61.58873 0 61.8848 0C62.18086 0 62.66977 0 62.96584 0C63.2619 0 63.87259 0 64.01866 0S63.87259 0 64.01866 0S64.77542 0 65.07149 0C65.36755 0 65.85646 0 66.15253 0S66.90929 0 67.20535 0C67.50142 0 67.98637 0 68.2864 0C68.58644 0 69.07176 0 69.36789 0S70.12463 0 70.4207 0S71.20569 0 71.50175 0C71.79782 0 72.25851 0 72.55458 0S73.33955 0 73.63562 0S74.54237 0 74.68845 0C74.83452 0 74.54237 0 74.68845 0C74.83452 0 75.4452 0 75.74127 0S76.52625 0 76.82231 0C77.11838 0 77.57907 0 77.87514 0C78.1712 0 78.66011 0 78.95618 0C79.25224 0 79.71288 0 80.009 0C80.30513 0 80.79045 0 81.09048 0C81.39052 0 81.87546 0 82.17152 0C82.46759 0 82.92828 0 83.22435 0S84.00934 0 84.3054 0C84.60147 0 85.21216 0 85.35823 0S85.21216 0 85.35823 0S86.11497-.00789 86.41104 0C86.7071 .00789 87.19206 .04501 87.4921 .05687C87.79213 .06873 88.27751 .06975 88.57358 .08553C88.86964 .1013 89.3299 .14694 89.62596 .17061C89.92203 .19427 90.41132 .2285 90.70744 .25615C91.00357 .2838 91.46819 .33435 91.76027 .36989S92.51659 .47285 92.81265 .5123C93.10872 .55174 93.5941 .60693 93.89413 .65427C94.19417 .7016 94.67911 .80223 94.97517 .85355C95.27124 .90486 95.88193 1.0005 96.028 1.02417S95.88193 .99255 96.028 1.02417S96.78476 1.1889 97.08083 1.25209C97.37689 1.31528 97.86183 1.41646 98.16187 1.47958C98.4619 1.54271 98.94728 1.64 99.24335 1.70709C99.53941 1.77419 100.00366 1.88826 100.29575 1.96324C100.58783 2.03822 101.05243 2.16864 101.34856 2.2476C101.64468 2.32657 102.13397 2.44946 102.43004 2.53241C102.7261 2.61536 103.18637 2.75467 103.48244 2.84544C103.7785 2.93622 104.26389 3.09201 104.56392 3.18669S105.34889 3.43318 105.64496 3.52792C105.94102 3.62267 106.55171 3.82222 106.69778 3.86961C106.84386 3.917 106.55171 3.8183 106.69778 3.86961C106.84386 3.92093 107.45454 4.13297 107.75061 4.23952S108.53162 4.5271 108.83165 4.63763C109.13168 4.74817 109.61707 4.92564 109.91313 5.03618C110.2092 5.14671 110.66945 5.31985 110.96552 5.4343C111.26158 5.54874 111.75087 5.74266 112.047 5.86108C112.34312 5.9795 112.80774 6.16547 113.09982 6.28786S113.85614 6.61691 114.1522 6.74329C114.44827 6.86966 114.93365 7.06842 115.23369 7.1987C115.53372 7.32898 116.01866 7.54816 116.31473 7.68236S117.22148 8.0989 117.36755 8.166C117.51363 8.2331 117.22148 8.0989 117.36755 8.166C117.51363 8.2331 118.12431 8.51147 118.42038 8.64966C118.71645 8.78784 119.2014 9.01987 119.50143 9.16196C119.80147 9.30405 120.28683 9.53174 120.5829 9.67383S121.34322 10.04005 121.6353 10.18613C121.92738 10.3322 122.392 10.57666 122.68813 10.72664C122.98425 10.87662 123.47354 11.11717 123.7696 11.26717C124.06567 11.41716 124.52592 11.65373 124.82199 11.8077C125.11806 11.96165 125.60344 12.21892 125.90347 12.37686S126.68845 12.7881 126.98451 12.94604C127.28058 13.10399 127.89127 13.43625 128.03734 13.51521C128.18341 13.59418 127.89127 13.43233 128.03734 13.51521C128.18341 13.5981 128.7941 13.94684 129.09016 14.11261C129.38623 14.27838 129.87117 14.54424 130.1712 14.71C130.47124 14.87578 130.95662 15.14157 131.25269 15.3074C131.54875 15.47324 132.009 15.73941 132.30507 15.90524C132.60114 16.07108 133.09042 16.3329 133.38655 16.50264S134.1473 16.95503 134.43938 17.1287C134.73146 17.30235 135.19571 17.58064 135.49178 17.7543C135.78784 17.92796 136.27321 18.20663 136.57324 18.38036C136.87328 18.55408 137.35823 18.83269 137.6543 19.00641C137.95036 19.18013 138.56105 19.54561 138.70712 19.63246C138.8532 19.71931 138.56105 19.54169 138.70712 19.63246C138.8532 19.72324 139.46388 20.1091 139.75995 20.28673S140.54095 20.73515 140.84099 20.91278C141.14102 21.09041 141.6264 21.38544 141.92247 21.56705S142.68277 22.04015 142.97485 22.22176C143.26694 22.40337 143.73155 22.69447 144.02768 22.87602C144.3238 23.05757 144.8131 23.34868 145.10916 23.53029C145.40523 23.7119 145.86548 23.99947 146.16154 24.185C146.45761 24.37053 146.943 24.68196 147.24303 24.8675C147.54306 25.05302 148.028 25.3366 148.32407 25.52219C148.62013 25.70778 149.23082 26.11038 149.37689 26.20512C149.52296 26.29987 149.23082 26.11435 149.37689 26.20512C149.52296 26.2959 150.13365 26.67386 150.42972 26.85939C150.72578 27.04492 151.21072 27.35281 151.51076 27.54231C151.81079 27.73181 152.29617 28.03574 152.59224 28.22523C152.8883 28.41473 153.34857 28.71872 153.64464 28.90816C153.9407 29.0976 154.43 29.40512 154.72612 29.59065C155.02225 29.77618 155.48685 30.05977 155.77893 30.24536S156.53526 30.73885 156.83133 30.92828C157.1274 31.11772 157.61278 31.42134 157.91281 31.61078S158.69778 32.1042 158.99385 32.2937S159.9006 32.88188 160.04668 32.97662C160.19275 33.07137 159.9006 32.88188 160.04668 32.97662C160.19275 33.07137 160.80344 33.47005 161.0995 33.65955C161.39557 33.84904 161.88051 34.15297 162.18054 34.34247C162.48058 34.53197 162.96596 34.8359 163.26202 35.0254C163.55809 35.2149 164.02232 35.51491 164.3144 35.70833C164.60649 35.90175 165.0711 36.22604 165.36723 36.41946S166.15265 36.9129 166.44872 37.1024C166.74478 37.2919 167.20503 37.59583 167.5011 37.78532C167.79716 37.97482 168.28255 38.27875 168.58258 38.46825S169.36757 38.96173 169.66364 39.15117C169.9597 39.3406 170.71646 39.83366 170.71646 39.83366' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='vmesnik'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M85.35823-14.22636V51.21501' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M87.62117 0C87.62117 1.2498 86.60803 2.26294 85.35823 2.26294S83.09529 1.2498 83.09529 0S84.10843-2.26294 85.35823-2.26294S87.62117-1.2498 87.62117 0ZM85.35823 0'/>
+</g>
+<g transform='translate(85.35823,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,-20.752181)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(82.85823,-24.91504)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,-20.752181)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-66.106653' y='-20.752181' xlink:href='#c21-05-brez-veznih-g0-97'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='konica'>
+<path d='M172.55508 39.83366C172.55508 40.8491 171.7319 41.67229 170.71646 41.67229S168.87784 40.8491 168.87784 39.83366S169.70102 37.99504 170.71646 37.99504S172.55508 38.81822 172.55508 39.83366ZM170.71646 39.83366' stroke='none'/>
+<g transform='translate(170.71646,39.83366)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,-20.752181)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M184.94283 .45V39.38367' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,184.94283,0.3)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.69885V-3.69885' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,184.94283,32.40501)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,1.0,-1.0,0.0,184.94283,39.53366)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.69885V-3.69885' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(191.42125,16.69461)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-66.106653,-20.752181)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-66.106653' y='-20.752181' xlink:href='#c21-05-brez-veznih-g0-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 21.17</span>: Najnižja Ritzova oblika konzole iz samih načinov z vpetim robom (oranžno) in prvi način celotne konzole (sivo črtkano), oba s pomikom konca <span class="nobr">\(1\).</span> Prvi je na levi polovici nič, saj rob miruje, na desni se zvija kot konzola dolžine \(L/2\) in ima frekvenco \(14{,}0641\ \omega_0\) namesto <span class="nobr">\(3{,}51602\ \omega_0\).</span> Prazen krog je rob a, kjer sta pomik in zasuk oranžne oblike nič. Mera desno kaže pomik konca <span class="nobr">\(1\).</span></figcaption></figure>
+<p>Narisana je <a data-del="os" class="xref kaz" href="sec-podstrukture.html#fig-cb-brez-veznih" data-knowl="fig-cb-brez-veznih">os</a> konzole, <span class="nobr"><a data-del="vpetje" class="xref kaz" href="sec-podstrukture.html#fig-cb-brez-veznih" data-knowl="fig-cb-brez-veznih">vpete pri \(x = 0\)</a>,</span> z <a data-del="vmesnik" class="xref kaz" href="sec-podstrukture.html#fig-cb-brez-veznih" data-knowl="fig-cb-brez-veznih">robom</a> pri vozlišču \(8\) (prazen krog). <a data-del="polni" class="xref kaz" href="sec-podstrukture.html#fig-cb-brez-veznih" data-knowl="fig-cb-brez-veznih">Pravi prvi način</a> je siva črtkana krivulja, ki je pri robu že odmaknjena <span class="nobr">(\(0{,}3395\)</span> pomika konca), in njen <a data-del="konica" class="xref kaz" href="sec-podstrukture.html#fig-cb-brez-veznih" data-knowl="fig-cb-brez-veznih">konec</a> ima pomik <span class="nobr">\(1\).</span> Najnižja Ritzova oblika iz samih načinov z vpetim robom je <a data-del="brezveznih" class="xref kaz" href="sec-podstrukture.html#fig-cb-brez-veznih" data-knowl="fig-cb-brez-veznih">oranžna</a>: leva polovica ostane na osi, desna se zvije. Frekvenca je pri \(k = 3\) in \(k = 5\) enaka, <span class="nobr">\(14{,}0641\ \omega_0\),</span> to je \(300{,}0\) % nad pravo vrednostjo \(3{,}51602\ \omega_0\) oziroma \(4{,}0000\)-krat toliko (NumPy), in dodajanje načinov je ne zniža. Izrek <a class="xref" href="sec-ritz-lastne-vrednosti.html#thm-ritz-gornja-meja" data-knowl="thm-ritz-gornja-meja">10.42</a> zagotavlja samo, da je približek nad pravo vrednostjo, in je. Zakaj je tako slab? Vsi stolpci imajo robni koordinati enaki nič, torej opisujejo konstrukcijo, vpeto tudi pri vozlišču <span class="nobr">\(8\).</span> Vez, kot jo opisuje posledica <a class="xref" href="sec-rayleighov-kolicnik.html#cor-rayleighov-izrek-vezi" data-knowl="cor-rayleighov-izrek-vezi">10.29</a>, <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">lastnih vrednosti</a> ne zniža, in tu najnižjo močno dvigne. Konstrukcija, vpeta tudi pri <span class="nobr">\(x = L/2\),</span> razpade na dva neodvisna nosilca dolžine <span class="nobr">\(L/2\).</span> Levi je vpet na obeh koncih in ima najnižjo frekvenco \(89{,}5007\ \omega_0\) (podstruktura <span class="nobr">\(1\)),</span> desni je konzola s frekvenco <span class="nobr">\(14{,}0641\ \omega_0\),</span> štirikrat višjo od <span class="nobr">\(3{,}51602\ \omega_0\),</span> kot smo izračunali zgoraj (podstruktura <span class="nobr">\(2\)).</span> Nižja od obeh, <span class="nobr">\(14{,}0641\ \omega_0\),</span> je najnižja frekvenca modela. Vezni načini so tisti stolpci, ki dovolijo robu, da se premakne.</p>
+<p>Razdelek je tako pokazal podstrukture z dvema vrstama načinov. Vezni načini so statika roba, načini z vpetim robom lastno nihanje notranjosti, in skupaj tvorijo Ritzov približek, ki je izračunljiv podstruktura za podstrukturo in daje <a class="xref auto" href="sec-polnost.html#def-zgornja-meja" data-knowl="def-zgornja-meja">zgornje meje</a> ter natančne frekvence, kadar so dovolj pod najnižjo izpuščeno frekvenco (slika <a class="xref" href="sec-podstrukture.html#fig-cb-konvergenca" data-knowl="fig-cb-konvergenca">21.16</a>). Pri konzoli smo reducirali \(32\) koordinat na \(8\) z napako pod \(0{,}18\) % pri štirih frekvencah, ker je najnižja izpuščena frekvenca dovolj daleč. <a class="xref auto" href="sec-ritz-lastne-vrednosti.html#def-ritzov-priblizek" data-knowl="def-ritzov-priblizek">Reducirani lastni problem</a> reda \(8\) je majhen, in kako rešimo velikega, ki ga skrajšanje ni dovolj skrčilo, pokažejo naslednji razdelki, začenši z najpreprostejšim postopkom, ki najde eno lastno vrednost. Sklopljeni model odgovori tudi na vprašanje o dušenju skrajšanega modela, ki je v enem od kasnejših razdelkov.</p>
+
+<div class="opomba"><p>Ne obravnavamo podstruktur z načini pripetja (attachment modes), z načini s prostim robom (free-interface modes) in podstruktur z več ravnmi (multilevel substructuring): ti so po vrsti v CK razdelkih 17.3, 17.7 in 17.8 (PDF str. 557-561, 577-581 in 582-588) in niso dokazani v tej knjigi.</p>
+</div>
+</main>
+<footer><nav class="pager"><a href="sec-guyanova-redukcija.html" rel="prev">← 21.4</a><a href="index.html">Kazalo</a><a href="sec-inverzna-iteracija.html" rel="next">21.6 →</a></nav></footer>
+</body>
+</html>

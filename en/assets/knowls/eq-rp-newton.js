@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rp-newton"] = {"html": "<div class=\"eq\">\\[\\vek q\\cdot\\vek n = h\\,(T - T_\\infty) \\quad\\text{or}\\quad -k\\,\\frac{\\partial T}{\\partial n} = h\\,(T - T_\\infty) , \\tag{14.12}\\]</div>", "href": "sec-robni-pogoji-toplote.html#eq-rp-newton"};

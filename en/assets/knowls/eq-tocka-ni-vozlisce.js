@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-tocka-ni-vozlisce"] = {"html": "<div class=\"eq\">\\[e(h) = -\\frac{q\\,h^2}{2EA}\\,s\\,(1 - s) = -\\frac{q L^2}{2EA}\\cdot\\frac{s\\,(1 - s)}{n^2} , \\qquad s = \\{0{,}4\\,n\\} . \\tag{17.13}\\]</div>", "href": "sec-konvergenca-mreze.html#eq-tocka-ni-vozlisce"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-gibajoca-struna-c"] = {"html": "<div class=\"eq\">\\[w_{\\mathrm{tt}} + 2v\\,w_{\\mathrm{xt}} - (c^2 - v^2)\\,w_{\\mathrm{xx}} = 0 . \\tag{26.6}\\]</div>", "href": "sec-gibajoca-struna.html#eq-gibajoca-struna-c"};

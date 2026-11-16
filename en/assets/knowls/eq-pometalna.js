@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pometalna"] = {"html": "<div class=\"eq\">\\[\\mat S_{\\mathrm{p}} = \\mat I - \\sum_{\\mathrm{s}=1}^p\\vek\\varphi_{\\mathrm{s}}\\vek\\varphi_{\\mathrm{s}}^\\T\\mat M . \\tag{21.43}\\]</div>", "href": "sec-inverzna-iteracija.html#eq-pometalna"};

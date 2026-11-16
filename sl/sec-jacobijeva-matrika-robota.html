@@ -1,0 +1,1543 @@
+<!doctype html>
+<html lang="sl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>27.6 Jacobijeva matrika robota · Poglavje 27</title>
+<script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/style.css">
+<noscript><style>#loadbar { display: none; }</style></noscript>
+<script src="assets/config.js"></script>
+<script src="assets/load.js"></script>
+<script defer src="assets/interaktivno.js"></script>
+<script defer src="assets/book.js"></script>
+<script defer src="assets/predavanje.js"></script>
+<script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<div id="loadbar" aria-hidden="true"></div>
+<header class="top"><a class="home" href="index.html">Mehanika</a><nav class="pager"><a href="sec-inverzna-kinematika.html" rel="prev">← 27.5</a><a href="index.html">Kazalo</a><a href="sec-singularnosti-statika.html" rel="next">27.7 →</a></nav>
+<span class="tools"><a class="lang" href="../en/sec-jacobijeva-matrika-robota.html" hreflang="en">English</a><button type="button" class="theme-toggle" title="Svetla ali temna tema" aria-label="Svetla ali temna tema"></button><button type="button" data-details="open">Razpri vse</button><button type="button" data-details="close">Skrij vse</button><button type="button" class="fig-side-toggle" aria-pressed="false">Slike ob strani</button></span></header>
+<main>
+<p class="updated">Posodobljeno 16. 11. 2026 ob 10.52</p>
+<p class="crumb"><a href="ch-roboti.html"><span class="h-num">Poglavje 27</span> Kinematika in dinamika robotov</a></p>
+<h2 id="sec-jacobijeva-matrika-robota"><span class="h-num">27.6</span> Jacobijeva matrika robota</h2>
+<p>Doslej smo robotu določali lego: <a class="xref auto" href="sec-robotske-verige.html#def-spremenljivke-zglobov" data-knowl="def-spremenljivke-zglobov">spremenljivke zglobov</a> \(\vek q = (q_1, \dots, q_{\mathrm{n}})\) (razdelek <a class="xref" href="sec-robotske-verige.html">27.1</a>) dajo po direktni kinematiki (definicija <a class="xref" href="sec-dh-zapis.html#def-direktna-kinematika" data-knowl="def-direktna-kinematika">27.31</a>) lego <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">izhodišča</a> \(\vek o_{\mathrm{n}}(\vek q)\) in matriko orientacije \(\mat R_{\mathrm{n}}(\vek q)\) končnega efektorja (definicija <a class="xref" href="sec-orientacija-clenov.html#def-matrika-orientacije" data-knowl="def-matrika-orientacije">27.8</a>). Motorji pa se ne zavrtijo za stalen kot, temveč imajo vsak svojo hitrost <span class="nobr">\(\dot q_{\mathrm{i}}\).</span> Vprašanje je, kako hitro se pri tem giblje končni efektor in kako hitro se vrti. Odgovor bomo potrebovali trikrat: za iskanje leg, kjer robot ne more več v vse smeri (razdelek <a class="xref" href="sec-singularnosti-statika.html">27.7</a>), za <a class="xref auto forward" href="sec-singularnosti-statika.html#thm-sile-v-zglobih" data-knowl="thm-sile-v-zglobih" title="Definirano kasneje v knjigi">sile v zglobih</a>, ki uravnovesijo breme na efektorju (razdelek <a class="xref" href="sec-singularnosti-statika.html">27.7</a>), in za <a class="xref auto forward" href="sec-masna-matrika-clena.html#thm-kineticna-energija-clena" data-knowl="thm-kineticna-energija-clena" title="Definirano kasneje v knjigi">kinetično energijo členov</a> (razdelek <a class="xref" href="sec-gibalne-enacbe-robota.html">27.8</a>).</p>
+<p>Model je isti kot prej (razdelek <a class="xref" href="sec-robotske-verige.html">27.1</a>): <a class="xref auto forward" href="sec-masna-matrika-clena.html#cor-togi-clen" data-knowl="cor-togi-clen" title="Definirano kasneje v knjigi">togi členi</a> (definicija <a class="xref" href="sec-deformacija-v-tocki.html#def-togo-telo" data-knowl="def-togo-telo">1.11</a>), idealni zglobi z eno prostostno stopnjo, ki jih držijo motorji, in odprta veriga. Trenje in vztrajnost motorja ne nastopata. Spremenljivke \(q_{\mathrm{i}}(t)\) so dvakrat <a class="xref auto" href="sec-sprememba-polja.html#def-zvezno-odvedljivo-polje" data-knowl="def-zvezno-odvedljivo-polje">zvezno odvedljive</a> <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcije</a> časa, tako kot <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">elementi matrike</a> \(\mat Q(t)\) v definiciji <a class="xref" href="sec-posplosene-koordinate.html#def-togo-gibanje" data-knowl="def-togo-gibanje">8.38</a>. Oznake: matriko orientacije člena \(n\) glede na sistem \(0\) pišemo skrajšano <span class="nobr">\(\mat R_{\mathrm{n}} = \mat R^0{}_{\mathrm{n}}\).</span> Njeni stolpci so osi sistema \(n\) v sistemu \(0\) (definicija <a class="xref" href="sec-orientacija-clenov.html#def-matrika-orientacije" data-knowl="def-matrika-orientacije">27.8</a>), zato je to <a class="xref auto" href="sec-matrike.html#def-transponirana-matrika" data-knowl="def-transponirana-matrika">transponirana matrika</a> zasuka \(\mat Q\) iz definicije <a class="xref" href="sec-vrtenje-osi.html#def-matrika-zasuka" data-knowl="def-matrika-zasuka">2.37</a>, kjer so osi v vrsticah. Ni polarni faktor iz poglavja <a class="xref" href="ch-napetost.html">2</a> in ni \(\mat R(\varphi)\) iz poglavja <a class="xref" href="ch-analiticna-dinamika.html">8</a>. Izhodišče sistema \(i\) v sistemu \(0\) je <span class="nobr">\(\vek o_{\mathrm{i}} = \vek o^0{}_{\mathrm{i}}\),</span> <a class="xref auto" href="sec-vektorji.html#def-enotski-vektor" data-knowl="def-enotski-vektor">enotski vektor</a> osi \(z\) sistema \(i\) v sistemu \(0\) pa \(\vek z_{\mathrm{i}} = \mat R_{\mathrm{i}}\,\vek k\) z <span class="nobr">\(\vek k = (0, 0, 1)\).</span> Matriko, ki jo bomo sestavili, pišemo <span class="nobr">\(\mat J(\vek q)\).</span> <a class="xref auto" href="sec-kineticna-energija.html#def-tenzor-vztrajnosti" data-knowl="def-tenzor-vztrajnosti">Vztrajnostni tenzor</a> iz poglavja <a class="xref" href="ch-analiticna-dinamika.html">8</a>, ki ga tam pišemo <span class="nobr">\(\mat J_{\mathrm{k}}\),</span> bomo v tem poglavju pisali <span class="nobr">\(\mat J_{\mathrm{G},\mathrm{k}}\),</span> da se oznaki ne zamenjata.</p>
+
+<h3 id="sec-j-kotna-hitrost"><span class="h-num">27.6.1</span> Kotna hitrost člena</h3>
+<p>Najprej potrebujemo hitrosti točk enega člena. Poglavje <a class="xref" href="ch-analiticna-dinamika.html">8</a> je za gibanje \(\vek x = \vek c + \mat Q\,\vek X\) pokazalo, da imajo vse točke <a class="xref auto" href="sec-deformacija-v-tocki.html#def-togo-telo" data-knowl="def-togo-telo">togega telesa</a> hitrost \(\dot{\vek c} + \vek\omega\times(\vek x - \vek c)\) (lema <a class="xref" href="sec-kineticna-energija.html#lem-hitrost-togega" data-knowl="lem-hitrost-togega">8.78</a>) z eno samo kotno hitrostjo \(\vek\omega\) (definicija <a class="xref" href="sec-kineticna-energija.html#def-kotna-hitrost" data-knowl="def-kotna-hitrost">8.77</a>). Člen \(n\) je tako <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">telo</a>. Točka s stalnimi <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinatami</a> \(\vek p^n\) v sistemu člena ima v sistemu \(0\) lego \(\vek x = \vek o_{\mathrm{n}} + \mat R_{\mathrm{n}}\,\vek p^n\) po lemi <a class="xref" href="sec-orientacija-clenov.html#lem-orientacija-in-zasuk" data-knowl="lem-orientacija-in-zasuk">27.9</a>, to je zapis \(\vek c + \mat Q\,\vek X\) z \(\mat R_{\mathrm{n}}\) namesto <span class="nobr">\(\mat Q\).</span> <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">Matrika</a> \(\mat R_{\mathrm{n}}\) ni nujno enaka <a class="xref auto" href="sec-matrike.html#def-enotska-matrika" data-knowl="def-enotska-matrika">enotski matriki</a> ob času <span class="nobr">\(0\),</span> zato dokaz leme <a class="xref" href="sec-kineticna-energija.html#lem-antisimetricen-omega" data-knowl="lem-antisimetricen-omega">8.76</a> ponovimo za <span class="nobr">\(\mat R_{\mathrm{n}}\).</span></p>
+
+<div class="blk lema" id="lem-odvod-orientacije"><div class="blk-head"><span class="blk-label">Lema 27.37</span> <span class="blk-title">Odvod matrike orientacije in kotna hitrost člena (derivative of the orientation matrix and angular velocity of a link)</span></div><div class="blk-body"><p>Naj bo \(\mat R(t)\) <a class="xref auto" href="sec-orientacija-clenov.html#def-matrika-orientacije" data-knowl="def-matrika-orientacije">matrika orientacije</a> člena glede na sistem <span class="nobr">\(0\),</span> z dvakrat <a class="xref auto" href="sec-sprememba-polja.html#def-zvezno-odvedljivo-polje" data-knowl="def-zvezno-odvedljivo-polje">zvezno odvedljivimi</a> elementi, in <span class="nobr">\(\mat\Omega = \dot{\mat R}\,\mat R^\T\).</span> Tedaj je \(\mat\Omega\) antisimetrična, za \(\vek\omega = (\Omega_{32},\ \Omega_{13},\ \Omega_{21})\) velja \(\mat\Omega\,\vek y = \vek\omega\times\vek y\) za vsak <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vektor</a> \(\vek y\) in <span class="nobr">\(\dot{\mat R} = \mat\Omega\,\mat R\).</span> Točka z nespremenljivimi <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinatami</a> \(\vek p\) v sistemu člena, ki ima v sistemu \(0\) lego <span class="nobr">\(\vek x = \vek o + \mat R\,\vek p\),</span> ima hitrost</p>
+<div class="eq" id="eq-hitrost-tocke-clena">\[\dot{\vek x} = \dot{\vek o} + \vek\omega\times(\vek x - \vek o) . \tag{27.21}\]</div>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da je \(\mat\Omega\) antisimetrična, in nato uporabiti, da je \(\vek p\) stalen.</p>
+<ol>
+<li><a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">Matrika</a> \(\mat R\) je ortogonalna (lema <a class="xref" href="sec-orientacija-clenov.html#lem-orientacija-in-zasuk" data-knowl="lem-orientacija-in-zasuk">27.9</a>), zato je \(\mat R\,\mat R^\T = \mat I\) ob vsakem času. Po pravilu za odvod zmnožka (lema <a class="xref" href="sec-srednja-vrednost.html#lem-pravila-odvajanja" data-knowl="lem-pravila-odvajanja">1.81</a>), uporabljenem na vsakem elementu, je <span class="nobr">\(\dot{\mat R}\,\mat R^\T + \mat R\,\dot{\mat R}^\T = \mat 0\).</span></li>
+<li>Po lemi <a class="xref" href="sec-matrike.html#lem-transponiran-produkt" data-knowl="lem-transponiran-produkt">1.101</a> je <span class="nobr">\(\mat\Omega^\T = \mat R\,\dot{\mat R}^\T\),</span> kar je po koraku 1 enako <span class="nobr">\(-\mat\Omega\).</span> Matrika \(\mat\Omega\) je antisimetrična.</li>
+<li>Koraka 3 in 4 dokaza leme <a class="xref" href="sec-kineticna-energija.html#lem-antisimetricen-omega" data-knowl="lem-antisimetricen-omega">8.76</a> uporabljata le \(\mat\Omega^\T = -\mat\Omega\) in <a class="xref" href="sec-simetrija-napetosti.html#eq-vektorski-produkt" data-knowl="eq-vektorski-produkt">(2.32)</a>, zato dasta <span class="nobr">\(\mat\Omega\,\vek y = \vek\omega\times\vek y\).</span></li>
+<li>Iz \(\mat R^\T\mat R = \mat I\) (lema <a class="xref" href="sec-orientacija-clenov.html#lem-orientacija-in-zasuk" data-knowl="lem-orientacija-in-zasuk">27.9</a>) je <span class="nobr">\(\dot{\mat R} = \dot{\mat R}\,\mat R^\T\mat R = \mat\Omega\,\mat R\).</span></li>
+<li>Ker je \(\vek p\) stalen, je <span class="nobr">\(\dot{\vek x} = \dot{\vek o} + \dot{\mat R}\,\vek p\).</span> Po koraku 4 in koraku 3 z \(\vek y = \mat R\,\vek p = \vek x - \vek o\) je <span class="nobr">\(\dot{\mat R}\,\vek p = \mat\Omega\,\mat R\,\vek p = \vek\omega\times(\vek x - \vek o)\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> SPONG (4.18) (PDF str. 129) za <span class="nobr">\(\dot{\mat R} = \mat S(\vek\omega)\,\mat R\),</span> (4.32) in (4.35) (PDF str. 132) za hitrost točke. Dokaz po korakih za \(\mat R\) je prepis dokaza leme <a class="xref" href="sec-kineticna-energija.html#lem-antisimetricen-omega" data-knowl="lem-antisimetricen-omega">8.76</a> in ni iz vira.</p></div></div>
+<p>Za gibanje, ki ga obravnava lema <a class="xref" href="sec-kineticna-energija.html#lem-hitrost-togega" data-knowl="lem-hitrost-togega">8.78</a>, je <span class="nobr">\(\mat Q(t) = \mat R(t)\,\mat R(0)^\T\),</span> saj ima ob času \(0\) vrednost \(\mat I\) in zasuka točko \(\vek X\) ogrodja kot <span class="nobr">\(\mat R(t)\,\vek p\).</span> Zato je <span class="nobr">\(\dot{\mat Q}\,\mat Q^\T = \dot{\mat R}\,\mat R(0)^\T\mat R(0)\,\mat R^\T = \dot{\mat R}\,\mat R^\T\),</span> in kotna hitrost iz leme <a class="xref" href="sec-jacobijeva-matrika-robota.html#lem-odvod-orientacije" data-knowl="lem-odvod-orientacije">27.37</a> je prav kotna hitrost iz definicije <a class="xref" href="sec-kineticna-energija.html#def-kotna-hitrost" data-knowl="def-kotna-hitrost">8.77</a>. Gibanje točk člena je torej opisano z dvema <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vektorjema</a>, \(\dot{\vek o}\) in <span class="nobr">\(\vek\omega\),</span> to je s šestimi števili. Zveze med njima in hitrostmi zglobov \(\dot{\vek q}\) bomo iskali v naslednjem podrazdelku.</p>
+<p>Robot ima več členov, ki se vrtijo drug glede na drugega, zato moramo kotne hitrosti seštevati. Poznamo kotno hitrost člena \(1\) glede na sistem \(0\) in kotno hitrost člena \(2\) glede na člen <span class="nobr">\(1\).</span> Kakšna je kotna hitrost člena \(2\) glede na sistem <span class="nobr">\(0\)?</span> Pri tem se vektorji, zapisani v različnih sistemih, ne smejo seštevati. Najprej potrebujemo enakost, ki pove, kako se <a class="xref auto" href="sec-simetrija-napetosti.html#def-vektorski-produkt" data-knowl="def-vektorski-produkt">vektorski produkt</a> obnaša ob zasuku.</p>
+
+<div class="blk lema" id="lem-vektorski-produkt-zasuk"><div class="blk-head"><span class="blk-label">Lema 27.38</span> <span class="blk-title">Vektorski produkt in zasuk (the vector product and a rotation)</span></div><div class="blk-body"><p>Naj bo \(\mat R\) <a class="xref auto" href="sec-vrtenje-osi.html#def-ortogonalna-matrika" data-knowl="def-ortogonalna-matrika">ortogonalna matrika</a> velikosti \(3 \times 3\) z <span class="nobr">\(\det\mat R = 1\).</span> Tedaj velja za vsaka <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vektorja</a> \(\vek a\) in \(\vek b\)</p>
+<div class="eq" id="eq-vektorski-produkt-zasuk">\[(\mat R\,\vek a)\times(\mat R\,\vek b) = \mat R\,(\vek a\times\vek b) . \tag{27.22}\]</div>
+<p>Če za <a class="xref auto" href="sec-matrike.html#def-simetricna-matrika" data-knowl="def-simetricna-matrika">antisimetrično matriko</a> \(\mat\Omega\) velja \(\mat\Omega\,\vek y = \vek a\times\vek y\) za vsak <span class="nobr">\(\vek y\),</span> potem je \(\mat R\,\mat\Omega\,\mat R^\T\vek y = (\mat R\,\vek a)\times\vek y\) za vsak <span class="nobr">\(\vek y\).</span></p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da imata <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vektorja</a> v <a class="xref" href="sec-jacobijeva-matrika-robota.html#eq-vektorski-produkt-zasuk" data-knowl="eq-vektorski-produkt-zasuk">(27.22)</a> enak <a class="xref auto" href="sec-skalarni-produkt.html#def-skalarni-produkt" data-knowl="def-skalarni-produkt">skalarni produkt</a> z vsakim vektorjem, in nato to uporabiti.</p>
+<ol>
+<li>Naj bo \(\vek c\) poljuben vektor in <span class="nobr">\(\vek u = \mat R^\T\vek c\),</span> torej \(\vek c = \mat R\,\vek u\) (lema <a class="xref" href="sec-orientacija-clenov.html#lem-orientacija-in-zasuk" data-knowl="lem-orientacija-in-zasuk">27.9</a>).</li>
+<li><a class="xref auto" href="sec-determinanta.html#def-mesani-produkt" data-knowl="def-mesani-produkt">Mešani produkt</a> je <a class="xref auto" href="sec-determinanta.html#def-determinanta" data-knowl="def-determinanta">determinanta</a> <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrike</a>, ki ima vektorje v stolpcih (<a class="xref" href="sec-determinanta.html#eq-determinanta-stolpec" data-knowl="eq-determinanta-stolpec">(2.52)</a>), zato je <span class="nobr">\(\vek c\cdot\big((\mat R\,\vek a)\times(\mat R\,\vek b)\big) = \det(\mat R\,\vek u,\ \mat R\,\vek a,\ \mat R\,\vek b)\).</span></li>
+<li>Stolpci matrike \(\mat R\,\mat M\) so <span class="nobr">\(\mat R\),</span> pomnožen s stolpci matrike \(\mat M\) (<a class="xref" href="sec-matrike.html#eq-matrika-krat-vektor" data-knowl="eq-matrika-krat-vektor">(1.38)</a>). Zato je determinanta iz koraka 2 enaka \(\det\big(\mat R\,(\vek u, \vek a, \vek b)\big) = \det\mat R\cdot\det(\vek u, \vek a, \vek b)\) po izreku <a class="xref" href="sec-determinanta.html#thm-determinanta-produkta" data-knowl="thm-determinanta-produkta">2.52</a>, to je <span class="nobr">\(\vek u\cdot(\vek a\times\vek b)\).</span></li>
+<li>Po lemi <a class="xref" href="sec-matrike.html#lem-transponiran-produkt" data-knowl="lem-transponiran-produkt">1.101</a> je <span class="nobr">\(\vek u\cdot(\vek a\times\vek b) = (\mat R^\T\vek c)\cdot(\vek a\times\vek b) = \vek c\cdot\mat R\,(\vek a\times\vek b)\).</span></li>
+<li>Razlika \(\vek d = (\mat R\,\vek a)\times(\mat R\,\vek b) - \mat R\,(\vek a\times\vek b)\) torej izpolnjuje \(\vek c\cdot\vek d = 0\) za vsak <span class="nobr">\(\vek c\).</span> Za \(\vek c = \vek d\) je \(|\vek d|^2 = 0\) in <span class="nobr">\(\vek d = \vek 0\).</span> To je <a class="xref" href="sec-jacobijeva-matrika-robota.html#eq-vektorski-produkt-zasuk" data-knowl="eq-vektorski-produkt-zasuk">(27.22)</a>.</li>
+<li>Drugi del: \(\mat R\,\mat\Omega\,\mat R^\T\vek y = \mat R\,(\vek a\times\mat R^\T\vek y)\) po predpostavki, kar je po <a class="xref" href="sec-jacobijeva-matrika-robota.html#eq-vektorski-produkt-zasuk" data-knowl="eq-vektorski-produkt-zasuk">(27.22)</a> enako <span class="nobr">\((\mat R\,\vek a)\times(\mat R\,\mat R^\T\vek y) = (\mat R\,\vek a)\times\vek y\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> SPONG (4.9) in (4.8) (PDF str. 127): obe enakosti sta v viru povedani s &quot;preverimo z računom&quot;. Dokaz je naš.</p></div></div>
+<p>Pogoj \(\det\mat R = 1\) je potreben. Odbojna matrika \(\mat R = -\mat I\) ima \(\det\mat R = -1\) in je ortogonalna, a za <span class="nobr">\(\vek a = \vek e_{\mathrm{x}}\),</span> \(\vek b = \vek e_{\mathrm{y}}\) je <span class="nobr">\((\mat R\,\vek a)\times(\mat R\,\vek b) = (-\vek e_{\mathrm{x}})\times(-\vek e_{\mathrm{y}}) = \vek e_{\mathrm{z}}\),</span> medtem ko je \(\mat R\,(\vek a\times\vek b) = -\vek e_{\mathrm{z}}\) (num-06.out N4). Korak 3 dokaza je tam, kjer bi se pokazal faktor <span class="nobr">\(\det\mat R = -1\).</span> Zasuki ohranjajo <a class="xref auto" href="sec-simetrija-napetosti.html#def-desnosucni-sistem" data-knowl="def-desnosucni-sistem">desnosučnost</a> (lema <a class="xref" href="sec-orientacija-clenov.html#lem-orientacija-in-zasuk" data-knowl="lem-orientacija-in-zasuk">27.9</a>), odboji ne.</p>
+
+<div class="blk lema" id="lem-sestevanje-kotnih-hitrosti"><div class="blk-head"><span class="blk-label">Lema 27.39</span> <span class="blk-title">Seštevanje kotnih hitrosti (addition of angular velocities)</span></div><div class="blk-body"><p>Naj bo \(\mat R_2 = \mat R_1\,\mat R^1{}_2\) po lemi <a class="xref" href="sec-orientacija-clenov.html#lem-sestavljanje-orientacij" data-knowl="lem-sestavljanje-orientacij">27.12</a>, vse tri <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrike</a> z dvakrat <a class="xref auto" href="sec-sprememba-polja.html#def-zvezno-odvedljivo-polje" data-knowl="def-zvezno-odvedljivo-polje">zvezno odvedljivimi</a> elementi. Naj bo \(\vek\omega_1\) <a class="xref auto" href="sec-kineticna-energija.html#def-kotna-hitrost" data-knowl="def-kotna-hitrost">kotna hitrost</a> matrike \(\mat R_1\) in \(\vek\omega^1{}_{1,2}\) kotna hitrost matrike \(\mat R^1{}_2\) po lemi <a class="xref" href="sec-jacobijeva-matrika-robota.html#lem-odvod-orientacije" data-knowl="lem-odvod-orientacije">27.37</a> (komponente prve v sistemu <span class="nobr">\(0\),</span> druge v sistemu <span class="nobr">\(1\),</span> ker v njem merimo <span class="nobr">\(\mat R^1{}_2\)).</span> Tedaj je kotna hitrost matrike \(\mat R_2\)</p>
+<div class="eq" id="eq-vsota-kotnih-hitrosti">\[\vek\omega_2 = \vek\omega_1 + \mat R_1\,\vek\omega^1{}_{1,2} . \tag{27.23}\]</div>
+<p>Za verigo \(n\) členov je \(\vek\omega_{\mathrm{n}} = \sum_{\mathrm{i}=1}^n \mat R_{\mathrm{i}-1}\,\vek\omega^{i-1}{}_{\mathrm{i}-1,\mathrm{i}}\) z <span class="nobr">\(\mat R_0 = \mat I\).</span></p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da je \(\dot{\mat R}_2\,\mat R_2^\T\) vsota dveh <a class="xref auto" href="sec-matrike.html#def-simetricna-matrika" data-knowl="def-simetricna-matrika">antisimetričnih matrik</a>, ki ju poznamo, in nato brati <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vektor</a>.</p>
+<ol>
+<li>Po pravilu za odvod zmnožka (lema <a class="xref" href="sec-srednja-vrednost.html#lem-pravila-odvajanja" data-knowl="lem-pravila-odvajanja">1.81</a>) je <span class="nobr">\(\dot{\mat R}_2 = \dot{\mat R}_1\,\mat R^1{}_2 + \mat R_1\,\dot{\mat R}^1{}_2\).</span></li>
+<li>Po lemi <a class="xref" href="sec-matrike.html#lem-transponiran-produkt" data-knowl="lem-transponiran-produkt">1.101</a> je <span class="nobr">\(\mat R_2^\T = (\mat R^1{}_2)^\T\mat R_1^\T\).</span> Pomnožimo in uporabimo <span class="nobr">\(\mat R^1{}_2(\mat R^1{}_2)^\T = \mat I\):</span> <span class="nobr">\(\dot{\mat R}_2\,\mat R_2^\T = \dot{\mat R}_1\,\mat R_1^\T + \mat R_1\,\big(\dot{\mat R}^1{}_2(\mat R^1{}_2)^\T\big)\,\mat R_1^\T\).</span></li>
+<li>Prvi člen je <span class="nobr">\(\mat\Omega_1\),</span> kotna hitrost je <span class="nobr">\(\vek\omega_1\).</span> V drugem je oklepaj po lemi <a class="xref" href="sec-jacobijeva-matrika-robota.html#lem-odvod-orientacije" data-knowl="lem-odvod-orientacije">27.37</a> <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrika</a> z <span class="nobr">\(\vek y \mapsto \vek\omega^1{}_{1,2}\times\vek y\).</span> Po drugem delu leme <a class="xref" href="sec-jacobijeva-matrika-robota.html#lem-vektorski-produkt-zasuk" data-knowl="lem-vektorski-produkt-zasuk">27.38</a> je drugi člen preslikava <span class="nobr">\(\vek y \mapsto (\mat R_1\,\vek\omega^1{}_{1,2})\times\vek y\).</span></li>
+<li>Matrika \(\mat\Omega_2\) torej deluje kot <span class="nobr">\(\vek y \mapsto (\vek\omega_1 + \mat R_1\,\vek\omega^1{}_{1,2})\times\vek y\).</span> Če matrika deluje kot <span class="nobr">\(\vek y \mapsto \vek a\times\vek y\),</span> je <span class="nobr">\(\Omega_{32} = (\vek a\times\vek e_{\mathrm{y}})_{\mathrm{z}} = a_{\mathrm{x}}\),</span> \(\Omega_{13} = (\vek a\times\vek e_{\mathrm{z}})_{\mathrm{x}} = a_{\mathrm{y}}\) in <span class="nobr">\(\Omega_{21} = (\vek a\times\vek e_{\mathrm{x}})_{\mathrm{y}} = a_{\mathrm{z}}\),</span> torej je njen vektor po definiciji <a class="xref" href="sec-kineticna-energija.html#def-kotna-hitrost" data-knowl="def-kotna-hitrost">8.77</a> prav <span class="nobr">\(\vek a\).</span> To je <a class="xref" href="sec-jacobijeva-matrika-robota.html#eq-vsota-kotnih-hitrosti" data-knowl="eq-vsota-kotnih-hitrosti">(27.23)</a>.</li>
+<li>Za verigo uporabimo <a class="xref" href="sec-jacobijeva-matrika-robota.html#eq-vsota-kotnih-hitrosti" data-knowl="eq-vsota-kotnih-hitrosti">(27.23)</a> z <a class="xref auto" href="sec-konvergenca-zaporedij.html#thm-indukcija" data-knowl="thm-indukcija">indukcijo</a> po <span class="nobr">\(n\):</span> \(\mat R_{\mathrm{n}} = \mat R_{\mathrm{n}-1}\,\mat R^{n-1}{}_{\mathrm{n}}\) (lema <a class="xref" href="sec-orientacija-clenov.html#lem-sestavljanje-orientacij" data-knowl="lem-sestavljanje-orientacij">27.12</a>) da <span class="nobr">\(\vek\omega_{\mathrm{n}} = \vek\omega_{\mathrm{n}-1} + \mat R_{\mathrm{n}-1}\,\vek\omega^{n-1}{}_{\mathrm{n}-1,\mathrm{n}}\),</span> in \(\vek\omega_1 = \mat R_0\,\vek\omega^0{}_{0,1}\) je začetek.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> SPONG (4.20)-(4.26) (PDF str. 130-131) in (4.28)-(4.30) (PDF str. 131). Dokaz po korakih je naš, vir uporabi (4.8) in <span class="nobr">\(\mat S(\vek a) + \mat S(\vek b) = \mat S(\vek a + \vek b)\).</span></p></div></div>
+<p>Vsota <a class="xref" href="sec-jacobijeva-matrika-robota.html#eq-vsota-kotnih-hitrosti" data-knowl="eq-vsota-kotnih-hitrosti">(27.23)</a> je seštevanje vektorjev, ki je pravilno šele, ko so vse komponente zapisane v istem sistemu: \(\mat R_1\,\vek\omega^1{}_{1,2}\) je kotna hitrost člena \(2\) glede na člen <span class="nobr">\(1\),</span> preračunana v sistem \(0\) (lema <a class="xref" href="sec-orientacija-clenov.html#lem-orientacija-in-zasuk" data-knowl="lem-orientacija-in-zasuk">27.9</a>). Zadnji korak v dokazu je prav zato matrika \(\mat R_{\mathrm{i}-1}\) pred vsakim členom.</p>
+<p>Kakšna je kotna hitrost enega zgloba? Po razdelku <a class="xref" href="sec-dh-zapis.html">27.4</a> je \(\mat R^{i-1}{}_{\mathrm{i}} = \mat R_{\mathrm{z},\theta_\mathrm{i}}\,\mat R_{\mathrm{x},\alpha_\mathrm{i}}\) (lema <a class="xref" href="sec-dh-zapis.html#lem-dh-matrika" data-knowl="lem-dh-matrika">27.28</a>, definicija <a class="xref" href="sec-orientacija-clenov.html#def-osnovni-zasuki" data-knowl="def-osnovni-zasuki">27.10</a>). Pri vrtljivem zglobu je \(\theta_{\mathrm{i}}\) spremenljivka \(q_{\mathrm{i}}\) (ali \(q_{\mathrm{i}}\) plus stalna vrednost) in \(\alpha_{\mathrm{i}}\) stalen, pri drsnem zglobu je \(\theta_{\mathrm{i}}\) stalen.</p>
+
+<div class="blk lema" id="lem-kotna-hitrost-zgloba"><div class="blk-head"><span class="blk-label">Lema 27.40</span> <span class="blk-title">Kotna hitrost zgloba (angular velocity of a joint)</span></div><div class="blk-body"><p>Naj bo <span class="nobr">\(\mat K = \begin{pmatrix} 0 &amp; -1 &amp; 0 \\ 1 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 0 \end{pmatrix}\).</span> Tedaj je \(\mat K\,\vek y = \vek k\times\vek y\) za vsak \(\vek y\) in <span class="nobr">\(\dfrac{\mathrm{d}}{\mathrm{d}\theta}\mat R_{\mathrm{z},\theta} = \mat K\,\mat R_{\mathrm{z},\theta}\).</span> Pri vrtljivem zglobu \(i\) je <span class="nobr">\(\vek\omega^{i-1}{}_{\mathrm{i}-1,\mathrm{i}} = \dot q_{\mathrm{i}}\,\vek k\),</span> pri drsnem zglobu je <span class="nobr">\(\vek\omega^{i-1}{}_{\mathrm{i}-1,\mathrm{i}} = \vek 0\).</span></p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo oba <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">odvoda</a>, nato izračunati <span class="nobr">\(\dot{\mat R}\,\mat R^\T\).</span></p>
+<ol>
+<li>Po <a class="xref" href="sec-simetrija-napetosti.html#eq-vektorski-produkt" data-knowl="eq-vektorski-produkt">(2.32)</a> je <span class="nobr">\(\vek k\times\vek y = (0\cdot y_3 - 1\cdot y_2,\ 1\cdot y_1 - 0\cdot y_3,\ 0) = (-y_2,\ y_1,\ 0) = \mat K\,\vek y\).</span></li>
+<li><a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">Matrika</a> \(\mat R_{\mathrm{z},\theta}\) ima elemente <span class="nobr">\(\cos\theta\),</span> <span class="nobr">\(-\sin\theta\),</span> <span class="nobr">\(\sin\theta\),</span> \(\cos\theta\) in <span class="nobr">\(1\).</span> Odvoda sta \(\sin' = \cos\) in \(\cos' = -\sin\) (izrek <a class="xref" href="sec-sinus-kosinus.html#thm-odvoda-sinusa-kosinusa" data-knowl="thm-odvoda-sinusa-kosinusa">8.12</a>), zato je odvod matrike po \(\theta\) enak <span class="nobr">\(\begin{pmatrix} -\sin\theta &amp; -\cos\theta &amp; 0 \\ \cos\theta &amp; -\sin\theta &amp; 0 \\ 0 &amp; 0 &amp; 0 \end{pmatrix}\),</span> kar je \(\mat K\,\mat R_{\mathrm{z},\theta}\) po definiciji produkta matrik (definicija <a class="xref" href="sec-matrike.html#def-produkt-matrik" data-knowl="def-produkt-matrik">1.98</a>).</li>
+<li>Pri vrtljivem zglobu je \(\dot{\mat R}^{i-1}{}_{\mathrm{i}} = \dot q_{\mathrm{i}}\,\mat K\,\mat R_{\mathrm{z},\theta_\mathrm{i}}\mat R_{\mathrm{x},\alpha_\mathrm{i}}\) po <a class="xref auto" href="sec-zamenjava-spremenljivk.html#lem-verizno-pravilo" data-knowl="lem-verizno-pravilo">verižnem pravilu</a> in koraku 2. Po lemi <a class="xref" href="sec-matrike.html#lem-transponiran-produkt" data-knowl="lem-transponiran-produkt">1.101</a> je \((\mat R^{i-1}{}_{\mathrm{i}})^\T = \mat R_{\mathrm{x},\alpha_\mathrm{i}}^\T\mat R_{\mathrm{z},\theta_\mathrm{i}}^\T\) in zato <span class="nobr">\(\dot{\mat R}^{i-1}{}_{\mathrm{i}}(\mat R^{i-1}{}_{\mathrm{i}})^\T = \dot q_{\mathrm{i}}\,\mat K\),</span> saj sta zasuka ortogonalna (lema <a class="xref" href="sec-orientacija-clenov.html#lem-orientacija-in-zasuk" data-knowl="lem-orientacija-in-zasuk">27.9</a>). Po koraku 1 deluje kot <span class="nobr">\(\vek y \mapsto \dot q_{\mathrm{i}}\,\vek k\times\vek y\),</span> in <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vektor</a> po definiciji <a class="xref" href="sec-kineticna-energija.html#def-kotna-hitrost" data-knowl="def-kotna-hitrost">8.77</a> je \(\dot q_{\mathrm{i}}\,\vek k\) (korak 4 dokaza leme <a class="xref" href="sec-jacobijeva-matrika-robota.html#lem-sestevanje-kotnih-hitrosti" data-knowl="lem-sestevanje-kotnih-hitrosti">27.39</a>).</li>
+<li>Pri drsnem zglobu je \(\mat R^{i-1}{}_{\mathrm{i}}\) stalna, odvod je \(\mat 0\) in zato <span class="nobr">\(\vek\omega^{i-1}{}_{\mathrm{i}-1,\mathrm{i}} = \vek 0\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> SPONG (4.43) in (4.44) (PDF str. 134). Dokaz po korakih je naš.</p></div></div>
+<p>Vsak vrtljiv zglob torej zavrti naslednji člen okoli svoje osi \(\vek z_{\mathrm{i}-1}\) s hitrostjo <span class="nobr">\(\dot q_{\mathrm{i}}\),</span> drsni zglob ga ne zavrti. Od tod bo v naslednjem podrazdelku sledil kotni del <a class="xref auto" href="sec-zamenjava-spremenljivk.html#def-preslikava" data-knowl="def-preslikava">Jacobijeve matrike</a>.</p>
+
+<h3 id="sec-j-matrika"><span class="h-num">27.6.2</span> Matrika, ki preslika hitrosti zglobov v hitrost efektorja</h3>
+<p>Kako se hitrost efektorja sestavi iz hitrosti motorjev, si oglejmo na robotu A, dvočlenski ravninski roki z \(l_1 = 1\) m in \(l_2 = 0{,}5\) m, ki smo jo spoznali v razdelku <a class="xref" href="sec-robotske-verige.html">27.1</a> (mase členov so naša izbira, tu jih ne potrebujemo). Narišimo roko pri \(\vek q = (30^\circ;\ 60^\circ)\) (slika <a class="xref" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-stolpci" data-knowl="fig-c27-06-stolpci">27.27</a>). <a data-del="baza" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-stolpci" data-knowl="fig-c27-06-stolpci">Podnožje</a> je v koordinatnem <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">izhodišču</a>. <a data-del="c1" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-stolpci" data-knowl="fig-c27-06-stolpci">Člen 1</a> gre od podnožja do drugega zgloba pod kotom <span class="nobr">\(30^\circ\),</span> <a data-del="c2" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-stolpci" data-knowl="fig-c27-06-stolpci">člen 2</a> nadaljuje pod kotom <span class="nobr">\(q_1 + q_2 = 90^\circ\),</span> navpično navzgor, do vrha efektorja. Osi obeh zglobov, <span class="nobr"><a data-del="z" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-stolpci" data-knowl="fig-c27-06-stolpci">\(\vek z_0\) in \(\vek z_1\)</a>,</span> kažeta pravokotno iz lista proti nam, ker se roka vrti v ravnini lista.</p>
+
+<figure class="blk slika" id="fig-c27-06-stolpci"><p><span class="svgfig" role="img" aria-label="Robot A s hitrostjo vrha, ko se vrti motor 1, motor 2 in oba skupaj"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='392.09pt' height='167.06pt' viewBox='-72.000004 -72.000009 290.435168 123.749719'>
+<defs>
+<path id='c27-06-stolpci-g0-74' d='M4.443337-6.366127H5.250311V-6.834371C4.901619-6.804483 4.054795-6.804483 3.666252-6.804483C3.138232-6.804483 2.161893-6.804483 1.683686-6.834371V-6.366127H3.088418V-1.484433C3.088418-1.295143 3.088418-.249066 2.102117-.249066C1.932752-.249066 1.603985-.278954 1.305106-.408468V-.418431C1.305106-.418431 1.753425-.607721 1.753425-1.135741C1.753425-1.673724 1.325031-1.902864 .996264-1.902864C.627646-1.902864 .229141-1.653798 .229141-1.135741C.229141-.368618 1.016189 .109589 2.15193 .109589C3.486924 .109589 4.443337-.458281 4.443337-1.494396V-6.366127Z'/>
+<path id='c27-06-stolpci-g0-114' d='M2.022416-3.35741V-4.483188L.368618-4.403487V-3.935243C.986301-3.935243 1.05604-3.935243 1.05604-3.5467V-.468244H.368618V0C.71731-.009963 1.165629-.029888 1.62391-.029888C2.002491-.029888 2.6401-.029888 2.998755 0V-.468244H2.132005V-2.211706C2.132005-2.909091 2.381071-4.124533 3.377335-4.124533C3.367372-4.11457 3.188045-3.955168 3.188045-3.666252C3.188045-3.257783 3.506849-3.058531 3.795766-3.058531S4.403487-3.267746 4.403487-3.666252C4.403487-4.194271 3.865504-4.483188 3.347447-4.483188C2.650062-4.483188 2.251557-3.985056 2.022416-3.35741Z'/>
+<path id='c27-06-stolpci-g0-118' d='M5.041096-3.745953C5.100872-3.88543 5.140722-3.955168 5.778331-3.955168V-4.423412C5.529265-4.403487 5.240349-4.393524 4.991283-4.393524S4.293898-4.41345 4.084682-4.423412V-3.955168C4.273973-3.955168 4.562889-3.92528 4.562889-3.845579C4.562889-3.835616 4.552927-3.815691 4.513076-3.726027L3.35741-1.235367L2.092154-3.955168H2.630137V-4.423412C2.30137-4.403487 1.404732-4.393524 1.39477-4.393524C1.115816-4.393524 .667497-4.41345 .259029-4.423412V-3.955168H.896638L2.6401-.209215C2.759651 .039851 2.889166 .039851 3.01868 .039851C3.188045 .039851 3.287671 .009963 3.387298-.199253L5.041096-3.745953Z'/>
+<path id='c27-06-stolpci-g0-122' d='M4.473225-3.995019C4.552927-4.104608 4.572852-4.124533 4.572852-4.214197C4.572852-4.423412 4.433375-4.423412 4.254047-4.423412H.597758L.478207-2.67995H.946451C1.006227-3.706102 1.315068-4.064757 2.34122-4.064757H3.188045L.408468-.438356C.318804-.328767 .318804-.308842 .318804-.219178C.318804 0 .448319 0 .637609 0H4.423412L4.60274-2.012453H4.134496C4.044832-1.006227 3.88543-.398506 2.570361-.398506H1.713574L4.473225-3.995019Z'/>
+<path id='c27-06-stolpci-g1-113' d='M4.503113-4.293898C4.503113-4.333748 4.473225-4.393524 4.403487-4.393524C4.293898-4.393524 3.895392-3.995019 3.726027-3.706102C3.506849-4.244085 3.118306-4.403487 2.799502-4.403487C1.62391-4.403487 .398506-2.929016 .398506-1.484433C.398506-.508095 .986301 .109589 1.713574 .109589C2.141968 .109589 2.530511-.129514 2.889166-.488169C2.799502-.139477 2.470735 1.205479 2.440847 1.295143C2.361146 1.574097 2.281445 1.613948 1.723537 1.62391C1.594022 1.62391 1.494396 1.62391 1.494396 1.823163C1.494396 1.833126 1.494396 1.932752 1.62391 1.932752C1.942715 1.932752 2.291407 1.902864 2.620174 1.902864C2.958904 1.902864 3.317559 1.932752 3.646326 1.932752C3.696139 1.932752 3.825654 1.932752 3.825654 1.733499C3.825654 1.62391 3.726027 1.62391 3.566625 1.62391C3.088418 1.62391 3.088418 1.554172 3.088418 1.464508C3.088418 1.39477 3.108344 1.334994 3.128269 1.24533L4.503113-4.293898ZM1.743462-.109589C1.145704-.109589 1.105853-.876712 1.105853-1.046077C1.105853-1.524284 1.39477-2.610212 1.564134-3.028643C1.872976-3.765878 2.391034-4.184309 2.799502-4.184309C3.447073-4.184309 3.58655-3.377335 3.58655-3.307597C3.58655-3.247821 3.038605-1.066002 3.008717-1.026152C2.859278-.747198 2.30137-.109589 1.743462-.109589Z'/>
+<path id='c27-06-stolpci-g2-95' d='M1.912827-6.136986C1.912827-6.405978 1.683686-6.665006 1.384807-6.665006C1.046077-6.665006 .846824-6.386052 .846824-6.136986C.846824-5.867995 1.075965-5.608966 1.374844-5.608966C1.713574-5.608966 1.912827-5.88792 1.912827-6.136986Z'/>
+<path id='c27-06-stolpci-g3-48' d='M3.598506-2.224658C3.598506-2.991781 3.507846-3.542715 3.187049-4.030884C2.970859-4.351681 2.538481-4.630635 1.980573-4.630635C.36264-4.630635 .36264-2.726775 .36264-2.224658S.36264 .139477 1.980573 .139477S3.598506-1.72254 3.598506-2.224658ZM1.980573-.055791C1.659776-.055791 1.234371-.244085 1.094894-.81594C.99726-1.227397 .99726-1.799253 .99726-2.315318C.99726-2.824408 .99726-3.354421 1.101868-3.737983C1.248319-4.288917 1.694645-4.435367 1.980573-4.435367C2.357161-4.435367 2.719801-4.20523 2.84533-3.800747C2.956912-3.424159 2.963885-2.922042 2.963885-2.315318C2.963885-1.799253 2.963885-1.283188 2.873225-.843836C2.733748-.209215 2.259527-.055791 1.980573-.055791Z'/>
+<path id='c27-06-stolpci-g3-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='c27-06-stolpci-g3-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+</defs>
+<g id='c27-06-stolpci-page1'>
+<g stroke-miterlimit='10' transform='translate(-51.933439,40.187158)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='baza'>
+<path d='M0 0L-8.5359-5.69046H8.5359Z' fill='none'/>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-14.22636-5.69046H14.22638' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-14.22636-5.69046L-19.91682-11.38092' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-7.11319-5.69046L-12.80365-11.38092' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0-5.69046L-5.69046-11.38092' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M7.11319-5.69046L1.42273-11.38092' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M14.22638-5.69046L8.53592-11.38092' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='c1'>
+<g stroke-width='1.4'>
+<path d='M0 0L54.20244 31.29819' fill='none'/>
+</g>
+</g>
+<g class='del' data-del='c2'>
+<g stroke-width='1.4'>
+<path d='M54.20244 31.29819V62.59595' fill='none'/>
+</g>
+</g>
+<g class='del' data-del='z'>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M3.11157 0C3.11157 1.71849 1.71849 3.11157 0 3.11157S-3.11157 1.71849-3.11157 0S-1.71849-3.11157 0-3.11157S3.11157-1.71849 3.11157 0ZM0 0'/>
+</g>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.933439,40.187158)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M.98999 0C.98999 .54675 .54675 .98999 0 .98999S-.98999 .54675-.98999 0S-.54675-.98999 0-.98999S.98999-.54675 .98999 0ZM0 0' stroke='none'/>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.933439,40.187158)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M57.31401 31.29819C57.31401 33.01668 55.92093 34.40976 54.20244 34.40976S51.09087 33.01668 51.09087 31.29819S52.48395 28.18661 54.20244 28.18661S57.31401 29.5797 57.31401 31.29819ZM54.20244 31.29819'/>
+</g>
+<g transform='translate(54.20244,31.29819)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.933439,40.187158)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M55.19243 31.29819C55.19243 31.84494 54.74919 32.28818 54.20244 32.28818S53.21245 31.84494 53.21245 31.29819C53.21245 30.75143 53.65569 30.3082 54.20244 30.3082S55.19243 30.75143 55.19243 31.29819ZM54.20244 31.29819' stroke='none'/>
+<g transform='translate(54.20244,31.29819)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.933439,40.187158)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='baza'>
+<path d='M105.27505 0L96.73915-5.69046H113.81096Z' fill='none'/>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M91.04869-5.69046H119.50143' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M91.04869-5.69046L85.35823-11.38092' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M98.16187-5.69046L92.4714-11.38092' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M105.27505-5.69046L99.5846-11.38092' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M112.38824-5.69046L106.69778-11.38092' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M119.50143-5.69046L113.81097-11.38092' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='c1'>
+<g stroke-width='1.4'>
+<path d='M105.27505 0L159.4775 31.29819' fill='none'/>
+</g>
+</g>
+<g class='del' data-del='c2'>
+<g stroke-width='1.4'>
+<path d='M159.4775 31.29819V62.59595' fill='none'/>
+</g>
+</g>
+<g class='del' data-del='z'>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M108.38663 0C108.38663 1.71849 106.99355 3.11157 105.27505 3.11157C103.55656 3.11157 102.16348 1.71849 102.16348 0S103.55656-3.11157 105.27505-3.11157C106.99355-3.11157 108.38663-1.71849 108.38663 0ZM105.27505 0'/>
+</g>
+<g transform='translate(105.27505,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.933439,40.187158)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M106.26505 0C106.26505 .54675 105.82181 .98999 105.27505 .98999C104.7283 .98999 104.28506 .54675 104.28506 0S104.7283-.98999 105.27505-.98999C105.82181-.98999 106.26505-.54675 106.26505 0ZM105.27505 0' stroke='none'/>
+<g transform='translate(105.27505,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.933439,40.187158)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M162.58907 31.29819C162.58907 33.01668 161.19598 34.40976 159.4775 34.40976C157.759 34.40976 156.36592 33.01668 156.36592 31.29819S157.759 28.18661 159.4775 28.18661C161.19598 28.18661 162.58907 29.5797 162.58907 31.29819ZM159.4775 31.29819'/>
+</g>
+<g transform='translate(159.4775,31.29819)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.933439,40.187158)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M160.46748 31.29819C160.46748 31.84494 160.02425 32.28818 159.4775 32.28818C158.93074 32.28818 158.4875 31.84494 158.4875 31.29819C158.4875 30.75143 158.93074 30.3082 159.4775 30.3082C160.02425 30.3082 160.46748 30.75143 160.46748 31.29819ZM159.4775 31.29819' stroke='none'/>
+<g transform='translate(159.4775,31.29819)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.933439,40.187158)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='baza'>
+<path d='M210.55013 0L202.01422-5.69046H219.08603Z' fill='none'/>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M196.32376-5.69046H224.7765' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M196.32376-5.69046L190.6333-11.38092' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M203.43694-5.69046L197.74648-11.38092' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M210.55013-5.69046L204.85966-11.38092' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M217.66331-5.69046L211.97285-11.38092' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M224.7765-5.69046L219.08604-11.38092' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='c1'>
+<g stroke-width='1.4'>
+<path d='M210.55013 0L264.75256 31.29819' fill='none'/>
+</g>
+</g>
+<g class='del' data-del='c2'>
+<g stroke-width='1.4'>
+<path d='M264.75256 31.29819V62.59595' fill='none'/>
+</g>
+</g>
+<g class='del' data-del='z'>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M213.6617 0C213.6617 1.71849 212.26862 3.11157 210.55013 3.11157C208.83163 3.11157 207.43855 1.71849 207.43855 0S208.83163-3.11157 210.55013-3.11157C212.26862-3.11157 213.6617-1.71849 213.6617 0ZM210.55013 0'/>
+</g>
+<g transform='translate(210.55013,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.933439,40.187158)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M211.54012 0C211.54012 .54675 211.09688 .98999 210.55013 .98999C210.00337 .98999 209.56013 .54675 209.56013 0S210.00337-.98999 210.55013-.98999C211.09688-.98999 211.54012-.54675 211.54012 0ZM210.55013 0' stroke='none'/>
+<g transform='translate(210.55013,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.933439,40.187158)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M267.86414 31.29819C267.86414 33.01668 266.47105 34.40976 264.75256 34.40976S261.64099 33.01668 261.64099 31.29819S263.03407 28.18661 264.75256 28.18661S267.86414 29.5797 267.86414 31.29819ZM264.75256 31.29819'/>
+</g>
+<g transform='translate(264.75256,31.29819)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.933439,40.187158)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M265.74255 31.29819C265.74255 31.84494 265.29932 32.28818 264.75256 32.28818C264.20581 32.28818 263.76257 31.84494 263.76257 31.29819C263.76257 30.75143 264.20581 30.3082 264.75256 30.3082C265.29932 30.3082 265.74255 30.75143 265.74255 31.29819ZM264.75256 31.29819' stroke='none'/>
+<g transform='translate(264.75256,31.29819)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.933439,40.187158)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='r1'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.6'>
+<path d='M1.42271 .85355L49.97372 58.41577' fill='none'/>
+<g transform='matrix(0.64473,0.76436,-0.76436,0.64473,48.37709,56.52287)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(11.32979,36.93915)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.933439,40.187158)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-51.933439' y='40.187158' xlink:href='#c27-06-stolpci-g0-114'/>
+<use x='-47.215033' y='41.681539' xlink:href='#c27-06-stolpci-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='w1'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M15.6491 1.42271C15.07602 7.97523 10.46361 13.47235 8.18962 14.0817' fill='none'/>
+<g transform='matrix(-0.96591,0.25877,-0.25877,-0.96591,10.70584,13.4076)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(17.71797,19.82602)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.933439,40.187158)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-50.084446' y='40.187158' xlink:href='#c27-06-stolpci-g2-95'/>
+<use x='-51.933439' y='40.187158' xlink:href='#c27-06-stolpci-g1-113'/>
+<use x='-47.485977' y='41.681539' xlink:href='#c27-06-stolpci-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='v1'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.0'>
+<path d='M54.20244 62.59595L17.52946 94.34454' fill='none'/>
+<g transform='matrix(-0.75601,0.6545,-0.6545,-0.75601,19.5313,92.61151)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.33095 0L1.67535 1.31036L2.89789 0L1.67535-1.31036Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(9.1535,102.41377)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.933439,40.187158)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-51.933439' y='40.187158' xlink:href='#c27-06-stolpci-g0-74'/>
+<use x='-46.011233' y='41.681539' xlink:href='#c27-06-stolpci-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='z'>
+<g transform='translate(-14.6529,4.7874)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.933439,40.187158)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.933439' y='40.187158' xlink:href='#c27-06-stolpci-g0-122'/>
+<use x='-46.84145' y='41.681539' xlink:href='#c27-06-stolpci-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='r2'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.6'>
+<path d='M154.2138 32.72047V56.82103' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,154.2138,54.34457)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(140.22025,45.47461)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.933439,40.187158)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-51.933439' y='40.187158' xlink:href='#c27-06-stolpci-g0-114'/>
+<use x='-47.215033' y='41.681539' xlink:href='#c27-06-stolpci-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='w2'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M170.71645 31.29819C170.71645 34.66196 169.22783 37.85434 169.88652 37.30162' fill='none'/>
+<g transform='matrix(-0.76604,0.64276,-0.64276,-0.76604,171.88206,35.62721)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(174.77722,40.31203)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.933439,40.187158)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-50.084446' y='40.187158' xlink:href='#c27-06-stolpci-g2-95'/>
+<use x='-51.933439' y='40.187158' xlink:href='#c27-06-stolpci-g1-113'/>
+<use x='-47.485977' y='41.681539' xlink:href='#c27-06-stolpci-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='v2'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='1.0'>
+<path d='M159.4775 62.59595H143.74142' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,146.38931,62.59595)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.33095 0L1.67535 1.31036L2.89789 0L1.67535-1.31036Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(125.29715,67.9289)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.933439,40.187158)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-51.933439' y='40.187158' xlink:href='#c27-06-stolpci-g0-74'/>
+<use x='-46.011233' y='41.681539' xlink:href='#c27-06-stolpci-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='z'>
+<g transform='translate(90.62216,4.7874)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.933439,40.187158)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.933439' y='40.187158' xlink:href='#c27-06-stolpci-g0-122'/>
+<use x='-46.84145' y='41.681539' xlink:href='#c27-06-stolpci-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(165.81352,21.29004)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.933439,40.187158)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.933439' y='40.187158' xlink:href='#c27-06-stolpci-g0-122'/>
+<use x='-46.84145' y='41.681539' xlink:href='#c27-06-stolpci-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='v1'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='1.0'>
+<path d='M264.75256 62.59595L228.07959 94.34454' fill='none'/>
+<g transform='matrix(-0.75601,0.6545,-0.6545,-0.75601,230.08142,92.61151)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.33095 0L1.67535 1.31036L2.89789 0L1.67535-1.31036Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(248.66872,77.38004)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.933439,40.187158)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-51.933439' y='40.187158' xlink:href='#c27-06-stolpci-g0-74'/>
+<use x='-46.011233' y='41.681539' xlink:href='#c27-06-stolpci-g3-49'/>
+<use x='-39.69287' y='40.187158' xlink:href='#c27-06-stolpci-g2-95'/>
+<use x='-41.541863' y='40.187158' xlink:href='#c27-06-stolpci-g1-113'/>
+<use x='-37.094401' y='41.681539' xlink:href='#c27-06-stolpci-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='v2'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='1.0'>
+<path d='M224.9189 97.08083H219.14102' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,221.78891,97.08083)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.33095 0L1.67535 1.31036L2.89789 0L1.67535-1.31036Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(193.07947,101.52525)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.933439,40.187158)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-51.933439' y='40.187158' xlink:href='#c27-06-stolpci-g0-74'/>
+<use x='-46.011233' y='41.681539' xlink:href='#c27-06-stolpci-g3-50'/>
+<use x='-39.69287' y='40.187158' xlink:href='#c27-06-stolpci-g2-95'/>
+<use x='-41.541863' y='40.187158' xlink:href='#c27-06-stolpci-g1-113'/>
+<use x='-37.094401' y='41.681539' xlink:href='#c27-06-stolpci-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='v'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.2'>
+<path d='M264.75256 62.59595L218.34338 94.73781' fill='none'/>
+<g transform='matrix(-0.82205,0.56932,-0.56932,-0.82205,220.57376,93.19315)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <g stroke-width='1.15233'>
+ <path d='M5.10281 0L1.93056 1.14156L3.00125 0L1.93056-1.14156Z'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(229.69432,83.77135)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.933439,40.187158)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-51.933439' y='40.187158' xlink:href='#c27-06-stolpci-g0-118'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 27.27</span>: Robot A pri <span class="nobr">\(\vek q = (30^\circ;\ 60^\circ)\),</span> \(l_1 = 1\) m, \(l_2 = 0{,}5\) m (dolžine 2,2 cm na m, hitrosti 1,4 cm na m/s). Osi zglobov \(\vek z_0\) in \(\vek z_1\) kažejo iz lista. Levo: vrti se le motor 1 s hitrostjo \(\dot q_1 = 1\) rad/s, vsa roka se kot ena celota vrti okoli osi \(\vek z_0\) in vrh ima hitrost \(\vek J_1 = (-1;\ 0{,}866)\) m/s, pravokotno na ročico <span class="nobr">\(\vek r_1\).</span> Sredina: vrti se le motor 2 z \(\dot q_2 = 1\) rad/s, člen 1 miruje in vrh ima hitrost \(\vek J_2 = (-0{,}5;\ 0)\) m/s, pravokotno na ročico <span class="nobr">\(\vek r_2\).</span> Desno: oba motorja hkrati, \(\dot q_1 = 1\) rad/s in \(\dot q_2 = 0{,}5\) rad/s, hitrost vrha \(\vek v\) je vsota obeh prispevkov (črtkano), \((-1{,}25;\ 0{,}866)\) m/s.</figcaption></figure>
+<p>Zdaj naj se vrti le motor 1 <a data-del="w1" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-stolpci" data-knowl="fig-c27-06-stolpci">s hitrostjo \(\dot q_1\)</a> (levi del slike). Motor 2 miruje, zato se oba člena obnašata kot eno <a class="xref auto" href="sec-deformacija-v-tocki.html#def-togo-telo" data-knowl="def-togo-telo">togo telo</a>, ki se vrti okoli osi \(\vek z_0\) s <a class="xref auto" href="sec-kineticna-energija.html#def-kotna-hitrost" data-knowl="def-kotna-hitrost">kotno hitrostjo</a> \(\dot q_1\,\vek z_0\) (lema <a class="xref" href="sec-jacobijeva-matrika-robota.html#lem-kotna-hitrost-zgloba" data-knowl="lem-kotna-hitrost-zgloba">27.40</a>). Vrh na <a data-del="r1" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-stolpci" data-knowl="fig-c27-06-stolpci">ročici \(\vek r_1 = \vek o_2 - \vek o_0\)</a> od osi do vrha ima po lemi <a class="xref" href="sec-jacobijeva-matrika-robota.html#lem-odvod-orientacije" data-knowl="lem-odvod-orientacije">27.37</a> (z nepremičnim izhodiščem <span class="nobr">\(\vek o_0\))</span> hitrost <span class="nobr">\(\dot q_1\,\vek z_0\times\vek r_1\).</span> <a class="xref auto" href="sec-simetrija-napetosti.html#def-vektorski-produkt" data-knowl="def-vektorski-produkt">Vektorski produkt</a> je pravokoten na <a class="xref auto" href="sec-simetrija-napetosti.html#lem-rocica" data-knowl="lem-rocica">ročico</a> (lema <a class="xref" href="sec-simetrija-napetosti.html#lem-lastnosti-vektorskega-produkta" data-knowl="lem-lastnosti-vektorskega-produkta">2.31</a>, točka 4), njegova dolžina pa je \(|\vek r_1| = \sqrt{0{,}866^2 + 1^2} = 1{,}3229\) m krat <span class="nobr">\(\dot q_1\).</span> Pri \(\dot q_1 = 1\) rad/s je to <span class="nobr"><a data-del="v1" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-stolpci" data-knowl="fig-c27-06-stolpci">hitrost \(\vek J_1\)</a>,</span> narisana iz vrha. Povedano z rokami: točka na veliki ročici se pri enaki kotni hitrosti giblje hitreje kot točka na majhni, in smer gibanja je pravokotna na ročico. V drugem delu (sredina slike) se vrti le motor 2 <span class="nobr"><a data-del="w2" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-stolpci" data-knowl="fig-c27-06-stolpci">s hitrostjo \(\dot q_2\)</a>.</span> Člen 1 miruje, člen 2 se vrti okoli osi \(\vek z_1\) skozi drugi zglob, <a data-del="r2" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-stolpci" data-knowl="fig-c27-06-stolpci">ročica \(\vek r_2\)</a> je le še dolžina člena 2, \(|\vek o_2 - \vek o_1| = 0{,}5\) m, in vrh se giblje s <a data-del="v2" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-stolpci" data-knowl="fig-c27-06-stolpci">hitrostjo \(\vek J_2\)</a> \(= \vek z_1\times\vek r_2\) pri \(\dot q_2 = 1\) rad/s. V desnem delu vrtita motorja hkrati, vsak s svojo hitrostjo. Hitrost vrha je <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">odvod</a> njegove lege po času, ta lega pa je <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcija</a> obeh kotov, zato je po <a class="xref auto" href="sec-zamenjava-spremenljivk.html#lem-verizno-pravilo" data-knowl="lem-verizno-pravilo">verižnem pravilu</a> (lema <a class="xref" href="sec-implicitna-funkcija.html#lem-verizno-pravilo-n" data-knowl="lem-verizno-pravilo-n">8.29</a>) <a data-del="v" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-stolpci" data-knowl="fig-c27-06-stolpci">hitrost vsota</a> obeh prispevkov, vsak pomnožen s svojo hitrostjo motorja, <span class="nobr">\(\vek v = \vek J_1\,\dot q_1 + \vek J_2\,\dot q_2\).</span> Števili \(\dot q_1\) in \(\dot q_2\) torej določata hitrost vrha z <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matriko</a>, ki ima \(\vek J_1\) in \(\vek J_2\) za stolpca.</p>
+<p>Ime Jacobijeva matrika ima že matrika odvodov preslikave iz poglavja <a class="xref" href="ch-energijski-principi.html">4</a> (definicija <a class="xref" href="sec-zamenjava-spremenljivk.html#def-preslikava" data-knowl="def-preslikava">4.42</a>). Tudi ta matrika je matrika odvodov: stolpec \(i\) je odvod lege vrha po \(q_{\mathrm{i}}\) (korak 3 izreka <a class="xref" href="sec-jacobijeva-matrika-robota.html#thm-stolpci-jacobijeve" data-knowl="thm-stolpci-jacobijeve">27.42</a>), zato ji pravimo tako. Za kotno hitrost takih odvodov ni (lema <a class="xref" href="sec-jacobijeva-matrika-robota.html#lem-omega-ni-odvod" data-knowl="lem-omega-ni-odvod">27.44</a>), zato matriko za oba dela skupaj definiramo po njeni nalogi.</p>
+
+<div class="blk definicija" id="def-jacobijeva-matrika-robota"><div class="blk-head"><span class="blk-label">Definicija 27.41</span> <span class="blk-title">Jacobijeva matrika robota (Jacobian matrix of a robot)</span></div><div class="blk-body"><p>Naj bo robot z \(n\) zglobi, <a class="xref auto" href="sec-robotske-verige.html#def-spremenljivke-zglobov" data-knowl="def-spremenljivke-zglobov">spremenljivkami zglobov</a> \(\vek q\) in <a class="xref auto" href="sec-orientacija-clenov.html#def-matrika-orientacije" data-knowl="def-matrika-orientacije">matriko orientacije</a> \(\mat R_{\mathrm{n}}(\vek q)\) efektorja. Naj bo \(\vek v = \dot{\vek o}_{\mathrm{n}}\) hitrost <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">izhodišča</a> efektorja, \(\vek\omega = \vek\omega_{\mathrm{n}}\) <a class="xref auto" href="sec-kineticna-energija.html#def-kotna-hitrost" data-knowl="def-kotna-hitrost">kotna hitrost</a> <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrike</a> \(\mat R_{\mathrm{n}}\) po lemi <a class="xref" href="sec-jacobijeva-matrika-robota.html#lem-odvod-orientacije" data-knowl="lem-odvod-orientacije">27.37</a> (obe v sistemu <span class="nobr">\(0\))</span> in \(\vek\xi = (\vek v;\ \vek\omega)\) stolpec s šestimi števili. Jacobijeva matrika robota je matrika \(\mat J(\vek q)\) velikosti <span class="nobr">\(6 \times n\),</span> ki je <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcija</a> le spremenljivk \(\vek q\) in za vsako gibanje \(\vek q(t)\) izpolnjuje</p>
+<div class="eq" id="eq-jacobijeva">\[\vek\xi = \mat J(\vek q)\,\dot{\vek q} . \tag{27.24}\]</div>
+<p>Zgornjih \(3\) vrstic označimo <span class="nobr">\(\mat J_{\mathrm{v}}\),</span> spodnje \(3\) vrstice <span class="nobr">\(\mat J_\omega\),</span> torej \(\vek v = \mat J_{\mathrm{v}}\,\dot{\vek q}\) in <span class="nobr">\(\vek\omega = \mat J_\omega\,\dot{\vek q}\).</span> Stolpec \(i\) označimo <span class="nobr">\(\mat J_{\mathrm{i}}\).</span></p>
+
+<p class="vir"><span class="vir-label">Vir:</span> SPONG (4.37)-(4.42) (PDF str. 133), kjer je \(\vek\xi\) imenovan &quot;body velocity&quot; in je matrika zapisana kot <span class="nobr">\(6 \times n\).</span> Tu je matrika definirana z lastnostjo <a class="xref" href="sec-jacobijeva-matrika-robota.html#eq-jacobijeva" data-knowl="eq-jacobijeva">(27.24)</a>, obstoj in enoličnost sta v izreku <a class="xref" href="sec-jacobijeva-matrika-robota.html#thm-stolpci-jacobijeve" data-knowl="thm-stolpci-jacobijeve">27.42</a>.</p></div></div>
+<p>Enote: \(\dot q_{\mathrm{i}}\) je v rad/s pri vrtljivem in v m/s pri drsnem zglobu, zato ima matrika \(\mat J\) stolpce z različnimi enotami (stolpec vrtljivega zgloba ima zgoraj m, spodaj 1, stolpec drsnega zgloba zgoraj 1, spodaj 0). Definicija ne pove, ali taka matrika obstaja in kakšna je. Slika kaže, da je stolpec \(i\) hitrost, ki jo dobimo, ko se vrti samo zglob <span class="nobr">\(i\).</span> To dokaže izrek.</p>
+
+<div class="blk izrek" id="thm-stolpci-jacobijeve"><div class="blk-head"><span class="blk-label">Izrek 27.42</span> <span class="blk-title">Stolpci Jacobijeve matrike (columns of the Jacobian matrix)</span></div><div class="blk-body"><p>Naj bo \(\vek q(t)\) dvakrat <a class="xref auto" href="sec-sprememba-polja.html#def-zvezno-odvedljivo-polje" data-knowl="def-zvezno-odvedljivo-polje">zvezno odvedljivo</a> gibanje robota z \(n\) zglobi in DH sistemi \(0, \dots, n\) (razdelek <a class="xref" href="sec-dh-zapis.html">27.4</a>). Naj bo \(\rho_{\mathrm{i}} = 1\) pri vrtljivem in \(\rho_{\mathrm{i}} = 0\) pri drsnem zglobu <span class="nobr">\(i\).</span> Tedaj <a class="xref auto" href="sec-jacobijeva-matrika-robota.html#def-jacobijeva-matrika-robota" data-knowl="def-jacobijeva-matrika-robota">Jacobijeva matrika robota</a> obstaja, je enolična in ima stolpce</p>
+<div class="eq" id="eq-stolpci-jacobijeve">\[\mat J_{\mathrm{i}} = \begin{pmatrix} \vek z_{\mathrm{i}-1}\times(\vek o_{\mathrm{n}} - \vek o_{\mathrm{i}-1}) \\ \vek z_{\mathrm{i}-1} \end{pmatrix} \text{ (vrtljiv zglob)} , \qquad \mat J_{\mathrm{i}} = \begin{pmatrix} \vek z_{\mathrm{i}-1} \\ \vek 0 \end{pmatrix} \text{ (drsni zglob)} . \tag{27.25}\]</div>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo najprej, da je <span class="nobr">\(\vek\omega_{\mathrm{n}} = \sum_{\mathrm{i}} \rho_{\mathrm{i}}\,\dot q_{\mathrm{i}}\,\vek z_{\mathrm{i}-1}\),</span> nato, da je \(\partial\vek o_{\mathrm{n}}/\partial q_{\mathrm{i}}\) enak zgornjemu delu stolpca <span class="nobr">\(i\),</span> in na koncu uporabiti <a class="xref auto" href="sec-zamenjava-spremenljivk.html#lem-verizno-pravilo" data-knowl="lem-verizno-pravilo">verižno pravilo</a>.</p>
+<ol>
+<li>Po lemi <a class="xref" href="sec-jacobijeva-matrika-robota.html#lem-kotna-hitrost-zgloba" data-knowl="lem-kotna-hitrost-zgloba">27.40</a> je <span class="nobr">\(\vek\omega^{i-1}{}_{\mathrm{i}-1,\mathrm{i}} = \rho_{\mathrm{i}}\,\dot q_{\mathrm{i}}\,\vek k\).</span> Po lemi <a class="xref" href="sec-jacobijeva-matrika-robota.html#lem-sestevanje-kotnih-hitrosti" data-knowl="lem-sestevanje-kotnih-hitrosti">27.39</a> je <span class="nobr">\(\vek\omega_{\mathrm{n}} = \sum_{\mathrm{i}} \rho_{\mathrm{i}}\,\dot q_{\mathrm{i}}\,\mat R_{\mathrm{i}-1}\,\vek k = \sum_{\mathrm{i}} \rho_{\mathrm{i}}\,\dot q_{\mathrm{i}}\,\vek z_{\mathrm{i}-1}\).</span> To je \(\mat J_\omega\,\dot{\vek q}\) s stolpcem <span class="nobr">\(\rho_{\mathrm{i}}\,\vek z_{\mathrm{i}-1}\),</span> kar je spodnji del <a class="xref" href="sec-jacobijeva-matrika-robota.html#eq-stolpci-jacobijeve" data-knowl="eq-stolpci-jacobijeve">(27.25)</a>.</li>
+<li>Lege sestavimo po lemi <a class="xref" href="sec-homogene-transformacije.html#lem-homogena-sestavljanje" data-knowl="lem-homogena-sestavljanje">27.22</a> iz <span class="nobr">\(\mat T^0{}_{\mathrm{n}} = \mat T^0{}_{\mathrm{i}-1}\,\mat T^{i-1}{}_{\mathrm{i}}\,\mat T^i{}_{\mathrm{n}}\).</span> Zato je \(\vek o_{\mathrm{n}} = \vek o_{\mathrm{i}-1} + \mat R_{\mathrm{i}-1}\,\vek o^{i-1}{}_{\mathrm{n}}\) in <span class="nobr">\(\vek o^{i-1}{}_{\mathrm{n}} = \mat R^{i-1}{}_{\mathrm{i}}\,\vek o^i{}_{\mathrm{n}} + \vek o^{i-1}{}_{\mathrm{i}}\).</span> Po lemi <a class="xref" href="sec-dh-zapis.html#lem-dh-matrika" data-knowl="lem-dh-matrika">27.28</a> vsak \(\mat T^{j-1}{}_{\mathrm{j}}\) vsebuje le spremenljivko <span class="nobr">\(q_{\mathrm{j}}\),</span> zato \(\vek o_{\mathrm{i}-1}\) in \(\mat R_{\mathrm{i}-1}\) ne vsebujeta \(q_{\mathrm{i}}\) in \(\vek o^i{}_{\mathrm{n}}\) ne vsebuje <span class="nobr">\(q_{\mathrm{i}}\).</span></li>
+<li>Po verižnem pravilu (lema <a class="xref" href="sec-implicitna-funkcija.html#lem-verizno-pravilo-n" data-knowl="lem-verizno-pravilo-n">8.29</a>, točka 1) je <span class="nobr">\(\dot{\vek o}_{\mathrm{n}} = \sum_{\mathrm{i}} \dfrac{\partial\vek o_{\mathrm{n}}}{\partial q_{\mathrm{i}}}\,\dot q_{\mathrm{i}}\).</span> <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">Vektor</a> \(\partial\vek o_{\mathrm{n}}/\partial q_{\mathrm{i}}\) je torej stolpec \(i\) <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrike</a> \(\mat J_{\mathrm{v}}\) in je hitrost efektorja, ko je \(\dot q_{\mathrm{i}} = 1\) in so vsi drugi <span class="nobr">\(\dot q_{\mathrm{j}} = 0\).</span></li>
+<li>Drsni zglob: \(q_{\mathrm{i}} = d_{\mathrm{i}}\) in po lemi <a class="xref" href="sec-dh-zapis.html#lem-dh-matrika" data-knowl="lem-dh-matrika">27.28</a> je <span class="nobr">\(\vek o^{i-1}{}_{\mathrm{i}} = \mat R_{\mathrm{z},\theta_\mathrm{i}}\,(a_{\mathrm{i}},\ 0,\ d_{\mathrm{i}})\),</span> \(\mat R^{i-1}{}_{\mathrm{i}}\) pa od \(d_{\mathrm{i}}\) ne zavisi. Zato je \(\partial\vek o^{i-1}{}_{\mathrm{n}}/\partial d_{\mathrm{i}} = \mat R_{\mathrm{z},\theta_\mathrm{i}}\,\vek k = \vek k\) in po koraku 2 <span class="nobr">\(\partial\vek o_{\mathrm{n}}/\partial d_{\mathrm{i}} = \mat R_{\mathrm{i}-1}\,\vek k = \vek z_{\mathrm{i}-1}\).</span></li>
+<li>Vrtljiv zglob: \(\theta_{\mathrm{i}} = q_{\mathrm{i}}\) ali \(q_{\mathrm{i}}\) plus stalna vrednost, ki <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">odvoda</a> ne spremeni. Po lemi <a class="xref" href="sec-dh-zapis.html#lem-dh-matrika" data-knowl="lem-dh-matrika">27.28</a> je \(\vek o^{i-1}{}_{\mathrm{n}} = \mat R_{\mathrm{z},\theta_\mathrm{i}}\,\vek w\) z <span class="nobr">\(\vek w = (a_{\mathrm{i}},\ 0,\ d_{\mathrm{i}}) + \mat R_{\mathrm{x},\alpha_\mathrm{i}}\,\vek o^i{}_{\mathrm{n}}\),</span> ki ne zavisi od \(\theta_{\mathrm{i}}\) (korak 2). Po lemi <a class="xref" href="sec-jacobijeva-matrika-robota.html#lem-kotna-hitrost-zgloba" data-knowl="lem-kotna-hitrost-zgloba">27.40</a> je \(\partial\mat R_{\mathrm{z},\theta}/\partial\theta = \mat K\,\mat R_{\mathrm{z},\theta}\) in <span class="nobr">\(\mat K\,\vek y = \vek k\times\vek y\).</span> Zato je <span class="nobr">\(\partial\vek o^{i-1}{}_{\mathrm{n}}/\partial\theta_{\mathrm{i}} = \vek k\times\vek o^{i-1}{}_{\mathrm{n}}\).</span></li>
+<li>Po koraku 2 in po <a class="xref" href="sec-jacobijeva-matrika-robota.html#eq-vektorski-produkt-zasuk" data-knowl="eq-vektorski-produkt-zasuk">(27.22)</a> je <span class="nobr">\(\dfrac{\partial\vek o_{\mathrm{n}}}{\partial q_{\mathrm{i}}} = \mat R_{\mathrm{i}-1}\,(\vek k\times\vek o^{i-1}{}_{\mathrm{n}}) = (\mat R_{\mathrm{i}-1}\,\vek k)\times(\mat R_{\mathrm{i}-1}\,\vek o^{i-1}{}_{\mathrm{n}}) = \vek z_{\mathrm{i}-1}\times(\vek o_{\mathrm{n}} - \vek o_{\mathrm{i}-1})\).</span></li>
+<li>Koraka 1 in 3 skupaj z 4 in 6 dasta \(\vek\xi = \mat J\,\dot{\vek q}\) z <a class="xref" href="sec-jacobijeva-matrika-robota.html#eq-stolpci-jacobijeve" data-knowl="eq-stolpci-jacobijeve">(27.25)</a>. Enoličnost: če \(\mat J'\) tudi izpolnjuje <a class="xref" href="sec-jacobijeva-matrika-robota.html#eq-jacobijeva" data-knowl="eq-jacobijeva">(27.24)</a>, vzamemo gibanje \(\vek q + t\,\vek u\) z vektorjem \(\vek u\) in dobimo \(\mat J'\,\vek u = \mat J\,\vek u\) za vsak <span class="nobr">\(\vek u\).</span> Za \(\vek u = \vek e_{\mathrm{i}}\) sta enaka stolpca <span class="nobr">\(i\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> SPONG (4.43)-(4.47) (PDF str. 134) za kotni del, (4.48)-(4.54) (PDF str. 135-137) za hitrostni del in (4.55)-(4.58) (PDF str. 137) za stolpce. Vir uporabi sliko 4.1 in 4.2 (PDF str. 135-136) namesto računa s parcialnimi odvodi. Dokaz po korakih je naš, vir kot izhodišče uporabi isto zamisel o enem zglobu naenkrat.</p></div></div>
+<p>Stolpec vrtljivega zgloba je torej prav to, kar je narisala slika: kotna hitrost \(\vek z_{\mathrm{i}-1}\) in hitrost vrha \(\vek z_{\mathrm{i}-1}\times\vek r\) z ročico \(\vek r = \vek o_{\mathrm{n}} - \vek o_{\mathrm{i}-1}\) od osi zgloba do vrha. Stolpec drsnega zgloba je hitrost \(\vek z_{\mathrm{i}-1}\) vzdolž osi in nič kotne hitrosti. To si oglejmo na treh zgledih.</p>
+<p>Pogosta napaka je ročica od podnožja namesto od osi zgloba. Pri robotu A bi to pomenilo <span class="nobr">\(\mat J_2 = \vek k\times(\vek o_2 - \vek o_0)\),</span> kar je \((-1;\ 0{,}866)\) m namesto \((-0{,}5;\ 0)\) m (levi in srednji del slike <a class="xref" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-stolpci" data-knowl="fig-c27-06-stolpci">27.27</a>). Pri \(\dot{\vek q} = (1;\ 0{,}5)\) rad/s bi vrh imel hitrost \((-1{,}5;\ 1{,}299)\) m/s namesto \((-1{,}25;\ 0{,}866)\) m/s, torej za \((-0{,}25;\ 0{,}433)\) m/s preveč (num-06.out N3). Zglob \(2\) vrti le člen \(2\) okoli svoje osi, zato je ročica razdalja do te osi, kot pravi izrek.</p>
+<p><strong>Zgled A, ravninska roka.</strong> Pri \(\vek q = (30^\circ;\ 60^\circ)\) (slika <a class="xref" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-stolpci" data-knowl="fig-c27-06-stolpci">27.27</a>) so izhodišča <span class="nobr">\(\vek o_0 = (0, 0, 0)\),</span> \(\vek o_1 = (0{,}866;\ 0{,}5;\ 0)\) m, \(\vek o_2 = (0{,}866;\ 1;\ 0)\) m in osi \(\vek z_0 = \vek z_1 = \vek k\) (ravnina <span class="nobr">\(xy\),</span> vrtenje okoli osi <span class="nobr">\(z\)).</span> Po <a class="xref" href="sec-jacobijeva-matrika-robota.html#eq-stolpci-jacobijeve" data-knowl="eq-stolpci-jacobijeve">(27.25)</a> je \(\mat J_1 = \vek k\times(\vek o_2 - \vek o_0) = \vek k\times(0{,}866;\ 1;\ 0) = (-1;\ 0{,}866;\ 0)\) m, ker je <span class="nobr">\(\vek k\times\vek y = (-y_2,\ y_1,\ 0)\),</span> in \(\mat J_2 = \vek k\times(0;\ 0{,}5;\ 0) = (-0{,}5;\ 0;\ 0)\) m, zgoraj, spodaj pa \(\vek k\) v obeh stolpcih. Matrika je</p>
+<div class="eq">\[\mat J = \begin{pmatrix} -1 &amp; -0{,}5 \\ 0{,}866 &amp; 0 \\ 0 &amp; 0 \\ 0 &amp; 0 \\ 0 &amp; 0 \\ 1 &amp; 1 \end{pmatrix} .\]</div>
+<p>Prvi stolpec je prav \(\vek J_1\) z leve in drugi \(\vek J_2\) s sredine slike. Pri \(\dot{\vek q} = (1;\ 0{,}5)\) rad/s je <span class="nobr">\(\vek\xi = \mat J\,\dot{\vek q} = (-1{,}25;\ 0{,}866;\ 0;\ 0;\ 0;\ 1{,}5)\),</span> hitrost vrha \((-1{,}25;\ 0{,}866)\) m/s (desni del slike) in kotna hitrost efektorja \((\dot q_1 + \dot q_2)\,\vek k = 1{,}5\,\vek k\) rad/s. Račun smo preverili s središčno razliko lege vrha in matrike \(\mat R_2\) pri koraku \(10^{-6}\) s: hitrost vrha se ujema na \(10^{-10}\) m/s, \(\dot{\mat R}_2\,\mat R_2^\T\) pa da \(\Omega_{21} = 1{,}5\) rad/s (num-06.out A4, A5). Zgornja \(2 \times 2\) matrika je matrika <a class="xref auto" href="sec-parcialni-odvodi.html#def-parcialni-odvod" data-knowl="def-parcialni-odvod">parcialnih odvodov</a> \(\partial\vek o_2/\partial\vek q\) (definicija <a class="xref" href="sec-zamenjava-spremenljivk.html#def-preslikava" data-knowl="def-preslikava">4.42</a>), in njena <a class="xref auto" href="sec-determinanta.html#def-determinanta" data-knowl="def-determinanta">determinanta</a> je \(0{,}433 = l_1\,l_2\sin q_2\) m<span class="nobr">\(^2\).</span> Spodnja vrstica z enicami pove, da se efektor vrti z vsoto hitrosti obeh motorjev, kar je enako vsoti kotov \(q_1 + q_2 = 90^\circ\) iz lege.</p>
+<p><strong>Zgled C, drsni zglob.</strong> Pri roki z enim vrtljivim in enim drsnim zglobom (slika <a class="xref" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-polarna" data-knowl="fig-c27-06-polarna">27.28</a>) je <a data-del="baza" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-polarna" data-knowl="fig-c27-06-polarna">podnožje</a> v izhodišču, <a data-del="z" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-polarna" data-knowl="fig-c27-06-polarna">os \(\vek z_0\)</a> pa kaže iz lista. <a data-del="sleeve" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-polarna" data-knowl="fig-c27-06-polarna">Ovoj</a> se vrti okoli podnožja za kot <span class="nobr">\(q_1\),</span> <a data-del="rod" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-polarna" data-knowl="fig-c27-06-polarna">drog</a> drsi po njem in ima od podnožja <span class="nobr"><a data-del="d" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-polarna" data-knowl="fig-c27-06-polarna">razdaljo \(d\)</a>,</span> narisano kot razdalja z merskima črticama. Vrtljiv zglob ima hitrost <span class="nobr">\(\dot q_1\),</span> <a data-del="w" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-polarna" data-knowl="fig-c27-06-polarna">prikazano z lokom</a>, drsni zglob hitrost \(\dot d\) vzdolž droga. Izberemo \(q_1 = 30^\circ\) in \(d = 1{,}2\) m. Os drsnega zgloba je smer droga, torej <span class="nobr">\(\vek z_1 = (\cos q_1,\ \sin q_1,\ 0) = (0{,}866;\ 0{,}5;\ 0)\),</span> kar dobimo iz DH tabele z vrstico \((a, \alpha, d, \theta) = (0, 90^\circ, 0, q_1 + 90^\circ)\) <span class="nobr">(\(\mat R_1 = \mat R_{\mathrm{z},\mathrm{q}_1 + 90^\circ}\,\mat R_{\mathrm{x},90^\circ}\)</span> ima tretji stolpec \((\cos q_1,\ \sin q_1,\ 0)\) in stalna \(90^\circ\) odvoda ne spremeni). Vrh je v \(\vek o_2 = d\,\vek z_1 = (1{,}039;\ 0{,}6;\ 0)\) m, izhodišči \(\vek o_0 = \vek o_1\) sta v podnožju. Po <a class="xref" href="sec-jacobijeva-matrika-robota.html#eq-stolpci-jacobijeve" data-knowl="eq-stolpci-jacobijeve">(27.25)</a> je \(\mat J_1 = (\vek k\times\vek o_2;\ \vek k) = (-0{,}6;\ 1{,}039;\ 0;\ 0;\ 0;\ 1)\) in <span class="nobr">\(\mat J_2 = (\vek z_1;\ \vek 0) = (0{,}866;\ 0{,}5;\ 0;\ 0;\ 0;\ 0)\).</span> Pri \(\dot q_1 = 0{,}5\) rad/s in \(\dot d = 0{,}2\) m/s je \(\vek v = (-0{,}127;\ 0{,}620;\ 0)\) m/s, <a data-del="v1" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-polarna" data-knowl="fig-c27-06-polarna">prispevek vrtenja</a> \((-0{,}3;\ 0{,}520)\) m/s in <a data-del="v2" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-polarna" data-knowl="fig-c27-06-polarna">prispevek drsenja</a> \((0{,}173;\ 0{,}1)\) m/s sta vzdolž tangente in vzdolž droga, <a data-del="v" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-polarna" data-knowl="fig-c27-06-polarna">njuna vsota</a> je hitrost vrha. Neposreden odvod \(\dot d\,\vek z_1 + d\,\dot q_1\,(-\sin q_1,\ \cos q_1,\ 0)\) da isto (num-06.out C2, C3). Drsni stolpec nima člena z ročico, ker pri premiku vzdolž osi ni vrtenja.</p>
+
+<figure class="blk slika" id="fig-c27-06-polarna"><p><span class="svgfig" role="img" aria-label="Roka z vrtljivim in drsnim zglobom s hitrostjo vrha kot vsoto vrtenja in drsenja"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='126.38pt' height='154.81pt' viewBox='-72.000004 -72.000002 93.611875 114.677091'>
+<defs>
+<path id='c27-06-polarna-g0-74' d='M4.443337-6.366127H5.250311V-6.834371C4.901619-6.804483 4.054795-6.804483 3.666252-6.804483C3.138232-6.804483 2.161893-6.804483 1.683686-6.834371V-6.366127H3.088418V-1.484433C3.088418-1.295143 3.088418-.249066 2.102117-.249066C1.932752-.249066 1.603985-.278954 1.305106-.408468V-.418431C1.305106-.418431 1.753425-.607721 1.753425-1.135741C1.753425-1.673724 1.325031-1.902864 .996264-1.902864C.627646-1.902864 .229141-1.653798 .229141-1.135741C.229141-.368618 1.016189 .109589 2.15193 .109589C3.486924 .109589 4.443337-.458281 4.443337-1.494396V-6.366127Z'/>
+<path id='c27-06-polarna-g0-118' d='M5.041096-3.745953C5.100872-3.88543 5.140722-3.955168 5.778331-3.955168V-4.423412C5.529265-4.403487 5.240349-4.393524 4.991283-4.393524S4.293898-4.41345 4.084682-4.423412V-3.955168C4.273973-3.955168 4.562889-3.92528 4.562889-3.845579C4.562889-3.835616 4.552927-3.815691 4.513076-3.726027L3.35741-1.235367L2.092154-3.955168H2.630137V-4.423412C2.30137-4.403487 1.404732-4.393524 1.39477-4.393524C1.115816-4.393524 .667497-4.41345 .259029-4.423412V-3.955168H.896638L2.6401-.209215C2.759651 .039851 2.889166 .039851 3.01868 .039851C3.188045 .039851 3.287671 .009963 3.387298-.199253L5.041096-3.745953Z'/>
+<path id='c27-06-polarna-g0-122' d='M4.473225-3.995019C4.552927-4.104608 4.572852-4.124533 4.572852-4.214197C4.572852-4.423412 4.433375-4.423412 4.254047-4.423412H.597758L.478207-2.67995H.946451C1.006227-3.706102 1.315068-4.064757 2.34122-4.064757H3.188045L.408468-.438356C.318804-.328767 .318804-.308842 .318804-.219178C.318804 0 .448319 0 .637609 0H4.423412L4.60274-2.012453H4.134496C4.044832-1.006227 3.88543-.398506 2.570361-.398506H1.713574L4.473225-3.995019Z'/>
+<path id='c27-06-polarna-g1-100' d='M5.140722-6.804483C5.140722-6.814446 5.140722-6.914072 5.011208-6.914072C4.861768-6.914072 3.915318-6.824408 3.745953-6.804483C3.666252-6.794521 3.606476-6.744707 3.606476-6.615193C3.606476-6.495641 3.696139-6.495641 3.845579-6.495641C4.323786-6.495641 4.343711-6.425903 4.343711-6.326276L4.313823-6.127024L3.716065-3.765878C3.536737-4.134496 3.247821-4.403487 2.799502-4.403487C1.633873-4.403487 .398506-2.938979 .398506-1.484433C.398506-.547945 .946451 .109589 1.723537 .109589C1.92279 .109589 2.420922 .069738 3.01868-.637609C3.098381-.219178 3.447073 .109589 3.92528 .109589C4.273973 .109589 4.503113-.119552 4.662516-.438356C4.83188-.797011 4.961395-1.404732 4.961395-1.424658C4.961395-1.524284 4.871731-1.524284 4.841843-1.524284C4.742217-1.524284 4.732254-1.484433 4.702366-1.344956C4.533001-.697385 4.353674-.109589 3.945205-.109589C3.676214-.109589 3.646326-.368618 3.646326-.56787C3.646326-.806974 3.666252-.876712 3.706102-1.046077L5.140722-6.804483ZM3.068493-1.185554C3.01868-1.006227 3.01868-.986301 2.86924-.816936C2.430884-.268991 2.022416-.109589 1.743462-.109589C1.24533-.109589 1.105853-.657534 1.105853-1.046077C1.105853-1.544209 1.424658-2.769614 1.653798-3.227895C1.96264-3.815691 2.410959-4.184309 2.809465-4.184309C3.457036-4.184309 3.596513-3.367372 3.596513-3.307597S3.576588-3.188045 3.566625-3.138232L3.068493-1.185554Z'/>
+<path id='c27-06-polarna-g1-113' d='M4.503113-4.293898C4.503113-4.333748 4.473225-4.393524 4.403487-4.393524C4.293898-4.393524 3.895392-3.995019 3.726027-3.706102C3.506849-4.244085 3.118306-4.403487 2.799502-4.403487C1.62391-4.403487 .398506-2.929016 .398506-1.484433C.398506-.508095 .986301 .109589 1.713574 .109589C2.141968 .109589 2.530511-.129514 2.889166-.488169C2.799502-.139477 2.470735 1.205479 2.440847 1.295143C2.361146 1.574097 2.281445 1.613948 1.723537 1.62391C1.594022 1.62391 1.494396 1.62391 1.494396 1.823163C1.494396 1.833126 1.494396 1.932752 1.62391 1.932752C1.942715 1.932752 2.291407 1.902864 2.620174 1.902864C2.958904 1.902864 3.317559 1.932752 3.646326 1.932752C3.696139 1.932752 3.825654 1.932752 3.825654 1.733499C3.825654 1.62391 3.726027 1.62391 3.566625 1.62391C3.088418 1.62391 3.088418 1.554172 3.088418 1.464508C3.088418 1.39477 3.108344 1.334994 3.128269 1.24533L4.503113-4.293898ZM1.743462-.109589C1.145704-.109589 1.105853-.876712 1.105853-1.046077C1.105853-1.524284 1.39477-2.610212 1.564134-3.028643C1.872976-3.765878 2.391034-4.184309 2.799502-4.184309C3.447073-4.184309 3.58655-3.377335 3.58655-3.307597C3.58655-3.247821 3.038605-1.066002 3.008717-1.026152C2.859278-.747198 2.30137-.109589 1.743462-.109589Z'/>
+<path id='c27-06-polarna-g2-95' d='M1.912827-6.136986C1.912827-6.405978 1.683686-6.665006 1.384807-6.665006C1.046077-6.665006 .846824-6.386052 .846824-6.136986C.846824-5.867995 1.075965-5.608966 1.374844-5.608966C1.713574-5.608966 1.912827-5.88792 1.912827-6.136986Z'/>
+<path id='c27-06-polarna-g3-48' d='M3.598506-2.224658C3.598506-2.991781 3.507846-3.542715 3.187049-4.030884C2.970859-4.351681 2.538481-4.630635 1.980573-4.630635C.36264-4.630635 .36264-2.726775 .36264-2.224658S.36264 .139477 1.980573 .139477S3.598506-1.72254 3.598506-2.224658ZM1.980573-.055791C1.659776-.055791 1.234371-.244085 1.094894-.81594C.99726-1.227397 .99726-1.799253 .99726-2.315318C.99726-2.824408 .99726-3.354421 1.101868-3.737983C1.248319-4.288917 1.694645-4.435367 1.980573-4.435367C2.357161-4.435367 2.719801-4.20523 2.84533-3.800747C2.956912-3.424159 2.963885-2.922042 2.963885-2.315318C2.963885-1.799253 2.963885-1.283188 2.873225-.843836C2.733748-.209215 2.259527-.055791 1.980573-.055791Z'/>
+<path id='c27-06-polarna-g3-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+</defs>
+<g id='c27-06-polarna-page1'>
+<g stroke-miterlimit='10' transform='translate(-51.246941,31.114537)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='baza'>
+<path d='M0 0L-8.5359-5.69046H8.5359Z' fill='none'/>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-14.22636-5.69046H14.22638' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-14.22636-5.69046L-19.91682-11.38092' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-7.11319-5.69046L-12.80365-11.38092' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0-5.69046L-5.69046-11.38092' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M7.11319-5.69046L1.42273-11.38092' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M14.22638-5.69046L8.53592-11.38092' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='sleeve'>
+<g stroke-width='3.0'>
+<path d='M0 0L32.52164 18.7789' fill='none'/>
+</g>
+</g>
+<g class='del' data-del='rod'>
+<g stroke-width='1.4'>
+<path d='M17.07181 9.84444L65.04283 37.55782' fill='none'/>
+</g>
+</g>
+<g class='del' data-del='z'>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M3.11157 0C3.11157 1.71849 1.71849 3.11157 0 3.11157S-3.11157 1.71849-3.11157 0S-1.71849-3.11157 0-3.11157S3.11157-1.71849 3.11157 0ZM0 0'/>
+</g>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.246941,31.114537)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M.98999 0C.98999 .54675 .54675 .98999 0 .98999S-.98999 .54675-.98999 0S-.54675-.98999 0-.98999S.98999-.54675 .98999 0ZM0 0' stroke='none'/>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.246941,31.114537)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+<g transform='translate(-17.49791,4.21823)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.246941,31.114537)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-51.246941' y='31.114537' xlink:href='#c27-06-polarna-g0-122'/>
+<use x='-46.154952' y='32.608918' xlink:href='#c27-06-polarna-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='d'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M5.27156-8.45226L69.7299 28.76764' fill='none'/>
+<g transform='matrix(-0.866,-0.50003,0.50003,-0.866,10.29697,-5.55057)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-0.866,-0.50003,0.50003,-0.866,5.17415,-8.50848)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.866,0.50003,-0.50003,0.866,64.7045,25.86595)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.866,0.50003,-0.50003,0.866,69.82732,28.82387)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(40.72572,-0.01173)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.246941,31.114537)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-51.246941' y='31.114537' xlink:href='#c27-06-polarna-g1-100'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='w'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M21.33955-1.42271C21.6007 2.31274 20.87326 6.05505 21.0832 5.62448' fill='none'/>
+<g transform='matrix(-0.43834,0.89879,-0.89879,-0.43834,22.2251,3.28311)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(23.97762,1.0471)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.246941,31.114537)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-49.397949' y='31.114537' xlink:href='#c27-06-polarna-g2-95'/>
+<use x='-51.246941' y='31.114537' xlink:href='#c27-06-polarna-g1-113'/>
+<use x='-46.799479' y='32.608918' xlink:href='#c27-06-polarna-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='v1'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='1.0'>
+<path d='M65.04283 37.55782L41.52567 78.29517' fill='none'/>
+<g transform='matrix(-0.49994,0.86603,-0.86603,-0.49994,42.84944,76.00201)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.33095 0L1.67535 1.31036L2.89789 0L1.67535-1.31036Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(29.02542,57.27846)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.246941,31.114537)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-51.246941' y='31.114537' xlink:href='#c27-06-polarna-g0-74'/>
+<use x='-45.324736' y='32.608918' xlink:href='#c27-06-polarna-g3-49'/>
+<use x='-39.006373' y='31.114537' xlink:href='#c27-06-polarna-g2-95'/>
+<use x='-40.855366' y='31.114537' xlink:href='#c27-06-polarna-g1-113'/>
+<use x='-36.407904' y='32.608918' xlink:href='#c27-06-polarna-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='v2'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='1.0'>
+<path d='M39.43555 81.9158L50.60988 88.36255' fill='none'/>
+<g transform='matrix(0.86617,0.49971,-0.49971,0.86617,48.31638,87.03937)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.33095 0L1.67535 1.31036L2.89789 0L1.67535-1.31036Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(39.43228,91.18373)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.246941,31.114537)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-51.246941' y='31.114537' xlink:href='#c27-06-polarna-g0-122'/>
+<use x='-46.154952' y='32.608918' xlink:href='#c27-06-polarna-g3-49'/>
+<use x='-38.816079' y='28.485495' xlink:href='#c27-06-polarna-g2-95'/>
+<use x='-41.685583' y='31.114537' xlink:href='#c27-06-polarna-g1-100'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='v'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.2'>
+<path d='M65.04283 37.55782L55.05518 86.41983' fill='none'/>
+<g transform='matrix(-0.20024,0.97969,-0.97969,-0.20024,55.59846,83.76175)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <g stroke-width='1.15233'>
+ <path d='M5.10281 0L1.93056 1.14156L3.00125 0L1.93056-1.14156Z'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(63.56993,61.78255)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-51.246941,31.114537)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-51.246941' y='31.114537' xlink:href='#c27-06-polarna-g0-118'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 27.28</span>: Roka z vrtljivim in drsnim zglobom pri <span class="nobr">\(q_1 = 30^\circ\),</span> \(d = 1{,}2\) m (2,2 cm na m, hitrosti 3 cm na m/s). Os \(\vek z_0\) kaže iz lista, drsni zglob drsi v smeri droga. \(\dot q_1 = 0{,}5\) rad/s in \(\dot d = 0{,}2\) m/s. Iz vrha so narisani prispevek vrtenja \(\vek J_1\,\dot q_1\) (pravokotno na drog), prispevek drsenja \(\vek z_1\,\dot d\) (vzdolž droga) in njuna vsota <span class="nobr">\(\vek v\).</span></figcaption></figure>
+<p><strong>Zgled B, prostorska roka.</strong> Tridimenzionalna roka s tremi vrtljivimi zglobi (DH tabela <span class="nobr">\((a, \alpha, d, \theta)\):</span> <span class="nobr">\((0, 90^\circ, 0{,}4, q_1)\),</span> <span class="nobr">\((0{,}5, 0, 0, q_2)\),</span> \((0{,}4, 0, 0, q_3)\) m, iz razdelka <a class="xref" href="sec-dh-zapis.html">27.4</a>, naše mere) ima pri \(\vek q = (30^\circ;\ 45^\circ;\ -60^\circ)\) izhodišča <span class="nobr">\(\vek o_0 = \vek 0\),</span> <span class="nobr">\(\vek o_1 = (0;\ 0;\ 0{,}4)\),</span> \(\vek o_3 = (0{,}6408;\ 0{,}37;\ 0{,}65)\) m in osi <span class="nobr">\(\vek z_0 = (0;\ 0;\ 1)\),</span> \(\vek z_1 = \vek z_2 = (0{,}5;\ -0{,}866;\ 0)\) (num-06.out B1). Stolpec \(2\) po <a class="xref" href="sec-jacobijeva-matrika-robota.html#eq-stolpci-jacobijeve" data-knowl="eq-stolpci-jacobijeve">(27.25)</a> s \(\vek o_3 - \vek o_1 = (0{,}6408;\ 0{,}37;\ 0{,}25)\) m je</p>
+<div class="eq">\[\vek z_1\times(\vek o_3 - \vek o_1) = \begin{pmatrix} (-0{,}866)(0{,}25) - 0\cdot 0{,}37 \\ 0\cdot 0{,}6408 - 0{,}5\cdot 0{,}25 \\ 0{,}5\cdot 0{,}37 - (-0{,}866)(0{,}6408) \end{pmatrix} = \begin{pmatrix} -0{,}2165 \\ -0{,}125 \\ 0{,}7399 \end{pmatrix}\text{ m} ,\]</div>
+<p>po <a class="xref" href="sec-simetrija-napetosti.html#eq-vektorski-produkt" data-knowl="eq-vektorski-produkt">(2.32)</a>, in spodaj je <span class="nobr">\(\vek z_1\).</span> Ostala stolpca se izračunata isto in</p>
+<div class="eq">\[\mat J_{\mathrm{v}} = \begin{pmatrix} -0{,}37 &amp; -0{,}2165 &amp; 0{,}0897 \\ 0{,}6408 &amp; -0{,}125 &amp; 0{,}0518 \\ 0 &amp; 0{,}7399 &amp; 0{,}3864 \end{pmatrix}\text{ m} , \qquad \mat J_\omega = \begin{pmatrix} 0 &amp; 0{,}5 &amp; 0{,}5 \\ 0 &amp; -0{,}866 &amp; -0{,}866 \\ 1 &amp; 0 &amp; 0 \end{pmatrix} .\]</div>
+<p>Pri \(\dot{\vek q} = (0{,}3;\ -0{,}2;\ 0{,}5)\) rad/s je <span class="nobr">\(\vek\xi = (-0{,}0229;\ 0{,}2431;\ 0{,}0452;\ 0{,}15;\ -0{,}2598;\ 0{,}3)\).</span> Primerjava s središčnima razlikama lege vrha in matrike \(\mat R_3\) (korak \(10^{-6}\) s) se ujema na manj kot \(10^{-8}\) (num-06.out B4). Stolpca \(2\) in \(3\) matrike \(\mat J_\omega\) sta enaka, ker sta osi drugega in tretjega zgloba vzporedni <span class="nobr">(\(\vek z_1 = \vek z_2\)):</span> zasuka okoli njiju se seštejeta okoli iste osi. <!-- nofig: algebra --></p>
+<p>Jacobijeva matrika ne velja le za efektor. Hitrost katere koli točke, ki je trdno pritrjena na člen <span class="nobr">\(k\),</span> je odvod njene lege po verižnem pravilu in korake izreka <a class="xref" href="sec-jacobijeva-matrika-robota.html#thm-stolpci-jacobijeve" data-knowl="thm-stolpci-jacobijeve">27.42</a> lahko ponovimo.</p>
+
+<div class="blk posledica" id="cor-jacobijeva-tezisc"><div class="blk-head"><span class="blk-label">Posledica 27.43</span> <span class="blk-title">Jacobijeva matrika točke člena (Jacobian matrix of a point of a link)</span></div><div class="blk-body"><p>Naj bo \(\vek o_{\mathrm{c}} = \vek o_{\mathrm{k}} + \mat R_{\mathrm{k}}\,\vek p\) lega točke s stalnimi <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">koordinatami</a> \(\vek p\) v sistemu člena <span class="nobr">\(k\).</span> Tedaj je \(\dot{\vek o}_{\mathrm{c}} = \mat J_{\mathrm{v}}^{(c)}\,\dot{\vek q}\) in <span class="nobr">\(\vek\omega_{\mathrm{k}} = \mat J_\omega^{(k)}\,\dot{\vek q}\),</span> kjer imata <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matriki</a> \(3 \times n\) za \(i \le k\) stolpce \(\vek z_{\mathrm{i}-1}\times(\vek o_{\mathrm{c}} - \vek o_{\mathrm{i}-1})\) in \(\rho_{\mathrm{i}}\,\vek z_{\mathrm{i}-1}\) pri vrtljivem zglobu ter \(\vek z_{\mathrm{i}-1}\) in \(\vek 0\) pri drsnem, za \(i &gt; k\) pa ničelne stolpce. Za <a class="xref auto" href="sec-geometrija-prereza.html#def-tezisce" data-knowl="def-tezisce">težišče</a> \(\vek c_{\mathrm{k}}\) člena \(k\) sta to matriki \(\mat A_{\mathrm{k}}\) in \(\mat W_{\mathrm{k}}\) iz dokaza izreka <a class="xref" href="sec-kineticna-energija.html#thm-kineticna-energija-koordinate" data-knowl="thm-kineticna-energija-koordinate">8.86</a>.</p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da koraki 1 do 7 izreka <a class="xref" href="sec-jacobijeva-matrika-robota.html#thm-stolpci-jacobijeve" data-knowl="thm-stolpci-jacobijeve">27.42</a> veljajo, če \(\vek o_{\mathrm{n}}\) zamenjamo z \(\vek o_{\mathrm{c}}\) in verigo skrajšamo na \(k\) členov.</p>
+<ol>
+<li>Točka \(\vek c\) ima v sistemu \(i \le k\) lego <span class="nobr">\(\vek o^i{}_{\mathrm{c}} = \mat R^i{}_{\mathrm{k}}\,\vek p + \vek o^i{}_{\mathrm{k}}\),</span> ki vsebuje le \(q_{\mathrm{i}+1}, \dots, q_{\mathrm{k}}\) (korak 2 izreka <a class="xref" href="sec-jacobijeva-matrika-robota.html#thm-stolpci-jacobijeve" data-knowl="thm-stolpci-jacobijeve">27.42</a>). Zato je koraka 2 in 4 do 6 izreka mogoče ponoviti z \(\vek o^i{}_{\mathrm{c}}\) na mestu <span class="nobr">\(\vek o^i{}_{\mathrm{n}}\).</span></li>
+<li>Za \(i &gt; k\) lega \(\vek o_{\mathrm{c}} = \vek o_{\mathrm{k}} + \mat R_{\mathrm{k}}\,\vek p\) vsebuje le <span class="nobr">\(q_1, \dots, q_{\mathrm{k}}\),</span> zato je <span class="nobr">\(\partial\vek o_{\mathrm{c}}/\partial q_{\mathrm{i}} = \vek 0\).</span> Isto velja za \(\vek\omega_{\mathrm{k}} = \sum_{\mathrm{i} \le \mathrm{k}}\rho_{\mathrm{i}}\,\dot q_{\mathrm{i}}\,\vek z_{\mathrm{i}-1}\) po koraku 1 izreka <a class="xref" href="sec-jacobijeva-matrika-robota.html#thm-stolpci-jacobijeve" data-knowl="thm-stolpci-jacobijeve">27.42</a> s skrajšano verigo.</li>
+<li>V dokazu izreka <a class="xref" href="sec-kineticna-energija.html#thm-kineticna-energija-koordinate" data-knowl="thm-kineticna-energija-koordinate">8.86</a> (korak 1) sta hitrost <a class="xref auto" href="sec-geometrija-prereza.html#def-tezisce" data-knowl="def-tezisce">težišča</a> \(\vek v_{\mathrm{G},\mathrm{k}} = \mat A_{\mathrm{k}}\,\dot{\vek q}\) in <a class="xref auto" href="sec-kineticna-energija.html#def-kotna-hitrost" data-knowl="def-kotna-hitrost">kotna hitrost</a> \(\vek\omega_{\mathrm{k}} = \mat W_{\mathrm{k}}\,\dot{\vek q}\) pri skleronomnih vezeh, kot so zglobi robota. <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">Matrika</a> \(3 \times n\) s to lastnostjo je enolična (isti sklep kot v koraku 7), zato je \(\mat A_{\mathrm{k}} = \mat J_{\mathrm{v}}^{(c)}\) za \(\vek p\) težišča in <span class="nobr">\(\mat W_{\mathrm{k}} = \mat J_\omega^{(k)}\).</span></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> SPONG zgled 4.6 (PDF str. 138-139): &quot;the usual Jacobian with \(\vek o_{\mathrm{c}}\) in place of \(\vek o_{\mathrm{n}}\)&quot;. Povezava z \(\mat A_{\mathrm{k}}\) in \(\mat W_{\mathrm{k}}\) je naša.</p></div></div>
+<p>Posledico uporabimo na <a class="xref auto" href="sec-geometrija-prereza.html#def-tezisce" data-knowl="def-tezisce">težiščih</a> členov robota A. Težišči sta \(\vek c_1 = (0{,}433;\ 0{,}25;\ 0)\) m (sredina člena 1) in \(\vek c_2 = (0{,}866;\ 0{,}75;\ 0)\) m (sredina člena 2, ki gleda navpično navzgor). Po posledici <a class="xref" href="sec-jacobijeva-matrika-robota.html#cor-jacobijeva-tezisc" data-knowl="cor-jacobijeva-tezisc">27.43</a> je \(\mat A_1 = \begin{pmatrix} -0{,}25 &amp; 0 \\ 0{,}433 &amp; 0 \end{pmatrix}\) (člen 1 ne zavisi od <span class="nobr">\(q_2\))</span> in \(\mat A_2 = \begin{pmatrix} -0{,}75 &amp; -0{,}25 \\ 0{,}866 &amp; 0 \end{pmatrix}\) (zgornji dve vrstici). Matriki \(\mat W_1\) in \(\mat W_2\) imata prvi dve vrstici ničelni, njuna tretja vrstica je \((1,\ 0)\) oziroma <span class="nobr">\((1,\ 1)\).</span> Pri \(\dot{\vek q} = (1;\ 0{,}5)\) rad/s sta hitrosti težišč \((-0{,}25;\ 0{,}433)\) in \((-0{,}875;\ 0{,}866)\) m/s, enaki središčnim razlikam lege (num-06.out A7, A8). To so matrike, ki jih bo razdelek <a class="xref" href="sec-gibalne-enacbe-robota.html">27.8</a> vstavil v masno matriko.</p>
+
+<h3 id="sec-j-ni-odvod"><span class="h-num">27.6.3</span> Kotna hitrost ni odvod nobenih treh kotov</h3>
+<p>Zgornje vrstice <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrike</a> \(\mat J\) so matrika <a class="xref auto" href="sec-parcialni-odvodi.html#def-parcialni-odvod" data-knowl="def-parcialni-odvod">parcialnih odvodov</a> (definicija <a class="xref" href="sec-zamenjava-spremenljivk.html#def-preslikava" data-knowl="def-preslikava">4.42</a>) preslikave <span class="nobr">\(\vek q \mapsto \vek o_{\mathrm{n}}\),</span> to je <a class="xref auto" href="sec-limita-odvod.html#def-odvod" data-knowl="def-odvod">odvod</a> nečesa, kar merimo. Ali je tudi spodnji del \(\vek\omega = \mat J_\omega\,\dot{\vek q}\) odvod kakšnih treh števil, ki opisujejo <a class="xref auto" href="sec-determinanta.html#def-orientacija" data-knowl="def-orientacija">orientacijo</a>, na primer treh kotov, tako kot je \(\dot{\vek o}_{\mathrm{n}}\) odvod treh koordinat vrha? Če bi bil, bi lahko \(\mat J_\omega\) vzeli kar kot matriko parcialnih odvodov in prihranili ločeno obravnavo. Odgovor je ne, in to velja tudi, če kote izberemo poljubno.</p>
+<p>Zamislimo si en sam trdni sistem, ki ga zasukamo štirikrat okoli osi osnovnega sistema, vsakič za \(90^\circ\) med časom \(0\) in \(1\) s s stalno <a class="xref auto" href="sec-kineticna-energija.html#def-kotna-hitrost" data-knowl="def-kotna-hitrost">kotno hitrostjo</a>: okoli osi \(x\) za <span class="nobr">\(+90^\circ\),</span> okoli \(z\) za <span class="nobr">\(+90^\circ\),</span> okoli \(x\) za <span class="nobr">\(-90^\circ\),</span> okoli \(z\) za <span class="nobr">\(-90^\circ\).</span> Pri vsakem zasuku okoli osi osnovnega sistema se <a class="xref auto" href="sec-orientacija-clenov.html#def-matrika-orientacije" data-knowl="def-matrika-orientacije">matrika orientacije</a> pomnoži z leve (lema <a class="xref" href="sec-orientacija-clenov.html#lem-sestavljanje-orientacij" data-knowl="lem-sestavljanje-orientacij">27.12</a>). Slika <a class="xref" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-ni-odvod" data-knowl="fig-c27-06-ni-odvod">27.29</a> kaže <a data-del="t0,t1,t2,t3,t4" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-ni-odvod" data-knowl="fig-c27-06-ni-odvod">stanja \(t_0\) do \(t_4\)</a> sistema, to je stolpce matrike \(\mat R\) v sistemu <span class="nobr">\(0\),</span> in <a data-del="k1,k2,k3,k4" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-ni-odvod" data-knowl="fig-c27-06-ni-odvod">štiri zasuke</a> med njimi. Sistem gledamo poševno: v <a data-del="t0" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-ni-odvod" data-knowl="fig-c27-06-ni-odvod">stanju \(t_0\)</a> kaže os \(x\) proti nam (narisana poševno levo navzdol), os \(y\) na desno in os \(z\) navzgor. <a data-del="k1" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-ni-odvod" data-knowl="fig-c27-06-ni-odvod">Prvi zasuk</a>, okoli osi \(x\) za <span class="nobr">\(90^\circ\),</span> dvigne os \(y\) navzgor in obrne os \(z\) na levo, to je <span class="nobr"><a data-del="t1" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-ni-odvod" data-knowl="fig-c27-06-ni-odvod">stanje \(t_1\)</a>.</span> <a data-del="k2" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-ni-odvod" data-knowl="fig-c27-06-ni-odvod">Drugi</a>, okoli osi \(z\) za <span class="nobr">\(90^\circ\),</span> obrne os \(x\) na desno in os \(z\) proti nam, to je <span class="nobr"><a data-del="t2" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-ni-odvod" data-knowl="fig-c27-06-ni-odvod">stanje \(t_2\)</a>.</span> <a data-del="k3" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-ni-odvod" data-knowl="fig-c27-06-ni-odvod">Tretji</a>, okoli osi \(x\) za <span class="nobr">\(-90^\circ\),</span> obrne os \(x\) navzdol in os \(y\) na desno, to je <span class="nobr"><a data-del="t3" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-ni-odvod" data-knowl="fig-c27-06-ni-odvod">stanje \(t_3\)</a>.</span> <a data-del="k4" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-ni-odvod" data-knowl="fig-c27-06-ni-odvod">Četrti</a>, okoli osi \(z\) za <span class="nobr">\(-90^\circ\),</span> da zadnje stanje. Konec ni enak začetku: <a data-del="t4" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-ni-odvod" data-knowl="fig-c27-06-ni-odvod">zadnji sistem</a> ima os \(x\) navzdol, os \(y\) proti nam in os \(z\) na levo, <a data-del="start" class="xref kaz" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-ni-odvod" data-knowl="fig-c27-06-ni-odvod">začetni</a>, narisan črtkano, pa os \(x\) proti nam, os \(y\) na desno in os \(z\) navzgor.</p>
+
+<figure class="blk slika" id="fig-c27-06-ni-odvod"><p><span class="svgfig" role="img" aria-label="Štirje zasuki sistema, po katerih sistem ni v začetni legi"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='748.80pt' height='132.18pt' viewBox='-72.000004 -72.000003 554.666919 97.912658'>
+<defs>
+<path id='c27-06-ni-odvod-g0-101' d='M4.60274-2.171856C4.821918-2.171856 4.921544-2.171856 4.921544-2.440847C4.921544-2.749689 4.861768-3.476961 4.363636-3.975093C3.995019-4.333748 3.466999-4.513076 2.779577-4.513076C1.185554-4.513076 .318804-3.486924 .318804-2.241594C.318804-.9066 1.315068 .059776 2.919054 .059776C4.493151 .059776 4.921544-.996264 4.921544-1.165629C4.921544-1.344956 4.732254-1.344956 4.682441-1.344956C4.513076-1.344956 4.493151-1.295143 4.433375-1.135741C4.224159-.657534 3.656289-.33873 3.008717-.33873C1.603985-.33873 1.594022-1.663761 1.594022-2.171856H4.60274ZM1.594022-2.500623C1.613948-2.889166 1.62391-3.307597 1.833126-3.636364C2.092154-4.034869 2.49066-4.154421 2.779577-4.154421C3.945205-4.154421 3.965131-2.849315 3.975093-2.500623H1.594022Z'/>
+<path id='c27-06-ni-odvod-g1-0' d='M6.56538-2.291407C6.734745-2.291407 6.914072-2.291407 6.914072-2.49066S6.734745-2.689913 6.56538-2.689913H1.175592C1.006227-2.689913 .826899-2.689913 .826899-2.49066S1.006227-2.291407 1.175592-2.291407H6.56538Z'/>
+<path id='c27-06-ni-odvod-g2-14' d='M3.535741-1.743462C3.535741-2.587298 2.859278-3.242839 2.036364-3.242839C1.199502-3.242839 .536986-2.566376 .536986-1.750436C.536986-.9066 1.21345-.251059 2.036364-.251059C2.873225-.251059 3.535741-.927522 3.535741-1.743462ZM2.036364-.592777C1.380822-.592777 .878705-1.12279 .878705-1.743462C.878705-2.39203 1.39477-2.901121 2.036364-2.901121C2.691905-2.901121 3.194022-2.371108 3.194022-1.750436C3.194022-1.101868 2.677958-.592777 2.036364-.592777Z'/>
+<path id='c27-06-ni-odvod-g3-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='c27-06-ni-odvod-g3-120' d='M3.327522-3.008717C3.387298-3.267746 3.616438-4.184309 4.313823-4.184309C4.363636-4.184309 4.60274-4.184309 4.811955-4.054795C4.533001-4.004981 4.333748-3.755915 4.333748-3.516812C4.333748-3.35741 4.443337-3.16812 4.712329-3.16812C4.931507-3.16812 5.250311-3.347447 5.250311-3.745953C5.250311-4.26401 4.662516-4.403487 4.323786-4.403487C3.745953-4.403487 3.39726-3.875467 3.277709-3.646326C3.028643-4.303861 2.49066-4.403487 2.201743-4.403487C1.165629-4.403487 .597758-3.118306 .597758-2.86924C.597758-2.769614 .697385-2.769614 .71731-2.769614C.797011-2.769614 .826899-2.789539 .846824-2.879203C1.185554-3.935243 1.843088-4.184309 2.181818-4.184309C2.371108-4.184309 2.719801-4.094645 2.719801-3.516812C2.719801-3.20797 2.550436-2.540473 2.181818-1.145704C2.022416-.52802 1.673724-.109589 1.235367-.109589C1.175592-.109589 .946451-.109589 .737235-.239103C.986301-.288917 1.205479-.498132 1.205479-.777086C1.205479-1.046077 .986301-1.125778 .836862-1.125778C.537983-1.125778 .288917-.86675 .288917-.547945C.288917-.089664 .787049 .109589 1.225405 .109589C1.882939 .109589 2.241594-.587796 2.271482-.647572C2.391034-.278954 2.749689 .109589 3.347447 .109589C4.373599 .109589 4.941469-1.175592 4.941469-1.424658C4.941469-1.524284 4.851806-1.524284 4.821918-1.524284C4.732254-1.524284 4.712329-1.484433 4.692403-1.414695C4.363636-.348692 3.686177-.109589 3.367372-.109589C2.978829-.109589 2.819427-.428394 2.819427-.767123C2.819427-.986301 2.879203-1.205479 2.988792-1.643836L3.327522-3.008717Z'/>
+<path id='c27-06-ni-odvod-g3-121' d='M4.841843-3.795766C4.881694-3.935243 4.881694-3.955168 4.881694-4.024907C4.881694-4.204234 4.742217-4.293898 4.592777-4.293898C4.493151-4.293898 4.333748-4.234122 4.244085-4.084682C4.224159-4.034869 4.144458-3.726027 4.104608-3.5467C4.034869-3.287671 3.965131-3.01868 3.905355-2.749689L3.457036-.956413C3.417186-.806974 2.988792-.109589 2.331258-.109589C1.823163-.109589 1.713574-.547945 1.713574-.916563C1.713574-1.374844 1.882939-1.992528 2.221669-2.86924C2.381071-3.277709 2.420922-3.387298 2.420922-3.58655C2.420922-4.034869 2.102117-4.403487 1.603985-4.403487C.657534-4.403487 .288917-2.958904 .288917-2.86924C.288917-2.769614 .388543-2.769614 .408468-2.769614C.508095-2.769614 .518057-2.789539 .56787-2.948941C.836862-3.88543 1.235367-4.184309 1.574097-4.184309C1.653798-4.184309 1.823163-4.184309 1.823163-3.865504C1.823163-3.616438 1.723537-3.35741 1.653798-3.16812C1.255293-2.11208 1.075965-1.544209 1.075965-1.075965C1.075965-.18929 1.703611 .109589 2.291407 .109589C2.67995 .109589 3.01868-.059776 3.297634-.33873C3.16812 .179328 3.048568 .667497 2.650062 1.195517C2.391034 1.534247 2.012453 1.823163 1.554172 1.823163C1.414695 1.823163 .966376 1.793275 .797011 1.404732C.956413 1.404732 1.085928 1.404732 1.225405 1.285181C1.325031 1.195517 1.424658 1.066002 1.424658 .876712C1.424658 .56787 1.155666 .52802 1.05604 .52802C.826899 .52802 .498132 .687422 .498132 1.175592C.498132 1.673724 .936488 2.042341 1.554172 2.042341C2.580324 2.042341 3.606476 1.135741 3.88543 .009963L4.841843-3.795766Z'/>
+<path id='c27-06-ni-odvod-g3-122' d='M1.325031-.826899C1.863014-1.404732 2.15193-1.653798 2.510585-1.96264C2.510585-1.972603 3.128269-2.500623 3.486924-2.859278C4.433375-3.785803 4.652553-4.26401 4.652553-4.303861C4.652553-4.403487 4.562889-4.403487 4.542964-4.403487C4.473225-4.403487 4.443337-4.383562 4.393524-4.293898C4.094645-3.815691 3.88543-3.656289 3.646326-3.656289S3.287671-3.805729 3.138232-3.975093C2.948941-4.204234 2.779577-4.403487 2.450809-4.403487C1.703611-4.403487 1.24533-3.476961 1.24533-3.267746C1.24533-3.217933 1.275218-3.158157 1.364882-3.158157S1.474471-3.20797 1.494396-3.267746C1.683686-3.726027 2.261519-3.73599 2.34122-3.73599C2.550436-3.73599 2.739726-3.666252 2.968867-3.58655C3.367372-3.437111 3.476961-3.437111 3.73599-3.437111C3.377335-3.008717 2.540473-2.291407 2.351183-2.132005L1.454545-1.295143C.777086-.627646 .428394-.059776 .428394 .009963C.428394 .109589 .52802 .109589 .547945 .109589C.627646 .109589 .647572 .089664 .707347-.019925C.936488-.368618 1.235367-.637609 1.554172-.637609C1.783313-.637609 1.882939-.547945 2.132005-.259029C2.30137-.049813 2.480697 .109589 2.769614 .109589C3.755915 .109589 4.333748-1.155666 4.333748-1.424658C4.333748-1.474471 4.293898-1.524284 4.214197-1.524284C4.124533-1.524284 4.104608-1.464508 4.07472-1.39477C3.845579-.747198 3.20797-.557908 2.879203-.557908C2.67995-.557908 2.500623-.617684 2.291407-.687422C1.952677-.816936 1.803238-.856787 1.594022-.856787C1.574097-.856787 1.414695-.856787 1.325031-.826899Z'/>
+<path id='c27-06-ni-odvod-g4-120' d='M1.736488-.739228C1.66675-.502117 1.436613-.125529 1.080946-.125529C1.060025-.125529 .850809-.125529 .704359-.223163C.990286-.313823 1.011208-.564882 1.011208-.606725C1.011208-.760149 .892653-.864757 .732254-.864757C.536986-.864757 .334745-.697385 .334745-.439352C.334745-.09066 .72528 .069738 1.066999 .069738C1.387796 .069738 1.673724-.132503 1.84807-.425405C2.015442-.055791 2.399004 .069738 2.677958 .069738C3.47995 .069738 3.905355-.801993 3.905355-.99726C3.905355-1.08792 3.814695-1.08792 3.793773-1.08792C3.696139-1.08792 3.689166-1.053051 3.66127-.969365C3.514819-.488169 3.096389-.125529 2.705853-.125529C2.426899-.125529 2.280448-.313823 2.280448-.578829C2.280448-.760149 2.447821-1.39477 2.643088-2.168867C2.782565-2.705853 3.096389-2.880199 3.326526-2.880199C3.340473-2.880199 3.556663-2.880199 3.703113-2.782565C3.47995-2.719801 3.396264-2.524533 3.396264-2.399004C3.396264-2.245579 3.514819-2.140971 3.675218-2.140971S4.065753-2.273474 4.065753-2.566376C4.065753-2.956912 3.619427-3.075467 3.340473-3.075467C2.991781-3.075467 2.712827-2.84533 2.559402-2.580324C2.433873-2.866252 2.113076-3.075467 1.72254-3.075467C.941469-3.075467 .495143-2.217684 .495143-2.008468C.495143-1.917808 .592777-1.917808 .613699-1.917808C.704359-1.917808 .711333-1.945704 .746202-2.036364C.920548-2.580324 1.3599-2.880199 1.701619-2.880199C1.931756-2.880199 2.12005-2.75467 2.12005-2.419925C2.12005-2.280448 2.036364-1.931756 1.973599-1.694645L1.736488-.739228Z'/>
+<path id='c27-06-ni-odvod-g4-122' d='M1.171606-.613699C1.352927-.795019 1.478456-.927522 2.071233-1.401743C2.217684-1.520299 2.740722-1.93873 2.942964-2.133998C3.368369-2.552428 3.633375-2.908095 3.633375-2.991781S3.542715-3.075467 3.514819-3.075467C3.452055-3.075467 3.431133-3.061519 3.396264-3.005729C3.180075-2.684932 3.033624-2.580324 2.866252-2.580324C2.782565-2.580324 2.677958-2.587298 2.468742-2.789539C2.231631-3.02665 2.078207-3.075467 1.917808-3.075467C1.3599-3.075467 .983313-2.468742 .983313-2.259527C.983313-2.196762 1.053051-2.175841 1.101868-2.175841C1.185554-2.175841 1.199502-2.196762 1.227397-2.273474C1.332005-2.517559 1.72254-2.531507 1.834122-2.531507C1.994521-2.531507 2.175841-2.489664 2.273474-2.468742C2.657036-2.385056 2.705853-2.385056 2.880199-2.385056C2.698879-2.196762 2.57335-2.071233 1.910834-1.54122C1.366874-1.108842 1.17858-.934496 1.046077-.795019C.627646-.383562 .425405-.076712 .425405-.013948C.425405 .069738 .516065 .069738 .54396 .069738C.613699 .069738 .627646 .055791 .662516 0C.850809-.265006 1.066999-.425405 1.30411-.425405C1.387796-.425405 1.492403-.418431 1.680697-.244085C1.896887-.034869 2.036364 .069738 2.259527 .069738C3.005729 .069738 3.472976-.774097 3.472976-1.011208C3.472976-1.094894 3.396264-1.101868 3.354421-1.101868C3.270735-1.101868 3.256787-1.066999 3.228892-.990286C3.096389-.641594 2.684932-.474222 2.343213-.474222C2.182814-.474222 2.008468-.509091 1.834122-.550934C1.513325-.620672 1.457534-.620672 1.332005-.620672C1.318057-.620672 1.21345-.620672 1.171606-.613699Z'/>
+<path id='c27-06-ni-odvod-g5-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='c27-06-ni-odvod-g5-57' d='M3.656289-3.16812V-2.849315C3.656289-.518057 2.620174-.059776 2.042341-.059776C1.872976-.059776 1.334994-.079701 1.066002-.418431C1.504359-.418431 1.58406-.707347 1.58406-.876712C1.58406-1.185554 1.344956-1.334994 1.125778-1.334994C.966376-1.334994 .667497-1.24533 .667497-.856787C.667497-.18929 1.205479 .219178 2.052304 .219178C3.337484 .219178 4.552927-1.135741 4.552927-3.277709C4.552927-5.957659 3.407223-6.635118 2.520548-6.635118C1.972603-6.635118 1.484433-6.455791 1.05604-6.007472C.647572-5.559153 .418431-5.140722 .418431-4.393524C.418431-3.148194 1.295143-2.171856 2.410959-2.171856C3.01868-2.171856 3.427148-2.590286 3.656289-3.16812ZM2.420922-2.400996C2.261519-2.400996 1.803238-2.400996 1.494396-3.028643C1.315068-3.39726 1.315068-3.895392 1.315068-4.383562C1.315068-4.921544 1.315068-5.389788 1.524284-5.758406C1.793275-6.256538 2.171856-6.386052 2.520548-6.386052C2.978829-6.386052 3.307597-6.047323 3.476961-5.599004C3.596513-5.280199 3.636364-4.652553 3.636364-4.194271C3.636364-3.367372 3.297634-2.400996 2.420922-2.400996Z'/>
+</defs>
+<g id='c27-06-ni-odvod-page1'>
+<g stroke-miterlimit='10' transform='translate(-49.177599,-29.738046)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='t0'>
+<g stroke-width='0.9'>
+<path d='M0 0L-10.30602-7.3615' fill='none'/>
+<g transform='matrix(-0.81369,-0.58119,0.58119,-0.81369,-8.18633,-5.84747)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-21.40799,-16.07176)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.177599,-29.738046)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-49.177599' y='-29.738046' xlink:href='#c27-06-ni-odvod-g3-120'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<g fill='#00f' stroke='#00f'>
+<path d='M0 0H28.49686' fill='none'/>
+<g transform='translate(25.89183,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(34.67047,-6.25554)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.177599,-29.738046)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-49.177599' y='-29.738046' xlink:href='#c27-06-ni-odvod-g3-121'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<g fill='#f00' stroke='#f00'>
+<path d='M0 0V28.49686' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,0.0,25.89183)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(-2.54515,34.67047)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.177599,-29.738046)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-49.177599' y='-29.738046' xlink:href='#c27-06-ni-odvod-g3-122'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='t1'>
+<g stroke-width='0.9'>
+<path d='M125.1919 0L114.88625-7.36143' fill='none'/>
+<g transform='matrix(-0.81367,-0.5812,0.5812,-0.81367,117.00589,-5.84737)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(103.78433,-16.07176)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.177599,-29.738046)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-49.177599' y='-29.738046' xlink:href='#c27-06-ni-odvod-g3-120'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<g fill='#00f' stroke='#00f'>
+<path d='M125.1919 0V28.49686' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,125.1919,25.89183)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(122.5611,36.6149)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.177599,-29.738046)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-49.177599' y='-29.738046' xlink:href='#c27-06-ni-odvod-g3-121'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<g fill='#f00' stroke='#f00'>
+<path d='M125.1919 0H96.69502' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,99.30005,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(85.4311,-6.25554)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.177599,-29.738046)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-49.177599' y='-29.738046' xlink:href='#c27-06-ni-odvod-g3-122'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='t2'>
+<g stroke-width='0.9'>
+<path d='M250.38422 0H278.88109' fill='none'/>
+<g transform='translate(276.27606,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(285.0547,-6.25554)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.177599,-29.738046)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-49.177599' y='-29.738046' xlink:href='#c27-06-ni-odvod-g3-120'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<g fill='#00f' stroke='#00f'>
+<path d='M250.38422 0V28.49686' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,250.38422,25.89183)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(247.75342,36.6149)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.177599,-29.738046)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-49.177599' y='-29.738046' xlink:href='#c27-06-ni-odvod-g3-121'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<g fill='#f00' stroke='#f00'>
+<path d='M250.38422 0L240.0782-7.3615' fill='none'/>
+<g transform='matrix(-0.81369,-0.58119,0.58119,-0.81369,242.19789,-5.84747)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(229.6012,-16.07176)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.177599,-29.738046)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-49.177599' y='-29.738046' xlink:href='#c27-06-ni-odvod-g3-122'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='t3'>
+<g stroke-width='0.9'>
+<path d='M375.57613 0V-28.49686' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,375.57613,-25.89183)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(372.71849,-38.97601)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.177599,-29.738046)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-49.177599' y='-29.738046' xlink:href='#c27-06-ni-odvod-g3-120'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<g fill='#00f' stroke='#00f'>
+<path d='M375.57613 0H404.07343' fill='none'/>
+<g transform='translate(401.4684,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(410.24704,-6.25554)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.177599,-29.738046)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-49.177599' y='-29.738046' xlink:href='#c27-06-ni-odvod-g3-121'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<g fill='#f00' stroke='#f00'>
+<path d='M375.57613 0L365.2701-7.3615' fill='none'/>
+<g transform='matrix(-0.81369,-0.58119,0.58119,-0.81369,367.38979,-5.84747)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(354.79309,-16.07176)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.177599,-29.738046)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-49.177599' y='-29.738046' xlink:href='#c27-06-ni-odvod-g3-122'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='t4'>
+<g stroke-width='0.9'>
+<path d='M500.76845 0V-28.49686' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,500.76845,-25.89183)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(497.91081,-38.97601)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.177599,-29.738046)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-49.177599' y='-29.738046' xlink:href='#c27-06-ni-odvod-g3-120'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<g fill='#00f' stroke='#00f'>
+<path d='M500.76845 0L490.46243-7.3615' fill='none'/>
+<g transform='matrix(-0.81369,-0.58119,0.58119,-0.81369,492.58212,-5.84747)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(479.81413,-16.07176)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.177599,-29.738046)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-49.177599' y='-29.738046' xlink:href='#c27-06-ni-odvod-g3-121'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<g fill='#f00' stroke='#f00'>
+<path d='M500.76845 0H472.27115' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,474.87617,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(461.00723,-6.25554)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.177599,-29.738046)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-49.177599' y='-29.738046' xlink:href='#c27-06-ni-odvod-g3-122'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='start'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.7'>
+<path d='M500.76845 0L490.53218-7.31168' fill='none'/>
+<g transform='matrix(-0.81369,-0.58119,0.58119,-0.81369,492.58212,-5.84747)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.78027 0L1.17273 1.6428L2.69429 0L1.17273-1.6428Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.7'>
+<path d='M500.76845 0H529.1796' fill='none'/>
+<g transform='translate(526.6603,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.78027 0L1.17273 1.6428L2.69429 0L1.17273-1.6428Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.7'>
+<path d='M500.76845 0V28.41113' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,500.76845,25.89183)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.78027 0L1.17273 1.6428L2.69429 0L1.17273-1.6428Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='k1'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.7'>
+<path d='M11.38092-42.67911H109.50163' fill='none'/>
+<g transform='translate(106.98233,-42.67911)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.78027 0L1.17273 1.6428L2.69429 0L1.17273-1.6428Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(46.25568,-51.91496)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.177599,-29.738046)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-49.177599' y='-29.738046' xlink:href='#c27-06-ni-odvod-g0-101'/>
+<use x='-43.926476' y='-28.243665' xlink:href='#c27-06-ni-odvod-g4-120'/>
+<use x='-38.910556' y='-29.738046' xlink:href='#c27-06-ni-odvod-g3-59'/>
+<use x='-31.161873' y='-29.738046' xlink:href='#c27-06-ni-odvod-g5-57'/>
+<use x='-26.180534' y='-29.738046' xlink:href='#c27-06-ni-odvod-g5-48'/>
+<use x='-21.199195' y='-33.35341' xlink:href='#c27-06-ni-odvod-g2-14'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='k2'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.7'>
+<path d='M136.57324-42.67911H234.69353' fill='none'/>
+<g transform='translate(232.17422,-42.67911)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.78027 0L1.17273 1.6428L2.69429 0L1.17273-1.6428Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(171.66132,-51.91496)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.177599,-29.738046)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-49.177599' y='-29.738046' xlink:href='#c27-06-ni-odvod-g0-101'/>
+<use x='-43.926476' y='-28.243665' xlink:href='#c27-06-ni-odvod-g4-122'/>
+<use x='-39.336009' y='-29.738046' xlink:href='#c27-06-ni-odvod-g3-59'/>
+<use x='-31.587326' y='-29.738046' xlink:href='#c27-06-ni-odvod-g5-57'/>
+<use x='-26.605987' y='-29.738046' xlink:href='#c27-06-ni-odvod-g5-48'/>
+<use x='-21.624648' y='-33.35341' xlink:href='#c27-06-ni-odvod-g2-14'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='k3'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.7'>
+<path d='M261.76515-42.67911H359.88585' fill='none'/>
+<g transform='translate(357.36655,-42.67911)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.78027 0L1.17273 1.6428L2.69429 0L1.17273-1.6428Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(292.75099,-51.91496)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.177599,-29.738046)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-49.177599' y='-29.738046' xlink:href='#c27-06-ni-odvod-g0-101'/>
+<use x='-43.926476' y='-28.243665' xlink:href='#c27-06-ni-odvod-g4-120'/>
+<use x='-38.910556' y='-29.738046' xlink:href='#c27-06-ni-odvod-g3-59'/>
+<use x='-31.161873' y='-29.738046' xlink:href='#c27-06-ni-odvod-g1-0'/>
+<use x='-23.413126' y='-29.738046' xlink:href='#c27-06-ni-odvod-g5-57'/>
+<use x='-18.431787' y='-29.738046' xlink:href='#c27-06-ni-odvod-g5-48'/>
+<use x='-13.450448' y='-33.35341' xlink:href='#c27-06-ni-odvod-g2-14'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='k4'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.7'>
+<path d='M386.95747-42.67911H485.07776' fill='none'/>
+<g transform='translate(482.55846,-42.67911)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.78027 0L1.17273 1.6428L2.69429 0L1.17273-1.6428Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(418.15665,-51.91496)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-49.177599,-29.738046)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-49.177599' y='-29.738046' xlink:href='#c27-06-ni-odvod-g0-101'/>
+<use x='-43.926476' y='-28.243665' xlink:href='#c27-06-ni-odvod-g4-122'/>
+<use x='-39.336009' y='-29.738046' xlink:href='#c27-06-ni-odvod-g3-59'/>
+<use x='-31.587326' y='-29.738046' xlink:href='#c27-06-ni-odvod-g1-0'/>
+<use x='-23.838578' y='-29.738046' xlink:href='#c27-06-ni-odvod-g5-57'/>
+<use x='-18.857239' y='-29.738046' xlink:href='#c27-06-ni-odvod-g5-48'/>
+<use x='-13.8759' y='-33.35341' xlink:href='#c27-06-ni-odvod-g2-14'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Slika 27.29</span>: Štirje zasuki sistema okoli osi osnovnega sistema: \(x\) za <span class="nobr">\(90^\circ\),</span> \(z\) za <span class="nobr">\(90^\circ\),</span> \(x\) za <span class="nobr">\(-90^\circ\),</span> \(z\) za <span class="nobr">\(-90^\circ\).</span> Vsak trikotnik osi kaže stolpce \(\mat R\) (os \(x\) <span class="ink-l">črna</span><span class="ink-d">bela</span>, \(y\) modra, \(z\) oranžna) v poševnem pogledu, enota 1,15 cm. Zadnji sistem se ne ujema z začetnim (črtkano), čeprav je vsota \(\int\vek\omega\,\mathrm{d}t\) po vseh štirih zasukih enaka <span class="nobr">\(\vek 0\).</span></figcaption></figure>
+<div class="blk lema" id="lem-omega-ni-odvod"><div class="blk-head"><span class="blk-label">Lema 27.44</span> <span class="blk-title">Kotna hitrost ni odvod orientacije (the angular velocity is not the derivative of an orientation)</span></div><div class="blk-body"><p>Ne obstaja <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcija</a> <span class="nobr">\(\vek\varphi(\mat R)\),</span> ki bi vsaki <a class="xref auto" href="sec-orientacija-clenov.html#def-matrika-orientacije" data-knowl="def-matrika-orientacije">matriki orientacije</a> priredila tri števila, tako da je \(\dfrac{\mathrm{d}}{\mathrm{d}t}\vek\varphi(\mat R(t)) = \vek\omega(t)\) za vsako gibanje in da imata različni <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matriki</a> različni trojici števil.</p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Dokaz</summary><div class="hid-body"><p>Pokazati moramo, da bi iz take <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">funkcije</a> sledilo, da je štirikratni zasuk iz slike <a class="xref" href="sec-jacobijeva-matrika-robota.html#fig-c27-06-ni-odvod" data-knowl="fig-c27-06-ni-odvod">27.29</a> vrnil sistem na začetek, kar pa ne drži.</p>
+<ol>
+<li>Naj se v prvem delu z začetno \(\mat R = \mat I\) zasuk okoli osi \(x\) giblje kot \(\mat R(t) = \mat R_{\mathrm{x},\mathrm{s}(\mathrm{t})}\,\mat R_0\) s \(\mat R_0\) ob začetku dela in <span class="nobr">\(s(t) = \pm\tfrac{\pi}{2}\,t\).</span> Tedaj je \(\dot{\mat R}\,\mat R^\T = \dot{\mat R}_{\mathrm{x},\mathrm{s}}\,\mat R_{\mathrm{x},\mathrm{s}}^\T\) (kot v lemi <a class="xref" href="sec-jacobijeva-matrika-robota.html#lem-kotna-hitrost-zgloba" data-knowl="lem-kotna-hitrost-zgloba">27.40</a> za os <span class="nobr">\(z\)),</span> to je \(\dot s\) krat <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrika</a>, ki deluje kot <span class="nobr">\(\vek y \mapsto \vek e_{\mathrm{x}}\times\vek y\).</span> Torej je \(\vek\omega = \dot s\,\vek e_{\mathrm{x}}\) po lemi <a class="xref" href="sec-jacobijeva-matrika-robota.html#lem-odvod-orientacije" data-knowl="lem-odvod-orientacije">27.37</a>. Isto velja za osi \(z\) z <span class="nobr">\(\vek e_{\mathrm{z}}\).</span></li>
+<li>Na vsakem od štirih delov je \(\vek\omega\) stalen, zato so <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integrali</a> \(\vek\omega\) po času delov po vrsti <span class="nobr">\(\tfrac{\pi}{2}\vek e_{\mathrm{x}}\),</span> <span class="nobr">\(\tfrac{\pi}{2}\vek e_{\mathrm{z}}\),</span> \(-\tfrac{\pi}{2}\vek e_{\mathrm{x}}\) in <span class="nobr">\(-\tfrac{\pi}{2}\vek e_{\mathrm{z}}\).</span> Njihova vsota je <span class="nobr">\(\vek 0\).</span></li>
+<li>Če bi bil <span class="nobr">\(\vek\omega = \dot{\vek\varphi}\),</span> bi bila po osnovnem izreku (izrek <a class="xref" href="sec-integral.html#thm-osnovni-izrek" data-knowl="thm-osnovni-izrek">3.40</a>), uporabljenem na vsakem delu posebej, sprememba \(\vek\varphi\) na vsakem delu enaka integralu \(\vek\omega\) po tem delu. Vsota sprememb po štirih delih je po koraku 2 enaka <span class="nobr">\(\vek 0\),</span> torej <span class="nobr">\(\vek\varphi(\mat R_{\text{konec}}) = \vek\varphi(\mat I)\).</span> Po predpostavki o različnih trojicah bi bila <span class="nobr">\(\mat R_{\text{konec}} = \mat I\).</span></li>
+<li>Konec je <span class="nobr">\(\mat R_{\text{konec}} = \mat R_{\mathrm{z},-90^\circ}\,\mat R_{\mathrm{x},-90^\circ}\,\mat R_{\mathrm{z},90^\circ}\,\mat R_{\mathrm{x},90^\circ} = \begin{pmatrix} 0 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; -1 \\ -1 &amp; 0 &amp; 0 \end{pmatrix} \neq \mat I\).</span> Točka \((0{,}1;\ 0;\ 0)\) m efektorja gre v \((0;\ 0;\ -0{,}1)\) m, \(0{,}1414\) m stran od začetka. To je protislovje.</li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Vir:</span> SPONG (PDF str. 133 in 162): &quot;this velocity vector is not the derivative of a position variable, since the angular velocity vector is not the derivative of any particular time-varying quantity&quot; (omenjeno brez dokaza). Dokaz in račun sta naša, števila iz num-06.out N2.</p></div></div>
+<p>Kar lema pove, je pomembno za naslednje razdelke: zveze \(\vek\xi = \mat J\,\dot{\vek q}\) ne moremo integrirati v <span class="nobr">\(\vek\xi = \tfrac{\mathrm{d}}{\mathrm{d}t}(\ldots)\),</span> in orientacija se ne da razbrati iz <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integrala</a> kotne hitrosti. Za orientacijo bi potrebovali tri števila, na primer Eulerjeve kote iz razdelka <a class="xref" href="sec-orientacija-clenov.html">27.2</a>, in njihovi odvodi so povezani z \(\vek\omega\) z matriko, ki ni enotska in pri \(\sin\theta = 0\) nima inverza (SPONG, PDF str. 144). Pri \(\theta = 0\) namreč ista matrika orientacije pripada vsem parom <span class="nobr">\(\varphi\),</span> \(\psi\) z isto vsoto (razdelek <a class="xref" href="sec-orientacija-clenov.html">27.2</a>). Matriko odvodov takih kotov imenuje vir analitična Jacobijeva matrika (SPONG razdelek 4.8, PDF str. 143), tu je ne dokazujemo in ne uporabljamo. Mi ostanemo pri geometrijski matriki \(\mat J\) in pri \(\vek\omega\) kot kotni hitrosti <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">telesa</a> po definiciji <a class="xref" href="sec-kineticna-energija.html#def-kotna-hitrost" data-knowl="def-kotna-hitrost">8.77</a>.</p>
+<p>Razdelek smo začeli z vprašanjem, kako hitro se giblje efektor. Odgovor je enačba <a class="xref" href="sec-jacobijeva-matrika-robota.html#eq-jacobijeva" data-knowl="eq-jacobijeva">(27.24)</a> z matriko, katere stolpec \(i\) je hitrost ob vrtenju samega zgloba \(i\) (izrek <a class="xref" href="sec-jacobijeva-matrika-robota.html#thm-stolpci-jacobijeve" data-knowl="thm-stolpci-jacobijeve">27.42</a>). Ista matrika bo tvorila podlago za vse, kar sledi: razdelek <a class="xref" href="sec-singularnosti-statika.html">27.7</a> bo v njej iskal lege, kjer robot izgubi smer gibanja, in jo uporabil za <a class="xref auto forward" href="sec-singularnosti-statika.html#thm-sile-v-zglobih" data-knowl="thm-sile-v-zglobih" title="Definirano kasneje v knjigi">sile v zglobih</a>, razdelek <a class="xref" href="sec-gibalne-enacbe-robota.html">27.8</a> pa matriki \(\mat A_{\mathrm{k}}\) in \(\mat W_{\mathrm{k}}\) iz posledice <a class="xref" href="sec-jacobijeva-matrika-robota.html#cor-jacobijeva-tezisc" data-knowl="cor-jacobijeva-tezisc">27.43</a> za <a class="xref auto" href="sec-kineticna-energija.html#def-kineticna-energija" data-knowl="def-kineticna-energija">kinetično energijo</a>.</p>
+
+</main>
+<footer><nav class="pager"><a href="sec-inverzna-kinematika.html" rel="prev">← 27.5</a><a href="index.html">Kazalo</a><a href="sec-singularnosti-statika.html" rel="next">27.7 →</a></nav></footer>
+</body>
+</html>

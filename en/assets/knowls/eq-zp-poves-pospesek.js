@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-zp-poves-pospesek"] = {"html": "<div class=\"eq\">\\[v(x) = -\\frac{\\rho A\\,\\alpha}{120\\,EI}\\,\\big(x^5 - 10\\,L^2 x^3 + 20\\,L^3 x^2\\big) , \\qquad v(L) = -\\frac{11\\,\\rho A\\,\\alpha\\,L^5}{120\\,EI} = -12{,}16\\ \\text{mm} , \\tag{28.6}\\]</div>", "href": "sec-zakaj-podajni.html#eq-zp-poves-pospesek"};

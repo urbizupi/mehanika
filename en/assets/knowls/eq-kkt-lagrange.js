@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kkt-lagrange"] = {"html": "<div class=\"eq\">\\[\\mathcal{L}(\\vek x, \\vek\\mu) = f(\\vek x) + \\sum_{\\mathrm{i}=1}^{m}\\mu_{\\mathrm{i}}\\,g_{\\mathrm{i}}(\\vek x) . \\tag{29.18}\\]</div>", "href": "sec-kkt.html#eq-kkt-lagrange"};

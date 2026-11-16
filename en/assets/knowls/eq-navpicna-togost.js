@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-navpicna-togost"] = {"html": "<div class=\"eq\">\\[k_{\\mathrm{vv}} = \\frac{n\\,F_{\\mathrm{v}}}{\\delta_{\\mathrm{r}}} , \\qquad k_{\\mathrm{vh}} = \\frac{n\\,F_{\\mathrm{h}}}{\\delta_{\\mathrm{r}}} , \\tag{25.42}\\]</div>", "href": "sec-togost-lezaja.html#eq-navpicna-togost"};

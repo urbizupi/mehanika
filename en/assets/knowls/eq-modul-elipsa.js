@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-modul-elipsa"] = {"html": "<div class=\"eq\">\\[\\Big(\\frac{\\varepsilon}{\\varepsilon_0}\\Big)^2 + \\Big(\\frac{\\sigma - E_{\\mathrm{shr}}\\varepsilon}{E_{\\mathrm{izg}}\\varepsilon_0}\\Big)^2 = 1 . \\tag{20.30}\\]</div>", "href": "sec-kompleksni-modul.html#eq-modul-elipsa"};

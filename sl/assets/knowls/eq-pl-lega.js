@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pl-lega"] = {"html": "<div class=\"eq\">\\[\\vek r = \\vek o + \\mat R(\\theta)\\,\\big(\\bar{\\vek r}_0 + \\bar{\\vek u}\\big) . \\tag{28.8}\\]</div>", "href": "sec-plavajoci-sistem.html#eq-pl-lega"};

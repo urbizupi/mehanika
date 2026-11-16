@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-lu-dolzina"] = {"html": "<div class=\"eq\">\\[L = \\int_\\alpha^\\beta \\sqrt{\\vek q'(t)^\\T\\mat A\\,\\vek q'(t)}\\,\\mathrm{d}t . \\tag{22.5}\\]</div>", "href": "sec-srednja-ploskev.html#eq-lu-dolzina"};

@@ -1,0 +1,1632 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>27.7 Singular configurations and joint forces · Chapter 27</title>
+<script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<link rel="stylesheet" href="assets/style.css">
+<noscript><style>#loadbar { display: none; }</style></noscript>
+<script src="assets/config.js"></script>
+<script src="assets/load.js"></script>
+<script defer src="assets/interaktivno.js"></script>
+<script defer src="assets/book.js"></script>
+<script defer src="assets/predavanje.js"></script>
+<script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
+</head>
+<body>
+<div id="loadbar" aria-hidden="true"></div>
+<header class="top"><a class="home" href="index.html">Mechanics</a><nav class="pager"><a href="sec-jacobijeva-matrika-robota.html" rel="prev">← 27.6</a><a href="index.html">Contents</a><a href="sec-gibalne-enacbe-robota.html" rel="next">27.8 →</a></nav>
+<span class="tools"><a class="lang" href="../sl/sec-singularnosti-statika.html" hreflang="sl">Slovenščina</a><button type="button" class="theme-toggle" title="Light or dark theme" aria-label="Light or dark theme"></button><button type="button" data-details="open">Expand all</button><button type="button" data-details="close">Collapse all</button><button type="button" class="fig-side-toggle" aria-pressed="false">Figures alongside</button></span></header>
+<main>
+<p class="updated">Last updated 16 November 2026, 10:52</p>
+<p class="crumb"><a href="ch-roboti.html"><span class="h-num">Chapter 27</span> Robot kinematics and dynamics</a></p>
+<h2 id="sec-singularnosti-statika"><span class="h-num">27.7</span> Singular configurations and joint forces</h2>
+<p>The <a class="xref auto" href="sec-zamenjava-spremenljivk.html#def-preslikava" data-knowl="def-preslikava">Jacobian matrix</a> \(\mat J(\vek q)\) of section <a class="xref" href="sec-jacobijeva-matrika-robota.html">27.6</a> connects the velocity of the arm's tip (figure <a class="xref" href="sec-singularnosti-statika.html#fig-sing-2r" data-knowl="fig-sing-2r">27.30</a>) with the velocities of the joints, \(\vek\xi = \mat J\dot{\vek q}\) (definition <a class="xref" href="sec-jacobijeva-matrika-robota.html#def-jacobijeva-matrika-robota" data-knowl="def-jacobijeva-matrika-robota">27.41</a>). Now we use it for two questions that everyone who steers an arm asks. First: the tip is to move with a given velocity, how fast must the joints turn? Second: a load acts on the tip, what torques must the motors supply so that the arm stays at rest? Both questions end at the same <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a>. In the first we must invert it, in the second <a class="xref auto" href="sec-matrike.html#def-transponirana-matrika" data-knowl="def-transponirana-matrika">transpose</a> it (swap its rows and columns). We shall see that both have trouble in the same configurations of the arm.</p>
+<p>Anyone who has carried a heavy bucket knows the answer to the second question from their muscles. With the arm stretched downward the bucket hardly tires us, with the arm stretched out horizontally it does quickly. The weight is the same, what changes is the distance between the line of the weight and the shoulder (figure <a class="xref" href="sec-singularnosti-statika.html#fig-sing-sile" data-knowl="fig-sing-sile">27.32</a>). In the subsection <a class="xref" href="sec-singularnosti-statika.html#sec-sile-v-zglobih">27.7.3</a> we shall write this simple fact down for every joint of the arm.</p>
+<p>The model of the arm of figure <a class="xref" href="sec-singularnosti-statika.html#fig-sing-2r" data-knowl="fig-sing-2r">27.30</a> is the same as in the previous sections (section <a class="xref" href="sec-robotske-verige.html">27.1</a>): <a class="xref auto" href="sec-toge-povezave.html#def-toga-povezava" data-knowl="def-toga-povezava">rigid links</a> (definition <a class="xref" href="sec-deformacija-v-tocki.html#def-togo-telo" data-knowl="def-togo-telo">1.11</a>), ideal joints with one degree of freedom, an open chain, motors that put torques and forces \(\boldsymbol\tau\) into the joints, no friction and no inertia of motors and gears. A real joint has friction, which helps at rest, and a real motor has a gearbox with its own inertia. We model neither here. For the velocities and forces of the tip it is enough that the joints are ideal.</p>
+
+<h3 id="sec-sing-lege"><span class="h-num">27.7.1</span> When the tip cannot be moved in every direction</h3>
+<p>Take arm A of section <a class="xref" href="sec-robotske-verige.html">27.1</a>, the planar arm with lengths \(l_1 = 1\) m and \(l_2 = 0{,}5\) m, and put it in the configuration <span class="nobr">\(\vek q = (30°, 60°)\).</span> Figure <a class="xref" href="sec-singularnosti-statika.html#fig-sing-2r" data-knowl="fig-sing-2r">27.30</a> (left) draws it step by step. First <span class="nobr"><a data-del="os" class="xref kaz" href="sec-singularnosti-statika.html#fig-sing-2r" data-knowl="fig-sing-2r">the axis \(x_0\)</a>,</span> from which we measure the angle <span class="nobr">\(q_1\).</span> Then <a data-del="roka" class="xref kaz" href="sec-singularnosti-statika.html#fig-sing-2r" data-knowl="fig-sing-2r">the two links</a>: the first goes from the base <span class="nobr">\(O\),</span> the <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">origin</a> \(o_0\) of frame 0, to the first joint <span class="nobr">\(o_1\),</span> the second from \(o_1\) to the tip <span class="nobr">\(o_2\).</span> <a data-del="kota" class="xref kaz" href="sec-singularnosti-statika.html#fig-sing-2r" data-knowl="fig-sing-2r">The angle \(q_1 = 30°\)</a> lies between the axis and the first link, the angle \(q_2 = 60°\) between the extension of the first link (dashed) and the second link. The tip lies at \((0{,}866;\ 1{,}000)\) m. Now we ask where the tip moves if we turn a single joint. <a data-del="stolpca" class="xref kaz" href="sec-singularnosti-statika.html#fig-sing-2r" data-knowl="fig-sing-2r">The two columns</a> of the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat J\) are exactly that: \(\vek j_1\) is the velocity of the tip at \(\dot{\vek q} = (1, 0)\) rad/s, \(\vek j_2\) at \(\dot{\vek q} = (0, 1)\) rad/s. By theorem <a class="xref" href="sec-jacobijeva-matrika-robota.html#thm-stolpci-jacobijeve" data-knowl="thm-stolpci-jacobijeve">27.42</a> column \(i\) of \(\mat J_{\mathrm{v}}\) for a revolute joint is <span class="nobr">\(\vek z_{\mathrm{i}-1}\times(\vek o_2 - \vek o_{\mathrm{i}-1})\),</span> for arm A with \(\vek z = \vek e_{\mathrm{z}}\) and positions <span class="nobr">\(\vek o_0 = \vek 0\),</span> \(\vek o_1 = l_1(\cos q_1, \sin q_1)\) therefore</p>
+<div class="eq" id="eq-sing-j-roke-a">\[\mat J = \begin{pmatrix} -l_1\sin q_1 - l_2\sin(q_1+q_2) &amp; -l_2\sin(q_1+q_2) \\ l_1\cos q_1 + l_2\cos(q_1+q_2) &amp; l_2\cos(q_1+q_2) \end{pmatrix} . \tag{27.26}\]</div>
+<p>For arm A we are interested only in the components of the tip velocity in the plane, so from the matrix \(\mat J_{\mathrm{v}}\) (three rows, the third is zero) we take the upper two rows and in this section write them just as <span class="nobr">\(\mat J\).</span> At \(\vek q = (30°, 60°)\) we have \(\sin(q_1+q_2) = \sin 90° = 1\) and <span class="nobr">\(\cos(q_1+q_2) = \cos 90° = 0\),</span> so</p>
+<div class="eq">\[\vek j_1 = \begin{pmatrix} -1 \\ 0{,}866 \end{pmatrix}\ \mathrm{m} , \qquad \vek j_2 = \begin{pmatrix} -0{,}5 \\ 0 \end{pmatrix}\ \mathrm{m} .\]</div>
+<p>By the definition of the product of a matrix and a vector (definition <a class="xref" href="sec-matrike.html#def-produkt-matrike-in-vektorja" data-knowl="def-produkt-matrike-in-vektorja">1.96</a>) the tip velocity is the sum <span class="nobr">\(\mat J\dot{\vek q} = \dot q_1\,\vek j_1 + \dot q_2\,\vek j_2\).</span> The two columns point in two different directions of the plane, so we can build every planar velocity from them. Let the tip move at \(0{,}1\) m/s in the direction <span class="nobr">\(x_0\),</span> \(\vek v = (0{,}1;\ 0)\) m/s. The second row \(0{,}866\,\dot q_1 = 0\) gives <span class="nobr">\(\dot q_1 = 0\),</span> the first \(-0{,}5\,\dot q_2 = 0{,}1\) gives \(\dot q_2 = -0{,}2\) rad/s. Indeed: only the second joint turns, and the end of the second link, which is \(0{,}5\) m long and points vertically, then moves horizontally at \(0{,}5 \cdot 0{,}2 = 0{,}1\) m/s, by the law for the velocity of a point of a rigid body (lemma <a class="xref" href="sec-kineticna-energija.html#lem-hitrost-togega" data-knowl="lem-hitrost-togega">8.78</a>).</p>
+<p>Now stretch the arm and keep the first angle, \(\vek q = (30°, 0)\) (figure <a class="xref" href="sec-singularnosti-statika.html#fig-sing-2r" data-knowl="fig-sing-2r">27.30</a>, right). <a data-del="roka" class="xref kaz" href="sec-singularnosti-statika.html#fig-sing-2r" data-knowl="fig-sing-2r">Both links</a> lie on the same line through <span class="nobr">\(O\).</span> <a data-del="stolpca" class="xref kaz" href="sec-singularnosti-statika.html#fig-sing-2r" data-knowl="fig-sing-2r">The columns</a> are now \(\vek j_1 = (-0{,}75;\ 1{,}299)\) m and \(\vek j_2 = (-0{,}25;\ 0{,}433)\) m, and <span class="nobr">\(\vek j_1 = 3\,\vek j_2\).</span> They are drawn side by side so that they do not overlap, and they point in the same direction, perpendicular to the arm. The reason is the law for the velocity of a point of a rigid body (lemma <a class="xref" href="sec-kineticna-energija.html#lem-hitrost-togega" data-knowl="lem-hitrost-togega">8.78</a>). The first link turns about \(O\) with <a class="xref auto" href="sec-kineticna-energija.html#def-kotna-hitrost" data-knowl="def-kotna-hitrost">angular velocity</a> <span class="nobr">\(\dot q_1\vek e_{\mathrm{z}}\),</span> so its contribution to the tip velocity is <span class="nobr">\(\dot q_1\vek e_{\mathrm{z}}\times(\vek o_2 - \vek o_0)\),</span> and a <a class="xref auto" href="sec-simetrija-napetosti.html#def-vektorski-produkt" data-knowl="def-vektorski-produkt">cross product</a> is perpendicular to both factors (lemma <a class="xref" href="sec-simetrija-napetosti.html#lem-lastnosti-vektorskega-produkta" data-knowl="lem-lastnosti-vektorskega-produkta">2.31</a>). The second link turns relative to the first about \(o_1\) and contributes <span class="nobr">\(\dot q_2\vek e_{\mathrm{z}}\times(\vek o_2 - \vek o_1)\),</span> perpendicular to <span class="nobr">\(\vek o_2 - \vek o_1\).</span> Since \(\vek o_2 - \vek o_0\) and \(\vek o_2 - \vek o_1\) lie on the same line, both contributions are perpendicular to the same line. Every tip velocity that we get from joint velocities therefore has component zero along the arm. <a data-del="radialno" class="xref kaz" href="sec-singularnosti-statika.html#fig-sing-2r" data-knowl="fig-sing-2r">The radial direction</a> (dashed, crossed) cannot be reached, however fast we turn the joints.</p>
+
+<figure class="blk slika" id="fig-sing-2r"><p><span class="svgfig" role="img" aria-label="Two-link arm in a general and in a stretched configuration, the columns of the Jacobian matrix as tip velocities"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='395.27pt' height='168.51pt' viewBox='-72.000004 -71.999999 292.793993 124.823472'>
+<defs>
+<path id='c27-07-singularna-2r-g0-106' d='M.826899-4.403487V-3.935243C.996264-3.935243 1.215442-3.935243 1.364882-3.915318C1.58406-3.875467 1.58406-3.745953 1.58406-3.536737V.418431C1.58406 .916563 1.43462 1.633873 .836862 1.633873C.67746 1.633873 .597758 1.613948 .448319 1.574097C.637609 1.43462 .687422 1.225405 .687422 1.075965C.687422 .727273 .428394 .458281 .069738 .458281C-.308842 .458281-.557908 .727273-.557908 1.085928C-.557908 1.653798 .039851 1.992528 .856787 1.992528C1.713574 1.992528 2.660025 1.474471 2.660025 .418431V-4.483188L.826899-4.403487ZM2.660025-6.146949C2.660025-6.575342 2.311333-6.924035 1.882939-6.924035S1.105853-6.575342 1.105853-6.146949S1.454545-5.369863 1.882939-5.369863S2.660025-5.718555 2.660025-6.146949Z'/>
+<path id='c27-07-singularna-2r-g1-79' d='M7.372354-4.343711C7.372354-5.947696 6.316314-7.023661 4.83188-7.023661C2.67995-7.023661 .488169-4.762142 .488169-2.440847C.488169-.787049 1.603985 .219178 3.038605 .219178C5.150685 .219178 7.372354-1.96264 7.372354-4.343711ZM3.098381-.039851C2.11208-.039851 1.414695-.846824 1.414695-2.161893C1.414695-2.600249 1.554172-4.054795 2.321295-5.220423C3.008717-6.256538 3.985056-6.774595 4.772105-6.774595C5.589041-6.774595 6.485679-6.216687 6.485679-4.732254C6.485679-4.014944 6.216687-2.460772 5.230386-1.235367C4.752179-.627646 3.935243-.039851 3.098381-.039851Z'/>
+<path id='c27-07-singularna-2r-g1-111' d='M4.672478-2.719801C4.672478-3.755915 3.975093-4.403487 3.078456-4.403487C1.743462-4.403487 .408468-2.988792 .408468-1.574097C.408468-.587796 1.075965 .109589 2.002491 .109589C3.327522 .109589 4.672478-1.265255 4.672478-2.719801ZM2.012453-.109589C1.58406-.109589 1.145704-.418431 1.145704-1.195517C1.145704-1.683686 1.404732-2.759651 1.723537-3.267746C2.221669-4.034869 2.789539-4.184309 3.068493-4.184309C3.646326-4.184309 3.945205-3.706102 3.945205-3.108344C3.945205-2.719801 3.745953-1.673724 3.367372-1.026152C3.01868-.448319 2.470735-.109589 2.012453-.109589Z'/>
+<path id='c27-07-singularna-2r-g1-113' d='M4.503113-4.293898C4.503113-4.333748 4.473225-4.393524 4.403487-4.393524C4.293898-4.393524 3.895392-3.995019 3.726027-3.706102C3.506849-4.244085 3.118306-4.403487 2.799502-4.403487C1.62391-4.403487 .398506-2.929016 .398506-1.484433C.398506-.508095 .986301 .109589 1.713574 .109589C2.141968 .109589 2.530511-.129514 2.889166-.488169C2.799502-.139477 2.470735 1.205479 2.440847 1.295143C2.361146 1.574097 2.281445 1.613948 1.723537 1.62391C1.594022 1.62391 1.494396 1.62391 1.494396 1.823163C1.494396 1.833126 1.494396 1.932752 1.62391 1.932752C1.942715 1.932752 2.291407 1.902864 2.620174 1.902864C2.958904 1.902864 3.317559 1.932752 3.646326 1.932752C3.696139 1.932752 3.825654 1.932752 3.825654 1.733499C3.825654 1.62391 3.726027 1.62391 3.566625 1.62391C3.088418 1.62391 3.088418 1.554172 3.088418 1.464508C3.088418 1.39477 3.108344 1.334994 3.128269 1.24533L4.503113-4.293898ZM1.743462-.109589C1.145704-.109589 1.105853-.876712 1.105853-1.046077C1.105853-1.524284 1.39477-2.610212 1.564134-3.028643C1.872976-3.765878 2.391034-4.184309 2.799502-4.184309C3.447073-4.184309 3.58655-3.377335 3.58655-3.307597C3.58655-3.247821 3.038605-1.066002 3.008717-1.026152C2.859278-.747198 2.30137-.109589 1.743462-.109589Z'/>
+<path id='c27-07-singularna-2r-g1-120' d='M3.327522-3.008717C3.387298-3.267746 3.616438-4.184309 4.313823-4.184309C4.363636-4.184309 4.60274-4.184309 4.811955-4.054795C4.533001-4.004981 4.333748-3.755915 4.333748-3.516812C4.333748-3.35741 4.443337-3.16812 4.712329-3.16812C4.931507-3.16812 5.250311-3.347447 5.250311-3.745953C5.250311-4.26401 4.662516-4.403487 4.323786-4.403487C3.745953-4.403487 3.39726-3.875467 3.277709-3.646326C3.028643-4.303861 2.49066-4.403487 2.201743-4.403487C1.165629-4.403487 .597758-3.118306 .597758-2.86924C.597758-2.769614 .697385-2.769614 .71731-2.769614C.797011-2.769614 .826899-2.789539 .846824-2.879203C1.185554-3.935243 1.843088-4.184309 2.181818-4.184309C2.371108-4.184309 2.719801-4.094645 2.719801-3.516812C2.719801-3.20797 2.550436-2.540473 2.181818-1.145704C2.022416-.52802 1.673724-.109589 1.235367-.109589C1.175592-.109589 .946451-.109589 .737235-.239103C.986301-.288917 1.205479-.498132 1.205479-.777086C1.205479-1.046077 .986301-1.125778 .836862-1.125778C.537983-1.125778 .288917-.86675 .288917-.547945C.288917-.089664 .787049 .109589 1.225405 .109589C1.882939 .109589 2.241594-.587796 2.271482-.647572C2.391034-.278954 2.749689 .109589 3.347447 .109589C4.373599 .109589 4.941469-1.175592 4.941469-1.424658C4.941469-1.524284 4.851806-1.524284 4.821918-1.524284C4.732254-1.524284 4.712329-1.484433 4.692403-1.414695C4.363636-.348692 3.686177-.109589 3.367372-.109589C2.978829-.109589 2.819427-.428394 2.819427-.767123C2.819427-.986301 2.879203-1.205479 2.988792-1.643836L3.327522-3.008717Z'/>
+<path id='c27-07-singularna-2r-g2-48' d='M3.598506-2.224658C3.598506-2.991781 3.507846-3.542715 3.187049-4.030884C2.970859-4.351681 2.538481-4.630635 1.980573-4.630635C.36264-4.630635 .36264-2.726775 .36264-2.224658S.36264 .139477 1.980573 .139477S3.598506-1.72254 3.598506-2.224658ZM1.980573-.055791C1.659776-.055791 1.234371-.244085 1.094894-.81594C.99726-1.227397 .99726-1.799253 .99726-2.315318C.99726-2.824408 .99726-3.354421 1.101868-3.737983C1.248319-4.288917 1.694645-4.435367 1.980573-4.435367C2.357161-4.435367 2.719801-4.20523 2.84533-3.800747C2.956912-3.424159 2.963885-2.922042 2.963885-2.315318C2.963885-1.799253 2.963885-1.283188 2.873225-.843836C2.733748-.209215 2.259527-.055791 1.980573-.055791Z'/>
+<path id='c27-07-singularna-2r-g2-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='c27-07-singularna-2r-g2-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+</defs>
+<g id='c27-07-singularna-2r-page1'>
+<g stroke-miterlimit='10' transform='translate(-57.184058,39.075756)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='os'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 0H96.73915' fill='none'/>
+<g fill='#000' stroke='#000'>
+<g fill='#000' stroke='#000'>
+</g>
+<g transform='translate(100.29712,-1.40279)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,39.075756)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.184058' y='39.075756' xlink:href='#c27-07-singularna-2r-g1-120'/>
+<use x='-51.490126' y='40.570137' xlink:href='#c27-07-singularna-2r-g2-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='roka'>
+<g stroke-width='1.6'>
+<path d='M0 0L59.12488 34.1432V68.2864' fill='none'/>
+</g>
+<path d='M1.83862 0C1.83862 1.01544 1.01544 1.83862 0 1.83862S-1.83862 1.01544-1.83862 0S-1.01544-1.83862 0-1.83862S1.83862-1.01544 1.83862 0ZM0 0' stroke='none'/>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,39.075756)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+<path d='M60.9635 34.1432C60.9635 35.15865 60.14032 35.98183 59.12488 35.98183S57.28625 35.15865 57.28625 34.1432C57.28625 33.12776 58.10944 32.30458 59.12488 32.30458S60.9635 33.12776 60.9635 34.1432ZM59.12488 34.1432' stroke='none'/>
+<g transform='translate(59.12488,34.1432)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,39.075756)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M61.38782 68.2864C61.38782 69.53621 60.37468 70.54935 59.12488 70.54935S56.86194 69.53621 56.86194 68.2864C56.86194 67.0366 57.87508 66.02347 59.12488 66.02347S61.38782 67.0366 61.38782 68.2864ZM59.12488 68.2864'/>
+</g>
+<g transform='translate(59.12488,68.2864)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,39.075756)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-11.53853,-10.4663)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,39.075756)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.184058' y='39.075756' xlink:href='#c27-07-singularna-2r-g1-79'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(62.75786,26.20468)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,39.075756)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.184058' y='39.075756' xlink:href='#c27-07-singularna-2r-g1-111'/>
+<use x='-52.354937' y='40.570137' xlink:href='#c27-07-singularna-2r-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(62.75786,73.41936)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,39.075756)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.184058' y='39.075756' xlink:href='#c27-07-singularna-2r-g1-111'/>
+<use x='-52.354937' y='40.570137' xlink:href='#c27-07-singularna-2r-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='kota'>
+<path d='M22.76227 0C22.76227 3.99457 21.70987 7.92178 21.88864 7.61195' fill='none'/>
+<g transform='matrix(-0.49995,0.86604,-0.86604,-0.49995,23.12675,5.46724)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(26.82306,4.5099)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,39.075756)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.184058' y='39.075756' xlink:href='#c27-07-singularna-2r-g1-113'/>
+<use x='-52.736596' y='40.570137' xlink:href='#c27-07-singularna-2r-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M59.12488 34.1432L83.76573 48.36957' fill='none'/>
+</g>
+</g>
+</g>
+<path d='M76.3734 44.1014C72.81618 50.26279 66.23962 54.05981 63.47707 54.05981' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,65.95352,54.05981)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(73.76991,51.45718)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,39.075756)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.184058' y='39.075756' xlink:href='#c27-07-singularna-2r-g1-113'/>
+<use x='-52.736596' y='40.570137' xlink:href='#c27-07-singularna-2r-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='stolpca'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M59.12488 68.2864L31.01883 92.6364' fill='none'/>
+<g transform='matrix(-0.75578,0.65479,-0.65479,-0.75578,32.98766,90.93066)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(23.82669,101.12936)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,39.075756)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-57.184058' y='39.075756' xlink:href='#c27-07-singularna-2r-g0-106'/>
+<use x='-53.683316' y='40.570137' xlink:href='#c27-07-singularna-2r-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M59.12488 68.2864H47.6994' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,50.30443,68.2864)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(31.69281,65.7864)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,39.075756)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-57.184058' y='39.075756' xlink:href='#c27-07-singularna-2r-g0-106'/>
+<use x='-53.683316' y='40.570137' xlink:href='#c27-07-singularna-2r-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='os'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M159.3356 0H187.78835' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='roka'>
+<g stroke-width='1.6'>
+<path d='M159.3356 0L218.46048 34.1432L248.05115 51.21501' fill='none'/>
+</g>
+<path d='M161.17422 0C161.17422 1.01544 160.35104 1.83862 159.3356 1.83862S157.49698 1.01544 157.49698 0S158.32016-1.83862 159.3356-1.83862S161.17422-1.01544 161.17422 0ZM159.3356 0' stroke='none'/>
+<g transform='translate(159.3356,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,39.075756)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M220.2991 34.1432C220.2991 35.15865 219.47592 35.98183 218.46048 35.98183S216.62186 35.15865 216.62186 34.1432C216.62186 33.12776 217.44504 32.30458 218.46048 32.30458S220.2991 33.12776 220.2991 34.1432ZM218.46048 34.1432' stroke='none'/>
+<g transform='translate(218.46048,34.1432)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,39.075756)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M250.31409 51.21501C250.31409 52.46481 249.30095 53.47795 248.05115 53.47795S245.78821 52.46481 245.78821 51.21501S246.80135 48.95207 248.05115 48.95207S250.31409 49.96521 250.31409 51.21501ZM248.05115 51.21501'/>
+</g>
+<g transform='translate(248.05115,51.21501)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,39.075756)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(162.96858,-10.4663)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,39.075756)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.184058' y='39.075756' xlink:href='#c27-07-singularna-2r-g1-79'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(222.09346,26.20468)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,39.075756)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.184058' y='39.075756' xlink:href='#c27-07-singularna-2r-g1-111'/>
+<use x='-52.354937' y='40.570137' xlink:href='#c27-07-singularna-2r-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(251.68413,43.27649)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,39.075756)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.184058' y='39.075756' xlink:href='#c27-07-singularna-2r-g1-111'/>
+<use x='-52.354937' y='40.570137' xlink:href='#c27-07-singularna-2r-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='kota'>
+<path d='M182.09787 0C182.09787 3.99457 181.04547 7.92178 181.22424 7.61195' fill='none'/>
+<g transform='matrix(-0.49995,0.86604,-0.86604,-0.49995,182.46236,5.46724)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(186.15866,4.5099)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,39.075756)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.184058' y='39.075756' xlink:href='#c27-07-singularna-2r-g1-113'/>
+<use x='-52.736596' y='40.570137' xlink:href='#c27-07-singularna-2r-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='stolpca'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M254.31078 54.82848L232.94904 91.8297' fill='none'/>
+<g transform='matrix(-0.49997,0.86603,-0.86603,-0.49997,234.25146,89.57367)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(219.05438,101.21487)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,39.075756)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-57.184058' y='39.075756' xlink:href='#c27-07-singularna-2r-g0-106'/>
+<use x='-53.683316' y='40.570137' xlink:href='#c27-07-singularna-2r-g2-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M248.05115 51.21501L242.33958 61.10133' fill='none'/>
+<g transform='matrix(-0.50023,0.86588,-0.86588,-0.50023,243.6427,58.8457)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(233.06085,58.67322)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,39.075756)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-57.184058' y='39.075756' xlink:href='#c27-07-singularna-2r-g0-106'/>
+<use x='-53.683316' y='40.570137' xlink:href='#c27-07-singularna-2r-g2-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='radialno'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M248.05115 51.21501L275.15584 66.8641' fill='none'/>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M271.74165 70.27829L278.57047 63.44948' fill='none'/>
+</g>
+<g stroke-width='0.9'>
+<path d='M271.74165 63.44992L278.57047 70.27873' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 27.30</span>: Arm A. Left: configuration <span class="nobr">\(\vek q = (30°, 60°)\),</span> the columns \(\vek j_1\) (blue) and \(\vek j_2\) (orange) point in different directions. Right: the stretched configuration <span class="nobr">\(\vek q = (30°, 0)\),</span> the columns point in the same direction, perpendicular to the arm, and are drawn side by side so that they do not overlap. Crossed dashed line: the direction in which the tip cannot move. Scale of the arm 2,4 cm = 1 m, velocities 1,1 cm = 1 m/s.</figcaption></figure>
+<p>We name the configuration in which this happens (right in figure <a class="xref" href="sec-singularnosti-statika.html#fig-sing-2r" data-knowl="fig-sing-2r">27.30</a>). The word comes from the Latin singularis, single, exceptional: such configurations are exceptions among all configurations of the arm. In matrices the same word names those that have no inverse. The <a class="xref auto" href="sec-zamenjava-spremenljivk.html#def-preslikava" data-knowl="def-preslikava">Jacobian matrix</a> in such configurations is not <a class="xref auto" href="sec-matrike.html#def-inverzna-matrika" data-knowl="def-inverzna-matrika">invertible</a>, so we call the configuration singular. Which rows of the matrix we count is decided by the task. For arm A we care about the planar position of the tip, so two rows. For arm B of this section, a three-joint arm in space, we care about the position of the tip, so the matrix \(\mat J_{\mathrm{v}}\) with three rows. We count the independent rows with the pivots of the section on elimination (definition <a class="xref" href="sec-implicitna-funkcija.html#def-pivoti" data-knowl="def-pivoti">8.20</a>).</p>
+
+<div class="blk definicija" id="def-singularna-lega"><div class="blk-head"><span class="blk-label">Definition 27.45</span> <span class="blk-title">Singular configuration (singularna lega)</span></div><div class="blk-body"><p>Let \(\mat J_*(\vek q)\) be a matrix of size \(m \times n\) with \(m \le n\) whose rows are the components of the tip velocity that the task requires (for arm A the two planar components, for arm B the three components of <span class="nobr">\(\mat J_{\mathrm{v}}\),</span> for a six-joint arm all six rows of <span class="nobr">\(\mat J\))</span> and whose columns are one per joint. The configuration \(\vek q\) is singular if \(\mat J_*(\vek q)\) does not have a pivot in every row (definition <a class="xref" href="sec-implicitna-funkcija.html#def-pivoti" data-knowl="def-pivoti">8.20</a>). Otherwise the configuration is regular (regularna). For a <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">square matrix</a> \(m = n\) this means that it does not have \(n\) pivots. <!-- nofig: algebra --></p>
+
+<p class="vir"><span class="vir-label">Source:</span> SPONG §4.9 (PDF pp. 144-145) defines singular configurations by the number of independent rows being smaller than its maximum. We use pivots instead of this number, because the book introduces them in the section on elimination.</p></div></div>
+<p>The word configuration (lega) is the one of definition <a class="xref" href="sec-posplosene-koordinate.html#def-konfiguracija" data-knowl="def-konfiguracija">8.41</a>: the set of all <a class="xref auto" href="sec-robotske-verige.html#def-spremenljivke-zglobov" data-knowl="def-spremenljivke-zglobov">joint variables</a>. Singularity is a property of the configuration, not of the arm: the same arm is regular in most configurations (left in figure <a class="xref" href="sec-singularnosti-statika.html#fig-sing-2r" data-knowl="fig-sing-2r">27.30</a>).</p>
+<p>For square matrices of order 2 and 3 we have a simple test, the determinant. Determinants in the book are defined for order 3 (definition <a class="xref" href="sec-determinanta.html#def-determinanta" data-knowl="def-determinanta">2.50</a>), for order 2 we write <span class="nobr">\(\det\mat A = A_{11}A_{22} - A_{12}A_{21}\).</span> <!-- nofig: signpost --></p>
+
+<div class="blk lema" id="lem-det-singularna"><div class="blk-head"><span class="blk-label">Lemma 27.46</span> <span class="blk-title">Determinant and pivots (determinanta in pivoti)</span></div><div class="blk-body"><p>A <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">square matrix</a> \(\mat A\) of order 2 or 3 has a full set of pivots if and only if <span class="nobr">\(\det\mat A \neq 0\).</span> <!-- nofig: algebra --></p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that \(\det\mat A = 0\) implies missing pivots and the converse. Order 3 is a direct consequence of two known lemmas, order 2 we show separately. <!-- nofig: algebra --></p>
+<ol>
+<li>Order 3. By lemma <a class="xref" href="sec-implicitna-funkcija.html#lem-pivoti-obrnljiva" data-knowl="lem-pivoti-obrnljiva">8.21</a> \(\mat A\) has three pivots if and only if \(\mat A\vek w = \vek 0\) implies <span class="nobr">\(\vek w = \vek 0\).</span> By lemma <a class="xref" href="sec-determinanta.html#lem-nicelna-determinanta" data-knowl="lem-nicelna-determinanta">2.53</a> \(\det\mat A = 0\) if and only if there is \(\vek w \neq \vek 0\) with <span class="nobr">\(\mat A\vek w = \vek 0\).</span> The two statements are opposite, so \(\det\mat A \neq 0\) if and only if the pivots are full. <!-- nofig: algebra --></li>
+<li>Order 2, <span class="nobr">\(\det\mat A \neq 0\).</span> The <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat B = \begin{pmatrix} A_{22} &amp; -A_{12} \\ -A_{21} &amp; A_{11} \end{pmatrix}\) gives by multiplication <span class="nobr">\(\mat A\mat B = (\det\mat A)\,\mat I\).</span> If <span class="nobr">\(\mat A\vek w = \vek 0\),</span> then \((\det\mat A)\,\vek w = \mat B\mat A\vek w = \vek 0\) (also <span class="nobr">\(\mat B\mat A = (\det\mat A)\,\mat I\)),</span> so <span class="nobr">\(\vek w = \vek 0\).</span> By lemma <a class="xref" href="sec-implicitna-funkcija.html#lem-pivoti-obrnljiva" data-knowl="lem-pivoti-obrnljiva">8.21</a> \(\mat A\) has two pivots. <!-- nofig: algebra --></li>
+<li>Order 2, <span class="nobr">\(\det\mat A = 0\).</span> The column \(\vek w = (A_{22}, -A_{12})\) gives <span class="nobr">\(\mat A\vek w = (\det\mat A,\ 0) = \vek 0\).</span> If <span class="nobr">\(\vek w \neq \vek 0\),</span> by lemma <a class="xref" href="sec-implicitna-funkcija.html#lem-pivoti-obrnljiva" data-knowl="lem-pivoti-obrnljiva">8.21</a> \(\mat A\) does not have two pivots. If <span class="nobr">\(\vek w = \vek 0\),</span> the second column of the matrix is zero, so \(\mat A(0,1) = \vek 0\) with a nonzero <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vector</a>, and \(\mat A\) again does not have two pivots. <!-- nofig: algebra --></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> The proof is not from the sources.</p></div></div>
+<p>Now we show what a <a class="xref auto" href="sec-singularnosti-statika.html#def-singularna-lega" data-knowl="def-singularna-lega">singular configuration</a> means for velocities and for forces. Both statements follow from the same deficiency of the matrix, so we write them together. <!-- nofig: signpost --></p>
+
+<div class="blk izrek" id="thm-singularna-hitrost"><div class="blk-head"><span class="blk-label">Theorem 27.47</span> <span class="blk-title">Velocities at a singular configuration (hitrosti pri singularni legi)</span></div><div class="blk-body"><p>Let \(\mat J_*\) be a <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">square matrix</a> of order \(n\) and \(\vek\xi = \mat J_*\dot{\vek q}\) the relation between the joint velocities and the tip velocity. <!-- nofig: algebra --></p>
+<ol>
+<li>If the configuration is regular, \(\mat J_*\dot{\vek q} = \vek\xi\) has for every \(\vek\xi\) exactly one solution <span class="nobr">\(\dot{\vek q} = \mat J_*^{-1}\vek\xi\).</span> <!-- nofig: algebra --></li>
+<li>If the configuration is singular, there is \(\vek w \neq \vek 0\) with \(\mat J_*\vek w = \vek 0\) (the joints turn, the tip is at rest) and there is \(\vek u \neq \vek 0\) with <span class="nobr">\(\mat J_*^\T\vek u = \vek 0\).</span> Every velocity \(\vek\xi = \mat J_*\dot{\vek q}\) satisfies <span class="nobr">\(\vek u\cdot\vek\xi = 0\),</span> and the velocity \(\vek\xi = \vek u\) belongs to no <span class="nobr">\(\dot{\vek q}\).</span> <!-- nofig: algebra --></li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show both points. The first is the lemma on pivots, the second applies the same lemma to \(\mat J_*\) and to its <a class="xref auto" href="sec-matrike.html#def-transponirana-matrika" data-knowl="def-transponirana-matrika">transpose</a>. <!-- nofig: algebra --></p>
+<ol>
+<li>A regular configuration means \(n\) pivots (definition <a class="xref" href="sec-singularnosti-statika.html#def-singularna-lega" data-knowl="def-singularna-lega">27.45</a>). By lemma <a class="xref" href="sec-implicitna-funkcija.html#lem-pivoti-obrnljiva" data-knowl="lem-pivoti-obrnljiva">8.21</a> the system \(\mat J_*\dot{\vek q} = \vek\xi\) has exactly one solution for every right-hand side and \(\mat J_*\) has an <a class="xref auto" href="sec-matrike.html#def-inverzna-matrika" data-knowl="def-inverzna-matrika">inverse matrix</a>. <!-- nofig: algebra --></li>
+<li>A singular configuration means fewer than \(n\) pivots. By lemma <a class="xref" href="sec-implicitna-funkcija.html#lem-pivoti-obrnljiva" data-knowl="lem-pivoti-obrnljiva">8.21</a> <span class="nobr">(\(n\)</span> pivots if and only if \(\mat A\vek w = \vek 0\) implies <span class="nobr">\(\vek w = \vek 0\))</span> there is \(\vek w \neq \vek 0\) with <span class="nobr">\(\mat J_*\vek w = \vek 0\).</span> <!-- nofig: algebra --></li>
+<li>We apply the same lemma to <span class="nobr">\(\mat J_*^\T\).</span> If \(\mat J_*^\T\) had \(n\) pivots, then by this lemma so would <span class="nobr">\((\mat J_*^\T)^\T = \mat J_*\).</span> It does not, so there is \(\vek u \neq \vek 0\) with <span class="nobr">\(\mat J_*^\T\vek u = \vek 0\).</span> <!-- nofig: algebra --></li>
+<li>For every \(\dot{\vek q}\) we have \(\vek u\cdot(\mat J_*\dot{\vek q}) = (\mat J_*^\T\vek u)\cdot\dot{\vek q} = 0\) (lemma <a class="xref" href="sec-matrike.html#lem-transponiran-produkt" data-knowl="lem-transponiran-produkt">1.101</a>). If \(\mat J_*\dot{\vek q} = \vek u\) held, we would have <span class="nobr">\(\vek u\cdot\vek u = 0\),</span> which is false for <span class="nobr">\(\vek u \neq \vek 0\).</span> <!-- nofig: algebra --></li>
+</ol>
+</div></details><details class="hid razlaga" open><summary>Explanation</summary><div class="hid-body"><p>The <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vector</a> \(\vek u\) is the dashed unreachable direction in the figures of this section, the vector \(\vek w\) the motion of the joints that does not move the tip. <!-- nofig: algebra --></p>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> SPONG §4.9 (PDF pp. 144-145) says the same with the number of independent rows, the proof is not from the source.</p></div></div>
+<p>The right part of figure <a class="xref" href="sec-singularnosti-statika.html#fig-sing-2r" data-knowl="fig-sing-2r">27.30</a> shows point 2 on an example: at \(\vek q = (30°, 0)\) we have <span class="nobr">\(\vek u = (\cos 30°, \sin 30°) = (0{,}866;\ 0{,}5)\),</span> the <a class="xref auto" href="sec-vektorji.html#def-enotski-vektor" data-knowl="def-enotski-vektor">unit vector</a> along the arm, and <span class="nobr">\(\vek u\cdot\vek j_1 = \vek u\cdot\vek j_2 = 0\).</span> The <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vector</a> \(\vek w\) is here <span class="nobr">\((1, -3)\),</span> since <span class="nobr">\(\vek j_1 - 3\vek j_2 = \vek 0\).</span> A singular configuration is not just a point where something does not work: already near it the joint velocities grow beyond every bound when the tip velocity has a <a class="xref auto" href="sec-skalarni-produkt.html#def-projekcija" data-knowl="def-projekcija">component in the direction</a> <span class="nobr">\(\vek u\).</span> How fast, the determinant shows.</p>
+
+<div class="blk lema" id="lem-singularnost-2r"><div class="blk-head"><span class="blk-label">Lemma 27.48</span> <span class="blk-title">Singular configurations of arm A (singularne lege roke A)</span></div><div class="blk-body"><p>Arm A has <span class="nobr">\(\det\mat J = l_1l_2\sin q_2\).</span> The configuration is singular if and only if \(q_2 = 0\) or \(q_2 = \pi\) (up to full turns), that is, when the arm is stretched or folded. The angle \(q_1\) does not matter. <!-- nofig: algebra --></p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show the expression for the <a class="xref auto" href="sec-determinanta.html#def-determinanta" data-knowl="def-determinanta">determinant</a> and its zeros. The <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> is <a class="xref" href="sec-singularnosti-statika.html#eq-sing-j-roke-a" data-knowl="eq-sing-j-roke-a">(27.26)</a>, its determinant is \(J_{11}J_{22} - J_{12}J_{21}\) (notation before lemma <a class="xref" href="sec-singularnosti-statika.html#lem-det-singularna" data-knowl="lem-det-singularna">27.46</a>). We write <span class="nobr">\(s_1 = \sin q_1\),</span> <span class="nobr">\(c_1 = \cos q_1\),</span> <span class="nobr">\(s_{12} = \sin(q_1+q_2)\),</span> <span class="nobr">\(c_{12} = \cos(q_1+q_2)\).</span> <!-- nofig: algebra --></p>
+<ol>
+<li><span class="nobr">\(\det\mat J = (-l_1s_1 - l_2s_{12})\,l_2c_{12} - (-l_2s_{12})(l_1c_1 + l_2c_{12})\).</span> <!-- nofig: algebra --></li>
+<li>The terms \(-l_2^2s_{12}c_{12}\) and \(+l_2^2s_{12}c_{12}\) cancel, what remains is <span class="nobr">\(\det\mat J = l_1l_2\,(s_{12}c_1 - s_1c_{12})\).</span> <!-- nofig: algebra --></li>
+<li>By the addition formula (corollary <a class="xref" href="sec-sinus-kosinus.html#cor-adicijska-izreka" data-knowl="cor-adicijska-izreka">8.15</a>) <span class="nobr">\(s_{12}c_1 - s_1c_{12} = \sin((q_1 + q_2) - q_1) = \sin q_2\).</span> So <span class="nobr">\(\det\mat J = l_1l_2\sin q_2\).</span> <!-- nofig: algebra --></li>
+<li>Since \(l_1l_2 = 0{,}5\) m² <span class="nobr">\(\neq 0\),</span> \(\det\mat J = 0\) exactly when <span class="nobr">\(\sin q_2 = 0\),</span> that is <span class="nobr">\(q_2 = k\pi\).</span> By lemma <a class="xref" href="sec-singularnosti-statika.html#lem-det-singularna" data-knowl="lem-det-singularna">27.46</a> this is exactly the <a class="xref auto" href="sec-singularnosti-statika.html#def-singularna-lega" data-knowl="def-singularna-lega">singular configuration</a>. <!-- nofig: algebra --></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> SPONG, equation (4.62) and PDF page 151 (the same determinant, zeros at <span class="nobr">\(\theta_2 = 0, \pi\)).</span> The step-by-step writing and the proof are not from the source.</p></div></div>
+<p>The stretched arm <span class="nobr">(\(q_2 = 0\),</span> right in figure <a class="xref" href="sec-singularnosti-statika.html#fig-sing-2r" data-knowl="fig-sing-2r">27.30</a>) is on the outer edge of the <a class="xref auto" href="sec-robotske-verige.html#def-delovni-prostor" data-knowl="def-delovni-prostor">workspace</a> (lemma <a class="xref" href="sec-robotske-verige.html#lem-delovni-prostor-2r" data-knowl="lem-delovni-prostor-2r">27.7</a>), the folded one <span class="nobr">(\(q_2 = \pi\))</span> on its inner edge. For arm A the singular configurations are therefore on the edges. Arm B will show that this is not necessary.</p>
+<p>We also look at what &quot;near&quot; means (configurations between the left and the right part of figure <a class="xref" href="sec-singularnosti-statika.html#fig-sing-2r" data-knowl="fig-sing-2r">27.30</a>). Let the tip velocity be \(\vek v = (0{,}1;\ 0)\) m/s, <span class="nobr">\(q_1 = 30°\).</span> The inverse of a matrix of order 2 is \(\mat J^{-1} = \mat B/\det\mat J\) with \(\mat B\) from step 2 of the proof of lemma <a class="xref" href="sec-singularnosti-statika.html#lem-det-singularna" data-knowl="lem-det-singularna">27.46</a>, so</p>
+<div class="eq" id="eq-sing-hitrost-q1">\[\dot q_1 = \frac{0{,}1\,\cos(q_1+q_2)}{l_1\sin q_2} \ \text{m/s} . \tag{27.27}\]</div>
+<p>The denominator is <span class="nobr">\(\sin q_2\),</span> from lemma <a class="xref" href="sec-singularnosti-statika.html#lem-singularnost-2r" data-knowl="lem-singularnost-2r">27.48</a>. The table shows what happens as \(q_2\) falls toward zero.</p>
+<table>
+<thead>
+<tr>
+<th>\(q_2\)</th>
+<th>\(\dot q_1\) (rad/s)</th>
+<th>\(\dot q_2\) (rad/s)</th>
+<th>\(\det\mat J\) (m²)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>\(60°\)</td>
+<td>\(0\)</td>
+<td>\(-0{,}2\)</td>
+<td>\(0{,}43301\)</td>
+</tr>
+<tr>
+<td>\(10°\)</td>
+<td>\(0{,}4411\)</td>
+<td>\(-1{,}4386\)</td>
+<td>\(0{,}08682\)</td>
+</tr>
+<tr>
+<td>\(5°\)</td>
+<td>\(0{,}9399\)</td>
+<td>\(-2{,}9272\)</td>
+<td>\(0{,}04358\)</td>
+</tr>
+<tr>
+<td>\(1°\)</td>
+<td>\(4{,}9115\)</td>
+<td>\(-14{,}8359\)</td>
+<td>\(0{,}00873\)</td>
+</tr>
+<tr>
+<td>\(0{,}1°\)</td>
+<td>\(49{,}5696\)</td>
+<td>\(-148{,}8088\)</td>
+<td>\(0{,}00087\)</td>
+</tr>
+</tbody>
+</table>
+<p>The tip velocity is the same in all rows, \(0{,}1\) m/s (configurations between the left and the right part of figure <a class="xref" href="sec-singularnosti-statika.html#fig-sing-2r" data-knowl="fig-sing-2r">27.30</a>). When the angle drops from \(10°\) to <span class="nobr">\(1°\),</span> \(\sin q_2\) falls by the factor <span class="nobr">\(\sin 10°/\sin 1° = 9{,}95\),</span> and \(\cos(q_1+q_2)\) rises from \(\cos 40° = 0{,}766\) to <span class="nobr">\(\cos 31° = 0{,}857\),</span> that is by the factor <span class="nobr">\(1{,}119\).</span> By <a class="xref" href="sec-singularnosti-statika.html#eq-sing-hitrost-q1" data-knowl="eq-sing-hitrost-q1">(27.27)</a> \(\dot q_1\) grows by <span class="nobr">\(9{,}95 \cdot 1{,}119 = 11{,}1\),</span> and indeed <span class="nobr">\(4{,}9115/0{,}4411 = 11{,}1\).</span> A motor does not have unbounded speed, so a real arm cannot keep this tip velocity any more as it approaches the stretched configuration, before it reaches the configuration. At \(q_2 = 0\) there is no solution if the velocity has a component along the arm (theorem <a class="xref" href="sec-singularnosti-statika.html#thm-singularna-hitrost" data-knowl="thm-singularna-hitrost">27.47</a>, point 2), and ours has one, \(\vek u\cdot\vek v = 0{,}866 \cdot 0{,}1 = 0{,}0866\) m/s. If the component along the arm is zero, there are infinitely many solutions: by theorem <a class="xref" href="sec-singularnosti-statika.html#thm-singularna-hitrost" data-knowl="thm-singularna-hitrost">27.47</a> we add to every solution a <a class="xref auto" href="sec-vektorji.html#def-vsota-vektorjev" data-knowl="def-vsota-vektorjev">multiple of the vector</a> <span class="nobr">\(\vek w = (1, -3)\),</span> for which the tip is at rest.</p>
+<p>A measure of how far a configuration is from a singular one is the manipulability (manipulability) \(\mu = |\det\mat J|\) for a square matrix. SPONG names it in §4.12 (equations (4.121) and (4.123), PDF p. 156) and extends it to general matrices with the root of \(\det\mat J\mat J^\T\) and the manipulability ellipsoid. We only cite this and do not prove it. For arm A (figure <a class="xref" href="sec-singularnosti-statika.html#fig-sing-2r" data-knowl="fig-sing-2r">27.30</a>) we have <span class="nobr">\(\mu = l_1l_2|\sin q_2|\):</span> \(0{,}5\) m² at <span class="nobr">\(q_2 = 90°\),</span> \(0{,}433\) m² at <span class="nobr">\(60°\),</span> \(0{,}087\) m² at \(10°\) and \(0\) at <span class="nobr">\(0°\).</span></p>
+<!-- nofig: signpost -->
+
+<h3 id="sec-sing-roka-b"><span class="h-num">27.7.2</span> An arm in space: elbow and shoulder singularities</h3>
+<p>In arm A all <a class="xref auto" href="sec-singularnosti-statika.html#def-singularna-lega" data-knowl="def-singularna-lega">singular configurations</a> are on the edges of the <a class="xref auto" href="sec-robotske-verige.html#def-delovni-prostor" data-knowl="def-delovni-prostor">workspace</a>. An arm with three revolute joints in space has one more kind. Take arm B, an elbow arm (komolčna roka), after the layout of the book SPONG (Example 4.9, PDF pp. 147-148, figure 4.5) with our dimensions \(d_1 = 0{,}4\) m, \(a_2 = 0{,}5\) m, \(a_3 = 0{,}4\) m. We repeat its DH table from section <a class="xref" href="sec-dh-zapis.html">27.4</a>: the rows \((a_{\mathrm{i}}, \alpha_{\mathrm{i}}, d_{\mathrm{i}}, \theta_{\mathrm{i}})\) are <span class="nobr">\((0,\ 90°,\ d_1,\ q_1)\),</span> <span class="nobr">\((a_2,\ 0,\ 0,\ q_2)\),</span> <span class="nobr">\((a_3,\ 0,\ 0,\ q_3)\).</span> The first joint turns the base about the vertical axis <span class="nobr">\(z_0\),</span> the second and third joints have parallel, horizontal axes and raise the upper arm and the forearm (figure <a class="xref" href="sec-singularnosti-statika.html#fig-sing-b" data-knowl="fig-sing-b">27.31</a>).</p>
+<p>How do we get to the columns of <span class="nobr">\(\mat J_{\mathrm{v}}\)?</span> By theorem <a class="xref" href="sec-jacobijeva-matrika-robota.html#thm-stolpci-jacobijeve" data-knowl="thm-stolpci-jacobijeve">27.42</a> they are <span class="nobr">\(\vek z_{\mathrm{i}-1}\times(\vek o_3 - \vek o_{\mathrm{i}-1})\).</span> We need the axes and origins of frames 0, 1, 2. By theorem <a class="xref" href="sec-dh-zapis.html#thm-dh-obstoj" data-knowl="thm-dh-obstoj">27.30</a> <span class="nobr">\(\vek o_{\mathrm{i}} = \vek o_{\mathrm{i}-1} + d_{\mathrm{i}}\vek z_{\mathrm{i}-1} + a_{\mathrm{i}}\vek x_{\mathrm{i}}\),</span> and by lemma <a class="xref" href="sec-dh-zapis.html#lem-dh-matrika" data-knowl="lem-dh-matrika">27.28</a> the columns of \(\mat R^{i-1}_{\mathrm{i}}\) are the axes of <a class="xref auto" href="sec-okvirji.html#def-okvir" data-knowl="def-okvir">frame</a> <span class="nobr">\(i\).</span> From the first row of the table, frame 1 has <span class="nobr">\(\vek x_1 = (c_1, s_1, 0)\),</span> \(\vek y_1 = (0, 0, 1)\) and \(\vek z_1 = (s_1, -c_1, 0)\) (because of \(\alpha_1 = 90°\) the axis \(z\) is horizontal) and <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">origin</a> <span class="nobr">\(\vek o_1 = (0, 0, d_1)\).</span> In the second and third rows <span class="nobr">\(\alpha = 0\),</span> the axes \(z\) do not change, <span class="nobr">\(\vek z_2 = \vek z_1\),</span> and the frame turns about it: \(\vek x_2 = c_2\vek x_1 + s_2\vek y_1 = (c_1c_2,\ s_1c_2,\ s_2)\) and by the same computation \(\vek x_3 = (c_1c_{23},\ s_1c_{23},\ s_{23})\) with \(c_{23} = \cos(q_2+q_3)\) and <span class="nobr">\(s_{23} = \sin(q_2+q_3)\).</span> The origins are \(\vek o_2 = \vek o_1 + a_2\vek x_2\) and <span class="nobr">\(\vek o_3 = \vek o_2 + a_3\vek x_3\).</span> With the notation \(r = a_2c_2 + a_3c_{23}\) and \(w = a_2s_2 + a_3s_{23}\) the tip is</p>
+<div class="eq" id="eq-sing-konica-b">\[\vek o_3 = (c_1 r,\ s_1 r,\ d_1 + w) . \tag{27.28}\]</div>
+<p>At \(\vek q = (30°, 45°, -60°)\) we have \(r = 0{,}7399\) m, \(w = 0{,}25\) m and \(\vek o_3 = (0{,}6408;\ 0{,}37;\ 0{,}65)\) m. <a data-del="os" class="xref kaz" href="sec-singularnosti-statika.html#fig-sing-b" data-knowl="fig-sing-b">The rotation axis of the base \(z_0\)</a> is drawn dashed in figure <a class="xref" href="sec-singularnosti-statika.html#fig-sing-b" data-knowl="fig-sing-b">27.31</a>, <a data-del="roka" class="xref kaz" href="sec-singularnosti-statika.html#fig-sing-b" data-knowl="fig-sing-b">the links</a> as thick lines from the joint \(o_1\) to \(o_2\) and from \(o_2\) to <span class="nobr">\(o_3\),</span> <a data-del="kota" class="xref kaz" href="sec-singularnosti-statika.html#fig-sing-b" data-knowl="fig-sing-b">the angle \(q_2\)</a> lies between the horizontal in the direction of the axis \(\vek x_1\) (dashed) and the upper arm.</p>
+
+<div class="blk lema" id="lem-singularnosti-b"><div class="blk-head"><span class="blk-label">Lemma 27.49</span> <span class="blk-title">Singular configurations of arm B (singularne lege roke B)</span></div><div class="blk-body"><p>For arm B <!-- nofig: algebra --></p>
+<div class="eq" id="eq-sing-jv-b">\[\mat J_{\mathrm{v}} = \begin{pmatrix} -s_1 r &amp; -c_1 w &amp; -a_3c_1s_{23} \\ c_1 r &amp; -s_1 w &amp; -a_3s_1s_{23} \\ 0 &amp; r &amp; a_3c_{23} \end{pmatrix} , \qquad \det\mat J_{\mathrm{v}} = -a_2a_3\sin q_3\ (a_2\cos q_2 + a_3\cos(q_2+q_3)) . \tag{27.29}\]</div>
+<p>The configuration is singular if and only if \(\sin q_3 = 0\) (elbow stretched or folded) or <span class="nobr">\(a_2\cos q_2 + a_3\cos(q_2+q_3) = 0\),</span> that is \(r = 0\) (the tip on the axis <span class="nobr">\(z_0\)).</span> In the first case \(\vek u = \vek x_2\) is an unreachable direction, in the second the first column is zero, so turning the base does not move the tip.</p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show the columns, the <a class="xref auto" href="sec-determinanta.html#def-determinanta" data-knowl="def-determinanta">determinant</a> and the zeros. We compute the columns from theorem <a class="xref" href="sec-jacobijeva-matrika-robota.html#thm-stolpci-jacobijeve" data-knowl="thm-stolpci-jacobijeve">27.42</a> and the expressions before the lemma, the determinant by expansion along the first column. <!-- nofig: algebra --></p>
+<ol>
+<li>Column 1. \(\vek z_0 = (0,0,1)\) and <span class="nobr">\(\vek o_3 - \vek o_0 = (c_1r,\ s_1r,\ d_1 + w)\).</span> The <a class="xref auto" href="sec-simetrija-napetosti.html#def-vektorski-produkt" data-knowl="def-vektorski-produkt">cross product</a> \((0,0,1)\times(a,b,c) = (-b,\ a,\ 0)\) gives <span class="nobr">\((-s_1r,\ c_1r,\ 0)\).</span> <!-- nofig: algebra --></li>
+<li>Column 2. \(\vek z_1 = (s_1, -c_1, 0)\) and <span class="nobr">\(\vek o_3 - \vek o_1 = (c_1r,\ s_1r,\ w)\).</span> By the formula for the cross product \((a_1,a_2,a_3)\times(b_1,b_2,b_3) = (a_2b_3 - a_3b_2,\ a_3b_1 - a_1b_3,\ a_1b_2 - a_2b_1)\) the components are <span class="nobr">\((-c_1w,\ -s_1w,\ s_1\cdot s_1r + c_1\cdot c_1r) = (-c_1w,\ -s_1w,\ r)\).</span> <!-- nofig: algebra --></li>
+<li>Column 3. \(\vek z_2 = \vek z_1\) and <span class="nobr">\(\vek o_3 - \vek o_2 = a_3\vek x_3 = a_3(c_1c_{23},\ s_1c_{23},\ s_{23})\).</span> The same product gives <span class="nobr">\(a_3(-c_1s_{23},\ -s_1s_{23},\ s_1^2c_{23} + c_1^2c_{23}) = a_3(-c_1s_{23},\ -s_1s_{23},\ c_{23})\).</span> <!-- nofig: algebra --></li>
+<li>Expansion along the first column: \(\det\mat J_{\mathrm{v}} = (-s_1r)\,M_{11} - (c_1r)\,M_{21}\) with the minors \(M_{11} = (-s_1w)(a_3c_{23}) - (-a_3s_1s_{23})\,r = a_3s_1K\) and <span class="nobr">\(M_{21} = (-c_1w)(a_3c_{23}) - (-a_3c_1s_{23})\,r = a_3c_1K\),</span> where <span class="nobr">\(K = s_{23}r - c_{23}w\).</span> <!-- nofig: algebra --></li>
+<li>The sum: <span class="nobr">\(\det\mat J_{\mathrm{v}} = -a_3rK\,(s_1^2 + c_1^2) = -a_3rK\).</span> <!-- nofig: algebra --></li>
+<li>\(K = s_{23}(a_2c_2 + a_3c_{23}) - c_{23}(a_2s_2 + a_3s_{23}) = a_2(s_{23}c_2 - c_{23}s_2) = a_2\sin q_3\) by the addition formula (corollary <a class="xref" href="sec-sinus-kosinus.html#cor-adicijska-izreka" data-knowl="cor-adicijska-izreka">8.15</a>). So <span class="nobr">\(\det\mat J_{\mathrm{v}} = -a_2a_3\sin q_3\,r\).</span> <!-- nofig: algebra --></li>
+<li>By lemma <a class="xref" href="sec-singularnosti-statika.html#lem-det-singularna" data-knowl="lem-det-singularna">27.46</a> the configuration is singular exactly when <span class="nobr">\(\det\mat J_{\mathrm{v}} = 0\).</span> Since <span class="nobr">\(a_2a_3 \neq 0\),</span> this means \(\sin q_3 = 0\) or <span class="nobr">\(r = 0\).</span> <!-- nofig: algebra --></li>
+<li>The unreachable direction. If <span class="nobr">\(\sin q_3 = 0\),</span> then <span class="nobr">\(\vek x_3 = \pm\vek x_2\),</span> so \(\vek o_3 - \vek o_1\) and \(\vek o_3 - \vek o_2\) are multiples of <span class="nobr">\(\vek x_2\).</span> Columns 2 and 3 are cross products with \(\vek x_2\) and by lemma <a class="xref" href="sec-simetrija-napetosti.html#lem-lastnosti-vektorskega-produkta" data-knowl="lem-lastnosti-vektorskega-produkta">2.31</a> are perpendicular to it. For column 1 we have <span class="nobr">\(\vek x_2\cdot(-s_1r,\ c_1r,\ 0) = r\,c_2(-c_1s_1 + s_1c_1) = 0\).</span> So <span class="nobr">\(\vek x_2\cdot\mat J_{\mathrm{v}} = \vek 0\),</span> that is <span class="nobr">\(\mat J_{\mathrm{v}}^\T\vek x_2 = \vek 0\).</span> <!-- nofig: algebra --></li>
+<li>If <span class="nobr">\(r = 0\),</span> all three components <span class="nobr">\(-s_1r\),</span> <span class="nobr">\(c_1r\),</span> \(0\) of column 1 are zero. <!-- nofig: algebra --></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> SPONG, Example 4.9 (PDF pp. 147-148), equations (4.97) and (4.98). The book states the determinant and leaves the computation to the reader (Problem 4-12), so the proof by steps is ours.</p></div></div>
+<p>Let us look at both cases in figure <a class="xref" href="sec-singularnosti-statika.html#fig-sing-b" data-knowl="fig-sing-b">27.31</a>. At \(\vek q = (30°, 45°, 0)\) (left) <a data-del="roka" class="xref kaz" href="sec-singularnosti-statika.html#fig-sing-b" data-knowl="fig-sing-b">the elbow is stretched</a>: <span class="nobr">\(\vek o_1\),</span> <span class="nobr">\(\vek o_2\),</span> \(\vek o_3\) lie on one line with the <a class="xref auto" href="sec-vektorji.html#def-enotski-vektor" data-knowl="def-enotski-vektor">unit vector</a> <span class="nobr">\(\vek x_2 = (0{,}6124;\ 0{,}3536;\ 0{,}7071)\).</span> <a data-del="mozno" class="xref kaz" href="sec-singularnosti-statika.html#fig-sing-b" data-knowl="fig-sing-b">The column \(\vek j_2\)</a> points perpendicular to this line (column 3 is parallel to it), and <a data-del="radialno" class="xref kaz" href="sec-singularnosti-statika.html#fig-sing-b" data-knowl="fig-sing-b">the line</a> is unreachable, as in arm A. Column 1 is still nonzero, the base can turn and move the tip horizontally, perpendicular to the plane of the arm. The <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat J_{\mathrm{v}}\) therefore still has two pivots: one direction is unreachable, the other two the tip reaches. In arm A at \(q_2 = 0\) there is only one pivot, because the columns are parallel, <span class="nobr">\(\vek j_1 = 3\,\vek j_2\).</span> At \(q_3 = 180°\) (folded elbow) the same holds with the same direction <span class="nobr">\(\vek x_2\).</span></p>
+<p>The other case is more interesting. At \(\vek q = (30°, 45°, 107{,}1144°)\) (figure <a class="xref" href="sec-singularnosti-statika.html#fig-sing-b" data-knowl="fig-sing-b">27.31</a>, right) we have <span class="nobr">\(r = a_2\cos 45° + a_3\cos(152{,}1144°) = 0\):</span> <a data-del="osvrtenje" class="xref kaz" href="sec-singularnosti-statika.html#fig-sing-b" data-knowl="fig-sing-b">the tip</a> is on the axis <span class="nobr">\(z_0\),</span> at the height \(0{,}9406\) m, and <span class="nobr">\(\det\mat J_{\mathrm{v}} = 0\).</span> Why is it singular exactly here? The base turns about \(z_0\) with <a class="xref auto" href="sec-kineticna-energija.html#def-kotna-hitrost" data-knowl="def-kotna-hitrost">angular velocity</a> <span class="nobr">\(\dot q_1\vek z_0\),</span> and the velocity of a point on the axis is by the law for the velocity of a <a class="xref auto" href="sec-deformacija-v-tocki.html#def-togo-telo" data-knowl="def-togo-telo">rigid body</a> \(\dot q_1\vek z_0\times(\vek o_3 - \vek o_0)\) (lemma <a class="xref" href="sec-kineticna-energija.html#lem-hitrost-togega" data-knowl="lem-hitrost-togega">8.78</a>), and this is <span class="nobr">\(\vek 0\),</span> since \(\vek o_3 - \vek o_0 = (0, 0, 0{,}9406)\) m is a multiple of \(\vek z_0\) (lemma <a class="xref" href="sec-simetrija-napetosti.html#lem-lastnosti-vektorskega-produkta" data-knowl="lem-lastnosti-vektorskega-produkta">2.31</a>, points 1 and 3). Turning the base does not move the tip, as the zero first column shows. The unreachable direction is the horizontal tangent <span class="nobr">\(\vek u = (-s_1,\ c_1,\ 0) = (-0{,}5;\ 0{,}866;\ 0)\),</span> since \(\vek u^\T\mat J_{\mathrm{v}} = (r,\ 0,\ 0)\) (columns 2 and 3 have in the first two rows the ratio <span class="nobr">\(c_1 : s_1\),</span> so they are perpendicular to <span class="nobr">\(\vek u\)).</span> The tip is \(0{,}9406 - 0{,}4 = 0{,}5406\) m from the shoulder <span class="nobr">\(o_1\),</span> more than \(a_2 - a_3 = 0{,}1\) m and less than \(a_2 + a_3 = 0{,}9\) m, so it lies inside the workspace (lemma <a class="xref" href="sec-robotske-verige.html#lem-delovni-prostor-2r" data-knowl="lem-delovni-prostor-2r">27.7</a> for the two links in the plane of the arm), not on its edge, and yet in this configuration it cannot move in the direction <span class="nobr">\(\vek u\).</span> So arm B has two kinds of singular configurations: the elbow ones on the edges of the workspace and the shoulder one in its interior. SPONG (PDF p. 148) says that in an arm with an offset in the elbow or the shoulder the wrist cannot hit the axis \(z_0\) (Figure 4.8, PDF p. 149), and that points reachable in a singular configuration may no longer be reachable after a small change of the dimensions.</p>
+
+<figure class="blk slika" id="fig-sing-b"><p><span class="svgfig" role="img" aria-label="Arm B with a stretched elbow and with the tip on the vertical axis of the base"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='314.04pt' height='168.37pt' viewBox='-72.000004 -72 232.622595 124.719432'>
+<defs>
+<path id='c27-07-singularna-b-g0-48' d='M5.270237-3.178082C5.270237-4.144458 5.260274-6.525529 2.859278-6.525529S.448319-4.154421 .448319-3.178082C.448319-2.191781 .458281 .109589 2.859278 .109589C5.250311 .109589 5.270237-2.181818 5.270237-3.178082ZM2.859278-.249066C2.500623-.249066 1.942715-.468244 1.8132-1.195517C1.723537-1.713574 1.723537-2.749689 1.723537-3.297634C1.723537-4.014944 1.723537-4.662516 1.803238-5.180573C1.92279-6.067248 2.620174-6.166874 2.859278-6.166874C3.227895-6.166874 3.636364-5.977584 3.825654-5.539228C3.995019-5.17061 3.995019-4.11457 3.995019-3.297634C3.995019-2.739726 3.995019-1.833126 3.92528-1.315068C3.785803-.388543 3.158157-.249066 2.859278-.249066Z'/>
+<path id='c27-07-singularna-b-g0-106' d='M.826899-4.403487V-3.935243C.996264-3.935243 1.215442-3.935243 1.364882-3.915318C1.58406-3.875467 1.58406-3.745953 1.58406-3.536737V.418431C1.58406 .916563 1.43462 1.633873 .836862 1.633873C.67746 1.633873 .597758 1.613948 .448319 1.574097C.637609 1.43462 .687422 1.225405 .687422 1.075965C.687422 .727273 .428394 .458281 .069738 .458281C-.308842 .458281-.557908 .727273-.557908 1.085928C-.557908 1.653798 .039851 1.992528 .856787 1.992528C1.713574 1.992528 2.660025 1.474471 2.660025 .418431V-4.483188L.826899-4.403487ZM2.660025-6.146949C2.660025-6.575342 2.311333-6.924035 1.882939-6.924035S1.105853-6.575342 1.105853-6.146949S1.454545-5.369863 1.882939-5.369863S2.660025-5.718555 2.660025-6.146949Z'/>
+<path id='c27-07-singularna-b-g0-117' d='M4.363636-.71731V.059776L6.127024 0V-.468244C5.50934-.468244 5.439601-.468244 5.439601-.856787V-4.483188L3.616438-4.403487V-3.935243C4.234122-3.935243 4.303861-3.935243 4.303861-3.5467V-1.643836C4.303861-.826899 3.795766-.298879 3.068493-.298879C2.30137-.298879 2.271482-.547945 2.271482-1.085928V-4.483188L.448319-4.403487V-3.935243C1.066002-3.935243 1.135741-3.935243 1.135741-3.5467V-1.225405C1.135741-.159402 1.942715 .059776 2.929016 .059776C3.188045 .059776 3.905355 .059776 4.363636-.71731Z'/>
+<path id='c27-07-singularna-b-g1-111' d='M4.672478-2.719801C4.672478-3.755915 3.975093-4.403487 3.078456-4.403487C1.743462-4.403487 .408468-2.988792 .408468-1.574097C.408468-.587796 1.075965 .109589 2.002491 .109589C3.327522 .109589 4.672478-1.265255 4.672478-2.719801ZM2.012453-.109589C1.58406-.109589 1.145704-.418431 1.145704-1.195517C1.145704-1.683686 1.404732-2.759651 1.723537-3.267746C2.221669-4.034869 2.789539-4.184309 3.068493-4.184309C3.646326-4.184309 3.945205-3.706102 3.945205-3.108344C3.945205-2.719801 3.745953-1.673724 3.367372-1.026152C3.01868-.448319 2.470735-.109589 2.012453-.109589Z'/>
+<path id='c27-07-singularna-b-g1-113' d='M4.503113-4.293898C4.503113-4.333748 4.473225-4.393524 4.403487-4.393524C4.293898-4.393524 3.895392-3.995019 3.726027-3.706102C3.506849-4.244085 3.118306-4.403487 2.799502-4.403487C1.62391-4.403487 .398506-2.929016 .398506-1.484433C.398506-.508095 .986301 .109589 1.713574 .109589C2.141968 .109589 2.530511-.129514 2.889166-.488169C2.799502-.139477 2.470735 1.205479 2.440847 1.295143C2.361146 1.574097 2.281445 1.613948 1.723537 1.62391C1.594022 1.62391 1.494396 1.62391 1.494396 1.823163C1.494396 1.833126 1.494396 1.932752 1.62391 1.932752C1.942715 1.932752 2.291407 1.902864 2.620174 1.902864C2.958904 1.902864 3.317559 1.932752 3.646326 1.932752C3.696139 1.932752 3.825654 1.932752 3.825654 1.733499C3.825654 1.62391 3.726027 1.62391 3.566625 1.62391C3.088418 1.62391 3.088418 1.554172 3.088418 1.464508C3.088418 1.39477 3.108344 1.334994 3.128269 1.24533L4.503113-4.293898ZM1.743462-.109589C1.145704-.109589 1.105853-.876712 1.105853-1.046077C1.105853-1.524284 1.39477-2.610212 1.564134-3.028643C1.872976-3.765878 2.391034-4.184309 2.799502-4.184309C3.447073-4.184309 3.58655-3.377335 3.58655-3.307597C3.58655-3.247821 3.038605-1.066002 3.008717-1.026152C2.859278-.747198 2.30137-.109589 1.743462-.109589Z'/>
+<path id='c27-07-singularna-b-g1-122' d='M1.325031-.826899C1.863014-1.404732 2.15193-1.653798 2.510585-1.96264C2.510585-1.972603 3.128269-2.500623 3.486924-2.859278C4.433375-3.785803 4.652553-4.26401 4.652553-4.303861C4.652553-4.403487 4.562889-4.403487 4.542964-4.403487C4.473225-4.403487 4.443337-4.383562 4.393524-4.293898C4.094645-3.815691 3.88543-3.656289 3.646326-3.656289S3.287671-3.805729 3.138232-3.975093C2.948941-4.204234 2.779577-4.403487 2.450809-4.403487C1.703611-4.403487 1.24533-3.476961 1.24533-3.267746C1.24533-3.217933 1.275218-3.158157 1.364882-3.158157S1.474471-3.20797 1.494396-3.267746C1.683686-3.726027 2.261519-3.73599 2.34122-3.73599C2.550436-3.73599 2.739726-3.666252 2.968867-3.58655C3.367372-3.437111 3.476961-3.437111 3.73599-3.437111C3.377335-3.008717 2.540473-2.291407 2.351183-2.132005L1.454545-1.295143C.777086-.627646 .428394-.059776 .428394 .009963C.428394 .109589 .52802 .109589 .547945 .109589C.627646 .109589 .647572 .089664 .707347-.019925C.936488-.368618 1.235367-.637609 1.554172-.637609C1.783313-.637609 1.882939-.547945 2.132005-.259029C2.30137-.049813 2.480697 .109589 2.769614 .109589C3.755915 .109589 4.333748-1.155666 4.333748-1.424658C4.333748-1.474471 4.293898-1.524284 4.214197-1.524284C4.124533-1.524284 4.104608-1.464508 4.07472-1.39477C3.845579-.747198 3.20797-.557908 2.879203-.557908C2.67995-.557908 2.500623-.617684 2.291407-.687422C1.952677-.816936 1.803238-.856787 1.594022-.856787C1.574097-.856787 1.414695-.856787 1.325031-.826899Z'/>
+<path id='c27-07-singularna-b-g2-61' d='M6.844334-3.257783C6.993773-3.257783 7.183064-3.257783 7.183064-3.457036S6.993773-3.656289 6.854296-3.656289H.886675C.747198-3.656289 .557908-3.656289 .557908-3.457036S.747198-3.257783 .896638-3.257783H6.844334ZM6.854296-1.325031C6.993773-1.325031 7.183064-1.325031 7.183064-1.524284S6.993773-1.723537 6.844334-1.723537H.896638C.747198-1.723537 .557908-1.723537 .557908-1.524284S.747198-1.325031 .886675-1.325031H6.854296Z'/>
+<path id='c27-07-singularna-b-g3-48' d='M3.598506-2.224658C3.598506-2.991781 3.507846-3.542715 3.187049-4.030884C2.970859-4.351681 2.538481-4.630635 1.980573-4.630635C.36264-4.630635 .36264-2.726775 .36264-2.224658S.36264 .139477 1.980573 .139477S3.598506-1.72254 3.598506-2.224658ZM1.980573-.055791C1.659776-.055791 1.234371-.244085 1.094894-.81594C.99726-1.227397 .99726-1.799253 .99726-2.315318C.99726-2.824408 .99726-3.354421 1.101868-3.737983C1.248319-4.288917 1.694645-4.435367 1.980573-4.435367C2.357161-4.435367 2.719801-4.20523 2.84533-3.800747C2.956912-3.424159 2.963885-2.922042 2.963885-2.315318C2.963885-1.799253 2.963885-1.283188 2.873225-.843836C2.733748-.209215 2.259527-.055791 1.980573-.055791Z'/>
+<path id='c27-07-singularna-b-g3-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='c27-07-singularna-b-g3-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+<path id='c27-07-singularna-b-g3-51' d='M1.903861-2.329265C2.447821-2.329265 2.838356-1.952677 2.838356-1.206476C2.838356-.341719 2.336239-.083686 1.931756-.083686C1.652802-.083686 1.039103-.160399 .746202-.571856C1.073973-.585803 1.150685-.81594 1.150685-.962391C1.150685-1.185554 .983313-1.345953 .767123-1.345953C.571856-1.345953 .376588-1.227397 .376588-.941469C.376588-.285928 1.101868 .139477 1.945704 .139477C2.915068 .139477 3.584558-.509091 3.584558-1.206476C3.584558-1.750436 3.138232-2.294396 2.371108-2.454795C3.103362-2.719801 3.368369-3.242839 3.368369-3.668244C3.368369-4.219178 2.733748-4.630635 1.959651-4.630635S.592777-4.254047 .592777-3.696139C.592777-3.459029 .746202-3.326526 .955417-3.326526C1.171606-3.326526 1.311083-3.486924 1.311083-3.682192C1.311083-3.884433 1.171606-4.030884 .955417-4.044832C1.199502-4.351681 1.680697-4.428394 1.93873-4.428394C2.252553-4.428394 2.691905-4.274969 2.691905-3.668244C2.691905-3.375342 2.594271-3.054545 2.412951-2.838356C2.182814-2.57335 1.987547-2.559402 1.638854-2.538481C1.464508-2.524533 1.45056-2.524533 1.415691-2.517559C1.401743-2.517559 1.345953-2.503611 1.345953-2.426899C1.345953-2.329265 1.408717-2.329265 1.527273-2.329265H1.903861Z'/>
+</defs>
+<g id='c27-07-singularna-b-page1'>
+<g stroke-miterlimit='10' transform='translate(-55.761597,51.922417)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='os'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 34.1432V102.43004' fill='none'/>
+<g fill='#000' stroke='#000'>
+<g fill='#000' stroke='#000'>
+</g>
+<g transform='translate(-4.56831,107.48798)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.761597,51.922417)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.761597' y='51.922417' xlink:href='#c27-07-singularna-b-g1-122'/>
+<use x='-51.128474' y='53.416798' xlink:href='#c27-07-singularna-b-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M170.71646 34.1432V102.43004' fill='none'/>
+<g fill='#000' stroke='#000'>
+<g fill='#000' stroke='#000'>
+</g>
+<g transform='translate(166.14815,107.48798)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.761597,51.922417)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.761597' y='51.922417' xlink:href='#c27-07-singularna-b-g1-122'/>
+<use x='-51.128474' y='53.416798' xlink:href='#c27-07-singularna-b-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='roka'>
+<g stroke-width='1.6'>
+<path d='M0 0V34.1432L30.17981 64.32301L54.32182 88.46547' fill='none'/>
+</g>
+<path d='M1.83862 34.1432C1.83862 35.15865 1.01544 35.98183 0 35.98183S-1.83862 35.15865-1.83862 34.1432C-1.83862 33.12776-1.01544 32.30458 0 32.30458S1.83862 33.12776 1.83862 34.1432ZM0 34.1432' stroke='none'/>
+<g transform='translate(0.0,34.1432)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.761597,51.922417)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M32.01843 64.32301C32.01843 65.33846 31.19525 66.16164 30.17981 66.16164S28.34119 65.33846 28.34119 64.32301C28.34119 63.30757 29.16437 62.48439 30.17981 62.48439S32.01843 63.30757 32.01843 64.32301ZM30.17981 64.32301' stroke='none'/>
+<g transform='translate(30.17981,64.32301)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.761597,51.922417)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M56.58476 88.46547C56.58476 89.71527 55.57162 90.72841 54.32182 90.72841S52.05888 89.71527 52.05888 88.46547S53.07202 86.20253 54.32182 86.20253S56.58476 87.21567 56.58476 88.46547ZM54.32182 88.46547'/>
+</g>
+<g transform='translate(54.32182,88.46547)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.761597,51.922417)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-12.96632,32.74042)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.761597,51.922417)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.761597' y='51.922417' xlink:href='#c27-07-singularna-b-g1-111'/>
+<use x='-50.932475' y='53.416798' xlink:href='#c27-07-singularna-b-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(33.81279,62.92023)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.761597,51.922417)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.761597' y='51.922417' xlink:href='#c27-07-singularna-b-g1-111'/>
+<use x='-50.932475' y='53.416798' xlink:href='#c27-07-singularna-b-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(57.9548,87.06268)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.761597,51.922417)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.761597' y='51.922417' xlink:href='#c27-07-singularna-b-g1-111'/>
+<use x='-50.932475' y='53.416798' xlink:href='#c27-07-singularna-b-g3-51'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.9'>
+<path d='M-14.22636 0H14.22636' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='kota'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 34.1432H25.60728' fill='none'/>
+</g>
+</g>
+</g>
+<path d='M17.07181 34.1432C17.07181 38.67007 15.27255 43.01384 15.14905 43.13734' fill='none'/>
+<g transform='matrix(-0.7071,0.7071,-0.7071,-0.7071,16.90018,41.38622)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(19.70987,39.22227)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.761597,51.922417)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.761597' y='51.922417' xlink:href='#c27-07-singularna-b-g1-113'/>
+<use x='-51.314135' y='53.416798' xlink:href='#c27-07-singularna-b-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='radialno'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M54.32182 88.46547L72.42867 106.57231' fill='none'/>
+</g>
+</g>
+</g>
+<g stroke-width='0.9'>
+<path d='M69.01448 109.9865L75.84329 103.15768' fill='none'/>
+</g>
+<g stroke-width='0.9'>
+<path d='M69.01448 103.15813L75.84329 109.98694' fill='none'/>
+</g>
+</g>
+<g class='del' data-del='mozno'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M54.32182 88.46547L37.39154 105.39575' fill='none'/>
+<g transform='matrix(-0.7071,0.7071,-0.7071,-0.7071,39.23358,103.55371)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(22.62202,114.10971)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.761597,51.922417)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-55.761597' y='51.922417' xlink:href='#c27-07-singularna-b-g0-106'/>
+<use x='-52.260855' y='53.416798' xlink:href='#c27-07-singularna-b-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='roka'>
+<g stroke-width='1.6'>
+<path d='M170.71652 0V34.1432L200.89633 64.32301L170.71652 80.28773' fill='none'/>
+</g>
+<path d='M172.55515 34.1432C172.55515 35.15865 171.73196 35.98183 170.71652 35.98183S168.8779 35.15865 168.8779 34.1432C168.8779 33.12776 169.70108 32.30458 170.71652 32.30458S172.55515 33.12776 172.55515 34.1432ZM170.71652 34.1432' stroke='none'/>
+<g transform='translate(170.71652,34.1432)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.761597,51.922417)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M202.73495 64.32301C202.73495 65.33846 201.91177 66.16164 200.89633 66.16164S199.05771 65.33846 199.05771 64.32301C199.05771 63.30757 199.88089 62.48439 200.89633 62.48439S202.73495 63.30757 202.73495 64.32301ZM200.89633 64.32301' stroke='none'/>
+<g transform='translate(200.89633,64.32301)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.761597,51.922417)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M172.97946 80.28773C172.97946 81.53754 171.96632 82.55067 170.71652 82.55067S168.45358 81.53754 168.45358 80.28773C168.45358 79.03793 169.46672 78.0248 170.71652 78.0248S172.97946 79.03793 172.97946 80.28773ZM170.71652 80.28773'/>
+</g>
+<g transform='translate(170.71652,80.28773)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.761597,51.922417)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(157.7502,32.74042)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.761597,51.922417)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.761597' y='51.922417' xlink:href='#c27-07-singularna-b-g1-111'/>
+<use x='-50.932475' y='53.416798' xlink:href='#c27-07-singularna-b-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(204.52931,62.92023)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.761597,51.922417)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.761597' y='51.922417' xlink:href='#c27-07-singularna-b-g1-111'/>
+<use x='-50.932475' y='53.416798' xlink:href='#c27-07-singularna-b-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(157.7502,78.88495)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.761597,51.922417)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.761597' y='51.922417' xlink:href='#c27-07-singularna-b-g1-111'/>
+<use x='-50.932475' y='53.416798' xlink:href='#c27-07-singularna-b-g3-51'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.9'>
+<path d='M156.49016 0H184.94289' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='kota'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M170.71652 34.1432H196.3238' fill='none'/>
+</g>
+</g>
+</g>
+<path d='M187.78833 34.1432C187.78833 38.67007 185.98907 43.01384 185.86557 43.13734' fill='none'/>
+<g transform='matrix(-0.7071,0.7071,-0.7071,-0.7071,187.6167,41.38622)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(190.42639,39.22227)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.761597,51.922417)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.761597' y='51.922417' xlink:href='#c27-07-singularna-b-g1-113'/>
+<use x='-51.314135' y='53.416798' xlink:href='#c27-07-singularna-b-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='osvrtenje'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M176.40698 8.5359C181.85031 11.6786 183.71541 18.63922 180.57271 24.08255C179.57417 25.81218 178.13661 27.24974 180.0648 26.13667' fill='none'/>
+<g transform='matrix(-0.86604,0.49995,-0.49995,-0.86604,182.32088,24.83427)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(185.73042,18.73627)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.761597,51.922417)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-55.761597' y='51.922417' xlink:href='#c27-07-singularna-b-g1-113'/>
+<use x='-51.314135' y='53.416798' xlink:href='#c27-07-singularna-b-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M173.8281 80.28773C173.8281 82.00623 172.43501 83.3993 170.71652 83.3993S167.60495 82.00623 167.60495 80.28773C167.60495 78.56924 168.99803 77.17616 170.71652 77.17616S173.8281 78.56924 173.8281 80.28773ZM170.71652 80.28773' fill='none'/>
+</g>
+<g transform='translate(170.71652,80.28773)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.761597,51.922417)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+<path d='M171.56491 80.28773C171.56491 80.75629 171.18507 81.13612 170.71652 81.13612S169.86813 80.75629 169.86813 80.28773C169.86813 79.81918 170.24797 79.43935 170.71652 79.43935S171.56491 79.81918 171.56491 80.28773ZM170.71652 80.28773' stroke='none'/>
+</g>
+<g transform='translate(170.71652,80.28773)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.761597,51.922417)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(180.03996,78.01472)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.761597,51.922417)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-55.761597' y='51.922417' xlink:href='#c27-07-singularna-b-g0-117'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(180.03996,91.39413)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.761597,51.922417)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-55.761597' y='51.922417' xlink:href='#c27-07-singularna-b-g0-106'/>
+<use x='-52.260855' y='53.416798' xlink:href='#c27-07-singularna-b-g3-49'/>
+<use x='-45.024153' y='51.922417' xlink:href='#c27-07-singularna-b-g2-61'/>
+<use x='-34.508073' y='51.922417' xlink:href='#c27-07-singularna-b-g0-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 27.31</span>: Arm B in the vertical plane of the arm, scale 3 cm = 1 m, <span class="nobr">\(q_2 = 45°\).</span> Left: elbow stretched <span class="nobr">(\(q_3 = 0\)),</span> the crossed dashed line is the unreachable direction <span class="nobr">\(\vek u = \vek x_2\),</span> the blue \(\vek j_2\) is a possible velocity perpendicular to it. Right: <span class="nobr">\(q_3 = 107{,}1144°\),</span> the tip on the axis <span class="nobr">\(z_0\),</span> \(\vek u\) (orange, circle with a dot) points out of the plane toward the reader, the rotation \(q_1\) does not move the tip, <span class="nobr">\(\vek j_1 = \vek 0\).</span></figcaption></figure>
+<p>As in the stretched elbow of arm B (figure <a class="xref" href="sec-singularnosti-statika.html#fig-sing-b" data-knowl="fig-sing-b">27.31</a>), singularity also arises when the axes of two revolute joints lie on one line. In a spherical wrist (kroglasto zapestje), which arms with six joints have, this happens when the axes \(\vek z_3\) and \(\vek z_5\) are collinear, that is at \(q_5 = 0\) or \(\pi\) (SPONG §4.9.2, PDF p. 147). We see the reason in the angular velocity. Let the first three joints be at rest. By lemma <a class="xref" href="sec-jacobijeva-matrika-robota.html#lem-sestevanje-kotnih-hitrosti" data-knowl="lem-sestevanje-kotnih-hitrosti">27.39</a> then <span class="nobr">\(\vek\omega = \vek z_3\dot q_4 + \vek z_4\dot q_5 + \vek z_5\dot q_6\),</span> and at \(\vek z_5 = \vek z_3\) the choice \((\dot q_4, \dot q_5, \dot q_6) = (1, 0, -1)\) rad/s gives angular velocity zero: the joints turn, the wrist is at rest. SPONG separates the singularities of the arm and of the wrist by splitting the matrix \(\mat J\) into blocks (§4.9.1, PDF pp. 145-147). We do not prove this splitting.</p>
+<!-- nofig: signpost -->
+
+<h3 id="sec-sile-v-zglobih"><span class="h-num">27.7.3</span> Joint forces</h3>
+<p>Back to the bucket. Let arm A be in the configuration <span class="nobr">\(\vek q = (0°, 45°)\),</span> the first link horizontal, the second pointing up at \(45°\) to the first (figure <a class="xref" href="sec-singularnosti-statika.html#fig-sing-sile" data-knowl="fig-sing-sile">27.32</a>). From <a data-del="roka" class="xref kaz" href="sec-singularnosti-statika.html#fig-sing-sile" data-knowl="fig-sing-sile">the tip</a> hangs a load of \(5\) kg, which pulls with the vertical downward force \(\vek F\) of magnitude \(5 \cdot 9{,}81 = 49{,}05\) N. The force <a data-del="sila" class="xref kaz" href="sec-singularnosti-statika.html#fig-sing-sile" data-knowl="fig-sing-sile">acts along its line</a>, downward through the tip, and it pulls: the arrow starts at the tip. What must the motors do? The magnitude of the moment of a force about a point (definition <a class="xref" href="sec-simetrija-napetosti.html#def-moment-sile" data-knowl="def-moment-sile">2.32</a>) is the force times the lever arm, the perpendicular distance of the point from the line of the force (lemma <a class="xref" href="sec-simetrija-napetosti.html#lem-rocica" data-knowl="lem-rocica">2.33</a>). The line of the force is vertical, so <a data-del="kraka" class="xref kaz" href="sec-singularnosti-statika.html#fig-sing-sile" data-knowl="fig-sing-sile">the lever arm about the joint \(O\)</a> is the horizontal distance \(1{,}354\) m (the horizontal coordinate of the tip), and about the joint \(o_1\) it is \(0{,}354\) m. The moment of the force about \(O\) is \(1{,}354 \cdot 49{,}05 = 66{,}39\) N m, about \(o_1\) it is \(0{,}354 \cdot 49{,}05 = 17{,}34\) N m. If we do not count the weight of the links for now, then for rest <a data-del="navora" class="xref kaz" href="sec-singularnosti-statika.html#fig-sing-sile" data-knowl="fig-sing-sile">the motor in each joint</a> must supply a torque of equal magnitude and opposite sense. Why this is exactly what the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat J\) says, we show below. First we write down what a load on the tip means.</p>
+
+<figure class="blk slika" id="fig-sing-sile"><p><span class="svgfig" role="img" aria-label="Arm A with a load on the tip, the line of the force and the lever arms to both joints"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='194.77pt' height='153.31pt' viewBox='-72.000004 -72.000008 144.270535 113.560936'>
+<defs>
+<path id='c27-07-sila-navori-g0-70' d='M6.41594-6.774595H.388543V-6.306351H1.464508V-.468244H.388543V0C.767123-.029888 1.77335-.029888 2.211706-.029888C2.699875-.029888 3.785803-.029888 4.224159 0V-.468244H2.879203V-3.158157H3.377335C4.333748-3.158157 4.423412-2.729763 4.423412-1.992528H4.891656V-4.79203H4.423412C4.423412-4.054795 4.343711-3.626401 3.377335-3.626401H2.879203V-6.306351H4.273973C5.877958-6.306351 6.107098-5.539228 6.256538-4.373599H6.724782L6.41594-6.774595Z'/>
+<path id='c27-07-sila-navori-g1-28' d='M2.929016-3.716065H4.60274C4.732254-3.716065 5.090909-3.716065 5.090909-4.054795C5.090909-4.293898 4.881694-4.293898 4.692403-4.293898H1.902864C1.703611-4.293898 1.315068-4.293898 .876712-3.825654C.547945-3.466999 .268991-2.988792 .268991-2.929016C.268991-2.919054 .268991-2.82939 .388543-2.82939C.468244-2.82939 .488169-2.86924 .547945-2.948941C1.036115-3.716065 1.603985-3.716065 1.8132-3.716065H2.6401L1.663761-.518057C1.62391-.398506 1.564134-.18929 1.564134-.14944C1.564134-.039851 1.633873 .119552 1.853051 .119552C2.181818 .119552 2.231631-.159402 2.261519-.308842L2.929016-3.716065Z'/>
+<path id='c27-07-sila-navori-g1-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='c27-07-sila-navori-g1-79' d='M7.372354-4.343711C7.372354-5.947696 6.316314-7.023661 4.83188-7.023661C2.67995-7.023661 .488169-4.762142 .488169-2.440847C.488169-.787049 1.603985 .219178 3.038605 .219178C5.150685 .219178 7.372354-1.96264 7.372354-4.343711ZM3.098381-.039851C2.11208-.039851 1.414695-.846824 1.414695-2.161893C1.414695-2.600249 1.554172-4.054795 2.321295-5.220423C3.008717-6.256538 3.985056-6.774595 4.772105-6.774595C5.589041-6.774595 6.485679-6.216687 6.485679-4.732254C6.485679-4.014944 6.216687-2.460772 5.230386-1.235367C4.752179-.627646 3.935243-.039851 3.098381-.039851Z'/>
+<path id='c27-07-sila-navori-g1-111' d='M4.672478-2.719801C4.672478-3.755915 3.975093-4.403487 3.078456-4.403487C1.743462-4.403487 .408468-2.988792 .408468-1.574097C.408468-.587796 1.075965 .109589 2.002491 .109589C3.327522 .109589 4.672478-1.265255 4.672478-2.719801ZM2.012453-.109589C1.58406-.109589 1.145704-.418431 1.145704-1.195517C1.145704-1.683686 1.404732-2.759651 1.723537-3.267746C2.221669-4.034869 2.789539-4.184309 3.068493-4.184309C3.646326-4.184309 3.945205-3.706102 3.945205-3.108344C3.945205-2.719801 3.745953-1.673724 3.367372-1.026152C3.01868-.448319 2.470735-.109589 2.012453-.109589Z'/>
+<path id='c27-07-sila-navori-g2-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='c27-07-sila-navori-g2-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c27-07-sila-navori-g2-51' d='M2.889166-3.506849C3.706102-3.775841 4.283935-4.473225 4.283935-5.260274C4.283935-6.07721 3.407223-6.635118 2.450809-6.635118C1.444583-6.635118 .687422-6.03736 .687422-5.280199C.687422-4.951432 .9066-4.762142 1.195517-4.762142C1.504359-4.762142 1.703611-4.98132 1.703611-5.270237C1.703611-5.768369 1.235367-5.768369 1.085928-5.768369C1.39477-6.256538 2.052304-6.386052 2.410959-6.386052C2.819427-6.386052 3.367372-6.166874 3.367372-5.270237C3.367372-5.150685 3.347447-4.572852 3.088418-4.134496C2.789539-3.656289 2.450809-3.626401 2.201743-3.616438C2.122042-3.606476 1.882939-3.58655 1.8132-3.58655C1.733499-3.576588 1.663761-3.566625 1.663761-3.466999C1.663761-3.35741 1.733499-3.35741 1.902864-3.35741H2.34122C3.158157-3.35741 3.526775-2.67995 3.526775-1.703611C3.526775-.348692 2.839352-.059776 2.400996-.059776C1.972603-.059776 1.225405-.229141 .876712-.816936C1.225405-.767123 1.534247-.986301 1.534247-1.364882C1.534247-1.723537 1.265255-1.92279 .976339-1.92279C.737235-1.92279 .418431-1.783313 .418431-1.344956C.418431-.438356 1.344956 .219178 2.430884 .219178C3.646326 .219178 4.552927-.687422 4.552927-1.703611C4.552927-2.520548 3.92528-3.297634 2.889166-3.506849Z'/>
+<path id='c27-07-sila-navori-g2-52' d='M2.929016-1.643836V-.777086C2.929016-.418431 2.909091-.308842 2.171856-.308842H1.96264V0C2.371108-.029888 2.889166-.029888 3.307597-.029888S4.254047-.029888 4.662516 0V-.308842H4.4533C3.716065-.308842 3.696139-.418431 3.696139-.777086V-1.643836H4.692403V-1.952677H3.696139V-6.485679C3.696139-6.684932 3.696139-6.744707 3.536737-6.744707C3.447073-6.744707 3.417186-6.744707 3.337484-6.625156L.278954-1.952677V-1.643836H2.929016ZM2.988792-1.952677H.557908L2.988792-5.668742V-1.952677Z'/>
+<path id='c27-07-sila-navori-g2-53' d='M4.473225-2.002491C4.473225-3.188045 3.656289-4.184309 2.580324-4.184309C2.102117-4.184309 1.673724-4.024907 1.315068-3.676214V-5.618929C1.514321-5.559153 1.843088-5.489415 2.161893-5.489415C3.387298-5.489415 4.084682-6.396015 4.084682-6.525529C4.084682-6.585305 4.054795-6.635118 3.985056-6.635118C3.975093-6.635118 3.955168-6.635118 3.905355-6.60523C3.706102-6.515567 3.217933-6.316314 2.550436-6.316314C2.15193-6.316314 1.693649-6.386052 1.225405-6.595268C1.145704-6.625156 1.125778-6.625156 1.105853-6.625156C1.006227-6.625156 1.006227-6.545455 1.006227-6.386052V-3.437111C1.006227-3.257783 1.006227-3.178082 1.145704-3.178082C1.215442-3.178082 1.235367-3.20797 1.275218-3.267746C1.384807-3.427148 1.753425-3.965131 2.560399-3.965131C3.078456-3.965131 3.327522-3.506849 3.407223-3.327522C3.566625-2.958904 3.58655-2.570361 3.58655-2.072229C3.58655-1.723537 3.58655-1.125778 3.347447-.707347C3.108344-.318804 2.739726-.059776 2.281445-.059776C1.554172-.059776 .986301-.587796 .816936-1.175592C.846824-1.165629 .876712-1.155666 .986301-1.155666C1.315068-1.155666 1.484433-1.404732 1.484433-1.643836S1.315068-2.132005 .986301-2.132005C.846824-2.132005 .498132-2.062267 .498132-1.603985C.498132-.747198 1.185554 .219178 2.30137 .219178C3.457036 .219178 4.473225-.737235 4.473225-2.002491Z'/>
+<path id='c27-07-sila-navori-g3-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='c27-07-sila-navori-g3-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+</defs>
+<g id='c27-07-sila-navori-page1'>
+<g stroke-miterlimit='10' transform='translate(-57.184058,-26.678018)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='roka'>
+<g stroke-width='1.6'>
+<path d='M0 0H85.35823L115.53804 30.17981' fill='none'/>
+</g>
+<path d='M1.83862 0C1.83862 1.01544 1.01544 1.83862 0 1.83862S-1.83862 1.01544-1.83862 0S-1.01544-1.83862 0-1.83862S1.83862-1.01544 1.83862 0ZM0 0' stroke='none'/>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,-26.678018)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+<path d='M87.19685 0C87.19685 1.01544 86.37367 1.83862 85.35823 1.83862S83.5196 1.01544 83.5196 0S84.34279-1.83862 85.35823-1.83862S87.19685-1.01544 87.19685 0ZM85.35823 0' stroke='none'/>
+<g transform='translate(85.35823,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,-26.678018)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M117.80098 30.17981C117.80098 31.42961 116.78784 32.44275 115.53804 32.44275S113.2751 31.42961 113.2751 30.17981S114.28824 27.91687 115.53804 27.91687S117.80098 28.93001 117.80098 30.17981ZM115.53804 30.17981'/>
+</g>
+<g transform='translate(115.53804,30.17981)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,-26.678018)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-11.53853,3.63298)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,-26.678018)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.184058' y='-26.678018' xlink:href='#c27-07-sila-navori-g1-79'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(80.69156,-10.78397)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,-26.678018)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.184058' y='-26.678018' xlink:href='#c27-07-sila-navori-g1-111'/>
+<use x='-52.354937' y='-25.183638' xlink:href='#c27-07-sila-navori-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(110.87137,37.85342)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,-26.678018)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-57.184058' y='-26.678018' xlink:href='#c27-07-sila-navori-g1-111'/>
+<use x='-52.354937' y='-25.183638' xlink:href='#c27-07-sila-navori-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='sila'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M115.53804 30.17981V-24.27199' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,115.53804,-21.6241)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.33095 0L1.67535 1.31036L2.89789 0L1.67535-1.31036Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(119.37102,-31.8833)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,-26.678018)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-57.184058' y='-26.678018' xlink:href='#c27-07-sila-navori-g0-70'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='kraka'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 0V-54.06003' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M85.35823 0V-54.06003' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M115.53804-28.45274V-54.06003' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M.33748-51.21501H115.20056' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,6.14052,-51.21501)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,0.22499,-51.21501)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(109.39752,-51.21501)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(115.31305,-51.21501)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(46.3801,-63.21742)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,-26.678018)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-57.184058' y='-26.678018' xlink:href='#c27-07-sila-navori-g2-49'/>
+<use x='-52.202719' y='-26.678018' xlink:href='#c27-07-sila-navori-g1-59'/>
+<use x='-49.435311' y='-26.678018' xlink:href='#c27-07-sila-navori-g2-51'/>
+<use x='-44.453972' y='-26.678018' xlink:href='#c27-07-sila-navori-g2-53'/>
+<use x='-39.472633' y='-26.678018' xlink:href='#c27-07-sila-navori-g2-52'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M85.69571-39.83366H115.20056' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,91.49875,-39.83366)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,85.58322,-39.83366)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(109.39752,-39.83366)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(115.31305,-39.83366)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(89.05922,-32.33125)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,-26.678018)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-57.184058' y='-26.678018' xlink:href='#c27-07-sila-navori-g2-48'/>
+<use x='-52.202719' y='-26.678018' xlink:href='#c27-07-sila-navori-g1-59'/>
+<use x='-49.435311' y='-26.678018' xlink:href='#c27-07-sila-navori-g2-51'/>
+<use x='-44.453972' y='-26.678018' xlink:href='#c27-07-sila-navori-g2-53'/>
+<use x='-39.472633' y='-26.678018' xlink:href='#c27-07-sila-navori-g2-52'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='navora'>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M14.79555 5.40608C11.83961 13.52766 2.85934 17.71503-5.26224 14.7591C-8.7189 13.50093-11.62303 11.06412-11.35065 11.53593' fill='none'/>
+<g transform='matrix(-0.49998,-0.86601,0.86601,-0.49998,-10.04817,13.79192)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(-7.27428,19.93677)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,-26.678018)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-57.184058' y='-26.678018' xlink:href='#c27-07-sila-navori-g1-28'/>
+<use x='-52.828843' y='-25.183638' xlink:href='#c27-07-sila-navori-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g stroke-width='0.9'>
+<path d='M98.73105 4.83691C96.04385 12.22014 87.88004 16.02681 80.49681 13.33961C77.35442 12.19585 74.7143 9.98056 75.1539 10.74202' fill='none'/>
+<g transform='matrix(-0.49998,-0.86601,0.86601,-0.49998,76.45638,12.998)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.48073 0L1.5078 1.42119L2.83002 0L1.5078-1.42119Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(76.66165,21.35948)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-57.184058,-26.678018)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-57.184058' y='-26.678018' xlink:href='#c27-07-sila-navori-g1-28'/>
+<use x='-52.828843' y='-25.183638' xlink:href='#c27-07-sila-navori-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 27.32</span>: Arm A in the configuration \(\vek q = (0°, 45°)\) with a load of \(5\) kg. The force \(\vek F = (0;\ -49{,}05)\) N acts at the tip on a vertical line and pulls downward (1 cm = 20 N). The lever arms are the horizontal distances of the joints \(O\) and \(o_1\) from this line: \(1{,}354\) m and \(0{,}354\) m. Blue: the torques \(\tau_1\) and \(\tau_2\) that the motors must supply. Scale of the arm 3 cm = 1 m.</figcaption></figure>
+<p>In general a load on the tip (figure <a class="xref" href="sec-singularnosti-statika.html#fig-sing-sile" data-knowl="fig-sing-sile">27.32</a>) is a force \(\vek f\) at the point \(\vek o_{\mathrm{n}}\) and a moment \(\vek m\) acting on the last link. We write them as a column \(\vek F = (\vek f,\ \vek m)\) of six numbers, arranged like \(\vek\xi = (\vek v,\ \vek\omega)\) in section <a class="xref" href="sec-jacobijeva-matrika-robota.html">27.6</a>. The load is the force with which the surroundings (the load, the workpiece, the ground) act on the arm, not the other way round. The motor torques \(\boldsymbol\tau\) are by the notation of the chapter (notation in section <a class="xref" href="sec-jacobijeva-matrika-robota.html">27.6</a>) the generalized forces of the drives, as in definition <a class="xref" href="sec-posplosene-sile.html#def-posplosena-sila" data-knowl="def-posplosena-sila">8.50</a>. The weight of the links we write as a column \(\vek g(\vek q)\) (bold, to tell it from the gravitational acceleration \(g = 9{,}81\) m/s²): the torques that the motors need merely to hold the links. Let link \(k\) have mass \(m_{\mathrm{k}}\) and <a class="xref auto" href="sec-dalembert.html#def-masa-tezisce" data-knowl="def-masa-tezisce">centre of mass</a> \(c_{\mathrm{k}}\) with velocity \(\vek v_{\mathrm{c},\mathrm{k}} = \mat A_{\mathrm{k}}\dot{\vek q}\) (theorem <a class="xref" href="sec-kineticna-energija.html#thm-kineticna-energija-koordinate" data-knowl="thm-kineticna-energija-koordinate">8.86</a>), and let the <a class="xref auto" href="sec-vektorji.html#def-enotski-vektor" data-knowl="def-enotski-vektor">unit vector</a> \(\vek e\) point vertically up. Then</p>
+<div class="eq" id="eq-sing-teza">\[\vek g(\vek q) = \sum_{\mathrm{k}} m_{\mathrm{k}}\,g\,\mat A_{\mathrm{k}}^\T\vek e . \tag{27.30}\]</div>
+<p>Why this form will be shown by the proof of the theorem. For arm A with the centres at the middle of the links, \(m_1 = 10\) kg and \(m_2 = 5\) kg (both masses are our choice, not a source's), \(g_1 = m_1gl_{\mathrm{c}1}\cos q_1 + m_2g(l_1\cos q_1 + l_{\mathrm{c}2}\cos(q_1+q_2))\) and \(g_2 = m_2gl_{\mathrm{c}2}\cos(q_1+q_2)\) with \(l_{\mathrm{c}1} = 0{,}5\) m and \(l_{\mathrm{c}2} = 0{,}25\) m. At \(\vek q = (0°, 45°)\) we have \(\vek g = (106{,}771;\ 8{,}671)\) N m.</p>
+
+<div class="blk izrek" id="thm-sile-v-zglobih"><div class="blk-head"><span class="blk-label">Theorem 27.50</span> <span class="blk-title">Joint torques of a static load (sile v zglobih)</span></div><div class="blk-body"><p>Let an open chain of \(n\) joints with <a class="xref auto" href="sec-toge-povezave.html#def-toga-povezava" data-knowl="def-toga-povezava">rigid links</a> and ideal joints (section <a class="xref" href="sec-robotske-verige.html">27.1</a>), whose <a class="xref auto" href="sec-robotske-verige.html#def-spremenljivke-zglobov" data-knowl="def-spremenljivke-zglobov">joint variables</a> are generalized <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">coordinates</a> (for a planar chain with revolute joints lemma <a class="xref" href="sec-robotske-verige.html#lem-zglobi-so-koordinate" data-knowl="lem-zglobi-so-koordinate">27.4</a> says so), have the <a class="xref auto" href="sec-zamenjava-spremenljivk.html#def-preslikava" data-knowl="def-preslikava">Jacobian matrix</a> \(\mat J(\vek q) = \begin{pmatrix}\mat J_{\mathrm{v}} \\ \mat J_\omega\end{pmatrix}\) and a load \(\vek F = (\vek f,\ \vek m)\) on the last link. The <a class="xref auto" href="sec-posplosene-sile.html#def-posplosena-sila" data-knowl="def-posplosena-sila">generalized force</a> of the load is <span class="nobr">\(\mat J^\T\vek F\),</span> so its \(s\)-th component is \(\vek f\cdot\partial\vek o_{\mathrm{n}}/\partial q_{\mathrm{s}} + \vek m\cdot\vek w_{\mathrm{s}}\) with the \(s\)-th column \(\vek w_{\mathrm{s}}\) of <span class="nobr">\(\mat J_\omega\).</span> The arm is at rest in the configuration \(\vek q\) if and only if the motors supply <!-- nofig: algebra --></p>
+<div class="eq" id="eq-sing-statika">\[\boldsymbol\tau = \vek g(\vek q) - \mat J(\vek q)^\T\vek F . \tag{27.31}\]</div>
+<p>Component \(i\) of \(\mat J^\T\vek F\) is for a revolute joint the moment of the load about the axis of the joint, <span class="nobr">\(\vek z_{\mathrm{i}-1}\cdot\big((\vek o_{\mathrm{n}} - \vek o_{\mathrm{i}-1})\times\vek f + \vek m\big)\),</span> for a prismatic joint the component of the force along the axis, <span class="nobr">\(\vek z_{\mathrm{i}-1}\cdot\vek f\).</span></p>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show that the load has the generalized force \(\mat J^\T\vek F\) and that equilibrium is the sum of all generalized forces. We use equilibrium in generalized coordinates from chapter <a class="xref" href="ch-analiticna-dinamika.html">8</a>. <!-- nofig: algebra --></p>
+<ol>
+<li>The <a class="xref auto" href="sec-robotske-verige.html#def-spremenljivke-zglobov" data-knowl="def-spremenljivke-zglobov">joint variables</a> are generalized <a class="xref auto" href="sec-vektorji.html#def-koordinatni-sistem" data-knowl="def-koordinatni-sistem">coordinates</a> of the chain (hypothesis of the theorem, for a planar chain with revolute joints lemma <a class="xref" href="sec-robotske-verige.html#lem-zglobi-so-koordinate" data-knowl="lem-zglobi-so-koordinate">27.4</a>), the joints are ideal constraints (definition <a class="xref" href="sec-virtualno-delo-sistemov.html#def-idealna-vez" data-knowl="def-idealna-vez">8.2</a>). So theorem <a class="xref" href="sec-posplosene-sile.html#thm-ravnovesje-posplosene" data-knowl="thm-ravnovesje-posplosene">8.52</a> holds: the configuration \(\vek q\) is an equilibrium if and only if the sum of the generalized forces of all external forces and moments is zero. <!-- nofig: algebra --></li>
+<li>The generalized force of the load: by definition <a class="xref" href="sec-posplosene-sile.html#def-posplosena-sila" data-knowl="def-posplosena-sila">8.50</a> its component \(s\) is <span class="nobr">\(\vek f\cdot\partial\vek o_{\mathrm{n}}/\partial q_{\mathrm{s}} + \vek m\cdot\vek w_{\mathrm{s}}\),</span> where \(\delta\boldsymbol\varphi_{\mathrm{n}} = \sum_{\mathrm{s}}\vek w_{\mathrm{s}}\,\delta q_{\mathrm{s}}\) is the virtual rotation of the last link. <!-- nofig: algebra --></li>
+<li>The velocities of the last link from theorem <a class="xref" href="sec-jacobijeva-matrika-robota.html#thm-stolpci-jacobijeve" data-knowl="thm-stolpci-jacobijeve">27.42</a> are \(\vek v = \mat J_{\mathrm{v}}\dot{\vek q}\) and <span class="nobr">\(\vek\omega = \mat J_\omega\dot{\vek q}\).</span> By the <a class="xref auto" href="sec-zamenjava-spremenljivk.html#lem-verizno-pravilo" data-knowl="lem-verizno-pravilo">chain rule</a> (lemma <a class="xref" href="sec-implicitna-funkcija.html#lem-verizno-pravilo-n" data-knowl="lem-verizno-pravilo-n">8.29</a>) <span class="nobr">\(\vek v = \sum_{\mathrm{s}}(\partial\vek o_{\mathrm{n}}/\partial q_{\mathrm{s}})\,\dot q_{\mathrm{s}}\).</span> With \(\dot{\vek q} = \vek e_{\mathrm{s}}\) (a <a class="xref auto" href="sec-vektorji.html#def-enotski-vektor" data-knowl="def-enotski-vektor">unit vector</a>) both expressions give that the \(s\)-th column of \(\mat J_{\mathrm{v}}\) equals <span class="nobr">\(\partial\vek o_{\mathrm{n}}/\partial q_{\mathrm{s}}\).</span> The <a class="xref auto" href="sec-kineticna-energija.html#def-kotna-hitrost" data-knowl="def-kotna-hitrost">angular velocity</a> is exactly \(\sum_{\mathrm{s}}\vek w_{\mathrm{s}}\dot q_{\mathrm{s}}\) with the same columns (as in step 3 of theorem <a class="xref" href="sec-kineticna-energija.html#thm-kineticna-energija-koordinate" data-knowl="thm-kineticna-energija-koordinate">8.86</a>), so \(\vek w_{\mathrm{s}}\) is the \(s\)-th column of <span class="nobr">\(\mat J_\omega\).</span> <!-- nofig: algebra --></li>
+<li>From steps 2 and 3 the \(s\)-th component of the generalized force is <span class="nobr">\((\mat J_{\mathrm{v}}^\T\vek f + \mat J_\omega^\T\vek m)_{\mathrm{s}} = (\mat J^\T\vek F)_{\mathrm{s}}\).</span> <!-- nofig: algebra --></li>
+<li>The generalized force of gravity: the force on the centre \(c_{\mathrm{k}}\) is <span class="nobr">\(-m_{\mathrm{k}}g\,\vek e\),</span> by definition <a class="xref" href="sec-posplosene-sile.html#def-posplosena-sila" data-knowl="def-posplosena-sila">8.50</a> its component \(s\) is <span class="nobr">\(-m_{\mathrm{k}}g\,\vek e\cdot\partial\vek c_{\mathrm{k}}/\partial q_{\mathrm{s}}\),</span> which is \(-m_{\mathrm{k}}g\,(\mat A_{\mathrm{k}}^\T\vek e)_{\mathrm{s}}\) by the same argument as in step 3. The sum over the links is <span class="nobr">\(-\vek g(\vek q)\).</span> <!-- nofig: algebra --></li>
+<li>The motors supply the generalized forces \(\boldsymbol\tau\) (notation of the chapter). By step 1 the equilibrium is <span class="nobr">\(\boldsymbol\tau - \vek g(\vek q) + \mat J^\T\vek F = \vek 0\),</span> so <a class="xref" href="sec-singularnosti-statika.html#eq-sing-statika" data-knowl="eq-sing-statika">(27.31)</a>. <!-- nofig: algebra --></li>
+<li>Component <span class="nobr">\(i\).</span> For a revolute joint column \(i\) of \(\mat J\) is by theorem <a class="xref" href="sec-jacobijeva-matrika-robota.html#thm-stolpci-jacobijeve" data-knowl="thm-stolpci-jacobijeve">27.42</a> <span class="nobr">\((\vek z_{\mathrm{i}-1}\times(\vek o_{\mathrm{n}} - \vek o_{\mathrm{i}-1});\ \vek z_{\mathrm{i}-1})\).</span> Its <a class="xref auto" href="sec-skalarni-produkt.html#def-skalarni-produkt" data-knowl="def-skalarni-produkt">scalar product</a> with \(\vek F\) is \((\vek z_{\mathrm{i}-1}\times\vek r)\cdot\vek f + \vek z_{\mathrm{i}-1}\cdot\vek m\) with <span class="nobr">\(\vek r = \vek o_{\mathrm{n}} - \vek o_{\mathrm{i}-1}\).</span> By the cyclic exchange in the mixed product (lemma <a class="xref" href="sec-determinanta.html#lem-lastnosti-determinante" data-knowl="lem-lastnosti-determinante">2.51</a>, point 1) <span class="nobr">\((\vek z_{\mathrm{i}-1}\times\vek r)\cdot\vek f = \vek z_{\mathrm{i}-1}\cdot(\vek r\times\vek f)\).</span> For a prismatic joint the column is \((\vek z_{\mathrm{i}-1};\ \vek 0)\) and the component is <span class="nobr">\(\vek z_{\mathrm{i}-1}\cdot\vek f\).</span> <!-- nofig: algebra --></li>
+</ol>
+</div></details><details class="hid razlaga" open><summary>Explanation</summary><div class="hid-body"><p>For \(\vek F = \vek 0\) and links without weight the theorem says only <span class="nobr">\(\boldsymbol\tau = \vek 0\).</span> With a load and without the weight of the links the torques needed are <span class="nobr">\(-\mat J^\T\vek F\):</span> opposite to the <a class="xref auto" href="sec-posplosene-sile.html#def-posplosena-sila" data-knowl="def-posplosena-sila">generalized force</a> of the load <span class="nobr">\(\mat J^\T\vek F\).</span> <!-- nofig: algebra --></p>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> SPONG §4.10 (PDF pp. 151-152), equation (4.104) <span class="nobr">\(\boldsymbol\tau = \mat J^\T\vek F\),</span> with an informal virtual work and &quot;infinitesimal displacements&quot; \(\delta X = J\,\delta q\) (PDF p. 152). We derive it from equilibrium in generalized coordinates and virtual displacements of chapter <a class="xref" href="ch-analiticna-dinamika.html">8</a>, without infinitesimal numbers. In equation (4.106) SPONG writes the work as <span class="nobr">\(F^T\delta X - \tau^T\delta q\),</span> so his \(F\) is the force of the tip on the surroundings, with the opposite sign to our load. The proof by steps is ours.</p></div></div>
+<p>For arm A the components of the theorem are exactly those that we computed in figure <a class="xref" href="sec-singularnosti-statika.html#fig-sing-sile" data-knowl="fig-sing-sile">27.32</a> as moments. At \(\vek q = (0°, 45°)\) we have by theorem <a class="xref" href="sec-jacobijeva-matrika-robota.html#thm-stolpci-jacobijeve" data-knowl="thm-stolpci-jacobijeve">27.42</a> \(\mat J = \begin{pmatrix} -0{,}3536 &amp; -0{,}3536 \\ 1{,}3536 &amp; 0{,}3536\end{pmatrix}\) m and</p>
+<div class="eq" id="eq-sing-jtf">\[\mat J^\T\vek F = \begin{pmatrix} -0{,}3536 &amp; 1{,}3536 \\ -0{,}3536 &amp; 0{,}3536\end{pmatrix}\begin{pmatrix}0 \\ -49{,}05\end{pmatrix} = \begin{pmatrix}-66{,}392 \\ -17{,}342\end{pmatrix}\ \text{N m} . \tag{27.32}\]</div>
+<p>These are exactly \(x_{\mathrm{o}_2}F_{\mathrm{y}} = 1{,}3536 \cdot (-49{,}05)\) and <span class="nobr">\((x_{\mathrm{o}_2} - x_{\mathrm{o}_1})F_{\mathrm{y}} = 0{,}3536 \cdot (-49{,}05)\),</span> the moments about the joints \(O\) and <span class="nobr">\(o_1\),</span> as step 7 says. To hold the load alone the motors must supply \(-\mat J^\T\vek F = (66{,}392;\ 17{,}342)\) N m, including the weight of the links by equation <a class="xref" href="sec-singularnosti-statika.html#eq-sing-statika" data-knowl="eq-sing-statika">(27.31)</a> \(\boldsymbol\tau = \vek g - \mat J^\T\vek F = (106{,}771 + 66{,}392;\ 8{,}671 + 17{,}342) = (173{,}163;\ 26{,}013)\) N m.</p>
+<p>At \(\vek q = (30°, 60°)\) and the same load \(\mat J^\T\vek F = (-42{,}479;\ 0)\) N m. The second link points vertically (left in figure <a class="xref" href="sec-singularnosti-statika.html#fig-sing-2r" data-knowl="fig-sing-2r">27.30</a>), the line of the force passes through \(o_1\) and the lever arm about \(o_1\) is zero, the first torque is \(0{,}866 \cdot (-49{,}05) = -42{,}479\) N m. A force whose line passes through a joint needs no torque in that joint, since \(\vek r\) and \(\vek f\) of step 7 of theorem <a class="xref" href="sec-singularnosti-statika.html#thm-sile-v-zglobih" data-knowl="thm-sile-v-zglobih">27.50</a> are parallel and <span class="nobr">\(\vek r\times\vek f = \vek 0\).</span></p>
+<p>The same matrices also serve the power (figure <a class="xref" href="sec-singularnosti-statika.html#fig-sing-sile" data-knowl="fig-sing-sile">27.32</a>): a load \(\vek F\) at the tip, which moves with velocity <span class="nobr">\(\vek v = \mat J_{\mathrm{v}}\dot{\vek q}\),</span> has power \(\vek F^\T\mat J\dot{\vek q} = (\mat J^\T\vek F)^\T\dot{\vek q}\) (lemma <a class="xref" href="sec-matrike.html#lem-transponiran-produkt" data-knowl="lem-transponiran-produkt">1.101</a>). At \(\dot{\vek q} = (1, 0)\) rad/s and \(\vek q = (0°, 45°)\) this is \(-66{,}392\) W, the same on both sides. That is why the <a class="xref auto" href="sec-matrike.html#def-transponirana-matrika" data-knowl="def-transponirana-matrika">transposed matrix</a> appears: \(\mat J\) carries joint velocities into tip velocity, and \(\mat J^\T\) carries the force of the tip into joint torques, so that the power stays the same.</p>
+
+<h3 id="sec-sing-statika"><span class="h-num">27.7.4</span> Statics at a singular configuration</h3>
+<p>The inverse of the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat J^\T\) in theorem <a class="xref" href="sec-singularnosti-statika.html#thm-sile-v-zglobih" data-knowl="thm-sile-v-zglobih">27.50</a> exists in a regular configuration and there the load is determined exactly by the torques: \(\vek F = -\mat J_*^{-\T}\,\boldsymbol\tau\) (theorem <a class="xref" href="sec-singularnosti-statika.html#thm-singularna-hitrost" data-knowl="thm-singularna-hitrost">27.47</a>, point 1, for <span class="nobr">\(\mat J_*^\T\),</span> which by lemma <a class="xref" href="sec-implicitna-funkcija.html#lem-pivoti-obrnljiva" data-knowl="lem-pivoti-obrnljiva">8.21</a> also has \(n\) pivots). In a <a class="xref auto" href="sec-singularnosti-statika.html#def-singularna-lega" data-knowl="def-singularna-lega">singular configuration</a> it is not so. Why, the stretched arm from the second part of figure <a class="xref" href="sec-singularnosti-statika.html#fig-sing-2r" data-knowl="fig-sing-2r">27.30</a> shows, this time loaded.</p>
+
+<div class="blk izrek" id="thm-singularna-statika"><div class="blk-head"><span class="blk-label">Theorem 27.51</span> <span class="blk-title">Statics at a singular configuration (statika pri singularni legi)</span></div><div class="blk-body"><p>Let \(\mat J_*\) be a <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">square matrix</a> of order \(n\) that belongs to the load \(\vek F_*\) (for arm A a force \(\vek f\) without a moment, for arm B a force without a moment and <span class="nobr">\(\mat J_{\mathrm{v}}\)).</span> For \(\boldsymbol\tau = -\mat J_*^\T\vek F_*\) (without the weight of the links): <!-- nofig: algebra --></p>
+<ol>
+<li>If the configuration is regular, for every \(\boldsymbol\tau\) there is exactly one load <span class="nobr">\(\vek F_* = -\mat J_*^{-\T}\boldsymbol\tau\).</span> <!-- nofig: algebra --></li>
+<li>If the configuration is singular, there is a load \(\vek F_* \neq \vek 0\) with <span class="nobr">\(\mat J_*^\T\vek F_* = \vek 0\),</span> so the torques are zero: the structure holds the arm, not the motors. And there is \(\vek w \neq \vek 0\) with <span class="nobr">\(\mat J_*\vek w = \vek 0\),</span> so \(\vek w\cdot\boldsymbol\tau = 0\) for every balanced load: torques with \(\vek w\cdot\boldsymbol\tau \neq 0\) are balanced by no load and the arm moves. <!-- nofig: algebra --></li>
+</ol>
+
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show both points of theorem <a class="xref" href="sec-singularnosti-statika.html#thm-singularna-hitrost" data-knowl="thm-singularna-hitrost">27.47</a>, translated into forces. <!-- nofig: algebra --></p>
+<ol>
+<li>Regular configuration: by lemma <a class="xref" href="sec-implicitna-funkcija.html#lem-pivoti-obrnljiva" data-knowl="lem-pivoti-obrnljiva">8.21</a> \(\mat J_*^\T\) has \(n\) pivots and an <a class="xref auto" href="sec-matrike.html#def-inverzna-matrika" data-knowl="def-inverzna-matrika">inverse matrix</a>, \(\mat J_*^\T\vek F_* = -\boldsymbol\tau\) has exactly one solution. <!-- nofig: algebra --></li>
+<li><a class="xref auto" href="sec-singularnosti-statika.html#def-singularna-lega" data-knowl="def-singularna-lega">Singular configuration</a>: by theorem <a class="xref" href="sec-singularnosti-statika.html#thm-singularna-hitrost" data-knowl="thm-singularna-hitrost">27.47</a>, point 2, there is \(\vek u \neq \vek 0\) with <span class="nobr">\(\mat J_*^\T\vek u = \vek 0\).</span> We take <span class="nobr">\(\vek F_* = \vek u\).</span> <!-- nofig: algebra --></li>
+<li>By the same theorem there is \(\vek w \neq \vek 0\) with <span class="nobr">\(\mat J_*\vek w = \vek 0\).</span> For every \(\vek F_*\) we have \(\vek w\cdot\boldsymbol\tau = -\vek w\cdot(\mat J_*^\T\vek F_*) = -(\mat J_*\vek w)\cdot\vek F_* = 0\) (lemma <a class="xref" href="sec-matrike.html#lem-transponiran-produkt" data-knowl="lem-transponiran-produkt">1.101</a>). <!-- nofig: algebra --></li>
+</ol>
+</div></details></div>
+<p class="vir"><span class="vir-label">Source:</span> SPONG §4.9 (PDF p. 145) states that at singular configurations &quot;bounded joint torques may correspond to unbounded end-effector forces and torques&quot;. The proof and both directions are ours.</p></div></div>
+<p>Take <a data-del="roka" class="xref kaz" href="sec-singularnosti-statika.html#fig-sing-statika" data-knowl="fig-sing-statika">arm A</a> at \(\vek q = (30°, 0)\) with <a data-del="radialna" class="xref kaz" href="sec-singularnosti-statika.html#fig-sing-statika" data-knowl="fig-sing-statika">a force of \(100\) N along the arm</a> (figure <a class="xref" href="sec-singularnosti-statika.html#fig-sing-statika" data-knowl="fig-sing-statika">27.33</a>, top, the arm is turned so that it is horizontal). The line of the force passes through both joints, <a data-del="radialna" class="xref kaz" href="sec-singularnosti-statika.html#fig-sing-statika" data-knowl="fig-sing-statika">the lever arm</a> about both is zero, so \(\tau_1 = \tau_2 = 0\) by step 7 of theorem <a class="xref" href="sec-singularnosti-statika.html#thm-sile-v-zglobih" data-knowl="thm-sile-v-zglobih">27.50</a>. Directly: \(\mat J^\T\vek F_{\mathrm{r}} = (0;\ 0)\) N m. The structure carries the force along the link (like the stretched arm with a bucket hanging down), the motors have no work. A force of \(100\) N <a data-del="tangencialna" class="xref kaz" href="sec-singularnosti-statika.html#fig-sing-statika" data-knowl="fig-sing-statika">perpendicular to the arm</a> (bottom) has <a data-del="kraka" class="xref kaz" href="sec-singularnosti-statika.html#fig-sing-statika" data-knowl="fig-sing-statika">lever arms</a> \(1{,}5\) m about \(O\) and \(0{,}5\) m about \(o_1\) (measured along the arm), so \(\mat J^\T\vek F_{\mathrm{t}} = (150;\ 50)\) N m. The ratio is <span class="nobr">\(\tau_1 : \tau_2 = 3 : 1\).</span> The <a class="xref auto" href="sec-vektorji.html#def-vektor" data-knowl="def-vektor">vector</a> \(\vek w = (1, -3)\) of theorem <a class="xref" href="sec-singularnosti-statika.html#thm-singularna-hitrost" data-knowl="thm-singularna-hitrost">27.47</a> therefore indeed gives <span class="nobr">\(\vek w\cdot\boldsymbol\tau = 150 - 150 = 0\).</span> Conversely, torques with <span class="nobr">\(\tau_1 \neq 3\tau_2\),</span> for example \((150;\ 0)\) N m, are balanced by no load: by theorem <a class="xref" href="sec-posplosene-sile.html#thm-ravnovesje-posplosene" data-knowl="thm-ravnovesje-posplosene">8.52</a> the arm is not <a class="xref auto" href="sec-sila-v-palici.html#def-ravnovesje" data-knowl="def-ravnovesje">in equilibrium</a> and starts to move.</p>
+<p>Why is it different in a regular configuration (figure <a class="xref" href="sec-singularnosti-statika.html#fig-sing-2r" data-knowl="fig-sing-2r">27.30</a>, left)? At \(q_1 = 30°\) and \(q_2 = 60°\) the joint torques \(\boldsymbol\tau = (10;\ 0)\) N m are balanced by exactly one force \(\vek F = -\mat J^{-\T}\boldsymbol\tau = (0;\ -11{,}547)\) N, vertically downward. The closer the configuration is to the stretched one, the larger the force that the same torque still balances: at \(q_2 = 10°\) it is \(57{,}588\) N, at \(1°\) it is \(572{,}987\) N and at \(0{,}1°\) it is \(5729{,}581\) N. The reason is the same as for <a class="xref" href="sec-singularnosti-statika.html#eq-sing-hitrost-q1" data-knowl="eq-sing-hitrost-q1">(27.27)</a>: \(\mat J^{-\T} = \mat B^\T/\det\mat J\) with \(\mat B\) of step 2 of the proof of lemma <a class="xref" href="sec-singularnosti-statika.html#lem-det-singularna" data-knowl="lem-det-singularna">27.46</a>, and the <a class="xref auto" href="sec-determinanta.html#def-determinanta" data-knowl="def-determinanta">determinant</a> in the denominator goes to zero. Bounded torques therefore correspond to ever larger forces of the tip as the configuration approaches a singular one (SPONG, PDF p. 145).</p>
+
+<figure class="blk slika" id="fig-sing-statika"><p><span class="svgfig" role="img" aria-label="Stretched arm A with a radial and a tangential force on the tip"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='280.01pt' height='231.76pt' viewBox='-72.000004 -72.000009 207.413131 171.671711'>
+<defs>
+<path id='c27-07-singularna-statika-g0-70' d='M6.41594-6.774595H.388543V-6.306351H1.464508V-.468244H.388543V0C.767123-.029888 1.77335-.029888 2.211706-.029888C2.699875-.029888 3.785803-.029888 4.224159 0V-.468244H2.879203V-3.158157H3.377335C4.333748-3.158157 4.423412-2.729763 4.423412-1.992528H4.891656V-4.79203H4.423412C4.423412-4.054795 4.343711-3.626401 3.377335-3.626401H2.879203V-6.306351H4.273973C5.877958-6.306351 6.107098-5.539228 6.256538-4.373599H6.724782L6.41594-6.774595Z'/>
+<path id='c27-07-singularna-statika-g1-28' d='M2.929016-3.716065H4.60274C4.732254-3.716065 5.090909-3.716065 5.090909-4.054795C5.090909-4.293898 4.881694-4.293898 4.692403-4.293898H1.902864C1.703611-4.293898 1.315068-4.293898 .876712-3.825654C.547945-3.466999 .268991-2.988792 .268991-2.929016C.268991-2.919054 .268991-2.82939 .388543-2.82939C.468244-2.82939 .488169-2.86924 .547945-2.948941C1.036115-3.716065 1.603985-3.716065 1.8132-3.716065H2.6401L1.663761-.518057C1.62391-.398506 1.564134-.18929 1.564134-.14944C1.564134-.039851 1.633873 .119552 1.853051 .119552C2.181818 .119552 2.231631-.159402 2.261519-.308842L2.929016-3.716065Z'/>
+<path id='c27-07-singularna-statika-g1-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='c27-07-singularna-statika-g1-79' d='M7.372354-4.343711C7.372354-5.947696 6.316314-7.023661 4.83188-7.023661C2.67995-7.023661 .488169-4.762142 .488169-2.440847C.488169-.787049 1.603985 .219178 3.038605 .219178C5.150685 .219178 7.372354-1.96264 7.372354-4.343711ZM3.098381-.039851C2.11208-.039851 1.414695-.846824 1.414695-2.161893C1.414695-2.600249 1.554172-4.054795 2.321295-5.220423C3.008717-6.256538 3.985056-6.774595 4.772105-6.774595C5.589041-6.774595 6.485679-6.216687 6.485679-4.732254C6.485679-4.014944 6.216687-2.460772 5.230386-1.235367C4.752179-.627646 3.935243-.039851 3.098381-.039851Z'/>
+<path id='c27-07-singularna-statika-g1-111' d='M4.672478-2.719801C4.672478-3.755915 3.975093-4.403487 3.078456-4.403487C1.743462-4.403487 .408468-2.988792 .408468-1.574097C.408468-.587796 1.075965 .109589 2.002491 .109589C3.327522 .109589 4.672478-1.265255 4.672478-2.719801ZM2.012453-.109589C1.58406-.109589 1.145704-.418431 1.145704-1.195517C1.145704-1.683686 1.404732-2.759651 1.723537-3.267746C2.221669-4.034869 2.789539-4.184309 3.068493-4.184309C3.646326-4.184309 3.945205-3.706102 3.945205-3.108344C3.945205-2.719801 3.745953-1.673724 3.367372-1.026152C3.01868-.448319 2.470735-.109589 2.012453-.109589Z'/>
+<path id='c27-07-singularna-statika-g2-114' d='M1.638854-1.408717C1.645828-1.45056 1.806227-2.078207 1.820174-2.113076C1.834122-2.168867 2.036364-2.517559 2.259527-2.684932C2.336239-2.740722 2.524533-2.880199 2.824408-2.880199C2.894147-2.880199 3.068493-2.873225 3.20797-2.782565C2.984807-2.719801 2.901121-2.524533 2.901121-2.399004C2.901121-2.245579 3.019676-2.140971 3.180075-2.140971S3.57061-2.273474 3.57061-2.566376C3.57061-2.929016 3.187049-3.075467 2.831382-3.075467C2.468742-3.075467 2.154919-2.929016 1.84807-2.580324C1.72254-3.005729 1.297136-3.075467 1.129763-3.075467C.871731-3.075467 .697385-2.915068 .585803-2.719801C.425405-2.447821 .327771-2.043337 .327771-2.008468C.327771-1.917808 .425405-1.917808 .446326-1.917808C.54396-1.917808 .550934-1.93873 .599751-2.127024C.704359-2.552428 .836862-2.880199 1.108842-2.880199C1.290162-2.880199 1.338979-2.726775 1.338979-2.538481C1.338979-2.405978 1.276214-2.147945 1.227397-1.959651S1.108842-1.48543 1.073973-1.332005L.850809-.439352C.822914-.348692 .781071-.174346 .781071-.153425C.781071 0 .9066 .069738 1.018182 .069738C1.12279 .069738 1.262267 .006974 1.318057-.132503C1.332005-.174346 1.408717-.481196 1.45056-.655542L1.638854-1.408717Z'/>
+<path id='c27-07-singularna-statika-g2-116' d='M1.715567-2.75467H2.426899C2.559402-2.75467 2.650062-2.75467 2.650062-2.908095C2.650062-3.005729 2.559402-3.005729 2.440847-3.005729H1.778331L2.036364-4.037858C2.043337-4.072727 2.057285-4.107597 2.057285-4.135492C2.057285-4.261021 1.959651-4.358655 1.820174-4.358655C1.645828-4.358655 1.54122-4.2401 1.492403-4.05878C1.443587-3.884433 1.534247-4.219178 1.227397-3.005729H.516065C.383562-3.005729 .292902-3.005729 .292902-2.852304C.292902-2.75467 .376588-2.75467 .502117-2.75467H1.164633L.753176-1.108842C.711333-.934496 .648568-.683437 .648568-.592777C.648568-.18132 .99726 .069738 1.39477 .069738C2.168867 .069738 2.608219-.9066 2.608219-.99726S2.517559-1.08792 2.496638-1.08792C2.412951-1.08792 2.405978-1.073973 2.350187-.955417C2.154919-.516065 1.799253-.125529 1.415691-.125529C1.26924-.125529 1.171606-.216189 1.171606-.467248C1.171606-.536986 1.199502-.683437 1.21345-.753176L1.715567-2.75467Z'/>
+<path id='c27-07-singularna-statika-g3-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='c27-07-singularna-statika-g3-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='c27-07-singularna-statika-g3-53' d='M4.473225-2.002491C4.473225-3.188045 3.656289-4.184309 2.580324-4.184309C2.102117-4.184309 1.673724-4.024907 1.315068-3.676214V-5.618929C1.514321-5.559153 1.843088-5.489415 2.161893-5.489415C3.387298-5.489415 4.084682-6.396015 4.084682-6.525529C4.084682-6.585305 4.054795-6.635118 3.985056-6.635118C3.975093-6.635118 3.955168-6.635118 3.905355-6.60523C3.706102-6.515567 3.217933-6.316314 2.550436-6.316314C2.15193-6.316314 1.693649-6.386052 1.225405-6.595268C1.145704-6.625156 1.125778-6.625156 1.105853-6.625156C1.006227-6.625156 1.006227-6.545455 1.006227-6.386052V-3.437111C1.006227-3.257783 1.006227-3.178082 1.145704-3.178082C1.215442-3.178082 1.235367-3.20797 1.275218-3.267746C1.384807-3.427148 1.753425-3.965131 2.560399-3.965131C3.078456-3.965131 3.327522-3.506849 3.407223-3.327522C3.566625-2.958904 3.58655-2.570361 3.58655-2.072229C3.58655-1.723537 3.58655-1.125778 3.347447-.707347C3.108344-.318804 2.739726-.059776 2.281445-.059776C1.554172-.059776 .986301-.587796 .816936-1.175592C.846824-1.165629 .876712-1.155666 .986301-1.155666C1.315068-1.155666 1.484433-1.404732 1.484433-1.643836S1.315068-2.132005 .986301-2.132005C.846824-2.132005 .498132-2.062267 .498132-1.603985C.498132-.747198 1.185554 .219178 2.30137 .219178C3.457036 .219178 4.473225-.737235 4.473225-2.002491Z'/>
+<path id='c27-07-singularna-statika-g3-61' d='M6.844334-3.257783C6.993773-3.257783 7.183064-3.257783 7.183064-3.457036S6.993773-3.656289 6.854296-3.656289H.886675C.747198-3.656289 .557908-3.656289 .557908-3.457036S.747198-3.257783 .896638-3.257783H6.844334ZM6.854296-1.325031C6.993773-1.325031 7.183064-1.325031 7.183064-1.524284S6.993773-1.723537 6.844334-1.723537H.896638C.747198-1.723537 .557908-1.723537 .557908-1.524284S.747198-1.325031 .886675-1.325031H6.854296Z'/>
+<path id='c27-07-singularna-statika-g4-49' d='M2.336239-4.435367C2.336239-4.623661 2.322291-4.630635 2.127024-4.630635C1.680697-4.191283 1.046077-4.184309 .760149-4.184309V-3.93325C.927522-3.93325 1.387796-3.93325 1.771357-4.128518V-.571856C1.771357-.341719 1.771357-.251059 1.073973-.251059H.808966V0C.934496-.006974 1.792279-.027895 2.050311-.027895C2.266501-.027895 3.145205-.006974 3.29863 0V-.251059H3.033624C2.336239-.251059 2.336239-.341719 2.336239-.571856V-4.435367Z'/>
+<path id='c27-07-singularna-statika-g4-50' d='M3.521793-1.26924H3.284682C3.263761-1.115816 3.194022-.704359 3.103362-.63462C3.047572-.592777 2.510585-.592777 2.412951-.592777H1.129763C1.862017-1.241345 2.106102-1.436613 2.524533-1.764384C3.040598-2.175841 3.521793-2.608219 3.521793-3.270735C3.521793-4.11457 2.782565-4.630635 1.889913-4.630635C1.025156-4.630635 .439352-4.02391 .439352-3.382316C.439352-3.02665 .739228-2.991781 .808966-2.991781C.976339-2.991781 1.17858-3.110336 1.17858-3.361395C1.17858-3.486924 1.129763-3.731009 .767123-3.731009C.983313-4.226152 1.457534-4.379577 1.785305-4.379577C2.48269-4.379577 2.84533-3.835616 2.84533-3.270735C2.84533-2.66401 2.412951-2.182814 2.189788-1.931756L.509091-.27198C.439352-.209215 .439352-.195268 .439352 0H3.312578L3.521793-1.26924Z'/>
+</defs>
+<g id='c27-07-singularna-statika-page1'>
+<g stroke-miterlimit='10' transform='translate(-55.134828,-56.441436)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='roka'>
+<g stroke-width='1.6'>
+<path d='M0 0H73.9773H110.96552' fill='none'/>
+</g>
+<path d='M1.83862 0C1.83862 1.01544 1.01544 1.83862 0 1.83862S-1.83862 1.01544-1.83862 0S-1.01544-1.83862 0-1.83862S1.83862-1.01544 1.83862 0ZM0 0' stroke='none'/>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.134828,-56.441436)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+<path d='M75.81592 0C75.81592 1.01544 74.99274 1.83862 73.9773 1.83862C72.96185 1.83862 72.13867 1.01544 72.13867 0S72.96185-1.83862 73.9773-1.83862C74.99274-1.83862 75.81592-1.01544 75.81592 0ZM73.9773 0' stroke='none'/>
+<g transform='translate(73.9773,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.134828,-56.441436)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M113.22845 0C113.22845 1.2498 112.21532 2.26294 110.96552 2.26294C109.71571 2.26294 108.70258 1.2498 108.70258 0S109.71571-2.26294 110.96552-2.26294C112.21532-2.26294 113.22845-1.2498 113.22845 0ZM110.96552 0'/>
+</g>
+<g transform='translate(110.96552,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.134828,-56.441436)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-11.53853,3.63298)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.134828,-56.441436)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.134828' y='-56.441436' xlink:href='#c27-07-singularna-statika-g1-79'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(69.31062,7.9784)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.134828,-56.441436)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.134828' y='-56.441436' xlink:href='#c27-07-singularna-statika-g1-111'/>
+<use x='-50.305706' y='-54.947055' xlink:href='#c27-07-singularna-statika-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(106.29884,7.9784)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.134828,-56.441436)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.134828' y='-56.441436' xlink:href='#c27-07-singularna-statika-g1-111'/>
+<use x='-50.305706' y='-54.947055' xlink:href='#c27-07-singularna-statika-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='radialna'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M110.96552 0H177.91663' fill='none'/>
+<g transform='translate(175.26874,0.0)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.33095 0L1.67535 1.31036L2.89789 0L1.67535-1.31036Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(176.26523,5.33295)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.134828,-56.441436)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-55.134828' y='-56.441436' xlink:href='#c27-07-singularna-statika-g0-70'/>
+<use x='-47.925791' y='-54.947055' xlink:href='#c27-07-singularna-statika-g2-114'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-13.59544,-14.34515)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.134828,-56.441436)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.134828' y='-56.441436' xlink:href='#c27-07-singularna-statika-g1-28'/>
+<use x='-50.779612' y='-54.947055' xlink:href='#c27-07-singularna-statika-g4-49'/>
+<use x='-43.54291' y='-56.441436' xlink:href='#c27-07-singularna-statika-g3-61'/>
+<use x='-33.02683' y='-56.441436' xlink:href='#c27-07-singularna-statika-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(60.38185,-14.34515)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.134828,-56.441436)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.134828' y='-56.441436' xlink:href='#c27-07-singularna-statika-g1-28'/>
+<use x='-50.779612' y='-54.947055' xlink:href='#c27-07-singularna-statika-g4-50'/>
+<use x='-43.54291' y='-56.441436' xlink:href='#c27-07-singularna-statika-g3-61'/>
+<use x='-33.02683' y='-56.441436' xlink:href='#c27-07-singularna-statika-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='roka'>
+<g stroke-width='1.6'>
+<path d='M0-102.43008H73.9773H110.96552' fill='none'/>
+</g>
+<path d='M1.83862-102.43008C1.83862-101.41464 1.01544-100.59146 0-100.59146S-1.83862-101.41464-1.83862-102.43008C-1.83862-103.44553-1.01544-104.2687 0-104.2687S1.83862-103.44553 1.83862-102.43008ZM0-102.43008' stroke='none'/>
+<g transform='translate(0.0,-102.43008)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.134828,-56.441436)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M75.81592-102.43008C75.81592-101.41464 74.99274-100.59146 73.9773-100.59146C72.96185-100.59146 72.13867-101.41464 72.13867-102.43008C72.13867-103.44553 72.96185-104.2687 73.9773-104.2687C74.99274-104.2687 75.81592-103.44553 75.81592-102.43008ZM73.9773-102.43008' stroke='none'/>
+<g transform='translate(73.9773,-102.43008)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.134828,-56.441436)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g fill='#fff'>
+<g fill='#fff'>
+<path d='M113.22845-102.43008C113.22845-101.18028 112.21532-100.16714 110.96552-100.16714C109.71571-100.16714 108.70258-101.18028 108.70258-102.43008C108.70258-103.67989 109.71571-104.69302 110.96552-104.69302C112.21532-104.69302 113.22845-103.67989 113.22845-102.43008ZM110.96552-102.43008'/>
+</g>
+<g transform='translate(110.96552,-102.43008)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.134828,-56.441436)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(-11.53853,-98.7971)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.134828,-56.441436)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.134828' y='-56.441436' xlink:href='#c27-07-singularna-statika-g1-79'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(77.61028,-110.3686)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.134828,-56.441436)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.134828' y='-56.441436' xlink:href='#c27-07-singularna-statika-g1-111'/>
+<use x='-50.305706' y='-54.947055' xlink:href='#c27-07-singularna-statika-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(114.5985,-110.3686)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.134828,-56.441436)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-55.134828' y='-56.441436' xlink:href='#c27-07-singularna-statika-g1-111'/>
+<use x='-50.305706' y='-54.947055' xlink:href='#c27-07-singularna-statika-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='tangencialna'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='1.0'>
+<path d='M110.96552-102.43008V-35.47899' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,110.96552,-38.12688)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.33095 0L1.67535 1.31036L2.89789 0L1.67535-1.31036Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(114.7985,-33.9788)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.134828,-56.441436)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-55.134828' y='-56.441436' xlink:href='#c27-07-singularna-statika-g0-70'/>
+<use x='-47.925791' y='-54.947055' xlink:href='#c27-07-singularna-statika-g2-116'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='kraka'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0-102.43008V-145.10919' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M73.9773-102.43008V-133.72827' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M110.96552-102.43008V-145.10919' fill='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M.33748-139.41873H110.62804' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,6.14052,-139.41873)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,0.22499,-139.41873)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(104.825,-139.41873)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(110.74052,-139.41873)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(49.09386,-151.42114)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.134828,-56.441436)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-55.134828' y='-56.441436' xlink:href='#c27-07-singularna-statika-g3-49'/>
+<use x='-50.153489' y='-56.441436' xlink:href='#c27-07-singularna-statika-g1-59'/>
+<use x='-47.38608' y='-56.441436' xlink:href='#c27-07-singularna-statika-g3-53'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M74.31477-128.03737H110.62804' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,80.11781,-128.03737)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,74.20229,-128.03737)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(104.825,-128.03737)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(110.74052,-128.03737)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(86.0825,-121.53496)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-55.134828,-56.441436)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-55.134828' y='-56.441436' xlink:href='#c27-07-singularna-statika-g3-48'/>
+<use x='-50.153489' y='-56.441436' xlink:href='#c27-07-singularna-statika-g1-59'/>
+<use x='-47.38608' y='-56.441436' xlink:href='#c27-07-singularna-statika-g3-53'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 27.33</span>: Arm A stretched <span class="nobr">(\(q_2 = 0\)),</span> turned so that it is horizontal. Top: the force \(\vek F_{\mathrm{r}}\) along the arm, the line of the force passes through \(O\) and <span class="nobr">\(o_1\),</span> <span class="nobr">\(\tau_1 = \tau_2 = 0\).</span> Bottom: the force \(\vek F_{\mathrm{t}}\) perpendicular to the arm, lever arms \(1{,}5\) m and \(0{,}5\) m, \(\tau_1 = 150\) N m and \(\tau_2 = 50\) N m. Both forces \(100\) N (1 cm = 40 N), scale of the arm 2,6 cm = 1 m.</figcaption></figure>
+<p>Back to the two opening questions. We can move the tip in every direction and every set of motor torques is balanced by exactly one load exactly when the configuration is not singular (theorem <a class="xref" href="sec-singularnosti-statika.html#thm-singularna-hitrost" data-knowl="thm-singularna-hitrost">27.47</a> and theorem <a class="xref" href="sec-singularnosti-statika.html#thm-singularna-statika" data-knowl="thm-singularna-statika">27.51</a>), for arm A exactly when \(\sin q_2 \neq 0\) (lemma <a class="xref" href="sec-singularnosti-statika.html#lem-singularnost-2r" data-knowl="lem-singularnost-2r">27.48</a>), for arm B when \(\sin q_3\,r \neq 0\) (lemma <a class="xref" href="sec-singularnosti-statika.html#lem-singularnosti-b" data-knowl="lem-singularnosti-b">27.49</a>). Velocities and forces belong to the same matrix <span class="nobr">\(\mat J\),</span> one to its columns, the other to its rows. We need the weight of the links \(\vek g(\vek q)\) and \(\mat J^\T\) also in section <a class="xref" href="sec-gibalne-enacbe-robota.html">27.8</a>: there \(\vek g(\vek q) = \partial V/\partial\vek q\) with the gravitational potential energy <span class="nobr">\(V\),</span> and equation <a class="xref" href="sec-singularnosti-statika.html#eq-sing-teza" data-knowl="eq-sing-teza">(27.30)</a> is an expression for the same thing link by link. <!-- nofig: signpost --></p>
+
+</main>
+<footer><nav class="pager"><a href="sec-jacobijeva-matrika-robota.html" rel="prev">← 27.6</a><a href="index.html">Contents</a><a href="sec-gibalne-enacbe-robota.html" rel="next">27.8 →</a></nav></footer>
+</body>
+</html>

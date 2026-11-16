@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-togost-lezaja"] = {"html": "<div class=\"eq\">\\[\\mat K_{\\mathrm{b}}(\\vek u_0) = \\Big[\\frac{\\partial F_{\\mathrm{b},\\mathrm{a}}}{\\partial u_{\\mathrm{c}}}(\\vek u_0)\\Big]_{\\mathrm{a},\\mathrm{c} \\in \\{\\mathrm{v}, \\mathrm{h}\\}} , \\tag{25.40}\\]</div>", "href": "sec-togost-lezaja.html#eq-togost-lezaja"};

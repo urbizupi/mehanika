@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-richardson"] = {"html": "<div class=\"eq\">\\[\\hat Q = Q_{\\mathrm{h}/2} + \\frac{Q_{\\mathrm{h}/2} - Q_{\\mathrm{h}}}{2^q - 1} . \\tag{17.9}\\]</div>", "href": "sec-konvergenca-mreze.html#eq-richardson"};

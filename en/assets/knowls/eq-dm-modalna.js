@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dm-modalna"] = {"html": "<div class=\"eq\">\\[m_{\\mathrm{d}}(\\Omega) = m_\\Sigma + \\sum_{\\mathrm{r}=1}^{n_1}\\Gamma_{\\mathrm{r}}^2\\,\\frac{\\Omega^2}{\\omega_{\\mathrm{r}}^2 - \\Omega^2} , \\tag{21.26}\\]</div>", "href": "sec-dodatna-masa.html#eq-dm-modalna"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vogalna-sila-vrsta"] = {"html": "<div class=\"eq\">\\[R = \\frac{32(1 - \\nu)}{\\pi^4}\\,q_0a^2\\sum_{\\mathrm{m},\\mathrm{n}\\ \\text{lih}}\\frac{1}{(m^2 + n^2)^2} = 0{,}06496\\,q_0a^2 . \\tag{18.38}\\]</div>", "href": "sec-navierova-resitev.html#eq-vogalna-sila-vrsta"};

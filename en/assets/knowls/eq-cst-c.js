@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-cst-c"] = {"html": "<div class=\"eq\">\\[\\mat C = \\frac{E'}{1 - \\nu'^2}\\begin{bmatrix} 1 &amp; \\nu' &amp; 0 \\\\ \\nu' &amp; 1 &amp; 0 \\\\ 0 &amp; 0 &amp; \\tfrac12\\,(1 - \\nu') \\end{bmatrix} . \\tag{15.20}\\]</div>", "href": "sec-mkk-ravninski-trikotnik.html#eq-cst-c"};

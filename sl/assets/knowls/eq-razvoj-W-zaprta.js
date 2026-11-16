@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-razvoj-W-zaprta"] = {"html": "<div class=\"eq\">\\[W(x) = -p\\left[\\frac12\\left(\\frac{\\cos\\beta(x - L/2)}{\\cos\\theta} + \\frac{\\cosh\\beta(x - L/2)}{\\cosh\\theta}\\right) - 1\\right] . \\tag{13.58}\\]</div>", "href": "sec-razvoj-po-nacinih.html#eq-razvoj-W-zaprta"};

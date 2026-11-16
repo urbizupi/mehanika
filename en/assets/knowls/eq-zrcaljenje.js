@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-zrcaljenje"] = {"html": "<div class=\"eq\">\\[\\mat Z = \\mat I - 2\\,\\vek m\\,\\vek m^\\T , \\tag{19.1}\\]</div>", "href": "sec-zrcalna-simetrija.html#eq-zrcaljenje"};

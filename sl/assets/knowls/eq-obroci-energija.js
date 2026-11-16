@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-obroci-energija"] = {"html": "<div class=\"eq\">\\[\\Pi(w) = \\tfrac12\\,T\\int_{\\text{krog}} |\\nabla w|^2\\,\\mathrm{d}A - F\\,w(0) , \\tag{17.14}\\]</div>", "href": "sec-konvergenca-mreze.html#eq-obroci-energija"};

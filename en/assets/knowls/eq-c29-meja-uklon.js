@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-c29-meja-uklon"] = {"html": "<div class=\"eq\">\\[A_{\\mathrm{AC}} \\ge 2L\\sqrt{\\frac{|N_{\\mathrm{AC}}|}{\\pi E}} = 8\\ \\text{m}\\cdot\\sqrt{\\frac{13\\,333\\ \\text{N}}{\\pi\\cdot 196\\cdot 10^9\\ \\text{Pa}}} = 1177\\ \\text{mm}^2 . \\tag{29.10}\\]</div>", "href": "sec-palicje-z-napetostmi.html#eq-c29-meja-uklon"};
