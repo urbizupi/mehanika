@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-tetragonalen"] = {"html": "<div class=\"eq\">\\[C_{22} = C_{11} , \\qquad C_{23} = C_{13} , \\qquad C_{55} = C_{44} , \\tag{3.46}\\]</div>", "href": "sec-anizotropija.html#eq-tetragonalen"};

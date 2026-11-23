@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-ocena-inverzne"] = {"html": "<div class=\"eq\">\\[\\mat B = \\mat H - \\mat H\\mat B , \\qquad \\mat F^{-1} = \\mat I - \\mat H + \\mat H\\mat B , \\tag{1.61}\\]</div>", "href": "sec-deformacija-v-prostoru.html#eq-ocena-inverzne"};
+(window.KNOWLS = window.KNOWLS || {})["eq-ocena-inverzne"] = {"html": "<div class=\"eq\">\\[\\mat B = \\mat H - \\mat H\\mat B , \\qquad \\mat F^{-1} = \\mat I - \\mat H + \\mat H\\mat B , \\tag{1.69}\\]</div>", "href": "sec-deformacija-v-prostoru.html#eq-ocena-inverzne"};

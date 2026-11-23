@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sled-napetosti-temperatura"] = {"html": "<div class=\"eq\">\\[\\nabla^2\\Theta = -\\frac{1 + \\nu}{1 - \\nu}\\,\\mathrm{div}\\,\\vek b - \\frac{2\\,\\alpha E}{1 - \\nu}\\,\\nabla^2 T . \\tag{14.38}\\]</div>", "href": "sec-temperaturne-napetosti.html#eq-sled-napetosti-temperatura"};

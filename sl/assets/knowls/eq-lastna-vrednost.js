@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-lastna-vrednost"] = {"html": "<div class=\"eq\">\\[\\mat A\\,\\vek v = \\lambda\\,\\vek v . \\tag{2.58}\\]</div>", "href": "sec-glavne-napetosti.html#eq-lastna-vrednost"};
+(window.KNOWLS = window.KNOWLS || {})["eq-lastna-vrednost"] = {"html": "<div class=\"eq\">\\[\\mat A\\,\\vek v = \\lambda\\,\\vek v . \\tag{2.77}\\]</div>", "href": "sec-glavne-napetosti.html#eq-lastna-vrednost"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-leca-deljeno"] = {"html": "<div class=\"eq\">\\[\\frac{\\Delta\\vek F_{\\mathrm{u}}}{h^2} = \\frac{\\Delta\\vek F_{\\mathrm{r}}}{h^2} + \\frac{\\Delta\\vek F_{\\mathrm{s}}}{h^2} + \\frac{\\Delta\\vek G}{h^2} . \\tag{2.19}\\]</div>", "href": "sec-vektor-napetosti.html#eq-leca-deljeno"};

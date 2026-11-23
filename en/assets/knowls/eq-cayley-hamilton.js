@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-cayley-hamilton"] = {"html": "<div class=\"eq\">\\[\\mat A\\mat A\\mat A - I_1\\,\\mat A\\mat A + I_2\\,\\mat A - I_3\\,\\mat I = \\mat 0 . \\tag{2.86}\\]</div>", "href": "sec-glavne-napetosti.html#eq-cayley-hamilton"};

@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-diferencialna-enacba"] = {"html": "<div class=\"eq\">\\[\\Phi\\big(x, y, y', \\dots, y^{(n)}\\big) = 0 , \\tag{5.42}\\]</div>", "href": "sec-navadne-diferencialne-enacbe.html#eq-diferencialna-enacba"};
+(window.KNOWLS = window.KNOWLS || {})["eq-diferencialna-enacba"] = {"html": "<div class=\"eq\">\\[\\Phi\\big(x, y, y', \\dots, y^{(n)}\\big) = 0 , \\tag{5.45}\\]</div>", "href": "sec-navadne-diferencialne-enacbe.html#eq-diferencialna-enacba"};

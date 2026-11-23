@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-cauchy-green-tenzorja"] = {"html": "<div class=\"eq\">\\[\\mat C = \\mat F^\\T\\mat F , \\qquad \\mat B = \\mat F\\,\\mat F^\\T . \\tag{2.144}\\]</div>", "href": "sec-piola-kirchhoff.html#eq-cauchy-green-tenzorja"};

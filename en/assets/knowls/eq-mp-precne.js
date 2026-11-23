@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-mp-precne"] = {"html": "<div class=\"eq\">\\[Q_{\\mathrm{x}} = S\\,\\gamma_{\\mathrm{x}} , \\qquad Q_{\\mathrm{y}} = S\\,\\gamma_{\\mathrm{y}} . \\tag{18.63}\\]</div>", "href": "sec-mindlinove-plosce.html#eq-mp-precne"};
+(window.KNOWLS = window.KNOWLS || {})["eq-mp-precne"] = {"html": "<div class=\"eq\">\\[Q_{\\mathrm{x}} = S\\,\\gamma_{\\mathrm{x}} , \\qquad Q_{\\mathrm{y}} = S\\,\\gamma_{\\mathrm{y}} . \\tag{18.65}\\]</div>", "href": "sec-mindlinove-plosce.html#eq-mp-precne"};

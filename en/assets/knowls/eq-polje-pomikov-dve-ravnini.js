@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-polje-pomikov-dve-ravnini"] = {"html": "<div class=\"eq\">\\[u_{\\mathrm{x}} = u(x) - y\\,v'(x) - z\\,w'(x) , \\qquad u_{\\mathrm{y}} = v(x) , \\qquad u_{\\mathrm{z}} = w(x) . \\tag{5.95}\\]</div>", "href": "sec-okvirji.html#eq-polje-pomikov-dve-ravnini"};

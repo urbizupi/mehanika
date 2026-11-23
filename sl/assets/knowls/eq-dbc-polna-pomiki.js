@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dbc-polna-pomiki"] = {"html": "<div class=\"eq\">\\[u_{\\mathrm{x}} = -\\frac{(1 - \\nu)\\,p}{E}\\,x , \\qquad u_{\\mathrm{y}} = -\\frac{(1 - \\nu)\\,p}{E}\\,y , \\qquad u_{\\mathrm{z}} = \\frac{2\\nu\\,p}{E}\\,z \\tag{11.41}\\]</div>", "href": "sec-debelostenska-cev.html#eq-dbc-polna-pomiki"};

@@ -8,14 +8,31 @@
 // was on the board before, else the last figure block or figure of the step before. A part that a pointer names in the figure's own stretch of text
 // (from its first step to the next figure block) is hidden until that pointer's sentence, the others are
 // there from the start. The text column holds the steps of the current figure since the last heading.
+// It runs on lecture pages only (book/README.md "Lecture pages"), on a chapter's book pages it is a link to them.
 (() => {
   const main = document.querySelector("main");
   const tools = document.querySelector("header.top .tools");
-  if (!main || !tools || !main.querySelector("figure.slika g.del")) return;
+  if (!main || !tools) return;
   const sl = document.documentElement.lang === "sl";
   const T = sl
-    ? { btn: "Predavanje", tip: "Predavanje: stavek za stavkom, slika nastaja sproti. Naprej: preslednica, puščica desno ali dotik. Nazaj: puščica levo ali dotik leve tretjine. Esc zapre.", next: "Naprej", back: "Nazaj", close: "Zapri" }
-    : { btn: "Lecture", tip: "Lecture: one sentence at a time, the figure is built as you go. Next: space, right arrow or a tap. Back: left arrow or a tap on the left third. Esc closes.", next: "Next", back: "Back", close: "Close" };
+    ? { btn: "Predavanje", tip: "Predavanje: stavek za stavkom, slika nastaja sproti. Naprej: preslednica, puščica desno ali dotik. Nazaj: puščica levo ali dotik leve tretjine. Esc zapre.", go: "Predavanje k temu poglavju: razlaga, ob kateri slike nastajajo korak za korakom.", next: "Naprej", back: "Nazaj", close: "Zapri" }
+    : { btn: "Lecture", tip: "Lecture: one sentence at a time, the figure is built as you go. Next: space, right arrow or a tap. Back: left arrow or a tap on the left third. Esc closes.", go: "The lecture of this chapter: an explanation that builds its figures step by step.", next: "Next", back: "Back", close: "Close" };
+  // Book pages are not turned into slides (2026-11-22: lectures are not "the book appearing line by line"):
+  // on a chapter's pages the button is a link to its lecture page (body data-lecture, set by the build), and
+  // without a lecture page there is no button. The slides run only on a lecture page (body data-tabla="on").
+  if (document.body.dataset.tabla !== "on") {
+    const href = document.body.dataset.lecture;
+    if (!href) return;
+    const a = document.createElement("a");
+    a.className = "pr-btn";
+    a.href = href;
+    a.title = T.go;
+    a.setAttribute("aria-label", T.go);
+    a.innerHTML = `<span aria-hidden="true">▶</span><span class="pr-btn-t"> ${T.btn}</span>`;
+    tools.insertBefore(a, tools.querySelector(".theme-toggle"));
+    return;
+  }
+  if (!main.querySelector("figure.slika g.del")) return;
 
   const SKIP = "p.updated, p.crumb, p.one-page, nav, script, style, button, aside, .interaktivno";
   const CONT = "div.tabla, div.blk, div.blk-body, div.zgodovina, div.hid-row, details, div.hid-body, section";

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ts-prestava"] = {"html": "<div class=\"eq\">\\[\\gamma = \\frac{r_{\\mathrm{a}}}{r_{\\mathrm{b}}} = \\frac{z_{\\mathrm{a}}}{z_{\\mathrm{b}}} &gt; 0, \\qquad \\text{so that}\\quad \\varphi_{\\mathrm{b}} = -\\gamma\\,\\varphi_{\\mathrm{a}} . \\tag{23.48}\\]</div>", "href": "sec-torzija-gredi.html#eq-ts-prestava"};

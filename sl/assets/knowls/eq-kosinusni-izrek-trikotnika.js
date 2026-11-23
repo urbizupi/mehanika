@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kosinusni-izrek-trikotnika"] = {"html": "<div class=\"eq\">\\[c^2 = \\big(b^2 - b^2\\cos^2\\varphi\\big) + \\big(a - b\\cos\\varphi\\big)^2 = a^2 + b^2 - 2ab\\cos\\varphi . \\tag{1.51}\\]</div>", "href": "sec-deformacija-v-prostoru.html#eq-kosinusni-izrek-trikotnika"};

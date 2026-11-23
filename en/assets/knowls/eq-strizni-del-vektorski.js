@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-strizni-del-vektorski"] = {"html": "<div class=\"eq\">\\[(\\vek n\\times\\vek t)\\times\\vek n = \\vek t - (\\vek t\\cdot\\vek n)\\,\\vek n , \\qquad |\\vek n\\times\\vek t| = |\\vek t - (\\vek t\\cdot\\vek n)\\,\\vek n| . \\tag{2.41}\\]</div>", "href": "sec-simetrija-napetosti.html#eq-strizni-del-vektorski"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nakljucno-odtekanje"] = {"html": "<div class=\"eq\">\\[|C_{\\mathrm{k}}| = \\frac{|\\sin\\pi(\\nu - k)|}{N\\,|\\sin(\\pi(\\nu - k)/N)|} . \\tag{9.163}\\]</div>", "href": "sec-nakljucno-vzbujanje.html#eq-nakljucno-odtekanje"};

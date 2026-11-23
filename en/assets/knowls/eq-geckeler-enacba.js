@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-geckeler-enacba"] = {"html": "<div class=\"eq\">\\[D\\,w_\\mathrm{e}'''' + \\frac{Eh}{R^2}\\,w_\\mathrm{e} = 0 , \\tag{22.50}\\]</div>", "href": "sec-spoji-lupin.html#eq-geckeler-enacba"};
+(window.KNOWLS = window.KNOWLS || {})["eq-geckeler-enacba"] = {"html": "<div class=\"eq\">\\[D\\,w_\\mathrm{e}'''' + \\frac{Eh}{R^2}\\,w_\\mathrm{e} = 0 , \\tag{22.51}\\]</div>", "href": "sec-spoji-lupin.html#eq-geckeler-enacba"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-spi-razlicni-masi"] = {"html": "<div class=\"eq\">\\[\\mat K = k\\begin{bmatrix} 2 &amp; -1 \\\\ -1 &amp; 1 \\end{bmatrix} , \\qquad \\mat M = m\\begin{bmatrix} 1 &amp; 0 \\\\ 0 &amp; 2 \\end{bmatrix} . \\tag{10.39}\\]</div>", "href": "sec-spektralni-izrek.html#eq-spi-razlicni-masi"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-spi-krog-produkt"] = {"html": "<div class=\"eq\">\\[\\vek\\varphi^\\T\\mat M_{\\mathrm{y}}\\,\\vek\\psi = \\vek\\varphi^\\T\\mat C\\,\\mat C^\\T\\vek\\psi = (\\mat C^\\T\\vek\\varphi)^\\T(\\mat C^\\T\\vek\\psi) , \\tag{10.35}\\]</div>", "href": "sec-spektralni-izrek.html#eq-spi-krog-produkt"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-beltramijeve-enacbe"] = {"html": "<div class=\"eq\">\\[(1 + \\nu)\\,\\nabla^2\\sigma_{\\mathrm{ij}} + \\frac{\\partial^2\\Theta}{\\partial x_{\\mathrm{i}}\\,\\partial x_{\\mathrm{j}}} = 0 . \\tag{14.39}\\]</div>", "href": "sec-temperaturne-napetosti.html#eq-beltramijeve-enacbe"};

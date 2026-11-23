@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-prava-deformacija"] = {"html": "<div class=\"eq\">\\[\\varepsilon_{\\ln} = \\ln\\frac{L}{L_0} . \\tag{3.7}\\]</div>", "href": "sec-natezni-preizkus.html#eq-prava-deformacija"};

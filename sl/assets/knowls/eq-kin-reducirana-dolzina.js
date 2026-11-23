@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kin-reducirana-dolzina"] = {"html": "<div class=\"eq\">\\[l_{\\mathrm{r}} = \\frac{J_{\\mathrm{O}}}{m\\,s} = s + \\frac{J_{\\mathrm{G}}}{m\\,s} . \\tag{8.98}\\]</div>", "href": "sec-kineticna-energija.html#eq-kin-reducirana-dolzina"};

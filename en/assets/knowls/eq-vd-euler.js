@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vd-euler"] = {"html": "<div class=\"eq\">\\[r^2\\,\\sigma_{\\mathrm{rr}}'' + 3r\\,\\sigma_{\\mathrm{rr}}' = -(3 + \\nu)\\,\\rho\\,\\Omega^2 r^2 , \\qquad \\sigma_{\\theta\\theta} = \\big(r\\,\\sigma_{\\mathrm{rr}}\\big)' + \\rho\\,\\Omega^2 r^2 . \\tag{24.58}\\]</div>", "href": "sec-vrteci-disk.html#eq-vd-euler"};

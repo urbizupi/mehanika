@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kroglice-gibalna"] = {"html": "<div class=\"eq\">\\[m\\,\\ddot w_{\\mathrm{j}} = -\\frac{T}{h}\\,\\big(-w_{\\mathrm{j}-1} + 2w_{\\mathrm{j}} - w_{\\mathrm{j}+1}\\big) \\quad (j = 1, \\dots, N) , \\qquad w_0 = w_{\\mathrm{N}+1} = 0 , \\tag{13.13}\\]</div>", "href": "sec-nacini-strune.html#eq-kroglice-gibalna"};

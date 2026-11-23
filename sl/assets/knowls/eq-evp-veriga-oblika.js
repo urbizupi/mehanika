@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-evp-veriga-oblika"] = {"html": "<div class=\"eq\">\\[\\vek q^\\T\\mat K\\vek q = k_1\\,q_1^2 + \\sum_{\\mathrm{i}=2}^{N} k_{\\mathrm{i}}\\,(q_{\\mathrm{i}} - q_{\\mathrm{i}-1})^2 + k_{\\mathrm{N}+1}\\,q_{\\mathrm{N}}^2 . \\tag{10.3}\\]</div>", "href": "sec-enacbe-vec-ps.html#eq-evp-veriga-oblika"};

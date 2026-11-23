@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-imp-normirana"] = {"html": "<div class=\"eq\">\\[\\ddot q + 2\\,\\zeta\\,\\omega_{\\mathrm{n}}\\,\\dot q + \\omega_{\\mathrm{n}}^2\\,q = f(t) , \\qquad f(t) = \\frac{Q(t)}{m} . \\tag{9.89}\\]</div>", "href": "sec-impulzni-odziv.html#eq-imp-normirana"};

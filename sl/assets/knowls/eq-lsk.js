@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-lsk"] = {"html": "<div class=\"eq\">\\[a_{\\mathrm{n}} y^{(n)} + \\dots + a_1 y' + a_0 y = f(t) . \\tag{9.31}\\]</div>", "href": "sec-linearne-enacbe.html#eq-lsk"};
+(window.KNOWLS = window.KNOWLS || {})["eq-lsk"] = {"html": "<div class=\"eq\">\\[a_{\\mathrm{n}} y^{(n)} + \\dots + a_1 y' + a_0 y = f(t) . \\tag{9.39}\\]</div>", "href": "sec-linearne-enacbe.html#eq-lsk"};

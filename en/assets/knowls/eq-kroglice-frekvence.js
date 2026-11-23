@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kroglice-frekvence"] = {"html": "<div class=\"eq\">\\[\\omega_{\\mathrm{r}}^{(N)} = 2\\sqrt{\\frac{T}{mh}}\\,\\sin\\frac{r\\pi}{2(N + 1)} , \\qquad \\phi_{\\mathrm{r},\\mathrm{j}} = \\sin\\frac{jr\\pi}{N + 1} = \\sin\\frac{r\\pi x_{\\mathrm{j}}}{L} . \\tag{13.14}\\]</div>", "href": "sec-nacini-strune.html#eq-kroglice-frekvence"};

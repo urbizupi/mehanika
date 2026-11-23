@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-prandtl-elipse"] = {"html": "<div class=\"eq\">\\[\\Phi = G\\alpha\\,\\frac{a^2b^2}{a^2 + b^2}\\Big( 1 - \\frac{y^2}{a^2} - \\frac{z^2}{b^2} \\Big) . \\tag{16.24}\\]</div>", "href": "sec-prandtlova-funkcija.html#eq-prandtl-elipse"};
+(window.KNOWLS = window.KNOWLS || {})["eq-prandtl-elipse"] = {"html": "<div class=\"eq\">\\[\\Phi = G\\alpha\\,\\frac{a^2b^2}{a^2 + b^2}\\Big( 1 - \\frac{y^2}{a^2} - \\frac{z^2}{b^2} \\Big) . \\tag{16.33}\\]</div>", "href": "sec-prandtlova-funkcija.html#eq-prandtl-elipse"};

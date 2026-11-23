@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-krozna-polje-splosna"] = {"html": "<div class=\"eq\">\\[w_{\\mathrm{i}}(r) = w_{\\mathrm{p},\\mathrm{i}}(r) + A_{\\mathrm{i}} + B_{\\mathrm{i}}\\,r^2 + C_{\\mathrm{i}}\\ln\\frac ra + K_{\\mathrm{i}}\\,r^2\\ln\\frac ra \\tag{18.48}\\]</div>", "href": "sec-krozne-plosce.html#eq-krozna-polje-splosna"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-energija-temperatura-delo"] = {"html": "<div class=\"eq\">\\[w_{\\mathrm{T}} = G \\sum_{\\mathrm{i}}\\sum_{\\mathrm{j}} e_{\\mathrm{ij}}^2 + \\tfrac12\\,K\\,\\varepsilon_{\\mathrm{v}}^2 - 3K\\,\\alpha\\,\\Delta T\\,\\varepsilon_{\\mathrm{v}} . \\tag{3.76}\\]</div>", "href": "sec-energija-deformacije.html#eq-energija-temperatura-delo"};

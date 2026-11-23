@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dalembert-delovna-oblika"] = {"html": "<div class=\"eq\">\\[-\\int_{\\mathrm{V}} \\rho\\,\\vek a\\cdot\\delta\\vek u\\,\\mathrm{d}V = -m\\,\\vek a_{\\mathrm{G}}\\cdot\\delta\\vek r_{\\mathrm{G}} - J_{\\mathrm{G}}\\,\\ddot\\varphi\\,\\delta\\varphi . \\tag{8.80}\\]</div>", "href": "sec-dalembert.html#eq-dalembert-delovna-oblika"};

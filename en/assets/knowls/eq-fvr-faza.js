@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-fvr-faza"] = {"html": "<div class=\"eq\">\\[\\varphi_{\\mathrm{n}} = \\arg(a_{\\mathrm{n}} + \\mathrm{i}\\,b_{\\mathrm{n}}) , \\qquad -\\pi &lt; \\varphi_{\\mathrm{n}} \\le \\pi , \\tag{9.120}\\]</div>", "href": "sec-fourierjeve-vrste.html#eq-fvr-faza"};

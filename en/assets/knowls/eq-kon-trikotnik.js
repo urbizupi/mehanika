@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kon-trikotnik"] = {"html": "<div class=\"eq\">\\[q(t) = S(t) - R_{\\mathrm{t}_\\mathrm{d}}(t) = \\frac{Q_0}{k}\\Big(1 - \\cos\\omega t - \\frac{t}{t_{\\mathrm{d}}} + \\frac{\\sin\\omega t}{\\omega\\,t_{\\mathrm{d}}}\\Big) . \\tag{9.106}\\]</div>", "href": "sec-konvolucija.html#eq-kon-trikotnik"};

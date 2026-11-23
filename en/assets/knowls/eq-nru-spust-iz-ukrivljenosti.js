@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nru-spust-iz-ukrivljenosti"] = {"html": "<div class=\"eq\">\\[v(0) - v\\!\\left(\\tfrac{L}{2}\\right) = \\int_0^{L/2} x\\,\\frac{M(x)}{EI}\\,\\mathrm{d}x . \\tag{5.61}\\]</div>", "href": "sec-upogibnice.html#eq-nru-spust-iz-ukrivljenosti"};

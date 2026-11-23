@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-prosta-ploskev"] = {"html": "<div class=\"eq\">\\[\\sigma_{\\mathrm{xy}}\\,n_{\\mathrm{y}} + \\sigma_{\\mathrm{xz}}\\,n_{\\mathrm{z}} = 0 \\quad \\text{na robu.} \\tag{16.18}\\]</div>", "href": "sec-prandtlova-funkcija.html#eq-prosta-ploskev"};
+(window.KNOWLS = window.KNOWLS || {})["eq-prosta-ploskev"] = {"html": "<div class=\"eq\">\\[\\sigma_{\\mathrm{xy}}\\,n_{\\mathrm{y}} + \\sigma_{\\mathrm{xz}}\\,n_{\\mathrm{z}} = 0 \\quad \\text{na robu.} \\tag{16.27}\\]</div>", "href": "sec-prandtlova-funkcija.html#eq-prosta-ploskev"};

@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-zveznost-prostor"] = {"html": "<div class=\"eq\">\\[|f(Q) - f(P)| &lt; \\eta \\quad \\text{for every point } Q \\in D \\text{ with } |PQ| &lt; \\delta . \\tag{1.28}\\]</div>", "href": "sec-zveznost.html#eq-zveznost-prostor"};
+(window.KNOWLS = window.KNOWLS || {})["eq-zveznost-prostor"] = {"html": "<div class=\"eq\">\\[|f(Q) - f(P)| &lt; \\eta \\quad \\text{for every point } Q \\in D \\text{ with } |PQ| &lt; \\delta . \\tag{1.29}\\]</div>", "href": "sec-zveznost.html#eq-zveznost-prostor"};

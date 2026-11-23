@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rk-simpson"] = {"html": "<div class=\"eq\">\\[y_{\\mathrm{k}+1} - y_{\\mathrm{k}} = \\frac{\\Delta t}{6}\\,\\Big(f(t_{\\mathrm{k}}) + 4 f\\big(t_{\\mathrm{k}} + \\tfrac12\\Delta t\\big) + f(t_{\\mathrm{k}} + \\Delta t)\\Big) , \\tag{10.131}\\]</div>", "href": "sec-casovno-korakanje.html#eq-rk-simpson"};

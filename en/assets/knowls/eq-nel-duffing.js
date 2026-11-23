@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nel-duffing"] = {"html": "<div class=\"eq\">\\[\\ddot x + \\omega_0^2\\,x + \\varepsilon\\,x^3 = 0 . \\tag{9.131}\\]</div>", "href": "sec-nelinearno-nihanje.html#eq-nel-duffing"};

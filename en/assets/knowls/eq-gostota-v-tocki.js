@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-gostota-v-tocki"] = {"html": "<div class=\"eq\">\\[\\rho(P) = \\lim_{\\mathrm{h} \\to 0^+} \\frac{\\Delta m}{h^3} , \\tag{2.30}\\]</div>", "href": "sec-ravnotezne-enacbe.html#eq-gostota-v-tocki"};

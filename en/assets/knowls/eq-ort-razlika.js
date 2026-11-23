@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-ort-razlika"] = {"html": "<div class=\"eq\">\\[\\int_0^L (Du)\\,v\\,\\mathrm{d}x - \\int_0^L u\\,(Dv)\\,\\mathrm{d}x = b(u, v) - b(v, u) . \\tag{13.47}\\]</div>", "href": "sec-ortogonalnost-zveznih.html#eq-ort-razlika"};
+(window.KNOWLS = window.KNOWLS || {})["eq-ort-razlika"] = {"html": "<div class=\"eq\">\\[\\int_0^L (Du)\\,v\\,\\mathrm{d}x - \\int_0^L u\\,(Dv)\\,\\mathrm{d}x = b(u, v) - b(v, u) . \\tag{13.71}\\]</div>", "href": "sec-ortogonalnost-zveznih.html#eq-ort-razlika"};

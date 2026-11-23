@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pdn-met-razmerje"] = {"html": "<div class=\"eq\">\\[\\mu_{\\mathrm{r}} = \\frac{m}{M_{\\mathrm{b}} + 2m} , \\qquad 0 &lt; \\mu_{\\mathrm{r}} &lt; \\tfrac12 , \\tag{9.59}\\]</div>", "href": "sec-prosto-duseno-nihanje.html#eq-pdn-met-razmerje"};

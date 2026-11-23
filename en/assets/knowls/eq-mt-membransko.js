@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-mt-membransko"] = {"html": "<div class=\"eq\">\\[M_1 = M_2 = M_{12} = 0 , \\qquad Q_1 = Q_2 = 0 , \\tag{22.27}\\]</div>", "href": "sec-membranska-teorija.html#eq-mt-membransko"};
+(window.KNOWLS = window.KNOWLS || {})["eq-mt-membransko"] = {"html": "<div class=\"eq\">\\[M_1 = M_2 = M_{12} = 0 , \\qquad Q_1 = Q_2 = 0 , \\tag{22.28}\\]</div>", "href": "sec-membranska-teorija.html#eq-mt-membransko"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-okvir-enacbi-elementa"] = {"html": "<div class=\"eq\">\\[EA_{\\mathrm{k}}\\,u_{\\mathrm{k}}'' = -q_{\\mathrm{x},\\mathrm{k}} , \\qquad EI_{\\mathrm{k}}\\,v_{\\mathrm{k}}'''' = q_{\\mathrm{k}} \\qquad \\text{na } (0, L_{\\mathrm{k}}) , \\tag{5.92}\\]</div>", "href": "sec-okvirji.html#eq-okvir-enacbi-elementa"};

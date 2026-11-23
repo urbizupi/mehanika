@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ts-zaporedna"] = {"html": "<div class=\"eq\">\\[\\frac{1}{k^*} = \\frac{1}{k_1} + \\frac{1}{k_2}, \\qquad k^* = \\frac{k_1 k_2}{k_1 + k_2} . \\tag{23.47}\\]</div>", "href": "sec-torzija-gredi.html#eq-ts-zaporedna"};

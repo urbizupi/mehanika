@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kot-glavnih-smeri"] = {"html": "<div class=\"eq\">\\[\\tan 2\\theta = \\frac{2\\sigma_{\\mathrm{xy}}}{\\sigma_{\\mathrm{xx}} - \\sigma_{\\mathrm{yy}}} . \\tag{2.101}\\]</div>", "href": "sec-najvecja-strizna.html#eq-kot-glavnih-smeri"};

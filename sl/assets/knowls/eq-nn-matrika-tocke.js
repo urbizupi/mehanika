@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nn-matrika-tocke"] = {"html": "<div class=\"eq\">\\[\\mathbf P = \\begin{bmatrix} 1 &amp; 0 &amp; 0 &amp; 0 \\\\ 0 &amp; 1 &amp; 0 &amp; 0 \\\\ 0 &amp; 0 &amp; 1 &amp; 0 \\\\ -m\\,\\omega^2 &amp; 0 &amp; 0 &amp; 1 \\end{bmatrix} . \\tag{13.64}\\]</div>", "href": "sec-nacini-nosilca.html#eq-nn-matrika-tocke"};

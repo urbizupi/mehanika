@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-dbc-tanka-stena"] = {"html": "<div class=\"eq\">\\[\\sigma = \\frac{p\\,a}{b - a} = \\frac{p\\,a}{t} , \\qquad t = b - a . \\tag{11.33}\\]</div>", "href": "sec-debelostenska-cev.html#eq-dbc-tanka-stena"};
+(window.KNOWLS = window.KNOWLS || {})["eq-dbc-tanka-stena"] = {"html": "<div class=\"eq\">\\[\\sigma = \\frac{p\\,a}{b - a} = \\frac{p\\,a}{t} , \\qquad t = b - a . \\tag{11.36}\\]</div>", "href": "sec-debelostenska-cev.html#eq-dbc-tanka-stena"};

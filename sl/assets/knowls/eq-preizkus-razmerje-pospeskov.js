@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-preizkus-razmerje-pospeskov"] = {"html": "<div class=\"eq\">\\[\\frac{A}{A_0} = \\mathrm{TR} , \\tag{9.150}\\]</div>", "href": "sec-vibracijski-preizkus.html#eq-preizkus-razmerje-pospeskov"};

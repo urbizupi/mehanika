@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mep-premik"] = {"html": "<div class=\"eq\">\\[m\\,\\ddot{\\tilde q} + c\\,\\dot{\\tilde q} + k\\,\\tilde q = \\tilde Q(t) , \\tag{9.14}\\]</div>", "href": "sec-model-ena-ps.html#eq-mep-premik"};

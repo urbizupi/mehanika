@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-j-elipse"] = {"html": "<div class=\"eq\">\\[J = \\frac{\\pi\\,a^3b^3}{a^2 + b^2} , \\qquad \\alpha = \\frac{M_{\\mathrm{x}}}{GJ} . \\tag{16.25}\\]</div>", "href": "sec-prandtlova-funkcija.html#eq-j-elipse"};
+(window.KNOWLS = window.KNOWLS || {})["eq-j-elipse"] = {"html": "<div class=\"eq\">\\[J = \\frac{\\pi\\,a^3b^3}{a^2 + b^2} , \\qquad \\alpha = \\frac{M_{\\mathrm{x}}}{GJ} . \\tag{16.34}\\]</div>", "href": "sec-prandtlova-funkcija.html#eq-j-elipse"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-prostorninska-sila-zasuk"] = {"html": "<div class=\"eq\">\\[\\vek b = \\frac{m_{\\mathrm{x}}}{I_{\\mathrm{p}}}\\,(0,\\ -z,\\ y) , \\qquad m_{\\mathrm{x}} = -G\\,I_{\\mathrm{p}}\\,\\varphi'' . \\tag{16.15}\\]</div>", "href": "sec-torzija-kroga.html#eq-prostorninska-sila-zasuk"};

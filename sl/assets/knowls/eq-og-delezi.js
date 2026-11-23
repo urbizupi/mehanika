@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-og-delezi"] = {"html": "<div class=\"eq\">\\[\\mathcal E^* = \\tfrac12\\sum_{\\mathrm{n}=1}^{N} N_{\\mathrm{n}}\\Big(\\big(\\xi_{\\mathrm{n}}^{\\mathrm R}\\big)^2 + \\big(\\xi_{\\mathrm{n}}^{\\mathrm I}\\big)^2\\Big) . \\tag{26.47}\\]</div>", "href": "sec-ortogonalnost-gibajoce.html#eq-og-delezi"};

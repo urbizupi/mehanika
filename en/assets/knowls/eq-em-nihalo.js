@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-em-nihalo"] = {"html": "<div class=\"eq\">\\[R_{\\mathrm{nih}}(\\Omega) = \\mu\\,\\frac{\\lambda}{\\lambda - \\Omega^2} . \\tag{21.20}\\]</div>", "href": "sec-efektivna-masa.html#eq-em-nihalo"};

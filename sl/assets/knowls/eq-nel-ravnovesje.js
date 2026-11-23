@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nel-ravnovesje"] = {"html": "<div class=\"eq\">\\[\\big(\\omega_0^2 - \\Omega^2 + \\tfrac34\\varepsilon a^2\\big)\\,a = p_0\\cos\\varphi , \\qquad 2\\zeta\\omega_0\\Omega\\,a = p_0\\sin\\varphi . \\tag{9.137}\\]</div>", "href": "sec-nelinearno-nihanje.html#eq-nel-ravnovesje"};

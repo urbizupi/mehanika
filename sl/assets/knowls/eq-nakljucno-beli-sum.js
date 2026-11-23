@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nakljucno-beli-sum"] = {"html": "<div class=\"eq\">\\[\\overline{a^2} = G_0\\int_0^\\infty \\mathrm{TR}(f)^2\\,\\mathrm{d}f = G_0\\,\\frac{\\pi f_{\\mathrm{n}}\\,(1 + 4\\zeta^2)}{4\\zeta} . \\tag{9.159}\\]</div>", "href": "sec-nakljucno-vzbujanje.html#eq-nakljucno-beli-sum"};

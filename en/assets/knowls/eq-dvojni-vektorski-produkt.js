@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dvojni-vektorski-produkt"] = {"html": "<div class=\"eq\">\\[(\\vek a\\times\\vek b)\\times\\vek c = (\\vek a\\cdot\\vek c)\\,\\vek b - (\\vek b\\cdot\\vek c)\\,\\vek a . \\tag{2.40}\\]</div>", "href": "sec-simetrija-napetosti.html#eq-dvojni-vektorski-produkt"};

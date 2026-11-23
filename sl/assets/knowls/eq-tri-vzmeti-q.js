@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-tri-vzmeti-q"] = {"html": "<div class=\"eq\">\\[Q_1 = -\\frac{\\partial V}{\\partial x_1} = -k_1 x_1 + k_2 (x_2 - x_1) , \\qquad Q_2 = -\\frac{\\partial V}{\\partial x_2} = -k_2 (x_2 - x_1) - k_3 x_2 . \\tag{8.108}\\]</div>", "href": "sec-lagrangeeve-enacbe.html#eq-tri-vzmeti-q"};

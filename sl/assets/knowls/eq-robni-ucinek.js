@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-robni-ucinek"] = {"html": "<div class=\"eq\">\\[w(x) = w_{\\mathrm{p}} + \\mathrm{e}^{-\\beta x}\\big(C_1\\cos\\beta x + C_2\\sin\\beta x\\big) \\tag{22.43}\\]</div>", "href": "sec-upogib-valja.html#eq-robni-ucinek"};
+(window.KNOWLS = window.KNOWLS || {})["eq-robni-ucinek"] = {"html": "<div class=\"eq\">\\[w(x) = w_{\\mathrm{p}} + \\mathrm{e}^{-\\beta x}\\big(C_1\\cos\\beta x + C_2\\sin\\beta x\\big) \\tag{22.44}\\]</div>", "href": "sec-upogib-valja.html#eq-robni-ucinek"};

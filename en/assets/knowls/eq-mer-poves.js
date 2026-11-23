@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-mer-poves"] = {"html": "<div class=\"eq\">\\[\\omega_{\\mathrm{n}} = \\sqrt{\\frac{k}{m}} = \\sqrt{\\frac{g}{\\delta_{\\mathrm{st}}}} . \\tag{9.88}\\]</div>", "href": "sec-merjenje.html#eq-mer-poves"};
+(window.KNOWLS = window.KNOWLS || {})["eq-mer-poves"] = {"html": "<div class=\"eq\">\\[\\omega_{\\mathrm{n}} = \\sqrt{\\frac{k}{m}} = \\sqrt{\\frac{g}{\\delta_{\\mathrm{st}}}} . \\tag{9.139}\\]</div>", "href": "sec-merjenje.html#eq-mer-poves"};

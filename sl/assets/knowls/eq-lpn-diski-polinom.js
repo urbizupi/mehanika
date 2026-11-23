@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-lpn-diski-polinom"] = {"html": "<div class=\"eq\">\\[p(x) = -6x^3 + 33x^2 - 24x = -3x\\,(2x^2 - 11x + 8) . \\tag{10.30}\\]</div>", "href": "sec-lastni-problem.html#eq-lpn-diski-polinom"};

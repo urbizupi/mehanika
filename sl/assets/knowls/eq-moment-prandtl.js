@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-moment-prandtl"] = {"html": "<div class=\"eq\">\\[M_{\\mathrm{x}} = 2\\int_{\\mathrm{S}} \\Phi\\,\\mathrm{d}A . \\tag{16.23}\\]</div>", "href": "sec-prandtlova-funkcija.html#eq-moment-prandtl"};
+(window.KNOWLS = window.KNOWLS || {})["eq-moment-prandtl"] = {"html": "<div class=\"eq\">\\[M_{\\mathrm{x}} = 2\\int_{\\mathrm{S}} \\Phi\\,\\mathrm{d}A . \\tag{16.32}\\]</div>", "href": "sec-prandtlova-funkcija.html#eq-moment-prandtl"};

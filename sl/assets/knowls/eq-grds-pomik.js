@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-grds-pomik"] = {"html": "<div class=\"eq\">\\[\\vek u = \\big(u_{\\mathrm{x}}(x, y),\\ u_{\\mathrm{y}}(x, y),\\ \\varepsilon_0\\,z\\big) , \\tag{11.56}\\]</div>", "href": "sec-ravninski-problemi.html#eq-grds-pomik"};

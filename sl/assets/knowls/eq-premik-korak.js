@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-premik-korak"] = {"html": "<div class=\"eq\">\\[(\\mat K - \\lambda_0\\mat M)\\,\\vek y_{\\mathrm{k}+1} = \\mat M\\,\\vek x_{\\mathrm{k}} . \\tag{21.44}\\]</div>", "href": "sec-inverzna-iteracija.html#eq-premik-korak"};
+(window.KNOWLS = window.KNOWLS || {})["eq-premik-korak"] = {"html": "<div class=\"eq\">\\[(\\mat K - \\lambda_0\\mat M)\\,\\vek y_{\\mathrm{k}+1} = \\mat M\\,\\vek x_{\\mathrm{k}} . \\tag{21.46}\\]</div>", "href": "sec-inverzna-iteracija.html#eq-premik-korak"};

@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-mt-meridianska"] = {"html": "<div class=\"eq\">\\[N_\\varphi(s) = \\frac{P_{\\mathrm{z}}(s)}{2\\pi\\,r(s)\\,\\sin\\varphi(s)} . \\tag{22.30}\\]</div>", "href": "sec-membranska-teorija.html#eq-mt-meridianska"};
+(window.KNOWLS = window.KNOWLS || {})["eq-mt-meridianska"] = {"html": "<div class=\"eq\">\\[N_\\varphi(s) = \\frac{P_{\\mathrm{z}}(s)}{2\\pi\\,r(s)\\,\\sin\\varphi(s)} . \\tag{22.31}\\]</div>", "href": "sec-membranska-teorija.html#eq-mt-meridianska"};

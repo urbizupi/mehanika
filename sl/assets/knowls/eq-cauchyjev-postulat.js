@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-cauchyjev-postulat"] = {"html": "<div class=\"eq\">\\[\\lim_{\\mathrm{h} \\to 0^+} \\frac{\\Delta\\vek F_{\\mathrm{u}}}{h^2} = \\vek t(\\vek n) \\tag{2.18}\\]</div>", "href": "sec-vektor-napetosti.html#eq-cauchyjev-postulat"};

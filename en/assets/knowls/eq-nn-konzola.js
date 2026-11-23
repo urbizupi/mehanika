@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-nn-konzola"] = {"html": "<div class=\"eq\">\\[\\cos x\\,\\operatorname{cosh}x + 1 = 0 \\tag{13.40}\\]</div>", "href": "sec-nacini-nosilca.html#eq-nn-konzola"};
+(window.KNOWLS = window.KNOWLS || {})["eq-nn-konzola"] = {"html": "<div class=\"eq\">\\[\\cos x\\,\\operatorname{cosh}x + 1 = 0 \\tag{13.55}\\]</div>", "href": "sec-nacini-nosilca.html#eq-nn-konzola"};

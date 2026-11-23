@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rk-velikost"] = {"html": "<div class=\"eq\">\\[|P(x)|^2 = 1 - \\frac{x^6\\,(8 - x^2)}{576} . \\tag{10.133}\\]</div>", "href": "sec-casovno-korakanje.html#eq-rk-velikost"};

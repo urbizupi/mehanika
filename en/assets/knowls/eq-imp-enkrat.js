@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-imp-enkrat"] = {"html": "<div class=\"eq\">\\[q(t) = I\\,h(t) = \\frac{I}{m}\\,g(t) . \\tag{9.91}\\]</div>", "href": "sec-impulzni-odziv.html#eq-imp-enkrat"};

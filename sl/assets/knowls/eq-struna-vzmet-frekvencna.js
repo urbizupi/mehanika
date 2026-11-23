@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-struna-vzmet-frekvencna"] = {"html": "<div class=\"eq\">\\[s\\cos s + \\kappa\\sin s = 0 , \\qquad \\text{to je} \\qquad \\frac{T\\omega}{kc} + \\tan\\frac{\\omega L}{c} = 0 . \\tag{13.17}\\]</div>", "href": "sec-nacini-strune.html#eq-struna-vzmet-frekvencna"};

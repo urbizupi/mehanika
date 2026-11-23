@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-oktaedrska-deformacija"] = {"html": "<div class=\"eq\">\\[\\varepsilon_{\\mathrm{oct}} = \\frac13\\sqrt{(\\varepsilon_1 - \\varepsilon_2)^2 + (\\varepsilon_2 - \\varepsilon_3)^2 + (\\varepsilon_3 - \\varepsilon_1)^2} . \\tag{2.136}\\]</div>", "href": "sec-najvecja-strizna.html#eq-oktaedrska-deformacija"};

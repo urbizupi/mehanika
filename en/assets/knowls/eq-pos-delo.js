@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-pos-delo"] = {"html": "<div class=\"eq\">\\[\\sum_{\\mathrm{s}=1}^{n} Q_{\\mathrm{s}}\\,\\delta q_{\\mathrm{s}} . \\tag{8.34}\\]</div>", "href": "sec-posplosene-sile.html#eq-pos-delo"};
+(window.KNOWLS = window.KNOWLS || {})["eq-pos-delo"] = {"html": "<div class=\"eq\">\\[\\sum_{\\mathrm{s}=1}^{n} Q_{\\mathrm{s}}\\,\\delta q_{\\mathrm{s}} . \\tag{8.36}\\]</div>", "href": "sec-posplosene-sile.html#eq-pos-delo"};

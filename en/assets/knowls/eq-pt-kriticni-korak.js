@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-pt-kriticni-korak"] = {"html": "<div class=\"eq\">\\[\\Delta t \\le \\Delta t_{\\mathrm{kr}} = \\frac{2}{\\lambda_{\\max}} . \\tag{14.64}\\]</div>", "href": "sec-prehodni-pojav-mke.html#eq-pt-kriticni-korak"};
+(window.KNOWLS = window.KNOWLS || {})["eq-pt-kriticni-korak"] = {"html": "<div class=\"eq\">\\[\\Delta t \\le \\Delta t_{\\mathrm{kr}} = \\frac{2}{\\lambda_{\\max}} . \\tag{14.69}\\]</div>", "href": "sec-prehodni-pojav-mke.html#eq-pt-kriticni-korak"};

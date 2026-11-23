@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-disk-pogoj-levi"] = {"html": "<div class=\"eq\">\\[J_0\\,\\varphi_{\\mathrm{tt}}(0, t) = G I_{\\mathrm{p}}\\,\\varphi_{\\mathrm{x}}(0, t) . \\tag{13.27}\\]</div>", "href": "sec-palica-gred.html#eq-disk-pogoj-levi"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nn-bisekcija"] = {"html": "<div class=\"eq\">\\[b_{\\mathrm{n}} - a_{\\mathrm{n}} = \\frac{b - a}{2^n} \\tag{13.54}\\]</div>", "href": "sec-nacini-nosilca.html#eq-nn-bisekcija"};

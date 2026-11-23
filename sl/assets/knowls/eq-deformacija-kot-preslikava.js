@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-deformacija-kot-preslikava"] = {"html": "<div class=\"eq\">\\[\\Phi(P) = P + \\vek u(P) , \\tag{1.15}\\]</div>", "href": "sec-pomik-v-prostoru.html#eq-deformacija-kot-preslikava"};

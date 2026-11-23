@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-up-kupola"] = {"html": "<div class=\"eq\">\\[N_\\varphi = -\\frac{qR}{1 + \\cos\\varphi} , \\qquad N_\\theta = qR\\Big(\\frac{1}{1 + \\cos\\varphi} - \\cos\\varphi\\Big) . \\tag{22.38}\\]</div>", "href": "sec-uporabe-membranske.html#eq-up-kupola"};
+(window.KNOWLS = window.KNOWLS || {})["eq-up-kupola"] = {"html": "<div class=\"eq\">\\[N_\\varphi = -\\frac{qR}{1 + \\cos\\varphi} , \\qquad N_\\theta = qR\\Big(\\frac{1}{1 + \\cos\\varphi} - \\cos\\varphi\\Big) . \\tag{22.39}\\]</div>", "href": "sec-uporabe-membranske.html#eq-up-kupola"};

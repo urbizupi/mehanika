@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-giro-krozenje"] = {"html": "<div class=\"eq\">\\[\\omega^2 - g\\,\\omega + 1 = 0 , \\qquad \\omega = \\frac{g \\pm \\sqrt{g^2 - 4}}{2} . \\tag{26.30}\\]</div>", "href": "sec-giroskopski-sistemi.html#eq-giro-krozenje"};

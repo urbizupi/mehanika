@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-lpn-diski-lambde"] = {"html": "<div class=\"eq\">\\[\\lambda_1 = 0 , \\qquad \\lambda_2 = \\frac{11 - \\sqrt{57}}{4}\\,\\frac{k}{J} , \\qquad \\lambda_3 = \\frac{11 + \\sqrt{57}}{4}\\,\\frac{k}{J} . \\tag{10.31}\\]</div>", "href": "sec-lastni-problem.html#eq-lpn-diski-lambde"};

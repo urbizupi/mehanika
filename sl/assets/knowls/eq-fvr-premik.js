@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-fvr-premik"] = {"html": "<div class=\"eq\">\\[c_{\\mathrm{n}}(g) = \\mathrm{e}^{-\\mathrm{i}n\\Omega t_0}\\,c_{\\mathrm{n}}(f) . \\tag{9.122}\\]</div>", "href": "sec-fourierjeve-vrste.html#eq-fvr-premik"};

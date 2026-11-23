@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nel-vsiljena"] = {"html": "<div class=\"eq\">\\[\\ddot x + 2\\zeta\\omega_0\\,\\dot x + \\omega_0^2\\,x + \\varepsilon\\,x^3 = p_0\\cos\\Omega t , \\qquad p_0 = \\frac{Q_0}{m} . \\tag{9.136}\\]</div>", "href": "sec-nelinearno-nihanje.html#eq-nel-vsiljena"};

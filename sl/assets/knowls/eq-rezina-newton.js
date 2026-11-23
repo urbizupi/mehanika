@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rezina-newton"] = {"html": "<div class=\"eq\">\\[-\\sigma(x - \\tfrac{\\Delta x}{2})\\,A + \\sigma(x + \\tfrac{\\Delta x}{2})\\,A + \\rho g A\\,\\Delta x = \\rho A\\,\\Delta x\\,a_{\\mathrm{x}} . \\tag{2.32}\\]</div>", "href": "sec-ravnotezne-enacbe.html#eq-rezina-newton"};

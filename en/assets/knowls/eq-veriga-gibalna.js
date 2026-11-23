@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-veriga-gibalna"] = {"html": "<div class=\"eq\">\\[m\\,\\ddot q_{\\mathrm{j}} = -k\\,(q_{\\mathrm{j}} - q_{\\mathrm{j}-1}) + k\\,(q_{\\mathrm{j}+1} - q_{\\mathrm{j}}) = -k\\,\\big(-q_{\\mathrm{j}-1} + 2q_{\\mathrm{j}} - q_{\\mathrm{j}+1}\\big) . \\tag{10.79}\\]</div>", "href": "sec-masna-matrika.html#eq-veriga-gibalna"};

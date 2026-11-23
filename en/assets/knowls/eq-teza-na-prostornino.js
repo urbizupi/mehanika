@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-teza-na-prostornino"] = {"html": "<div class=\"eq\">\\[\\frac{\\Delta\\vek F_{\\mathrm{V}}}{h^3} = g\\,\\frac{\\Delta m}{h^3}\\,\\vek e_{\\mathrm{x}} , \\qquad \\text{so} \\qquad \\vek b(P) = \\rho(P)\\,g\\,\\vek e_{\\mathrm{x}} . \\tag{2.31}\\]</div>", "href": "sec-ravnotezne-enacbe.html#eq-teza-na-prostornino"};

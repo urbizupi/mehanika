@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-j2-dve-razliki"] = {"html": "<div class=\"eq\">\\[J_2 = \\frac13\\Big((\\sigma_1 - \\sigma_3)^2 - (\\sigma_1 - \\sigma_3)(\\sigma_2 - \\sigma_3) + (\\sigma_2 - \\sigma_3)^2\\Big) . \\tag{2.108}\\]</div>", "href": "sec-najvecja-strizna.html#eq-j2-dve-razliki"};

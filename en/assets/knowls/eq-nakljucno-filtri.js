@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nakljucno-filtri"] = {"html": "<div class=\"eq\">\\[\\frac{kX}{Q_0} = D , \\qquad \\frac{m\\Omega^2 X}{Q_0} = r^2 D , \\qquad \\frac{c\\,\\Omega X}{Q_0} = 2\\zeta r D , \\qquad \\frac{|k - m\\Omega^2|\\,X}{Q_0} = |1 - r^2|\\,D . \\tag{9.166}\\]</div>", "href": "sec-nakljucno-vzbujanje.html#eq-nakljucno-filtri"};

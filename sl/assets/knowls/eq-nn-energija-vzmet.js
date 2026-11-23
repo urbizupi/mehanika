@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nn-energija-vzmet"] = {"html": "<div class=\"eq\">\\[\\lambda\\,\\rho A \\int_0^L \\varphi^2\\,\\mathrm{d}x = EI \\int_0^L \\varphi''^2\\,\\mathrm{d}x + k\\,\\varphi(L)^2 . \\tag{13.48}\\]</div>", "href": "sec-nacini-nosilca.html#eq-nn-energija-vzmet"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-voz-T"] = {"html": "<div class=\"eq\">\\[T = \\tfrac12 m_{\\mathrm{p}}\\,\\dot x_1^2 + 2\\,\\Big(\\tfrac12 m_{\\mathrm{k}}\\,\\dot x_1^2 + \\tfrac12 J\\,\\frac{\\dot x_1^2}{R^2}\\Big) + \\tfrac12 m_2\\,(\\dot x_1 - \\dot s)^2 . \\tag{8.116}\\]</div>", "href": "sec-lagrangeeve-enacbe.html#eq-voz-T"};

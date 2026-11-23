@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-ep-potencial"] = {"html": "<div class=\"eq\">\\[\\Pi(w) = U(w) - \\int_\\Omega q\\,w\\,\\mathrm{d}A , \\qquad U(w) = \\tfrac12\\,B(w, w) , \\tag{18.48}\\]</div>", "href": "sec-energijske-metode-plosc.html#eq-ep-potencial"};
+(window.KNOWLS = window.KNOWLS || {})["eq-ep-potencial"] = {"html": "<div class=\"eq\">\\[\\Pi(w) = U(w) - \\int_\\Omega q\\,w\\,\\mathrm{d}A , \\qquad U(w) = \\tfrac12\\,B(w, w) , \\tag{18.50}\\]</div>", "href": "sec-energijske-metode-plosc.html#eq-ep-potencial"};

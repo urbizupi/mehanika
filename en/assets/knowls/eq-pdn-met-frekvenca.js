@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pdn-met-frekvenca"] = {"html": "<div class=\"eq\">\\[\\omega_{\\mathrm{f}} = \\frac{\\omega}{\\sqrt{1 - 2\\mu_{\\mathrm{r}}}} &gt; \\omega . \\tag{9.61}\\]</div>", "href": "sec-prosto-duseno-nihanje.html#eq-pdn-met-frekvenca"};

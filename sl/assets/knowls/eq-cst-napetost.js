@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-cst-napetost"] = {"html": "<div class=\"eq\">\\[\\{\\sigma\\} = \\mat C\\,\\mat B\\,\\vek d_{\\mathrm{e}} . \\tag{15.25}\\]</div>", "href": "sec-mkk-ravninski-trikotnik.html#eq-cst-napetost"};

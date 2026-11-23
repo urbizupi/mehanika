@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-beta-valja"] = {"html": "<div class=\"eq\">\\[\\beta = \\frac{\\sqrt[4]{3(1 - \\nu^2)}}{\\sqrt{R h}} , \\tag{22.42}\\]</div>", "href": "sec-upogib-valja.html#eq-beta-valja"};
+(window.KNOWLS = window.KNOWLS || {})["eq-beta-valja"] = {"html": "<div class=\"eq\">\\[\\beta = \\frac{\\sqrt[4]{3(1 - \\nu^2)}}{\\sqrt{R h}} , \\tag{22.43}\\]</div>", "href": "sec-upogib-valja.html#eq-beta-valja"};

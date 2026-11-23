@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-lpn-diski-det"] = {"html": "<div class=\"eq\">\\[p(x) = \\det\\begin{bmatrix} 3 - 6x &amp; -3 &amp; 0 \\\\ -3 &amp; 4 - x &amp; -1 \\\\ 0 &amp; -1 &amp; 1 - x \\end{bmatrix} = 0 . \\tag{10.29}\\]</div>", "href": "sec-lastni-problem.html#eq-lpn-diski-det"};

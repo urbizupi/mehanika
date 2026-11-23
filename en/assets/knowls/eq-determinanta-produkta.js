@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-determinanta-produkta"] = {"html": "<div class=\"eq\">\\[\\det(\\mat A\\mat B) = \\det\\mat A\\,\\det\\mat B . \\tag{2.53}\\]</div>", "href": "sec-determinanta.html#eq-determinanta-produkta"};
+(window.KNOWLS = window.KNOWLS || {})["eq-determinanta-produkta"] = {"html": "<div class=\"eq\">\\[\\det(\\mat A\\mat B) = \\det\\mat A\\,\\det\\mat B . \\tag{2.72}\\]</div>", "href": "sec-determinanta.html#eq-determinanta-produkta"};

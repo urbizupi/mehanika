@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-lupina-nosi-z-nategom"] = {"html": "<div class=\"eq\">\\[2\\,N_\\theta\\sin\\frac{\\Delta\\theta}{2} = 2\\,p\\,R\\sin\\frac{\\Delta\\theta}{2} \\quad\\Longrightarrow\\quad \\frac{N_\\theta}{R} = p . \\tag{22.24}\\]</div>", "href": "sec-kinematika-lupine.html#eq-lupina-nosi-z-nategom"};

@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-meje-j-trak"] = {"html": "<div class=\"eq\">\\[71\\,111\\ \\text{mm}^4 \\ \\le\\ J\\ \\le\\ 85\\,333\\ \\text{mm}^4 , \\tag{16.56}\\]</div>", "href": "sec-meje-mke-torzije.html#eq-meje-j-trak"};
+(window.KNOWLS = window.KNOWLS || {})["eq-meje-j-trak"] = {"html": "<div class=\"eq\">\\[71\\,111\\ \\text{mm}^4 \\ \\le\\ J\\ \\le\\ 85\\,333\\ \\text{mm}^4 , \\tag{16.65}\\]</div>", "href": "sec-meje-mke-torzije.html#eq-meje-j-trak"};

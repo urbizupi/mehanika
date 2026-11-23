@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-invariante-deviatorja-glavne"] = {"html": "<div class=\"eq\">\\[J_1 = s_1 + s_2 + s_3 = 0 , \\qquad J_2 = -(s_1 s_2 + s_2 s_3 + s_3 s_1) = \\frac12\\,(s_1^2 + s_2^2 + s_3^2) , \\qquad J_3 = s_1 s_2 s_3 . \\tag{2.114}\\]</div>", "href": "sec-najvecja-strizna.html#eq-invariante-deviatorja-glavne"};

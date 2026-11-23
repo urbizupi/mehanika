@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-og-prenos"] = {"html": "<div class=\"eq\">\\[\\int_0^L f'\\,g\\,\\mathrm{d}x = -\\int_0^L f\\,g'\\,\\mathrm{d}x . \\tag{26.35}\\]</div>", "href": "sec-ortogonalnost-gibajoce.html#eq-og-prenos"};

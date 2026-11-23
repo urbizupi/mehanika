@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-j3-z-invariantami"] = {"html": "<div class=\"eq\">\\[J_3 = \\frac{2}{27}\\,I_1^3 - \\frac13\\,I_1 I_2 + I_3 . \\tag{2.115}\\]</div>", "href": "sec-najvecja-strizna.html#eq-j3-z-invariantami"};

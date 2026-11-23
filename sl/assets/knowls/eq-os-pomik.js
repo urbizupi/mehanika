@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-os-pomik"] = {"html": "<div class=\"eq\">\\[\\vek u = u_{\\mathrm{r}}(r, z)\\,\\vek e_{\\mathrm{r}} + u_{\\mathrm{z}}(r, z)\\,\\vek e_{\\mathrm{z}} , \\tag{15.43}\\]</div>", "href": "sec-mkk-osnosimetricni.html#eq-os-pomik"};
+(window.KNOWLS = window.KNOWLS || {})["eq-os-pomik"] = {"html": "<div class=\"eq\">\\[\\vek u = u_{\\mathrm{r}}(r, z)\\,\\vek e_{\\mathrm{r}} + u_{\\mathrm{z}}(r, z)\\,\\vek e_{\\mathrm{z}} , \\tag{15.47}\\]</div>", "href": "sec-mkk-osnosimetricni.html#eq-os-pomik"};

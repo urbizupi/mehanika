@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-podaljsek-natancno"] = {"html": "<div class=\"eq\">\\[L_1 - L = a + \\frac{b^2}{L_1 + L + a} . \\tag{4.48}\\]</div>", "href": "sec-virtualni-pomiki-palice.html#eq-podaljsek-natancno"};

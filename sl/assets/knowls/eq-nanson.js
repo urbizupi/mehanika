@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-nanson"] = {"html": "<div class=\"eq\">\\[\\vek n\\,\\Delta A = J\\,\\mat F^{-\\T}\\,\\vek n_0\\,\\Delta A_0 . \\tag{2.80}\\]</div>", "href": "sec-piola-kirchhoff.html#eq-nanson"};
+(window.KNOWLS = window.KNOWLS || {})["eq-nanson"] = {"html": "<div class=\"eq\">\\[\\vek n\\,\\Delta A = J\\,\\mat F^{-\\T}\\,\\vek n_0\\,\\Delta A_0 . \\tag{2.139}\\]</div>", "href": "sec-piola-kirchhoff.html#eq-nanson"};

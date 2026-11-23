@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pos-kosinusni"] = {"html": "<div class=\"eq\">\\[\\ell^2 = a^2 + c^2 - 2\\,a\\,c\\cos\\gamma . \\tag{8.43}\\]</div>", "href": "sec-posplosene-sile.html#eq-pos-kosinusni"};

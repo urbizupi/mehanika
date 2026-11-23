@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-rkv-definicija"] = {"html": "<div class=\"eq\">\\[R(\\vek v) = \\frac{\\vek v^\\T\\mat K\\,\\vek v}{\\vek v^\\T\\mat M\\,\\vek v} . \\tag{10.29}\\]</div>", "href": "sec-rayleighov-kolicnik.html#eq-rkv-definicija"};
+(window.KNOWLS = window.KNOWLS || {})["eq-rkv-definicija"] = {"html": "<div class=\"eq\">\\[R(\\vek v) = \\frac{\\vek v^\\T\\mat K\\,\\vek v}{\\vek v^\\T\\mat M\\,\\vek v} . \\tag{10.57}\\]</div>", "href": "sec-rayleighov-kolicnik.html#eq-rkv-definicija"};

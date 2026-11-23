@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-normala-iz-gradienta"] = {"html": "<div class=\"eq\">\\[\\vek n = \\frac{\\nabla f(P)}{|\\nabla f(P)|} \\tag{2.58}\\]</div>", "href": "sec-vrtenje-osi.html#eq-normala-iz-gradienta"};

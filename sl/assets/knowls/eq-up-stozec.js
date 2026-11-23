@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-up-stozec"] = {"html": "<div class=\"eq\">\\[N_\\varphi = \\frac{p\\,r}{2\\cos\\alpha} , \\qquad N_\\theta = \\frac{p\\,r}{\\cos\\alpha} . \\tag{22.39}\\]</div>", "href": "sec-uporabe-membranske.html#eq-up-stozec"};
+(window.KNOWLS = window.KNOWLS || {})["eq-up-stozec"] = {"html": "<div class=\"eq\">\\[N_\\varphi = \\frac{p\\,r}{2\\cos\\alpha} , \\qquad N_\\theta = \\frac{p\\,r}{\\cos\\alpha} . \\tag{22.40}\\]</div>", "href": "sec-uporabe-membranske.html#eq-up-stozec"};

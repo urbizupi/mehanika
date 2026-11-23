@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-fvr-amplituda-faza"] = {"html": "<div class=\"eq\">\\[a\\cos\\theta + b\\sin\\theta = A\\cos(\\theta - \\varphi) . \\tag{9.119}\\]</div>", "href": "sec-fourierjeve-vrste.html#eq-fvr-amplituda-faza"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-hvv-imaginarni-del"] = {"html": "<div class=\"eq\">\\[\\mathrm{Im}\\,H_{1\\mathrm{j}}(\\omega_{\\mathrm{r}}) \\approx -\\frac{\\varphi_{1\\mathrm{r}}\\,\\varphi_{\\mathrm{jr}}}{2\\zeta_{\\mathrm{r}}\\omega_{\\mathrm{r}}^2} . \\tag{10.112}\\]</div>", "href": "sec-frekvencni-odziv-vec.html#eq-hvv-imaginarni-del"};

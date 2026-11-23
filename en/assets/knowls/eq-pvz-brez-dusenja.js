@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pvz-brez-dusenja"] = {"html": "<div class=\"eq\">\\[q_{\\mathrm{p}}(t) = \\frac{a_0}{2k} + \\sum_{\\mathrm{n}=1}^{\\infty} \\frac{a_{\\mathrm{n}}\\cos n\\Omega t + b_{\\mathrm{n}}\\sin n\\Omega t}{k - m n^2\\Omega^2} . \\tag{9.127}\\]</div>", "href": "sec-periodicno-vzbujanje.html#eq-pvz-brez-dusenja"};

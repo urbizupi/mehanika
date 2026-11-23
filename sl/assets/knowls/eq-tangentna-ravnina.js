@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-tangentna-ravnina"] = {"html": "<div class=\"eq\">\\[|\\vek n\\cdot\\overrightarrow{PQ}| &lt; \\eta\\,|\\overrightarrow{PQ}| . \\tag{2.17}\\]</div>", "href": "sec-vektor-napetosti.html#eq-tangentna-ravnina"};

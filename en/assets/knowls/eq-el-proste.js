@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-el-proste"] = {"html": "<div class=\"eq\">\\[3(n_{\\mathrm{e}} + 1)^2 - 3(2n_{\\mathrm{e}} + 1) = 3\\,n_{\\mathrm{e}}^2 \\qquad \\text{unknowns.} \\tag{18.75}\\]</div>", "href": "sec-elementi-plosc.html#eq-el-proste"};
+(window.KNOWLS = window.KNOWLS || {})["eq-el-proste"] = {"html": "<div class=\"eq\">\\[3(n_{\\mathrm{e}} + 1)^2 - 3(2n_{\\mathrm{e}} + 1) = 3\\,n_{\\mathrm{e}}^2 \\qquad \\text{unknowns.} \\tag{18.77}\\]</div>", "href": "sec-elementi-plosc.html#eq-el-proste"};

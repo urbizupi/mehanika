@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-strizni-preizkus-modul"] = {"html": "<div class=\"eq\">\\[G = \\frac{\\tau}{\\gamma} = \\frac{F/A}{\\Delta x/h} = \\frac{F\\,h}{A\\,\\Delta x} . \\tag{3.25}\\]</div>", "href": "sec-hookov-zakon.html#eq-strizni-preizkus-modul"};

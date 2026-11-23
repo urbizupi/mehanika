@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-gibanje-palice"] = {"html": "<div class=\"eq\">\\[\\frac{\\partial N}{\\partial x} + q = \\rho A\\,a . \\tag{3.59}\\]</div>", "href": "sec-energija-deformacije.html#eq-gibanje-palice"};

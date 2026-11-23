@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-imp-polsinus-po"] = {"html": "<div class=\"eq\">\\[q(t) = \\frac{Q_0}{k}\\,\\frac{2\\,r\\,\\cos\\dfrac{\\pi}{2 r}}{r^2 - 1}\\,\\sin\\omega_{\\mathrm{n}}\\Big(t - \\frac{t_{\\mathrm{d}}}{2}\\Big) . \\tag{9.97}\\]</div>", "href": "sec-impulzni-odziv.html#eq-imp-polsinus-po"};

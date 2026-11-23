@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mep-togost-meritev"] = {"html": "<div class=\"eq\">\\[k = \\frac{\\sum_{\\mathrm{i}} f_{\\mathrm{i}}\\,u_{\\mathrm{i}}}{\\sum_{\\mathrm{i}} u_{\\mathrm{i}}^2} = \\frac{576{,}83}{28{,}82} = 20{,}01\\ \\text{N/mm} = 20\\,010\\ \\text{N/m} . \\tag{9.18}\\]</div>", "href": "sec-model-ena-ps.html#eq-mep-togost-meritev"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-hvv-modalna-amplituda"] = {"html": "<div class=\"eq\">\\[\\eta_{\\mathrm{r}} = \\frac{\\vek\\varphi_{\\mathrm{r}}^\\T\\vek Q_0}{\\omega_{\\mathrm{r}}^2 - \\Omega^2 + 2\\mathrm{i}\\,\\zeta_{\\mathrm{r}}\\omega_{\\mathrm{r}}\\Omega} . \\tag{10.107}\\]</div>", "href": "sec-frekvencni-odziv-vec.html#eq-hvv-modalna-amplituda"};

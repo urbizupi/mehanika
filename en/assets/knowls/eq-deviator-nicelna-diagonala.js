@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-deviator-nicelna-diagonala"] = {"html": "<div class=\"eq\">\\[(\\ten s\\,\\vek a)\\cdot\\vek a = 0 , \\qquad (\\ten s\\,\\vek b)\\cdot\\vek b = 0 , \\qquad (\\ten s\\,\\vek n)\\cdot\\vek n = 0 . \\tag{2.109}\\]</div>", "href": "sec-najvecja-strizna.html#eq-deviator-nicelna-diagonala"};

@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-mkk-t4-polje"] = {"html": "<div class=\"eq\">\\[\\vek u(\\vek x) = \\sum_{\\mathrm{i}=1}^{4} L_{\\mathrm{i}}(\\vek x)\\,\\vek u_{\\mathrm{i}} . \\tag{15.52}\\]</div>", "href": "sec-mkk-prostor.html#eq-mkk-t4-polje"};
+(window.KNOWLS = window.KNOWLS || {})["eq-mkk-t4-polje"] = {"html": "<div class=\"eq\">\\[\\vek u(\\vek x) = \\sum_{\\mathrm{i}=1}^{4} L_{\\mathrm{i}}(\\vek x)\\,\\vek u_{\\mathrm{i}} . \\tag{15.56}\\]</div>", "href": "sec-mkk-prostor.html#eq-mkk-t4-polje"};

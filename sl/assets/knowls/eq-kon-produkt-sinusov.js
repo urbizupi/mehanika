@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kon-produkt-sinusov"] = {"html": "<div class=\"eq\">\\[\\sin\\alpha\\,\\sin\\beta = \\tfrac12\\big(\\cos(\\alpha - \\beta) - \\cos(\\alpha + \\beta)\\big) . \\tag{9.103}\\]</div>", "href": "sec-konvolucija.html#eq-kon-produkt-sinusov"};

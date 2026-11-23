@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nakljucno-df"] = {"html": "<div class=\"eq\">\\[f_{\\mathrm{k}} = k\\,\\Delta f , \\qquad \\Delta f = \\frac{1}{T} . \\tag{9.154}\\]</div>", "href": "sec-nakljucno-vzbujanje.html#eq-nakljucno-df"};

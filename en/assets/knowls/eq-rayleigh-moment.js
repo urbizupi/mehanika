@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-rayleigh-moment"] = {"html": "<div class=\"eq\">\\[w_{\\mathrm{xx}}(0, t) = 0 , \\qquad w_{\\mathrm{xx}}(L, t) = 0 . \\tag{13.68}\\]</div>", "href": "sec-vztrajnost-zasuka.html#eq-rayleigh-moment"};
+(window.KNOWLS = window.KNOWLS || {})["eq-rayleigh-moment"] = {"html": "<div class=\"eq\">\\[w_{\\mathrm{xx}}(0, t) = 0 , \\qquad w_{\\mathrm{xx}}(L, t) = 0 . \\tag{13.92}\\]</div>", "href": "sec-vztrajnost-zasuka.html#eq-rayleigh-moment"};

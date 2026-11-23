@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-rk-faktor"] = {"html": "<div class=\"eq\">\\[z_{\\mathrm{k}+1} = P(x)\\,z_{\\mathrm{k}} , \\qquad P(x) = 1 - \\mathrm{i}\\,x - \\frac{x^2}{2} + \\mathrm{i}\\,\\frac{x^3}{6} + \\frac{x^4}{24} \\tag{10.132}\\]</div>", "href": "sec-casovno-korakanje.html#eq-rk-faktor"};

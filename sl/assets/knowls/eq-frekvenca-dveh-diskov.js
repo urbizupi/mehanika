@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-frekvenca-dveh-diskov"] = {"html": "<div class=\"eq\">\\[\\big(1 - j_0\\,j_{\\mathrm{L}}\\,s^2\\big)\\sin s + (j_0 + j_{\\mathrm{L}})\\,s\\,\\cos s = 0 . \\tag{13.29}\\]</div>", "href": "sec-palica-gred.html#eq-frekvenca-dveh-diskov"};

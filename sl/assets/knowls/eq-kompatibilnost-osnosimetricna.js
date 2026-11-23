@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kompatibilnost-osnosimetricna"] = {"html": "<div class=\"eq\">\\[\\varepsilon_{\\mathrm{rr}} = \\frac{\\mathrm{d}}{\\mathrm{d}r}\\big(r\\,\\varepsilon_{\\theta\\theta}\\big) . \\tag{11.29}\\]</div>", "href": "sec-enacbe-valjne-krogelne.html#eq-kompatibilnost-osnosimetricna"};

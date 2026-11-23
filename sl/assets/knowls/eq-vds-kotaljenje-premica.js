@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vds-kotaljenje-premica"] = {"html": "<div class=\"eq\">\\[x = r\\varphi . \\tag{8.1}\\]</div>", "href": "sec-virtualno-delo-sistemov.html#eq-vds-kotaljenje-premica"};

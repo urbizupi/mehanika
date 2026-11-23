@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-mp-krog"] = {"html": "<div class=\"eq\">\\[w_{\\mathrm{M}} = w_{\\mathrm{K}} + \\frac{q\\,(R^2 - r^2)}{4\\,S} , \\qquad \\vek\\theta = \\nabla w_{\\mathrm{K}} , \\tag{18.70}\\]</div>", "href": "sec-mindlinove-plosce.html#eq-mp-krog"};
+(window.KNOWLS = window.KNOWLS || {})["eq-mp-krog"] = {"html": "<div class=\"eq\">\\[w_{\\mathrm{M}} = w_{\\mathrm{K}} + \\frac{q\\,(R^2 - r^2)}{4\\,S} , \\qquad \\vek\\theta = \\nabla w_{\\mathrm{K}} , \\tag{18.72}\\]</div>", "href": "sec-mindlinove-plosce.html#eq-mp-krog"};

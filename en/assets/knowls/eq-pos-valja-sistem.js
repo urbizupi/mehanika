@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pos-valja-sistem"] = {"html": "<div class=\"eq\">\\[\\begin{aligned} -3\\,k R^2\\,\\varphi_1 + 4\\,k R^2\\,\\varphi_2 + 2R\\,F &amp;= 0 , \\\\ 4\\,k R^2\\,\\varphi_1 - 8\\,k R^2\\,\\varphi_2 + m_2 g\\,R &amp;= 0 . \\end{aligned} \\tag{8.62}\\]</div>", "href": "sec-posplosene-sile.html#eq-pos-valja-sistem"};

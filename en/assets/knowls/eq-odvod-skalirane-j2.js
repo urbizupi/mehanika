@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-odvod-skalirane-j2"] = {"html": "<div class=\"eq\">\\[\\frac{\\partial\\bar J_2}{\\partial\\sigma_{\\mathrm{kl}}} = \\frac{2\\,s_{\\mathrm{kl}}}{3\\,\\bar J_2} . \\tag{2.122}\\]</div>", "href": "sec-najvecja-strizna.html#eq-odvod-skalirane-j2"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-normala-ukrivljene"] = {"html": "<div class=\"eq\">\\[|\\vek n\\cdot\\overrightarrow{PQ}| \\le \\eta\\,|PQ| \\tag{2.57}\\]</div>", "href": "sec-vrtenje-osi.html#eq-normala-ukrivljene"};

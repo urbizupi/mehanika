@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-tresca"] = {"html": "<div class=\"eq\">\\[\\sigma_{\\mathrm{T}} = \\sigma_1 - \\sigma_3 = 2\\,\\tau_{\\max} , \\tag{2.125}\\]</div>", "href": "sec-najvecja-strizna.html#eq-tresca"};

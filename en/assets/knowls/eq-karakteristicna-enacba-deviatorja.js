@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-karakteristicna-enacba-deviatorja"] = {"html": "<div class=\"eq\">\\[\\lambda^3 - J_2\\,\\lambda - J_3 = 0 . \\tag{2.113}\\]</div>", "href": "sec-najvecja-strizna.html#eq-karakteristicna-enacba-deviatorja"};

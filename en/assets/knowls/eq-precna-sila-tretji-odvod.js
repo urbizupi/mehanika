@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-precna-sila-tretji-odvod"] = {"html": "<div class=\"eq\">\\[V = -EI\\,v''' \\tag{5.36}\\]</div>", "href": "sec-enacba-upogibnice.html#eq-precna-sila-tretji-odvod"};

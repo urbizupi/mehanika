@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-pogoj-luknje"] = {"html": "<div class=\"eq\">\\[\\oint_{\\Gamma_\\mathrm{k}}\\frac{\\partial\\Phi}{\\partial n_{\\mathrm{k}}}\\,\\mathrm{d}s = -2G\\alpha\\,A_{\\mathrm{k}} . \\tag{16.45}\\]</div>", "href": "sec-votli-prerezi.html#eq-pogoj-luknje"};
+(window.KNOWLS = window.KNOWLS || {})["eq-pogoj-luknje"] = {"html": "<div class=\"eq\">\\[\\oint_{\\Gamma_\\mathrm{k}}\\frac{\\partial\\Phi}{\\partial n_{\\mathrm{k}}}\\,\\mathrm{d}s = -2G\\alpha\\,A_{\\mathrm{k}} . \\tag{16.54}\\]</div>", "href": "sec-votli-prerezi.html#eq-pogoj-luknje"};

@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-razsirjanje"] = {"html": "<div class=\"eq\">\\[u(x, t) = \\tfrac12\\big(f(x - ct) + f(x + ct)\\big) \\tag{13.17}\\]</div>", "href": "sec-palica-gred.html#eq-razsirjanje"};
+(window.KNOWLS = window.KNOWLS || {})["eq-razsirjanje"] = {"html": "<div class=\"eq\">\\[u(x, t) = \\tfrac12\\big(f(x - ct) + f(x + ct)\\big) \\tag{13.23}\\]</div>", "href": "sec-palica-gred.html#eq-razsirjanje"};

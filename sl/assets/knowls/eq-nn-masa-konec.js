@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nn-masa-konec"] = {"html": "<div class=\"eq\">\\[1 + \\cos x\\,\\operatorname{cosh}x - \\mu_{\\mathrm{k}}\\,x\\,h(x) = 0 \\tag{13.57}\\]</div>", "href": "sec-nacini-nosilca.html#eq-nn-masa-konec"};

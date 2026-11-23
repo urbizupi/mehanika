@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-strig-vezani-pogoj"] = {"html": "<div class=\"eq\">\\[g_{\\mathrm{i}} = 2\\mu\\,n_{\\mathrm{i}} , \\qquad i = 1, 2, 3 . \\tag{2.94}\\]</div>", "href": "sec-najvecja-strizna.html#eq-strig-vezani-pogoj"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pdn-vdp-koeficient"] = {"html": "<div class=\"eq\">\\[c(\\theta) = c_{\\mathrm{s}}\\left(\\frac{\\theta^2}{\\theta_{\\mathrm{m}}^2} - 1\\right) , \\qquad c_{\\mathrm{s}} &gt; 0 , \\quad \\theta_{\\mathrm{m}} &gt; 0 . \\tag{9.53}\\]</div>", "href": "sec-prosto-duseno-nihanje.html#eq-pdn-vdp-koeficient"};

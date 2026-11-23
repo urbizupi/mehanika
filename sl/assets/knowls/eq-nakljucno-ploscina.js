@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nakljucno-ploscina"] = {"html": "<div class=\"eq\">\\[\\overline{x^2} = \\sum_{0 &lt; \\mathrm{k} &lt; \\mathrm{N}/2} G_{\\mathrm{k}}\\,\\Delta f , \\tag{9.157}\\]</div>", "href": "sec-nakljucno-vzbujanje.html#eq-nakljucno-ploscina"};

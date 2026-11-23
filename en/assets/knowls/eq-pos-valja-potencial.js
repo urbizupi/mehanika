@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pos-valja-potencial"] = {"html": "<div class=\"eq\">\\[V = \\tfrac12 k\\,(R\\varphi_1)^2 + \\tfrac12\\,(2k)\\,(2R\\varphi_2 - R\\varphi_1)^2 - m_2 g\\,R\\,\\varphi_2 . \\tag{8.61}\\]</div>", "href": "sec-posplosene-sile.html#eq-pos-valja-potencial"};

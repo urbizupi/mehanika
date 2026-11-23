@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ts-prenosna"] = {"html": "<div class=\"eq\">\\[\\mat T(\\omega) = \\mat D_{\\mathrm{N}}(\\omega)\\,\\mat P_{\\mathrm{N}-1}\\,\\mat D_{\\mathrm{N}-1}(\\omega)\\cdots\\mat P_1\\,\\mat D_1(\\omega) , \\tag{23.51}\\]</div>", "href": "sec-torzija-gredi.html#eq-ts-prenosna"};

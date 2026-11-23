@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-apk-euler-stalni"] = {"html": "<div class=\"eq\">\\[\\Phi'''' - 4\\Phi''' + 4\\Phi'' = 0 . \\tag{11.81}\\]</div>", "href": "sec-airy-polarne.html#eq-apk-euler-stalni"};

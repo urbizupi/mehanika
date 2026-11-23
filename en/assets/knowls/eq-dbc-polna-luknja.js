@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dbc-polna-luknja"] = {"html": "<div class=\"eq\">\\[\\sigma_{\\theta\\theta}(a) = A + \\frac{B}{a^2} = -\\frac{2\\,p\\,b^2}{b^2 - a^2} , \\tag{11.43}\\]</div>", "href": "sec-debelostenska-cev.html#eq-dbc-polna-luknja"};

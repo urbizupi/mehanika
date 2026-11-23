@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-tretja-stranica-vlaken"] = {"html": "<div class=\"eq\">\\[|\\mat F\\vek n - \\mat F\\vek m|^2 = \\vek m^\\T\\mat C\\,\\vek m + \\vek n^\\T\\mat C\\,\\vek n - 2\\,\\vek m^\\T\\mat C\\,\\vek n , \\tag{1.52}\\]</div>", "href": "sec-deformacija-v-prostoru.html#eq-tretja-stranica-vlaken"};

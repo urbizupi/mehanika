@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-fvr-absolutna"] = {"html": "<div class=\"eq\">\\[\\sum_{\\mathrm{n}=1}^{\\infty}\\big(|a_{\\mathrm{n}}| + |b_{\\mathrm{n}}|\\big) \\le \\frac{2\\sqrt{B}}{\\Omega} , \\tag{9.81}\\]</div>", "href": "sec-fourierjeve-vrste.html#eq-fvr-absolutna"};
+(window.KNOWLS = window.KNOWLS || {})["eq-fvr-absolutna"] = {"html": "<div class=\"eq\">\\[\\sum_{\\mathrm{n}=1}^{\\infty}\\big(|a_{\\mathrm{n}}| + |b_{\\mathrm{n}}|\\big) \\le \\frac{2\\sqrt{B}}{\\Omega} , \\tag{9.114}\\]</div>", "href": "sec-fourierjeve-vrste.html#eq-fvr-absolutna"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mep-zaporedno"] = {"html": "<div class=\"eq\">\\[k = \\frac{k_1\\,k_2}{k_1 + k_2} , \\qquad \\frac1k = \\frac1{k_1} + \\frac1{k_2} . \\tag{9.16}\\]</div>", "href": "sec-model-ena-ps.html#eq-mep-zaporedno"};

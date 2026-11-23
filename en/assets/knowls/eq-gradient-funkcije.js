@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-gradient-funkcije"] = {"html": "<div class=\"eq\">\\[\\nabla f(P) = \\Big(\\frac{\\partial f}{\\partial x}(P),\\ \\frac{\\partial f}{\\partial y}(P),\\ \\frac{\\partial f}{\\partial z}(P)\\Big) . \\tag{2.56}\\]</div>", "href": "sec-vrtenje-osi.html#eq-gradient-funkcije"};

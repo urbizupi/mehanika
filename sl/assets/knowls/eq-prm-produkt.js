@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-prm-produkt"] = {"html": "<div class=\"eq\">\\[\\mat T(\\lambda) = \\mat E\\,\\mat P_{\\mathrm{N}}\\mat F_{\\mathrm{N}}\\mat P_{\\mathrm{N}-1}\\cdots\\mat F_2\\mat P_1\\,\\mat S , \\tag{10.56}\\]</div>", "href": "sec-prenosne-matrike.html#eq-prm-produkt"};

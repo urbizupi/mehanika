@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nevtralna-os-posevni"] = {"html": "<div class=\"eq\">\\[\\frac{M_{\\mathrm{z}}}{I_{\\mathrm{z}}}\\,y = \\frac{M_{\\mathrm{y}}}{I_{\\mathrm{y}}}\\,z . \\tag{5.99}\\]</div>", "href": "sec-okvirji.html#eq-nevtralna-os-posevni"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sklopljena-upogiba"] = {"html": "<div class=\"eq\">\\[N = EA\\,u' , \\qquad M_{\\mathrm{z}} = E\\,\\big(I_{\\mathrm{z}}\\,v'' + I_{\\mathrm{yz}}\\,w''\\big) , \\qquad M_{\\mathrm{y}} = -E\\,\\big(I_{\\mathrm{yz}}\\,v'' + I_{\\mathrm{y}}\\,w''\\big) . \\tag{5.97}\\]</div>", "href": "sec-okvirji.html#eq-sklopljena-upogiba"};

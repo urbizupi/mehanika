@@ -208,9 +208,11 @@
   // reading line, in the order of the narration. Parts the narration never names are there from the start.
   // Scrolling back takes the later parts away again, a tap on the figure shows it whole. A figure too tall to
   // pin, print, knowls and pages without scripts show the whole figure.
+  // Book pages show every figure whole (style.md 61, 2026-11-22: "dont make it appear gradually as that
+  // is annoying"): the reveal runs only on lecture pages, whose body carries data-tabla="on".
   const figId = (a) => a.dataset.knowl || (a.getAttribute("href") || "").split("#")[1];
   const boards = [];
-  document.querySelectorAll("main figure.slika[id]").forEach((fig) => {
+  if (document.body.dataset.tabla === "on") document.querySelectorAll("main figure.slika[id]").forEach((fig) => {
     const mine = (el) => [...el.querySelectorAll("a.kaz")].filter((a) => figId(a) === fig.id);
     const narr = [];
     let held = [];
@@ -299,6 +301,27 @@
     root.dataset.theme = dark ? "light" : "dark";
     try { localStorage.setItem("theme", root.dataset.theme); } catch (e) { /* private mode: not kept */ }
   });
+
+  // Two notations (book/README.md): the toolbar button switches between sums written out (the default)
+  // and index notation. Both forms are in the page and typeset, the class "indeks" on the root says which
+  // one style.css shows, also in knowls and in the figure panel. The choice is kept in localStorage and
+  // applied before the page is drawn by the short script in the page head.
+  {
+    const root = document.documentElement;
+    const btn = document.querySelector("button.zapis-toggle");
+    const show = () => {
+      if (!btn) return;
+      const on = root.classList.contains("indeks");
+      btn.classList.toggle("on", on);
+      btn.setAttribute("aria-pressed", on ? "true" : "false");
+    };
+    show();
+    if (btn) btn.addEventListener("click", () => {
+      const on = root.classList.toggle("indeks");
+      try { localStorage.setItem("zapis", on ? "indeks" : "vsota"); } catch (e) { /* private mode: not kept */ }
+      show();
+    });
+  }
 
   // Figures alongside (wide screens only, see style.css): a panel on the right shows the figure of
   // the passage being read, that is, the last figure or link to a figure above a reading line at 40 %

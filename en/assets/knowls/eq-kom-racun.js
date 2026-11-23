@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-kom-racun"] = {"html": "<div class=\"eq\">\\[z + w = (a + c,\\, b + d) , \\qquad z\\,w = (a c - b d,\\, a d + b c) . \\tag{9.19}\\]</div>", "href": "sec-kompleksna-stevila.html#eq-kom-racun"};
+(window.KNOWLS = window.KNOWLS || {})["eq-kom-racun"] = {"html": "<div class=\"eq\">\\[z + w = (a + c,\\, b + d) , \\qquad z\\,w = (a c - b d,\\, a d + b c) . \\tag{9.27}\\]</div>", "href": "sec-kompleksna-stevila.html#eq-kom-racun"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nru-konec-izbrana-reakcija"] = {"html": "<div class=\"eq\">\\[v(L) = -\\frac{q_0 L^4}{8EI} + \\frac{R\\,L^3}{3EI} . \\tag{5.63}\\]</div>", "href": "sec-upogibnice.html#eq-nru-konec-izbrana-reakcija"};

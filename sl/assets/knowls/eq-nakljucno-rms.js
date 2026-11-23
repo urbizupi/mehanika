@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nakljucno-rms"] = {"html": "<div class=\"eq\">\\[\\bar x = \\frac{1}{N}\\sum_{\\mathrm{j}=0}^{N-1} x_{\\mathrm{j}} , \\qquad \\overline{x^2} = \\frac{1}{N}\\sum_{\\mathrm{j}=0}^{N-1} x_{\\mathrm{j}}^2 , \\qquad x_{\\mathrm{rms}} = \\sqrt{\\overline{x^2}} . \\tag{9.153}\\]</div>", "href": "sec-nakljucno-vzbujanje.html#eq-nakljucno-rms"};

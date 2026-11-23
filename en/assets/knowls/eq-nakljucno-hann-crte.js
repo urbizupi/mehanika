@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nakljucno-hann-crte"] = {"html": "<div class=\"eq\">\\[C_{\\mathrm{k}}^w = \\tfrac12 C_{\\mathrm{k}} - \\tfrac14 C_{\\mathrm{k}-1} - \\tfrac14 C_{\\mathrm{k}+1} . \\tag{9.165}\\]</div>", "href": "sec-nakljucno-vzbujanje.html#eq-nakljucno-hann-crte"};

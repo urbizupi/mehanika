@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-razvoj-faktor"] = {"html": "<div class=\"eq\">\\[\\frac{1}{1 - \\Omega^2/\\omega_{\\mathrm{n}}^2} , \\tag{13.55}\\]</div>", "href": "sec-razvoj-po-nacinih.html#eq-razvoj-faktor"};
+(window.KNOWLS = window.KNOWLS || {})["eq-razvoj-faktor"] = {"html": "<div class=\"eq\">\\[\\frac{1}{1 - \\Omega^2/\\omega_{\\mathrm{n}}^2} , \\tag{13.79}\\]</div>", "href": "sec-razvoj-po-nacinih.html#eq-razvoj-faktor"};

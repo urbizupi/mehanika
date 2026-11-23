@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-preizkus-sila-mize"] = {"html": "<div class=\"eq\">\\[F = m_{\\mathrm{a}} a_0 + m_{\\mathrm{p}} a . \\tag{9.145}\\]</div>", "href": "sec-vibracijski-preizkus.html#eq-preizkus-sila-mize"};

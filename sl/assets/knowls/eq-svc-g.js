@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-svc-g"] = {"html": "<div class=\"eq\">\\[g(x) = \\frac{1}{\\lambda}\\Big(\\frac{\\cos k(L - x)}{\\cos kL} - 1\\Big) , \\qquad 0 \\le x \\le L . \\tag{13.78}\\]</div>", "href": "sec-steber-vpet-clenkast.html#eq-svc-g"};
+(window.KNOWLS = window.KNOWLS || {})["eq-svc-g"] = {"html": "<div class=\"eq\">\\[g(x) = \\frac{1}{\\lambda}\\Big(\\frac{\\cos k(L - x)}{\\cos kL} - 1\\Big) , \\qquad 0 \\le x \\le L . \\tag{13.102}\\]</div>", "href": "sec-steber-vpet-clenkast.html#eq-svc-g"};

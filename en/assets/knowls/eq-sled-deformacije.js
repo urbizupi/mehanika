@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sled-deformacije"] = {"html": "<div class=\"eq\">\\[\\bar\\varepsilon_{\\mathrm{xx}} + \\bar\\varepsilon_{\\mathrm{yy}} + \\bar\\varepsilon_{\\mathrm{zz}} = \\varepsilon_{\\mathrm{xx}} + \\varepsilon_{\\mathrm{yy}} + \\varepsilon_{\\mathrm{zz}} . \\tag{2.135}\\]</div>", "href": "sec-najvecja-strizna.html#eq-sled-deformacije"};

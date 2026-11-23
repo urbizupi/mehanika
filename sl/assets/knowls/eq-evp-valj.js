@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-evp-valj"] = {"html": "<div class=\"eq\">\\[\\begin{aligned} 3\\,\\ddot{x}_1 + 6000\\,x_1 - 3500\\,x_2 &amp;= Q_1 , \\\\ 6\\,\\ddot{x}_2 - 3500\\,x_1 + 4750\\,x_2 &amp;= Q_2 . \\end{aligned} \\tag{10.18}\\]</div>", "href": "sec-enacbe-vec-ps.html#eq-evp-valj"};

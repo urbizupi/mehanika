@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dogovorna-meja"] = {"html": "<div class=\"eq\">\\[\\varepsilon_0 = \\frac{\\sigma_0}{E} + 0{,}002 . \\tag{3.9}\\]</div>", "href": "sec-natezni-preizkus.html#eq-dogovorna-meja"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pdn-met-podlaga"] = {"html": "<div class=\"eq\">\\[(M_{\\mathrm{b}} + 2m)\\,\\ddot x + m\\ell\\,(\\ddot\\theta_1 + \\ddot\\theta_2) = 0 . \\tag{9.57}\\]</div>", "href": "sec-prosto-duseno-nihanje.html#eq-pdn-met-podlaga"};

@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-spodnja-meja-j"] = {"html": "<div class=\"eq\">\\[J \\ge \\frac{4\\Big(\\int_{\\mathrm{S}} f\\,\\mathrm{d}A\\Big)^2}{\\int_{\\mathrm{S}}|\\nabla f|^2\\,\\mathrm{d}A} , \\tag{16.53}\\]</div>", "href": "sec-meje-mke-torzije.html#eq-spodnja-meja-j"};
+(window.KNOWLS = window.KNOWLS || {})["eq-spodnja-meja-j"] = {"html": "<div class=\"eq\">\\[J \\ge \\frac{4\\Big(\\int_{\\mathrm{S}} f\\,\\mathrm{d}A\\Big)^2}{\\int_{\\mathrm{S}}|\\nabla f|^2\\,\\mathrm{d}A} , \\tag{16.62}\\]</div>", "href": "sec-meje-mke-torzije.html#eq-spodnja-meja-j"};

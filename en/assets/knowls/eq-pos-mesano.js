@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pos-mesano"] = {"html": "<div class=\"eq\">\\[-\\frac{\\partial V}{\\partial q_{\\mathrm{s}}}(\\vek q_0) + Q_{\\mathrm{s}}^{\\mathrm{nc}}(\\vek q_0) = 0 \\quad \\text{for } s = 1, \\dots, n . \\tag{8.59}\\]</div>", "href": "sec-posplosene-sile.html#eq-pos-mesano"};

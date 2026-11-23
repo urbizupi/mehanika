@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nakljucno-parseval"] = {"html": "<div class=\"eq\">\\[\\frac{1}{N}\\sum_{\\mathrm{j}=0}^{N-1} |x_{\\mathrm{j}}|^2 = \\sum_{\\mathrm{k}=0}^{N-1} |C_{\\mathrm{k}}|^2 . \\tag{9.155}\\]</div>", "href": "sec-nakljucno-vzbujanje.html#eq-nakljucno-parseval"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-preizkus-meje"] = {"html": "<div class=\"eq\">\\[A \\le \\min\\bigl(\\Omega^2 X_{\\max},\\ \\Omega V_{\\max},\\ A_{\\max}\\bigr) . \\tag{9.147}\\]</div>", "href": "sec-vibracijski-preizkus.html#eq-preizkus-meje"};

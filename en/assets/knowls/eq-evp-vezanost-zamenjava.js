@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-evp-vezanost-zamenjava"] = {"html": "<div class=\"eq\">\\[y = \\frac{l_2\\,y_1 + l_1\\,y_2}{L} , \\qquad \\varphi = \\frac{y_2 - y_1}{L} . \\tag{10.16}\\]</div>", "href": "sec-enacbe-vec-ps.html#eq-evp-vezanost-zamenjava"};

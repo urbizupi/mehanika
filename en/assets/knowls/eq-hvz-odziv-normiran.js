@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-hvz-odziv-normiran"] = {"html": "<div class=\"eq\">\\[m\\,H(\\Omega) = \\frac{1}{\\omega_{\\mathrm{n}}^2 - \\Omega^2 + \\mathrm{i}\\,2\\zeta\\omega_{\\mathrm{n}}\\Omega} . \\tag{9.63}\\]</div>", "href": "sec-harmonicno-vzbujanje.html#eq-hvz-odziv-normiran"};

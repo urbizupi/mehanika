@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-izotropne-konstante-delte"] = {"html": "<div class=\"eq\">\\[C_{\\mathrm{ijkl}} = \\lambda\\,\\delta_{\\mathrm{ij}}\\,\\delta_{\\mathrm{kl}} + \\mu\\,(\\delta_{\\mathrm{ik}}\\,\\delta_{\\mathrm{jl}} + \\delta_{\\mathrm{il}}\\,\\delta_{\\mathrm{jk}}) , \\tag{3.49}\\]</div>", "href": "sec-anizotropija.html#eq-izotropne-konstante-delte"};

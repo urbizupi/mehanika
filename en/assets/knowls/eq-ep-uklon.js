@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-ep-uklon"] = {"html": "<div class=\"eq\">\\[D\\,\\nabla^4 w + N_0\\,w_{\\mathrm{xx}} = 0 . \\tag{18.56}\\]</div>", "href": "sec-energijske-metode-plosc.html#eq-ep-uklon"};
+(window.KNOWLS = window.KNOWLS || {})["eq-ep-uklon"] = {"html": "<div class=\"eq\">\\[D\\,\\nabla^4 w + N_0\\,w_{\\mathrm{xx}} = 0 . \\tag{18.58}\\]</div>", "href": "sec-energijske-metode-plosc.html#eq-ep-uklon"};

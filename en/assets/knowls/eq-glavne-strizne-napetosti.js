@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-glavne-strizne-napetosti"] = {"html": "<div class=\"eq\">\\[\\tau_{\\mathrm{ij}} = \\frac{\\sigma_{\\mathrm{i}} - \\sigma_{\\mathrm{j}}}{2} \\tag{2.97}\\]</div>", "href": "sec-najvecja-strizna.html#eq-glavne-strizne-napetosti"};

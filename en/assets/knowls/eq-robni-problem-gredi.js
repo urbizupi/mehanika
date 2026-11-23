@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-robni-problem-gredi"] = {"html": "<div class=\"eq\">\\[\\big(G I_{\\mathrm{p}}\\,\\varphi'\\big)'(x) + m_{\\mathrm{x}}(x) = 0 \\quad \\text{for every } x \\in (0, L) \\tag{16.16}\\]</div>", "href": "sec-torzija-kroga.html#eq-robni-problem-gredi"};

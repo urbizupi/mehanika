@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-duhamel-odvod"] = {"html": "<div class=\"eq\">\\[\\dot q(t) = \\dot q_{\\mathrm{pr}}(t) + \\int_{\\mathrm{t}_0}^t \\dot h(t - s)\\,Q(s)\\,\\mathrm{d}s . \\tag{9.73}\\]</div>", "href": "sec-konvolucija.html#eq-duhamel-odvod"};
+(window.KNOWLS = window.KNOWLS || {})["eq-duhamel-odvod"] = {"html": "<div class=\"eq\">\\[\\dot q(t) = \\dot q_{\\mathrm{pr}}(t) + \\int_{\\mathrm{t}_0}^t \\dot h(t - s)\\,Q(s)\\,\\mathrm{d}s . \\tag{9.101}\\]</div>", "href": "sec-konvolucija.html#eq-duhamel-odvod"};

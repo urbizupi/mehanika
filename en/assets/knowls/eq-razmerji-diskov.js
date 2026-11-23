@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-razmerji-diskov"] = {"html": "<div class=\"eq\">\\[j_0 = \\frac{J_0}{\\rho I_{\\mathrm{p}} L} , \\qquad j_{\\mathrm{L}} = \\frac{J_{\\mathrm{L}}}{\\rho I_{\\mathrm{p}} L} . \\tag{13.28}\\]</div>", "href": "sec-palica-gred.html#eq-razmerji-diskov"};

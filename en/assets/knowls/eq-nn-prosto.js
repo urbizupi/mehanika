@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-nn-prosto"] = {"html": "<div class=\"eq\">\\[\\omega_{\\mathrm{k}} = \\frac{(k\\pi)^2}{L^2}\\sqrt{\\frac{EI}{\\rho A}} , \\qquad k = 1, 2, 3, \\dots \\tag{13.39}\\]</div>", "href": "sec-nacini-nosilca.html#eq-nn-prosto"};
+(window.KNOWLS = window.KNOWLS || {})["eq-nn-prosto"] = {"html": "<div class=\"eq\">\\[\\omega_{\\mathrm{k}} = \\frac{(k\\pi)^2}{L^2}\\sqrt{\\frac{EI}{\\rho A}} , \\qquad k = 1, 2, 3, \\dots \\tag{13.51}\\]</div>", "href": "sec-nacini-nosilca.html#eq-nn-prosto"};

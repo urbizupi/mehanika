@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-spi-brez-mase"] = {"html": "<div class=\"eq\">\\[\\mat\\Phi\\,\\mat\\Phi^\\T = \\mat M^{-1} , \\qquad \\tilde{\\vek q} = \\mat\\Phi\\,\\mat\\Phi^\\T\\vek q = \\mat M^{-1}\\vek q = \\left(\\frac{10}{1};\\ \\frac{5}{2}\\right) \\text{ mm} . \\tag{10.41}\\]</div>", "href": "sec-spektralni-izrek.html#eq-spi-brez-mase"};

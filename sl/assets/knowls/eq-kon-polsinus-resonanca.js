@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kon-polsinus-resonanca"] = {"html": "<div class=\"eq\">\\[q(t) = \\frac{Q_0}{2k}\\big(\\sin\\omega_{\\mathrm{n}} t - \\omega_{\\mathrm{n}} t\\,\\cos\\omega_{\\mathrm{n}} t\\big) . \\tag{9.105}\\]</div>", "href": "sec-konvolucija.html#eq-kon-polsinus-resonanca"};

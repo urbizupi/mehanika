@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-skok-pod-silo"] = {"html": "<div class=\"eq\">\\[V(x_0^+) - V(x_0^-) = -F_{\\mathrm{y}} . \\tag{5.39}\\]</div>", "href": "sec-enacba-upogibnice.html#eq-skok-pod-silo"};
+(window.KNOWLS = window.KNOWLS || {})["eq-skok-pod-silo"] = {"html": "<div class=\"eq\">\\[V(x_0^+) - V(x_0^-) = -F_{\\mathrm{y}} . \\tag{5.42}\\]</div>", "href": "sec-enacba-upogibnice.html#eq-skok-pod-silo"};

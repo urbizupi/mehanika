@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-moc-palice"] = {"html": "<div class=\"eq\">\\[P = \\int_0^L \\rho A\\,a\\,v\\,\\mathrm{d}x + \\int_0^L N\\,\\frac{\\partial\\varepsilon}{\\partial t}\\,\\mathrm{d}x . \\tag{3.60}\\]</div>", "href": "sec-energija-deformacije.html#eq-moc-palice"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-sklopitveno-razmerje"] = {"html": "<div class=\"eq\">\\[\\delta = \\frac{3\\,(3\\lambda + 2\\mu)\\,\\alpha^2\\,T_0}{\\rho c} . \\tag{14.34}\\]</div>", "href": "sec-temperaturne-napetosti.html#eq-sklopitveno-razmerje"};

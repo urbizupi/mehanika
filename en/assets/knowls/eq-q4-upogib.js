@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-q4-upogib"] = {"html": "<div class=\"eq\">\\[\\frac{U_{\\mathrm{h}}}{U} = \\frac{1}{1 - \\nu^2} + \\frac{a^2}{2\\,(1 + \\nu)\\,b^2} . \\tag{15.36}\\]</div>", "href": "sec-mkk-zaplata.html#eq-q4-upogib"};
+(window.KNOWLS = window.KNOWLS || {})["eq-q4-upogib"] = {"html": "<div class=\"eq\">\\[\\frac{U_{\\mathrm{h}}}{U} = \\frac{1}{1 - \\nu^2} + \\frac{a^2}{2\\,(1 + \\nu)\\,b^2} . \\tag{15.40}\\]</div>", "href": "sec-mkk-zaplata.html#eq-q4-upogib"};

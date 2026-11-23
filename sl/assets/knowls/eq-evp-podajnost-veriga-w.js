@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-evp-podajnost-veriga-w"] = {"html": "<div class=\"eq\">\\[\\mat D = \\frac{1}{17k}\\begin{bmatrix} 7 &amp; 4 &amp; 3 \\\\ 4 &amp; 12 &amp; 9 \\\\ 3 &amp; 9 &amp; 11 \\end{bmatrix} , \\qquad \\mat K\\mat D = \\mat I \\tag{10.10}\\]</div>", "href": "sec-enacbe-vec-ps.html#eq-evp-podajnost-veriga-w"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-ravnovesje-kosa-gredi"] = {"html": "<div class=\"eq\">\\[M_{\\mathrm{x}}(b) - M_{\\mathrm{x}}(a) + \\int_{\\mathrm{a}}^b m_{\\mathrm{x}}(s)\\,\\mathrm{d}s = 0 . \\tag{16.10}\\]</div>", "href": "sec-torzija-kroga.html#eq-ravnovesje-kosa-gredi"};

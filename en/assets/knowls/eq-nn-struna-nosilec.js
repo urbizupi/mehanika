@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nn-struna-nosilec"] = {"html": "<div class=\"eq\">\\[\\mu\\,\\omega_{\\mathrm{n}}^2 = T\\Big(\\frac{n\\pi}{L}\\Big)^2 + EI\\Big(\\frac{n\\pi}{L}\\Big)^4 , \\qquad f_{\\mathrm{n}}^2 = f_{\\mathrm{n},\\mathrm{s}}^2 + f_{\\mathrm{n},\\mathrm{u}}^2 . \\tag{13.52}\\]</div>", "href": "sec-nacini-nosilca.html#eq-nn-struna-nosilec"};

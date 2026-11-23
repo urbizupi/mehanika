@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-togost-gredi"] = {"html": "<div class=\"eq\">\\[k_{\\mathrm{t}} = \\frac{M}{\\varphi(L)} = \\frac{G\\,I_{\\mathrm{p}}}{L} . \\tag{13.16}\\]</div>", "href": "sec-palica-gred.html#eq-togost-gredi"};
+(window.KNOWLS = window.KNOWLS || {})["eq-togost-gredi"] = {"html": "<div class=\"eq\">\\[k_{\\mathrm{t}} = \\frac{M}{\\varphi(L)} = \\frac{G\\,I_{\\mathrm{p}}}{L} . \\tag{13.22}\\]</div>", "href": "sec-palica-gred.html#eq-togost-gredi"};

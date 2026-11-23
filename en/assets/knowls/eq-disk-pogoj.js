@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-disk-pogoj"] = {"html": "<div class=\"eq\">\\[J_{\\mathrm{d}}\\,\\varphi_{\\mathrm{tt}}(L, t) = -G I_{\\mathrm{p}}\\,\\varphi_{\\mathrm{x}}(L, t) . \\tag{13.19}\\]</div>", "href": "sec-palica-gred.html#eq-disk-pogoj"};
+(window.KNOWLS = window.KNOWLS || {})["eq-disk-pogoj"] = {"html": "<div class=\"eq\">\\[J_{\\mathrm{d}}\\,\\varphi_{\\mathrm{tt}}(L, t) = -G I_{\\mathrm{p}}\\,\\varphi_{\\mathrm{x}}(L, t) . \\tag{13.25}\\]</div>", "href": "sec-palica-gred.html#eq-disk-pogoj"};

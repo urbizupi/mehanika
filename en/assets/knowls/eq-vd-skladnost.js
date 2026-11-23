@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vd-skladnost"] = {"html": "<div class=\"eq\">\\[\\varepsilon_{\\mathrm{rr}} = \\big(r\\,\\varepsilon_{\\theta\\theta}\\big)' = \\varepsilon_{\\theta\\theta} + r\\,\\varepsilon_{\\theta\\theta}' . \\tag{24.54}\\]</div>", "href": "sec-vrteci-disk.html#eq-vd-skladnost"};

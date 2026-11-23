@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dsp-klasicno-sile"] = {"html": "<div class=\"eq\">\\[\\mat C\\boldsymbol\\varphi_{\\mathrm{r}} = 2\\zeta_{\\mathrm{r}}\\omega_{\\mathrm{r}}\\,\\mat M\\boldsymbol\\varphi_{\\mathrm{r}} , \\qquad r = 1, \\dots, n . \\tag{10.98}\\]</div>", "href": "sec-dusenje-superpozicija.html#eq-dsp-klasicno-sile"};

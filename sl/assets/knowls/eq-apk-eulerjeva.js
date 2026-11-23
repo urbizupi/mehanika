@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-apk-eulerjeva"] = {"html": "<div class=\"eq\">\\[a_{\\mathrm{n}}\\,r^n y^{(n)} + \\dots + a_2\\,r^2 y'' + a_1\\,r\\,y' + a_0\\,y = 0 \\tag{11.78}\\]</div>", "href": "sec-airy-polarne.html#eq-apk-eulerjeva"};

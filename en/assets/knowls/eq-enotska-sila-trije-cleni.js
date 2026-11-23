@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-enotska-sila-trije-cleni"] = {"html": "<div class=\"eq\">\\[\\Delta = \\int_0^L \\Big( \\frac{n\\,N}{EA} + \\frac{m\\,M}{EI} + \\frac{f_{\\mathrm{s}}\\,v_1\\,V}{GA} \\Big)\\,\\mathrm{d}s . \\tag{5.78}\\]</div>", "href": "sec-energija-nosilca.html#eq-enotska-sila-trije-cleni"};

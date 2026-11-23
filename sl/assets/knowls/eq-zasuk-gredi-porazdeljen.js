@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-zasuk-gredi-porazdeljen"] = {"html": "<div class=\"eq\">\\[\\varphi(x) = \\int_0^x \\frac{M_{\\mathrm{x}}(s)}{G I_{\\mathrm{p}}(s)}\\,\\mathrm{d}s , \\qquad M_{\\mathrm{x}}(s) = M_{\\mathrm{L}} + \\int_{\\mathrm{s}}^L m_{\\mathrm{x}}(t)\\,\\mathrm{d}t . \\tag{16.18}\\]</div>", "href": "sec-torzija-kroga.html#eq-zasuk-gredi-porazdeljen"};

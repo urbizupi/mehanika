@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-enacba-valja"] = {"html": "<div class=\"eq\">\\[D\\,w'''' + \\frac{Eh}{R^2}\\,w = p - \\frac{\\nu N_1}{R} , \\qquad D = \\frac{Eh^3}{12(1 - \\nu^2)} . \\tag{22.41}\\]</div>", "href": "sec-upogib-valja.html#eq-enacba-valja"};
+(window.KNOWLS = window.KNOWLS || {})["eq-enacba-valja"] = {"html": "<div class=\"eq\">\\[D\\,w'''' + \\frac{Eh}{R^2}\\,w = p - \\frac{\\nu N_1}{R} , \\qquad D = \\frac{Eh^3}{12(1 - \\nu^2)} . \\tag{22.42}\\]</div>", "href": "sec-upogib-valja.html#eq-enacba-valja"};

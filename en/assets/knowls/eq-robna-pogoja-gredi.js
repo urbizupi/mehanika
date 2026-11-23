@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-robna-pogoja-gredi"] = {"html": "<div class=\"eq\">\\[\\varphi(0) = 0 , \\qquad G I_{\\mathrm{p}}\\,\\varphi'(L) = M_{\\mathrm{L}} . \\tag{16.17}\\]</div>", "href": "sec-torzija-kroga.html#eq-robna-pogoja-gredi"};

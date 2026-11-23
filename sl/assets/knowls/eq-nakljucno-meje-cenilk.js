@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nakljucno-meje-cenilk"] = {"html": "<div class=\"eq\">\\[H_1 \\to \\frac{H}{1 + G_{\\mathrm{mm}}/G_{\\mathrm{ff}}} , \\qquad H_2 \\to H\\Bigl(1 + \\frac{G_{\\mathrm{nn}}}{G_{\\mathrm{xx}}}\\Bigr) \\tag{9.162}\\]</div>", "href": "sec-nakljucno-vzbujanje.html#eq-nakljucno-meje-cenilk"};

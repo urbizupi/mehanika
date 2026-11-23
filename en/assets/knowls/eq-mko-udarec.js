@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mko-udarec"] = {"html": "<div class=\"eq\">\\[\\eta_{\\mathrm{r}}(0) = 0 , \\qquad \\dot\\eta_{\\mathrm{r}}(0) = \\varphi_{\\mathrm{jr}}\\,\\hat F , \\qquad r = 1, \\dots, n , \\tag{10.50}\\]</div>", "href": "sec-modalne-koordinate.html#eq-mko-udarec"};

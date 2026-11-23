@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-ts-modalna-sila"] = {"html": "<div class=\"eq\">\\[F_{\\mathrm{r}} = \\sum_{\\mathrm{k}=1}^{N}\\varphi_{\\mathrm{r},\\mathrm{k}}\\,q_{\\mathrm{k}} . \\tag{23.47}\\]</div>", "href": "sec-torzija-gredi.html#eq-ts-modalna-sila"};
+(window.KNOWLS = window.KNOWLS || {})["eq-ts-modalna-sila"] = {"html": "<div class=\"eq\">\\[F_{\\mathrm{r}} = \\sum_{\\mathrm{k}=1}^{N}\\varphi_{\\mathrm{r},\\mathrm{k}}\\,q_{\\mathrm{k}} . \\tag{23.53}\\]</div>", "href": "sec-torzija-gredi.html#eq-ts-modalna-sila"};

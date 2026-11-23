@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-apk-biharmonicna-osna"] = {"html": "<div class=\"eq\">\\[\\varphi'''' + \\frac2r\\,\\varphi''' - \\frac{1}{r^2}\\,\\varphi'' + \\frac{1}{r^3}\\,\\varphi' = 0 . \\tag{11.76}\\]</div>", "href": "sec-airy-polarne.html#eq-apk-biharmonicna-osna"};

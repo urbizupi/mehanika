@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-enoosna-deformacija-napetost"] = {"html": "<div class=\"eq\">\\[\\ten\\sigma = \\begin{bmatrix} \\sigma &amp; 0 &amp; 0 \\\\ 0 &amp; q &amp; 0 \\\\ 0 &amp; 0 &amp; q \\end{bmatrix} , \\qquad q = \\frac{\\nu}{1 - \\nu}\\,\\sigma . \\tag{3.16}\\]</div>", "href": "sec-hookov-zakon.html#eq-enoosna-deformacija-napetost"};

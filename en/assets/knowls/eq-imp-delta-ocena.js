@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-imp-delta-ocena"] = {"html": "<div class=\"eq\">\\[\\Big|\\int_{\\mathrm{t}_1}^{t_1+\\varepsilon} g(t)\\,p_\\varepsilon(t)\\,\\mathrm{d}t - g(t_1)\\Big| \\le \\max_{\\mathrm{t}_1 \\le \\mathrm{t} \\le \\mathrm{t}_1+\\varepsilon} |g(t) - g(t_1)| , \\tag{9.95}\\]</div>", "href": "sec-impulzni-odziv.html#eq-imp-delta-ocena"};

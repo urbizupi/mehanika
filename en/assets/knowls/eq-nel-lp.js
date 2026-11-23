@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nel-lp"] = {"html": "<div class=\"eq\">\\[x_{\\mathrm{LP}}(t) = A\\cos\\omega t + \\frac{\\varepsilon A^3}{32\\,\\omega_0^2}\\big(\\cos 3\\omega t - \\cos\\omega t\\big) . \\tag{9.135}\\]</div>", "href": "sec-nelinearno-nihanje.html#eq-nel-lp"};

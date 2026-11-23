@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-svc-vsota"] = {"html": "<div class=\"eq\">\\[F(\\lambda) = \\int_0^L g\\,\\mathrm{d}x = \\frac{\\sin kL - kL\\cos kL}{k^3\\cos kL} = \\frac{\\tan kL - kL}{k^3} . \\tag{13.79}\\]</div>", "href": "sec-steber-vpet-clenkast.html#eq-svc-vsota"};
+(window.KNOWLS = window.KNOWLS || {})["eq-svc-vsota"] = {"html": "<div class=\"eq\">\\[F(\\lambda) = \\int_0^L g\\,\\mathrm{d}x = \\frac{\\sin kL - kL\\cos kL}{k^3\\cos kL} = \\frac{\\tan kL - kL}{k^3} . \\tag{13.103}\\]</div>", "href": "sec-steber-vpet-clenkast.html#eq-svc-vsota"};

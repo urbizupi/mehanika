@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nel-perioda-duffing"] = {"html": "<div class=\"eq\">\\[T = \\frac{4}{\\omega_0}\\int_0^{\\pi/2}\\frac{\\mathrm{d}u}{\\sqrt{1 + \\tfrac12\\,\\mu\\,(1 + \\sin^2 u)}} , \\tag{9.133}\\]</div>", "href": "sec-nelinearno-nihanje.html#eq-nel-perioda-duffing"};

@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-umeritev-opne"] = {"html": "<div class=\"eq\">\\[\\frac{p}{N} = \\frac{2G\\alpha}{\\kappa} , \\qquad \\text{to je} \\qquad \\kappa = \\frac{2G\\alpha\\,N}{p} . \\tag{16.28}\\]</div>", "href": "sec-membranska-analogija.html#eq-umeritev-opne"};
+(window.KNOWLS = window.KNOWLS || {})["eq-umeritev-opne"] = {"html": "<div class=\"eq\">\\[\\frac{p}{N} = \\frac{2G\\alpha}{\\kappa} , \\qquad \\text{to je} \\qquad \\kappa = \\frac{2G\\alpha\\,N}{p} . \\tag{16.37}\\]</div>", "href": "sec-membranska-analogija.html#eq-umeritev-opne"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mnozitelji-gradienta"] = {"html": "<div class=\"eq\">\\[\\nabla q = \\lambda\\,\\nabla g . \\tag{2.82}\\]</div>", "href": "sec-glavne-napetosti.html#eq-mnozitelji-gradienta"};

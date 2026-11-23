@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-strizni-preizkus-napetost"] = {"html": "<div class=\"eq\">\\[\\tau = \\frac{F}{A} = \\frac{F}{l\\,b} . \\tag{3.23}\\]</div>", "href": "sec-hookov-zakon.html#eq-strizni-preizkus-napetost"};

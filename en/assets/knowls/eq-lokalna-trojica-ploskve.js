@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-lokalna-trojica-ploskve"] = {"html": "<div class=\"eq\">\\[\\vek p = \\frac{1}{\\tau}\\,(\\vek t - \\sigma_{\\mathrm{n}}\\vek n) , \\qquad \\vek q = \\vek n\\times\\vek p . \\tag{2.42}\\]</div>", "href": "sec-simetrija-napetosti.html#eq-lokalna-trojica-ploskve"};

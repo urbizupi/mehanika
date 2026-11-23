@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-strizni-preizkus-deformacija"] = {"html": "<div class=\"eq\">\\[\\gamma = 2\\,\\varepsilon_{\\mathrm{xz}} = \\frac{\\Delta x}{h} . \\tag{3.24}\\]</div>", "href": "sec-hookov-zakon.html#eq-strizni-preizkus-deformacija"};

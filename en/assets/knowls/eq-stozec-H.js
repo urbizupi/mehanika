@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-stozec-H"] = {"html": "<div class=\"eq\">\\[H = N_{\\mathrm{s}}\\sin\\alpha = \\frac{pR\\tan\\alpha}{2} \\tag{22.51}\\]</div>", "href": "sec-spoji-lupin.html#eq-stozec-H"};
+(window.KNOWLS = window.KNOWLS || {})["eq-stozec-H"] = {"html": "<div class=\"eq\">\\[H = N_{\\mathrm{s}}\\sin\\alpha = \\frac{pR\\tan\\alpha}{2} \\tag{22.52}\\]</div>", "href": "sec-spoji-lupin.html#eq-stozec-H"};

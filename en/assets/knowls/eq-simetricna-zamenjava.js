@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-simetricna-zamenjava"] = {"html": "<div class=\"eq\">\\[\\vek v\\cdot(\\mat A\\,\\vek w) = \\vek w\\cdot(\\mat A\\,\\vek v) . \\tag{2.60}\\]</div>", "href": "sec-glavne-napetosti.html#eq-simetricna-zamenjava"};
+(window.KNOWLS = window.KNOWLS || {})["eq-simetricna-zamenjava"] = {"html": "<div class=\"eq\">\\[\\vek v\\cdot(\\mat A\\,\\vek w) = \\vek w\\cdot(\\mat A\\,\\vek v) . \\tag{2.79}\\]</div>", "href": "sec-glavne-napetosti.html#eq-simetricna-zamenjava"};

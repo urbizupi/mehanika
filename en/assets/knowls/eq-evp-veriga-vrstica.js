@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-evp-veriga-vrstica"] = {"html": "<div class=\"eq\">\\[m_{\\mathrm{i}}\\,\\ddot{q}_{\\mathrm{i}} - k_{\\mathrm{i}}\\,q_{\\mathrm{i}-1} + (k_{\\mathrm{i}} + k_{\\mathrm{i}+1})\\,q_{\\mathrm{i}} - k_{\\mathrm{i}+1}\\,q_{\\mathrm{i}+1} = Q_{\\mathrm{i}} . \\tag{10.2}\\]</div>", "href": "sec-enacbe-vec-ps.html#eq-evp-veriga-vrstica"};

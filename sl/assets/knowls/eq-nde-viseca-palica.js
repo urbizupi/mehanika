@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-nde-viseca-palica"] = {"html": "<div class=\"eq\">\\[E\\,u''(x) = -\\rho g . \\tag{5.40}\\]</div>", "href": "sec-navadne-diferencialne-enacbe.html#eq-nde-viseca-palica"};
+(window.KNOWLS = window.KNOWLS || {})["eq-nde-viseca-palica"] = {"html": "<div class=\"eq\">\\[E\\,u''(x) = -\\rho g . \\tag{5.43}\\]</div>", "href": "sec-navadne-diferencialne-enacbe.html#eq-nde-viseca-palica"};

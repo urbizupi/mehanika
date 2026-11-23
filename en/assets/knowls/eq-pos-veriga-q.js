@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pos-veriga-q"] = {"html": "<div class=\"eq\">\\[Q_{\\mathrm{s}} = F\\,l\\cos\\varphi_{\\mathrm{s}} - \\big(n - s + \\tfrac12\\big)\\,m g\\,l\\sin\\varphi_{\\mathrm{s}} , \\qquad s = 1, \\dots, n . \\tag{8.41}\\]</div>", "href": "sec-posplosene-sile.html#eq-pos-veriga-q"};

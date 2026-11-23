@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-mkk-prostorninske"] = {"html": "<div class=\"eq\">\\[L_1 + L_2 + L_3 + L_4 = 1 , \\qquad L_1\\vek x_1 + L_2\\vek x_2 + L_3\\vek x_3 + L_4\\vek x_4 = \\vek x . \\tag{15.51}\\]</div>", "href": "sec-mkk-prostor.html#eq-mkk-prostorninske"};
+(window.KNOWLS = window.KNOWLS || {})["eq-mkk-prostorninske"] = {"html": "<div class=\"eq\">\\[L_1 + L_2 + L_3 + L_4 = 1 , \\qquad L_1\\vek x_1 + L_2\\vek x_2 + L_3\\vek x_3 + L_4\\vek x_4 = \\vek x . \\tag{15.55}\\]</div>", "href": "sec-mkk-prostor.html#eq-mkk-prostorninske"};

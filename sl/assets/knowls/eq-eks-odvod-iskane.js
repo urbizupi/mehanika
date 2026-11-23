@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-eks-odvod-iskane"] = {"html": "<div class=\"eq\">\\[f'(y) = \\frac{f'(1)}{y} . \\tag{9.13}\\]</div>", "href": "sec-eksponentna-funkcija.html#eq-eks-odvod-iskane"};
+(window.KNOWLS = window.KNOWLS || {})["eq-eks-odvod-iskane"] = {"html": "<div class=\"eq\">\\[f'(y) = \\frac{f'(1)}{y} . \\tag{9.21}\\]</div>", "href": "sec-eksponentna-funkcija.html#eq-eks-odvod-iskane"};

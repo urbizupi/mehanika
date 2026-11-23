@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-tau-elipse"] = {"html": "<div class=\"eq\">\\[\\tau_{\\max} = \\frac{2M_{\\mathrm{x}}}{\\pi\\,a^2b} . \\tag{16.26}\\]</div>", "href": "sec-prandtlova-funkcija.html#eq-tau-elipse"};
+(window.KNOWLS = window.KNOWLS || {})["eq-tau-elipse"] = {"html": "<div class=\"eq\">\\[\\tau_{\\max} = \\frac{2M_{\\mathrm{x}}}{\\pi\\,a^2b} . \\tag{16.35}\\]</div>", "href": "sec-prandtlova-funkcija.html#eq-tau-elipse"};

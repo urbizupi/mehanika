@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nel-frekvenca"] = {"html": "<div class=\"eq\">\\[\\omega = \\sqrt{\\omega_0^2 + \\tfrac34\\,\\varepsilon A^2} = \\omega_0\\sqrt{1 + \\tfrac34\\,\\mu} , \\tag{9.134}\\]</div>", "href": "sec-nelinearno-nihanje.html#eq-nel-frekvenca"};

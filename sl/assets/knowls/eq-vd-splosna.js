@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-vd-splosna"] = {"html": "<div class=\"eq\">\\[\\sigma_{\\mathrm{rr}} = A - \\frac{B}{r^2} - c\\,r^2 , \\qquad \\sigma_{\\theta\\theta} = A + \\frac{B}{r^2} - \\frac{(1 + 3\\nu)\\,\\rho\\,\\Omega^2}{8}\\,r^2 \\tag{24.59}\\]</div>", "href": "sec-vrteci-disk.html#eq-vd-splosna"};

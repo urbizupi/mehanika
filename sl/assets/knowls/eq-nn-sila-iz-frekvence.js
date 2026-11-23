@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nn-sila-iz-frekvence"] = {"html": "<div class=\"eq\">\\[T = 4\\,L^2 f_1^2\\,\\mu . \\tag{13.53}\\]</div>", "href": "sec-nacini-nosilca.html#eq-nn-sila-iz-frekvence"};

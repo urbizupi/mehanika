@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nel-amplitudna"] = {"html": "<div class=\"eq\">\\[a^2\\Big[\\big(\\omega_0^2 - \\Omega^2 + \\tfrac34\\varepsilon a^2\\big)^2 + \\big(2\\zeta\\omega_0\\Omega\\big)^2\\Big] = p_0^2 . \\tag{9.138}\\]</div>", "href": "sec-nelinearno-nihanje.html#eq-nel-amplitudna"};

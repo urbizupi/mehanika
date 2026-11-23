@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-mko-razklopljene-merilo"] = {"html": "<div class=\"eq\">\\[m_{\\mathrm{r}}\\,\\ddot a_{\\mathrm{r}} + k_{\\mathrm{r}}\\,a_{\\mathrm{r}} = \\boldsymbol\\psi_{\\mathrm{r}}^\\T\\vek Q(t) , \\qquad r = 1, \\dots, n . \\tag{10.47}\\]</div>", "href": "sec-modalne-koordinate.html#eq-mko-razklopljene-merilo"};

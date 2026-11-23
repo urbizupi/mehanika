@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-prizma-lega"] = {"html": "<div class=\"eq\">\\[x_{\\mathrm{B}} = x + R\\sin\\alpha + s\\cos\\alpha , \\qquad y_{\\mathrm{B}} = h + R\\cos\\alpha - s\\sin\\alpha . \\tag{8.110}\\]</div>", "href": "sec-lagrangeeve-enacbe.html#eq-prizma-lega"};

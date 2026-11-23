@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-natezna-trdnost"] = {"html": "<div class=\"eq\">\\[\\sigma_{\\mathrm{M}} = \\frac{F_{\\mathrm{M}}}{A_0} , \\tag{3.5}\\]</div>", "href": "sec-natezni-preizkus.html#eq-natezna-trdnost"};

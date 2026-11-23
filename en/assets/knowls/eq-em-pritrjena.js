@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-em-pritrjena"] = {"html": "<div class=\"eq\">\\[R_{\\mathrm{N}}^{\\mathrm{pop}} = m_{\\mathrm{S}} + \\mu_{\\mathrm{N}} + \\sum_{\\mathrm{r}=1}^{N} m_{\\mathrm{r}}^{\\mathrm{ef}}\\,\\frac{\\lambda_{\\mathrm{r}}}{\\lambda_{\\mathrm{r}} - \\Omega^2} . \\tag{21.21}\\]</div>", "href": "sec-efektivna-masa.html#eq-em-pritrjena"};

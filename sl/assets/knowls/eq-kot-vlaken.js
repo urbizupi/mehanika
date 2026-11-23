@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-kot-vlaken"] = {"html": "<div class=\"eq\">\\[\\cos\\varphi = \\frac{\\vek m^\\T\\mat C\\,\\vek n}{\\sqrt{\\vek m^\\T\\mat C\\,\\vek m}\\,\\sqrt{\\vek n^\\T\\mat C\\,\\vek n}} = \\frac{\\vek m^\\T\\mat C\\,\\vek n}{\\lambda(\\vek m)\\,\\lambda(\\vek n)} . \\tag{1.53}\\]</div>", "href": "sec-deformacija-v-prostoru.html#eq-kot-vlaken"};

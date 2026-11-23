@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-mt-baza"] = {"html": "<div class=\"eq\">\\[\\vek e_\\varphi = (\\cos\\varphi,\\ -\\sin\\varphi) , \\qquad \\vek n = (\\sin\\varphi,\\ \\cos\\varphi) . \\tag{22.28}\\]</div>", "href": "sec-membranska-teorija.html#eq-mt-baza"};
+(window.KNOWLS = window.KNOWLS || {})["eq-mt-baza"] = {"html": "<div class=\"eq\">\\[\\vek e_\\varphi = (\\cos\\varphi,\\ -\\sin\\varphi) , \\qquad \\vek n = (\\sin\\varphi,\\ \\cos\\varphi) . \\tag{22.29}\\]</div>", "href": "sec-membranska-teorija.html#eq-mt-baza"};

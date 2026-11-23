@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-moc-napetosti-lokalno"] = {"html": "<div class=\"eq\">\\[\\frac{\\partial w}{\\partial t} = \\sigma\\,\\frac{\\partial\\varepsilon}{\\partial t} . \\tag{3.62}\\]</div>", "href": "sec-energija-deformacije.html#eq-moc-napetosti-lokalno"};

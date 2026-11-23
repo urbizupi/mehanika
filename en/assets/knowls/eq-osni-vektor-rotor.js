@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-osni-vektor-rotor"] = {"html": "<div class=\"eq\">\\[\\vek\\omega = \\tfrac12\\,\\operatorname{rot}\\vek u . \\tag{2.67}\\]</div>", "href": "sec-vrtenje-osi.html#eq-osni-vektor-rotor"};

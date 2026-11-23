@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-oktaedrski-vektor"] = {"html": "<div class=\"eq\">\\[\\vek t = \\frac{1}{\\sqrt3}\\,(\\sigma_1,\\ \\sigma_2,\\ \\sigma_3) . \\tag{2.126}\\]</div>", "href": "sec-najvecja-strizna.html#eq-oktaedrski-vektor"};

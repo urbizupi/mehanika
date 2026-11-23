@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-prvi-zakon"] = {"html": "<div class=\"eq\">\\[\\frac{\\mathrm{d}}{\\mathrm{d}t}\\,(T + U) = P_{\\mathrm{A}} + P_{\\mathrm{V}} + Q \\tag{3.58}\\]</div>", "href": "sec-energija-deformacije.html#eq-prvi-zakon"};

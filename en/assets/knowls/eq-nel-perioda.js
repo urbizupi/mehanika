@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nel-perioda"] = {"html": "<div class=\"eq\">\\[T = 4\\int_0^{A}\\frac{\\mathrm{d}x}{\\sqrt{2\\,(E - V(x))}} . \\tag{9.132}\\]</div>", "href": "sec-nelinearno-nihanje.html#eq-nel-perioda"};

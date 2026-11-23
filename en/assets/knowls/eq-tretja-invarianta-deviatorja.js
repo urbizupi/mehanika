@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-tretja-invarianta-deviatorja"] = {"html": "<div class=\"eq\">\\[J_3 = \\det\\ten s . \\tag{2.112}\\]</div>", "href": "sec-najvecja-strizna.html#eq-tretja-invarianta-deviatorja"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-oktaedrska-invariante"] = {"html": "<div class=\"eq\">\\[\\tau_{\\mathrm{oct}} = \\frac13\\sqrt{(\\sigma_1 - \\sigma_2)^2 + (\\sigma_2 - \\sigma_3)^2 + (\\sigma_3 - \\sigma_1)^2} = \\frac{\\sqrt2}{3}\\sqrt{I_1^2 - 3 I_2} . \\tag{2.128}\\]</div>", "href": "sec-najvecja-strizna.html#eq-oktaedrska-invariante"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-osni-vektor"] = {"html": "<div class=\"eq\">\\[\\vek\\omega = (\\omega_{\\mathrm{x}},\\ \\omega_{\\mathrm{y}},\\ \\omega_{\\mathrm{z}}) = (-\\omega_{\\mathrm{yz}},\\ \\ \\omega_{\\mathrm{xz}},\\ \\ -\\omega_{\\mathrm{xy}}) . \\tag{2.65}\\]</div>", "href": "sec-vrtenje-osi.html#eq-osni-vektor"};

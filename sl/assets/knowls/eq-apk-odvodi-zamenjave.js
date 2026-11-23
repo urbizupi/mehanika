@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-apk-odvodi-zamenjave"] = {"html": "<div class=\"eq\">\\[\\begin{aligned} r\\,y' &amp;= Y' , \\\\ r^2 y'' &amp;= Y'' - Y' , \\\\ r^3 y''' &amp;= Y''' - 3Y'' + 2Y' , \\\\ r^4 y'''' &amp;= Y'''' - 6Y''' + 11Y'' - 6Y' , \\end{aligned} \\tag{11.79}\\]</div>", "href": "sec-airy-polarne.html#eq-apk-odvodi-zamenjave"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pdn-vdp"] = {"html": "<div class=\"eq\">\\[M\\,\\ddot\\theta + c_{\\mathrm{s}}\\left(\\frac{\\theta^2}{\\theta_{\\mathrm{m}}^2} - 1\\right)\\dot\\theta + k\\,\\theta = 0 , \\tag{9.54}\\]</div>", "href": "sec-prosto-duseno-nihanje.html#eq-pdn-vdp"};

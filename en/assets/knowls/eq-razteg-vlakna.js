@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-razteg-vlakna"] = {"html": "<div class=\"eq\">\\[\\lambda(\\vek n) = |\\mat F\\,\\vek n| , \\tag{1.50}\\]</div>", "href": "sec-deformacija-v-prostoru.html#eq-razteg-vlakna"};

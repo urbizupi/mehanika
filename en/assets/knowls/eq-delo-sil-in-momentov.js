@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-delo-sil-in-momentov"] = {"html": "<div class=\"eq\">\\[\\delta W = \\sum_{\\mathrm{i}} \\vek F_{\\mathrm{i}}\\cdot\\delta\\vek u_{\\mathrm{i}} + \\sum_{\\mathrm{j}} \\vek M_{\\mathrm{j}}\\cdot\\delta\\boldsymbol\\varphi_{\\mathrm{j}} . \\tag{4.66}\\]</div>", "href": "sec-virtualne-sile.html#eq-delo-sil-in-momentov"};

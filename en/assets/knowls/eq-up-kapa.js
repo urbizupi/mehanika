@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-up-kapa"] = {"html": "<div class=\"eq\">\\[2\\pi\\,r\\,\\sin\\varphi\\;N_\\varphi = Z(\\varphi) , \\tag{22.35}\\]</div>", "href": "sec-uporabe-membranske.html#eq-up-kapa"};
+(window.KNOWLS = window.KNOWLS || {})["eq-up-kapa"] = {"html": "<div class=\"eq\">\\[2\\pi\\,r\\,\\sin\\varphi\\;N_\\varphi = Z(\\varphi) , \\tag{22.36}\\]</div>", "href": "sec-uporabe-membranske.html#eq-up-kapa"};

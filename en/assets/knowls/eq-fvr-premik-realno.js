@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-fvr-premik-realno"] = {"html": "<div class=\"eq\">\\[a_{\\mathrm{n}}(g) = a_{\\mathrm{n}}\\cos\\psi - b_{\\mathrm{n}}\\sin\\psi , \\qquad b_{\\mathrm{n}}(g) = a_{\\mathrm{n}}\\sin\\psi + b_{\\mathrm{n}}\\cos\\psi . \\tag{9.123}\\]</div>", "href": "sec-fourierjeve-vrste.html#eq-fvr-premik-realno"};

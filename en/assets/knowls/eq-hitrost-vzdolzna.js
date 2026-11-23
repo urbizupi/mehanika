@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-hitrost-vzdolzna"] = {"html": "<div class=\"eq\">\\[c_{\\mathrm{L}}^2 = \\frac{\\lambda + 2\\mu}{\\rho} = \\frac{E\\,(1 - \\nu)}{\\rho\\,(1 + \\nu)(1 - 2\\nu)} , \\tag{13.25}\\]</div>", "href": "sec-elastodinamika.html#eq-hitrost-vzdolzna"};
+(window.KNOWLS = window.KNOWLS || {})["eq-hitrost-vzdolzna"] = {"html": "<div class=\"eq\">\\[c_{\\mathrm{L}}^2 = \\frac{\\lambda + 2\\mu}{\\rho} = \\frac{E\\,(1 - \\nu)}{\\rho\\,(1 + \\nu)(1 - 2\\nu)} , \\tag{13.36}\\]</div>", "href": "sec-elastodinamika.html#eq-hitrost-vzdolzna"};

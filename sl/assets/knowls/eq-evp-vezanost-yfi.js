@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-evp-vezanost-yfi"] = {"html": "<div class=\"eq\">\\[\\mat K = \\begin{bmatrix} k_1 + k_2 &amp; k_2 l_2 - k_1 l_1 \\\\ k_2 l_2 - k_1 l_1 &amp; k_1 l_1^2 + k_2 l_2^2 \\end{bmatrix} , \\qquad \\mat M = \\begin{bmatrix} M &amp; 0 \\\\ 0 &amp; J \\end{bmatrix} . \\tag{10.14}\\]</div>", "href": "sec-enacbe-vec-ps.html#eq-evp-vezanost-yfi"};

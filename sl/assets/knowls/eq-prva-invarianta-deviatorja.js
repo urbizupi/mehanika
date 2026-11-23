@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-prva-invarianta-deviatorja"] = {"html": "<div class=\"eq\">\\[J_1 = s_{\\mathrm{xx}} + s_{\\mathrm{yy}} + s_{\\mathrm{zz}} , \\tag{2.111}\\]</div>", "href": "sec-najvecja-strizna.html#eq-prva-invarianta-deviatorja"};

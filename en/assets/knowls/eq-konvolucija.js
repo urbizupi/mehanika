@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-konvolucija"] = {"html": "<div class=\"eq\">\\[(f * g)(t) = \\int_0^t f(t - s)\\,g(s)\\,\\mathrm{d}s . \\tag{9.102}\\]</div>", "href": "sec-konvolucija.html#eq-konvolucija"};

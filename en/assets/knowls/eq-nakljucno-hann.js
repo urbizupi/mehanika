@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nakljucno-hann"] = {"html": "<div class=\"eq\">\\[w_{\\mathrm{j}} = \\tfrac12\\Bigl(1 - \\cos\\frac{2\\pi j}{N}\\Bigr) , \\qquad j = 0, \\dots, N - 1 , \\tag{9.164}\\]</div>", "href": "sec-nakljucno-vzbujanje.html#eq-nakljucno-hann"};

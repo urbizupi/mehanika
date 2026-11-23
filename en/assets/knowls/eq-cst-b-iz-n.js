@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-cst-b-iz-n"] = {"html": "<div class=\"eq\">\\[\\{\\varepsilon\\} = \\boldsymbol\\partial\\,\\vek u = \\boldsymbol\\partial\\,\\mat N\\,\\vek d_{\\mathrm{e}} = \\mat B\\,\\vek d_{\\mathrm{e}} , \\qquad \\mat B = \\boldsymbol\\partial\\,\\mat N . \\tag{15.20}\\]</div>", "href": "sec-mkk-ravninski-trikotnik.html#eq-cst-b-iz-n"};

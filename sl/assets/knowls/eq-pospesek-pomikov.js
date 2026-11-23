@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-pospesek-pomikov"] = {"html": "<div class=\"eq\">\\[\\vek a = \\frac{\\partial^2\\vek u}{\\partial t^2} = \\vek u_{\\mathrm{tt}} . \\tag{13.21}\\]</div>", "href": "sec-elastodinamika.html#eq-pospesek-pomikov"};
+(window.KNOWLS = window.KNOWLS || {})["eq-pospesek-pomikov"] = {"html": "<div class=\"eq\">\\[\\vek a = \\frac{\\partial^2\\vek u}{\\partial t^2} = \\vek u_{\\mathrm{tt}} . \\tag{13.32}\\]</div>", "href": "sec-elastodinamika.html#eq-pospesek-pomikov"};

@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-moment-sile"] = {"html": "<div class=\"eq\">\\[\\vek M_{\\mathrm{O}} = \\vek r\\times\\vek F , \\qquad \\vek r = \\overrightarrow{OA} , \\tag{2.33}\\]</div>", "href": "sec-simetrija-napetosti.html#eq-moment-sile"};
+(window.KNOWLS = window.KNOWLS || {})["eq-moment-sile"] = {"html": "<div class=\"eq\">\\[\\vek M_{\\mathrm{O}} = \\vek r\\times\\vek F , \\qquad \\vek r = \\overrightarrow{OA} , \\tag{2.43}\\]</div>", "href": "sec-simetrija-napetosti.html#eq-moment-sile"};

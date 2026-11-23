@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-napaka-j-strmina"] = {"html": "<div class=\"eq\">\\[J - J_{\\mathrm{h}}^\\Phi = \\int_{\\mathrm{S}}|\\nabla\\hat\\Phi - \\nabla f_{\\mathrm{h}}|^2\\,\\mathrm{d}A . \\tag{16.70}\\]</div>", "href": "sec-meje-mke-torzije.html#eq-napaka-j-strmina"};

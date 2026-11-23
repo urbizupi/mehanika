@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nn-zaznavalo"] = {"html": "<div class=\"eq\">\\[\\frac{\\Delta f_1}{f_1} \\approx -2\\,\\mu_{\\mathrm{k}} = -\\frac{2\\,m_{\\mathrm{k}}}{\\rho A L} . \\tag{13.58}\\]</div>", "href": "sec-nacini-nosilca.html#eq-nn-zaznavalo"};

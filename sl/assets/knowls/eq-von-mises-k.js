@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-von-mises-k"] = {"html": "<div class=\"eq\">\\[J_2 = k^2 , \\qquad k = \\frac{\\sigma_{\\mathrm{Y}}}{\\sqrt3} . \\tag{2.129}\\]</div>", "href": "sec-najvecja-strizna.html#eq-von-mises-k"};

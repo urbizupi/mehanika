@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-lpn-dve-zahtevi"] = {"html": "<div class=\"eq\">\\[\\text{vrstica 1:}\\quad \\lambda = \\frac{k}{m}\\,(2 - r) , \\qquad \\text{vrstica 2:}\\quad \\lambda = \\frac{k}{m}\\,\\Big(1 - \\frac1r\\Big) . \\tag{10.24}\\]</div>", "href": "sec-lastni-problem.html#eq-lpn-dve-zahtevi"};

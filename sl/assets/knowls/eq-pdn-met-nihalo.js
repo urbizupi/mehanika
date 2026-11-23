@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pdn-met-nihalo"] = {"html": "<div class=\"eq\">\\[m\\ell^2\\,\\ddot\\theta_{\\mathrm{i}} + m\\ell\\,\\ddot x + m g\\ell\\,\\theta_{\\mathrm{i}} = -c(\\theta_{\\mathrm{i}})\\,\\dot\\theta_{\\mathrm{i}} , \\qquad i = 1, 2 . \\tag{9.58}\\]</div>", "href": "sec-prosto-duseno-nihanje.html#eq-pdn-met-nihalo"};

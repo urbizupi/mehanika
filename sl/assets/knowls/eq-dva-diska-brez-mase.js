@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-dva-diska-brez-mase"] = {"html": "<div class=\"eq\">\\[\\omega_{\\mathrm{2D}} = \\sqrt{k_{\\mathrm{t}}\\Big(\\frac{1}{J_0} + \\frac{1}{J_{\\mathrm{L}}}\\Big)} = \\sqrt{\\frac{k_{\\mathrm{t}}\\,(J_0 + J_{\\mathrm{L}})}{J_0\\,J_{\\mathrm{L}}}} \\tag{13.30}\\]</div>", "href": "sec-palica-gred.html#eq-dva-diska-brez-mase"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-spi-ortogonalnost-razlika"] = {"html": "<div class=\"eq\">\\[(\\lambda_{\\mathrm{r}} - \\lambda_{\\mathrm{s}})\\,\\vek\\varphi_{\\mathrm{s}}^\\T\\mat M\\,\\vek\\varphi_{\\mathrm{r}} = 0 . \\tag{10.36}\\]</div>", "href": "sec-spektralni-izrek.html#eq-spi-ortogonalnost-razlika"};

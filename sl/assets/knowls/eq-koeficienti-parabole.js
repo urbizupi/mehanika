@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-koeficienti-parabole"] = {"html": "<div class=\"eq\">\\[c_{\\mathrm{n}} = \\frac{32\\,a^2}{\\pi^3 n^3}\\,(-1)^{(n-1)/2} \\qquad (n = 1, 3, 5, \\dots) . \\tag{16.29}\\]</div>", "href": "sec-pravokotni-prerez.html#eq-koeficienti-parabole"};
+(window.KNOWLS = window.KNOWLS || {})["eq-koeficienti-parabole"] = {"html": "<div class=\"eq\">\\[c_{\\mathrm{n}} = \\frac{32\\,a^2}{\\pi^3 n^3}\\,(-1)^{(n-1)/2} \\qquad (n = 1, 3, 5, \\dots) . \\tag{16.38}\\]</div>", "href": "sec-pravokotni-prerez.html#eq-koeficienti-parabole"};

@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-von-mises"] = {"html": "<div class=\"eq\">\\[\\sigma_{\\mathrm{vM}} = \\sqrt{3 J_2} , \\tag{2.75}\\]</div>", "href": "sec-najvecja-strizna.html#eq-von-mises"};
+(window.KNOWLS = window.KNOWLS || {})["eq-von-mises"] = {"html": "<div class=\"eq\">\\[\\sigma_{\\mathrm{vM}} = \\sqrt{3 J_2} , \\tag{2.124}\\]</div>", "href": "sec-najvecja-strizna.html#eq-von-mises"};

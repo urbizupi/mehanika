@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-voz-nihalo-N"] = {"html": "<div class=\"eq\">\\[N = (m_1 + m_2)\\,g + m_2\\,l\\,(\\ddot\\theta\\sin\\theta + \\dot\\theta^2\\cos\\theta) . \\tag{8.122}\\]</div>", "href": "sec-lagrangeeve-enacbe.html#eq-voz-nihalo-N"};

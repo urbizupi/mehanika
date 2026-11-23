@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Chapter 18: Plates</title>
-<script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<script>try{const t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}try{if(localStorage.getItem("zapis")==="indeks")document.documentElement.classList.add("indeks")}catch(e){}</script>
 <link rel="stylesheet" href="assets/style.css">
 <noscript><style>#loadbar { display: none; }</style></noscript>
 <script src="assets/config.js"></script>
@@ -14,25 +14,959 @@
 <script defer src="assets/predavanje.js"></script>
 <script defer id="MathJax-script" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js"></script>
 </head>
-<body>
+<body data-lecture="pred-ch-plosce.html">
 <div id="loadbar" aria-hidden="true"></div>
 <header class="top"><a class="home" href="index.html">Mechanics</a><nav class="pager"><a href="sec-modeliranje-povezave.html" rel="prev">← 17.10</a><a href="index.html">Contents</a><a href="sec-kirchhoffova-plosca.html" rel="next">18.1 →</a></nav>
-<span class="tools"><a class="lang" href="../sl/ch-plosce.html" hreflang="sl">Slovenščina</a><button type="button" class="theme-toggle" title="Light or dark theme" aria-label="Light or dark theme"></button><button type="button" data-details="open">Expand all</button><button type="button" data-details="close">Collapse all</button><button type="button" class="fig-side-toggle" aria-pressed="false">Figures alongside</button></span></header>
+<span class="tools"><a class="lang" href="../sl/ch-plosce.html" hreflang="sl">Slovenščina</a><button type="button" class="theme-toggle" title="Light or dark theme" aria-label="Light or dark theme"></button><button type="button" data-details="open">Expand all</button><button type="button" data-details="close">Collapse all</button><button type="button" class="fig-side-toggle" aria-pressed="false">Figures alongside</button><button type="button" class="zapis-toggle" aria-pressed="false">Index notation</button></span></header>
 <main>
-<p class="updated">Last updated 16 November 2026, 10:52</p>
+<p class="updated">Last updated 23 November 2026, 20:58</p>
 <h1 id="ch-plosce"><span class="h-num">Chapter 18</span><span class="h-title">Plates</span></h1>
 <nav class="sec-toc"><ol><li><a href="sec-kirchhoffova-plosca.html"><span class="h-num">18.1</span> The Kirchhoff plate</a></li><li><a href="sec-ravnotezje-plosce.html"><span class="h-num">18.2</span> Equilibrium of a plate</a></li><li><a href="sec-robni-pogoji-plosce.html"><span class="h-num">18.3</span> Energy, boundary conditions and uniqueness of a plate</a></li><li><a href="sec-plosca-trak.html"><span class="h-num">18.4</span> The plate as a strip: cylindrical bending</a></li><li><a href="sec-navierova-resitev.html"><span class="h-num">18.5</span> The simply supported rectangle: Navier's solution</a></li><li><a href="sec-krozne-plosce.html"><span class="h-num">18.6</span> Circular plates</a></li><li><a href="sec-energijske-metode-plosc.html"><span class="h-num">18.7</span> Energy methods for plates</a></li><li><a href="sec-mindlinove-plosce.html"><span class="h-num">18.8</span> Mindlin plates</a></li><li><a href="sec-elementi-plosc.html"><span class="h-num">18.9</span> Finite elements of plates</a></li><li><a href="sec-povezave-plosce.html"><span class="h-num">18.10</span> Connections</a></li></ol></nav>
 <p class="one-page"><a href="ch-plosce-celota.html">The whole chapter on one page (loads more slowly)</a></p>
-<!-- nofig: signpost -->
-<p>We begin with <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">bodies</a> from everyday life: the floor of a storey, a trench cover, the sheet metal of a car body, the wing of an aircraft. All are flat and have one dimension, the thickness, much smaller than the other two. In <a class="xref" href="ch-nosilci.html">5</a> we treated slender bodies and described them by a <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> of one variable, the deflection of the axis. Here only one dimension is small, so we must write equilibrium, energy and vibration for two dimensions at once.</p>
-<!-- nofig: signpost -->
-<p>In everyday language the word plate (plošča) means a flat, thin piece. Engineers use it for a flat body that is thin compared with its other two dimensions and is loaded perpendicular to its plane. A plate is therefore distinguished from a shell (lupina), which is just as thin but curved. As a <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beam</a> is described by its axis, a plate is described by the plane halfway through its thickness.</p>
-<!-- nofig: signpost -->
-<p>Why this matters is shown by a steel plate with a square plan of side \(500\) mm and thickness \(10\) mm, which accompanies all the calculations of the chapter. Under a load of \(10\) kPa it bends a little more than a tenth of a millimetre at its centre, and its lowest natural frequency is about \(190\) Hz. The first figure decides whether a floor or a cover carries the load, the second whether a machine turning at a similar frequency excites the plate. If we compress the plate in its own plane it can buckle, and the chapter shows at which load.</p>
-<!-- nofig: signpost -->
-<p>The chapter promises three things. First, from the assumptions about a thin plate we derive, following the beam, the displacements, the <a class="xref auto" href="sec-sila-v-palici.html#def-notranja-sila" data-knowl="def-notranja-sila">internal forces</a>, a single equation of equilibrium and the edge conditions of the different supports. Second, we solve the equation on a strip, on a rectangle with the series of <a class="xref" href="ch-nihanje-zveznih-sistemov.html">13</a> and on a circular plate, and then use energy methods to find vibration and buckling. Third, we show where the simplification fails for thick <a class="xref auto forward" href="sec-kirchhoffova-plosca.html#def-plosca" data-knowl="def-plosca" title="Defined later in the book">plates</a> and carry the plate over to the finite elements of <a class="xref" href="ch-mke-nosilci.html">12</a>.</p>
+<p class="one-page lecture-page"><a href="pred-ch-plosce.html">The lecture of this chapter (figures built as it is explained)</a></p>
+<p>We begin with <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">bodies</a> from everyday life: the floor of a storey, a trench cover, the sheet metal of a car body, the wing of an aircraft. All are flat and have one dimension, the thickness, much smaller than the other two. In <a class="xref" href="ch-nosilci.html">5</a> we treated <a data-del="nosilec" class="xref kaz" href="sec-model-nosilca.html#fig-nkn-vrste-konstrukcij" data-knowl="fig-nkn-vrste-konstrukcij">slender bodies</a> and described them by a <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">function</a> of one variable, the deflection of the axis. Here only one dimension is small, so we must write equilibrium, energy and vibration for two dimensions at once.</p>
+<p>In everyday language the word <a class="xref auto forward" href="sec-kirchhoffova-plosca.html#def-plosca" data-knowl="def-plosca" title="Defined later in the book">plate</a> (plošča) means a flat, thin piece. Engineers use it for a <a data-del="plosca" class="xref kaz" href="sec-model-nosilca.html#fig-nkn-vrste-konstrukcij" data-knowl="fig-nkn-vrste-konstrukcij">flat body</a> that is thin compared with its other two dimensions and is loaded perpendicular to its plane. A plate is therefore distinguished from a <a data-del="lupina" class="xref kaz" href="sec-model-nosilca.html#fig-nkn-vrste-konstrukcij" data-knowl="fig-nkn-vrste-konstrukcij">shell</a> (lupina), which is just as thin but curved. As a <a class="xref auto" href="sec-model-nosilca.html#def-nosilec" data-knowl="def-nosilec">beam</a> is described by its axis, a plate is described by the <a data-del="srednja" class="xref kaz" href="sec-kirchhoffova-plosca.html#fig-kp-plosca" data-knowl="fig-kp-plosca">plane halfway through its thickness</a>.</p>
 
-<script type="application/json" id="moved">{"sec-kirchhoffova-plosca": "sec-kirchhoffova-plosca.html", "sec-kp-plosca": "sec-kirchhoffova-plosca.html", "fig-kp-plosca": "sec-kirchhoffova-plosca.html", "def-plosca": "sec-kirchhoffova-plosca.html", "eq-plosca": "sec-kirchhoffova-plosca.html", "sec-kp-idealizacije": "sec-kirchhoffova-plosca.html", "fig-kp-kinematika": "sec-kirchhoffova-plosca.html", "def-kirchhoffova-plosca": "sec-kirchhoffova-plosca.html", "thm-polje-pomikov-plosce": "sec-kirchhoffova-plosca.html", "eq-polje-pomikov-plosce": "sec-kirchhoffova-plosca.html", "eq-deformacije-plosce": "sec-kirchhoffova-plosca.html", "def-ukrivljenosti-plosce": "sec-kirchhoffova-plosca.html", "eq-ukrivljenosti-plosce": "sec-kirchhoffova-plosca.html", "sec-kp-momenti": "sec-kirchhoffova-plosca.html", "fig-kp-momenti": "sec-kirchhoffova-plosca.html", "def-momenti-plosce": "sec-kirchhoffova-plosca.html", "eq-momenti-plosce": "sec-kirchhoffova-plosca.html", "def-upogibna-togost-plosce": "sec-kirchhoffova-plosca.html", "eq-upogibna-togost-plosce": "sec-kirchhoffova-plosca.html", "thm-momenti-ukrivljenosti": "sec-kirchhoffova-plosca.html", "eq-napetosti-plosce": "sec-kirchhoffova-plosca.html", "eq-momenti-ukrivljenosti": "sec-kirchhoffova-plosca.html", "cor-napetosti-plosce": "sec-kirchhoffova-plosca.html", "eq-napetosti-iz-momentov": "sec-kirchhoffova-plosca.html", "eq-napetosti-najvecje": "sec-kirchhoffova-plosca.html", "sec-kp-ozki-nosilec": "sec-kirchhoffova-plosca.html", "fig-kp-ozki": "sec-kirchhoffova-plosca.html", "sec-kp-cena": "sec-kirchhoffova-plosca.html", "sec-kp-oznake": "sec-kirchhoffova-plosca.html", "sec-ravnotezje-plosce": "sec-ravnotezje-plosce.html", "sec-rp-precne-sile": "sec-ravnotezje-plosce.html", "fig-rp-kos": "sec-ravnotezje-plosce.html", "def-precne-sile-plosce": "sec-ravnotezje-plosce.html", "eq-precne-sile-plosce": "sec-ravnotezje-plosce.html", "sec-rp-kos": "sec-ravnotezje-plosce.html", "lem-ravnovesje-kosa-plosce": "sec-ravnotezje-plosce.html", "eq-rp-sila": "sec-ravnotezje-plosce.html", "eq-rp-moment-x": "sec-ravnotezje-plosce.html", "eq-rp-moment-y": "sec-ravnotezje-plosce.html", "sec-rp-enacba": "sec-ravnotezje-plosce.html", "lem-divergenca-pravokotnik": "sec-ravnotezje-plosce.html", "eq-gauss-ravnina": "sec-ravnotezje-plosce.html", "thm-enacba-plosce": "sec-ravnotezje-plosce.html", "eq-rp-precne-iz-poveza": "sec-ravnotezje-plosce.html", "eq-enacba-plosce": "sec-ravnotezje-plosce.html", "eq-rp-ravnovesje-sil": "sec-ravnotezje-plosce.html", "sec-rp-germain": "sec-ravnotezje-plosce.html", "fig-rp-zasuk": "sec-ravnotezje-plosce.html", "sec-rp-strizne": "sec-ravnotezje-plosce.html", "lem-strizne-napetosti-plosce": "sec-ravnotezje-plosce.html", "eq-strizne-plosce": "sec-ravnotezje-plosce.html", "fig-rp-profili": "sec-ravnotezje-plosce.html", "sec-robni-pogoji-plosce": "sec-robni-pogoji-plosce.html", "sec-rp-energija": "sec-robni-pogoji-plosce.html", "eq-rp-momenti": "sec-robni-pogoji-plosce.html", "def-energija-plosce": "sec-robni-pogoji-plosce.html", "eq-rpl-energija": "sec-robni-pogoji-plosce.html", "lem-energija-plosce-oblika": "sec-robni-pogoji-plosce.html", "eq-rp-energija-momenti": "sec-robni-pogoji-plosce.html", "lem-energija-plosce-nenegativna": "sec-robni-pogoji-plosce.html", "lem-gauss-v-ravnini": "sec-robni-pogoji-plosce.html", "eq-rp-gauss": "sec-robni-pogoji-plosce.html", "lem-germain-energija": "sec-robni-pogoji-plosce.html", "eq-rp-germain": "sec-robni-pogoji-plosce.html", "sec-rp-robovi": "sec-robni-pogoji-plosce.html", "fig-rp-robni-pogoji": "sec-robni-pogoji-plosce.html", "def-robni-pogoji-plosce": "sec-robni-pogoji-plosce.html", "eq-rp-mn-vn": "sec-robni-pogoji-plosce.html", "sec-rp-variacija": "sec-robni-pogoji-plosce.html", "lem-green-plosce": "sec-robni-pogoji-plosce.html", "eq-rp-green": "sec-robni-pogoji-plosce.html", "thm-variacija-plosce": "sec-robni-pogoji-plosce.html", "eq-rp-plosca-variacija": "sec-robni-pogoji-plosce.html", "eq-rp-prva-variacija": "sec-robni-pogoji-plosce.html", "sec-rp-vogal": "sec-robni-pogoji-plosce.html", "fig-rp-vogalna": "sec-robni-pogoji-plosce.html", "cor-vogalna-sila": "sec-robni-pogoji-plosce.html", "eq-rp-ravnovesje-sile": "sec-robni-pogoji-plosce.html", "sec-rp-poisson": "sec-robni-pogoji-plosce.html", "sec-rpl-enolicnost": "sec-robni-pogoji-plosce.html", "thm-enolicnost-plosce": "sec-robni-pogoji-plosce.html", "fig-rp-prosta": "sec-robni-pogoji-plosce.html", "sec-rp-povzetek": "sec-robni-pogoji-plosce.html", "sec-plosca-trak": "sec-plosca-trak.html", "fig-trak-valjasti": "sec-plosca-trak.html", "def-valjasti-upogib": "sec-plosca-trak.html", "fig-trak-ozek": "sec-plosca-trak.html", "lem-valjasti-upogib": "sec-plosca-trak.html", "cor-trak-podpore": "sec-plosca-trak.html", "eq-trak-prosto": "sec-plosca-trak.html", "eq-trak-vpeto": "sec-plosca-trak.html", "ex-ozek-nosilec": "sec-plosca-trak.html", "fig-trak-pravokotnik": "sec-plosca-trak.html", "sec-navierova-resitev": "sec-navierova-resitev.html", "eq-prosto-podprt": "sec-navierova-resitev.html", "fig-navier-clen": "sec-navierova-resitev.html", "lem-sinusni-clen-plosce": "sec-navierova-resitev.html", "eq-navier-lambda": "sec-navierova-resitev.html", "lem-odvajanje-vrste-plosce": "sec-navierova-resitev.html", "thm-navierova-resitev": "sec-navierova-resitev.html", "eq-navier-koef": "sec-navierova-resitev.html", "eq-navier-momenti": "sec-navierova-resitev.html", "eq-navier-kos": "sec-navierova-resitev.html", "cor-enakomerna-obtezba-plosce": "sec-navierova-resitev.html", "eq-navier-enakomerna": "sec-navierova-resitev.html", "fig-navier-konvergenca": "sec-navierova-resitev.html", "cor-vogalne-sile-kvadrata": "sec-navierova-resitev.html", "eq-vogalna-sila-vrsta": "sec-navierova-resitev.html", "fig-vogal-reakcije": "sec-navierova-resitev.html", "lem-tockovna-sila-navier": "sec-navierova-resitev.html", "sec-krozne-plosce": "sec-krozne-plosce.html", "fig-krozna-plosca": "sec-krozne-plosce.html", "lem-osnosimetricni-laplace": "sec-krozne-plosce.html", "eq-momenti-osnosimetricni": "sec-krozne-plosce.html", "thm-osnosimetricna-plosca": "sec-krozne-plosce.html", "eq-osnosimetricna-splosna": "sec-krozne-plosce.html", "cor-vpeta-krozna-plosca": "sec-krozne-plosce.html", "eq-vpeta-krozna": "sec-krozne-plosce.html", "eq-vpeta-momenti": "sec-krozne-plosce.html", "cor-podprta-krozna-plosca": "sec-krozne-plosce.html", "eq-podprta-krozna": "sec-krozne-plosce.html", "eq-podprta-momenti": "sec-krozne-plosce.html", "eq-razlika-momentov": "sec-krozne-plosce.html", "fig-krozna-profili": "sec-krozne-plosce.html", "ex-krozna-kvadrat": "sec-krozne-plosce.html", "lem-tockovna-sila-krozna": "sec-krozne-plosce.html", "eq-tockovna-vpeta": "sec-krozne-plosce.html", "eq-tockovna-momenti": "sec-krozne-plosce.html", "fig-tockovna-sila": "sec-krozne-plosce.html", "sec-energijske-metode-plosc": "sec-energijske-metode-plosc.html", "sec-ep-polja": "sec-energijske-metode-plosc.html", "eq-ep-potencial": "sec-energijske-metode-plosc.html", "eq-ep-forma-b": "sec-energijske-metode-plosc.html", "def-dopustno-polje-plosce": "sec-energijske-metode-plosc.html", "lem-gauss-clen-nic": "sec-energijske-metode-plosc.html", "eq-ep-gauss-nic": "sec-energijske-metode-plosc.html", "sec-ep-ritz": "sec-energijske-metode-plosc.html", "thm-ritz-plosca": "sec-energijske-metode-plosc.html", "fig-ep-ritz": "sec-energijske-metode-plosc.html", "sec-ep-hamilton": "sec-energijske-metode-plosc.html", "def-akcija-plosce": "sec-energijske-metode-plosc.html", "eq-ep-akcija": "sec-energijske-metode-plosc.html", "thm-hamilton-plosca": "sec-energijske-metode-plosc.html", "eq-ep-gibalna-plosce": "sec-energijske-metode-plosc.html", "sec-ep-nacini": "sec-energijske-metode-plosc.html", "lem-ep-koeficienti": "sec-energijske-metode-plosc.html", "eq-ep-koeficienti": "sec-energijske-metode-plosc.html", "thm-nacini-podprte-plosce": "sec-energijske-metode-plosc.html", "eq-ep-frekvence": "sec-energijske-metode-plosc.html", "fig-ep-nacini": "sec-energijske-metode-plosc.html", "eq-ep-kombinacija": "sec-energijske-metode-plosc.html", "sec-ep-rayleigh": "sec-energijske-metode-plosc.html", "thm-rayleigh-plosca": "sec-energijske-metode-plosc.html", "sec-ep-uklon": "sec-energijske-metode-plosc.html", "lem-delo-ravninskih-sil": "sec-energijske-metode-plosc.html", "thm-uklon-podprte-plosce": "sec-energijske-metode-plosc.html", "eq-ep-uklon": "sec-energijske-metode-plosc.html", "eq-ep-nmn": "sec-energijske-metode-plosc.html", "eq-ep-ncr": "sec-energijske-metode-plosc.html", "fig-ep-uklon": "sec-energijske-metode-plosc.html", "sec-mindlinove-plosce": "sec-mindlinove-plosce.html", "sec-mp-kinematika": "sec-mindlinove-plosce.html", "fig-mp-kinematika": "sec-mindlinove-plosce.html", "def-mindlinova-plosca": "sec-mindlinove-plosce.html", "eq-mp-polje": "sec-mindlinove-plosce.html", "eq-mp-strizni-koti": "sec-mindlinove-plosce.html", "lem-mp-rezultante": "sec-mindlinove-plosce.html", "eq-mp-deformacije": "sec-mindlinove-plosce.html", "eq-mp-momenti": "sec-mindlinove-plosce.html", "eq-mp-precne": "sec-mindlinove-plosce.html", "sec-mp-enacbe": "sec-mindlinove-plosce.html", "eq-mp-ravnovesje": "sec-mindlinove-plosce.html", "thm-mindlinove-enacbe": "sec-mindlinove-plosce.html", "eq-mp-enacbe": "sec-mindlinove-plosce.html", "eq-mp-virtualno-delo": "sec-mindlinove-plosce.html", "lem-enolicnost-mindlin": "sec-mindlinove-plosce.html", "sec-mp-marcus": "sec-mindlinove-plosce.html", "eq-mp-marcus": "sec-mindlinove-plosce.html", "fig-mp-marcus": "sec-mindlinove-plosce.html", "lem-dirichlet-laplace-enolicnost": "sec-mindlinove-plosce.html", "lem-mp-druzina": "sec-mindlinove-plosce.html", "eq-mp-druzina": "sec-mindlinove-plosce.html", "thm-mindlin-kirchhoff": "sec-mindlinove-plosce.html", "eq-mp-rezultat": "sec-mindlinove-plosce.html", "sec-mp-krog": "sec-mindlinove-plosce.html", "lem-mindlin-krozna-vpeta": "sec-mindlinove-plosce.html", "eq-mp-krog": "sec-mindlinove-plosce.html", "sec-mp-meje": "sec-mindlinove-plosce.html", "fig-mp-razmerje": "sec-mindlinove-plosce.html", "sec-elementi-plosc": "sec-elementi-plosc.html", "sec-el-c1": "sec-elementi-plosc.html", "fig-skok-nagiba": "sec-elementi-plosc.html", "lem-zahteva-c1": "sec-elementi-plosc.html", "sec-el-mindlin": "sec-elementi-plosc.html", "fig-element": "sec-elementi-plosc.html", "def-element-mindlinove-plosce": "sec-elementi-plosc.html", "eq-el-n": "sec-elementi-plosc.html", "eq-el-polja": "sec-elementi-plosc.html", "lem-togost-mindlinove-plosce": "sec-elementi-plosc.html", "eq-el-b": "sec-elementi-plosc.html", "eq-el-togost": "sec-elementi-plosc.html", "sec-el-gauss": "sec-elementi-plosc.html", "lem-gauss-pravokotnik": "sec-elementi-plosc.html", "sec-el-zaklepanje": "sec-elementi-plosc.html", "eq-el-proste": "sec-elementi-plosc.html", "lem-strizno-zaklepanje-plosce": "sec-elementi-plosc.html", "eq-el-kazen": "sec-elementi-plosc.html", "fig-zaklepanje": "sec-elementi-plosc.html", "sec-el-izbirno": "sec-elementi-plosc.html", "thm-selektivna-integracija": "sec-elementi-plosc.html", "sec-el-laznji": "sec-elementi-plosc.html", "lem-laznji-nacini": "sec-elementi-plosc.html", "eq-el-nacina": "sec-elementi-plosc.html", "fig-laznji-nacini": "sec-elementi-plosc.html", "sec-el-povzetek": "sec-elementi-plosc.html", "sec-povezave-plosce": "sec-povezave-plosce.html", "eq-mindlin-presezek": "sec-povezave-plosce.html", "fig-c18-meje": "sec-povezave-plosce.html"}</script>
+<figure class="blk slika" id="fig-plosce-uvod-zgled"><p><span class="svgfig" role="img" aria-label="A square plate on four edges and a long plate on two edges under the same pressure with deflections 0,14 mm and 0,45 mm, vibration and buckling of the square"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='474.65pt' height='400.34pt' viewBox='-72.000004 -72.000006 351.58941 296.548224'>
+<defs>
+<path id='t-ch-plosce-00-1-g0-59' d='M2.022416-.009963C2.022416-.667497 1.77335-1.05604 1.384807-1.05604C1.05604-1.05604 .856787-.806974 .856787-.52802C.856787-.259029 1.05604 0 1.384807 0C1.504359 0 1.633873-.039851 1.733499-.129514C1.763387-.14944 1.77335-.159402 1.783313-.159402S1.803238-.14944 1.803238-.009963C1.803238 .727273 1.454545 1.325031 1.125778 1.653798C1.016189 1.763387 1.016189 1.783313 1.016189 1.8132C1.016189 1.882939 1.066002 1.92279 1.115816 1.92279C1.225405 1.92279 2.022416 1.155666 2.022416-.009963Z'/>
+<path id='t-ch-plosce-00-1-g0-78' d='M7.531756-5.758406C7.631382-6.156912 7.81071-6.465753 8.607721-6.495641C8.657534-6.495641 8.777086-6.505604 8.777086-6.694894C8.777086-6.704857 8.777086-6.804483 8.647572-6.804483C8.318804-6.804483 7.970112-6.774595 7.641345-6.774595C7.302615-6.774595 6.953923-6.804483 6.625156-6.804483C6.56538-6.804483 6.445828-6.804483 6.445828-6.60523C6.445828-6.495641 6.545455-6.495641 6.625156-6.495641C7.193026-6.485679 7.302615-6.276463 7.302615-6.057285C7.302615-6.027397 7.28269-5.877958 7.272727-5.84807L6.156912-1.414695L3.955168-6.615193C3.875467-6.794521 3.865504-6.804483 3.636364-6.804483H2.30137C2.102117-6.804483 2.012453-6.804483 2.012453-6.60523C2.012453-6.495641 2.102117-6.495641 2.291407-6.495641C2.34122-6.495641 2.968867-6.495641 2.968867-6.405978L1.633873-1.05604C1.534247-.657534 1.364882-.33873 .557908-.308842C.498132-.308842 .388543-.298879 .388543-.109589C.388543-.039851 .438356 0 .518057 0C.836862 0 1.185554-.029888 1.514321-.029888C1.853051-.029888 2.211706 0 2.540473 0C2.590286 0 2.719801 0 2.719801-.199253C2.719801-.298879 2.630137-.308842 2.520548-.308842C1.942715-.328767 1.863014-.547945 1.863014-.747198C1.863014-.816936 1.872976-.86675 1.902864-.976339L3.217933-6.236613C3.257783-6.176837 3.257783-6.156912 3.307597-6.057285L5.788294-.18929C5.858032-.019925 5.88792 0 5.977584 0C6.087173 0 6.087173-.029888 6.136986-.209215L7.531756-5.758406Z'/>
+<path id='t-ch-plosce-00-1-g1-40' d='M3.297634 2.391034C3.297634 2.361146 3.297634 2.34122 3.128269 2.171856C1.882939 .916563 1.564134-.966376 1.564134-2.49066C1.564134-4.224159 1.942715-5.957659 3.16812-7.202989C3.297634-7.32254 3.297634-7.342466 3.297634-7.372354C3.297634-7.442092 3.257783-7.47198 3.198007-7.47198C3.098381-7.47198 2.201743-6.794521 1.613948-5.529265C1.105853-4.433375 .986301-3.327522 .986301-2.49066C.986301-1.713574 1.09589-.508095 1.643836 .617684C2.241594 1.843088 3.098381 2.49066 3.198007 2.49066C3.257783 2.49066 3.297634 2.460772 3.297634 2.391034Z'/>
+<path id='t-ch-plosce-00-1-g1-41' d='M2.879203-2.49066C2.879203-3.267746 2.769614-4.473225 2.221669-5.599004C1.62391-6.824408 .767123-7.47198 .667497-7.47198C.607721-7.47198 .56787-7.43213 .56787-7.372354C.56787-7.342466 .56787-7.32254 .757161-7.143213C1.733499-6.156912 2.30137-4.572852 2.30137-2.49066C2.30137-.787049 1.932752 .966376 .697385 2.221669C.56787 2.34122 .56787 2.361146 .56787 2.391034C.56787 2.450809 .607721 2.49066 .667497 2.49066C.767123 2.49066 1.663761 1.8132 2.251557 .547945C2.759651-.547945 2.879203-1.653798 2.879203-2.49066Z'/>
+<path id='t-ch-plosce-00-1-g1-48' d='M4.582814-3.188045C4.582814-3.985056 4.533001-4.782067 4.184309-5.519303C3.726027-6.475716 2.909091-6.635118 2.49066-6.635118C1.892902-6.635118 1.165629-6.37609 .757161-5.449564C.438356-4.762142 .388543-3.985056 .388543-3.188045C.388543-2.440847 .428394-1.544209 .836862-.787049C1.265255 .019925 1.992528 .219178 2.480697 .219178C3.01868 .219178 3.775841 .009963 4.214197-.936488C4.533001-1.62391 4.582814-2.400996 4.582814-3.188045ZM2.480697 0C2.092154 0 1.504359-.249066 1.325031-1.205479C1.215442-1.803238 1.215442-2.719801 1.215442-3.307597C1.215442-3.945205 1.215442-4.60274 1.295143-5.140722C1.484433-6.326276 2.231631-6.41594 2.480697-6.41594C2.809465-6.41594 3.466999-6.236613 3.656289-5.250311C3.755915-4.692403 3.755915-3.935243 3.755915-3.307597C3.755915-2.560399 3.755915-1.882939 3.646326-1.24533C3.496887-.298879 2.929016 0 2.480697 0Z'/>
+<path id='t-ch-plosce-00-1-g1-49' d='M2.929016-6.37609C2.929016-6.615193 2.929016-6.635118 2.699875-6.635118C2.082192-5.997509 1.205479-5.997509 .886675-5.997509V-5.688667C1.085928-5.688667 1.673724-5.688667 2.191781-5.947696V-.787049C2.191781-.428394 2.161893-.308842 1.265255-.308842H.946451V0C1.295143-.029888 2.161893-.029888 2.560399-.029888S3.825654-.029888 4.174346 0V-.308842H3.855542C2.958904-.308842 2.929016-.418431 2.929016-.787049V-6.37609Z'/>
+<path id='t-ch-plosce-00-1-g1-52' d='M2.929016-1.643836V-.777086C2.929016-.418431 2.909091-.308842 2.171856-.308842H1.96264V0C2.371108-.029888 2.889166-.029888 3.307597-.029888S4.254047-.029888 4.662516 0V-.308842H4.4533C3.716065-.308842 3.696139-.418431 3.696139-.777086V-1.643836H4.692403V-1.952677H3.696139V-6.485679C3.696139-6.684932 3.696139-6.744707 3.536737-6.744707C3.447073-6.744707 3.417186-6.744707 3.337484-6.625156L.278954-1.952677V-1.643836H2.929016ZM2.988792-1.952677H.557908L2.988792-5.668742V-1.952677Z'/>
+<path id='t-ch-plosce-00-1-g1-53' d='M4.473225-2.002491C4.473225-3.188045 3.656289-4.184309 2.580324-4.184309C2.102117-4.184309 1.673724-4.024907 1.315068-3.676214V-5.618929C1.514321-5.559153 1.843088-5.489415 2.161893-5.489415C3.387298-5.489415 4.084682-6.396015 4.084682-6.525529C4.084682-6.585305 4.054795-6.635118 3.985056-6.635118C3.975093-6.635118 3.955168-6.635118 3.905355-6.60523C3.706102-6.515567 3.217933-6.316314 2.550436-6.316314C2.15193-6.316314 1.693649-6.386052 1.225405-6.595268C1.145704-6.625156 1.125778-6.625156 1.105853-6.625156C1.006227-6.625156 1.006227-6.545455 1.006227-6.386052V-3.437111C1.006227-3.257783 1.006227-3.178082 1.145704-3.178082C1.215442-3.178082 1.235367-3.20797 1.275218-3.267746C1.384807-3.427148 1.753425-3.965131 2.560399-3.965131C3.078456-3.965131 3.327522-3.506849 3.407223-3.327522C3.566625-2.958904 3.58655-2.570361 3.58655-2.072229C3.58655-1.723537 3.58655-1.125778 3.347447-.707347C3.108344-.318804 2.739726-.059776 2.281445-.059776C1.554172-.059776 .986301-.587796 .816936-1.175592C.846824-1.165629 .876712-1.155666 .986301-1.155666C1.315068-1.155666 1.484433-1.404732 1.484433-1.643836S1.315068-2.132005 .986301-2.132005C.846824-2.132005 .498132-2.062267 .498132-1.603985C.498132-.747198 1.185554 .219178 2.30137 .219178C3.457036 .219178 4.473225-.737235 4.473225-2.002491Z'/>
+<path id='t-ch-plosce-00-1-g1-57' d='M3.656289-3.16812V-2.849315C3.656289-.518057 2.620174-.059776 2.042341-.059776C1.872976-.059776 1.334994-.079701 1.066002-.418431C1.504359-.418431 1.58406-.707347 1.58406-.876712C1.58406-1.185554 1.344956-1.334994 1.125778-1.334994C.966376-1.334994 .667497-1.24533 .667497-.856787C.667497-.18929 1.205479 .219178 2.052304 .219178C3.337484 .219178 4.552927-1.135741 4.552927-3.277709C4.552927-5.957659 3.407223-6.635118 2.520548-6.635118C1.972603-6.635118 1.484433-6.455791 1.05604-6.007472C.647572-5.559153 .418431-5.140722 .418431-4.393524C.418431-3.148194 1.295143-2.171856 2.410959-2.171856C3.01868-2.171856 3.427148-2.590286 3.656289-3.16812ZM2.420922-2.400996C2.261519-2.400996 1.803238-2.400996 1.494396-3.028643C1.315068-3.39726 1.315068-3.895392 1.315068-4.383562C1.315068-4.921544 1.315068-5.389788 1.524284-5.758406C1.793275-6.256538 2.171856-6.386052 2.520548-6.386052C2.978829-6.386052 3.307597-6.047323 3.476961-5.599004C3.596513-5.280199 3.636364-4.652553 3.636364-4.194271C3.636364-3.367372 3.297634-2.400996 2.420922-2.400996Z'/>
+<path id='t-ch-plosce-00-1-g1-72' d='M6.107098-6.027397C6.107098-6.386052 6.127024-6.495641 6.894147-6.495641H7.13325V-6.804483C6.784558-6.774595 6.047323-6.774595 5.668742-6.774595S4.542964-6.774595 4.194271-6.804483V-6.495641H4.433375C5.200498-6.495641 5.220423-6.386052 5.220423-6.027397V-3.696139H2.241594V-6.027397C2.241594-6.386052 2.261519-6.495641 3.028643-6.495641H3.267746V-6.804483C2.919054-6.774595 2.181818-6.774595 1.803238-6.774595S.67746-6.774595 .328767-6.804483V-6.495641H.56787C1.334994-6.495641 1.354919-6.386052 1.354919-6.027397V-.777086C1.354919-.418431 1.334994-.308842 .56787-.308842H.328767V0C.67746-.029888 1.414695-.029888 1.793275-.029888S2.919054-.029888 3.267746 0V-.308842H3.028643C2.261519-.308842 2.241594-.418431 2.241594-.777086V-3.387298H5.220423V-.777086C5.220423-.418431 5.200498-.308842 4.433375-.308842H4.194271V0C4.542964-.029888 5.280199-.029888 5.65878-.029888S6.784558-.029888 7.13325 0V-.308842H6.894147C6.127024-.308842 6.107098-.418431 6.107098-.777086V-6.027397Z'/>
+<path id='t-ch-plosce-00-1-g1-80' d='M2.261519-3.148194H3.945205C5.140722-3.148194 6.216687-3.955168 6.216687-4.951432C6.216687-5.927771 5.230386-6.804483 3.865504-6.804483H.348692V-6.495641H.587796C1.354919-6.495641 1.374844-6.386052 1.374844-6.027397V-.777086C1.374844-.418431 1.354919-.308842 .587796-.308842H.348692V0C.697385-.029888 1.43462-.029888 1.8132-.029888S2.938979-.029888 3.287671 0V-.308842H3.048568C2.281445-.308842 2.261519-.418431 2.261519-.777086V-3.148194ZM2.231631-3.407223V-6.097136C2.231631-6.425903 2.251557-6.495641 2.719801-6.495641H3.606476C5.190535-6.495641 5.190535-5.439601 5.190535-4.951432C5.190535-4.483188 5.190535-3.407223 3.606476-3.407223H2.231631Z'/>
+<path id='t-ch-plosce-00-1-g1-97' d='M3.317559-.757161C3.35741-.358655 3.626401 .059776 4.094645 .059776C4.303861 .059776 4.911582-.079701 4.911582-.886675V-1.444583H4.662516V-.886675C4.662516-.308842 4.41345-.249066 4.303861-.249066C3.975093-.249066 3.935243-.697385 3.935243-.747198V-2.739726C3.935243-3.158157 3.935243-3.5467 3.576588-3.915318C3.188045-4.303861 2.689913-4.463263 2.211706-4.463263C1.39477-4.463263 .707347-3.995019 .707347-3.337484C.707347-3.038605 .9066-2.86924 1.165629-2.86924C1.444583-2.86924 1.62391-3.068493 1.62391-3.327522C1.62391-3.447073 1.574097-3.775841 1.115816-3.785803C1.384807-4.134496 1.872976-4.244085 2.191781-4.244085C2.67995-4.244085 3.247821-3.855542 3.247821-2.968867V-2.600249C2.739726-2.570361 2.042341-2.540473 1.414695-2.241594C.667497-1.902864 .418431-1.384807 .418431-.946451C.418431-.139477 1.384807 .109589 2.012453 .109589C2.669988 .109589 3.128269-.288917 3.317559-.757161ZM3.247821-2.391034V-1.39477C3.247821-.448319 2.530511-.109589 2.082192-.109589C1.594022-.109589 1.185554-.458281 1.185554-.956413C1.185554-1.504359 1.603985-2.331258 3.247821-2.391034Z'/>
+<path id='t-ch-plosce-00-1-g1-98' d='M1.713574-3.755915V-6.914072L.278954-6.804483V-6.495641C.976339-6.495641 1.05604-6.425903 1.05604-5.937733V0H1.305106C1.315068-.009963 1.39477-.14944 1.663761-.617684C1.8132-.388543 2.231631 .109589 2.968867 .109589C4.154421 .109589 5.190535-.86675 5.190535-2.15193C5.190535-3.417186 4.214197-4.403487 3.078456-4.403487C2.30137-4.403487 1.872976-3.935243 1.713574-3.755915ZM1.743462-1.135741V-3.188045C1.743462-3.377335 1.743462-3.387298 1.853051-3.5467C2.241594-4.104608 2.789539-4.184309 3.028643-4.184309C3.476961-4.184309 3.835616-3.92528 4.07472-3.5467C4.333748-3.138232 4.363636-2.570361 4.363636-2.161893C4.363636-1.793275 4.343711-1.195517 4.054795-.747198C3.845579-.438356 3.466999-.109589 2.929016-.109589C2.480697-.109589 2.122042-.348692 1.882939-.71731C1.743462-.926526 1.743462-.956413 1.743462-1.135741Z'/>
+<path id='t-ch-plosce-00-1-g1-99' d='M1.165629-2.171856C1.165629-3.795766 1.982565-4.214197 2.510585-4.214197C2.600249-4.214197 3.227895-4.204234 3.576588-3.845579C3.16812-3.815691 3.108344-3.516812 3.108344-3.387298C3.108344-3.128269 3.287671-2.929016 3.566625-2.929016C3.825654-2.929016 4.024907-3.098381 4.024907-3.39726C4.024907-4.07472 3.267746-4.463263 2.500623-4.463263C1.255293-4.463263 .33873-3.387298 .33873-2.15193C.33873-.876712 1.325031 .109589 2.480697 .109589C3.815691 .109589 4.134496-1.085928 4.134496-1.185554S4.034869-1.285181 4.004981-1.285181C3.915318-1.285181 3.895392-1.24533 3.875467-1.185554C3.58655-.259029 2.938979-.139477 2.570361-.139477C2.042341-.139477 1.165629-.56787 1.165629-2.171856Z'/>
+<path id='t-ch-plosce-00-1-g1-100' d='M3.785803-.547945V.109589L5.250311 0V-.308842C4.552927-.308842 4.473225-.37858 4.473225-.86675V-6.914072L3.038605-6.804483V-6.495641C3.73599-6.495641 3.815691-6.425903 3.815691-5.937733V-3.785803C3.526775-4.144458 3.098381-4.403487 2.560399-4.403487C1.384807-4.403487 .33873-3.427148 .33873-2.141968C.33873-.876712 1.315068 .109589 2.450809 .109589C3.088418 .109589 3.536737-.229141 3.785803-.547945ZM3.785803-3.217933V-1.175592C3.785803-.996264 3.785803-.976339 3.676214-.806974C3.377335-.328767 2.929016-.109589 2.500623-.109589C2.052304-.109589 1.693649-.368618 1.454545-.747198C1.195517-1.155666 1.165629-1.723537 1.165629-2.132005C1.165629-2.500623 1.185554-3.098381 1.474471-3.5467C1.683686-3.855542 2.062267-4.184309 2.600249-4.184309C2.948941-4.184309 3.367372-4.034869 3.676214-3.58655C3.785803-3.417186 3.785803-3.39726 3.785803-3.217933Z'/>
+<path id='t-ch-plosce-00-1-g1-107' d='M1.05604-.757161C1.05604-.308842 .946451-.308842 .278954-.308842V0C.607721-.009963 1.075965-.029888 1.364882-.029888C1.663761-.029888 2.062267-.019925 2.460772 0V-.308842C1.793275-.308842 1.683686-.308842 1.683686-.757161V-1.783313L2.321295-2.331258C3.088418-1.275218 3.506849-.71731 3.506849-.537983C3.506849-.348692 3.337484-.308842 3.148194-.308842V0C3.427148-.009963 4.014944-.029888 4.224159-.029888C4.513076-.029888 4.801993-.019925 5.090909 0V-.308842C4.722291-.308842 4.503113-.308842 4.124533-.836862L2.859278-2.620174C2.849315-2.6401 2.799502-2.699875 2.799502-2.729763C2.799502-2.769614 3.506849-3.367372 3.606476-3.447073C4.234122-3.955168 4.652553-3.975093 4.861768-3.985056V-4.293898C4.572852-4.26401 4.443337-4.26401 4.164384-4.26401C3.805729-4.26401 3.188045-4.283935 3.048568-4.293898V-3.985056C3.237858-3.975093 3.337484-3.865504 3.337484-3.73599C3.337484-3.536737 3.198007-3.417186 3.118306-3.347447L1.713574-2.132005V-6.914072L.278954-6.804483V-6.495641C.976339-6.495641 1.05604-6.425903 1.05604-5.937733V-.757161Z'/>
+<path id='t-ch-plosce-00-1-g1-109' d='M1.09589-3.427148V-.757161C1.09589-.308842 .986301-.308842 .318804-.308842V0C.667497-.009963 1.175592-.029888 1.444583-.029888C1.703611-.029888 2.221669-.009963 2.560399 0V-.308842C1.892902-.308842 1.783313-.308842 1.783313-.757161V-2.590286C1.783313-3.626401 2.49066-4.184309 3.128269-4.184309C3.755915-4.184309 3.865504-3.646326 3.865504-3.078456V-.757161C3.865504-.308842 3.755915-.308842 3.088418-.308842V0C3.437111-.009963 3.945205-.029888 4.214197-.029888C4.473225-.029888 4.991283-.009963 5.330012 0V-.308842C4.662516-.308842 4.552927-.308842 4.552927-.757161V-2.590286C4.552927-3.626401 5.260274-4.184309 5.897883-4.184309C6.525529-4.184309 6.635118-3.646326 6.635118-3.078456V-.757161C6.635118-.308842 6.525529-.308842 5.858032-.308842V0C6.206725-.009963 6.714819-.029888 6.983811-.029888C7.242839-.029888 7.760897-.009963 8.099626 0V-.308842C7.581569-.308842 7.332503-.308842 7.32254-.607721V-2.510585C7.32254-3.367372 7.32254-3.676214 7.013699-4.034869C6.874222-4.204234 6.545455-4.403487 5.967621-4.403487C5.13076-4.403487 4.692403-3.805729 4.523039-3.427148C4.383562-4.293898 3.646326-4.403487 3.198007-4.403487C2.470735-4.403487 2.002491-3.975093 1.723537-3.35741V-4.403487L.318804-4.293898V-3.985056C1.016189-3.985056 1.09589-3.915318 1.09589-3.427148Z'/>
+<path id='t-ch-plosce-00-1-g1-122' d='M3.88543-3.995019C3.975093-4.104608 3.975093-4.124533 3.975093-4.164384C3.975093-4.293898 3.895392-4.293898 3.716065-4.293898H.52802L.418431-2.689913H.667497C.727273-3.706102 .916563-4.07472 2.012453-4.07472H3.148194L.368618-.318804C.278954-.209215 .278954-.18929 .278954-.139477C.278954 0 .348692 0 .537983 0H3.825654L3.995019-1.863014H3.745953C3.656289-.687422 3.447073-.249066 2.291407-.249066H1.115816L3.88543-3.995019Z'/>
+</defs>
+<g id='t-ch-plosce-00-1-page1'>
+<g stroke-miterlimit='10' transform='translate(-12.494862,78.765968)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='tloris4'>
+<g fill='#e6ffe6' stroke='#e6ffe6'>
+<path d='M0 45.52455V125.1919H79.66776V45.52455ZM79.66776 125.1919' stroke='none'/>
+</g>
+<path d='M0 45.52455V125.1919H79.66776V45.52455ZM79.66776 125.1919' fill='none'/>
+<g transform='translate(33.44476,-52.2923)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-12.494862,78.765968)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-12.494862' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-40'/>
+<use x='-8.620488' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-97'/>
+<use x='-3.639149' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-41'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='rob4'>
+<g stroke-width='1.6'>
+<path d='M0 45.52455V125.1919H79.66776V45.52455ZM79.66776 125.1919' fill='none'/>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M2.84544 45.52455L-1.42229 41.25682' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M2.84544 125.1919L7.11317 129.45963' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 48.37001L-4.26773 52.63774' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M79.66776 48.37001L83.93549 44.10228' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M9.95863 45.52455L5.6909 41.25682' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M9.95863 125.1919L14.22636 129.45963' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 55.48318L-4.26773 59.75092' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M79.66776 55.48318L83.93549 51.21545' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M17.07181 45.52455L12.80408 41.25682' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M17.07181 125.1919L21.33954 129.45963' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 62.59637L-4.26773 66.8641' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M79.66776 62.59637L83.93549 58.32864' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M24.185 45.52455L19.91727 41.25682' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M24.185 125.1919L28.45273 129.45963' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 69.70956L-4.26773 73.9773' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M79.66776 69.70956L83.93549 65.44183' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M31.29819 45.52455L27.03046 41.25682' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M31.29819 125.1919L35.56592 129.45963' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 76.82275L-4.26773 81.09048' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M79.66776 76.82275L83.93549 72.55502' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M38.41138 45.52455L34.14365 41.25682' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M38.41138 125.1919L42.67911 129.45963' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 83.93593L-4.26773 88.20366' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M79.66776 83.93593L83.93549 79.6682' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M45.52455 45.52455L41.25682 41.25682' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M45.52455 125.1919L49.79228 129.45963' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 91.04912L-4.26773 95.31685' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M79.66776 91.04912L83.93549 86.78139' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M52.63774 45.52455L48.37001 41.25682' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M52.63774 125.1919L56.90547 129.45963' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 98.16231L-4.26773 102.43004' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M79.66776 98.16231L83.93549 93.89458' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M59.75093 45.52455L55.4832 41.25682' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M59.75093 125.1919L64.01866 129.45963' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 105.2755L-4.26773 109.54323' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M79.66776 105.2755L83.93549 101.00777' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M66.86412 45.52455L62.59639 41.25682' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M66.86412 125.1919L71.13185 129.45963' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 112.38867L-4.26773 116.6564' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M79.66776 112.38867L83.93549 108.12094' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M73.9773 45.52455L69.70956 41.25682' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M73.9773 125.1919L78.24503 129.45963' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M0 119.50186L-4.26773 123.76959' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M79.66776 119.50186L83.93549 115.23413' fill='none'/>
+</g>
+</g>
+<path d='M0 0L-5.12128-9.10507H5.12128Z' fill='none'/>
+<path d='M79.66776 0L74.54604-9.10507H84.78905Z' fill='none'/>
+</g>
+<g class='del' data-del='a'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M.33748 137.99597H79.33028' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,6.14052,137.99597)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,0.22499,137.99597)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(73.52724,137.99597)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.04976 0L.72658 1.62856L2.14713 0L.72658-1.62856Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(79.44276,137.99597)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.41432V-3.41432' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='translate(22.33383,141.55394)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-12.494862,78.765968)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-12.494862' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-53'/>
+<use x='-7.513523' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-48'/>
+<use x='-2.532184' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-48'/>
+<use x='5.77003' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-109'/>
+<use x='14.072256' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-109'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='q4'>
+<path d='M5.69046 24.185V10.61182' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,5.69046,13.08827)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<path d='M17.07181 24.185V10.61182' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,17.07181,13.08827)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<path d='M28.45317 24.185V10.61182' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,28.45317,13.08827)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<path d='M39.83453 24.185V10.61182' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,39.83453,13.08827)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<path d='M51.21588 24.185V10.61182' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,51.21588,13.08827)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<path d='M62.59724 24.185V10.61182' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,62.59724,13.08827)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<path d='M73.9786 24.185V10.61182' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,73.9786,13.08827)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(83.30074,17.86734)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-12.494862,78.765968)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-12.494862' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-49'/>
+<use x='-7.513523' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-48'/>
+<use x='.788691' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-107'/>
+<use x='6.046779' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-80'/>
+<use x='12.550177' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-97'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='pred4'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0 0H79.66776M0 4.26773H79.66776' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='h'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-4.26773 0H-21.33955M-4.26773 4.26773H-21.33955' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-17.07181-12.80363V-4.41649' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,-17.07181,-6.82864)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M6.1547 0L.75389 1.91983L2.52464 0L.75389-1.91983Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M-17.07181 17.07181V8.68422' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,-17.07181,11.09637)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M6.1547 0L.75389 1.91983L2.52464 0L.75389-1.91983Z'/>
+ </g>
+ </g>
+</g>
+</g>
+</g>
+<g transform='translate(-56.39531,-1.23032)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-12.494862,78.765968)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-12.494862' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-49'/>
+<use x='-7.513523' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-48'/>
+<use x='.788691' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-109'/>
+<use x='9.090917' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-109'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='po4'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M0 0L2.74689-.92213L5.49379-1.83429L8.24068-2.72475L10.98758-3.5835L13.73447-4.40015L16.48137-5.16469L19.22826-5.86932L21.97516-6.5045L24.72205-7.06412L27.46895-7.54039L30.21584-7.92853L32.96274-8.22374L35.70963-8.42259L38.45653-8.52287H41.20341L43.95032-8.42302L46.6972-8.22461L49.4441-7.92982L52.191-7.54213L54.9379-7.06586L57.68478-6.50623L60.43169-5.87106L63.17857-5.1673L65.92548-4.40231L68.67236-3.58568L71.41927-2.72736L74.16615-1.8369L76.91306-.92517L79.65994-.0026' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M0 4.26773L2.74689 3.34558L5.49379 2.43343L8.24068 1.54298L10.98758 .68422L13.73447-.13242L16.48137-.89696L19.22826-1.6016L21.97516-2.23676L24.72205-2.79639L27.46895-3.27264L30.21584-3.66078L32.96274-3.95601L35.70963-4.15485L38.45653-4.25514H41.20341L43.95032-4.15529L46.6972-3.95688L49.4441-3.66208L52.191-3.27438L54.9379-2.79811L57.68478-2.2385L60.43169-1.60332L63.17857-.89957L65.92548-.13458L68.67236 .68205L71.41927 1.54037L74.16615 2.43082L76.91306 3.34254L79.65994 4.26512' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='w4'>
+<g fill='#00f' stroke='#00f'>
+<path d='M39.83366-.45V-8.0859' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,39.83366,-0.3)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.69885V-3.69885' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,39.83366,-1.10725)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,39.83366,-8.2359)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.69885V-3.69885' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(44.88936,-17.8991)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-12.494862,78.765968)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-12.494862' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-48'/>
+<use x='-7.513523' y='78.765968' xlink:href='#t-ch-plosce-00-1-g0-59'/>
+<use x='-4.746114' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-49'/>
+<use x='.235225' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-52'/>
+<use x='8.537439' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-109'/>
+<use x='16.839664' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-109'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='tloris2'>
+<g fill='#e6ffe6' stroke='#e6ffe6'>
+<path d='M176.40692 45.52455L196.32375 48.93875L216.24059 45.52455L236.15785 48.93875L256.07468 45.52455V125.1919L236.15785 128.60652L216.24059 125.1919L196.32375 128.60652L176.40692 125.1919Z' stroke='none'/>
+</g>
+<path d='M176.40692 45.52455L196.32375 48.93875L216.24059 45.52455L236.15785 48.93875L256.07468 45.52455' fill='none'/>
+<path d='M176.40692 125.1919L196.32375 128.60652L216.24059 125.1919L236.15785 128.60652L256.07468 125.1919' fill='none'/>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M176.40692 45.52455V31.29819M256.07468 45.52455V31.29819M176.40692 125.1919V140.84099M256.07468 125.1919V140.84099' fill='none'/>
+</g>
+</g>
+</g>
+<g transform='translate(209.5739,-52.2923)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-12.494862,78.765968)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-12.494862' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-40'/>
+<use x='-8.620488' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-98'/>
+<use x='-3.085671' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-41'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='rob2'>
+<g stroke-width='1.6'>
+<path d='M176.40692 45.52455V125.1919M256.07468 45.52455V125.1919' fill='none'/>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M176.40692 48.37001L172.13919 52.63774' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M256.07468 48.37001L260.3424 44.10228' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M176.40692 55.48318L172.13919 59.75092' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M256.07468 55.48318L260.3424 51.21545' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M176.40692 62.59637L172.13919 66.8641' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M256.07468 62.59637L260.3424 58.32864' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M176.40692 69.70956L172.13919 73.9773' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M256.07468 69.70956L260.3424 65.44183' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M176.40692 76.82275L172.13919 81.09048' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M256.07468 76.82275L260.3424 72.55502' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M176.40692 83.93593L172.13919 88.20366' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M256.07468 83.93593L260.3424 79.6682' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M176.40692 91.04912L172.13919 95.31685' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M256.07468 91.04912L260.3424 86.78139' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M176.40692 98.16231L172.13919 102.43004' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M256.07468 98.16231L260.3424 93.89458' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M176.40692 105.2755L172.13919 109.54323' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M256.07468 105.2755L260.3424 101.00777' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M176.40692 112.38867L172.13919 116.6564' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M256.07468 112.38867L260.3424 108.12094' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M176.40692 119.50186L172.13919 123.76959' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.45'>
+<path d='M256.07468 119.50186L260.3424 115.23413' fill='none'/>
+</g>
+</g>
+<path d='M176.40692 0L171.28564-9.10507H181.5282Z' fill='none'/>
+<path d='M256.07468 0L250.95296-9.10507H261.19597Z' fill='none'/>
+</g>
+<g class='del' data-del='q2'>
+<path d='M182.09738 24.185V10.61182' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,182.09738,13.08827)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<path d='M193.47873 24.185V10.61182' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,193.47873,13.08827)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<path d='M204.86009 24.185V10.61182' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,204.86009,13.08827)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<path d='M216.24146 24.185V10.61182' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,216.24146,13.08827)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<path d='M227.6228 24.185V10.61182' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,227.6228,13.08827)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<path d='M239.00417 24.185V10.61182' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,239.00417,13.08827)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<path d='M250.38553 24.185V10.61182' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,250.38553,13.08827)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(259.70766,17.86734)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-12.494862,78.765968)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-12.494862' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-49'/>
+<use x='-7.513523' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-48'/>
+<use x='.788691' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-107'/>
+<use x='6.046779' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-80'/>
+<use x='12.550177' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-97'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='pred2'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M176.40692 0H256.07468M176.40692 4.26773H256.07468' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='po2'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M176.40692 0L179.15381-2.95181L181.90071-5.8702L184.6476-8.71999L187.3945-11.46732L190.14139-14.08049L192.88829-16.52824L195.63518-18.78151L198.38208-20.8151L201.12897-22.60597L203.87587-24.1303L206.62276-25.3724L209.36966-26.31627L212.11655-26.95273L214.86345-27.27313L217.61034-27.27357L220.35724-26.95404L223.10413-26.31886L225.85103-25.37589L228.59792-24.13507L231.34482-22.61119L234.0917-20.82117L236.83861-18.78845L239.5855-16.5352L242.3324-14.0883L245.07928-11.4747L247.82619-8.72867L250.57307-5.87845L253.31998-2.9605L256.06686-.00868' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M176.40692 4.26773L179.15381 1.31592L181.90071-1.60246L184.6476-4.45224L187.3945-7.19957L190.14139-9.81274L192.88829-12.26051L195.63518-14.51378L198.38208-16.54735L201.12897-18.33824L203.87587-19.86256L206.62276-21.10468L209.36966-22.04852L212.11655-22.685L214.86345-23.0054L217.61034-23.00583L220.35724-22.6863L223.10413-22.05113L225.85103-21.10814L228.59792-19.86732L231.34482-18.34344L234.0917-16.55344L236.83861-14.52072L239.5855-12.26746L242.3324-9.82057L245.07928-7.20695L247.82619-4.46092L250.57307-1.6107L253.31998 1.30724L256.06686 4.25905' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='w2'>
+<g fill='#00f' stroke='#00f'>
+<path d='M216.24059-.45V-26.86482' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,216.24059,-0.3)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.69885V-3.69885' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,216.24059,-19.88617)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,216.24059,-27.01482)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linecap='butt'>
+ <g stroke-linejoin='miter'>
+ <path d='M0 3.69885V-3.69885' fill='none'/>
+ </g>
+ </g>
+ </g>
+</g>
+</g>
+<g fill='#00f' stroke='#00f'>
+<g fill='#00f' stroke='#00f'>
+</g>
+<g transform='translate(221.29628,-36.3932)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-12.494862,78.765968)scale(-1,-1)'>
+<g fill='#00f'>
+<g stroke='none'>
+<g fill='#00f'>
+<use x='-12.494862' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-48'/>
+<use x='-7.513523' y='78.765968' xlink:href='#t-ch-plosce-00-1-g0-59'/>
+<use x='-4.746114' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-52'/>
+<use x='.235225' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-53'/>
+<use x='8.537439' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-109'/>
+<use x='16.839664' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-109'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='ravna3'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M0-102.43004H79.66776' fill='none'/>
+</g>
+</g>
+</g>
+<path d='M0-102.43004L-5.12128-111.53511H5.12128Z' fill='none'/>
+<path d='M79.66776-102.43004L74.54604-111.53511H84.78905Z' fill='none'/>
+<g transform='translate(33.72255,-140.49596)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-12.494862,78.765968)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-12.494862' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-40'/>
+<use x='-8.620488' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-99'/>
+<use x='-4.192636' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-41'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='nihanje'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M0-102.43004L2.74689-100.8927L5.49379-99.37273L8.24068-97.88835L10.98758-96.45738L13.73447-95.09631L16.48137-93.82164L19.22826-92.64812L21.97516-91.58878L24.72205-90.65622L27.46895-89.86214L30.21584-89.21526L32.96274-88.72379L35.70963-88.39209L38.45653-88.22539L41.20341-88.22495L43.95032-88.39166L46.6972-88.72249L49.4441-89.21352L52.191-89.85997L54.9379-90.65361L57.68478-91.58574L60.43169-92.64464L63.17857-93.81816L65.92548-95.0924L68.67236-96.45348L71.41927-97.88402L74.16615-99.3684L76.91306-100.88792L79.65994-102.4257' fill='none'/>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M0-102.43004L2.74689-103.96738L5.49379-105.48735L8.24068-106.97173L10.98758-108.4027L13.73447-109.76376L16.48137-111.03844L19.22826-112.21196L21.97516-113.2713L24.72205-114.20386L27.46895-114.99794L30.21584-115.64482L32.96274-116.13629L35.70963-116.46799L38.45653-116.63469L41.20341-116.63513L43.95032-116.46841L46.6972-116.13759L49.4441-115.64656L52.191-115.0001L54.9379-114.20647L57.68478-113.27434L60.43169-112.21544L63.17857-111.04192L65.92548-109.76767L68.67236-108.4066L71.41927-106.97606L74.16615-105.49168L76.91306-103.97215L79.65994-102.43437' fill='none'/>
+</g>
+</g>
+<path d='M39.83366-94.83214V-110.02794' fill='none'/>
+<g transform='matrix(0.0,1.0,-1.0,0.0,39.83366,-97.3086)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='matrix(0.0,-1.0,1.0,0.0,39.83366,-107.55148)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+</g>
+<g class='del' data-del='f'>
+<g transform='translate(87.56848,-95.88806)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-12.494862,78.765968)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-12.494862' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-49'/>
+<use x='-7.513523' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-57'/>
+<use x='-2.532184' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-48'/>
+<use x='5.77003' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-72'/>
+<use x='13.242029' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-122'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='ravna4'>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-dasharray='3.0,3.0' stroke-dashoffset='0.0'>
+<g stroke-width='0.45'>
+<path d='M176.40692-102.43004H256.07468' fill='none'/>
+</g>
+</g>
+</g>
+<path d='M176.40692-102.43004L171.28564-111.53511H181.5282Z' fill='none'/>
+<path d='M256.07468-102.43004L250.95296-111.53511H261.19597Z' fill='none'/>
+<g transform='translate(209.5739,-140.49596)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-12.494862,78.765968)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-12.494862' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-40'/>
+<use x='-8.620488' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-100'/>
+<use x='-3.085671' y='78.765968' xlink:href='#t-ch-plosce-00-1-g1-41'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='N'>
+<path d='M145.10873-102.43004H169.77847' fill='none'/>
+<g transform='translate(167.30202,-102.43004)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<path d='M287.37244-102.43004H262.70314' fill='none'/>
+<g transform='matrix(-1.0,0.0,0.0,-1.0,265.1796,-102.43004)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M5.93002 0L1.00522 1.7536L2.62645 0L1.00522-1.7536Z'/>
+ </g>
+ </g>
+</g>
+<g transform='translate(151.92761,-97.37434)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-12.494862,78.765968)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-12.494862' y='78.765968' xlink:href='#t-ch-plosce-00-1-g0-78'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(271.42903,-97.37434)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-12.494862,78.765968)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-12.494862' y='78.765968' xlink:href='#t-ch-plosce-00-1-g0-78'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='izbocena'>
+<g fill='#f00' stroke='#f00'>
+<g stroke-width='0.9'>
+<path d='M176.40692-102.43004L179.15381-100.73901L181.90071-99.0671L184.6476-97.43423L187.3945-95.86043L190.14139-94.36302L192.88829-92.96114L195.63518-91.66997L198.38208-90.5047L201.12897-89.47879L203.87587-88.6057L206.62276-87.89412L209.36966-87.35316L212.11655-86.98848L214.86345-86.80482L217.61034-86.8044L220.35724-86.98761L223.10413-87.35143L225.85103-87.89195L228.59792-88.60266L231.34482-89.47575L234.0917-90.50165L236.83861-91.66606L239.5855-92.9568L242.3324-94.35869L245.07928-95.85608L247.82619-97.42946L250.57307-99.06232L253.31998-100.73381L256.06686-102.42528' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 18.1</span>: The steel plate of the chapter, \(10\) mm thick, under a pressure of \(10\) kPa. (a) A square \(500\) mm × \(500\) mm supported along all four edges: above the plan, below the side view, grey dashed before loading, orange after it, the deflection at the centre in blue. (b) A long plate with the same span, supported along two opposite edges only, with a deflection more than three times larger. (c) The square of (a) vibrates up and down between the two orange positions. (d) Two compressive forces \(N\) in its plane make it buckle. The thickness and the deflections are strongly exaggerated, the deflections of (a) and (b) in the same scale.</figcaption></figure>
+<p>Why this matters is shown by a steel plate that accompanies all the calculations of the chapter (figure <a class="xref" href="ch-plosce.html#fig-plosce-uvod-zgled" data-knowl="fig-plosce-uvod-zgled">18.1</a>). In the <a data-del="tloris4" class="xref kaz" href="ch-plosce.html#fig-plosce-uvod-zgled" data-knowl="fig-plosce-uvod-zgled">plan</a> it is a square with <a data-del="a" class="xref kaz" href="ch-plosce.html#fig-plosce-uvod-zgled" data-knowl="fig-plosce-uvod-zgled">side \(500\) mm</a>. The <a data-del="pred4" class="xref kaz" href="ch-plosce.html#fig-plosce-uvod-zgled" data-knowl="fig-plosce-uvod-zgled">side view</a> below shows the <a data-del="h" class="xref kaz" href="ch-plosce.html#fig-plosce-uvod-zgled" data-knowl="fig-plosce-uvod-zgled">thickness \(10\) mm</a>, drawn far too large. We <a data-del="rob4" class="xref kaz" href="ch-plosce.html#fig-plosce-uvod-zgled" data-knowl="fig-plosce-uvod-zgled">support the plate along all four edges</a> and load it with a <a data-del="q4" class="xref kaz" href="ch-plosce.html#fig-plosce-uvod-zgled" data-knowl="fig-plosce-uvod-zgled">pressure of \(10\) kPa</a>, about what a column of water one metre high presses with. The plate <a data-del="po4" class="xref kaz" href="ch-plosce.html#fig-plosce-uvod-zgled" data-knowl="fig-plosce-uvod-zgled">bends</a>, at its centre by <a data-del="w4" class="xref kaz" href="ch-plosce.html#fig-plosce-uvod-zgled" data-knowl="fig-plosce-uvod-zgled">a little more than a tenth of a millimetre, \(0{,}14\) mm</a> (section <a class="xref" href="sec-navierova-resitev.html">18.5</a>).</p>
+<p>Why is a beam not enough here? Take a <a data-del="tloris2" class="xref kaz" href="ch-plosce.html#fig-plosce-uvod-zgled" data-knowl="fig-plosce-uvod-zgled">very long plate</a> with the same span of \(500\) mm and the same thickness and <a data-del="rob2" class="xref kaz" href="ch-plosce.html#fig-plosce-uvod-zgled" data-knowl="fig-plosce-uvod-zgled">support it along two opposite edges only</a>, like a trench cover. Under the <a data-del="q2" class="xref kaz" href="ch-plosce.html#fig-plosce-uvod-zgled" data-knowl="fig-plosce-uvod-zgled">same pressure</a> the <a data-del="pred2" class="xref kaz" href="ch-plosce.html#fig-plosce-uvod-zgled" data-knowl="fig-plosce-uvod-zgled">flat plate</a> <a data-del="po2" class="xref kaz" href="ch-plosce.html#fig-plosce-uvod-zgled" data-knowl="fig-plosce-uvod-zgled">bends</a> by <a data-del="w2" class="xref kaz" href="ch-plosce.html#fig-plosce-uvod-zgled" data-knowl="fig-plosce-uvod-zgled">\(0{,}45\) mm</a>, more than three times as much (section <a class="xref" href="sec-plosca-trak.html">18.4</a>). Here every narrow band of the plate from support to support carries its own load alone, like a row of beams side by side. The <a data-del="tloris4" class="xref kaz" href="ch-plosce.html#fig-plosce-uvod-zgled" data-knowl="fig-plosce-uvod-zgled">square</a>, however, carries the load to the supports in both directions at once, along \(x\) and along <span class="nobr">\(y\),</span> and therefore bends less. A beam has no such sharing of the load between two directions, so we describe a plate by a deflection that is a function of two variables.</p>
+<p>A plate also vibrates. The lowest natural frequency of the square of (a) is about <a data-del="f" class="xref kaz" href="ch-plosce.html#fig-plosce-uvod-zgled" data-knowl="fig-plosce-uvod-zgled">\(190\) Hz</a> (section <a class="xref" href="sec-energijske-metode-plosc.html">18.7</a>): the <a data-del="ravna3" class="xref kaz" href="ch-plosce.html#fig-plosce-uvod-zgled" data-knowl="fig-plosce-uvod-zgled">flat plate</a> <a data-del="nihanje" class="xref kaz" href="ch-plosce.html#fig-plosce-uvod-zgled" data-knowl="fig-plosce-uvod-zgled">bends up and down</a>, \(190\) times a second. The deflection decides whether a floor or a cover carries the load, the frequency whether a machine turning at a similar frequency excites the plate. If we <a data-del="N" class="xref kaz" href="ch-plosce.html#fig-plosce-uvod-zgled" data-knowl="fig-plosce-uvod-zgled">compress</a> the <a data-del="ravna4" class="xref kaz" href="ch-plosce.html#fig-plosce-uvod-zgled" data-knowl="fig-plosce-uvod-zgled">flat plate</a> in its own plane it can <a data-del="izbocena" class="xref kaz" href="ch-plosce.html#fig-plosce-uvod-zgled" data-knowl="fig-plosce-uvod-zgled">buckle</a>, and the chapter shows at which load.</p>
+<!-- nofig: signpost -->
+<p>The chapter promises three things. First, from the assumptions about a thin plate we derive, following the beam, the displacements, the <a class="xref auto" href="sec-sila-v-palici.html#def-notranja-sila" data-knowl="def-notranja-sila">internal forces</a>, a single equation of equilibrium and the edge conditions of the different supports. Second, we solve the equation on a strip, on a rectangle with the series of <a class="xref" href="ch-nihanje-zveznih-sistemov.html">13</a> and on a circular plate, and then use energy methods to find vibration and buckling. Third, we show where the simplification fails for thick plates and carry the plate over to the finite elements of <a class="xref" href="ch-mke-nosilci.html">12</a>.</p>
+
+<script type="application/json" id="moved">{"sec-kirchhoffova-plosca": "sec-kirchhoffova-plosca.html", "sec-kp-plosca": "sec-kirchhoffova-plosca.html", "fig-kp-plosca": "sec-kirchhoffova-plosca.html", "def-plosca": "sec-kirchhoffova-plosca.html", "eq-plosca": "sec-kirchhoffova-plosca.html", "sec-kp-idealizacije": "sec-kirchhoffova-plosca.html", "fig-kp-kinematika": "sec-kirchhoffova-plosca.html", "def-kirchhoffova-plosca": "sec-kirchhoffova-plosca.html", "fig-kp-meje": "sec-kirchhoffova-plosca.html", "thm-polje-pomikov-plosce": "sec-kirchhoffova-plosca.html", "eq-polje-pomikov-plosce": "sec-kirchhoffova-plosca.html", "eq-deformacije-plosce": "sec-kirchhoffova-plosca.html", "def-ukrivljenosti-plosce": "sec-kirchhoffova-plosca.html", "eq-ukrivljenosti-plosce": "sec-kirchhoffova-plosca.html", "fig-kp-ukrivljenosti": "sec-kirchhoffova-plosca.html", "sec-kp-momenti": "sec-kirchhoffova-plosca.html", "fig-kp-momenti": "sec-kirchhoffova-plosca.html", "def-momenti-plosce": "sec-kirchhoffova-plosca.html", "eq-momenti-plosce": "sec-kirchhoffova-plosca.html", "def-upogibna-togost-plosce": "sec-kirchhoffova-plosca.html", "eq-upogibna-togost-plosce": "sec-kirchhoffova-plosca.html", "fig-kp-po-debelini": "sec-kirchhoffova-plosca.html", "thm-momenti-ukrivljenosti": "sec-kirchhoffova-plosca.html", "eq-napetosti-plosce": "sec-kirchhoffova-plosca.html", "eq-momenti-ukrivljenosti": "sec-kirchhoffova-plosca.html", "cor-napetosti-plosce": "sec-kirchhoffova-plosca.html", "eq-napetosti-iz-momentov": "sec-kirchhoffova-plosca.html", "eq-napetosti-najvecje": "sec-kirchhoffova-plosca.html", "fig-kp-zgleda": "sec-kirchhoffova-plosca.html", "sec-kp-ozki-nosilec": "sec-kirchhoffova-plosca.html", "fig-kp-ozki": "sec-kirchhoffova-plosca.html", "sec-kp-cena": "sec-kirchhoffova-plosca.html", "fig-kp-cena": "sec-kirchhoffova-plosca.html", "sec-kp-oznake": "sec-kirchhoffova-plosca.html", "fig-kp-oznake": "sec-kirchhoffova-plosca.html", "sec-ravnotezje-plosce": "sec-ravnotezje-plosce.html", "sec-rp-precne-sile": "sec-ravnotezje-plosce.html", "fig-rp-kos": "sec-ravnotezje-plosce.html", "def-precne-sile-plosce": "sec-ravnotezje-plosce.html", "eq-precne-sile-plosce": "sec-ravnotezje-plosce.html", "sec-rp-kos": "sec-ravnotezje-plosce.html", "fig-rp-tloris-kosa": "sec-ravnotezje-plosce.html", "lem-ravnovesje-kosa-plosce": "sec-ravnotezje-plosce.html", "eq-rp-sila": "sec-ravnotezje-plosce.html", "eq-rp-moment-x": "sec-ravnotezje-plosce.html", "eq-rp-moment-y": "sec-ravnotezje-plosce.html", "fig-rp-preizkus-kosa": "sec-ravnotezje-plosce.html", "sec-rp-enacba": "sec-ravnotezje-plosce.html", "fig-rp-poti-obtezbe": "sec-ravnotezje-plosce.html", "fig-rp-divergenca": "sec-ravnotezje-plosce.html", "lem-divergenca-pravokotnik": "sec-ravnotezje-plosce.html", "eq-gauss-ravnina": "sec-ravnotezje-plosce.html", "fig-rp-pas-zveznosti": "sec-ravnotezje-plosce.html", "thm-enacba-plosce": "sec-ravnotezje-plosce.html", "eq-rp-precne-iz-poveza": "sec-ravnotezje-plosce.html", "eq-enacba-plosce": "sec-ravnotezje-plosce.html", "fig-rp-dvojica": "sec-ravnotezje-plosce.html", "eq-rp-ravnovesje-sil": "sec-ravnotezje-plosce.html", "sec-rp-germain": "sec-ravnotezje-plosce.html", "fig-rp-zasuk": "sec-ravnotezje-plosce.html", "sec-rp-strizne": "sec-ravnotezje-plosce.html", "fig-rp-profili": "sec-ravnotezje-plosce.html", "lem-strizne-napetosti-plosce": "sec-ravnotezje-plosce.html", "eq-strizne-plosce": "sec-ravnotezje-plosce.html", "fig-rp-rezina": "sec-ravnotezje-plosce.html", "fig-rp-strig-stevilke": "sec-ravnotezje-plosce.html", "sec-robni-pogoji-plosce": "sec-robni-pogoji-plosce.html", "sec-rp-energija": "sec-robni-pogoji-plosce.html", "fig-rp-tloris-robovi": "sec-robni-pogoji-plosce.html", "eq-rp-momenti": "sec-robni-pogoji-plosce.html", "fig-rp-energija-krivulje": "sec-robni-pogoji-plosce.html", "def-energija-plosce": "sec-robni-pogoji-plosce.html", "eq-rpl-energija": "sec-robni-pogoji-plosce.html", "lem-energija-plosce-oblika": "sec-robni-pogoji-plosce.html", "eq-rp-energija-momenti": "sec-robni-pogoji-plosce.html", "fig-rp-zvitje": "sec-robni-pogoji-plosce.html", "fig-rp-ocena-gostote": "sec-robni-pogoji-plosce.html", "lem-energija-plosce-nenegativna": "sec-robni-pogoji-plosce.html", "fig-rp-nenegativnost-dokaz": "sec-robni-pogoji-plosce.html", "fig-rp-toga-ravnina": "sec-robni-pogoji-plosce.html", "lem-gauss-v-ravnini": "sec-robni-pogoji-plosce.html", "eq-rp-gauss": "sec-robni-pogoji-plosce.html", "lem-germain-energija": "sec-robni-pogoji-plosce.html", "eq-rp-germain": "sec-robni-pogoji-plosce.html", "sec-rp-robovi": "sec-robni-pogoji-plosce.html", "fig-rp-robni-pogoji": "sec-robni-pogoji-plosce.html", "def-robni-pogoji-plosce": "sec-robni-pogoji-plosce.html", "eq-rp-mn-vn": "sec-robni-pogoji-plosce.html", "fig-rp-vogalna": "sec-robni-pogoji-plosce.html", "sec-rp-variacija": "sec-robni-pogoji-plosce.html", "lem-green-plosce": "sec-robni-pogoji-plosce.html", "eq-rp-green": "sec-robni-pogoji-plosce.html", "fig-rp-parabola-variacije": "sec-robni-pogoji-plosce.html", "fig-rp-variacije": "sec-robni-pogoji-plosce.html", "fig-rp-grbina-predznak": "sec-robni-pogoji-plosce.html", "thm-variacija-plosce": "sec-robni-pogoji-plosce.html", "eq-rp-plosca-variacija": "sec-robni-pogoji-plosce.html", "eq-rp-prva-variacija": "sec-robni-pogoji-plosce.html", "sec-rp-vogal": "sec-robni-pogoji-plosce.html", "fig-rp-reakcije-kvadrat": "sec-robni-pogoji-plosce.html", "cor-vogalna-sila": "sec-robni-pogoji-plosce.html", "eq-rp-ravnovesje-sile": "sec-robni-pogoji-plosce.html", "sec-rp-poisson": "sec-robni-pogoji-plosce.html", "sec-rpl-enolicnost": "sec-robni-pogoji-plosce.html", "fig-rp-enolicnost-podpore": "sec-robni-pogoji-plosce.html", "thm-enolicnost-plosce": "sec-robni-pogoji-plosce.html", "fig-rp-prosta": "sec-robni-pogoji-plosce.html", "sec-rp-povzetek": "sec-robni-pogoji-plosce.html", "sec-plosca-trak": "sec-plosca-trak.html", "fig-trak-valjasti": "sec-plosca-trak.html", "def-valjasti-upogib": "sec-plosca-trak.html", "fig-trak-ozek": "sec-plosca-trak.html", "lem-valjasti-upogib": "sec-plosca-trak.html", "fig-r52-plosce-04-1": "sec-plosca-trak.html", "fig-trak-podpore": "sec-plosca-trak.html", "cor-trak-podpore": "sec-plosca-trak.html", "eq-trak-prosto": "sec-plosca-trak.html", "eq-trak-vpeto": "sec-plosca-trak.html", "ex-ozek-nosilec": "sec-plosca-trak.html", "fig-trak-pravokotnik": "sec-plosca-trak.html", "sec-navierova-resitev": "sec-navierova-resitev.html", "fig-navier-naloga": "sec-navierova-resitev.html", "eq-prosto-podprt": "sec-navierova-resitev.html", "fig-navier-clen": "sec-navierova-resitev.html", "fig-navier-sinus": "sec-navierova-resitev.html", "lem-sinusni-clen-plosce": "sec-navierova-resitev.html", "eq-navier-lambda": "sec-navierova-resitev.html", "lem-odvajanje-vrste-plosce": "sec-navierova-resitev.html", "fig-navier-grbe": "sec-navierova-resitev.html", "thm-navierova-resitev": "sec-navierova-resitev.html", "eq-navier-koef": "sec-navierova-resitev.html", "eq-navier-momenti": "sec-navierova-resitev.html", "eq-navier-kos": "sec-navierova-resitev.html", "fig-navier-vsote": "sec-navierova-resitev.html", "fig-navier-indeksi": "sec-navierova-resitev.html", "cor-enakomerna-obtezba-plosce": "sec-navierova-resitev.html", "eq-navier-enakomerna": "sec-navierova-resitev.html", "fig-navier-pravokotnik": "sec-navierova-resitev.html", "fig-navier-konvergenca": "sec-navierova-resitev.html", "fig-navier-zasuk": "sec-navierova-resitev.html", "cor-vogalne-sile-kvadrata": "sec-navierova-resitev.html", "eq-vogalna-sila-vrsta": "sec-navierova-resitev.html", "fig-vogal-reakcije": "sec-navierova-resitev.html", "fig-navier-tockovna": "sec-navierova-resitev.html", "lem-tockovna-sila-navier": "sec-navierova-resitev.html", "sec-krozne-plosce": "sec-krozne-plosce.html", "fig-krozna-plosca": "sec-krozne-plosce.html", "lem-osnosimetricni-laplace": "sec-krozne-plosce.html", "eq-momenti-osnosimetricni": "sec-krozne-plosce.html", "fig-r52-plosce-06-1": "sec-krozne-plosce.html", "fig-krozna-krivini": "sec-krozne-plosce.html", "thm-osnosimetricna-plosca": "sec-krozne-plosce.html", "eq-osnosimetricna-splosna": "sec-krozne-plosce.html", "fig-r52-plosce-06-2": "sec-krozne-plosce.html", "cor-vpeta-krozna-plosca": "sec-krozne-plosce.html", "eq-vpeta-krozna": "sec-krozne-plosce.html", "eq-vpeta-momenti": "sec-krozne-plosce.html", "fig-krozna-vpeta-podprta": "sec-krozne-plosce.html", "cor-podprta-krozna-plosca": "sec-krozne-plosce.html", "eq-podprta-krozna": "sec-krozne-plosce.html", "eq-podprta-momenti": "sec-krozne-plosce.html", "eq-razlika-momentov": "sec-krozne-plosce.html", "fig-krozna-profili": "sec-krozne-plosce.html", "fig-krog-kvadrat": "sec-krozne-plosce.html", "ex-krozna-kvadrat": "sec-krozne-plosce.html", "lem-tockovna-sila-krozna": "sec-krozne-plosce.html", "eq-tockovna-vpeta": "sec-krozne-plosce.html", "eq-tockovna-momenti": "sec-krozne-plosce.html", "fig-tockovna-sila": "sec-krozne-plosce.html", "sec-kpl-polja": "sec-krozne-plosce.html", "fig-krozna-polja": "sec-krozne-plosce.html", "def-polje-krozne-plosce": "sec-krozne-plosce.html", "fig-krozna-stiri-oblike": "sec-krozne-plosce.html", "fig-krozna-prehod": "sec-krozne-plosce.html", "thm-prehodni-pogoji-krozne-plosce": "sec-krozne-plosce.html", "eq-krozna-polje-splosna": "sec-krozne-plosce.html", "eq-krozna-prehodni": "sec-krozne-plosce.html", "fig-r52-plosce-06-3": "sec-krozne-plosce.html", "fig-krozna-obrocasta": "sec-krozne-plosce.html", "ex-obrocasta-plosca": "sec-krozne-plosce.html", "sec-kpl-dve-polji": "sec-krozne-plosce.html", "fig-krozna-dve-polji": "sec-krozne-plosce.html", "ex-dve-polji-krozna": "sec-krozne-plosce.html", "fig-r52-plosce-06-4": "sec-krozne-plosce.html", "sec-energijske-metode-plosc": "sec-energijske-metode-plosc.html", "sec-ep-polja": "sec-energijske-metode-plosc.html", "fig-ep-polje": "sec-energijske-metode-plosc.html", "eq-ep-potencial": "sec-energijske-metode-plosc.html", "eq-ep-forma-b": "sec-energijske-metode-plosc.html", "def-dopustno-polje-plosce": "sec-energijske-metode-plosc.html", "fig-ep-gauss": "sec-energijske-metode-plosc.html", "lem-gauss-clen-nic": "sec-energijske-metode-plosc.html", "eq-ep-gauss-nic": "sec-energijske-metode-plosc.html", "sec-ep-ritz": "sec-energijske-metode-plosc.html", "fig-ep-ritz-sestava": "sec-energijske-metode-plosc.html", "thm-ritz-plosca": "sec-energijske-metode-plosc.html", "fig-ep-ritz": "sec-energijske-metode-plosc.html", "fig-ep-vlozeni": "sec-energijske-metode-plosc.html", "sec-ep-hamilton": "sec-energijske-metode-plosc.html", "fig-ep-inercija": "sec-energijske-metode-plosc.html", "fig-ep-hamilton": "sec-energijske-metode-plosc.html", "def-akcija-plosce": "sec-energijske-metode-plosc.html", "eq-ep-akcija": "sec-energijske-metode-plosc.html", "thm-hamilton-plosca": "sec-energijske-metode-plosc.html", "eq-ep-gibalna-plosce": "sec-energijske-metode-plosc.html", "sec-ep-nacini": "sec-energijske-metode-plosc.html", "fig-ep-green": "sec-energijske-metode-plosc.html", "lem-ep-koeficienti": "sec-energijske-metode-plosc.html", "eq-ep-koeficienti": "sec-energijske-metode-plosc.html", "thm-nacini-podprte-plosce": "sec-energijske-metode-plosc.html", "eq-ep-frekvence": "sec-energijske-metode-plosc.html", "fig-ep-nacini": "sec-energijske-metode-plosc.html", "eq-ep-kombinacija": "sec-energijske-metode-plosc.html", "sec-ep-rayleigh": "sec-energijske-metode-plosc.html", "fig-ep-sinusi": "sec-energijske-metode-plosc.html", "fig-ep-rayleigh": "sec-energijske-metode-plosc.html", "thm-rayleigh-plosca": "sec-energijske-metode-plosc.html", "sec-ep-uklon": "sec-energijske-metode-plosc.html", "fig-ep-tlak": "sec-energijske-metode-plosc.html", "lem-delo-ravninskih-sil": "sec-energijske-metode-plosc.html", "thm-uklon-podprte-plosce": "sec-energijske-metode-plosc.html", "eq-ep-uklon": "sec-energijske-metode-plosc.html", "eq-ep-nmn": "sec-energijske-metode-plosc.html", "eq-ep-ncr": "sec-energijske-metode-plosc.html", "fig-ep-uklon": "sec-energijske-metode-plosc.html", "sec-mindlinove-plosce": "sec-mindlinove-plosce.html", "sec-mp-kinematika": "sec-mindlinove-plosce.html", "fig-mp-kinematika": "sec-mindlinove-plosce.html", "fig-mp-zdrs": "sec-mindlinove-plosce.html", "def-mindlinova-plosca": "sec-mindlinove-plosce.html", "eq-mp-polje": "sec-mindlinove-plosce.html", "eq-mp-strizni-koti": "sec-mindlinove-plosce.html", "lem-mp-rezultante": "sec-mindlinove-plosce.html", "eq-mp-deformacije": "sec-mindlinove-plosce.html", "eq-mp-momenti": "sec-mindlinove-plosce.html", "eq-mp-precne": "sec-mindlinove-plosce.html", "sec-mp-enacbe": "sec-mindlinove-plosce.html", "eq-mp-ravnovesje": "sec-mindlinove-plosce.html", "fig-mp-rob": "sec-mindlinove-plosce.html", "fig-mp-testna": "sec-mindlinove-plosce.html", "thm-mindlinove-enacbe": "sec-mindlinove-plosce.html", "eq-mp-enacbe": "sec-mindlinove-plosce.html", "eq-mp-virtualno-delo": "sec-mindlinove-plosce.html", "fig-mp-enolicnost": "sec-mindlinove-plosce.html", "lem-enolicnost-mindlin": "sec-mindlinove-plosce.html", "sec-mp-marcus": "sec-mindlinove-plosce.html", "eq-mp-marcus": "sec-mindlinove-plosce.html", "fig-mp-marcus": "sec-mindlinove-plosce.html", "fig-mp-dirichlet": "sec-mindlinove-plosce.html", "lem-dirichlet-laplace-enolicnost": "sec-mindlinove-plosce.html", "fig-mp-druzina": "sec-mindlinove-plosce.html", "lem-mp-druzina": "sec-mindlinove-plosce.html", "eq-mp-druzina": "sec-mindlinove-plosce.html", "thm-mindlin-kirchhoff": "sec-mindlinove-plosce.html", "eq-mp-rezultat": "sec-mindlinove-plosce.html", "fig-mp-profili": "sec-mindlinove-plosce.html", "sec-mp-krog": "sec-mindlinove-plosce.html", "lem-mindlin-krozna-vpeta": "sec-mindlinove-plosce.html", "eq-mp-krog": "sec-mindlinove-plosce.html", "sec-mp-meje": "sec-mindlinove-plosce.html", "fig-mp-razmerje": "sec-mindlinove-plosce.html", "fig-mp-tockovna": "sec-mindlinove-plosce.html", "sec-elementi-plosc": "sec-elementi-plosc.html", "fig-elpl-cetrtina": "sec-elementi-plosc.html", "sec-el-c1": "sec-elementi-plosc.html", "fig-skok-nagiba": "sec-elementi-plosc.html", "fig-elpl-nagib-rob": "sec-elementi-plosc.html", "lem-zahteva-c1": "sec-elementi-plosc.html", "fig-elpl-ploscine": "sec-elementi-plosc.html", "sec-el-mindlin": "sec-elementi-plosc.html", "fig-element": "sec-elementi-plosc.html", "def-element-mindlinove-plosce": "sec-elementi-plosc.html", "eq-el-n": "sec-elementi-plosc.html", "eq-el-polja": "sec-elementi-plosc.html", "fig-elpl-zveznost": "sec-elementi-plosc.html", "fig-elpl-togo": "sec-elementi-plosc.html", "lem-togost-mindlinove-plosce": "sec-elementi-plosc.html", "eq-el-b": "sec-elementi-plosc.html", "eq-el-togost": "sec-elementi-plosc.html", "sec-el-gauss": "sec-elementi-plosc.html", "lem-gauss-pravokotnik": "sec-elementi-plosc.html", "fig-elpl-gauss-produkt": "sec-elementi-plosc.html", "sec-el-zaklepanje": "sec-elementi-plosc.html", "eq-el-proste": "sec-elementi-plosc.html", "lem-strizno-zaklepanje-plosce": "sec-elementi-plosc.html", "fig-elpl-meja": "sec-elementi-plosc.html", "eq-el-kazen": "sec-elementi-plosc.html", "fig-zaklepanje": "sec-elementi-plosc.html", "sec-el-izbirno": "sec-elementi-plosc.html", "thm-selektivna-integracija": "sec-elementi-plosc.html", "sec-el-laznji": "sec-elementi-plosc.html", "fig-laznji-nacini": "sec-elementi-plosc.html", "lem-laznji-nacini": "sec-elementi-plosc.html", "eq-el-nacina": "sec-elementi-plosc.html", "sec-el-povzetek": "sec-elementi-plosc.html", "sec-povezave-plosce": "sec-povezave-plosce.html", "fig-c18-mali-poves": "sec-povezave-plosce.html", "fig-c18-eksponenti": "sec-povezave-plosce.html", "eq-mindlin-presezek": "sec-povezave-plosce.html", "fig-c18-meje": "sec-povezave-plosce.html"}</script>
 </main>
 <footer><nav class="pager"><a href="sec-modeliranje-povezave.html" rel="prev">← 17.10</a><a href="index.html">Contents</a><a href="sec-kirchhoffova-plosca.html" rel="next">18.1 →</a></nav></footer>
 </body>

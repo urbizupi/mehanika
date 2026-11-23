@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-tanki-j"] = {"html": "<div class=\"eq\">\\[J = \\frac{h\\,t^3}{3} - \\frac{64\\,t^4}{\\pi^5}\\sum_{\\mathrm{n} = 1, 3, 5, \\dots}\\frac{1}{n^5}\\tanh\\frac{n\\pi h}{2t} , \\tag{16.36}\\]</div>", "href": "sec-tanki-odprti-prerezi.html#eq-tanki-j"};
+(window.KNOWLS = window.KNOWLS || {})["eq-tanki-j"] = {"html": "<div class=\"eq\">\\[J = \\frac{h\\,t^3}{3} - \\frac{64\\,t^4}{\\pi^5}\\sum_{\\mathrm{n} = 1, 3, 5, \\dots}\\frac{1}{n^5}\\tanh\\frac{n\\pi h}{2t} , \\tag{16.45}\\]</div>", "href": "sec-tanki-odprti-prerezi.html#eq-tanki-j"};

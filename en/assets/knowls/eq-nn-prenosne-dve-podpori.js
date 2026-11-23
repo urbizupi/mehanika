@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nn-prenosne-dve-podpori"] = {"html": "<div class=\"eq\">\\[\\omega^2 = \\frac{6EI}{m\\,l^3} . \\tag{13.66}\\]</div>", "href": "sec-nacini-nosilca.html#eq-nn-prenosne-dve-podpori"};

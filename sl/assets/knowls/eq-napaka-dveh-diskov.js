@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-napaka-dveh-diskov"] = {"html": "<div class=\"eq\">\\[\\frac{\\omega_{\\mathrm{2D}}}{\\omega_1} - 1 \\approx \\frac{j_0^2 - j_0 j_{\\mathrm{L}} + j_{\\mathrm{L}}^2}{6\\,j_0 j_{\\mathrm{L}}\\,(j_0 + j_{\\mathrm{L}})} , \\tag{13.31}\\]</div>", "href": "sec-palica-gred.html#eq-napaka-dveh-diskov"};

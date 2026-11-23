@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-prm-polje"] = {"html": "<div class=\"eq\">\\[\\vek z_{\\mathrm{b}} = \\mat F\\,\\vek z_{\\mathrm{a}} , \\qquad \\mat F = \\begin{pmatrix} 1 &amp; 1/k \\\\ 0 &amp; 1 \\end{pmatrix} . \\tag{10.54}\\]</div>", "href": "sec-prenosne-matrike.html#eq-prm-polje"};

@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-oktaedrska-deformacija-energija"] = {"html": "<div class=\"eq\">\\[\\varepsilon_{\\mathrm{oct}} = \\frac{\\tau_{\\mathrm{oct}}}{2G} \\tag{3.73}\\]</div>", "href": "sec-energija-deformacije.html#eq-oktaedrska-deformacija-energija"};

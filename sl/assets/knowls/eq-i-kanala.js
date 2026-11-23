@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-i-kanala"] = {"html": "<div class=\"eq\">\\[I = \\frac{t\\,h^3}{12} + 2\\,b\\,t\\left(\\frac h2\\right)^2 = \\frac{t\\,h^2\\,(h + 6b)}{12} = 42\\,667\\ \\text{mm}^4 . \\tag{16.41}\\]</div>", "href": "sec-strizno-sredisce.html#eq-i-kanala"};
+(window.KNOWLS = window.KNOWLS || {})["eq-i-kanala"] = {"html": "<div class=\"eq\">\\[I = \\frac{t\\,h^3}{12} + 2\\,b\\,t\\left(\\frac h2\\right)^2 = \\frac{t\\,h^2\\,(h + 6b)}{12} = 42\\,667\\ \\text{mm}^4 . \\tag{16.50}\\]</div>", "href": "sec-strizno-sredisce.html#eq-i-kanala"};

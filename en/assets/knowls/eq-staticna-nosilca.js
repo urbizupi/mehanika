@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-staticna-nosilca"] = {"html": "<div class=\"eq\">\\[EI\\,w_{\\mathrm{xxxx}} + \\big(\\mu v^2 - T\\big)\\,w_{\\mathrm{xx}} = 0 . \\tag{26.48}\\]</div>", "href": "sec-gibajoci-nosilec.html#eq-staticna-nosilca"};
+(window.KNOWLS = window.KNOWLS || {})["eq-staticna-nosilca"] = {"html": "<div class=\"eq\">\\[EI\\,w_{\\mathrm{xxxx}} + \\big(\\mu v^2 - T\\big)\\,w_{\\mathrm{xx}} = 0 . \\tag{26.51}\\]</div>", "href": "sec-gibajoci-nosilec.html#eq-staticna-nosilca"};

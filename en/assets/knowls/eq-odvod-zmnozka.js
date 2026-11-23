@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-odvod-zmnozka"] = {"html": "<div class=\"eq\">\\[(f g)'(x) = f'(x)\\,g(x) + f(x)\\,g'(x) . \\tag{1.29}\\]</div>", "href": "sec-srednja-vrednost.html#eq-odvod-zmnozka"};
+(window.KNOWLS = window.KNOWLS || {})["eq-odvod-zmnozka"] = {"html": "<div class=\"eq\">\\[(f g)'(x) = f'(x)\\,g(x) + f(x)\\,g'(x) . \\tag{1.30}\\]</div>", "href": "sec-srednja-vrednost.html#eq-odvod-zmnozka"};

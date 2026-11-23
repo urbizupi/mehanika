@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-coulombov-zakon-trenja"] = {"html": "<div class=\"eq\">\\[F_{\\mathrm{t}} = \\mu N , \\tag{8.2}\\]</div>", "href": "sec-virtualno-delo-sistemov.html#eq-coulombov-zakon-trenja"};

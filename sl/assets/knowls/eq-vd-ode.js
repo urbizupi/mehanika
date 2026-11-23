@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-vd-ode"] = {"html": "<div class=\"eq\">\\[u'' + \\frac{u'}{r} - \\frac{u}{r^2} = -\\frac{(1 - \\nu^2)\\,\\rho\\,\\Omega^2}{E}\\,r . \\tag{24.56}\\]</div>", "href": "sec-vrteci-disk.html#eq-vd-ode"};
+(window.KNOWLS = window.KNOWLS || {})["eq-vd-ode"] = {"html": "<div class=\"eq\">\\[u'' + \\frac{u'}{r} - \\frac{u}{r^2} = -\\frac{(1 - \\nu^2)\\,\\rho\\,\\Omega^2}{E}\\,r . \\tag{24.57}\\]</div>", "href": "sec-vrteci-disk.html#eq-vd-ode"};

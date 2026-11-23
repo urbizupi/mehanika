@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-nakljucno-psd"] = {"html": "<div class=\"eq\">\\[G_{\\mathrm{k}} = \\frac{1}{\\Delta f}\\cdot\\frac{1}{n_{\\mathrm{d}}}\\sum_{\\mathrm{i}=1}^{n_{\\mathrm{d}}} 2\\,\\bigl|C_{\\mathrm{k}}^{(i)}\\bigr|^2 . \\tag{9.156}\\]</div>", "href": "sec-nakljucno-vzbujanje.html#eq-nakljucno-psd"};

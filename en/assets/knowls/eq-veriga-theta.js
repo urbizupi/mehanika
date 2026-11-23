@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-veriga-theta"] = {"html": "<div class=\"eq\">\\[\\theta_{\\mathrm{r}} = \\frac{r\\pi}{N + 1} , \\qquad \\vek\\phi_{\\mathrm{r}} = \\big(\\sin\\theta_{\\mathrm{r}},\\ \\sin 2\\theta_{\\mathrm{r}},\\ \\dots,\\ \\sin N\\theta_{\\mathrm{r}}\\big) . \\tag{10.80}\\]</div>", "href": "sec-masna-matrika.html#eq-veriga-theta"};

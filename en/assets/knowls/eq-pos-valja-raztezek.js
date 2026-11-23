@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-pos-valja-raztezek"] = {"html": "<div class=\"eq\">\\[e = 2R\\,\\varphi_2 - R\\,\\varphi_1 . \\tag{8.60}\\]</div>", "href": "sec-posplosene-sile.html#eq-pos-valja-raztezek"};

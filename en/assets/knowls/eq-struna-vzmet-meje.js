@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-struna-vzmet-meje"] = {"html": "<div class=\"eq\">\\[n\\pi\\,\\frac{\\kappa}{1 + \\kappa} \\ &lt;\\ s_{\\mathrm{n}} \\ &lt;\\ n\\pi , \\qquad (2n - 1)\\frac{\\pi}{2} \\ &lt;\\ s_{\\mathrm{n}} \\ &lt;\\ (2n - 1)\\frac{\\pi}{2} + \\frac{2\\kappa}{(2n - 1)\\pi} . \\tag{13.18}\\]</div>", "href": "sec-nacini-strune.html#eq-struna-vzmet-meje"};

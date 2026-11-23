@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-preizkus-cas-v-pasu"] = {"html": "<div class=\"eq\">\\[\\Delta t = \\frac{60}{R}\\log_2\\frac{1 + \\zeta}{1 - \\zeta} \\approx \\frac{60}{R}\\cdot\\frac{2\\zeta}{\\ln 2} \\tag{9.149}\\]</div>", "href": "sec-vibracijski-preizkus.html#eq-preizkus-cas-v-pasu"};

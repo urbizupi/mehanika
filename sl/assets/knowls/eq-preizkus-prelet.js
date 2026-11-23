@@ -1,0 +1,1 @@
+(window.KNOWLS = window.KNOWLS || {})["eq-preizkus-prelet"] = {"html": "<div class=\"eq\">\\[f(t) = f_1\\cdot 2^{R\\,t/60} . \\tag{9.148}\\]</div>", "href": "sec-vibracijski-preizkus.html#eq-preizkus-prelet"};

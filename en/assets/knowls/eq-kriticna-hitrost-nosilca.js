@@ -1,1 +1,1 @@
-(window.KNOWLS = window.KNOWLS || {})["eq-kriticna-hitrost-nosilca"] = {"html": "<div class=\"eq\">\\[v_{\\mathrm{c}} = \\sqrt{\\frac{T + P_{\\mathrm{cr}}}{\\mu}} . \\tag{26.50}\\]</div>", "href": "sec-gibajoci-nosilec.html#eq-kriticna-hitrost-nosilca"};
+(window.KNOWLS = window.KNOWLS || {})["eq-kriticna-hitrost-nosilca"] = {"html": "<div class=\"eq\">\\[v_{\\mathrm{c}} = \\sqrt{\\frac{T + P_{\\mathrm{cr}}}{\\mu}} . \\tag{26.53}\\]</div>", "href": "sec-gibajoci-nosilec.html#eq-kriticna-hitrost-nosilca"};
