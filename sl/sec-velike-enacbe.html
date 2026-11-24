@@ -19,13 +19,13 @@
 <header class="top"><a class="home" href="index.html">Mehanika</a><nav class="pager"><a href="sec-kakovost-mreze.html" rel="prev">← 17.5</a><a href="index.html">Kazalo</a><a href="sec-nelinearna-statika.html" rel="next">17.7 →</a></nav>
 <span class="tools"><a class="lang" href="../en/sec-velike-enacbe.html" hreflang="en">English</a><button type="button" class="theme-toggle" title="Svetla ali temna tema" aria-label="Svetla ali temna tema"></button><button type="button" data-details="open">Razpri vse</button><button type="button" data-details="close">Skrij vse</button><button type="button" class="fig-side-toggle" aria-pressed="false">Slike ob strani</button><button type="button" class="zapis-toggle" aria-pressed="false">Indeksni zapis</button></span></header>
 <main>
-<p class="updated">Posodobljeno 23. 11. 2026 ob 20.58</p>
+<p class="updated">Posodobljeno 24. 11. 2026 ob 21.08</p>
 <p class="crumb"><a href="ch-modeliranje.html"><span class="h-num">Poglavje 17</span> Modeliranje z MKE v praksi</a></p>
 <h2 id="sec-velike-enacbe"><span class="h-num">17.6</span> Veliki sistemi enačb in številčna napaka (Large systems of equations and numerical error)</h2>
 <p>Mreža je izbrana, elementi so dobri, ostane en sam račun: sistem <span class="nobr">\(\mat K\,\vek d = \vek f\),</span> katerega <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrika</a> ima tisoč ali milijon vrstic. Ta razdelek obravnava tretjo od treh napak iz definicije <a class="xref" href="sec-hierarhija-modelov.html#def-vrste-napak" data-knowl="def-vrste-napak">17.2</a>, številčno napako (numerical error). Računalnik hrani vsako število s približno \(16\) veljavnimi števkami (dvojna natančnost, kot v poglavju <a class="xref" href="ch-sibka-oblika.html">6</a>) in vsaka operacija zaokroži, relativno za okoli <span class="nobr">\(10^{-16}\).</span> Zmanjšanje modelne in diskretizacijske napake te napake ne zmanjša, lahko jo celo poveča. Gostejša mreža zmanjša diskretizacijsko napako (razdelek <a class="xref" href="sec-konvergenca-mreze.html">17.3</a>), a poveča red \(n\) sistema in s tem ceno računa. COOK (PDF str. 318, prebrano) pove, da lahko velika <a class="xref auto" href="sec-integral.html#def-delitev" data-knowl="def-delitev">zgostitev</a> mreže, namenjena zmanjšanju diskretizacijske napake, poveča številčno napako toliko, da rezultati postanejo manj natančni namesto bolj natančni. Tri vprašanja si zastavimo. Koliko stane en sistem in koliko vsak nadaljnji z isto matriko? Koliko števk izgubimo pri palici iz poglavja <a class="xref" href="ch-mke-palice.html">7</a>, ko mrežo gostimo? In kdaj veliko <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-stevilo-obcutljivosti" data-knowl="def-stevilo-obcutljivosti">število občutljivosti</a> res pokvari rešitev, kdaj pa ne? <!-- nofig: signpost --></p>
 
 <h3 id="sec-ve-razcep"><span class="h-num">17.6.1</span> Razcep enkrat, desne strani mnogokrat</h3>
-<p>Poglavje <a class="xref" href="ch-mke-palice.html">7</a> (razdelek <a class="xref" href="sec-redke-matrike.html">7.8</a>) je pokazalo, da pasovna matrika s <a class="xref auto" href="sec-redke-matrike.html#def-pasovna-matrika" data-knowl="def-pasovna-matrika">polovično širino pasu</a> \(b\) stane pri eliminaciji približno \(n b^2/2\) množenj namesto \(n^3/6\) (lema <a class="xref" href="sec-redke-matrike.html#lem-cena-eliminacije" data-knowl="lem-cena-eliminacije">7.44</a>) in da preštevilčenje neznank spremeni pas, ne pa rešitve (lema <a class="xref" href="sec-redke-matrike.html#lem-permutacija" data-knowl="lem-permutacija">7.46</a>). Tega ne ponavljamo, slika <a class="xref" href="sec-redke-matrike.html#fig-mrm-cena" data-knowl="fig-mrm-cena">7.93</a> kaže razliko. Vzemimo isti primer: mreža \(50 \times 100\) vozlišč z dvema neznankama na vozlišče, torej \(n = 10^4\) in <span class="nobr">\(b = 100\),</span> in cena razcepa \(n b^2/2 = 5 \cdot 10^7\) množenj. Tam ni odgovora na vprašanje, ki ga postavi praksa. Isto konstrukcijo obremenimo na več načinov (lastna teža, veter z leve, veter z desne) in pri računu nihanja po trapeznem pravilu (definicija <a class="xref" href="sec-casovno-korakanje.html#def-trapezno-pravilo" data-knowl="def-trapezno-pravilo">10.92</a>) rešujemo sistem v vsakem časovnem koraku, njegova <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrika</a> pa za dani časovni korak ni odvisna od koraka (poglavje <a class="xref" href="ch-nihanje-vec-ps.html">10</a>). Ali vsaka nova desna stran stane spet \(5 \cdot 10^7\) množenj?</p>
+<p>Poglavje <a class="xref" href="ch-mke-palice.html">7</a> (razdelek <a class="xref" href="sec-redke-matrike.html">7.8</a>) je pokazalo, da pasovna matrika s <a class="xref auto" href="sec-redke-matrike.html#def-pasovna-matrika" data-knowl="def-pasovna-matrika">polovično širino pasu</a> \(b\) stane pri eliminaciji približno \(n b^2/2\) množenj namesto \(n^3/6\) (lema <a class="xref" href="sec-redke-matrike.html#lem-cena-eliminacije" data-knowl="lem-cena-eliminacije">7.44</a>) in da preštevilčenje neznank spremeni pas, ne pa rešitve (lema <a class="xref" href="sec-redke-matrike.html#lem-permutacija" data-knowl="lem-permutacija">7.46</a>). Tega ne ponavljamo, slika <a class="xref" href="sec-redke-matrike.html#fig-mrm-cena" data-knowl="fig-mrm-cena">7.99</a> kaže razliko. Vzemimo isti primer: mreža \(50 \times 100\) vozlišč z dvema neznankama na vozlišče, torej \(n = 10^4\) in <span class="nobr">\(b = 100\),</span> in cena razcepa \(n b^2/2 = 5 \cdot 10^7\) množenj. Tam ni odgovora na vprašanje, ki ga postavi praksa. Isto konstrukcijo obremenimo na več načinov (lastna teža, veter z leve, veter z desne) in pri računu nihanja po trapeznem pravilu (definicija <a class="xref" href="sec-casovno-korakanje.html#def-trapezno-pravilo" data-knowl="def-trapezno-pravilo">10.92</a>) rešujemo sistem v vsakem časovnem koraku, njegova <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrika</a> pa za dani časovni korak ni odvisna od koraka (poglavje <a class="xref" href="ch-nihanje-vec-ps.html">10</a>). Ali vsaka nova desna stran stane spet \(5 \cdot 10^7\) množenj?</p>
 <p>Ne, in razlog je v tem, kaj eliminacija počne. Množitelji, s katerimi eliminacija odšteva vrstice, so odvisni le od matrike, ne od desne strani. <a data-del="matrika" class="xref kaz" href="sec-velike-enacbe.html#fig-ve-razcep-pas" data-knowl="fig-ve-razcep-pas">Faktor \(\mat L\)</a> jih hrani (lema <a class="xref" href="sec-redke-matrike.html#lem-faktorizacija" data-knowl="lem-faktorizacija">7.47</a>), zato delo na matriki opravimo enkrat, pri novi desni strani pa ponovimo le odštevanja na njej. Koliko jih je, preštejemo na sliki.</p>
 
 <figure class="blk slika" id="fig-ve-razcep-pas"><p><span class="svgfig" role="img" aria-label="Pas faktorja L s tremi prehodi ene rešitve in cena za več desnih strani"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='568.70pt' height='224.51pt' viewBox='-72.000004 -72.000004 421.261758 166.304717'>
@@ -3129,9 +3129,11 @@ saj sta sled \(k_1 + 2k_2\) in determinanta <span class="nobr">\((k_1 + k_2)k_2 
 </g>
 </g>
 </g>
+<g class='del' data-del='os'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-width='0.45'>
 <path d='M-193.4794 99.5846H170.71712' fill='none'/>
+</g>
 </g>
 </g>
 <g class='del' data-del='vzmeti'>
@@ -3344,9 +3346,11 @@ saj sta sled \(k_1 + 2k_2\) in determinanta <span class="nobr">\((k_1 + k_2)k_2 
 </g>
 </g>
 </g>
+<g class='del' data-del='os'>
 <g fill='#0f0' stroke='#0f0'>
 <g stroke-width='0.45'>
 <path d='M-193.4794 39.83366H170.71712' fill='none'/>
+</g>
 </g>
 </g>
 <g class='del' data-del='diag'>

@@ -19,19 +19,19 @@
 <header class="top"><a class="home" href="index.html">Mechanics</a><nav class="pager"><a href="sec-element-palice.html" rel="prev">← 7.1</a><a href="index.html">Contents</a><a href="sec-robni-pogoji-mke.html" rel="next">7.3 →</a></nav>
 <span class="tools"><a class="lang" href="../sl/sec-sestavljanje.html" hreflang="sl">Slovenščina</a><button type="button" class="theme-toggle" title="Light or dark theme" aria-label="Light or dark theme"></button><button type="button" data-details="open">Expand all</button><button type="button" data-details="close">Collapse all</button><button type="button" class="fig-side-toggle" aria-pressed="false">Figures alongside</button><button type="button" class="zapis-toggle" aria-pressed="false">Index notation</button></span></header>
 <main>
-<p class="updated">Last updated 23 November 2026, 20:58</p>
+<p class="updated">Last updated 24 November 2026, 21:08</p>
 <p class="crumb"><a href="ch-mke-palice.html"><span class="h-num">Chapter 7</span> Basics of FEM for bars and trusses</a></p>
 <h2 id="sec-sestavljanje"><span class="h-num">7.2</span> Assembly (sestavljanje)</h2>
 <p>In section <a class="xref" href="sec-element-palice.html">7.1</a> we computed, for one element, the stiffness matrix \(\mat k_{\mathrm{e}}\) and the <a class="xref auto" href="sec-element-palice.html#def-konsistentne-sile" data-knowl="def-konsistentne-sile">consistent nodal forces</a> <span class="nobr">\(\vek f_{\mathrm{e}}\).</span> A bar has many elements, each has its own two displacements at its nodes, and neighbouring elements share one displacement (in the figure <a class="xref" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">7.13</a> a <a data-del="globalne" class="xref kaz" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">global number</a> is common to neighbouring <a data-del="elementi" class="xref kaz" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">elements</a>). How do we get the matrix of the whole bar from the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> of the elements? And why is it the same matrix that we obtained in chapter <a class="xref" href="ch-sibka-oblika.html">6</a> from <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integrals</a> of <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-sotorna-funkcija" data-knowl="def-sotorna-funkcija">hat functions</a> over the whole bar? First we write down which displacements of the whole bar belong to which element. Then we add the element matrices at the right places and show that the sum is exactly the Ritz matrix of chapter <a class="xref" href="ch-sibka-oblika.html">6</a>. At the end we compute the sum for the hanging bar and see what it still lacks.</p>
 <p>The whole section computes the same bar as chapters <a class="xref" href="ch-sibka-oblika.html">6</a>, <a class="xref" href="ch-energijski-principi.html">4</a> and the previous section: a steel hanging bar of length \(L = 10\) m and diameter 10 mm, axial stiffness \(EA = 1{,}5394 \cdot 10^7\) N, self weight \(q = \rho g A = 6{,}0097\) N/m per unit length, axis \(x\) pointing down, as for the <a data-del="palica" class="xref kaz" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">bar</a> in the figure <a class="xref" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">7.13</a>. We do not support the bar in this section. All nodal displacements are unknowns, and we add the supports in section <a class="xref" href="sec-robni-pogoji-mke.html">7.3</a>.</p>
 
 <h3 id="sec-tabela-povezav"><span class="h-num">7.2.1</span> Connectivity table (tabela povezav)</h3>
-<p>The mesh \(0 = x_0 &lt; x_1 &lt; \dots &lt; x_{\mathrm{n}} = L\) (definition <a class="xref" href="sec-skalarni-produkt-funkcij.html#def-mreza" data-knowl="def-mreza">6.24</a>) has elements \([x_{\mathrm{e}-1}, x_{\mathrm{e}}]\) for <span class="nobr">\(e = 1, \dots, n\).</span> The unknowns of the whole bar are the displacements of all nodes <span class="nobr">\(d_0, \dots, d_{\mathrm{n}}\),</span> collected in a column \(\vek d\) of \(n + 1\) numbers, where \(d_{\mathrm{I}}\) is the displacement of node <span class="nobr">\(x_{\mathrm{I}}\).</span> Element \(e\) has its own two displacements, which we write as a column \(\vek d_{\mathrm{e}} = (d^e_1, d^e_2)\) with local numbers \(1\) and \(2\) (first the left node, then the right one, as for the shape <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> \(\psi^e_1\) and \(\psi^e_2\) of definition <a class="xref" href="sec-element-palice.html#def-oblikovna-funkcija" data-knowl="def-oblikovna-funkcija">7.2</a>). For a bar the connection is simple: \(d^e_1 = d_{\mathrm{e}-1}\) and <span class="nobr">\(d^e_2 = d_{\mathrm{e}}\).</span> For the <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">truss</a> that we compute later, however, the numbering cannot be guessed from the mesh, so we write the connection into a table. In the figure <a class="xref" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">7.13</a> the <a data-del="elementi" class="xref kaz" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">elements</a> are numbered in circles, the <a data-del="globalne" class="xref kaz" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">global numbers</a> are at the nodes, the <a data-del="lokalne" class="xref kaz" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">local numbers</a> at the ends of the element, and the connection is held by the <a data-del="tabela" class="xref kaz" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">table</a>.</p>
+<p>The mesh \(0 = x_0 &lt; x_1 &lt; \dots &lt; x_{\mathrm{n}} = L\) (definition <a class="xref" href="sec-skalarni-produkt-funkcij.html#def-mreza" data-knowl="def-mreza">6.24</a>) has elements \([x_{\mathrm{e}-1}, x_{\mathrm{e}}]\) for <span class="nobr">\(e = 1, \dots, n\).</span> The unknowns of the whole bar are the displacements of all nodes <span class="nobr">\(d_0, \dots, d_{\mathrm{n}}\),</span> collected in a column \(\vek d\) of \(n + 1\) numbers, where \(d_{\mathrm{I}}\) is the displacement of node <span class="nobr">\(x_{\mathrm{I}}\).</span> Element \(e\) has its own two displacements, which we write as a column \(\vek d_{\mathrm{e}} = (d^e_1, d^e_2)^\T\) with local numbers \(1\) and \(2\) (first the left node, then the right one, as for the shape <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> \(\psi^e_1\) and \(\psi^e_2\) of definition <a class="xref" href="sec-element-palice.html#def-oblikovna-funkcija" data-knowl="def-oblikovna-funkcija">7.2</a>). For a bar the connection is simple: \(d^e_1 = d_{\mathrm{e}-1}\) and <span class="nobr">\(d^e_2 = d_{\mathrm{e}}\).</span> For the <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">truss</a> that we compute later, however, the numbering cannot be guessed from the mesh, so we write the connection into a table. In the figure <a class="xref" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">7.13</a> the <a data-del="palica" class="xref kaz" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">bar</a> is divided into four elements, numbered <a data-del="elementi" class="xref kaz" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">in circles</a>, the <a data-del="globalne" class="xref kaz" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">global numbers</a> \(d_0, \dots, d_4\) are at the nodes, the <a data-del="lokalne" class="xref kaz" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">local numbers</a> \(1\) and \(2\) at the ends of each element, and the connection is held by the <a data-del="tabela" class="xref kaz" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">table</a>.</p>
 
 <div class="blk definicija" id="def-tabela-povezav"><div class="blk-head"><span class="blk-label">Definition 7.10</span> <span class="blk-title">Connectivity table (tabela povezav)</span></div><div class="blk-body"><p>A structure has \(n_{\mathrm{u}}\) unknowns, numbered with global numbers (globalne številke), and \(n_{\mathrm{e}}\) elements, and element \(e\) has \(m\) displacements with local numbers \(i = 1, \dots, m\) (for the linear bar element <span class="nobr">\(m = 2\)).</span> The connectivity table (tabela povezav) is a table with \(n_{\mathrm{e}}\) rows and \(m\) columns in which row \(e\) and column \(i\) contain the global number \(g_{\mathrm{ei}}\) of the unknown that is the \(i\)-th displacement of element <span class="nobr">\(e\).</span> Two numbers in the same row are different, because two displacements of an element are two different unknowns. In the figure <a class="xref" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">7.13</a> this is the <a data-del="tabela" class="xref kaz" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">table</a>: the <a data-del="glava" class="xref kaz" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">header</a> lists the local numbers, each row is one <a data-del="elementi" class="xref kaz" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">element</a>, and in it are the <a data-del="globalne" class="xref kaz" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">global numbers</a> of its displacements.</p>
 
 <p class="vir"><span class="vir-label">Source:</span> FELIPPA §3.5.1 (PDF p. 46 to 47, Element Freedom Table), ONATE1 §2.3.3 (PDF p. 74, &quot;global number&quot;), COOK §2.5 (PDF p. 46 to 50). The Slovenian name is ours, FELIPPA calls the table Element Freedom Table.</p></div></div>
-<p>For a bar with four elements, <span class="nobr">\(n = 4\),</span> \(h = 2{,}5\) m, the unknowns are \(d_0, \dots, d_4\) <span class="nobr">(\(n_{\mathrm{u}} = 5\))</span> and the table has rows <span class="nobr">\((0, 1)\),</span> <span class="nobr">\((1, 2)\),</span> <span class="nobr">\((2, 3)\),</span> \((3, 4)\) (figure <a class="xref" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">7.13</a>). Row \(e = 2\) says that the first displacement of the second element is unknown \(1\) and the second is unknown <span class="nobr">\(2\),</span> so \(g_{21} = 1\) and <span class="nobr">\(g_{22} = 2\):</span> in the figure this is the <a data-del="el2" class="xref kaz" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">second element</a>, its two ends with the local numbers, and the <a data-del="vrstica2" class="xref kaz" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">second row of the table</a>. The numbering is a choice. If we numbered the nodes from the bottom up, the rows would be <span class="nobr">\((4, 3)\),</span> <span class="nobr">\((3, 2)\),</span> <span class="nobr">\((2, 1)\),</span> <span class="nobr">\((1, 0)\),</span> and the matrix of the whole bar would have the same values with rows and columns exchanged. The table says everything about the numbering that we need when we add the element <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a>.</p>
+<p>For a bar with four elements, <span class="nobr">\(n = 4\),</span> \(h = 2{,}5\) m, the unknowns are \(d_0, \dots, d_4\) <span class="nobr">(\(n_{\mathrm{u}} = 5\))</span> and the table has rows <span class="nobr">\((0, 1)\),</span> <span class="nobr">\((1, 2)\),</span> <span class="nobr">\((2, 3)\),</span> \((3, 4)\) (figure <a class="xref" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">7.13</a>). Row \(e = 2\) says that the first displacement of the second element is unknown \(1\) and the second is unknown <span class="nobr">\(2\),</span> so \(g_{21} = 1\) and <span class="nobr">\(g_{22} = 2\):</span> in the figure this is the <a data-del="el2" class="xref kaz" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">second element</a>, its two ends with the local numbers, and the <a data-del="vrstica2" class="xref kaz" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">second row of the table</a>.</p>
 
 <figure class="blk slika" id="fig-ses-tabela"><p><span class="svgfig" role="img" aria-label="A bar with four elements with global and local displacement numbers and the connectivity table"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='286.85pt' height='351.47pt' viewBox='-72.000004 -71.999999 212.483875 260.350615'>
 <defs>
@@ -475,15 +475,1667 @@
 </g>
 </svg></span></p>
 <figcaption><span class="blk-label">Figure 7.13</span>: A bar with four elements (the vertical axis \(x\) points down). To the left of the bar are the global numbers of the unknowns \(d_0, \dots, d_4\) at the nodes. Beside the bar are the local numbers \(1\) and \(2\) of the two displacements of each element, with the element numbers in circles. On the right is the connectivity table: row \(e\) holds the global number of its first and second displacement. Each inner node is the second displacement of the upper element and the first displacement of the lower one, so its number appears twice in the table. We do not hold the bar here, the supports are added in section <a class="xref" href="sec-robni-pogoji-mke.html">7.3</a>.</figcaption></figure>
-<p>In the figure the <a data-del="palica" class="xref kaz" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">bar</a> is divided into four elements, and the <a data-del="elementi" class="xref kaz" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">circles</a> hold their numbers. The <a data-del="globalne" class="xref kaz" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">global numbers</a> \(d_0, \dots, d_4\) stand at the nodes, the <a data-del="lokalne" class="xref kaz" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">local numbers</a> \(1\) and \(2\) at the ends of each element. The <a data-del="tabela" class="xref kaz" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">connectivity table</a> has the <a data-del="glava" class="xref kaz" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">header</a> <span class="nobr">\(e\),</span> \(1\) and <span class="nobr">\(2\),</span> and in each row the two global numbers of the element.</p>
-<p>From the table we build a matrix that picks the column of unknowns of one element out of the column of all unknowns. In the figure <a class="xref" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">7.14</a> the <a data-del="vrstica1" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">first row</a> and the <a data-del="vrstica2" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">second row</a> pick the first and the second displacement of the element out of the <a data-del="stolpci" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">columns</a> of all unknowns.</p>
+<p>The numbering is a choice. In the figure <a class="xref" href="sec-sestavljanje.html#fig-ses-stevilcenje" data-knowl="fig-ses-stevilcenje">7.14</a> the bar on the <a data-del="levo" class="xref kaz" href="sec-sestavljanje.html#fig-ses-stevilcenje" data-knowl="fig-ses-stevilcenje">left</a> is numbered as before, from the top down, and on the <a data-del="desno" class="xref kaz" href="sec-sestavljanje.html#fig-ses-stevilcenje" data-knowl="fig-ses-stevilcenje">right</a> from the bottom up, so that node \(x_{\mathrm{I}}\) gets the <a data-del="globalne2" class="xref kaz" href="sec-sestavljanje.html#fig-ses-stevilcenje" data-knowl="fig-ses-stevilcenje">global number</a> <span class="nobr">\(4 - I\).</span> The <a data-del="elementi" class="xref kaz" href="sec-sestavljanje.html#fig-ses-stevilcenje" data-knowl="fig-ses-stevilcenje">elements</a> and their local numbers stay the same, the first displacement of an element is still its upper end. So the <a data-del="tabela2" class="xref kaz" href="sec-sestavljanje.html#fig-ses-stevilcenje" data-knowl="fig-ses-stevilcenje">right table</a> has the rows <span class="nobr">\((4, 3)\),</span> <span class="nobr">\((3, 2)\),</span> <span class="nobr">\((2, 1)\),</span> <span class="nobr">\((1, 0)\),</span> and the <a data-del="tabela1" class="xref kaz" href="sec-sestavljanje.html#fig-ses-stevilcenje" data-knowl="fig-ses-stevilcenje">left table</a> the rows from before. The <a data-del="el2" class="xref kaz" href="sec-sestavljanje.html#fig-ses-stevilcenje" data-knowl="fig-ses-stevilcenje">second element</a> has the row \((1, 2)\) on the left and \((3, 2)\) on the right. Under each table is the <a data-del="mreza" class="xref kaz" href="sec-sestavljanje.html#fig-ses-stevilcenje" data-knowl="fig-ses-stevilcenje">grid of places</a> of the matrix of the whole bar, with rows and columns <span class="nobr">\(0, \dots, 4\).</span> When we add the element <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a>, the entries \(k_{11}, k_{12}, k_{21}, k_{22}\) of the matrix \(\mat k\) of the second element go to the places that its row of the table names (we show this in lemma <a class="xref" href="sec-sestavljanje.html#lem-izbirna-matrika" data-knowl="lem-izbirna-matrika">7.12</a>): on the <a data-del="blok1" class="xref kaz" href="sec-sestavljanje.html#fig-ses-stevilcenje" data-knowl="fig-ses-stevilcenje">left</a> into rows and columns 1 and 2, on the <a data-del="blok2" class="xref kaz" href="sec-sestavljanje.html#fig-ses-stevilcenje" data-knowl="fig-ses-stevilcenje">right</a> into rows and columns 3 and 2, so that on the right \(k_{11}\) is at place \((3, 3)\) and \(k_{22}\) at place <span class="nobr">\((2, 2)\).</span> The matrix of every element moves in the same way, so the matrix of the whole bar has the same values for both numberings, only its rows and columns are in reverse order: <span class="nobr">\(K'_{\mathrm{IJ}} = K_{4-\mathrm{I},\,4-\mathrm{J}}\),</span> where \(\mat K\) is the matrix for the numbering from the top and \(\mat K'\) for the numbering from the bottom. So the table says everything about the numbering that we need when we add the element matrices.</p>
 
-<div class="blk definicija" id="def-izbirna-matrika"><div class="blk-head"><span class="blk-label">Definition 7.11</span> <span class="blk-title">Selection matrix of an element (izbirna matrika elementa)</span></div><div class="blk-body"><p>In the figure <a class="xref" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">7.14</a> are the <a data-del="vrstica1,vrstica2" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">rows</a> and <a data-del="stolpci" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">columns</a> of such a <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a>. Let a structure have \(n_{\mathrm{u}}\) unknowns and let \(g_{\mathrm{ei}}\) be its connectivity table (definition <a class="xref" href="sec-sestavljanje.html#def-tabela-povezav" data-knowl="def-tabela-povezav">7.10</a>). The selection matrix (izbirna matrika) of element \(e\) is the matrix \(\mat Z_{\mathrm{e}}\) with \(m\) rows and \(n_{\mathrm{u}}\) columns whose entry in row \(i\) and column \(I\) is</p>
+<figure class="blk slika" id="fig-ses-stevilcenje"><p><span class="svgfig" role="img" aria-label="A bar numbered from the top down and from the bottom up, with both connectivity tables and the places of the matrix of the second element"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='462.73pt' height='409.96pt' viewBox='-72.000004 -72.000003 342.765988 303.676125'>
+<defs>
+<path id='t-fp-mke-palice-P4-1-g0-120' d='M3.993026-3.180075C3.642341-3.092403 3.626401-2.781569 3.626401-2.749689C3.626401-2.574346 3.761893-2.454795 3.937235-2.454795S4.383562-2.590286 4.383562-2.933001C4.383562-3.387298 3.881445-3.514819 3.58655-3.514819C3.211955-3.514819 2.909091-3.251806 2.725778-2.940971C2.550436-3.363387 2.13599-3.514819 1.809215-3.514819C.940473-3.514819 .454296-2.518555 .454296-2.295392C.454296-2.223661 .510087-2.191781 .573848-2.191781C.669489-2.191781 .68543-2.231631 .70934-2.327273C.892653-2.909091 1.370859-3.291656 1.785305-3.291656C2.096139-3.291656 2.247572-3.068493 2.247572-2.781569C2.247572-2.622167 2.15193-2.255542 2.088169-2.000498C2.032379-1.769365 1.857036-1.060025 1.817186-.908593C1.705604-.478207 1.41868-.143462 1.060025-.143462C1.028144-.143462 .820922-.143462 .653549-.255044C1.020174-.342715 1.020174-.67746 1.020174-.68543C1.020174-.868742 .876712-.980324 .70137-.980324C.486177-.980324 .255044-.797011 .255044-.494147C.255044-.127522 .645579 .079701 1.052055 .079701C1.474471 .079701 1.769365-.239103 1.912827-.494147C2.088169-.103611 2.454795 .079701 2.83736 .079701C3.706102 .079701 4.184309-.916563 4.184309-1.139726C4.184309-1.219427 4.120548-1.243337 4.064757-1.243337C3.969116-1.243337 3.953176-1.187547 3.929265-1.107846C3.769863-.573848 3.315567-.143462 2.8533-.143462C2.590286-.143462 2.399004-.318804 2.399004-.653549C2.399004-.812951 2.446824-.996264 2.558406-1.44259C2.614197-1.681694 2.789539-2.383064 2.82939-2.534496C2.940971-2.948941 3.219925-3.291656 3.57858-3.291656C3.618431-3.291656 3.825654-3.291656 3.993026-3.180075Z'/>
+<path id='t-fp-mke-palice-P4-1-g1-48' d='M3.897385-2.542466C3.897385-3.395268 3.809714-3.913325 3.5467-4.423412C3.196015-5.124782 2.550436-5.300125 2.11208-5.300125C1.107846-5.300125 .74122-4.550934 .629639-4.327771C.342715-3.745953 .326775-2.956912 .326775-2.542466C.326775-2.016438 .350685-1.211457 .73325-.573848C1.099875 .01594 1.689664 .167372 2.11208 .167372C2.494645 .167372 3.180075 .047821 3.57858-.74122C3.873474-1.315068 3.897385-2.024408 3.897385-2.542466ZM2.11208-.055791C1.841096-.055791 1.291158-.183313 1.123786-1.020174C1.036115-1.474471 1.036115-2.223661 1.036115-2.638107C1.036115-3.188045 1.036115-3.745953 1.123786-4.184309C1.291158-4.99726 1.912827-5.076961 2.11208-5.076961C2.383064-5.076961 2.933001-4.941469 3.092403-4.216189C3.188045-3.777833 3.188045-3.180075 3.188045-2.638107C3.188045-2.16787 3.188045-1.45056 3.092403-1.004234C2.925031-.167372 2.375093-.055791 2.11208-.055791Z'/>
+<path id='t-fp-mke-palice-P4-1-g1-49' d='M2.502615-5.076961C2.502615-5.292154 2.486675-5.300125 2.271482-5.300125C1.944707-4.98132 1.522291-4.790037 .765131-4.790037V-4.527024C.980324-4.527024 1.41071-4.527024 1.872976-4.742217V-.653549C1.872976-.358655 1.849066-.263014 1.091905-.263014H.812951V0C1.139726-.02391 1.825156-.02391 2.183811-.02391S3.235866-.02391 3.56264 0V-.263014H3.283686C2.526526-.263014 2.502615-.358655 2.502615-.653549V-5.076961Z'/>
+<path id='t-fp-mke-palice-P4-1-g1-50' d='M2.247572-1.625903C2.375093-1.745455 2.709838-2.008468 2.83736-2.12005C3.331507-2.574346 3.801743-3.012702 3.801743-3.737983C3.801743-4.686426 3.004732-5.300125 2.008468-5.300125C1.052055-5.300125 .422416-4.574844 .422416-3.865504C.422416-3.474969 .73325-3.419178 .844832-3.419178C1.012204-3.419178 1.259278-3.53873 1.259278-3.841594C1.259278-4.25604 .860772-4.25604 .765131-4.25604C.996264-4.837858 1.530262-5.037111 1.920797-5.037111C2.662017-5.037111 3.044583-4.407472 3.044583-3.737983C3.044583-2.909091 2.462765-2.303362 1.522291-1.338979L.518057-.302864C.422416-.215193 .422416-.199253 .422416 0H3.57061L3.801743-1.42665H3.55467C3.53076-1.267248 3.466999-.868742 3.371357-.71731C3.323537-.653549 2.717808-.653549 2.590286-.653549H1.171606L2.247572-1.625903Z'/>
+<path id='t-fp-mke-palice-P4-1-g1-51' d='M2.016438-2.662017C2.646077-2.662017 3.044583-2.199751 3.044583-1.362889C3.044583-.366625 2.478705-.071731 2.056289-.071731C1.617933-.071731 1.020174-.231133 .74122-.653549C1.028144-.653549 1.227397-.836862 1.227397-1.099875C1.227397-1.354919 1.044085-1.538232 .789041-1.538232C.573848-1.538232 .350685-1.40274 .350685-1.083935C.350685-.326775 1.163636 .167372 2.072229 .167372C3.132254 .167372 3.873474-.565878 3.873474-1.362889C3.873474-2.024408 3.347447-2.630137 2.534496-2.805479C3.164134-3.028643 3.634371-3.57061 3.634371-4.208219S2.917061-5.300125 2.088169-5.300125C1.235367-5.300125 .589788-4.837858 .589788-4.23213C.589788-3.937235 .789041-3.809714 .996264-3.809714C1.243337-3.809714 1.40274-3.985056 1.40274-4.216189C1.40274-4.511083 1.147696-4.622665 .972354-4.630635C1.307098-5.068991 1.920797-5.092902 2.064259-5.092902C2.271482-5.092902 2.87721-5.029141 2.87721-4.208219C2.87721-3.650311 2.646077-3.315567 2.534496-3.188045C2.295392-2.940971 2.11208-2.925031 1.625903-2.893151C1.474471-2.885181 1.41071-2.87721 1.41071-2.773599C1.41071-2.662017 1.482441-2.662017 1.617933-2.662017H2.016438Z'/>
+<path id='t-fp-mke-palice-P4-1-g1-52' d='M3.140224-5.156663C3.140224-5.316065 3.140224-5.379826 2.972852-5.379826C2.86924-5.379826 2.86127-5.371856 2.781569-5.260274L.239103-1.570112V-1.307098H2.486675V-.645579C2.486675-.350685 2.462765-.263014 1.849066-.263014H1.665753V0C2.343213-.02391 2.359153-.02391 2.81345-.02391S3.283686-.02391 3.961146 0V-.263014H3.777833C3.164134-.263014 3.140224-.350685 3.140224-.645579V-1.307098H3.985056V-1.570112H3.140224V-5.156663ZM2.542466-4.511083V-1.570112H.518057L2.542466-4.511083Z'/>
+<path id='t-fp-mke-palice-P4-1-g2-101' d='M1.228394-2.0533C1.775342-2.0533 2.358157-2.0533 2.833375-2.169863C3.676214-2.37609 3.828643-2.878207 3.828643-3.183064C3.828643-3.694147 3.353425-3.963138 2.824408-3.963138C1.784309-3.963138 .42142-3.084433 .42142-1.542217C.42142-.690411 .923537 .09863 1.891905 .09863C3.236862 .09863 3.990037-.833873 3.990037-.950436C3.990037-1.004234 3.927273-1.075965 3.864508-1.075965C3.819676-1.075965 3.81071-1.066999 3.730012-.968369C3.19203-.304857 2.37609-.125529 1.909838-.125529C1.273225-.125529 1.102864-.726276 1.102864-1.174595C1.102864-1.192528 1.102864-1.506351 1.228394-2.0533ZM1.291158-2.27746C1.685679-3.694147 2.680946-3.738979 2.824408-3.738979C3.129265-3.738979 3.496887-3.595517 3.496887-3.183064C3.496887-2.27746 2.142964-2.27746 1.291158-2.27746Z'/>
+<path id='t-fp-mke-palice-P4-1-g2-120' d='M4.411457-3.622416C4.079701-3.559651 3.981071-3.272727 3.981071-3.138232C3.981071-2.96787 4.1066-2.815442 4.33076-2.815442C4.581818-2.815442 4.82391-3.030635 4.82391-3.344458C4.82391-3.756912 4.375592-3.963138 3.954172-3.963138C3.416189-3.963138 3.102366-3.48792 2.99477-3.299626C2.824408-3.738979 2.429888-3.963138 1.999502-3.963138C1.0401-3.963138 .52005-2.815442 .52005-2.582316C.52005-2.501619 .582814-2.47472 .645579-2.47472C.726276-2.47472 .753176-2.519552 .771108-2.57335C1.049066-3.461021 1.640847-3.738979 1.981569-3.738979C2.241594-3.738979 2.47472-3.568618 2.47472-3.147198C2.47472-2.824408 2.089166-1.389788 1.972603-.959402C1.900872-.681445 1.63188-.125529 1.13873-.125529C.959402-.125529 .771108-.188294 .681445-.242092C.923537-.286924 1.102864-.493151 1.102864-.726276C1.102864-.950436 .932503-1.049066 .762142-1.049066C.502117-1.049066 .268991-.824907 .268991-.52005C.268991-.080697 .753176 .09863 1.129763 .09863C1.649813 .09863 1.95467-.331756 2.089166-.573848C2.313325 .017933 2.842341 .09863 3.084433 .09863C4.052802 .09863 4.563885-1.066999 4.563885-1.282192C4.563885-1.327024 4.536986-1.389788 4.447323-1.389788C4.348692-1.389788 4.339726-1.353923 4.294894-1.219427C4.097634-.573848 3.577584-.125529 3.111333-.125529C2.851308-.125529 2.609215-.286924 2.609215-.71731C2.609215-.91457 2.734745-1.407721 2.815442-1.748443C2.851308-1.909838 3.0934-2.878207 3.111333-2.940971C3.218929-3.263761 3.48792-3.738979 3.945205-3.738979C4.1066-3.738979 4.276961-3.71208 4.411457-3.622416Z'/>
+<path id='t-fp-mke-palice-P4-1-g3-48' d='M3.287671-1.906849C3.287671-2.343213 3.287671-3.975093 1.823163-3.975093S.358655-2.343213 .358655-1.906849C.358655-1.476463 .358655 .125529 1.823163 .125529S3.287671-1.476463 3.287671-1.906849ZM1.823163-.065753C1.572105-.065753 1.165629-.185305 1.022167-.681445C.926526-1.028144 .926526-1.613948 .926526-1.984558C.926526-2.385056 .926526-2.84533 1.010212-3.16812C1.159651-3.706102 1.613948-3.783811 1.823163-3.783811C2.098132-3.783811 2.492653-3.652304 2.624159-3.198007C2.713823-2.881196 2.719801-2.444832 2.719801-1.984558C2.719801-1.601993 2.719801-.998257 2.618182-.663512C2.450809-.143462 2.020423-.065753 1.823163-.065753Z'/>
+<path id='t-fp-mke-palice-P4-1-g3-49' d='M2.145953-3.795766C2.145953-3.975093 2.122042-3.975093 1.942715-3.975093C1.548194-3.592528 .938481-3.592528 .723288-3.592528V-3.359402C.878705-3.359402 1.273225-3.359402 1.63188-3.526775V-.508095C1.63188-.310834 1.63188-.233126 1.016189-.233126H.759153V0C1.08792-.02391 1.554172-.02391 1.888917-.02391S2.689913-.02391 3.01868 0V-.233126H2.761644C2.145953-.233126 2.145953-.310834 2.145953-.508095V-3.795766Z'/>
+<path id='t-fp-mke-palice-P4-1-g3-50' d='M3.21594-1.117808H2.99477C2.982814-1.034122 2.923039-.639601 2.833375-.573848C2.791532-.537983 2.307347-.537983 2.223661-.537983H1.105853L1.870984-1.159651C2.074222-1.321046 2.606227-1.703611 2.791532-1.882939C2.970859-2.062267 3.21594-2.367123 3.21594-2.791532C3.21594-3.53873 2.540473-3.975093 1.739477-3.975093C.968369-3.975093 .430386-3.466999 .430386-2.905106C.430386-2.600249 .687422-2.564384 .753176-2.564384C.902615-2.564384 1.075965-2.67198 1.075965-2.887173C1.075965-3.01868 .998257-3.209963 .735243-3.209963C.872727-3.514819 1.23736-3.741968 1.649813-3.741968C2.27746-3.741968 2.612204-3.275716 2.612204-2.791532C2.612204-2.367123 2.331258-1.93076 1.912827-1.548194L.496139-.251059C.436364-.191283 .430386-.185305 .430386 0H3.030635L3.21594-1.117808Z'/>
+<path id='t-fp-mke-palice-P4-1-g3-51' d='M1.75741-1.984558C2.265504-1.984558 2.606227-1.643836 2.606227-1.034122C2.606227-.376588 2.211706-.089664 1.775342-.089664C1.613948-.089664 .998257-.125529 .729265-.472229C.962391-.496139 1.058032-.651557 1.058032-.812951C1.058032-1.016189 .91457-1.153674 .71731-1.153674C.555915-1.153674 .376588-1.052055 .376588-.800996C.376588-.209215 1.034122 .125529 1.793275 .125529C2.677958 .125529 3.269738-.442341 3.269738-1.034122C3.269738-1.470486 2.934994-1.93076 2.223661-2.110087C2.69589-2.265504 3.078456-2.64807 3.078456-3.138232C3.078456-3.616438 2.516563-3.975093 1.799253-3.975093C1.099875-3.975093 .56787-3.652304 .56787-3.162142C.56787-2.905106 .765131-2.833375 .884682-2.833375C1.0401-2.833375 1.201494-2.940971 1.201494-3.150187C1.201494-3.335492 1.069988-3.443088 .908593-3.466999C1.189539-3.777833 1.733499-3.777833 1.787298-3.777833C2.092154-3.777833 2.47472-3.634371 2.47472-3.138232C2.47472-2.809465 2.289415-2.235616 1.691656-2.199751C1.58406-2.193773 1.422665-2.181818 1.368867-2.181818C1.309091-2.175841 1.243337-2.169863 1.243337-2.080199C1.243337-1.984558 1.309091-1.984558 1.41071-1.984558H1.75741Z'/>
+<path id='t-fp-mke-palice-P4-1-g3-52' d='M3.371357-.980324V-1.21345H2.67198V-3.855542C2.67198-3.993026 2.67198-4.034869 2.52254-4.034869C2.414944-4.034869 2.402989-4.016936 2.349191-3.945205L.274969-1.21345V-.980324H2.133998V-.502117C2.133998-.304857 2.133998-.233126 1.63188-.233126H1.458531V0C1.578082-.005978 2.139975-.02391 2.402989-.02391S3.227895-.005978 3.347447 0V-.233126H3.174097C2.67198-.233126 2.67198-.304857 2.67198-.502117V-.980324H3.371357ZM2.175841-3.383313V-1.21345H.532005L2.175841-3.383313Z'/>
+<path id='t-fp-mke-palice-P4-1-g4-48' d='M4.241096-2.86924C4.241096-3.469988 4.214197-4.241096 3.900374-4.913574C3.505853-5.756413 2.824408-5.971606 2.304359-5.971606C1.766376-5.971606 1.084932-5.756413 .690411-4.895641C.403487-4.276961 .358655-3.550685 .358655-2.86924C.358655-2.286426 .376588-1.416687 .762142-.708344C1.183562 .053798 1.882939 .19726 2.295392 .19726C2.878207 .19726 3.541719-.053798 3.918306-.878705C4.187298-1.479452 4.241096-2.15193 4.241096-2.86924ZM2.304359-.026899C2.035367-.026899 1.389788-.152428 1.219427-1.165629C1.129763-1.694645 1.129763-2.465753 1.129763-2.976837C1.129763-3.58655 1.129763-4.294894 1.23736-4.788045C1.416687-5.586052 1.990535-5.747447 2.295392-5.747447C2.636115-5.747447 3.200996-5.56812 3.371357-4.734247C3.469988-4.241096 3.469988-3.541719 3.469988-2.976837C3.469988-2.420922 3.469988-1.667746 3.380324-1.13873C3.19203-.116563 2.528518-.026899 2.304359-.026899Z'/>
+<path id='t-fp-mke-palice-P4-1-g4-49' d='M2.725778-5.729514C2.725778-5.953674 2.716812-5.971606 2.492653-5.971606C1.936737-5.397758 1.111831-5.397758 .833873-5.397758V-5.119801C1.004234-5.119801 1.551183-5.119801 2.035367-5.352927V-.71731C2.035367-.385554 2.008468-.277958 1.174595-.277958H.887671V0C1.210461-.026899 2.008468-.026899 2.37609-.026899S3.550685-.026899 3.873474 0V-.277958H3.58655C2.752677-.277958 2.725778-.385554 2.725778-.71731V-5.729514Z'/>
+<path id='t-fp-mke-palice-P4-1-g4-50' d='M4.142466-1.587049H3.891407C3.873474-1.470486 3.801743-.941469 3.685181-.798007C3.631382-.71731 3.012702-.71731 2.833375-.71731H1.23736L2.125031-1.560149C3.595517-2.833375 4.142466-3.308593 4.142466-4.223163C4.142466-5.254296 3.29066-5.971606 2.187796-5.971606C1.156663-5.971606 .457285-5.155666 .457285-4.339726C.457285-3.891407 .842839-3.846575 .923537-3.846575C1.120797-3.846575 1.389788-3.990037 1.389788-4.312827C1.389788-4.581818 1.201494-4.779078 .923537-4.779078C.878705-4.779078 .851806-4.779078 .81594-4.770112C1.031133-5.406725 1.604981-5.693649 2.089166-5.693649C3.003736-5.693649 3.317559-4.841843 3.317559-4.223163C3.317559-3.308593 2.627148-2.564384 2.196762-2.098132L.555915-.32279C.457285-.224159 .457285-.206227 .457285 0H3.891407L4.142466-1.587049Z'/>
+<path id='t-fp-mke-palice-P4-1-g4-51' d='M2.734745-3.156164C3.568618-3.469988 3.963138-4.124533 3.963138-4.743213C3.963138-5.433624 3.200996-5.971606 2.268493-5.971606S.636613-5.44259 .636613-4.761146C.636613-4.465255 .833873-4.294894 1.093898-4.294894S1.542217-4.483188 1.542217-4.743213C1.542217-5.057036 1.327024-5.191532 1.022167-5.191532C1.255293-5.56812 1.802242-5.747447 2.241594-5.747447C2.985803-5.747447 3.129265-5.155666 3.129265-4.734247C3.129265-4.465255 3.075467-4.034869 2.851308-3.694147C2.57335-3.29066 2.259527-3.272727 1.999502-3.254795C1.775342-3.236862 1.75741-3.236862 1.685679-3.236862C1.604981-3.227895 1.53325-3.218929 1.53325-3.120299C1.53325-3.003736 1.604981-3.003736 1.75741-3.003736H2.178829C2.958904-3.003736 3.299626-2.37609 3.299626-1.524284C3.299626-.376588 2.689913-.053798 2.232628-.053798C2.062267-.053798 1.192528-.09863 .789041-.762142C1.111831-.71731 1.362889-.941469 1.362889-1.246326C1.362889-1.542217 1.13873-1.730511 .878705-1.730511C.654545-1.730511 .385554-1.596015 .385554-1.219427C.385554-.42142 1.219427 .19726 2.259527 .19726C3.380324 .19726 4.214197-.609714 4.214197-1.524284C4.214197-2.304359 3.595517-2.96787 2.734745-3.156164Z'/>
+<path id='t-fp-mke-palice-P4-1-g4-52' d='M.260025-1.75741V-1.479452H2.707846V-.708344C2.707846-.376588 2.680946-.277958 2.008468-.277958H1.811208V0C2.37609-.026899 3.003736-.026899 3.066501-.026899C3.111333-.026899 3.756912-.026899 4.321793 0V-.277958H4.124533C3.452055-.277958 3.425156-.376588 3.425156-.708344V-1.479452H4.339726V-1.75741H3.425156V-5.828144C3.425156-6.007472 3.425156-6.070237 3.254795-6.070237C3.147198-6.070237 3.138232-6.06127 3.057534-5.935741L.260025-1.75741ZM.546949-1.75741L2.761644-5.074969V-1.75741H.546949Z'/>
+<path id='t-fp-mke-palice-P4-1-g4-98' d='M1.622914-2.860274C1.622914-3.030635 1.622914-3.039601 1.721544-3.183064C2.026401-3.595517 2.465753-3.738979 2.806476-3.738979C3.19203-3.738979 3.550685-3.523786 3.783811-3.147198C4.016936-2.761644 4.034869-2.232628 4.034869-1.945704C4.034869-1.524284 3.981071-1.049066 3.747945-.690411C3.550685-.403487 3.183064-.125529 2.707846-.125529C2.304359-.125529 1.963636-.340722 1.748443-.672478C1.622914-.860772 1.622914-.869738 1.622914-1.0401V-2.860274ZM1.542217-.546949C1.820174-.152428 2.268493 .09863 2.752677 .09863C3.819676 .09863 4.805978-.762142 4.805978-1.936737C4.805978-3.057534 3.918306-3.963138 2.842341-3.963138C2.232628-3.963138 1.811208-3.649315 1.596015-3.407223V-6.222665L.268991-6.124035V-5.846077C.878705-5.846077 .959402-5.783313 .959402-5.34396V0H1.210461L1.542217-.546949Z'/>
+<path id='t-fp-mke-palice-P4-1-g4-100' d='M3.48792-1.075965C3.48792-.91457 3.48792-.887671 3.353425-.699377C3.075467-.29589 2.663014-.125529 2.304359-.125529C1.918804-.125529 1.560149-.340722 1.327024-.71731C1.093898-1.102864 1.075965-1.63188 1.075965-1.918804C1.075965-2.340224 1.129763-2.815442 1.362889-3.174097C1.560149-3.461021 1.927771-3.738979 2.402989-3.738979C2.779577-3.738979 3.138232-3.550685 3.380324-3.209963C3.48792-3.066501 3.48792-3.057534 3.48792-2.887173V-1.075965ZM3.514819-3.434122C3.469988-3.48792 3.066501-3.963138 2.367123-3.963138C1.264259-3.963138 .304857-3.084433 .304857-1.927771C.304857-.806974 1.201494 .09863 2.268493 .09863C2.923039 .09863 3.326526-.286924 3.48792-.475218V.09863L4.841843 0V-.277958C4.23213-.277958 4.151432-.340722 4.151432-.780075V-6.222665L2.824408-6.124035V-5.846077C3.434122-5.846077 3.514819-5.783313 3.514819-5.34396V-3.434122Z'/>
+<path id='t-fp-mke-palice-P4-1-g4-109' d='M1.667746-2.322291C1.667746-3.29066 2.367123-3.738979 2.905106-3.738979C3.398257-3.738979 3.559651-3.38929 3.559651-2.761644V-.690411C3.559651-.277958 3.461021-.277958 2.86924-.277958V0C3.29066-.017933 3.461021-.026899 3.891407-.026899S4.438356-.017933 4.913574 0V-.277958C4.321793-.277958 4.223163-.277958 4.223163-.690411V-2.322291C4.223163-3.29066 4.92254-3.738979 5.460523-3.738979C5.953674-3.738979 6.115068-3.38929 6.115068-2.761644V-.690411C6.115068-.277958 6.016438-.277958 5.424658-.277958V0C5.846077-.017933 6.016438-.026899 6.446824-.026899S6.993773-.017933 7.468991 0V-.277958C7.011706-.277958 6.787547-.277958 6.77858-.555915V-2.27746C6.77858-3.057534 6.77858-3.308593 6.48269-3.640349C6.294396-3.855542 5.935741-3.963138 5.523288-3.963138C4.877709-3.963138 4.438356-3.58655 4.187298-3.111333C4.079701-3.640349 3.721046-3.963138 2.96787-3.963138C2.25056-3.963138 1.811208-3.496887 1.622914-3.084433H1.613948V-3.963138L.313823-3.864508V-3.58655C.923537-3.58655 1.004234-3.523786 1.004234-3.084433V-.690411C1.004234-.277958 .905604-.277958 .313823-.277958V0C.735243-.017933 .905604-.026899 1.33599-.026899S1.882939-.017933 2.358157 0V-.277958C1.766376-.277958 1.667746-.277958 1.667746-.690411V-2.322291Z'/>
+<path id='t-fp-mke-palice-P4-1-g4-110' d='M1.667746-2.322291C1.667746-3.272727 2.340224-3.738979 2.905106-3.738979C3.434122-3.738979 3.550685-3.299626 3.550685-2.761644V-.690411C3.550685-.277958 3.452055-.277958 2.860274-.277958V0C3.281694-.017933 3.452055-.026899 3.882441-.026899S4.42939-.017933 4.904608 0V-.277958C4.447323-.277958 4.223163-.277958 4.214197-.555915V-2.27746C4.214197-3.021669 4.214197-3.281694 3.963138-3.595517C3.756912-3.846575 3.416189-3.963138 2.96787-3.963138C2.133998-3.963138 1.748443-3.344458 1.622914-3.0934H1.613948V-3.963138L.313823-3.864508V-3.58655C.923537-3.58655 1.004234-3.523786 1.004234-3.084433V-.690411C1.004234-.277958 .905604-.277958 .313823-.277958V0C.735243-.017933 .905604-.026899 1.33599-.026899S1.882939-.017933 2.358157 0V-.277958C1.766376-.277958 1.667746-.277958 1.667746-.690411V-2.322291Z'/>
+<path id='t-fp-mke-palice-P4-1-g4-111' d='M4.339726-1.909838C4.339726-3.084433 3.407223-4.016936 2.304359-4.016936C1.165629-4.016936 .260025-3.057534 .260025-1.909838C.260025-.789041 1.192528 .09863 2.295392 .09863C3.434122 .09863 4.339726-.806974 4.339726-1.909838ZM2.304359-.152428C1.85604-.152428 1.479452-.376588 1.273225-.726276C1.0401-1.102864 1.031133-1.578082 1.031133-1.990535C1.031133-2.322291 1.031133-2.833375 1.255293-3.200996C1.524284-3.658281 1.972603-3.792777 2.295392-3.792777C2.806476-3.792777 3.174097-3.505853 3.353425-3.200996C3.559651-2.824408 3.568618-2.367123 3.568618-1.990535C3.568618-1.65878 3.568618-1.13873 3.344458-.744209C3.0934-.331756 2.680946-.152428 2.304359-.152428Z'/>
+<path id='t-fp-mke-palice-P4-1-g4-112' d='M1.622914-3.012702C1.927771-3.532752 2.420922-3.71208 2.797509-3.71208C3.496887-3.71208 4.034869-2.905106 4.034869-1.936737C4.034869-.91457 3.425156-.125529 2.698879-.125529C2.295392-.125529 1.95467-.358655 1.739477-.672478C1.622914-.851806 1.622914-.869738 1.622914-1.0401V-3.012702ZM1.622914-.430386C1.85604-.19726 2.160897 .09863 2.752677 .09863C3.819676 .09863 4.805978-.762142 4.805978-1.936737C4.805978-3.066501 3.927273-3.963138 2.86924-3.963138C2.385056-3.963138 1.936737-3.765878 1.596015-3.398257V-3.963138L.268991-3.864508V-3.58655C.905604-3.58655 .959402-3.532752 .959402-3.147198V1.049066C.959402 1.461519 .860772 1.461519 .268991 1.461519V1.739477C.690411 1.721544 .860772 1.712578 1.291158 1.712578S1.838107 1.721544 2.313325 1.739477V1.461519C1.721544 1.461519 1.622914 1.461519 1.622914 1.049066V-.430386Z'/>
+<path id='t-fp-mke-palice-P4-1-g4-116' d='M2.914072-3.58655V-3.864508H1.613948V-5.514321H1.362889C1.353923-4.761146 1.0401-3.837609 .170361-3.81071V-3.58655H.950436V-1.111831C.950436-.107597 1.676712 .09863 2.15193 .09863C2.752677 .09863 3.066501-.475218 3.066501-1.111831V-1.622914H2.815442V-1.13873C2.815442-.475218 2.537484-.152428 2.214695-.152428C1.613948-.152428 1.613948-.941469 1.613948-1.102864V-3.58655H2.914072Z'/>
+<path id='t-fp-mke-palice-P4-1-g4-117' d='M3.550685-1.497385C3.550685-.699377 3.102366-.125529 2.456787-.125529C1.712578-.125529 1.667746-.511083 1.667746-.995268V-3.963138L.313823-3.864508V-3.58655C1.004234-3.58655 1.004234-3.559651 1.004234-2.761644V-1.416687C1.004234-.833873 1.004234-.457285 1.416687-.143462C1.676712 .035866 2.044334 .09863 2.402989 .09863C2.86924 .09863 3.308593-.107597 3.568618-.645579H3.577584V.09863L4.904608 0V-.277958C4.294894-.277958 4.214197-.340722 4.214197-.780075V-3.963138L2.860274-3.864508V-3.58655C3.469988-3.58655 3.550685-3.523786 3.550685-3.084433V-1.497385Z'/>
+<path id='t-fp-mke-palice-P4-1-g4-119' d='M5.711582-2.99477C5.908842-3.541719 6.276463-3.577584 6.464757-3.58655V-3.864508C6.106102-3.837609 6.088169-3.837609 5.792279-3.837609C5.451557-3.837609 5.326027-3.837609 4.967372-3.864508V-3.58655C5.352927-3.577584 5.478456-3.335492 5.478456-3.156164C5.478456-3.066501 5.460523-3.012702 5.433624-2.949938L4.608717-.708344L3.703113-3.165131C3.658281-3.281694 3.658281-3.308593 3.658281-3.335492C3.658281-3.568618 3.936239-3.58655 4.169365-3.58655V-3.864508C3.756912-3.837609 3.38929-3.837609 3.245828-3.837609C2.96787-3.837609 2.707846-3.837609 2.420922-3.864508V-3.58655C2.707846-3.58655 2.887173-3.577584 2.985803-3.452055C3.066501-3.353425 3.183064-2.99477 3.183064-2.96787C3.183064-2.949938 3.138232-2.851308 3.138232-2.842341L2.402989-.824907L1.551183-3.156164C1.497385-3.29066 1.497385-3.308593 1.497385-3.344458C1.497385-3.58655 1.847073-3.58655 2.017435-3.58655V-3.864508C1.604981-3.846575 1.398755-3.837609 1.0401-3.837609C.744209-3.837609 .484184-3.837609 .179328-3.864508V-3.58655C.609714-3.58655 .726276-3.568618 .833873-3.263761L1.990535-.09863C2.035367 .008966 2.062267 .09863 2.196762 .09863S2.367123 0 2.402989-.089664L3.317559-2.600249L4.241096-.089664C4.276961 0 4.312827 .09863 4.447323 .09863S4.608717 .008966 4.644583-.080697L5.711582-2.99477Z'/>
+<path id='t-fp-mke-palice-P4-1-g5-107' d='M2.182814-4.630635C2.189788-4.644583 2.21071-4.735243 2.21071-4.742217C2.21071-4.777086 2.182814-4.839851 2.099128-4.839851C1.959651-4.839851 1.380822-4.78406 1.206476-4.770112C1.150685-4.763138 1.053051-4.756164 1.053051-4.609714C1.053051-4.51208 1.150685-4.51208 1.234371-4.51208C1.569116-4.51208 1.569116-4.463263 1.569116-4.407472C1.569116-4.358655 1.555168-4.316812 1.54122-4.254047L.557908-.306849C.523039-.18132 .523039-.167372 .523039-.153425C.523039-.048817 .606725 .069738 .760149 .069738C.948443 .069738 1.039103-.069738 1.080946-.223163C1.094894-.251059 1.39477-1.478456 1.422665-1.57609C1.917808-1.527273 2.315318-1.366874 2.315318-1.004234C2.315318-.969365 2.315318-.934496 2.30137-.864757C2.273474-.760149 2.273474-.72528 2.273474-.648568C2.273474-.153425 2.677958 .069738 3.012702 .069738C3.689166 .069738 3.898381-.990286 3.898381-.99726C3.898381-1.08792 3.807721-1.08792 3.7868-1.08792C3.689166-1.08792 3.682192-1.053051 3.647323-.920548C3.563636-.620672 3.375342-.125529 3.033624-.125529C2.84533-.125529 2.789539-.299875 2.789539-.488169C2.789539-.606725 2.789539-.620672 2.831382-.801993C2.838356-.822914 2.866252-.941469 2.866252-1.018182C2.866252-1.638854 2.02939-1.736488 1.736488-1.75741C1.93873-1.882939 2.196762-2.113076 2.315318-2.217684C2.670984-2.552428 3.019676-2.880199 3.410212-2.880199C3.493898-2.880199 3.584558-2.859278 3.640349-2.789539C3.340473-2.740722 3.277709-2.503611 3.277709-2.399004C3.277709-2.245579 3.396264-2.140971 3.556663-2.140971C3.744956-2.140971 3.954172-2.294396 3.954172-2.587298C3.954172-2.817435 3.7868-3.075467 3.417186-3.075467C3.019676-3.075467 2.657036-2.789539 2.30137-2.461768C2.008468-2.182814 1.778331-1.966625 1.492403-1.84807L2.182814-4.630635Z'/>
+<path id='t-fp-mke-palice-P4-1-g6-49' d='M1.982565-3.16812C1.982565-3.317559 1.967621-3.317559 1.803238-3.317559C1.449564-2.998755 .896638-2.998755 .797011-2.998755H.712329V-2.779577H.797011C.911582-2.779577 1.235367-2.794521 1.524284-2.919054V-.428394C1.524284-.273973 1.524284-.219178 .996264-.219178H.747198V0C1.021171-.019925 1.464508-.019925 1.753425-.019925S2.485679-.019925 2.759651 0V-.219178H2.510585C1.982565-.219178 1.982565-.273973 1.982565-.428394V-3.16812Z'/>
+<path id='t-fp-mke-palice-P4-1-g6-50' d='M2.933998-.961395H2.724782C2.709838-.86675 2.660025-.557908 2.580324-.508095C2.540473-.478207 2.122042-.478207 2.047323-.478207H1.070984C1.399751-.722291 1.768369-1.001245 2.067248-1.200498C2.515567-1.50934 2.933998-1.798257 2.933998-2.326276C2.933998-2.963885 2.331258-3.317559 1.618929-3.317559C.946451-3.317559 .4533-2.929016 .4533-2.440847C.4533-2.181818 .672478-2.136986 .742217-2.136986C.876712-2.136986 1.036115-2.22665 1.036115-2.430884C1.036115-2.610212 .9066-2.709838 .752179-2.724782C.891656-2.948941 1.180573-3.098381 1.514321-3.098381C1.997509-3.098381 2.400996-2.809465 2.400996-2.321295C2.400996-1.902864 2.11208-1.58406 1.728518-1.260274L.513076-.229141C.463263-.184309 .458281-.184309 .4533-.14944V0H2.769614L2.933998-.961395Z'/>
+</defs>
+<g id='t-fp-mke-palice-P4-1-page1'>
+<g stroke-miterlimit='10' transform='translate(-21.401708,-34.93058)scale(0.996264,-0.996264)'>
+<g fill='#000' stroke='#000'>
+<g stroke-width='0.4'>
+<g stroke-width='0.6'>
+<g stroke-linecap='round'>
+<g stroke-linejoin='round'>
+<g class='del' data-del='levo'>
+<g transform='translate(20.94838,27.62546)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-116'/>
+<use x='-17.817948' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-111'/>
+<use x='-13.210258' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-112'/>
+<use x='-5.018808' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-100'/>
+<use x='.100849' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-111'/>
+<use x='4.452556' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-119'/>
+<use x='11.10811' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-110'/>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.4'>
+<path d='M-48.36957 5.69046V-26.86026' fill='none'/>
+<g transform='matrix(0.0,-1.0,1.0,0.0,-48.36957,-24.46954)'>
+<g stroke-dasharray='none' stroke-dashoffset='0.0'>
+ <g stroke-linejoin='miter'>
+ <path d='M6.22958 0L.67012 1.97523L2.4907 0L.67012-1.97523Z'/>
+ </g>
+ </g>
+</g>
+</g>
+<g transform='translate(-41.89157,-33.23567)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g2-120'/>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='1.6'>
+<path d='M0 0V-39.83366' fill='none'/>
+</g>
+<g stroke-width='1.6'>
+<path d='M0-79.66776V-119.50143' fill='none'/>
+</g>
+<g stroke-width='1.6'>
+<path d='M0-119.50143V-159.33553' fill='none'/>
+</g>
+<path d='M1.83862 0C1.83862 1.01544 1.01544 1.83862 0 1.83862S-1.83862 1.01544-1.83862 0S-1.01544-1.83862 0-1.83862S1.83862-1.01544 1.83862 0ZM0 0' stroke='none'/>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+<path d='M1.83862-39.83366C1.83862-38.81822 1.01544-37.99504 0-37.99504S-1.83862-38.81822-1.83862-39.83366S-1.01544-41.67229 0-41.67229S1.83862-40.8491 1.83862-39.83366ZM0-39.83366' stroke='none'/>
+<g transform='translate(0.0,-39.83366)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M1.83862-79.66776C1.83862-78.65231 1.01544-77.82913 0-77.82913S-1.83862-78.65231-1.83862-79.66776C-1.83862-80.6832-1.01544-81.50638 0-81.50638S1.83862-80.6832 1.83862-79.66776ZM0-79.66776' stroke='none'/>
+<g transform='translate(0.0,-79.66776)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M1.83862-119.50143C1.83862-118.486 1.01544-117.66281 0-117.66281S-1.83862-118.486-1.83862-119.50143C-1.83862-120.51688-1.01544-121.34006 0-121.34006S1.83862-120.51688 1.83862-119.50143ZM0-119.50143' stroke='none'/>
+<g transform='translate(0.0,-119.50143)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M1.83862-159.33553C1.83862-158.32008 1.01544-157.4969 0-157.4969S-1.83862-158.32008-1.83862-159.33553C-1.83862-160.35097-1.01544-161.17415 0-161.17415S1.83862-160.35097 1.83862-159.33553ZM0-159.33553' stroke='none'/>
+<g transform='translate(0.0,-159.33553)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(-34.35115,-1.16667)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g0-120'/>
+<use x='-16.634809' y='-33.823631' xlink:href='#t-fp-mke-palice-P4-1-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(-34.35115,-41.00034)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g0-120'/>
+<use x='-16.634809' y='-33.823631' xlink:href='#t-fp-mke-palice-P4-1-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(-34.35115,-80.83443)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g0-120'/>
+<use x='-16.634809' y='-33.823631' xlink:href='#t-fp-mke-palice-P4-1-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(-34.35115,-120.6681)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g0-120'/>
+<use x='-16.634809' y='-33.823631' xlink:href='#t-fp-mke-palice-P4-1-g3-51'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(-34.35115,-160.5022)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g0-120'/>
+<use x='-16.634809' y='-33.823631' xlink:href='#t-fp-mke-palice-P4-1-g3-52'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<path d='M-16.61612-4.4H-8.99115V4.39999H-16.61612Z' fill='none'/>
+<g transform='translate(-15.11612,-2.9)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-48'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M-16.61612-44.23366H-8.99115V-35.43367H-16.61612Z' fill='none'/>
+<g transform='translate(-15.11612,-42.73366)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M-16.61612-84.06775H-8.99115V-75.26776H-16.61612Z' fill='none'/>
+<g transform='translate(-15.11612,-82.56775)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M-16.61612-123.90143H-8.99115V-115.10144H-16.61612Z' fill='none'/>
+<g transform='translate(-15.11612,-122.40143)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-51'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M-16.61612-163.73552H-8.99115V-154.93553H-16.61612Z' fill='none'/>
+<g transform='translate(-15.11612,-162.23552)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-52'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(7.04716,-11.4359)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(7.04716,-34.19818)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(7.04716,-91.10367)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(7.04716,-113.86551)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(7.04716,-130.93733)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(7.04716,-153.69962)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='elementi'>
+<path d='M30.72716-19.91682C30.72716-17.08917 28.43494-14.79695 25.60728-14.79695C22.77963-14.79695 20.48741-17.08917 20.48741-19.91682C20.48741-22.74448 22.77963-25.0367 25.60728-25.0367C28.43494-25.0367 30.72716-22.74448 30.72716-19.91682ZM25.60728-19.91682' fill='none'/>
+<g transform='translate(23.2948,-22.81682)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M30.72716-99.5846C30.72716-96.75694 28.43494-94.46472 25.60728-94.46472C22.77963-94.46472 20.48741-96.75694 20.48741-99.5846C20.48741-102.41225 22.77963-104.70447 25.60728-104.70447C28.43494-104.70447 30.72716-102.41225 30.72716-99.5846ZM25.60728-99.5846' fill='none'/>
+<g transform='translate(23.2948,-102.48459)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-51'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M30.72716-139.41826C30.72716-136.5906 28.43494-134.29839 25.60728-134.29839C22.77963-134.29839 20.48741-136.5906 20.48741-139.41826C20.48741-142.24591 22.77963-144.53813 25.60728-144.53813C28.43494-144.53813 30.72716-142.24591 30.72716-139.41826ZM25.60728-139.41826' fill='none'/>
+<g transform='translate(23.2948,-142.31825)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-52'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='tabela1'>
+<g transform='translate(54.75533,13.71161)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g2-101'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(75.93256,12.7491)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(95.84938,12.7491)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.4'>
+<path d='M48.36957 8.5359H108.1205' fill='none'/>
+</g>
+<g stroke-width='0.4'>
+<path d='M66.86412 22.76227V-159.33553' fill='none'/>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M48.36957-39.83366H108.1205' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M48.36957-79.66733H108.1205' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M48.36957-119.50099H108.1205' fill='none'/>
+</g>
+</g>
+<g transform='translate(54.593,-22.81682)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(75.93256,-22.81682)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(95.84938,-22.81682)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(54.593,-102.48459)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-51'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(75.93256,-102.48459)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(95.84938,-102.48459)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-51'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(54.593,-142.31825)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-52'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(75.93256,-142.31825)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-51'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(95.84938,-142.31825)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-52'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='el2'>
+<g transform='translate(54.593,-62.65092)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(75.93256,-62.65092)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(95.84938,-62.65092)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='el2'>
+<g stroke-width='1.6'>
+<path d='M0-39.83366V-79.66776' fill='none'/>
+</g>
+<g transform='translate(7.04716,-51.26956)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(7.04716,-74.03185)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='elementi'>
+<path d='M30.72716-59.75093C30.72716-56.92328 28.43494-54.63106 25.60728-54.63106C22.77963-54.63106 20.48741-56.92328 20.48741-59.75093S22.77963-64.8708 25.60728-64.8708C28.43494-64.8708 30.72716-62.57858 30.72716-59.75093ZM25.60728-59.75093' fill='none'/>
+<g transform='translate(23.2948,-62.65092)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='mreza'>
+<g transform='translate(26.32771,-177.56197)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g1-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(43.39952,-177.56197)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(60.47134,-177.56197)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(77.54317,-177.56197)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g1-51'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(94.61499,-177.56197)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g1-52'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(10.6786,-193.21106)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g1-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(10.6786,-210.28288)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(10.6786,-227.3547)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(10.6786,-244.42651)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g1-51'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(10.6786,-261.49834)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g1-52'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='blok1'>
+<g fill='#ffd9d9' stroke='#ffd9d9'>
+<path d='M36.98865-199.1692V-216.24101H54.06003V-199.1692ZM54.06003-216.24101' stroke='none'/>
+</g>
+<g fill='#ffd9d9' stroke='#ffd9d9'>
+<path d='M54.06003-199.1692V-216.24101H71.13185V-199.1692ZM71.13185-216.24101' stroke='none'/>
+</g>
+<g fill='#ffd9d9' stroke='#ffd9d9'>
+<path d='M36.98865-216.24101V-233.31241H54.06003V-216.24101ZM54.06003-233.31241' stroke='none'/>
+</g>
+<g fill='#ffd9d9' stroke='#ffd9d9'>
+<path d='M54.06003-216.24101V-233.31241H71.13185V-216.24101ZM71.13185-233.31241' stroke='none'/>
+</g>
+<g transform='translate(39.74612,-209.63565)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g5-107'/>
+<use x='-17.166398' y='-33.934316' xlink:href='#t-fp-mke-palice-P4-1-g6-49'/>
+<use x='-13.776277' y='-33.934316' xlink:href='#t-fp-mke-palice-P4-1-g6-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(56.81752,-209.63565)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g5-107'/>
+<use x='-17.166398' y='-33.934316' xlink:href='#t-fp-mke-palice-P4-1-g6-49'/>
+<use x='-13.776277' y='-33.934316' xlink:href='#t-fp-mke-palice-P4-1-g6-50'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(39.74612,-226.70703)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g5-107'/>
+<use x='-17.166398' y='-33.934316' xlink:href='#t-fp-mke-palice-P4-1-g6-50'/>
+<use x='-13.776277' y='-33.934316' xlink:href='#t-fp-mke-palice-P4-1-g6-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(56.81752,-226.70703)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g5-107'/>
+<use x='-17.166398' y='-33.934316' xlink:href='#t-fp-mke-palice-P4-1-g6-50'/>
+<use x='-13.776277' y='-33.934316' xlink:href='#t-fp-mke-palice-P4-1-g6-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M19.91682-182.09738V-199.1692H36.98865V-182.09738ZM36.98865-199.1692' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M36.98865-182.09738V-199.1692H54.06047V-182.09738ZM54.06047-199.1692' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M54.06047-182.09738V-199.1692H71.13228V-182.09738ZM71.13228-199.1692' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M71.13228-182.09738V-199.1692H88.2041V-182.09738ZM88.2041-199.1692' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M88.2041-182.09738V-199.1692H105.27592V-182.09738ZM105.27592-199.1692' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M19.91682-199.1692V-216.24101H36.98865V-199.1692ZM36.98865-216.24101' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M36.98865-199.1692V-216.24101H54.06047V-199.1692ZM54.06047-216.24101' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M54.06047-199.1692V-216.24101H71.13228V-199.1692ZM71.13228-216.24101' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M71.13228-199.1692V-216.24101H88.2041V-199.1692ZM88.2041-216.24101' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M88.2041-199.1692V-216.24101H105.27592V-199.1692ZM105.27592-216.24101' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M19.91682-216.24101V-233.31284H36.98865V-216.24101ZM36.98865-233.31284' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M36.98865-216.24101V-233.31284H54.06047V-216.24101ZM54.06047-233.31284' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M54.06047-216.24101V-233.31284H71.13228V-216.24101ZM71.13228-233.31284' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M71.13228-216.24101V-233.31284H88.2041V-216.24101ZM88.2041-233.31284' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M88.2041-216.24101V-233.31284H105.27592V-216.24101ZM105.27592-233.31284' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M19.91682-233.31284V-250.38466H36.98865V-233.31284ZM36.98865-250.38466' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M36.98865-233.31284V-250.38466H54.06047V-233.31284ZM54.06047-250.38466' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M54.06047-233.31284V-250.38466H71.13228V-233.31284ZM71.13228-250.38466' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M71.13228-233.31284V-250.38466H88.2041V-233.31284ZM88.2041-250.38466' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M88.2041-233.31284V-250.38466H105.27592V-233.31284ZM105.27592-250.38466' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M19.91682-250.38466V-267.45648H36.98865V-250.38466ZM36.98865-267.45648' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M36.98865-250.38466V-267.45648H54.06047V-250.38466ZM54.06047-267.45648' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M54.06047-250.38466V-267.45648H71.13228V-250.38466ZM71.13228-267.45648' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M71.13228-250.38466V-267.45648H88.2041V-250.38466ZM88.2041-267.45648' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M88.2041-250.38466V-267.45648H105.27592V-250.38466ZM105.27592-267.45648' fill='none'/>
+</g>
+</g>
+</g>
+<g class='del' data-del='desno'>
+<g transform='translate(203.32178,27.62546)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-98'/>
+<use x='-16.026069' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-111'/>
+<use x='-11.418378' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-116'/>
+<use x='-7.834619' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-116'/>
+<use x='-4.250859' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-111'/>
+<use x='.356831' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-109'/>
+<use x='11.10811' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-117'/>
+<use x='16.227766' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-112'/>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='1.6'>
+<path d='M184.94283 0V-39.83366' fill='none'/>
+</g>
+<g stroke-width='1.6'>
+<path d='M184.94283-79.66776V-119.50143' fill='none'/>
+</g>
+<g stroke-width='1.6'>
+<path d='M184.94283-119.50143V-159.33553' fill='none'/>
+</g>
+<path d='M186.78145 0C186.78145 1.01544 185.95827 1.83862 184.94283 1.83862C183.92738 1.83862 183.1042 1.01544 183.1042 0S183.92738-1.83862 184.94283-1.83862C185.95827-1.83862 186.78145-1.01544 186.78145 0ZM184.94283 0' stroke='none'/>
+<g transform='translate(184.94283,0.0)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M186.78145-39.83366C186.78145-38.81822 185.95827-37.99504 184.94283-37.99504C183.92738-37.99504 183.1042-38.81822 183.1042-39.83366S183.92738-41.67229 184.94283-41.67229C185.95827-41.67229 186.78145-40.8491 186.78145-39.83366ZM184.94283-39.83366' stroke='none'/>
+<g transform='translate(184.94283,-39.83366)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M186.78145-79.66776C186.78145-78.65231 185.95827-77.82913 184.94283-77.82913C183.92738-77.82913 183.1042-78.65231 183.1042-79.66776C183.1042-80.6832 183.92738-81.50638 184.94283-81.50638C185.95827-81.50638 186.78145-80.6832 186.78145-79.66776ZM184.94283-79.66776' stroke='none'/>
+<g transform='translate(184.94283,-79.66776)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M186.78145-119.50143C186.78145-118.486 185.95827-117.66281 184.94283-117.66281C183.92738-117.66281 183.1042-118.486 183.1042-119.50143C183.1042-120.51688 183.92738-121.34006 184.94283-121.34006C185.95827-121.34006 186.78145-120.51688 186.78145-119.50143ZM184.94283-119.50143' stroke='none'/>
+<g transform='translate(184.94283,-119.50143)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<path d='M186.78145-159.33553C186.78145-158.32008 185.95827-157.4969 184.94283-157.4969C183.92738-157.4969 183.1042-158.32008 183.1042-159.33553C183.1042-160.35097 183.92738-161.17415 184.94283-161.17415C185.95827-161.17415 186.78145-160.35097 186.78145-159.33553ZM184.94283-159.33553' stroke='none'/>
+<g transform='translate(184.94283,-159.33553)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'/>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(150.59167,-1.16667)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g0-120'/>
+<use x='-16.634809' y='-33.823631' xlink:href='#t-fp-mke-palice-P4-1-g3-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(150.59167,-41.00034)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g0-120'/>
+<use x='-16.634809' y='-33.823631' xlink:href='#t-fp-mke-palice-P4-1-g3-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(150.59167,-80.83443)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g0-120'/>
+<use x='-16.634809' y='-33.823631' xlink:href='#t-fp-mke-palice-P4-1-g3-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(150.59167,-120.6681)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g0-120'/>
+<use x='-16.634809' y='-33.823631' xlink:href='#t-fp-mke-palice-P4-1-g3-51'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g fill='#0f0' stroke='#0f0'>
+</g>
+<g transform='translate(150.59167,-160.5022)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#0f0'>
+<g stroke='none'>
+<g fill='#0f0'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g0-120'/>
+<use x='-16.634809' y='-33.823631' xlink:href='#t-fp-mke-palice-P4-1-g3-52'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(191.98999,-11.4359)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(191.98999,-34.19818)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(191.98999,-91.10367)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(191.98999,-113.86551)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(191.98999,-130.93733)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(191.98999,-153.69962)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='elementi'>
+<path d='M215.66998-19.91682C215.66998-17.08917 213.37776-14.79695 210.55011-14.79695S205.43024-17.08917 205.43024-19.91682C205.43024-22.74448 207.72246-25.0367 210.55011-25.0367S215.66998-22.74448 215.66998-19.91682ZM210.55011-19.91682' fill='none'/>
+<g transform='translate(208.23763,-22.81682)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M215.66998-99.5846C215.66998-96.75694 213.37776-94.46472 210.55011-94.46472S205.43024-96.75694 205.43024-99.5846C205.43024-102.41225 207.72246-104.70447 210.55011-104.70447S215.66998-102.41225 215.66998-99.5846ZM210.55011-99.5846' fill='none'/>
+<g transform='translate(208.23763,-102.48459)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-51'/>
+</g>
+</g>
+</g>
+</g>
+<path d='M215.66998-139.41826C215.66998-136.5906 213.37776-134.29839 210.55011-134.29839S205.43024-136.5906 205.43024-139.41826C205.43024-142.24591 207.72246-144.53813 210.55011-144.53813S215.66998-142.24591 215.66998-139.41826ZM210.55011-139.41826' fill='none'/>
+<g transform='translate(208.23763,-142.31825)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-52'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='tabela2'>
+<g transform='translate(239.69815,13.71161)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g2-101'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(260.87538,12.7491)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(280.7922,12.7491)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+<g stroke-width='0.4'>
+<path d='M233.3124 8.5359H293.06332' fill='none'/>
+</g>
+<g stroke-width='0.4'>
+<path d='M251.80695 22.76227V-159.33553' fill='none'/>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M233.3124-39.83366H293.06332' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M233.3124-79.66733H293.06332' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M233.3124-119.50099H293.06332' fill='none'/>
+</g>
+</g>
+<g transform='translate(239.53583,-22.81682)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(260.87538,-22.81682)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-52'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(280.7922,-22.81682)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-51'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(239.53583,-102.48459)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-51'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(260.87538,-102.48459)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(280.7922,-102.48459)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(239.53583,-142.31825)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-52'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(260.87538,-142.31825)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(280.7922,-142.31825)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='el2'>
+<g transform='translate(239.53583,-62.65092)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(260.87538,-62.65092)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-51'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#f00' stroke='#f00'>
+<g fill='#f00' stroke='#f00'>
+</g>
+<g transform='translate(280.7922,-62.65092)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='el2'>
+<g stroke-width='1.6'>
+<path d='M184.94283-39.83366V-79.66776' fill='none'/>
+</g>
+<g transform='translate(191.98999,-51.26956)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(191.98999,-74.03185)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='elementi'>
+<path d='M215.66998-59.75093C215.66998-56.92328 213.37776-54.63106 210.55011-54.63106S205.43024-56.92328 205.43024-59.75093S207.72246-64.8708 210.55011-64.8708S215.66998-62.57858 215.66998-59.75093ZM210.55011-59.75093' fill='none'/>
+<g transform='translate(208.23763,-62.65092)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='globalne2'>
+<g stroke='#f00'>
+<g stroke='#f00'>
+<path d='M168.3267-4.4H175.95167V4.39999H168.3267Z' fill='none'/>
+</g>
+<g transform='translate(169.8267,-2.9)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-52'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g stroke='#f00'>
+<g stroke='#f00'>
+<path d='M168.3267-44.23366H175.95167V-35.43367H168.3267Z' fill='none'/>
+</g>
+<g transform='translate(169.8267,-42.73366)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-51'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g stroke='#f00'>
+<g stroke='#f00'>
+<path d='M168.3267-84.06775H175.95167V-75.26776H168.3267Z' fill='none'/>
+</g>
+<g transform='translate(169.8267,-82.56775)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g stroke='#f00'>
+<g stroke='#f00'>
+<path d='M168.3267-123.90143H175.95167V-115.10144H168.3267Z' fill='none'/>
+</g>
+<g transform='translate(169.8267,-122.40143)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-49'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g stroke='#f00'>
+<g stroke='#f00'>
+<path d='M168.3267-163.73552H175.95167V-154.93553H168.3267Z' fill='none'/>
+</g>
+<g transform='translate(169.8267,-162.23552)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#f00'>
+<g stroke='none'>
+<g fill='#f00'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g4-48'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='mreza'>
+<g transform='translate(211.27054,-177.56197)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g1-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(228.34235,-177.56197)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(245.41417,-177.56197)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(262.486,-177.56197)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g1-51'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(279.55782,-177.56197)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g1-52'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(195.62143,-193.21106)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g1-48'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(195.62143,-210.28288)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g1-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(195.62143,-227.3547)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g1-50'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(195.62143,-244.42651)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g1-51'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(195.62143,-261.49834)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g1-52'/>
+</g>
+</g>
+</g>
+</g>
+<g class='del' data-del='blok2'>
+<g fill='#ffd9d9' stroke='#ffd9d9'>
+<path d='M239.00285-216.24101V-233.31241H256.07468V-216.24101ZM256.07468-233.31241' stroke='none'/>
+</g>
+<g fill='#ffd9d9' stroke='#ffd9d9'>
+<path d='M256.07468-216.24101V-233.31241H273.1465V-216.24101ZM273.1465-233.31241' stroke='none'/>
+</g>
+<g fill='#ffd9d9' stroke='#ffd9d9'>
+<path d='M239.00285-233.31241V-250.38422H256.07468V-233.31241ZM256.07468-250.38422' stroke='none'/>
+</g>
+<g fill='#ffd9d9' stroke='#ffd9d9'>
+<path d='M256.07468-233.31241V-250.38422H273.1465V-233.31241ZM273.1465-250.38422' stroke='none'/>
+</g>
+<g transform='translate(258.83215,-243.77885)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g5-107'/>
+<use x='-17.166398' y='-33.934316' xlink:href='#t-fp-mke-palice-P4-1-g6-49'/>
+<use x='-13.776277' y='-33.934316' xlink:href='#t-fp-mke-palice-P4-1-g6-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(241.76035,-243.77885)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g5-107'/>
+<use x='-17.166398' y='-33.934316' xlink:href='#t-fp-mke-palice-P4-1-g6-49'/>
+<use x='-13.776277' y='-33.934316' xlink:href='#t-fp-mke-palice-P4-1-g6-50'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(258.83215,-226.70703)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g5-107'/>
+<use x='-17.166398' y='-33.934316' xlink:href='#t-fp-mke-palice-P4-1-g6-50'/>
+<use x='-13.776277' y='-33.934316' xlink:href='#t-fp-mke-palice-P4-1-g6-49'/>
+</g>
+</g>
+</g>
+</g>
+<g transform='translate(241.76035,-226.70703)'>
+<g stroke='none' transform='scale(-1.00375,1.00375)translate(-21.401708,-34.93058)scale(-1,-1)'>
+<g fill='#000'>
+<g stroke='none'>
+<use x='-21.401708' y='-34.93058' xlink:href='#t-fp-mke-palice-P4-1-g5-107'/>
+<use x='-17.166398' y='-33.934316' xlink:href='#t-fp-mke-palice-P4-1-g6-50'/>
+<use x='-13.776277' y='-33.934316' xlink:href='#t-fp-mke-palice-P4-1-g6-50'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M204.85965-182.09738V-199.1692H221.93147V-182.09738ZM221.93147-199.1692' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M221.93147-182.09738V-199.1692H239.0033V-182.09738ZM239.0033-199.1692' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M239.0033-182.09738V-199.1692H256.0751V-182.09738ZM256.0751-199.1692' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M256.0751-182.09738V-199.1692H273.14693V-182.09738ZM273.14693-199.1692' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M273.14693-182.09738V-199.1692H290.21875V-182.09738ZM290.21875-199.1692' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M204.85965-199.1692V-216.24101H221.93147V-199.1692ZM221.93147-216.24101' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M221.93147-199.1692V-216.24101H239.0033V-199.1692ZM239.0033-216.24101' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M239.0033-199.1692V-216.24101H256.0751V-199.1692ZM256.0751-216.24101' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M256.0751-199.1692V-216.24101H273.14693V-199.1692ZM273.14693-216.24101' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M273.14693-199.1692V-216.24101H290.21875V-199.1692ZM290.21875-216.24101' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M204.85965-216.24101V-233.31284H221.93147V-216.24101ZM221.93147-233.31284' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M221.93147-216.24101V-233.31284H239.0033V-216.24101ZM239.0033-233.31284' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M239.0033-216.24101V-233.31284H256.0751V-216.24101ZM256.0751-233.31284' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M256.0751-216.24101V-233.31284H273.14693V-216.24101ZM273.14693-233.31284' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M273.14693-216.24101V-233.31284H290.21875V-216.24101ZM290.21875-233.31284' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M204.85965-233.31284V-250.38466H221.93147V-233.31284ZM221.93147-250.38466' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M221.93147-233.31284V-250.38466H239.0033V-233.31284ZM239.0033-250.38466' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M239.0033-233.31284V-250.38466H256.0751V-233.31284ZM256.0751-250.38466' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M256.0751-233.31284V-250.38466H273.14693V-233.31284ZM273.14693-250.38466' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M273.14693-233.31284V-250.38466H290.21875V-233.31284ZM290.21875-250.38466' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M204.85965-250.38466V-267.45648H221.93147V-250.38466ZM221.93147-267.45648' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M221.93147-250.38466V-267.45648H239.0033V-250.38466ZM239.0033-267.45648' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M239.0033-250.38466V-267.45648H256.0751V-250.38466ZM256.0751-267.45648' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M256.0751-250.38466V-267.45648H273.14693V-250.38466ZM273.14693-267.45648' fill='none'/>
+</g>
+</g>
+<g fill='#0f0' stroke='#0f0'>
+<g stroke-width='0.3'>
+<path d='M273.14693-250.38466V-267.45648H290.21875V-250.38466ZM290.21875-267.45648' fill='none'/>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</g>
+</svg></span></p>
+<figcaption><span class="blk-label">Figure 7.14</span>: The same bar with four elements, numbered in two ways (the vertical axis \(x\) points down). On the left from the top down as in figure <a class="xref" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">7.13</a>, on the right from the bottom up, so that node \(x_{\mathrm{I}}\) has the number <span class="nobr">\(4 - I\).</span> The element numbers in circles and the local numbers \(1\) (upper end) and \(2\) (lower end) are the same in both, only the global numbers change and with them the connectivity table. Under each table is the \(5 \times 5\) grid of places of the matrix of the whole bar, shaded are the places where the matrix \(\mat k\) of the second element goes: on the left rows and columns 1 and 2, on the right 3 and 2.</figcaption></figure>
+<p>From the table we build a matrix that picks the column of unknowns of one element out of the column of all unknowns. We need it because we wrote the energy of an element with the column of its displacements, \(U_{\mathrm{e}} = \tfrac12\,\vek d_{\mathrm{e}}^\T\,\mat k_{\mathrm{e}}\,\vek d_{\mathrm{e}}\) (lemma <a class="xref" href="sec-element-palice.html#lem-togost-elementa-palice" data-knowl="lem-togost-elementa-palice">7.5</a>), and we will add the energies of all elements, so we must write them with the same column <span class="nobr">\(\vek d\).</span> In the figure <a class="xref" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">7.15</a> the <a data-del="vrstica1" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">first row</a> and the <a data-del="vrstica2" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">second row</a> pick the first and the second displacement of the element out of the <a data-del="stolpci" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">columns</a> of all unknowns.</p>
+
+<div class="blk definicija" id="def-izbirna-matrika"><div class="blk-head"><span class="blk-label">Definition 7.11</span> <span class="blk-title">Selection matrix of an element (izbirna matrika elementa)</span></div><div class="blk-body"><p>In the figure <a class="xref" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">7.15</a> are the <a data-del="vrstica1,vrstica2" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">rows</a> and <a data-del="stolpci" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">columns</a> of such a <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a>. Let a structure have \(n_{\mathrm{u}}\) unknowns and let \(g_{\mathrm{ei}}\) be its connectivity table (definition <a class="xref" href="sec-sestavljanje.html#def-tabela-povezav" data-knowl="def-tabela-povezav">7.10</a>). The selection matrix (izbirna matrika) of element \(e\) is the matrix \(\mat Z_{\mathrm{e}}\) with \(m\) rows and \(n_{\mathrm{u}}\) columns whose entry in row \(i\) and column \(I\) is</p>
 <div class="eq">\[(\mat Z_{\mathrm{e}})_{\mathrm{iI}} = \begin{cases} 1 &amp; I = g_{\mathrm{ei}} , \\ 0 &amp; \text{elsewhere.} \end{cases}\]</div>
 <p>Each row therefore has one entry equal to 1, in the column of the number that the <a data-del="tabela" class="xref kaz" href="sec-sestavljanje.html#fig-ses-tabela" data-knowl="fig-ses-tabela">table</a> gives for this local displacement.</p>
 
 <p class="vir"><span class="vir-label">Source:</span> ONATE1 (2.85) (PDF p. 98, &quot;operator for the global assembly&quot;), FELIPPA §3.5.1 (PDF p. 47, EFT). The matrix form is ours.</p></div></div>
-<p>For element \(e = 2\) of the bar with four elements (the columns are numbered <span class="nobr">\(0, \dots, 4\),</span> in the figure <a class="xref" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">7.14</a> the <a data-del="ena1,ena2" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">ones</a> are in columns 1 and 2)</p>
+<p>For element \(e = 2\) of the bar with four elements (the columns are numbered <span class="nobr">\(0, \dots, 4\),</span> in the figure <a class="xref" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">7.15</a> the <a data-del="ena1,ena2" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">ones</a> are in columns 1 and 2)</p>
 <div class="eq">\[\mat Z_2 = \begin{pmatrix} 0 &amp; 1 &amp; 0 &amp; 0 &amp; 0 \\ 0 &amp; 0 &amp; 1 &amp; 0 &amp; 0 \end{pmatrix} , \qquad \mat Z_2 \vek d = \begin{pmatrix} d_1 \\ d_2 \end{pmatrix} = \vek d_2 .\]</div>
 
 <figure class="blk slika" id="fig-izbirna-matrika-z2"><p><span class="svgfig" role="img" aria-label="Selection matrix of element 2 with ones in columns 1 and 2"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='341.42pt' height='101.60pt' viewBox='-72.000004 -72.000007 252.90663 75.262127'>
@@ -790,8 +2442,8 @@
 </g>
 </g>
 </svg></span></p>
-<figcaption><span class="blk-label">Figure 7.14</span>: The selection matrix \(\mat Z_2\) of element 2 of the bar with four elements. The columns carry the global numbers <span class="nobr">\(0, \dots, 4\),</span> the rows the local numbers <span class="nobr">\(i = 1, 2\).</span> Each row has one 1, in the column that row \(e = 2\) of the connectivity table names <span class="nobr">(\(g_{21} = 1\),</span> <span class="nobr">\(g_{22} = 2\)),</span> zeros elsewhere. On the right is the result of multiplying by <span class="nobr">\(\vek d\).</span></figcaption></figure>
-<p>In the figure the <a data-del="stolpci" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">columns</a> belong to the unknowns <span class="nobr">\(d_0, \dots, d_4\).</span> The <a data-del="vrstica1" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">first row</a> has its <a data-del="ena1" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">one</a> in column 1, because <span class="nobr">\(g_{21} = 1\),</span> the <a data-del="vrstica2" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">second row</a> has its <a data-del="ena2" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">one</a> in column 2. So each row picks exactly one number out of <span class="nobr">\(\vek d\),</span> and the <a data-del="rezultat" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">result</a> is \(d_1\) and <span class="nobr">\(d_2\).</span> The matrix \(\mat Z_2\) does pick the displacements of nodes 1 and 2 out of <span class="nobr">\(\vek d\).</span> The <a class="xref auto" href="sec-matrike.html#def-transponirana-matrika" data-knowl="def-transponirana-matrika">transposed matrix</a> works the other way: it puts the column \(\vek d_2\) at places 1 and 2 and writes zeros at the other places. This is what the lemma says, which we need in the proof.</p>
+<figcaption><span class="blk-label">Figure 7.15</span>: The selection matrix \(\mat Z_2\) of element 2 of the bar with four elements. The columns carry the global numbers <span class="nobr">\(0, \dots, 4\),</span> the rows the local numbers <span class="nobr">\(i = 1, 2\).</span> Each row has one 1, in the column that row \(e = 2\) of the connectivity table names <span class="nobr">(\(g_{21} = 1\),</span> <span class="nobr">\(g_{22} = 2\)),</span> zeros elsewhere. On the right is the result of multiplying by <span class="nobr">\(\vek d\).</span></figcaption></figure>
+<p>In the figure the <a data-del="stolpci" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">columns</a> belong to the unknowns <span class="nobr">\(d_0, \dots, d_4\).</span> The <a data-del="vrstica1" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">first row</a> has its <a data-del="ena1" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">one</a> in column 1, because <span class="nobr">\(g_{21} = 1\),</span> the <a data-del="vrstica2" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">second row</a> has its <a data-del="ena2" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">one</a> in column 2. So each row picks exactly one number out of <span class="nobr">\(\vek d\),</span> and the <a data-del="rezultat" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">result</a> is \(d_1\) and <span class="nobr">\(d_2\),</span> the displacements of nodes 1 and 2. The <a class="xref auto" href="sec-matrike.html#def-transponirana-matrika" data-knowl="def-transponirana-matrika">transposed matrix</a> works the other way: it puts the column \(\vek d_2\) at places 1 and 2 and writes zeros at the other places, <span class="nobr">\(\mat Z_2^\T \vek d_2 = (0, d_1, d_2, 0, 0)^\T\),</span> like the <a data-del="stolpecf" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">column of forces</a> in the figure <a class="xref" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">7.16</a>. The next lemma states this exactly for columns and for matrices, and we need it when we add the element matrices.</p>
 
 <figure class="blk slika" id="fig-r51-izbirna-velika"><p><span class="svgfig" role="img" aria-label="A large matrix with four entries of the matrix k and a column of forces with zeros"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='326.16pt' height='272.32pt' viewBox='-72.000004 -72.000005 241.59729 201.716981'>
 <defs>
@@ -1668,23 +3320,23 @@
 </g>
 </g>
 </svg></span></p>
-<figcaption><span class="blk-label">Figure 7.15</span>: The matrix \(\mat Z_2^\T \mat k \mat Z_2\) for element 2 of the bar with four elements <span class="nobr">(\(n_{\mathrm{u}} = 5\))</span> and the column <span class="nobr">\(\mat Z_2^\T \vek f\).</span> The four entries of the matrix \(\mat k\) stand in rows and columns 1 and 2, everywhere else are zeros. In the column, \(f_1\) and \(f_2\) are at places 1 and 2.</figcaption></figure>
-<div class="blk lema" id="lem-izbirna-matrika"><div class="blk-head"><span class="blk-label">Lemma 7.12</span> <span class="blk-title">Properties of the selection matrix (lastnosti izbirne matrike)</span></div><div class="blk-body"><p>Let \(\mat Z_{\mathrm{e}}\) be the selection <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> of element <span class="nobr">\(e\),</span> \(\vek d\) a column of \(n_{\mathrm{u}}\) unknowns, \(\mat k\) an \(m \times m\) matrix and \(\vek f\) a column of \(m\) numbers. In the figure <a class="xref" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">7.15</a> is the <a data-del="velika" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">large matrix</a> with the <span class="nobr"><a data-del="mesta" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">four entries of the matrix \(\mat k\)</a>,</span> <a data-del="nicle" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">zeros</a> elsewhere, and the <a data-del="stolpecf" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">column of forces</a>. Then:</p>
+<figcaption><span class="blk-label">Figure 7.16</span>: The matrix \(\mat Z_2^\T \mat k \mat Z_2\) for element 2 of the bar with four elements <span class="nobr">(\(n_{\mathrm{u}} = 5\))</span> and the column <span class="nobr">\(\mat Z_2^\T \vek f\).</span> The four entries of the matrix \(\mat k\) stand in rows and columns 1 and 2, everywhere else are zeros. In the column, \(f_1\) and \(f_2\) are at places 1 and 2.</figcaption></figure>
+<div class="blk lema" id="lem-izbirna-matrika"><div class="blk-head"><span class="blk-label">Lemma 7.12</span> <span class="blk-title">Properties of the selection matrix (lastnosti izbirne matrike)</span></div><div class="blk-body"><p>Let \(\mat Z_{\mathrm{e}}\) be the selection <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> of element <span class="nobr">\(e\),</span> \(\vek d\) a column of \(n_{\mathrm{u}}\) unknowns, \(\mat k\) an \(m \times m\) matrix and \(\vek f\) a column of \(m\) numbers. In the figure <a class="xref" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">7.16</a> is the <a data-del="velika" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">large matrix</a> with the <span class="nobr"><a data-del="mesta" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">four entries of the matrix \(\mat k\)</a>,</span> <a data-del="nicle" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">zeros</a> elsewhere, and the <a data-del="stolpecf" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">column of forces</a>. Then:</p>
 <ol>
-<li><span class="nobr">\(\mat Z_{\mathrm{e}} \vek d = \vek d_{\mathrm{e}}\),</span> that is <span class="nobr">\((\mat Z_{\mathrm{e}} \vek d)_{\mathrm{i}} = d_{\mathrm{g}_{\mathrm{ei}}}\).</span> In the figure <a class="xref" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">7.14</a> this is the <a data-del="rezultat" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">result</a> of the multiplication.</li>
-<li>The entry \((\mat Z_{\mathrm{e}}^\T \mat k \mat Z_{\mathrm{e}})_{\mathrm{IJ}}\) of the \(n_{\mathrm{u}} \times n_{\mathrm{u}}\) matrix is \(k_{\mathrm{ij}}\) if \(I = g_{\mathrm{ei}}\) and <span class="nobr">\(J = g_{\mathrm{ej}}\),</span> and zero if \(I\) or \(J\) is not in row \(e\) of the table. In the figure <a class="xref" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">7.15</a> these are the <a data-del="mesta" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">four entries</a> at the crossings of the <a data-del="indeksi" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">rows and columns</a> \(g_{\mathrm{e}1}\) and <span class="nobr">\(g_{\mathrm{e}2}\),</span> elsewhere are <a data-del="nicle" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">zeros</a>.</li>
-<li>The entry \((\mat Z_{\mathrm{e}}^\T \vek f)_{\mathrm{I}}\) is \(f_{\mathrm{i}}\) if <span class="nobr">\(I = g_{\mathrm{ei}}\),</span> and zero if \(I\) is not in row \(e\) of the table. In the figure <a class="xref" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">7.15</a> these are <a data-del="stolpecf" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">\(f_1\) and \(f_2\)</a> at the places \(g_{\mathrm{e}1}\) and \(g_{\mathrm{e}2}\) of the column, elsewhere are zeros.</li>
+<li><span class="nobr">\(\mat Z_{\mathrm{e}} \vek d = \vek d_{\mathrm{e}}\),</span> that is <span class="nobr">\((\mat Z_{\mathrm{e}} \vek d)_{\mathrm{i}} = d_{\mathrm{g}_{\mathrm{ei}}}\).</span> In the figure <a class="xref" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">7.15</a> this is the <a data-del="rezultat" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">result</a> of the multiplication.</li>
+<li>The entry \((\mat Z_{\mathrm{e}}^\T \mat k \mat Z_{\mathrm{e}})_{\mathrm{IJ}}\) of the \(n_{\mathrm{u}} \times n_{\mathrm{u}}\) matrix is \(k_{\mathrm{ij}}\) if \(I = g_{\mathrm{ei}}\) and <span class="nobr">\(J = g_{\mathrm{ej}}\),</span> and zero if \(I\) or \(J\) is not in row \(e\) of the table. In the figure <a class="xref" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">7.16</a> these are the <a data-del="mesta" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">four entries</a> at the crossings of the <a data-del="indeksi" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">rows and columns</a> \(g_{\mathrm{e}1}\) and <span class="nobr">\(g_{\mathrm{e}2}\),</span> elsewhere are <a data-del="nicle" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">zeros</a>.</li>
+<li>The entry \((\mat Z_{\mathrm{e}}^\T \vek f)_{\mathrm{I}}\) is \(f_{\mathrm{i}}\) if <span class="nobr">\(I = g_{\mathrm{ei}}\),</span> and zero if \(I\) is not in row \(e\) of the table. In the figure <a class="xref" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">7.16</a> these are <a data-del="stolpecf" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">\(f_1\) and \(f_2\)</a> at the places \(g_{\mathrm{e}1}\) and \(g_{\mathrm{e}2}\) of the column, elsewhere are zeros.</li>
 </ol>
 
-<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must show three sums by the definition of the product of matrices (definition <a class="xref" href="sec-matrike.html#def-produkt-matrik" data-knowl="def-produkt-matrik">1.99</a>). In each of them at most one term is different from zero, because each row of the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat Z_{\mathrm{e}}\) has a single entry equal to 1. The first sum is the <a data-del="rezultat" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">result</a> for the selection matrix, the other two are the <a data-del="velika" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">matrix</a> and the <a data-del="stolpecf" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">column</a> with zeros outside the <a data-del="mesta" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">chosen places</a>.</p>
+<div class="hid-row"><details class="hid dokaz" open><summary>Proof</summary><div class="hid-body"><p>We must compute three sums by the definition of the product of matrices (definition <a class="xref" href="sec-matrike.html#def-produkt-matrik" data-knowl="def-produkt-matrik">1.99</a>). In each of them at most one term is different from zero, because each <a data-del="vrstica1" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">row</a> of the <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrix</a> \(\mat Z_{\mathrm{e}}\) has a single entry equal to 1 (the first sum) and each <a data-del="stolpci" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">column</a> at most one, since the numbers in a row of the table are different (the second and the third sum). The first sum is the <a data-del="rezultat" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">result</a> for the selection matrix, the other two are the <a data-del="velika" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">matrix</a> and the <a data-del="stolpecf" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">column</a> with zeros outside the <a data-del="mesta" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">chosen places</a>.</p>
 <ol>
-<li>By the definition of the product <span class="nobr">\((\mat Z_{\mathrm{e}} \vek d)_{\mathrm{i}} = \sum_{\mathrm{I}} (\mat Z_{\mathrm{e}})_{\mathrm{iI}}\,d_{\mathrm{I}}\).</span> The only nonzero term is at \(I = g_{\mathrm{ei}}\) and it is <span class="nobr">\(1 \cdot d_{\mathrm{g}_{\mathrm{ei}}}\).</span> The displacement \(d_{\mathrm{g}_{\mathrm{ei}}}\) is by the definition of the table the \(i\)-th displacement of element <span class="nobr">\(e\),</span> that is <span class="nobr">\(d^e_{\mathrm{i}}\).</span> In the figure <a class="xref" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">7.14</a> this is the <a data-del="rezultat" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">result</a>: the <a data-del="ena1" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">one</a> picks <span class="nobr">\(d_1\),</span> the <a data-del="ena2" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">one</a> picks <span class="nobr">\(d_2\).</span></li>
-<li>By the definition of the product and lemma <a class="xref" href="sec-matrike.html#lem-transponiran-produkt" data-knowl="lem-transponiran-produkt">1.102</a>, <span class="nobr">\((\mat Z_{\mathrm{e}}^\T \mat k \mat Z_{\mathrm{e}})_{\mathrm{IJ}} = \sum_{\mathrm{a},\mathrm{b}} (\mat Z_{\mathrm{e}})_{\mathrm{aI}}\,k_{\mathrm{ab}}\,(\mat Z_{\mathrm{e}})_{\mathrm{bJ}}\),</span> where \(a\) and \(b\) run over the local numbers. A term is nonzero only for \(a\) with \(g_{\mathrm{ea}} = I\) and for \(b\) with <span class="nobr">\(g_{\mathrm{eb}} = J\).</span> Because the numbers in a row of the table are different, such an \(a\) exists exactly when \(I\) is in the row, and then it is unique, \(a = i\) with <span class="nobr">\(g_{\mathrm{ei}} = I\).</span> The same holds for <span class="nobr">\(b = j\).</span> The sum is therefore \(k_{\mathrm{ij}}\) if both \(I\) and \(J\) are in row <span class="nobr">\(e\),</span> and otherwise empty, that is zero. In the figure <a class="xref" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">7.15</a> these are the <a data-del="mesta" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">four entries</a>, all others are <a data-del="nicle" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">zeros</a>.</li>
-<li>By the same definition <span class="nobr">\((\mat Z_{\mathrm{e}}^\T \vek f)_{\mathrm{I}} = \sum_{\mathrm{a}} (\mat Z_{\mathrm{e}})_{\mathrm{aI}}\,f_{\mathrm{a}}\).</span> Only the term with \(g_{\mathrm{ea}} = I\) is nonzero, which gives \(f_{\mathrm{i}}\) at <span class="nobr">\(I = g_{\mathrm{ei}}\),</span> and otherwise zero. In the figure <a class="xref" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">7.15</a> this is the <a data-del="stolpecf" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">column</a> with \(f_1\) and \(f_2\) at the places <span class="nobr">\(g_{\mathrm{ei}}\).</span></li>
+<li>By the definition of the product <span class="nobr">\((\mat Z_{\mathrm{e}} \vek d)_{\mathrm{i}} = \sum_{\mathrm{I}} (\mat Z_{\mathrm{e}})_{\mathrm{iI}}\,d_{\mathrm{I}}\).</span> The only nonzero term is at \(I = g_{\mathrm{ei}}\) and it is <span class="nobr">\(1 \cdot d_{\mathrm{g}_{\mathrm{ei}}}\).</span> The displacement \(d_{\mathrm{g}_{\mathrm{ei}}}\) is by the definition of the table the \(i\)-th displacement of element <span class="nobr">\(e\),</span> that is <span class="nobr">\(d^e_{\mathrm{i}}\).</span> In the figure <a class="xref" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">7.15</a> this is the <a data-del="rezultat" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">result</a>: the <a data-del="ena1" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">one</a> picks <span class="nobr">\(d_1\),</span> the <a data-del="ena2" class="xref kaz" href="sec-sestavljanje.html#fig-izbirna-matrika-z2" data-knowl="fig-izbirna-matrika-z2">one</a> picks <span class="nobr">\(d_2\).</span></li>
+<li>By the definition of the product, used twice, and by definition <a class="xref" href="sec-matrike.html#def-transponirana-matrika" data-knowl="def-transponirana-matrika">1.101</a>, <span class="nobr">\((\mat Z_{\mathrm{e}}^\T)_{\mathrm{Ia}} = (\mat Z_{\mathrm{e}})_{\mathrm{aI}}\),</span> we have <span class="nobr">\((\mat Z_{\mathrm{e}}^\T \mat k \mat Z_{\mathrm{e}})_{\mathrm{IJ}} = \sum_{\mathrm{a},\mathrm{b}} (\mat Z_{\mathrm{e}})_{\mathrm{aI}}\,k_{\mathrm{ab}}\,(\mat Z_{\mathrm{e}})_{\mathrm{bJ}}\),</span> where \(a\) and \(b\) run over the local numbers. A term is nonzero only for \(a\) with \(g_{\mathrm{ea}} = I\) and for \(b\) with <span class="nobr">\(g_{\mathrm{eb}} = J\).</span> Because the numbers in a row of the table are different, such an \(a\) exists exactly when \(I\) is in the row, and then it is unique, \(a = i\) with <span class="nobr">\(g_{\mathrm{ei}} = I\).</span> The same holds for <span class="nobr">\(b = j\).</span> The sum is therefore \(k_{\mathrm{ij}}\) if both \(I\) and \(J\) are in row <span class="nobr">\(e\),</span> and otherwise all its terms are zero and so is the sum. That the numbers in the row are different is needed here: for \(g_{\mathrm{e}1} = g_{\mathrm{e}2} = I\) all four terms would be nonzero and the entry \((I, I)\) would be \(k_{11} + k_{12} + k_{21} + k_{22}\) instead of a single <span class="nobr">\(k_{\mathrm{ij}}\).</span> In the figure <a class="xref" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">7.16</a> these are the <a data-del="mesta" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">four entries</a>, all others are <a data-del="nicle" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">zeros</a>.</li>
+<li>By the definition of the product and definition <a class="xref" href="sec-matrike.html#def-transponirana-matrika" data-knowl="def-transponirana-matrika">1.101</a>, <span class="nobr">\((\mat Z_{\mathrm{e}}^\T \vek f)_{\mathrm{I}} = \sum_{\mathrm{a}} (\mat Z_{\mathrm{e}})_{\mathrm{aI}}\,f_{\mathrm{a}}\).</span> Only the term with \(g_{\mathrm{ea}} = I\) is nonzero. There is at most one such <span class="nobr">\(a\),</span> because the numbers in a row of the table are different, so the sum is \(f_{\mathrm{i}}\) at \(I = g_{\mathrm{ei}}\) and zero if \(I\) is not in the row. In the figure <a class="xref" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">7.16</a> this is the <a data-del="stolpecf" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">column</a> with \(f_1\) and \(f_2\) at the places <span class="nobr">\(g_{\mathrm{ei}}\).</span></li>
 </ol>
 </div></details></div>
 <p class="vir"><span class="vir-label">Source:</span> The proof is not from a source.</p></div></div>
-<p>The matrix \(\mat Z_{\mathrm{e}}^\T \mat k \mat Z_{\mathrm{e}}\) is thus a large \(n_{\mathrm{u}} \times n_{\mathrm{u}}\) matrix that has the entries of the matrix \(\mat k\) at four places \((g_{\mathrm{ei}}, g_{\mathrm{ej}})\) and zeros everywhere else. We will use this: assembly will be the addition of such large matrices. In the figure <a class="xref" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">7.15</a> this is the <a data-del="velika" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">large matrix</a>, with the <a data-del="mesta" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">four entries</a> of the matrix \(\mat k\) in it and <a data-del="nicle" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">zeros</a> everywhere else.</p>
+<p>The matrix \(\mat Z_{\mathrm{e}}^\T \mat k \mat Z_{\mathrm{e}}\) is thus a <a data-del="velika" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">large matrix</a> \(n_{\mathrm{u}} \times n_{\mathrm{u}}\) (figure <a class="xref" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">7.16</a>) that has the <a data-del="mesta" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">entries of the matrix \(\mat k\)</a> at \(m^2\) places <span class="nobr">\((g_{\mathrm{ei}}, g_{\mathrm{ej}})\),</span> for a bar with \(m = 2\) at four, and <a data-del="nicle" class="xref kaz" href="sec-sestavljanje.html#fig-r51-izbirna-velika" data-knowl="fig-r51-izbirna-velika">zeros</a> everywhere else. We will use this: assembly will be the addition of such large matrices.</p>
 
 <h3 id="sec-vsota-elementov"><span class="h-num">7.2.2</span> The structure matrix as a sum (matrika konstrukcije kot vsota)</h3>
 <figure class="blk slika" id="fig-p3-sotori"><p><span class="svgfig" role="img" aria-label="Hat functions and the field on a bar with three elements"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='378.28pt' height='291.83pt' viewBox='-72.000004 -72.000011 280.204712 216.172453'>
@@ -2218,7 +3870,7 @@
 </g>
 </g>
 </svg></span></p>
-<figcaption><span class="blk-label">Figure 7.16</span>: Hat functions of neighbouring nodes of a bar with three elements, and the field. Above: blue \(\psi_{\mathrm{I}}\) around node 1, orange \(\psi_{\mathrm{J}}\) around node 2, each zero outside its two elements. The grey piece is the integral of their product on element 2, the only one where both are nonzero. Below: the field \(u_{\mathrm{h}}\) with the nodal displacements, on element 2 the sum of two shape functions with displacements.</figcaption></figure>
+<figcaption><span class="blk-label">Figure 7.17</span>: Hat functions of neighbouring nodes of a bar with three elements, and the field. Above: blue \(\psi_{\mathrm{I}}\) around node 1, orange \(\psi_{\mathrm{J}}\) around node 2, each zero outside its two elements. The grey piece is the integral of their product on element 2, the only one where both are nonzero. Below: the field \(u_{\mathrm{h}}\) with the nodal displacements, on element 2 the sum of two shape functions with displacements.</figcaption></figure>
 <p>The figure shows a bar with three elements. The <a data-del="mreza" class="xref kaz" href="sec-sestavljanje.html#fig-p3-sotori" data-knowl="fig-p3-sotori">nodes and elements</a> lie on the \(x\) axis. The <a data-del="psiI" class="xref kaz" href="sec-sestavljanje.html#fig-p3-sotori" data-knowl="fig-p3-sotori">hat function \(\psi_{\mathrm{I}}\)</a> equals 1 at node 1 and falls along a straight line to zero at the neighbouring nodes, the <a data-del="psiJ" class="xref kaz" href="sec-sestavljanje.html#fig-p3-sotori" data-knowl="fig-p3-sotori">hat function \(\psi_{\mathrm{J}}\)</a> is built the same way around node 2. Outside their two elements both are <a data-del="nic" class="xref kaz" href="sec-sestavljanje.html#fig-p3-sotori" data-knowl="fig-p3-sotori">zero</a>. The only element on which both are nonzero is element 2, and there each of them is a <a data-del="oblika" class="xref kaz" href="sec-sestavljanje.html#fig-p3-sotori" data-knowl="fig-p3-sotori">shape function of the element</a>. The <a class="xref auto" href="sec-integral.html#def-integral" data-knowl="def-integral">integral</a> of their product is therefore a single <a data-del="kos" class="xref kaz" href="sec-sestavljanje.html#fig-p3-sotori" data-knowl="fig-p3-sotori">piece of element 2</a>, elements 1 and 3 contribute nothing to it. The lower half shows the <a data-del="polje" class="xref kaz" href="sec-sestavljanje.html#fig-p3-sotori" data-knowl="fig-p3-sotori">field \(u_{\mathrm{h}}\)</a> with its nodal values, on element 2 it is the <a data-del="polje2" class="xref kaz" href="sec-sestavljanje.html#fig-p3-sotori" data-knowl="fig-p3-sotori">sum of two shape functions with displacements</a>.</p>
 <p>In chapter <a class="xref" href="ch-sibka-oblika.html">6</a> an entry of the Ritz matrix \(K_{\mathrm{IJ}} = B(\psi_{\mathrm{J}}, \psi_{\mathrm{I}}) = \int_0^L EA\,\psi'_{\mathrm{J}}\,\psi'_{\mathrm{I}}\,\mathrm{d}x\) was an integral over the whole bar. The <a data-del="psiI,psiJ" class="xref kaz" href="sec-sestavljanje.html#fig-p3-sotori" data-knowl="fig-p3-sotori">hat function of a node</a> lives on two elements only and is zero outside them, so the integral splits into pieces by elements, and on each element only the <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> of the two nodes of that element are nonzero. We guess that the piece of element \(e\) is exactly the entry of its matrix \(\mat k_{\mathrm{e}}\) at the place where the table puts its two displacements. The theorem says that the guess is true, and more. Adding the element <a class="xref auto" href="sec-matrike.html#def-matrika" data-knowl="def-matrika">matrices</a> at the places given by the table makes sense for every structure made of elements, also for a <a class="xref auto" href="sec-delo-sil-na-palici.html#def-palicje" data-knowl="def-palicje">truss</a>, where a node has two or three unknowns. The energy of the structure is then the sum of the energies of the elements, and the force that an unknown needs is the sum of the forces of the elements that contain this unknown. We therefore state the theorem generally, and the bar is its first example. The sum over elements is exactly what we will later do on a computer.</p>
 <p>Item 3 of the theorem holds for the bar of section <a class="xref" href="sec-mocna-sibka-oblika.html#sec-sibka-oblika-palice">6.1.3</a>, with axial stiffness \(EA &gt; 0\) and load \(q\) that are <a class="xref auto" href="sec-zveznost.html#def-zveznost" data-knowl="def-zveznost">continuous on</a> every closed element of the mesh (with one-sided values at the ends), which holds if they have jumps only at nodes, as for the step in section <a class="xref" href="sec-odsekoma-linearna.html#sec-stopnica-mreza">6.7.3</a>. Besides the <a class="xref auto" href="sec-virtualni-pomiki-palice.html#def-porazdeljena-obtezba" data-knowl="def-porazdeljena-obtezba">distributed load</a> \(q\) we allow point forces \(P_{\mathrm{I}}\) in the direction of the axis \(x\) at nodes. For unknown <span class="nobr">\(I\),</span> \(\psi_{\mathrm{I}}\) is the <a data-del="psiI" class="xref kaz" href="sec-sestavljanje.html#fig-p3-sotori" data-knowl="fig-p3-sotori">hat function of the node</a> whose displacement is this unknown (definition <a class="xref" href="sec-skalarni-produkt-funkcij.html#def-sotorna-funkcija" data-knowl="def-sotorna-funkcija">6.25</a>). We also include the hat function of the first node, although it was not among the trial functions in chapter <a class="xref" href="ch-sibka-oblika.html">6</a>, because its value at \(x = 0\) is not zero. The <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-bilinearna-forma" data-knowl="def-bilinearna-forma">bilinear form</a> \(B\) and the <a class="xref auto" href="sec-mocna-sibka-oblika.html#def-linearna-forma" data-knowl="def-linearna-forma">linear form</a> \(\ell\) can be computed with it as well:</p>
@@ -3121,7 +4773,7 @@
 </g>
 </g>
 </svg></span></p>
-<figcaption><span class="blk-label">Figure 7.17</span>: How an element acts in the structure. The column of displacements \(\mathbf{d}\) on the left, the selection matrix takes the element displacements \(\mathbf{d}_{\mathrm{e}}\) from it, the element computes the forces <span class="nobr">\(\mathbf{k}_{\mathrm{e}}\mathbf{d}_{\mathrm{e}}\),</span> and these return to their places in the column <span class="nobr">\(\mathbf{K}\mathbf{d}\).</span> An unknown that is in the row of the table of both elements gets the sum of the contributions, an unknown that is not in the row gets zero. Blue is element 1 with row <span class="nobr">\((0, 1)\),</span> orange element 2 with row <span class="nobr">\((1, 2)\).</span></figcaption></figure>
+<figcaption><span class="blk-label">Figure 7.18</span>: How an element acts in the structure. The column of displacements \(\mathbf{d}\) on the left, the selection matrix takes the element displacements \(\mathbf{d}_{\mathrm{e}}\) from it, the element computes the forces <span class="nobr">\(\mathbf{k}_{\mathrm{e}}\mathbf{d}_{\mathrm{e}}\),</span> and these return to their places in the column <span class="nobr">\(\mathbf{K}\mathbf{d}\).</span> An unknown that is in the row of the table of both elements gets the sum of the contributions, an unknown that is not in the row gets zero. Blue is element 1 with row <span class="nobr">\((0, 1)\),</span> orange element 2 with row <span class="nobr">\((1, 2)\).</span></figcaption></figure>
 <p>The figure shows how the theorem links an element to the structure. The <a data-del="d" class="xref kaz" href="sec-sestavljanje.html#fig-p3-izbira" data-knowl="fig-p3-izbira">column \(\mathbf{d}\)</a> holds the displacements of all unknowns. The <a data-del="izbira" class="xref kaz" href="sec-sestavljanje.html#fig-p3-izbira" data-knowl="fig-p3-izbira">selection matrix</a> takes from it only the <a data-del="de" class="xref kaz" href="sec-sestavljanje.html#fig-p3-izbira" data-knowl="fig-p3-izbira">displacements of the element \(\mathbf{d}_{\mathrm{e}}\)</a>, for element 1 the displacements \(d_0\) and <span class="nobr">\(d_1\),</span> for element 2 \(d_1\) and <span class="nobr">\(d_2\).</span> From them the element <a data-del="ke" class="xref kaz" href="sec-sestavljanje.html#fig-p3-izbira" data-knowl="fig-p3-izbira">computes the forces</a> <span class="nobr">\(\mathbf{k}_{\mathrm{e}}\mathbf{d}_{\mathrm{e}}\),</span> and these <a data-del="vsota" class="xref kaz" href="sec-sestavljanje.html#fig-p3-izbira" data-knowl="fig-p3-izbira">return to their places</a> in the column <span class="nobr">\(\mathbf{K}\mathbf{d}\).</span> An unknown that is in the row of the table of both elements gets the <a data-del="vsota" class="xref kaz" href="sec-sestavljanje.html#fig-p3-izbira" data-knowl="fig-p3-izbira">sum of both contributions</a>, an unknown that is not in the row gets <a data-del="nicle" class="xref kaz" href="sec-sestavljanje.html#fig-p3-izbira" data-knowl="fig-p3-izbira">zero</a>.</p>
 
 <div class="blk izrek" id="thm-sestavljanje"><div class="blk-head"><span class="blk-label">Theorem 7.13</span> <span class="blk-title">Assembly from elements (sestavljanje po elementih)</span></div><div class="blk-body"><p>Let a structure have \(n_{\mathrm{u}}\) unknowns and \(n_{\mathrm{e}}\) elements with a connectivity table \(g_{\mathrm{ei}}\) and <a data-del="izbira" class="xref kaz" href="sec-sestavljanje.html#fig-p3-izbira" data-knowl="fig-p3-izbira">selection matrices \(\mat Z_{\mathrm{e}}\)</a> (definitions <a class="xref" href="sec-sestavljanje.html#def-tabela-povezav" data-knowl="def-tabela-povezav">7.10</a> and <a class="xref" href="sec-sestavljanje.html#def-izbirna-matrika" data-knowl="def-izbirna-matrika">7.11</a>). Let element \(e\) have \(m\) displacements, a stiffness matrix \(\mat k_{\mathrm{e}}\) of order \(m\) (definition <a class="xref" href="sec-element-palice.html#def-togostna-matrika" data-knowl="def-togostna-matrika">7.4</a>) and a column of nodal forces \(\vek f_{\mathrm{e}}\) with \(m\) numbers, and let \(\vek P\) be the column of point forces \(P_{\mathrm{I}}\) in the directions of the unknowns. The matrix \(\mat K\) and the right-hand side \(\vek f\) of the structure are</p>
@@ -3148,7 +4800,7 @@
 </div></details></div>
 <p class="vir"><span class="vir-label">Source:</span> ONATE1 (2.23) and (2.24) (PDF p. 74, sum of the element contributions at a node) and (2.85) (PDF p. 98), COOK (2.5-10) (PDF p. 50, assembled matrix of a three-bar truss), EP (8.2.36) to (8.2.39) (pp. 540 to 542, two neighbouring elements add up at the common node). The sources assemble from the equilibrium of forces at a node, we from the splitting of the integral, so the proof in this form is not from a source.</p></div></div>
 <p>The proof showed that the matrix that we computed in chapter <a class="xref" href="ch-sibka-oblika.html">6</a> with integrals over the whole bar is nothing new. It is a sum of small pieces, each belonging to one element and computed once, no matter where on the bar the element lies. The same holds for the right-hand side and for the energy. All statements of chapter <a class="xref" href="ch-sibka-oblika.html">6</a> about the <a class="xref auto" href="sec-ritzova-metoda.html#def-ritzova-metoda" data-knowl="def-ritzova-metoda">Ritz solution</a> therefore hold also for the system that we assemble from elements. Their use is in section <a class="xref" href="sec-robni-pogoji-mke.html">7.3</a>, when we support the bar. Items 1 and 2 are not tied to the bar, so we will use them for trusses as well. Item 3 uses only that the function of a node is, on every element, the shape function of this node (steps 4 and 5). For elements with three nodes we will show this separately when we introduce them. In the figure each <a data-del="kos" class="xref kaz" href="sec-sestavljanje.html#fig-p3-sotori" data-knowl="fig-p3-sotori">piece</a> lives on its own element.</p>
-<p>We test the theorem on the bar with a step from section <a class="xref" href="sec-odsekoma-linearna.html#sec-stopnica-mreza">6.7.3</a>, where the two elements differ. Two elements of length \(h = 5\) m, the first with stiffness \(EA\) and weight \(q\) per unit length, the second with stiffness \(EA/4\) and weight <span class="nobr">\(q/4\).</span> The element matrices are \(\mat k_1 = \tfrac{EA}{h}\left(\begin{smallmatrix} 1 &amp; -1 \\ -1 &amp; 1 \end{smallmatrix}\right)\) and <span class="nobr">\(\mat k_2 = \tfrac{EA}{4h}\left(\begin{smallmatrix} 1 &amp; -1 \\ -1 &amp; 1 \end{smallmatrix}\right)\),</span> the element forces \(\vek f_1 = \tfrac{qh}{2}(1, 1)\) and <span class="nobr">\(\vek f_2 = \tfrac{qh}{8}(1, 1)\).</span> The <a class="xref auto" href="sec-sestavljanje.html#def-tabela-povezav" data-knowl="def-tabela-povezav">connectivity table</a> is <span class="nobr">\((0, 1)\),</span> <span class="nobr">\((1, 2)\).</span> Equation <a class="xref" href="sec-sestavljanje.html#eq-sestavljanje" data-knowl="eq-sestavljanje">(7.12)</a> gives (figure <a class="xref" href="sec-sestavljanje.html#fig-p3-stopnica-sestavljanje" data-knowl="fig-p3-stopnica-sestavljanje">7.18</a>)</p>
+<p>We test the theorem on the bar with a step from section <a class="xref" href="sec-odsekoma-linearna.html#sec-stopnica-mreza">6.7.3</a>, where the two elements differ. Two elements of length \(h = 5\) m, the first with stiffness \(EA\) and weight \(q\) per unit length, the second with stiffness \(EA/4\) and weight <span class="nobr">\(q/4\).</span> The element matrices are \(\mat k_1 = \tfrac{EA}{h}\left(\begin{smallmatrix} 1 &amp; -1 \\ -1 &amp; 1 \end{smallmatrix}\right)\) and <span class="nobr">\(\mat k_2 = \tfrac{EA}{4h}\left(\begin{smallmatrix} 1 &amp; -1 \\ -1 &amp; 1 \end{smallmatrix}\right)\),</span> the element forces \(\vek f_1 = \tfrac{qh}{2}(1, 1)\) and <span class="nobr">\(\vek f_2 = \tfrac{qh}{8}(1, 1)\).</span> The <a class="xref auto" href="sec-sestavljanje.html#def-tabela-povezav" data-knowl="def-tabela-povezav">connectivity table</a> is <span class="nobr">\((0, 1)\),</span> <span class="nobr">\((1, 2)\).</span> Equation <a class="xref" href="sec-sestavljanje.html#eq-sestavljanje" data-knowl="eq-sestavljanje">(7.12)</a> gives (figure <a class="xref" href="sec-sestavljanje.html#fig-p3-stopnica-sestavljanje" data-knowl="fig-p3-stopnica-sestavljanje">7.19</a>)</p>
 <div class="eq">\[\mat K = \frac{EA}{h} \begin{pmatrix} 1 &amp; -1 &amp; 0 \\ -1 &amp; 1 + \tfrac14 &amp; -\tfrac14 \\ 0 &amp; -\tfrac14 &amp; \tfrac14 \end{pmatrix} , \qquad \vek f = qh \begin{pmatrix} \tfrac12 \\ \tfrac12 + \tfrac18 \\ \tfrac18 \end{pmatrix} = qh \begin{pmatrix} \tfrac12 \\ \tfrac58 \\ \tfrac18 \end{pmatrix} .\]</div>
 
 <figure class="blk slika" id="fig-p3-stopnica-sestavljanje"><p><span class="svgfig" role="img" aria-label="3 by 3 matrix and force column of the bar with a step"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='254.23pt' height='177.74pt' viewBox='-72.000004 -71.999999 188.316443 131.660154'>
@@ -3201,11 +4853,14 @@
 </g>
 </g>
 </g>
+<g class='del' data-del='mreza'>
 <path d='M0 0V-76.8219H93.8946V0ZM93.8946-76.8219' fill='none'/>
 <path d='M31.2982 0V-76.8219' fill='none'/>
 <path d='M0-25.6073H93.8946' fill='none'/>
 <path d='M62.5964 0V-76.8219' fill='none'/>
 <path d='M0-51.2146H93.8946' fill='none'/>
+</g>
+<g class='del' data-del='blok1'>
 <g transform='translate(13.33661,-15.70364)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-60.452381,-40.786565)scale(-1,-1)'>
 <g fill='#000'>
@@ -3235,6 +4890,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='blok2'>
 <g transform='translate(71.615,-40.66092)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-60.452381,-40.786565)scale(-1,-1)'>
 <g fill='#000'>
@@ -3266,6 +4923,7 @@
 <use x='-59.256867' y='-44.460106' xlink:href='#t-ch-mke-palice-P3-2-g3-49'/>
 <rect x='-59.256867' y='-43.227408' height='.398484' width='3.652912'/>
 <use x='-59.256867' y='-37.743973' xlink:href='#t-ch-mke-palice-P3-2-g3-52'/>
+</g>
 </g>
 </g>
 </g>
@@ -3305,6 +4963,7 @@
 </g>
 </g>
 </g>
+<g class='del' data-del='mreza'>
 <g transform='translate(13.33661,3.63298)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-60.452381,-40.786565)scale(-1,-1)'>
 <g fill='#000'>
@@ -3375,6 +5034,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='stolpec'>
 <path d='M143.97191 0V-76.8219H175.27011V0ZM175.27011-76.8219' fill='none'/>
 <path d='M143.97191-25.6073H175.27011' fill='none'/>
 <path d='M143.97191-51.2146H175.27011' fill='none'/>
@@ -3435,6 +5096,7 @@
 </g>
 </g>
 </g>
+</g>
 <g class='del' data-del='vsota'>
 <g transform='translate(145.14328,-94.4364)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-60.452381,-40.786565)scale(-1,-1)'>
@@ -3458,8 +5120,8 @@
 </g>
 </g>
 </svg></span></p>
-<figcaption><span class="blk-label">Figure 7.18</span>: Matrix and force of the bar with a step, assembled from two elements. The matrix \(\mathbf{K}\) in units <span class="nobr">\(EA/h\):</span> the blue block is the first element, the red one the second, in entry \((1, 1)\) they overlap and the contributions add, <span class="nobr">\(1 + \tfrac14\).</span> The column \(\mathbf{f}\) in units <span class="nobr">\(qh\):</span> the weight of a node is half the weight of each element it belongs to. The column sums to the weight of the bar, <span class="nobr">\(\tfrac54\).</span></figcaption></figure>
-<p>In the <a data-del="blok1" class="xref kaz" href="sec-sestavljanje.html#fig-p3-stopnica-sestavljanje" data-knowl="fig-p3-stopnica-sestavljanje">first element</a> the stiffness is <span class="nobr">\(EA/h\),</span> in the <a data-del="blok2" class="xref kaz" href="sec-sestavljanje.html#fig-p3-stopnica-sestavljanje" data-knowl="fig-p3-stopnica-sestavljanje">second</a> a quarter of it, so in the <a data-del="prekrivanje" class="xref kaz" href="sec-sestavljanje.html#fig-p3-stopnica-sestavljanje" data-knowl="fig-p3-stopnica-sestavljanje">shared entry \((1, 1)\)</a> \(1\) and \(\tfrac14\) add. In the <a data-del="nicli" class="xref kaz" href="sec-sestavljanje.html#fig-p3-stopnica-sestavljanje" data-knowl="fig-p3-stopnica-sestavljanje">entries where no element falls</a> there is zero. The forces <a data-del="f0,f1,f2" class="xref kaz" href="sec-sestavljanje.html#fig-p3-stopnica-sestavljanje" data-knowl="fig-p3-stopnica-sestavljanje">at nodes 0, 1 and 2</a> are <span class="nobr">\(\tfrac12\),</span> \(\tfrac12 + \tfrac18\) and <span class="nobr">\(\tfrac18\),</span> <a data-del="vsota" class="xref kaz" href="sec-sestavljanje.html#fig-p3-stopnica-sestavljanje" data-knowl="fig-p3-stopnica-sestavljanje">together</a> \(\tfrac54\) in units of <span class="nobr">\(qh\).</span></p>
+<figcaption><span class="blk-label">Figure 7.19</span>: Matrix and force of the bar with a step, assembled from two elements. The matrix \(\mathbf{K}\) in units <span class="nobr">\(EA/h\):</span> the blue block is the first element, the red one the second, in entry \((1, 1)\) they overlap and the contributions add, <span class="nobr">\(1 + \tfrac14\).</span> The column \(\mathbf{f}\) in units <span class="nobr">\(qh\):</span> the weight of a node is half the weight of each element it belongs to. The column sums to the weight of the bar, <span class="nobr">\(\tfrac54\).</span></figcaption></figure>
+<p>The matrix \(\mathbf{K}\) is <a data-del="mreza" class="xref kaz" href="sec-sestavljanje.html#fig-p3-stopnica-sestavljanje" data-knowl="fig-p3-stopnica-sestavljanje">a 3 by 3 grid, with the node indices on its edge</a>, and on the right is <span class="nobr"><a data-del="stolpec" class="xref kaz" href="sec-sestavljanje.html#fig-p3-stopnica-sestavljanje" data-knowl="fig-p3-stopnica-sestavljanje">the column \(\mathbf{f}\)</a>.</span> In the <a data-del="blok1" class="xref kaz" href="sec-sestavljanje.html#fig-p3-stopnica-sestavljanje" data-knowl="fig-p3-stopnica-sestavljanje">first element</a> the stiffness is <span class="nobr">\(EA/h\),</span> in the <a data-del="blok2" class="xref kaz" href="sec-sestavljanje.html#fig-p3-stopnica-sestavljanje" data-knowl="fig-p3-stopnica-sestavljanje">second</a> a quarter of it, so in the <a data-del="prekrivanje" class="xref kaz" href="sec-sestavljanje.html#fig-p3-stopnica-sestavljanje" data-knowl="fig-p3-stopnica-sestavljanje">shared entry \((1, 1)\)</a> \(1\) and \(\tfrac14\) add. In the <a data-del="nicli" class="xref kaz" href="sec-sestavljanje.html#fig-p3-stopnica-sestavljanje" data-knowl="fig-p3-stopnica-sestavljanje">entries where no element falls</a> there is zero. The forces <a data-del="f0,f1,f2" class="xref kaz" href="sec-sestavljanje.html#fig-p3-stopnica-sestavljanje" data-knowl="fig-p3-stopnica-sestavljanje">at nodes 0, 1 and 2</a> are <span class="nobr">\(\tfrac12\),</span> \(\tfrac12 + \tfrac18\) and <span class="nobr">\(\tfrac18\),</span> <a data-del="vsota" class="xref kaz" href="sec-sestavljanje.html#fig-p3-stopnica-sestavljanje" data-knowl="fig-p3-stopnica-sestavljanje">together</a> \(\tfrac54\) in units of <span class="nobr">\(qh\).</span></p>
 <p>For unknowns \(1\) and \(2\) this is chapter <a class="xref" href="ch-sibka-oblika.html">6</a>: <span class="nobr">\(K_{11} = EA/h + EA/(4h)\),</span> <span class="nobr">\(K_{12} = -EA/(4h)\),</span> <span class="nobr">\(K_{22} = EA/(4h)\),</span> <span class="nobr">\(f_1 = \tfrac58 qh\),</span> <span class="nobr">\(f_2 = \tfrac18 qh\).</span> A computation with SymPy from the integrals of the hat functions over the whole bar, without elements, gives the same matrix and the same right-hand side. The sum of the forces at all nodes is <span class="nobr">\(qh\,(\tfrac12 + \tfrac58 + \tfrac18) = \tfrac54\,qh\),</span> which is the weight of the bar: \(qh\) for the upper piece and \(qh/4\) for the lower one. The figure shows the same: the <a data-del="prekrivanje" class="xref kaz" href="sec-sestavljanje.html#fig-p3-stopnica-sestavljanje" data-knowl="fig-p3-stopnica-sestavljanje">sum in place \((1, 1)\)</a> and the <a data-del="f0,f1,f2" class="xref kaz" href="sec-sestavljanje.html#fig-p3-stopnica-sestavljanje" data-knowl="fig-p3-stopnica-sestavljanje">forces at the nodes</a>.</p>
 
 <figure class="blk slika" id="fig-p3-energija"><p><span class="svgfig" role="img" aria-label="The field, the elongations of the elements and their energies as squares"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='382.35pt' height='341.44pt' viewBox='-72.000004 -72.000004 283.219148 252.916842'>
@@ -3925,7 +5587,7 @@
 </g>
 </g>
 </svg></span></p>
-<figcaption><span class="blk-label">Figure 7.19</span>: Energy check on the hanging bar with two elements. Above the field of the Ritz solution \(n = 2\) with the elongations of the elements, \(14{,}64\) µm and \(4{,}88\) µm. Below the energies of the elements as squares, the area proportional to the square of the elongation, \(U_1 = 329{,}93\) µJ and \(U_2 = 36{,}659\) µJ, together \(366{,}59\) µJ.</figcaption></figure>
+<figcaption><span class="blk-label">Figure 7.20</span>: Energy check on the hanging bar with two elements. Above the field of the Ritz solution \(n = 2\) with the elongations of the elements, \(14{,}64\) µm and \(4{,}88\) µm. Below the energies of the elements as squares, the area proportional to the square of the elongation, \(U_1 = 329{,}93\) µJ and \(U_2 = 36{,}659\) µJ, together \(366{,}59\) µJ.</figcaption></figure>
 <p>The figure shows the same bar. Above is the <a data-del="polje" class="xref kaz" href="sec-sestavljanje.html#fig-p3-energija" data-knowl="fig-p3-energija">field \(u_{\mathrm{h}}\)</a> of the Ritz solution with the nodal displacements. The <a data-del="raztezek1" class="xref kaz" href="sec-sestavljanje.html#fig-p3-energija" data-knowl="fig-p3-energija">first element</a> stretches by \(14{,}64\) µm, the <a data-del="raztezek2" class="xref kaz" href="sec-sestavljanje.html#fig-p3-energija" data-knowl="fig-p3-energija">second</a> by \(4{,}88\) µm. Below the energy of each element is drawn as a square with an area proportional to the square of the elongation, <a data-del="U1" class="xref kaz" href="sec-sestavljanje.html#fig-p3-energija" data-knowl="fig-p3-energija">\(U_1\)</a> and <span class="nobr"><a data-del="U2" class="xref kaz" href="sec-sestavljanje.html#fig-p3-energija" data-knowl="fig-p3-energija">\(U_2\)</a>,</span> <a data-del="razmerje" class="xref kaz" href="sec-sestavljanje.html#fig-p3-energija" data-knowl="fig-p3-energija">their ratio</a> is <span class="nobr">\(9\),</span> and the <a data-del="vsota" class="xref kaz" href="sec-sestavljanje.html#fig-p3-energija" data-knowl="fig-p3-energija">sum</a> is the energy of the bar.</p>
 <p>We check the energy on the <a data-del="polje" class="xref kaz" href="sec-sestavljanje.html#fig-p3-energija" data-knowl="fig-p3-energija">field of the Ritz solution</a> \(n = 2\) for the uniform bar, <span class="nobr">\(d_0 = 0\),</span> \(d_1 = 14{,}640\) µm, \(d_2 = 19{,}520\) µm (chapter <a class="xref" href="ch-sibka-oblika.html">6</a>). With \(EA/h = 3{,}0788 \cdot 10^6\) N/m, \(U_1 = \tfrac12 (EA/h)(d_1 - d_0)^2 = 329{,}93\) µJ and \(U_2 = \tfrac12 (EA/h)(d_2 - d_1)^2 = 36{,}659\) µJ. The sum \(366{,}59\) µJ equals \(\tfrac12\,\vek d^\T \mat K\,\vek d\) and also <span class="nobr">\(\tfrac12\,\vek d^\T \vek f\),</span> which is the last equality of the theorem and the equality from chapter <a class="xref" href="ch-sibka-oblika.html">6</a>, where \(\Pi = -391{,}03 + 97{,}76/n^2\) µJ, so for \(n = 2\) it is \(-366{,}59\) µJ. The <a data-del="U1" class="xref kaz" href="sec-sestavljanje.html#fig-p3-energija" data-knowl="fig-p3-energija">first element</a> carries almost all the energy: it has the larger elongation <span class="nobr">(\(14{,}64\)</span> µm against \(4{,}88\) µm), and the energy grows with the square of the elongation, \((14{,}64/4{,}88)^2 = 9\) (the ratio <span class="nobr">\(329{,}93 / 36{,}659 = 9{,}0\)).</span></p>
 <p>Three properties of the matrix follow from the theorem, and we will need them. <!-- nofig: signpost --></p>
@@ -4063,6 +5725,7 @@
 </g>
 </g>
 </g>
+<g class='del' data-del='mreza'>
 <path d='M0 0V-113.81142H113.81142V0ZM113.81142-113.81142' fill='none'/>
 <path d='M22.76228 0V-113.81142' fill='none'/>
 <path d='M0-22.76228H113.81142' fill='none'/>
@@ -4072,6 +5735,7 @@
 <path d='M0-68.28685H113.81142' fill='none'/>
 <path d='M91.04913 0V-113.81142' fill='none'/>
 <path d='M0-91.04913H113.81142' fill='none'/>
+</g>
 <g class='del' data-del='pas'>
 <g transform='translate(9.06865,-14.28113)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-60.452381,-40.219705)scale(-1,-1)'>
@@ -4309,6 +5973,7 @@
 </g>
 </g>
 </g>
+<g class='del' data-del='mreza'>
 <g transform='translate(9.06865,3.63298)'>
 <g stroke='none' transform='scale(-1.00375,1.00375)translate(-60.452381,-40.219705)scale(-1,-1)'>
 <g fill='#000'>
@@ -4415,6 +6080,8 @@
 </g>
 </g>
 </g>
+</g>
+<g class='del' data-del='stolpec'>
 <path d='M141.12608 0V-113.81142H163.88837V0ZM163.88837-113.81142' fill='none'/>
 <path d='M141.12608-22.76228H163.88837' fill='none'/>
 <path d='M141.12608-45.52457H163.88837' fill='none'/>
@@ -4492,9 +6159,10 @@
 </g>
 </g>
 </g>
+</g>
 </svg></span></p>
-<figcaption><span class="blk-label">Figure 7.20</span>: Matrix \(\mathbf{K}\) of the bar with four elements in units \(EA/h\) and force column \(\mathbf{f}\) in units <span class="nobr">\(qh/2\).</span> The nonzero entries (blue) form a band along the main diagonal, elsewhere there are zeros. The end nodes have \(1\) in the column, the inner ones <span class="nobr">\(2\).</span></figcaption></figure>
-<p>The <a data-del="pas" class="xref kaz" href="sec-sestavljanje.html#fig-p3-stirje-pas" data-knowl="fig-p3-stirje-pas">nonzero entries</a> are only the main diagonal and two neighbouring ones, <a data-del="nicle" class="xref kaz" href="sec-sestavljanje.html#fig-p3-stirje-pas" data-knowl="fig-p3-stirje-pas">all other entries</a> are zero. With \(EA/h = 6{,}1575 \cdot 10^6\) N/m and \(qh/2 = 7{,}512\) N the forces at the nodes are in turn \(7{,}512\) N, \(15{,}024\) N, \(15{,}024\) N, \(15{,}024\) N and \(7{,}512\) N. The <a data-del="notranja" class="xref kaz" href="sec-sestavljanje.html#fig-p3-stirje-pas" data-knowl="fig-p3-stirje-pas">inner nodes</a> carry the weight of half of each of the two neighbouring elements, so twice the number, the <a data-del="krajna" class="xref kaz" href="sec-sestavljanje.html#fig-p3-stirje-pas" data-knowl="fig-p3-stirje-pas">end nodes</a> only that of one element. The sum \(60{,}097\) N is the weight of the bar <span class="nobr">\(qL\).</span> The zeros in the matrix follow from each hat function living on two elements only (chapter <a class="xref" href="ch-sibka-oblika.html">6</a>). In section <a class="xref" href="sec-redke-matrike.html">7.8</a> we will see what these zeros bring us.</p>
+<figcaption><span class="blk-label">Figure 7.21</span>: Matrix \(\mathbf{K}\) of the bar with four elements in units \(EA/h\) and force column \(\mathbf{f}\) in units <span class="nobr">\(qh/2\).</span> The nonzero entries (blue) form a band along the main diagonal, elsewhere there are zeros. The end nodes have \(1\) in the column, the inner ones <span class="nobr">\(2\).</span></figcaption></figure>
+<p>The <a data-del="mreza" class="xref kaz" href="sec-sestavljanje.html#fig-p3-stirje-pas" data-knowl="fig-p3-stirje-pas">grid</a> has 5 by 5 entries, and <a data-del="stolpec" class="xref kaz" href="sec-sestavljanje.html#fig-p3-stirje-pas" data-knowl="fig-p3-stirje-pas">the column \(\mathbf{f}\)</a> is on the right. The <a data-del="pas" class="xref kaz" href="sec-sestavljanje.html#fig-p3-stirje-pas" data-knowl="fig-p3-stirje-pas">nonzero entries</a> are only the main diagonal and two neighbouring ones, <a data-del="nicle" class="xref kaz" href="sec-sestavljanje.html#fig-p3-stirje-pas" data-knowl="fig-p3-stirje-pas">all other entries</a> are zero. With \(EA/h = 6{,}1575 \cdot 10^6\) N/m and \(qh/2 = 7{,}512\) N the forces at the nodes are in turn \(7{,}512\) N, \(15{,}024\) N, \(15{,}024\) N, \(15{,}024\) N and \(7{,}512\) N. The <a data-del="notranja" class="xref kaz" href="sec-sestavljanje.html#fig-p3-stirje-pas" data-knowl="fig-p3-stirje-pas">inner nodes</a> carry the weight of half of each of the two neighbouring elements, so twice the number, the <a data-del="krajna" class="xref kaz" href="sec-sestavljanje.html#fig-p3-stirje-pas" data-knowl="fig-p3-stirje-pas">end nodes</a> only that of one element. The sum \(60{,}097\) N is the weight of the bar <span class="nobr">\(qL\).</span> The zeros in the matrix follow from each hat function living on two elements only (chapter <a class="xref" href="ch-sibka-oblika.html">6</a>). In section <a class="xref" href="sec-redke-matrike.html">7.8</a> we will see what these zeros bring us.</p>
 <p>The theorem determines what the <a class="xref auto" href="sec-sestavljanje.html#cor-matrika-konstrukcije" data-knowl="cor-matrika-konstrukcije">structure matrix</a> is. In a computation, however, we must not form every large matrix <span class="nobr">\(\mat Z_{\mathrm{e}}^\T\,\mat k_{\mathrm{e}}\,\mat Z_{\mathrm{e}}\),</span> since it has \((n+1)^2\) entries, almost all of them zero. Lemma <a class="xref" href="sec-sestavljanje.html#lem-izbirna-matrika" data-knowl="lem-izbirna-matrika">7.12</a> says that adding such matrices is the same as adding the entries of \(\mat k_{\mathrm{e}}\) directly at the places that the table gives. The algorithm is this. An element <a data-del="de" class="xref kaz" href="sec-sestavljanje.html#fig-p3-izbira" data-knowl="fig-p3-izbira">takes its displacements</a> and <a data-del="vsota" class="xref kaz" href="sec-sestavljanje.html#fig-p3-izbira" data-knowl="fig-p3-izbira">returns the forces to their places</a>, everything else is zero.</p>
 <ol>
 <li>Take a <a data-del="K" class="xref kaz" href="sec-sestavljanje.html#fig-ses-sestavljanje" data-knowl="fig-ses-sestavljanje">matrix \(\mat K\)</a> of order \(n_{\mathrm{u}}\) and a column \(\vek f\) of \(n_{\mathrm{u}}\) numbers, all zeros.</li>
@@ -4503,7 +6171,7 @@
 </ol>
 <p>By lemma <a class="xref" href="sec-sestavljanje.html#lem-izbirna-matrika" data-knowl="lem-izbirna-matrika">7.12</a> (items 2 and 3) every step 2 adds exactly the matrix \(\mat Z_{\mathrm{e}}^\T\,\mat k_{\mathrm{e}}\,\mat Z_{\mathrm{e}}\) and the column <span class="nobr">\(\mat Z_{\mathrm{e}}^\T\,\vek f_{\mathrm{e}}\),</span> so by theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a> the result is the same as the sum. FELIPPA says that the element matrices are not expanded (&quot;member stiffness matrices are not expanded&quot;, PDF p. 47). The procedure in which we add the coefficients of the elements at the places dictated by the numbering of the nodes of the structure is called by COOK (PDF p. 50) the direct stiffness method (metoda neposredne togosti). FELIPPA (PDF p. 28) uses the same name for the whole procedure from the elements to the structure and says that all major commercial programs for the finite element method are based on it. In the figure the <a data-del="prekrivanje" class="xref kaz" href="sec-sestavljanje.html#fig-ses-sestavljanje" data-knowl="fig-ses-sestavljanje">matrices of the elements overlap</a> in one place only, elsewhere each stands alone.</p>
 <p>By lemma <a class="xref" href="sec-sestavljanje.html#lem-izbirna-matrika" data-knowl="lem-izbirna-matrika">7.12</a> (items 2 and 3) every step 2 adds exactly the <a data-del="blok1,blok2" class="xref kaz" href="sec-sestavljanje.html#fig-ses-sestavljanje" data-knowl="fig-ses-sestavljanje">matrix \(\mat Z_{\mathrm{e}}^\T\,\mat k_{\mathrm{e}}\,\mat Z_{\mathrm{e}}\)</a> and the <span class="nobr"><a data-del="vsota" class="xref kaz" href="sec-sestavljanje.html#fig-p3-izbira" data-knowl="fig-p3-izbira">column \(\mat Z_{\mathrm{e}}^\T\,\vek f_{\mathrm{e}}\)</a>,</span> so by theorem <a class="xref" href="sec-sestavljanje.html#thm-sestavljanje" data-knowl="thm-sestavljanje">7.13</a> the result is the same as the sum. FELIPPA says that the <a data-del="k1,k2" class="xref kaz" href="sec-sestavljanje.html#fig-ses-sestavljanje" data-knowl="fig-ses-sestavljanje">element matrices are not expanded</a> (&quot;member stiffness matrices are not expanded&quot;, PDF p. 47). The procedure in which we add the coefficients of the elements at the places dictated by the numbering of the nodes of the structure is called by COOK (PDF p. 50) the direct stiffness method (metoda neposredne togosti). FELIPPA (PDF p. 28) uses the same name for the whole procedure from the elements to the structure and says that all major commercial programs for the finite element method are based on it.</p>
-<p>We carry out the algorithm for a bar with two elements, \(h = 5\) m, \(EA/h = 3{,}0788 \cdot 10^6\) N/m, \(qh/2 = 15{,}024\) N (figure <a class="xref" href="sec-sestavljanje.html#fig-ses-sestavljanje" data-knowl="fig-ses-sestavljanje">7.21</a>). The <a data-del="stevilke1,stevilke2" class="xref kaz" href="sec-sestavljanje.html#fig-ses-sestavljanje" data-knowl="fig-ses-sestavljanje">connectivity table</a> is <span class="nobr">\((0, 1)\),</span> <span class="nobr">\((1, 2)\),</span> and we start with the <span class="nobr"><a data-del="K" class="xref kaz" href="sec-sestavljanje.html#fig-ses-sestavljanje" data-knowl="fig-ses-sestavljanje">zero matrix \(3 \times 3\)</a>.</span></p>
+<p>We carry out the algorithm for a bar with two elements, \(h = 5\) m, \(EA/h = 3{,}0788 \cdot 10^6\) N/m, \(qh/2 = 15{,}024\) N (figure <a class="xref" href="sec-sestavljanje.html#fig-ses-sestavljanje" data-knowl="fig-ses-sestavljanje">7.22</a>). The <a data-del="stevilke1,stevilke2" class="xref kaz" href="sec-sestavljanje.html#fig-ses-sestavljanje" data-knowl="fig-ses-sestavljanje">connectivity table</a> is <span class="nobr">\((0, 1)\),</span> <span class="nobr">\((1, 2)\),</span> and we start with the <span class="nobr"><a data-del="K" class="xref kaz" href="sec-sestavljanje.html#fig-ses-sestavljanje" data-knowl="fig-ses-sestavljanje">zero matrix \(3 \times 3\)</a>.</span></p>
 <ul>
 <li>Element 1 (row <span class="nobr">\((0, 1)\)):</span> <a data-del="blok1" class="xref kaz" href="sec-sestavljanje.html#fig-ses-sestavljanje" data-knowl="fig-ses-sestavljanje">the pairs \((i, j)\) go to the places</a> <span class="nobr">\((g_{1\mathrm{i}}, g_{1\mathrm{j}})\),</span> that is <span class="nobr">\((0, 0)\),</span> <span class="nobr">\((0, 1)\),</span> <span class="nobr">\((1, 0)\),</span> <span class="nobr">\((1, 1)\).</span> After this
 <div class="eq">\[\mat K = \frac{EA}{h} \begin{pmatrix} 1 &amp; -1 &amp; 0 \\ -1 &amp; 1 &amp; 0 \\ 0 &amp; 0 &amp; 0 \end{pmatrix} , \qquad \vek f = \frac{qh}{2} \begin{pmatrix} 1 \\ 1 \\ 0 \end{pmatrix} .\]</div></li>
@@ -4926,7 +6594,7 @@
 </g>
 </g>
 </svg></span></p>
-<figcaption><span class="blk-label">Figure 7.21</span>: Assembly of a bar with two elements. On the left the element matrices in units of <span class="nobr">\(EA/h\),</span> blue element 1 and orange element 2, with the global numbers from the connectivity table beside the columns. On the right the structure matrix \(3 \times 3\) in the same units: the matrix of element 1 falls into rows and columns \(0\) and <span class="nobr">\(1\),</span> the matrix of element 2 into rows and columns \(1\) and <span class="nobr">\(2\).</span> The elements overlap in one entry <span class="nobr">\((1, 1)\),</span> where the contributions add, <span class="nobr">\(1 + 1 = 2\).</span> Neither falls on entries \((0, 2)\) and <span class="nobr">\((2, 0)\),</span> there is a zero.</figcaption></figure>
+<figcaption><span class="blk-label">Figure 7.22</span>: Assembly of a bar with two elements. On the left the element matrices in units of <span class="nobr">\(EA/h\),</span> blue element 1 and orange element 2, with the global numbers from the connectivity table beside the columns. On the right the structure matrix \(3 \times 3\) in the same units: the matrix of element 1 falls into rows and columns \(0\) and <span class="nobr">\(1\),</span> the matrix of element 2 into rows and columns \(1\) and <span class="nobr">\(2\).</span> The elements overlap in one entry <span class="nobr">\((1, 1)\),</span> where the contributions add, <span class="nobr">\(1 + 1 = 2\).</span> Neither falls on entries \((0, 2)\) and <span class="nobr">\((2, 0)\),</span> there is a zero.</figcaption></figure>
 <p>In the figure <a data-del="k1" class="xref kaz" href="sec-sestavljanje.html#fig-ses-sestavljanje" data-knowl="fig-ses-sestavljanje">matrix \(\mathbf{k}_1\)</a> is blue and <a data-del="k2" class="xref kaz" href="sec-sestavljanje.html#fig-ses-sestavljanje" data-knowl="fig-ses-sestavljanje">matrix \(\mathbf{k}_2\)</a> orange, and beside their <a data-del="stevilke1,stevilke2" class="xref kaz" href="sec-sestavljanje.html#fig-ses-sestavljanje" data-knowl="fig-ses-sestavljanje">rows and columns</a> are the global numbers from the connectivity table. The <a data-del="puscica" class="xref kaz" href="sec-sestavljanje.html#fig-ses-sestavljanje" data-knowl="fig-ses-sestavljanje">arrow</a> points to the <span class="nobr"><a data-del="K" class="xref kaz" href="sec-sestavljanje.html#fig-ses-sestavljanje" data-knowl="fig-ses-sestavljanje">structure matrix \(\mathbf{K}\)</a>,</span> whose <a data-del="stevilkeK" class="xref kaz" href="sec-sestavljanje.html#fig-ses-sestavljanje" data-knowl="fig-ses-sestavljanje">rows and columns</a> are numbered <span class="nobr">\(0\),</span> <span class="nobr">\(1\),</span> <span class="nobr">\(2\).</span> The <a data-del="blok1" class="xref kaz" href="sec-sestavljanje.html#fig-ses-sestavljanje" data-knowl="fig-ses-sestavljanje">first matrix</a> falls into rows and columns \(0\) and <span class="nobr">\(1\),</span> the <a data-del="blok2" class="xref kaz" href="sec-sestavljanje.html#fig-ses-sestavljanje" data-knowl="fig-ses-sestavljanje">second</a> into \(1\) and <span class="nobr">\(2\).</span> The <a data-del="prekrivanje" class="xref kaz" href="sec-sestavljanje.html#fig-ses-sestavljanje" data-knowl="fig-ses-sestavljanje">entry \((1, 1)\)</a> receives both contributions, <span class="nobr">\(1 + 1\).</span></p>
 <p>Why do the contributions in <a data-del="prekrivanje" class="xref kaz" href="sec-sestavljanje.html#fig-ses-sestavljanje" data-knowl="fig-ses-sestavljanje">entry \((1, 1)\)</a> add up rather than, say, average? The inner node 1 belongs to both elements. In mechanical terms: <a data-del="blok1" class="xref kaz" href="sec-sestavljanje.html#fig-ses-sestavljanje" data-knowl="fig-ses-sestavljanje">the first matrix</a> alone would hold stiffness \(EA/h\) against a displacement of this node, <a data-del="blok2" class="xref kaz" href="sec-sestavljanje.html#fig-ses-sestavljanje" data-knowl="fig-ses-sestavljanje">the second one</a> the same, and since both elements pull on the node at the same time, the forces add, together <span class="nobr">\(2EA/h\).</span> The end nodes belong to one element and have <span class="nobr">\(EA/h\).</span></p>
 
@@ -5521,10 +7189,10 @@
 </g>
 </g>
 </svg></span></p>
-<figcaption><span class="blk-label">Figure 7.22</span>: The beginnings of the finite element method on a time axis 1950 to 1965: the aircraft industry, Argyris, the paper of 1956, the name finite element in 1960 and the recognition of the Ritz method in 1963.</figcaption></figure>
-<p>Aircraft engineers made remarkable progress <a data-del="letalstvo" class="xref kaz" href="sec-sestavljanje.html#fig-p3-zgodovina" data-knowl="fig-p3-zgodovina">in the early to mid-1950s</a>, although some of the work was not published until much later because of company policies (COOK, PDF p. 24). Early in this period, equations from conventional methods of analysis were solved on the small computers of the time (COOK, PDF p. 24). The problem was wings of low aspect ratio: in the United States conventional methods proved inadequate for them, so Turner devised a three-node triangular element to model the wing skin (COOK, PDF p. 24). FELIPPA (PDF p. 203) says that continuum finite elements were invented in the aircraft industry for plane stress in the analysis of delta wing panels, and adds in a note the company Boeing and the period 1952 to 1953 (FELIPPA, PDF p. 203, note 1). In Germany, Argyris included finite element concepts in a set of influential papers about matrix procedures (COOK, PDF p. 24).</p>
+<figcaption><span class="blk-label">Figure 7.23</span>: The beginnings of the finite element method on a time axis 1950 to 1965: the aircraft industry, Argyris, the paper of 1956, the name finite element in 1960 and the recognition of the Ritz method in 1963.</figcaption></figure>
+<p>The horizontal <a data-del="os" class="xref kaz" href="sec-sestavljanje.html#fig-p3-zgodovina" data-knowl="fig-p3-zgodovina">time axis</a> runs from 1950 to 1965. Aircraft engineers made remarkable progress <a data-del="letalstvo" class="xref kaz" href="sec-sestavljanje.html#fig-p3-zgodovina" data-knowl="fig-p3-zgodovina">in the early to mid-1950s</a>, although some of the work was not published until much later because of company policies (COOK, PDF p. 24). Early in this period, equations from conventional methods of analysis were solved on the small computers of the time (COOK, PDF p. 24). The problem was wings of low aspect ratio: in the United States conventional methods proved inadequate for them, so Turner devised a three-node triangular element to model the wing skin (COOK, PDF p. 24). FELIPPA (PDF p. 203) says that continuum finite elements were invented in the aircraft industry for plane stress in the analysis of delta wing panels, and adds in a note the company Boeing and the period 1952 to 1953 (FELIPPA, PDF p. 203, note 1). In Germany, Argyris included finite element concepts in a set of influential papers about matrix procedures (COOK, PDF p. 24).</p>
 <p>The year of Argyris's work differs between the sources: GR (PDF p. 354) writes that <a data-del="argyris" class="xref kaz" href="sec-sestavljanje.html#fig-p3-zgodovina" data-knowl="fig-p3-zgodovina">in 1954</a> he published a famous monograph on matrix structural analysis, ONATE1 (PDF p. 469) lists his book with Kelsey with the year 1960, which appeared in a series of articles in 1954 to 1955.</p>
-<p><a data-del="cetvorica" class="xref kaz" href="sec-sestavljanje.html#fig-p3-zgodovina" data-knowl="fig-p3-zgodovina">In 1956</a> Martin, Turner, Clough and Topp published a paper with two continuum elements, which according to FELIPPA (PDF p. 218, note 1) is widely regarded as the start of the present finite element method. According to GR (PDF p. 354) Clough and his colleagues then formulated the finite element method as a natural extension of matrix structural analysis. According to GR (PDF p. 354) the real development of the method was triggered by the needs of the aerospace industry and by the concurrent progress in computers and in methods of matrix computation. Clough coined the name &quot;finite element&quot; in 1960 (COOK, PDF p. 24, ONATE1, PDF p. 10 and 63). Many new elements for stress analysis soon followed, developed largely by intuition and physical argument (COOK, PDF p. 24). <a data-del="ritz" class="xref kaz" href="sec-sestavljanje.html#fig-p3-zgodovina" data-knowl="fig-p3-zgodovina">In 1963</a> it was recognized that the finite element method is a form of the Rayleigh-Ritz method, a classical approximation technique. Thus, according to COOK (PDF p. 24), it was seen not only as a special trick for stress analysis but as a widely applicable method with a sound mathematical basis. This is the road that we took in chapter <a class="xref" href="ch-sibka-oblika.html">6</a>.</p>
+<p><a data-del="cetvorica" class="xref kaz" href="sec-sestavljanje.html#fig-p3-zgodovina" data-knowl="fig-p3-zgodovina">In 1956</a> Martin, Turner, Clough and Topp published a paper with two continuum elements, which according to FELIPPA (PDF p. 218, note 1) is widely regarded as the start of the present finite element method. According to GR (PDF p. 354) Clough and his colleagues then formulated the finite element method as a natural extension of matrix structural analysis. According to GR (PDF p. 354) the real development of the method was triggered by the needs of the aerospace industry and by the concurrent progress in computers and in methods of matrix computation. <a data-del="clough" class="xref kaz" href="sec-sestavljanje.html#fig-p3-zgodovina" data-knowl="fig-p3-zgodovina">Clough coined the name "finite element" in 1960</a> (COOK, PDF p. 24, ONATE1, PDF p. 10 and 63). Many new elements for stress analysis soon followed, developed largely by intuition and physical argument (COOK, PDF p. 24). <a data-del="ritz" class="xref kaz" href="sec-sestavljanje.html#fig-p3-zgodovina" data-knowl="fig-p3-zgodovina">In 1963</a> it was recognized that the finite element method is a form of the Rayleigh-Ritz method, a classical approximation technique. Thus, according to COOK (PDF p. 24), it was seen not only as a special trick for stress analysis but as a widely applicable method with a sound mathematical basis. This is the road that we took in chapter <a class="xref" href="ch-sibka-oblika.html">6</a>.</p>
 </div>
 <p>Let us return to the hanging bar and the assembly of its matrix. We now have the matrix of the bar with two elements and know that it equals the Ritz matrix with hat functions. Let us look at it once more in full. <!-- nofig: signpost --></p>
 
@@ -5764,7 +7432,7 @@
 </g>
 </g>
 </svg></span></p>
-<figcaption><span class="blk-label">Figure 7.23</span>: Rigid shift of the hanging bar without a support. The grey dashed bar is before the shift, the orange one after it, the blue distances are the shift \(c\) (strongly enlarged for visibility) of the three nodes, all moved by the same value: <span class="nobr">\(d_0 = d_1 = d_2 = c\).</span> The distances between nodes do not change, so no element is stretched and the energy is zero. The axis \(x\) points down.</figcaption></figure>
+<figcaption><span class="blk-label">Figure 7.24</span>: Rigid shift of the hanging bar without a support. The grey dashed bar is before the shift, the orange one after it, the blue distances are the shift \(c\) (strongly enlarged for visibility) of the three nodes, all moved by the same value: <span class="nobr">\(d_0 = d_1 = d_2 = c\).</span> The distances between nodes do not change, so no element is stretched and the energy is zero. The axis \(x\) points down.</figcaption></figure>
 <p>Why does the matrix allow this? Each row has \(1, -1\) or <span class="nobr">\(-1, 2, -1\),</span> and these are <a data-del="v0,v1,v2" class="xref kaz" href="sec-sestavljanje.html#fig-p3-togi-premik" data-knowl="fig-p3-togi-premik">differences of the displacements of neighbouring nodes</a>, which cancel when the displacements are equal. The force in an element is stiffness times a difference, not times the displacement itself. The <a class="xref auto" href="sec-glavne-napetosti.html#def-lastna-vrednost" data-knowl="def-lastna-vrednost">eigenvalues</a> of the matrix \(\mat K/(EA/h)\) are <span class="nobr">\(0\),</span> \(1\) and \(3\) (SymPy), one of them is zero.</p>
 
 <figure class="blk slika" id="fig-p3-podpora"><p><span class="svgfig" role="img" aria-label="The hanging bar, the forces at the nodes and the missing support force"><svg version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink' width='430.24pt' height='537.81pt' viewBox='-72.000004 -72.000007 318.693509 398.374765'>
@@ -6233,7 +7901,7 @@
 </g>
 </g>
 </svg></span></p>
-<figcaption><span class="blk-label">Figure 7.24</span>: The hanging bar with two elements and its weight at the nodes. The bar is orange, the forces at the nodes blue, together \(60{,}097\) N, the weight <span class="nobr">\(qL\).</span> The support force \(R\) and the support are dashed, since the system does not have them yet: we add them in the section on boundary conditions.</figcaption></figure>
+<figcaption><span class="blk-label">Figure 7.25</span>: The hanging bar with two elements and its weight at the nodes. The bar is orange, the forces at the nodes blue, together \(60{,}097\) N, the weight <span class="nobr">\(qL\).</span> The support force \(R\) and the support are dashed, since the system does not have them yet: we add them in the section on boundary conditions.</figcaption></figure>
 <p>The figure shows the bar. The <a data-del="os" class="xref kaz" href="sec-sestavljanje.html#fig-p3-podpora" data-knowl="fig-p3-podpora">\(x\) axis</a> points down, the <a data-del="palica" class="xref kaz" href="sec-sestavljanje.html#fig-p3-podpora" data-knowl="fig-p3-podpora">bar</a> has nodes <span class="nobr">\(0\),</span> \(1\) and <span class="nobr">\(2\).</span> The weight at the nodes is the <a data-del="f0,f1,f2" class="xref kaz" href="sec-sestavljanje.html#fig-p3-podpora" data-knowl="fig-p3-podpora">forces \(15{,}024\) N, \(30{,}049\) N and \(15{,}024\) N</a>, <a data-del="vsota" class="xref kaz" href="sec-sestavljanje.html#fig-p3-podpora" data-knowl="fig-p3-podpora">together</a> the weight of the bar. At the top the <a data-del="podpora" class="xref kaz" href="sec-sestavljanje.html#fig-p3-podpora" data-knowl="fig-p3-podpora">support</a> should hold the bar with a force <span class="nobr">\(R\),</span> but the system does not have it yet.</p>
 <p>We therefore cannot solve the system. Let us add all three equations. On the left the terms cancel, because the sum of each column is zero, and on the right <a data-del="f0,f1,f2,vsota" class="xref kaz" href="sec-sestavljanje.html#fig-p3-podpora" data-knowl="fig-p3-podpora">we get \(15{,}024 + 30{,}049 + 15{,}024 = 60{,}097\) N</a>, the weight of the bar <span class="nobr">\(qL\).</span> We get \(0 = 60{,}097\) N, which holds for no <span class="nobr">\(\vek d\).</span> The cause is in the model. A bar without a support is a <a class="xref auto" href="ch-deformacija.html#def-telo" data-knowl="def-telo">body</a> on which the force of gravity acts and no other, so it cannot be <a class="xref auto" href="sec-sila-v-palici.html#def-ravnovesje" data-knowl="def-ravnovesje">in equilibrium</a>, and our computation assumes equilibrium. The <a class="xref auto" href="sec-skalarni-produkt-funkcij.html#def-sotorna-funkcija" data-knowl="def-sotorna-funkcija">hat function</a> \(\psi_0\) was left out in chapter <a class="xref" href="ch-sibka-oblika.html">6</a> precisely because it does not satisfy <span class="nobr">\(w(0) = 0\).</span> Now we included it and forgot the condition <span class="nobr">\(u(0) = 0\).</span></p>
 <p>What is missing is therefore the <a data-del="podpora" class="xref kaz" href="sec-sestavljanje.html#fig-p3-podpora" data-knowl="fig-p3-podpora">force with which the support holds the bar</a>. Chapter <a class="xref" href="ch-sibka-oblika.html">6</a> built the condition \(d_0 = 0\) into the choice of trial <a class="xref auto" href="sec-limita-odvod.html#def-funkcija" data-knowl="def-funkcija">functions</a> and left out the function <span class="nobr">\(\psi_0\),</span> which in the matrix means that it left out <a data-del="stevilkeK" class="xref kaz" href="sec-sestavljanje.html#fig-ses-sestavljanje" data-knowl="fig-ses-sestavljanje">the row and the column of unknown \(0\)</a>. The first equation thereby disappeared, and since the force of the support is the only unknown force in it, chapter <a class="xref" href="ch-sibka-oblika.html">6</a> did not need it. How we build the condition into the assembled system, how we get the force of the support from the omitted equation, and whether the solution of the shortened system also solves the original one, is shown in section <a class="xref" href="sec-robni-pogoji-mke.html">7.3</a>.</p>
